@@ -1,1 +1,1 @@
-# Atomex.iOS / Atomex.Android
+# Atomex iOS/Android App
