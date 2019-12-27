@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
+             x:Class="atomex.ConversionPage"
+             Title="Conversion"
+             Icon="NavBar__conversion"
+             BackgroundColor="#f3f3f3">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Margin="20,30,20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+            
+                <Label x:Name="walletFrom"
+                       Text="From:"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center"/>
+                <Picker Grid.Column="1"
+                        x:Name="pickerFrom"
+                        Title="Select a wallet"
+                        ItemsSource="{Binding FromCurrencies}"
+                        ItemDisplayBinding="{Binding FullName}"
+                        SelectedItem="{Binding FromCurrency}"
+                        SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"
+                        HorizontalOptions="FillAndExpand">
+                </Picker>
+                <StackLayout Grid.Column="1"
+                             Orientation="Horizontal"
+                             IsVisible="{Binding FromCurrency}"
+                             Padding="20"
+                             HorizontalOptions="EndAndExpand"
+                             IsEnabled="False">
+                    <Label IsVisible="{Binding FromCurrency.Amount}"
+                           Text="{Binding FromCurrency.Amount}"
+                           VerticalTextAlignment="Center"
+                           FontAttributes="Bold" />
+                    <Image Source="{Binding FromCurrency.ImageUrl}"
+                           HeightRequest="48"
+                           WidthRequest="48" />
+                </StackLayout>
+
+                <Label Grid.Row="1"
+                       x:Name="walletTo"
+                       Text="To:"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center"/>
+                <Picker Grid.Row="1"
+                        Grid.Column="1"
+                        x:Name="pickerTo"
+                        Title="Select a wallet"
+                        ItemsSource="{Binding ToCurrencies}"
+                        ItemDisplayBinding="{Binding FullName}"
+                        SelectedItem="{Binding ToCurrency}"
+                        SelectedIndexChanged="OnPickerToCurrencySelectedIndexChanged"
+                        HorizontalOptions="FillAndExpand">
+                </Picker>
+                <StackLayout Grid.Row="1"
+                             Grid.Column="1"
+                             Orientation="Horizontal"
+                             IsVisible="{Binding FullName}"
+                             Padding="20"
+                             HorizontalOptions="EndAndExpand"
+                             IsEnabled="False">
+                    <Label IsVisible="{Binding ToCurrency.Amount}"
+                           Text="{Binding ToCurrency.Amount}"
+                           VerticalTextAlignment="Center"
+                           FontAttributes="Bold" />
+                    <Image Source="{Binding ToCurrency.ImageUrl}"
+                           HeightRequest="48"
+                           WidthRequest="48" />
+                </StackLayout>
+            </Grid>
+            <custom:CustomEntry x:Name="Amount"
+                                Placeholder="Amount"
+                                Keyboard="Numeric"
+                                IsSpellCheckEnabled="False"
+                                IsTextPredictionEnabled="False"
+                                HeightRequest="70"
+                                HorizontalTextAlignment="Center"/>
+
+            <Button Text="Convert"
+                    x:Name="ConvertBtn"
+                    TextColor="White"
+                    FontSize="18"
+                    HeightRequest="70"
+                    BackgroundColor="CadetBlue"
+                    CornerRadius="3"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="OnConvertButtonClicked" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

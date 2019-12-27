@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.WalletPage"
+             Title="{Binding Name}">
+    <ContentPage.Content>
+            <StackLayout>
+                <Image Source="{Binding ImageUrl}"
+                       HeightRequest="64"
+                       WidthRequest="64"
+                       Margin="0,30,0,10" />
+                <Label Text="{Binding Amount}"
+                       HorizontalOptions="Center"
+                       FontSize="Large"
+                       FontAttributes="Bold">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Amount}" />
+                            <Span Text=" " /> 
+                            <Span Text="{Binding Name}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text="{Binding FullName}"
+                       HorizontalOptions="Center"/>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0"
+                      Margin="50,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!--<Button ImageSource="SendIcon"
+                        BackgroundColor="#f0f0f0"
+                        Text="Send"
+                        TextColor="Black"
+                        FontSize="8"
+                        ContentLayout="Top,10"
+                        Clicked="ShowSendPage"/>
+                     <Button Grid.Column="1"
+                        ImageSource="ReceiveIcon"
+                        BackgroundColor="#f0f0f0"
+                        Text="Receive"
+                        TextColor="Black"
+                        FontSize="8"
+                        ContentLayout="Top,10"
+                        Clicked="ShowSendPage"/>
+                     <Button Grid.Column="2"
+                        ImageSource="ConversionIcon"
+                        Text="Conversion"
+                        TextColor="Black"
+                        FontSize="8"
+                        ContentLayout="Top,10"
+                        Clicked="ShowSendPage"/>
+                     <Button Grid.Column="3"
+                        ImageSource="CopyIcon"
+                        Text="Copy"
+                        TextColor="Black"
+                        FontSize="8"
+                        ContentLayout="Top,10"
+                        Clicked="ShowSendPage"/>-->
+                    <ImageButton Source="SendIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="ShowSendPage" />
+                    <ImageButton Grid.Column="1"
+                           Source="ReceiveIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="ShowReceivePage" />
+                    <ImageButton Grid.Column="2"
+                           Source="ConversionIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="ShowConversionPage" />
+                    <ImageButton Grid.Column="3"
+                           Source="CopyIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="Copy" />
+
+                    <Label Grid.Row="1"
+                           Text="Send"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Text="Receive"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand" />
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Text="Convert"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand" />
+                    <Label Grid.Row="1"
+                           Grid.Column="3"
+                           Text="Copy"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="CenterAndExpand" />
+                </Grid>
+                <ListView x:Name="transactionsList"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="20" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.5*" />
+                                        <ColumnDefinition Width="6.5*" />
+                                        <ColumnDefinition Width="2*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.ColumnSpan="3"
+                                           Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                           Margin="10,0"
+                                           FontAttributes="Bold"
+                                           FontSize="12"
+                                           TextColor="Gray"
+                                           VerticalTextAlignment="Start"/>
+                                    <Image Grid.Row="1"
+                                           Grid.RowSpan="2"
+                                           Source="SendIcon"
+                                           Margin="10,0">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding Action}" Value="From">
+                                                <Setter Property="Source" Value="ReceiveIcon"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Image" Binding="{Binding Action}" Value="To">
+                                                <Setter Property="Source" Value="SendIcon"></Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding Action, StringFormat='{0}:'}"
+                                           FontAttributes="Bold" />
+                                    <Label Grid.Row="1"
+                                           Grid.Column="2"
+                                           Grid.RowSpan="2"
+                                           Text="{Binding Amount, StringFormat='{0}'}"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Action}" Value="From">
+                                                <Setter Property="TextColor" Value="Green"></Setter>
+                                                <Setter Property="Text" Value="{Binding Amount, StringFormat='+{0}'}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Action}" Value="To">
+                                                <Setter Property="TextColor" Value="Red"></Setter>
+                                                <Setter Property="Text" Value="{Binding Amount, StringFormat='-{0}'}"></Setter>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="{Binding Address}"
+                                           VerticalOptions="Start" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>                      
+            </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

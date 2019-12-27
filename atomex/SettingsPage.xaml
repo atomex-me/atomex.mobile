@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="atomex.SettingsPage"
+               Title="Settings"
+               Icon="NavBar__settings">
+        <ContentPage.Content>
+            <TableView Intent="Settings">
+                <TableRoot>
+                    <TableSection Title="Security">
+                        <SwitchCell Text="Show Warnings" On="{Binding ShowWarnings}"/>
+                        <SwitchCell Text="Automatic sign out" On="{Binding AutoSignOut}" />
+                        <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
+                            <ViewCell.View>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="Period of inactive"
+                                           VerticalOptions="Center"
+                                           Margin="15,0">
+                                    </Label>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding PeriodOfInactive}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="End"
+                                           HorizontalOptions="End"
+                                           TextColor="Gray">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PeriodOfInactive}"/>
+                                                <Span Text=" min"/>
+                                        </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Column="2"
+                                           Source="RightArrowIcon"
+                                           HeightRequest="18"
+                                           Margin="10,0" />
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection Title="Blockchain">
+                        <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
+                            <ViewCell.View>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--<Image Source="CopyIcon"
+                                           HeightRequest="24"
+                                           Margin="10, 0"/>
+                                    <Label Grid.Column="1"
+                                           Text="Label"
+                                           VerticalOptions="Center" >
+                                    </Label>
+                                    <Label Grid.Column="2"
+                                           Text="{Binding Setting1}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="End"
+                                           HorizontalOptions="End"
+                                           TextColor="Gray"/>
+                                    <Image Grid.Column="3"
+                                           Source="RightArrowIcon"
+                                           HeightRequest="18"
+                                           Margin="10,0" />-->
+                                    <Label Text="Balance update interval"
+                                           VerticalOptions="Center"
+                                           
+                                           Margin="15,0,0,0">
+                                    </Label>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding BalanceUpdateInterval}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="End"
+                                           HorizontalOptions="End"
+                                           TextColor="Gray">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding BalanceUpdateInterval}"/>
+                                                <Span Text=" sec"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Column="2"
+                                           Source="RightArrowIcon"
+                                           HeightRequest="18"
+                                           Margin="10,0" />
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                        <!--<EntryCell Label="setting #1"
+                                   Placeholder="Enter value"
+                                   HorizontalTextAlignment="End"/>
+                        <TextCell Text="Test option" />-->
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </ContentPage.Content>
+    </ContentPage>

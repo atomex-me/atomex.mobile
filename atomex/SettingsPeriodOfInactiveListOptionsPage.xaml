@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.SettingsPeriodOfInactiveListOptionsPage">
+    <ContentPage.Content>
+        <TableView Intent="Settings">
+            <TableRoot>
+                <TableSection>
+                    <ViewCell x:Name="Option1" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="5 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="5">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell x:Name="Option2" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="10 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="10">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell x:Name="Option3" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="30 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="30">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell x:Name="Option4" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="60 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="60">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell x:Name="Option5" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="90 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="90">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                    <ViewCell x:Name="Option6" Tapped="OnOptionTapped">
+                        <ViewCell.View>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="180 min"
+                                       VerticalOptions="Center"
+                                       Margin="20,0">
+                                </Label>
+                                <Image Grid.Column="1"
+                                       Source="CheckedIcon"
+                                       Margin="10,0"
+                                       IsVisible="False" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="180">
+                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

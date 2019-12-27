@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             x:Class="atomex.ReceivePage"
+             Title="Receive">
+    <ScrollView>
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+            <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxcm:EncodingOptions Width="300" Height="100" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>-->
+            <zxing:ZXingBarcodeImageView WidthRequest="300"
+                                         HeightRequest="300"
+                                         BarcodeValue="{Binding Address}"
+                                         BarcodeFormat="QR_CODE"
+                                         x:Name="IMG">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxcm:EncodingOptions Width="300" Height="300" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>
+            <Label Text="{Binding Address}"
+                   TextColor="Gray"
+                   HorizontalTextAlignment="Center"
+                   FontSize="24"/>
+             <Grid RowSpacing="0" ColumnSpacing="50" Margin="20,40,20,0">
+                 <Grid.RowDefinitions>
+                     <RowDefinition Height="*" />
+                     <RowDefinition Height="*" />
+                 </Grid.RowDefinitions>
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*" />
+                     <ColumnDefinition Width="*" />
+                 </Grid.ColumnDefinitions>
+
+                 <ImageButton Grid.Column="0"
+                           Source="CopyIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="End"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="OnCopyButtonClicked" />
+                 <ImageButton Grid.Column="1"
+                           Source="SendIcon"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Start"
+                           VerticalOptions="CenterAndExpand"
+                           Clicked="OnShareButtonClicked" />
+
+                 <Label Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Copy"
+                        FontAttributes="Bold"
+                        HorizontalOptions="End"
+                        VerticalOptions="CenterAndExpand" />
+                 <Label Grid.Row="1"
+                        Grid.Column="1"
+                        Text="Share"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Start"
+                        VerticalOptions="CenterAndExpand" />
+             </Grid>
+            <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxcm:EncodingOptions Width="300" Height="100" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>-->
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

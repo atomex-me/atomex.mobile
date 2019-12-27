@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<custom:CustomTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:page="clr-namespace:atomex"
+            xmlns:custom="clr-namespace:atomex.CustomElements"
+            mc:Ignorable="d"
+            x:Class="atomex.MainPage">
+
+    <page:Portfolio></page:Portfolio>
+    <page:WalletsListPage></page:WalletsListPage>
+    <page:ConversionPage></page:ConversionPage>
+    <page:SettingsPage></page:SettingsPage>
+</custom:CustomTabbedPage>
