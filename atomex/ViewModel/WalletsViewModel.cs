@@ -23,13 +23,18 @@ namespace atomex.ViewModel
             }
         }
 
-        public WalletsViewModel(IAtomexApp atomexApp)
+        //public WalletsViewModel(IAtomexApp atomexApp)
+        //{
+        //    var terminal = atomexApp.Terminal;
+
+
+        //    atomexApp.Terminal.SwapUpdated += Terminal_SwapUpdated;
+
+        //    Wallets = WalletData.Wallets;
+        //}
+
+        public WalletsViewModel()
         {
-            var terminal = atomexApp.Terminal;
-            
-
-            atomexApp.Terminal.SwapUpdated += Terminal_SwapUpdated;
-
             Wallets = WalletData.Wallets;
         }
 

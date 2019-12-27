@@ -41,20 +41,21 @@ namespace atomex.ViewModel
             //var account = new Account(new HdWallet("atomex.wallet", ))
             //var account = Account.LoadFromFile("atomex.wallet", null, currenciesProvider, symbolsProvider);
 
-            AtomexApp = new AtomexApp()
-                .UseCurrenciesProvider(currenciesProvider)
-                .UseSymbolsProvider(symbolsProvider)
-                .UseQuotesProvider(new BitfinexQuotesProvider(
-                    currencies: currenciesProvider.GetCurrencies(Network.MainNet),
-                    baseCurrency: BitfinexQuotesProvider.Usd))
-                .UseTerminal(new Terminal(null, account));
+            //AtomexApp = new AtomexApp()
+            //    .UseCurrenciesProvider(currenciesProvider)
+            //    .UseSymbolsProvider(symbolsProvider)
+            //    .UseQuotesProvider(new BitfinexQuotesProvider(
+            //        currencies: currenciesProvider.GetCurrencies(Network.MainNet),
+            //        baseCurrency: BitfinexQuotesProvider.Usd))
+            //    .UseTerminal(new Terminal(null, account));
 
-            WalletsViewModel = new WalletsViewModel(AtomexApp);
+            //WalletsViewModel = new WalletsViewModel(AtomexApp);
+            WalletsViewModel = new WalletsViewModel();
             TransactionsViewModel = new TransactionsViewModel();
             SettingsViewModel = new SettingsViewModel();
             ConversionViewModel = new ConversionViewModel();
 
-            AtomexApp.Start();
+            //AtomexApp.Start();
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
 
