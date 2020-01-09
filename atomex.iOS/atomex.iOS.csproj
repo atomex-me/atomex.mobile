@@ -197,4 +197,10 @@
     <BundleResource Include="Resources\NavBarIcons\baseline_pie_chart_black_18dp.png" />
     <BundleResource Include="Resources\NavBarIcons\baseline_settings_applications_black_18dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="atomex.wallet">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInPackage>true</IncludeInPackage>
+    </Content>
+  </ItemGroup>
 </Project>

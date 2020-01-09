@@ -348,6 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Test wallets
+atomex.iOS/atomex.wallet
 <<<<<<< HEAD
 
 =======

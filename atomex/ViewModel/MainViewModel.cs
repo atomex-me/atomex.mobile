@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Atomex.MarketData;
 using Atomex.Wallet;
 using Atomex.Subsystems;
+using Atomex.Common;
+using System.Security;
 
 namespace atomex.ViewModel
 {
@@ -39,8 +41,8 @@ namespace atomex.ViewModel
 
             //var account = new Account(new HdWallet(Network.TestNet), "", currenciesProvider, symbolsProvider);
             //var account = new Account(new HdWallet("atomex.wallet", ))
-            //var account = Account.LoadFromFile("atomex.wallet", null, currenciesProvider, symbolsProvider);
-
+            var account = Account.LoadFromFile("atomex.wallet", "12345678".ToSecureString(), currenciesProvider, symbolsProvider);
+            //Console.WriteLine(account);
             //AtomexApp = new AtomexApp()
             //    .UseCurrenciesProvider(currenciesProvider)
             //    .UseSymbolsProvider(symbolsProvider)
