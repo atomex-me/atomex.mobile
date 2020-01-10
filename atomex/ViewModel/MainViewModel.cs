@@ -10,6 +10,7 @@ using Atomex.Wallet;
 using Atomex.Subsystems;
 using Atomex.Common;
 using System.Security;
+using System.Threading;
 
 namespace atomex.ViewModel
 {
@@ -36,20 +37,24 @@ namespace atomex.ViewModel
                 .AddEmbeddedJsonFile(coreAssembly, "symbols.json")
                 .Build();
 
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("configuration.json")
+                .Build();
+
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration, currenciesProvider);
 
             //var account = new Account(new HdWallet(Network.TestNet), "", currenciesProvider, symbolsProvider);
             //var account = new Account(new HdWallet("atomex.wallet", ))
             var account = Account.LoadFromFile("atomex.wallet", "12345678".ToSecureString(), currenciesProvider, symbolsProvider);
-            //Console.WriteLine(account);
-            //AtomexApp = new AtomexApp()
-            //    .UseCurrenciesProvider(currenciesProvider)
-            //    .UseSymbolsProvider(symbolsProvider)
-            //    .UseQuotesProvider(new BitfinexQuotesProvider(
-            //        currencies: currenciesProvider.GetCurrencies(Network.MainNet),
-            //        baseCurrency: BitfinexQuotesProvider.Usd))
-            //    .UseTerminal(new Terminal(null, account));
+
+            AtomexApp = new AtomexApp()
+                .UseCurrenciesProvider(currenciesProvider)
+                .UseSymbolsProvider(symbolsProvider)
+                .UseQuotesProvider(new BitfinexQuotesProvider(
+                    currencies: currenciesProvider.GetCurrencies(Network.TestNet),
+                    baseCurrency: BitfinexQuotesProvider.Usd))
+                .UseTerminal(new Terminal(configuration, account));
 
             //WalletsViewModel = new WalletsViewModel(AtomexApp);
             WalletsViewModel = new WalletsViewModel();
@@ -57,10 +62,16 @@ namespace atomex.ViewModel
             SettingsViewModel = new SettingsViewModel();
             ConversionViewModel = new ConversionViewModel();
 
-            //AtomexApp.Start();
+            AtomexApp.Start();
+
+            //Thread.Sleep(20000);
+
+            //Console.WriteLine(account.GetBalanceAsync(account.Currencies[0]).WaitForResult());
+            //var balance = account.GetBalanceAsync(account.Currencies[3]).WaitForResult();
+            //Console.WriteLine(balance);
+
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
-
             // AtomexApp.Stop();
         }
     }

@@ -1,0 +1,20 @@
+﻿{
+  "Services": {
+    "MainNet": {
+      "Exchange": {
+        "Url": "wss://atomex.me/exchange"
+      },
+      "MarketData": {
+        "Url": "wss://atomex.me/marketdata"
+      }
+    },
+    "TestNet": {
+      "Exchange": {
+        "Url": "wss://test.atomex.me/exchange"
+      },
+      "MarketData": {
+        "Url": "wss://test.atomex.me/marketdata"
+      }
+    }
+  }
+}

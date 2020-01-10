@@ -36,5 +36,10 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can i have camera?</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

@@ -28,6 +28,7 @@
     <MtouchDebug>true</MtouchDebug>
     <CodesignKey>Apple Development: oleg_milugin@mail.ru (KF9CFG9UZY)</CodesignKey>
     <CodesignProvision>iOS Team Provisioning Profile: atomex.iOS</CodesignProvision>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -201,6 +202,9 @@
     <Content Include="atomex.wallet">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInPackage>true</IncludeInPackage>
+    </Content>
+    <Content Include="configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>
