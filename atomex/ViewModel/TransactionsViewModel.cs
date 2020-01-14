@@ -9,10 +9,10 @@ namespace atomex.ViewModel
     {
         public List<Transaction> Transactions { get => TransactionData.Transactions; }
 
-        public List<Transaction> GetSortedList() {
+        public List<Transaction> GetTransactionsByCurrency(string currency) {
             if (Transactions != null)
             {
-                return Transactions.OrderByDescending(transaction => transaction.Date).ToList();
+                return Transactions.Where(t => t.Currency == currency).OrderByDescending(t => t.CreationTime).ToList();
             }
             return null;
         }

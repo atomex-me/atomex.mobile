@@ -134,7 +134,7 @@
                                         <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.ColumnSpan="3"
-                                           Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                           Text="{Binding CreationTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                            Margin="10,0"
                                            FontAttributes="Bold"
                                            FontSize="12"
@@ -145,18 +145,26 @@
                                            Source="SendIcon"
                                            Margin="10,0">
                                         <Image.Triggers>
-                                            <DataTrigger TargetType="Image" Binding="{Binding Action}" Value="From">
+                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Input">
                                                 <Setter Property="Source" Value="ReceiveIcon"></Setter>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Image" Binding="{Binding Action}" Value="To">
+                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Output">
                                                 <Setter Property="Source" Value="SendIcon"></Setter>
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
-                                           Text="{Binding Action, StringFormat='{0}:'}"
-                                           FontAttributes="Bold" />
+                                           FontAttributes="Bold">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
+                                                <Setter Property="Text" Value="To:"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
+                                                <Setter Property="Text" Value="From:"></Setter>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="2"
                                            Grid.RowSpan="2"
@@ -165,11 +173,11 @@
                                            HorizontalOptions="End"
                                            VerticalOptions="Center">
                                         <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Action}" Value="From">
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
                                                 <Setter Property="TextColor" Value="Green"></Setter>
                                                 <Setter Property="Text" Value="{Binding Amount, StringFormat='+{0}'}"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Action}" Value="To">
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
                                                 <Setter Property="TextColor" Value="Red"></Setter>
                                                 <Setter Property="Text" Value="{Binding Amount, StringFormat='-{0}'}"></Setter>
                                             </DataTrigger>
@@ -177,8 +185,16 @@
                                     </Label>
                                     <Label Grid.Row="2"
                                            Grid.Column="1"
-                                           Text="{Binding Address}"
-                                           VerticalOptions="Start" />
+                                           VerticalOptions="Start">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
+                                                <Setter Property="Text" Value="{Binding To}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
+                                                <Setter Property="Text" Value="{Binding From}"></Setter>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>

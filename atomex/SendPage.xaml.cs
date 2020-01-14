@@ -62,7 +62,7 @@ namespace atomex
             }
             else
             {
-                await DisplayAlert("Ошибка", "Буфер обмена пуст!", "OK");
+                await DisplayAlert("Ошибка", "Буфер обмена пуст", "OK");
             }
         }
 
@@ -70,12 +70,12 @@ namespace atomex
         {
             if (String.IsNullOrWhiteSpace(Address.Text) || String.IsNullOrWhiteSpace(Amount.Text))
             {
-                await DisplayAlert("Warning!", "Все поля должны быть заполнены!", "OK");
+                await DisplayAlert("Warning", "Все поля должны быть заполнены", "OK");
             }
             else
             {
                 var transaction = new Transaction();
-                transaction.Address = Address.Text;
+                transaction.To = Address.Text;
                
                 transaction.Amount = float.Parse(Amount.Text);
                 await Navigation.PushAsync(new AcceptSendPage(wallet, transaction));

@@ -13,24 +13,30 @@ namespace atomex.Models
             {
                 new Transaction
                 {
-                    Action = "To",
+                    Currency = "Ethereum",
+                    Type = "Output",
                     Amount = 0.003f,
-                    Address = "btc#ji82m9eu@9043n3$kh#kds?dj3",
-                    Date = new DateTime(2019, 8, 13, 12, 32, 30)
+                    From = "eth#8su7s62gk^4hbdj#$7",
+                    To = "eth#f4tm9eu@90n3$#kdsfby",
+                    CreationTime = new DateTime(2019, 8, 13, 12, 32, 30)
                 },
                 new Transaction
                 {
-                    Action = "From",
+                    Currency = "Ethereum",
+                    Type = "Input",
                     Amount = 0.739f,
-                    Address = "eth#ghj#j@jNB$>hgj%bnb*jhbdjs",
-                    Date = new DateTime(2019, 9, 21, 16, 09, 30)
+                    From = "eth#ghj#j@jNB$>hgj%bnb*jhbdjs",
+                    To = "eth#8su7s62gk^4hbdj#$7",
+                    CreationTime = new DateTime(2019, 9, 21, 16, 09, 30)
                 },
                 new Transaction
                 {
-                    Action = "From",
+                    Currency = "Tezos",
+                    Type = "Output",
                     Amount = 18f,
-                    Address = "xtz#93ih38d7sn4@khb$720JKdbvn^67",
-                    Date = new DateTime(2019, 3, 13, 02, 19, 32)
+                    From = "xtz#h6s02ks92d9@jd3$ss0l",
+                    To = "xtz#93ih38d7sn4@khb$720JKdbvn^67",
+                    CreationTime = new DateTime(2019, 3, 13, 02, 19, 32)
                 }
             };
         }

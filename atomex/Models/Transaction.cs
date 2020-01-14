@@ -4,9 +4,12 @@ namespace atomex.Models
 {
     public class Transaction
     {
-        public string Action { get; set; }
-        public string Address { get; set; }
+        public string Id { get; set; }
+        public string Currency { get; set; }
+        public string Type { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
         public float Amount { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 }

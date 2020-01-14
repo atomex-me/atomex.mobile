@@ -25,7 +25,7 @@ namespace atomex
             {
                 wallet = selectedWallet;
                 BindingContext = wallet;
-                transactionsList.ItemsSource = TransactionsViewModel.GetSortedList();
+                transactionsList.ItemsSource = TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName);
             }
         }
 

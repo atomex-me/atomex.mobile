@@ -15,7 +15,7 @@
                                   Detail=""
                                   DetailColor="CadetBlue" />
                         <TextCell Text="To"
-                                  Detail="{Binding Address}"
+                                  Detail="{Binding To}"
                                   DetailColor="CadetBlue"/>
                         <TextCell Text="Amount"
                                   Detail="{Binding Amount}"
