@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using atomex.Models;
+using atomex.Models; 
 
 namespace atomex
 {

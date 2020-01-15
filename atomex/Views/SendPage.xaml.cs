@@ -76,6 +76,7 @@ namespace atomex
             {
                 var transaction = new Transaction();
                 transaction.To = Address.Text;
+                
                
                 transaction.Amount = float.Parse(Amount.Text);
                 await Navigation.PushAsync(new AcceptSendPage(wallet, transaction));
