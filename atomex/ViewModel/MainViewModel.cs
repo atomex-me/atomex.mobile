@@ -67,11 +67,12 @@ namespace atomex.ViewModel
             //Thread.Sleep(20000);
 
             //Console.WriteLine(account.GetBalanceAsync(account.Currencies[0]).WaitForResult());
-            var balance = account.GetBalanceAsync(account.Currencies[1]).WaitForResult();
-            Console.WriteLine(balance);
+            //var balance = account.GetBalanceAsync(account.Currencies[1]).WaitForResult();
+            //Console.WriteLine(balance);
+            //Console.WriteLine(account);
 
-            var transactions = account.GetTransactionsAsync(account.Currencies[1]).WaitForResult();
-            Console.WriteLine(transactions);
+            //var transactions = account.GetTransactionsAsync(account.Currencies[1]).WaitForResult();
+            //Console.WriteLine(transactions);
 
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})

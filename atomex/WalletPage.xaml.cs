@@ -26,6 +26,10 @@ namespace atomex
                 wallet = selectedWallet;
                 BindingContext = wallet;
                 transactionsList.ItemsSource = TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName);
+                if (wallet.FullName == "Tezos")
+                {
+                    DelegateOption.IsVisible = true;
+                }
             }
         }
 
@@ -46,6 +50,13 @@ namespace atomex
             else
             {
                 await DisplayAlert("Ошибка", "Ошибка при копировании!", "OK");
+            }
+        }
+        async void ShowDelegationPage(object sender, EventArgs args)
+        {
+            if (wallet != null)
+            {
+                await DisplayAlert("Оповещение", "В разработке", "OK");
             }
         }
         void ShowConversionPage(object sender, EventArgs args)

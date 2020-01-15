@@ -127,7 +127,6 @@
     <ImageAsset Include="Assets.xcassets\ConversionIcon.imageset\conversion-1.png" />
     <ImageAsset Include="Assets.xcassets\CopyIcon.imageset\copy-1.png" />
     <ImageAsset Include="Assets.xcassets\ReceiveIcon.imageset\receive-1.png" />
-    <ImageAsset Include="Assets.xcassets\SendIcon.imageset\send-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\portfolio.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Contents.json" />
@@ -148,6 +147,9 @@
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\baseline_pie_chart_black_24dp.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\round_settings_applications_black_24dp.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\baseline_account_balance_wallet_black_24dp.png" />
+    <ImageAsset Include="Assets.xcassets\SendIcon.imageset\send.png" />
+    <ImageAsset Include="Assets.xcassets\DelegateIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\DelegateIcon.imageset\line.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -191,6 +193,7 @@
     <Folder Include="Assets.xcassets\ScanIcon.imageset\" />
     <Folder Include="Assets.xcassets\RightArrowIcon.imageset\" />
     <Folder Include="Assets.xcassets\CheckedIcon.imageset\" />
+    <Folder Include="Assets.xcassets\DelegateIcon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />
