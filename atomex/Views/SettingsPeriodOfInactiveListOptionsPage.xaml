@@ -22,7 +22,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="5">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="5">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -46,7 +46,7 @@
                                        Margin="10,0"
                                        IsVisible="False">
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="10">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="10">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -70,7 +70,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="30">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="30">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -94,7 +94,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="60">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="60">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -118,7 +118,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="90">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="90">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -142,7 +142,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactive}" Value="180">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="180">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>

@@ -4,6 +4,8 @@ using Xamarin.Forms;
 using atomex.Models;
 using atomex.CustomElements;
 using atomex.ViewModel;
+using Atomex;
+using Atomex.Wallet;
 
 namespace atomex
 {
@@ -21,7 +23,8 @@ namespace atomex
         {
 
             MainViewModel = new MainViewModel();
-            var navigationWalletsListPage = new NavigationPage(new WalletsListPage(MainViewModel.WalletsViewModel, MainViewModel.TransactionsViewModel, this));
+            IAtomexApp AtomexApp = MainViewModel.GetAtomexApp();
+            var navigationWalletsListPage = new NavigationPage(new WalletsListPage(AtomexApp, MainViewModel.WalletsViewModel, MainViewModel.TransactionsViewModel, this));
             navigationWalletsListPage.IconImageSource = "NavBar__wallets";
             navigationWalletsListPage.Title = "Wallets";
 
@@ -33,7 +36,7 @@ namespace atomex
             navigationConversionPage.IconImageSource = "NavBar__conversion";
             navigationConversionPage.Title = "Conversion";
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel));
+            var navigationSettingsPage = new NavigationPage(new SettingsPage(AtomexApp, MainViewModel.SettingsViewModel));
             navigationSettingsPage.IconImageSource = "NavBar__settings";
             navigationSettingsPage.Title = "Settings";
 

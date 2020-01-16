@@ -1,4 +1,6 @@
-﻿namespace atomex.Models
+﻿using System.Collections.Generic;
+
+namespace atomex.Models
 {
     public class Wallet
     {
@@ -10,5 +12,6 @@
         public float Cost { get; set; }
         public float PercentInPortfolio { get; set; }
         public string Address { get; set; }
+        public List<Transaction> Transactions { get; set; }
     }
 }

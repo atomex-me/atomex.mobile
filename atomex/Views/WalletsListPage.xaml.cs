@@ -1,6 +1,10 @@
 ﻿using Xamarin.Forms;
 using atomex.Models;
 using atomex.ViewModel;
+using Atomex;
+using System;
+using Atomex.Wallet;
+using Atomex.Common;
 
 namespace atomex
 {
@@ -14,9 +18,11 @@ namespace atomex
             InitializeComponent();
         }
 
-        public WalletsListPage(WalletsViewModel WalletsViewModel, TransactionsViewModel _TransactionsViewModel, INavigationService _navigationService)
+        public WalletsListPage(IAtomexApp AtomexApp, WalletsViewModel WalletsViewModel, TransactionsViewModel _TransactionsViewModel, INavigationService _navigationService)
         {
             InitializeComponent();
+
+            Console.WriteLine(AtomexApp.Account.GetBalanceAsync(AtomexApp.Account.Currencies[1]).WaitForResult());
 
             TransactionsViewModel = _TransactionsViewModel;
 

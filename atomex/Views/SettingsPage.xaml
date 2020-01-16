@@ -8,8 +8,10 @@
             <TableView Intent="Settings">
                 <TableRoot>
                     <TableSection Title="Security">
-                        <SwitchCell Text="Show Warnings" On="{Binding ShowWarnings}"/>
-                        <SwitchCell Text="Automatic sign out" On="{Binding AutoSignOut}" />
+                        <SwitchCell Text="Show Warnings"
+                                    On="{Binding ShowActiveSwapWarning, Mode=TwoWay}"/>
+                        <SwitchCell Text="Automatic sign out"
+                                    On="{Binding AutoSignOut, Mode=TwoWay}"/>
                         <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
                             <ViewCell.View>
                                 <Grid>
@@ -23,14 +25,14 @@
                                            Margin="15,0">
                                     </Label>
                                     <Label Grid.Column="1"
-                                           Text="{Binding PeriodOfInactive}"
+                                           Text="{Binding PeriodOfInactivityInMin}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            HorizontalOptions="End"
                                            TextColor="Gray">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding PeriodOfInactive}"/>
+                                                <Span Text="{Binding PeriodOfInactivityInMin}"/>
                                                 <Span Text=" min"/>
                                         </FormattedString>
                                         </Label.FormattedText>
@@ -75,14 +77,14 @@
                                            Margin="15,0,0,0">
                                     </Label>
                                     <Label Grid.Column="1"
-                                           Text="{Binding BalanceUpdateInterval}"
+                                           Text="{Binding BalanceUpdateIntervalInSec}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            HorizontalOptions="End"
                                            TextColor="Gray">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding BalanceUpdateInterval}"/>
+                                                <Span Text="{Binding BalanceUpdateIntervalInSec}"/>
                                                 <Span Text=" sec"/>
                                             </FormattedString>
                                         </Label.FormattedText>

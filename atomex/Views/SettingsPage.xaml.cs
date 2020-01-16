@@ -1,5 +1,6 @@
 ﻿using System;
 using atomex.ViewModel;
+using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
@@ -9,24 +10,27 @@ namespace atomex
         
         public SettingsViewModel SettingsViewModel;
 
+        private IAtomexApp AtomexApp;
+
         public SettingsPage()
         {
             InitializeComponent();
         }
 
-        public SettingsPage(SettingsViewModel settingsViewModel)
+        public SettingsPage(IAtomexApp _AtomexApp, SettingsViewModel _SettingsViewModel)
         {
             InitializeComponent();
-            SettingsViewModel = settingsViewModel;
-            BindingContext = settingsViewModel;
+            AtomexApp = _AtomexApp;
+            SettingsViewModel = _SettingsViewModel;
+            BindingContext = _SettingsViewModel;
         }
 
         async void OnBalanceUpdateIntervalSettingTapped(object sender, EventArgs args)
         {
             var optionsPage = new SettingsBalanceUpdateIntervalListOptionsPage(SettingsViewModel, selected =>
             {
-                SettingsViewModel.BalanceUpdateInterval = selected;
-                OnPropertyChanged(nameof(SettingsViewModel.BalanceUpdateInterval));
+                SettingsViewModel.BalanceUpdateIntervalInSec = selected;
+                AtomexApp.Account.UseUserSettings(SettingsViewModel.Settings);
             });
 
             await Navigation.PushAsync(optionsPage);
@@ -36,8 +40,8 @@ namespace atomex
         {
             var optionsPage = new SettingsPeriodOfInactiveListOptionsPage(SettingsViewModel, selected =>
             {
-                SettingsViewModel.PeriodOfInactive = selected;
-                OnPropertyChanged(nameof(SettingsViewModel.PeriodOfInactive));
+                SettingsViewModel.PeriodOfInactivityInMin = selected;
+                AtomexApp.Account.UseUserSettings(SettingsViewModel.Settings);
             });
 
             await Navigation.PushAsync(optionsPage);

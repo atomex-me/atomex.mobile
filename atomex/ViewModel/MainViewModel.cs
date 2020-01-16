@@ -59,7 +59,7 @@ namespace atomex.ViewModel
             //WalletsViewModel = new WalletsViewModel(AtomexApp);
             WalletsViewModel = new WalletsViewModel();
             TransactionsViewModel = new TransactionsViewModel();
-            SettingsViewModel = new SettingsViewModel();
+            SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel();
 
             AtomexApp.Start();
@@ -67,8 +67,8 @@ namespace atomex.ViewModel
             //Thread.Sleep(20000);
 
             //Console.WriteLine(account.GetBalanceAsync(account.Currencies[0]).WaitForResult());
-            //var balance = account.GetBalanceAsync(account.Currencies[1]).WaitForResult();
-            //Console.WriteLine(balance);
+            var balance = account.GetBalanceAsync(account.Currencies[1]).WaitForResult();
+            Console.WriteLine(balance);
             //Console.WriteLine(account);
 
             //var transactions = account.GetTransactionsAsync(account.Currencies[1]).WaitForResult();
@@ -77,6 +77,10 @@ namespace atomex.ViewModel
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
             // AtomexApp.Stop();
+        }
+
+        public IAtomexApp GetAtomexApp() {
+            return AtomexApp;
         }
     }
 }

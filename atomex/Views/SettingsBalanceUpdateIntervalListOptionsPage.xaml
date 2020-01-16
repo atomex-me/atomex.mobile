@@ -22,7 +22,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="30">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="30">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -46,7 +46,7 @@
                                        Margin="10,0"
                                        IsVisible="False">
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="60">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="60">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -70,7 +70,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="120">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="120">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -94,7 +94,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="240">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="240">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -118,7 +118,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="360">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="360">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -142,7 +142,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateInterval}" Value="600">
+                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="600">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>

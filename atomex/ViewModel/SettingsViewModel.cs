@@ -1,73 +1,74 @@
-﻿using System;
-using atomex.Models;
+﻿using Atomex.Wallet;
 
 namespace atomex.ViewModel
 {
     public class SettingsViewModel : BaseViewModel
     {
-        private bool showWarnings;
-        private bool autoSignOut;
-        private int periodOfInactive;
-        private int balanceUpdateInterval;
 
-        public int PeriodOfInactive
+        public UserSettings Settings { get; }
+
+        private Account Account;
+
+        public int PeriodOfInactivityInMin
         {
-            get { return periodOfInactive; }
+            get { return Settings.PeriodOfInactivityInMin; }
             set
             {
-                if (periodOfInactive != value)
+                if (Settings.PeriodOfInactivityInMin != value)
                 {
-                    periodOfInactive = value;
-                    OnPropertyChanged(nameof(PeriodOfInactive));
+                    Settings.PeriodOfInactivityInMin = value;
+                    Account.UseUserSettings(Settings);
+                    OnPropertyChanged(nameof(PeriodOfInactivityInMin));
                 }
             }
         }
 
-        public bool ShowWarnings
+        public bool ShowActiveSwapWarning
         {
-            get { return showWarnings; }
+            get { return Settings.ShowActiveSwapWarning; }
             set
             {
-                if (showWarnings != value)
+                if (Settings.ShowActiveSwapWarning != value)
                 {
-                    showWarnings = value;
-                    OnPropertyChanged(nameof(ShowWarnings));
+                    Settings.ShowActiveSwapWarning = value;
+                    Account.UseUserSettings(Settings);
+                    OnPropertyChanged(nameof(ShowActiveSwapWarning));
                 }
             }
         }
 
         public bool AutoSignOut
         {
-            get { return autoSignOut; }
+            get { return Settings.AutoSignOut; }
             set
             {
-                if (autoSignOut != value)
+                if (Settings.AutoSignOut != value)
                 {
-                    autoSignOut = value;
+                    Settings.AutoSignOut = value;
+                    Account.UseUserSettings(Settings);
                     OnPropertyChanged(nameof(AutoSignOut));
                 }
             }
         }
 
-        public int BalanceUpdateInterval
+        public int BalanceUpdateIntervalInSec
         {
-            get { return balanceUpdateInterval; }
+            get { return Settings.BalanceUpdateIntervalInSec; }
             set
             {
-                if (balanceUpdateInterval != value)
+                if (Settings.BalanceUpdateIntervalInSec != value)
                 {
-                    balanceUpdateInterval = value;
-                    OnPropertyChanged(nameof(BalanceUpdateInterval));
+                    Settings.BalanceUpdateIntervalInSec = value;
+                    Account.UseUserSettings(Settings);
+                    OnPropertyChanged(nameof(BalanceUpdateIntervalInSec));
                 }
             }
         }
 
-        public SettingsViewModel()
+        public SettingsViewModel(Account account)
         {
-            ShowWarnings = SettingsData.ShowWarnings;
-            AutoSignOut = SettingsData.AutoSignOut;
-            PeriodOfInactive = SettingsData.PeriodOfInactive;
-            BalanceUpdateInterval = SettingsData.BalanceUpdateInterval;
+            Account = account;
+            Settings = account.UserSettings;
         }
     }
 }
