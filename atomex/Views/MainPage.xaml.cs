@@ -36,7 +36,7 @@ namespace atomex
             navigationConversionPage.IconImageSource = "NavBar__conversion";
             navigationConversionPage.Title = "Conversion";
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(AtomexApp, MainViewModel.SettingsViewModel));
+            var navigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel));
             navigationSettingsPage.IconImageSource = "NavBar__settings";
             navigationSettingsPage.Title = "Settings";
 
