@@ -22,8 +22,6 @@ namespace atomex
         {
             InitializeComponent();
 
-            Console.WriteLine(AtomexApp.Account.GetBalanceAsync(AtomexApp.Account.Currencies[1]).WaitForResult());
-
             TransactionsViewModel = _TransactionsViewModel;
 
             navigationService = _navigationService;

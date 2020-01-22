@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Xamarin.Forms;
 using atomex.Models;
 using atomex.CustomElements;
 using atomex.ViewModel;
 using Atomex;
-using Atomex.Wallet;
 
 namespace atomex
 {

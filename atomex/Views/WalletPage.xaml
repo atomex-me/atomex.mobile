@@ -5,7 +5,7 @@
              Title="{Binding Name}">
     <ContentPage.Content>
             <StackLayout>
-                <Image Source="{Binding ImageUrl}"
+                <Image Source="{Binding Name}"
                        HeightRequest="64"
                        WidthRequest="64"
                        Margin="0,30,0,10" />

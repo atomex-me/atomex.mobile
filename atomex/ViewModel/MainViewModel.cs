@@ -5,12 +5,10 @@ using Atomex.Core;
 using Atomex.Common.Configuration;
 using Atomex.MarketData.Bitfinex;
 using Microsoft.Extensions.Configuration;
-using Atomex.MarketData;
 using Atomex.Wallet;
 using Atomex.Subsystems;
 using Atomex.Common;
-using System.Security;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace atomex.ViewModel
 {
@@ -56,28 +54,27 @@ namespace atomex.ViewModel
                     baseCurrency: BitfinexQuotesProvider.Usd))
                 .UseTerminal(new Terminal(configuration, account));
 
-            //WalletsViewModel = new WalletsViewModel(AtomexApp);
-            WalletsViewModel = new WalletsViewModel();
+            WalletsViewModel = new WalletsViewModel(AtomexApp);
             TransactionsViewModel = new TransactionsViewModel();
             SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel();
 
             AtomexApp.Start();
 
-            //Thread.Sleep(20000);
-
-            //Console.WriteLine(account.GetBalanceAsync(account.Currencies[0]).WaitForResult());
-            //var balance = account.GetBalanceAsync(account.Currencies[1]).WaitForResult();
-            //Console.WriteLine(balance);
-            //Console.WriteLine(account);
-
-            //var transactions = account.GetTransactionsAsync(account.Currencies[1]).WaitForResult();
-            //Console.WriteLine(transactions);
-
+            //Test(account).FireAndForget();
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
             // AtomexApp.Stop();
         }
+
+
+        //private async Task Test(Account account)
+        //{
+        //    await new HdWalletScanner(account).ScanAsync("ETH");
+        //    await account.UpdateBalanceAsync("ETH");
+        //    var balance = await account.GetBalanceAsync("ETH");
+        //    Console.WriteLine(balance);
+        //}
 
         public IAtomexApp GetAtomexApp() {
             return AtomexApp;

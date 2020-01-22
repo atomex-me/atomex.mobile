@@ -23,7 +23,7 @@
                                         <ColumnDefinition Width="4*" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
-                                           Source="{Binding ImageUrl}"
+                                           Source="{Binding Name}"
                                            HeightRequest="48"
                                            WidthRequest="48" />
                                     <Label Grid.Column="1"
