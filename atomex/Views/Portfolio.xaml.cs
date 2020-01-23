@@ -20,8 +20,9 @@ namespace atomex
         public Portfolio(WalletsViewModel walletsViewModel)
         {
             InitializeComponent();
-
+            walletsList.SeparatorVisibility = SeparatorVisibility.None;
             WalletsViewModel = walletsViewModel;
+
             walletsViewModel.QuotesUpdated += (s, a) =>
             {
                 Device.BeginInvokeOnMainThread(UpdateChart);   
@@ -36,17 +37,10 @@ namespace atomex
         }
 
         private void UpdateChart() {
-
             List<Wallet> wallets = WalletsViewModel.Wallets;
             if (wallets != null)
             {
-                walletsList.SeparatorVisibility = SeparatorVisibility.None;
                 walletsList.ItemsSource = wallets;
-                WalletsViewModel.TotalCost = 0;
-                for (int i = 0; i < wallets.Count; i++)
-                {
-                    WalletsViewModel.TotalCost += wallets[i].Cost;
-                }
                 walletsBalance.Text = string.Format("{0:f1} $", WalletsViewModel.TotalCost);
                 if (WalletsViewModel.TotalCost == 0)
                 {
@@ -59,16 +53,7 @@ namespace atomex
                     for (int i = 0; i < wallets.Count; i++)
                     {
                         Random rnd = new Random();
-                        wallets[i].PercentInPortfolio = wallets[i].Cost / WalletsViewModel.TotalCost * 100;
-                        //if (WalletsViewModel.TotalCost != 0)
-                        //{
-                        //    wallets[i].PercentInPortfolio = wallets[i].Cost / WalletsViewModel.TotalCost * 100;
-                        //}
-                        //else
-                        //{
-                        //    wallets[i].PercentInPortfolio = 0;
-                        //}
-                        entries[i] = new Microcharts.Entry((float)wallets[i].PercentInPortfolio)
+                        entries[i] = new Microcharts.Entry(wallets[i].PercentInPortfolio)
                         {
                             Label = wallets[i].Name,
                             ValueLabel = string.Format("{0:f2}", wallets[i].Amount),

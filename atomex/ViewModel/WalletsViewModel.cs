@@ -89,6 +89,15 @@ namespace atomex.ViewModel
                 var quote = App.QuotesProvider.GetQuote(wallet.Name, "USD");
                 wallet.Price = quote.Bid;
                 wallet.Cost = wallet.Amount * quote.Bid;
+                TotalCost += wallet.Cost;
+            }
+
+            if (TotalCost != 0)
+            {
+                foreach (var wallet in Wallets)
+                {
+                    wallet.PercentInPortfolio = (float)(wallet.Cost / TotalCost * 100);
+                }
             }
 
             QuotesUpdated?.Invoke(this, EventArgs.Empty);
