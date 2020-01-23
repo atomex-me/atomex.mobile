@@ -5,6 +5,7 @@ using atomex.Models;
 using SkiaSharp;
 using atomex.ViewModel;
 using atomex.CustomElements;
+using System.Linq;
 
 namespace atomex
 {
@@ -49,14 +50,15 @@ namespace atomex
                 else
                 {
                     portfolioChart.IsVisible = true;
-                    var entries = new Microcharts.Entry[wallets.Count];
-                    for (int i = 0; i < wallets.Count; i++)
+                    var nonzeroWallets = wallets.Where(w => w.Amount != 0).ToList();
+                    var entries = new Microcharts.Entry[nonzeroWallets.Count];
+                    for (int i = 0; i < nonzeroWallets.Count; i++)
                     {
                         Random rnd = new Random();
-                        entries[i] = new Microcharts.Entry(wallets[i].PercentInPortfolio)
+                        entries[i] = new Microcharts.Entry(nonzeroWallets[i].PercentInPortfolio)
                         {
-                            Label = wallets[i].Name,
-                            ValueLabel = string.Format("{0:f2}", wallets[i].Amount),
+                            Label = nonzeroWallets[i].Name,
+                            ValueLabel = string.Format("{0:f2}", nonzeroWallets[i].Amount),
                             Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
                         };
                     }

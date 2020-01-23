@@ -84,6 +84,7 @@ namespace atomex.ViewModel
 
         private void QuotesProvider_QuotesUpdated(object sender, EventArgs e)
         {
+            TotalCost = 0;
             foreach (var wallet in Wallets)
             {
                 var quote = App.QuotesProvider.GetQuote(wallet.Name, "USD");

@@ -25,7 +25,15 @@ namespace atomex
             {
                 wallet = selectedWallet;
                 BindingContext = wallet;
-                transactionsList.ItemsSource = TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName);
+                if (TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName).Count != 0)
+                {
+                    transactionsList.IsVisible = true;
+                    transactionsList.ItemsSource = TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName);
+                }
+                else
+                {
+                    transactionsList.IsVisible = false;
+                }
                 if (wallet.FullName == "Tezos")
                 {
                     DelegateOption.IsVisible = true;
