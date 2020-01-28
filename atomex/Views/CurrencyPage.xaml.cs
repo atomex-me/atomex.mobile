@@ -1,40 +1,39 @@
 ﻿using System;
 using Xamarin.Forms;
-using atomex.Models;
 using Xamarin.Essentials;
 using atomex.ViewModel;
 
 namespace atomex
 {
-    public partial class WalletPage : ContentPage
+    public partial class CurrencyPage : ContentPage
     {
-        private readonly Wallet wallet;
+        private CurrencyViewModel _currency;
         private INavigationService _navigationService;
 
-        public WalletPage()
+        public CurrencyPage()
         {
             InitializeComponent();
         }
-        public WalletPage(Wallet selectedWallet, TransactionsViewModel TransactionsViewModel, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel selectedCurrency, TransactionsViewModel transactionsViewModel, INavigationService navigationService)
         {
             InitializeComponent();
 
             _navigationService = navigationService;
 
-            if (selectedWallet != null)
+            if (selectedCurrency != null)
             {
-                wallet = selectedWallet;
-                BindingContext = wallet;
-                if (TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName).Count != 0)
+                _currency = selectedCurrency;
+                BindingContext = _currency;
+                if (transactionsViewModel.GetTransactionsByCurrency(_currency.FullName).Count != 0)
                 {
                     transactionsList.IsVisible = true;
-                    transactionsList.ItemsSource = TransactionsViewModel.GetTransactionsByCurrency(wallet.FullName);
+                    transactionsList.ItemsSource = transactionsViewModel.GetTransactionsByCurrency(_currency.FullName);
                 }
                 else
                 {
                     transactionsList.IsVisible = false;
                 }
-                if (wallet.FullName == "Tezos")
+                if (_currency.FullName == "Tezos")
                 {
                     DelegateOption.IsVisible = true;
                 }
@@ -42,18 +41,18 @@ namespace atomex
         }
 
         async void ShowReceivePage(object sender, EventArgs args) {
-            await Navigation.PushAsync(new ReceivePage(wallet));
+            await Navigation.PushAsync(new ReceivePage(_currency));
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SendPage(wallet));
+            await Navigation.PushAsync(new SendPage(_currency));
         }
         async void Copy(object sender, EventArgs args)
         {
-            if (wallet != null)
+            if (_currency != null)
             {
-                await Clipboard.SetTextAsync(wallet.Address);
-                await DisplayAlert("Адрес скопирован", wallet.Address, "OK");
+                await Clipboard.SetTextAsync(_currency.Address);
+                await DisplayAlert("Адрес скопирован", _currency.Address, "OK");
             }
             else
             {
@@ -62,16 +61,16 @@ namespace atomex
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         {
-            if (wallet != null)
+            if (_currency != null)
             {
                 await DisplayAlert("Оповещение", "В разработке", "OK");
             }
         }
         void ShowConversionPage(object sender, EventArgs args)
         {
-            if (wallet != null)
+            if (_currency != null)
             {
-                _navigationService.ShowConversionPage(wallet);
+                _navigationService.ShowConversionPage(_currency);
             }
         }
     }

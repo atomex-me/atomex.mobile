@@ -1,27 +1,27 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using atomex.Models; 
+using atomex.ViewModel; 
 
 namespace atomex
 {
     public partial class AcceptSendPage : ContentPage
     {
 
-        private Transaction currentTransaction;
+        private Transaction _currentTransaction;
 
         public AcceptSendPage()
         {
             InitializeComponent();
         }
 
-        public AcceptSendPage(Wallet selectedWallet, Transaction transaction)
+        public AcceptSendPage(CurrencyViewModel selectedCurrency, Transaction transaction)
         {
             InitializeComponent();
-            if (selectedWallet != null && transaction != null) {
-                currentTransaction = transaction;
-                FromWallet.Detail = selectedWallet.Address;
-                BindingContext = currentTransaction;
+            if (selectedCurrency != null && transaction != null) {
+                _currentTransaction = transaction;
+                FromWallet.Detail = selectedCurrency.Address;
+                BindingContext = _currentTransaction;
             }
         }
 

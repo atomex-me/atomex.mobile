@@ -1,33 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using atomex.Models;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Atomex;
+using Atomex.Core;
+using System.Threading.Tasks;
+using Atomex.Common;
 
 namespace atomex.ViewModel
 {
     public class ConversionViewModel : BaseViewModel
     {
+        private List<Currency> coreCurrencies;
+        private IAtomexApp App;
+
         private float amount;
         public float Amount
         {
             get => amount; set { amount = value; OnPropertyChanged(nameof(Amount)); }
         }
-        private List<Wallet> fromCurrencies;
-        public List<Wallet> FromCurrencies
+        private List<CurrencyViewModel> fromCurrencies;
+        public List<CurrencyViewModel> FromCurrencies
         {
             get => fromCurrencies;
             private set { fromCurrencies = value; OnPropertyChanged(nameof(FromCurrencies)); }
         }
 
-        private List<Wallet> toCurrencies;
-        public List<Wallet> ToCurrencies
+        private List<CurrencyViewModel> toCurrencies;
+        public List<CurrencyViewModel> ToCurrencies
         {
             get => toCurrencies;
             private set { toCurrencies = value; OnPropertyChanged(nameof(ToCurrencies)); }
         }
 
-        private Wallet fromCurrency;
-        public Wallet FromCurrency
+        private CurrencyViewModel fromCurrency;
+        public CurrencyViewModel FromCurrency
         {
             get { return fromCurrency; }
             set
@@ -43,7 +48,10 @@ namespace atomex.ViewModel
                     }
                     else
                     {
-                        ToCurrencies = fromCurrencies.Where(c => c.Name != fromCurrency.Name).ToList();
+                        if (fromCurrencies != null)
+                        {
+                            ToCurrencies = fromCurrencies.Where(c => c.Name != fromCurrency.Name).ToList();
+                        }
                     }
                     
                     OnPropertyChanged(nameof(FromCurrency));
@@ -52,8 +60,8 @@ namespace atomex.ViewModel
             }
         }
 
-        private Wallet toCurrency;
-        public Wallet ToCurrency
+        private CurrencyViewModel toCurrency;
+        public CurrencyViewModel ToCurrency
         {
             get { return toCurrency; }
             set
@@ -67,12 +75,32 @@ namespace atomex.ViewModel
             }
         }
 
-        public ConversionViewModel()
+        public ConversionViewModel(IAtomexApp app)
         {
-            FromCurrencies = WalletData.Wallets;
-            ToCurrencies = WalletData.Wallets;
-            FromCurrency = new Wallet();
-            ToCurrency = new Wallet();
+            App = app;
+            coreCurrencies = app.Account.Currencies.ToList();
+            FromCurrencies = ToCurrencies = new List<CurrencyViewModel>();
+            FillCurrenciesAsync().FireAndForget();
+
+            FromCurrency = new CurrencyViewModel(app);
+            ToCurrency = new CurrencyViewModel(app);
+        }
+
+        private async Task FillCurrenciesAsync()
+        {
+            await Task.WhenAll(coreCurrencies.Select(async c =>
+            {
+                var balance = await App.Account.GetBalanceAsync(c.Name);
+                var address = await App.Account.GetFreeExternalAddressAsync(c.Name);
+                FromCurrencies.Add(new CurrencyViewModel(App)
+                {
+                    Amount = balance.Available,
+                    Name = c.Name,
+                    FullName = c.Description,
+                    Address = address.Address
+                });
+                ToCurrencies = FromCurrencies;
+            }));
         }
     }
 }

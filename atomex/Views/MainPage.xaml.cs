@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
 using Xamarin.Forms;
-using atomex.Models;
-using atomex.CustomElements;
 using atomex.ViewModel;
+using atomex.CustomElements;
 using Atomex;
 
 namespace atomex
@@ -15,26 +14,26 @@ namespace atomex
 
         private readonly NavigationPage navigationConversionPage;
 
-        private MainViewModel MainViewModel;
+        private MainViewModel _mainViewModel;
 
         public MainPage()
         {
 
-            MainViewModel = new MainViewModel();
-            IAtomexApp AtomexApp = MainViewModel.GetAtomexApp();
-            var navigationWalletsListPage = new NavigationPage(new WalletsListPage(AtomexApp, MainViewModel.WalletsViewModel, MainViewModel.TransactionsViewModel, this));
+            _mainViewModel = new MainViewModel();
+            IAtomexApp AtomexApp = _mainViewModel.GetAtomexApp();
+            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(AtomexApp, _mainViewModel.CurrenciesViewModel, _mainViewModel.TransactionsViewModel, this));
             navigationWalletsListPage.IconImageSource = "NavBar__wallets";
             navigationWalletsListPage.Title = "Wallets";
 
-            var navigationPortfolio = new NavigationPage(new Portfolio(MainViewModel.WalletsViewModel));
+            var navigationPortfolio = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel));
             navigationPortfolio.IconImageSource = "NavBar__portfolio";
             navigationPortfolio.Title = "Portfolio";
 
-            navigationConversionPage = new NavigationPage(new ConversionPage(MainViewModel.ConversionViewModel));
+            navigationConversionPage = new NavigationPage(new ConversionPage(_mainViewModel.ConversionViewModel));
             navigationConversionPage.IconImageSource = "NavBar__conversion";
             navigationConversionPage.Title = "Conversion";
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel));
+            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel));
             navigationSettingsPage.IconImageSource = "NavBar__settings";
             navigationSettingsPage.Title = "Settings";
 
@@ -45,7 +44,7 @@ namespace atomex
 
         }
 
-        public void ShowConversionPage(Wallet wallet = null)
+        public void ShowConversionPage(CurrencyViewModel currency = null)
         {
             this.CurrentPage = navigationConversionPage;
 
@@ -53,7 +52,7 @@ namespace atomex
 
             if (conversionViewModel != null)
             {
-                conversionViewModel.FromCurrency = wallet;
+                conversionViewModel.FromCurrency = currency;
                 conversionViewModel.ToCurrency = null;
             }
         }

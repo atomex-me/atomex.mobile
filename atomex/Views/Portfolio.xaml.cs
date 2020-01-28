@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using atomex.Models;
 using SkiaSharp;
 using atomex.ViewModel;
 using atomex.CustomElements;
@@ -11,20 +10,20 @@ namespace atomex
 {
     public partial class Portfolio : ContentPage
     {
-        private WalletsViewModel WalletsViewModel;
+        private CurrenciesViewModel _currenciesViewModel;
 
         public Portfolio()
         {
             InitializeComponent();
         }
 
-        public Portfolio(WalletsViewModel walletsViewModel)
+        public Portfolio(CurrenciesViewModel currenciesViewModel)
         {
             InitializeComponent();
-            walletsList.SeparatorVisibility = SeparatorVisibility.None;
-            WalletsViewModel = walletsViewModel;
+            currenciesList.SeparatorVisibility = SeparatorVisibility.None;
+            _currenciesViewModel = currenciesViewModel;
 
-            walletsViewModel.QuotesUpdated += (s, a) =>
+            _currenciesViewModel.QuotesUpdated += (s, a) =>
             {
                 Device.BeginInvokeOnMainThread(UpdateChart);   
             };
@@ -38,24 +37,24 @@ namespace atomex
         }
 
         private void UpdateChart() {
-            List<Wallet> wallets = WalletsViewModel.Wallets;
-            if (wallets != null)
+            List<CurrencyViewModel> currencies = _currenciesViewModel.Currencies;
+            if (currencies != null)
             {
-                walletsList.ItemsSource = wallets;
-                walletsBalance.Text = string.Format("{0:f1} $", WalletsViewModel.TotalCost);
-                if (WalletsViewModel.TotalCost == 0)
+                currenciesList.ItemsSource = currencies;
+                walletsBalance.Text = string.Format("{0:f1} $", _currenciesViewModel.TotalCost);
+                if (_currenciesViewModel.TotalCost == 0)
                 {
                     portfolioChart.IsVisible = false;
                 }
                 else
                 {
                     portfolioChart.IsVisible = true;
-                    var nonzeroWallets = wallets.Where(w => w.Amount != 0).ToList();
+                    var nonzeroWallets = currencies.Where(w => w.Amount != 0).ToList();
                     var entries = new Microcharts.Entry[nonzeroWallets.Count];
                     for (int i = 0; i < nonzeroWallets.Count; i++)
                     {
                         Random rnd = new Random();
-                        entries[i] = new Microcharts.Entry(nonzeroWallets[i].PercentInPortfolio)
+                        entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                         {
                             Label = nonzeroWallets[i].Name,
                             ValueLabel = string.Format("{0:f2}", nonzeroWallets[i].Amount),

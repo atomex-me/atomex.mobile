@@ -42,7 +42,7 @@
                            Text="{Binding FromCurrency.Amount}"
                            VerticalTextAlignment="Center"
                            FontAttributes="Bold" />
-                    <Image Source="{Binding FromCurrency.ImageUrl}"
+                    <Image Source="{Binding FromCurrency.Name}"
                            HeightRequest="48"
                            WidthRequest="48" />
                 </StackLayout>
@@ -74,7 +74,7 @@
                            Text="{Binding ToCurrency.Amount}"
                            VerticalTextAlignment="Center"
                            FontAttributes="Bold" />
-                    <Image Source="{Binding ToCurrency.ImageUrl}"
+                    <Image Source="{Binding ToCurrency.Name}"
                            HeightRequest="48"
                            WidthRequest="48" />
                 </StackLayout>

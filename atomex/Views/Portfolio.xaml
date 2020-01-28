@@ -26,7 +26,7 @@
                        TextColor="Gray"
                        FontSize="14"
                        HorizontalTextAlignment="Center"/>
-                <ListView x:Name="walletsList"
+                <ListView x:Name="currenciesList"
                           HasUnevenRows="true"
                           Margin="0,20">
                     <ListView.ItemTemplate>
@@ -55,13 +55,13 @@
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.RowSpan="2"
                                            Grid.Column="2"
-                                           Text="{Binding PercentInPortfolio, StringFormat='{0:f1}'}"
+                                           Text="{Binding PortfolioPercent, StringFormat='{0:f1}'}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
                                            FontSize="14">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding PercentInPortfolio, StringFormat='{0:f1}'}" />
+                                                <Span Text="{Binding PortfolioPercent, StringFormat='{0:f1}'}" />
                                                 <Span Text=" %" /> 
                                             </FormattedString>
                                         </Label.FormattedText>

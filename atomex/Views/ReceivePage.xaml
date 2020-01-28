@@ -24,7 +24,8 @@
             <Label Text="{Binding Address}"
                    TextColor="Gray"
                    HorizontalTextAlignment="Center"
-                   FontSize="24"/>
+                   FontSize="24"
+                   Margin="20,0"/>
              <Grid RowSpacing="0" ColumnSpacing="50" Margin="20,40,20,0">
                  <Grid.RowDefinitions>
                      <RowDefinition Height="*" />

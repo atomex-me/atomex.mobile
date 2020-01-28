@@ -8,11 +8,11 @@ namespace atomex
     {
         public Action<int> OnOptionSelected;
 
-        public SettingsBalanceUpdateIntervalListOptionsPage(SettingsViewModel SettingsViewModel, Action<int> onOptionSelected)
+        public SettingsBalanceUpdateIntervalListOptionsPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
         {
             InitializeComponent();
             OnOptionSelected = onOptionSelected;
-            BindingContext = SettingsViewModel;
+            BindingContext = settingsViewModel;
         }
 
         async void OnOptionTapped(object sender, EventArgs args)

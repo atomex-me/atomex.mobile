@@ -1,28 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
-using atomex.Models;
+using atomex.ViewModel;
 using Xamarin.Essentials;
 
 namespace atomex
 {
     public partial class SendPage : ContentPage
     {
-        private Wallet wallet;
+        private CurrencyViewModel _currency;
 
         public SendPage()
         {
             InitializeComponent();
         }
 
-        public SendPage(Wallet selectedWallet)
+        public SendPage(CurrencyViewModel selectedCurrency)
         {
             InitializeComponent();
-            if (selectedWallet != null)
+            if (selectedCurrency != null)
             {
-                wallet = selectedWallet;
-                BindingContext = wallet;
+                _currency = selectedCurrency;
+                BindingContext = _currency;
             }
         }
 
@@ -38,9 +36,9 @@ namespace atomex
         }
 
         void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
-            if (wallet != null)
+            if (_currency != null)
             {
-                Amount.Text = wallet.Amount.ToString();
+                Amount.Text = _currency.Amount.ToString();
             }
         }
 
@@ -79,7 +77,7 @@ namespace atomex
                 
                
                 transaction.Amount = float.Parse(Amount.Text);
-                await Navigation.PushAsync(new AcceptSendPage(wallet, transaction));
+                await Navigation.PushAsync(new AcceptSendPage(_currency, transaction));
             }
         }
 

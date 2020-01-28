@@ -8,13 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Atomex.Wallet;
 using Atomex.Subsystems;
 using Atomex.Common;
-using System.Threading.Tasks;
 
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public WalletsViewModel WalletsViewModel { get; set; }
+        public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public TransactionsViewModel TransactionsViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
@@ -54,10 +53,10 @@ namespace atomex.ViewModel
                     baseCurrency: BitfinexQuotesProvider.Usd))
                 .UseTerminal(new Terminal(configuration, account));
 
-            WalletsViewModel = new WalletsViewModel(AtomexApp);
+            CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             TransactionsViewModel = new TransactionsViewModel();
             SettingsViewModel = new SettingsViewModel(account);
-            ConversionViewModel = new ConversionViewModel();
+            ConversionViewModel = new ConversionViewModel(AtomexApp);
 
             AtomexApp.Start();
 

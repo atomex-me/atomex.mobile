@@ -9,7 +9,7 @@
             x:Class="atomex.MainPage">
 
     <page:Portfolio></page:Portfolio>
-    <page:WalletsListPage></page:WalletsListPage>
+    <page:CurrenciesListPage></page:CurrenciesListPage>
     <page:ConversionPage></page:ConversionPage>
     <page:SettingsPage></page:SettingsPage>
 </custom:CustomTabbedPage>

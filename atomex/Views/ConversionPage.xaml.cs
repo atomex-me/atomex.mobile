@@ -2,24 +2,23 @@
 
 using Xamarin.Forms;
 using atomex.ViewModel;
-using atomex.Models;
 
 namespace atomex
 {
     public partial class ConversionPage : ContentPage
     {
-        ConversionViewModel ConversionViewModel;
+        private ConversionViewModel _conversionViewModel;
 
         public ConversionPage()
         {
             InitializeComponent();
         }
 
-        public ConversionPage(ConversionViewModel _ConversionViewModel)
+        public ConversionPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            ConversionViewModel = _ConversionViewModel;
-            BindingContext = ConversionViewModel;
+            _conversionViewModel = conversionViewModel;
+            BindingContext = _conversionViewModel;
             Amount.IsEnabled = false;
             Amount.Opacity = 0.5f;
             ConvertBtn.Opacity = 0.7f;
@@ -47,7 +46,7 @@ namespace atomex
                 //Console.WriteLine(picker.Items[selectedIndex]);
                 Amount.IsEnabled = true;
                 Amount.Opacity = 1f;
-                var wallet = picker.SelectedItem as Wallet;
+                var wallet = picker.SelectedItem as CurrencyViewModel;
                 Amount.Placeholder = "Amount, " + wallet.Name;
                 if (pickerTo.SelectedIndex != -1)
                 {

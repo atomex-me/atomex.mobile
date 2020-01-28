@@ -7,25 +7,25 @@ namespace atomex
     public partial class SettingsPage : ContentPage
     {
         
-        public SettingsViewModel SettingsViewModel;
+        private SettingsViewModel _settingsViewModel;
 
         public SettingsPage()
         {
             InitializeComponent();
         }
 
-        public SettingsPage(SettingsViewModel _SettingsViewModel)
+        public SettingsPage(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
-            SettingsViewModel = _SettingsViewModel;
-            BindingContext = _SettingsViewModel;
+            _settingsViewModel = settingsViewModel;
+            BindingContext = settingsViewModel;
         }
 
         async void OnBalanceUpdateIntervalSettingTapped(object sender, EventArgs args)
         {
-            var optionsPage = new SettingsBalanceUpdateIntervalListOptionsPage(SettingsViewModel, selected =>
+            var optionsPage = new SettingsBalanceUpdateIntervalListOptionsPage(_settingsViewModel, selected =>
             {
-                SettingsViewModel.BalanceUpdateIntervalInSec = selected;
+                _settingsViewModel.BalanceUpdateIntervalInSec = selected;
             });
 
             await Navigation.PushAsync(optionsPage);
@@ -33,9 +33,9 @@ namespace atomex
 
         async void OnPeriodOfInactiveSettingTapped(object sender, EventArgs args)
         {
-            var optionsPage = new SettingsPeriodOfInactiveListOptionsPage(SettingsViewModel, selected =>
+            var optionsPage = new SettingsPeriodOfInactiveListOptionsPage(_settingsViewModel, selected =>
             {
-                SettingsViewModel.PeriodOfInactivityInMin = selected;
+                _settingsViewModel.PeriodOfInactivityInMin = selected;
             });
 
             await Navigation.PushAsync(optionsPage);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace atomex.Models
+namespace atomex
 {
     public static class TransactionData 
     {

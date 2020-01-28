@@ -1,10 +1,10 @@
 ﻿using System;
-using atomex.Models;
+using atomex.ViewModel;
 
 namespace atomex
 {
     public interface INavigationService
     {
-        void ShowConversionPage(Wallet wallet);
+        void ShowConversionPage(CurrencyViewModel wallet);
     }
 }

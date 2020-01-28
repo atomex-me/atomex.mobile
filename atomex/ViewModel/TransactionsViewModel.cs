@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using atomex.Models;
 using System.Linq;
 
 namespace atomex.ViewModel

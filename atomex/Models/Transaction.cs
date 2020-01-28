@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace atomex.Models
+namespace atomex
 {
     public class Transaction
     {

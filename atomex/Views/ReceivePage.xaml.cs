@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using atomex.Models;
+using atomex.ViewModel;
 
 namespace atomex
 {
     public partial class ReceivePage : ContentPage
     {
-        private Wallet wallet;
+        private CurrencyViewModel _currency;
 
         public ReceivePage()
         {
             InitializeComponent();
         }
 
-        public ReceivePage(Wallet selectedWallet)
+        public ReceivePage(CurrencyViewModel selectedCurrency)
         {
             InitializeComponent();
-            wallet = selectedWallet;
-            BindingContext = wallet;
+            _currency = selectedCurrency;
+            BindingContext = _currency;
         }
 
         async void OnCopyButtonClicked(object sender, EventArgs args) {
-            if (wallet != null)
+            if (_currency != null)
             {
-                await Clipboard.SetTextAsync(wallet.Address);
-                await DisplayAlert("Адрес скопирован", wallet.Address, "OK");
+                await Clipboard.SetTextAsync(_currency.Address);
+                await DisplayAlert("Адрес скопирован", _currency.Address, "OK");
             }
             else
             {
@@ -39,8 +37,8 @@ namespace atomex
         {
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = "Мой публичный адрес для получения " + wallet.Name + ":\r\n" + wallet.Address,
-                Uri = wallet.Address,
+                Text = "Мой публичный адрес для получения " + _currency.Name + ":\r\n" + _currency.Address,
+                Uri = _currency.Address,
                 Title = "Address sharing"
             });
         }

@@ -8,11 +8,11 @@ namespace atomex
     {
         public Action<int> OnOptionSelected;
 
-        public SettingsPeriodOfInactiveListOptionsPage(SettingsViewModel SettingsViewModel, Action<int> onOptionSelected)
+        public SettingsPeriodOfInactiveListOptionsPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
         {
             InitializeComponent();
             OnOptionSelected = onOptionSelected;
-            BindingContext = SettingsViewModel;
+            BindingContext = settingsViewModel;
         }
 
         async void OnOptionTapped(object sender, EventArgs args)
