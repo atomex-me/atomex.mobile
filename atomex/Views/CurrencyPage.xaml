@@ -189,7 +189,9 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid Padding="10">
+                                <Grid Padding="10"
+                                      RowSpacing="0"
+                                      ColumnSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="20" />
                                         <RowDefinition Height="20" />
@@ -212,23 +214,36 @@
                                            Source="SendIcon"
                                            Margin="10,0">
                                         <Image.Triggers>
-                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Input">
-                                                <Setter Property="Source" Value="ReceiveIcon"></Setter>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="Source"
+                                                        Value="ReceiveIcon"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Image" Binding="{Binding Type}" Value="Output">
-                                                <Setter Property="Source" Value="SendIcon"></Setter>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="Source"
+                                                        Value="SendIcon"/>
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
-                                           FontAttributes="Bold">
+                                           FontAttributes="Bold"
+                                           VerticalOptions="EndAndExpand">
                                         <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
-                                                <Setter Property="Text" Value="To:"></Setter>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="Text"
+                                                        Value="Sent"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
-                                                <Setter Property="Text" Value="From:"></Setter>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="Text"
+                                                        Value="Received"/>
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
@@ -240,28 +255,69 @@
                                            HorizontalOptions="End"
                                            VerticalOptions="Center">
                                         <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
-                                                <Setter Property="TextColor" Value="Green"></Setter>
-                                                <Setter Property="Text" Value="{Binding Amount, StringFormat='+{0:0.#####}'}"/>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="TextColor"
+                                                        Value="Green"/>
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
-                                                <Setter Property="TextColor" Value="Red"></Setter>
-                                                <Setter Property="Text" Value="{Binding Amount, StringFormat='{0:0.#####}'}"></Setter>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="TextColor"
+                                                        Value="Red"/>
+                                                 <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
                                     <Label Grid.Row="2"
                                            Grid.Column="1"
-                                           VerticalOptions="Start"
+                                           VerticalOptions="StartAndExpand"
                                            TextColor="Gray"
-                                           FontSize="14"
-                                           Margin="10,0">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Output">
-                                                <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
+                                           FontSize="12"
+                                           Margin="10,0"
+                                           LineBreakMode="MiddleTruncation">
+                                        <Label.Triggers>             
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="To: "/>
+                                                            <Span Text="{Binding To, FallbackValue='Unknown'}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Label" Binding="{Binding Type}" Value="Input">
-                                                <Setter Property="Text" Value="{Binding From, FallbackValue='Unknown'}"></Setter>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="From: "/>
+                                                            <Span Text="{Binding From, FallbackValue='Unknown'}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
