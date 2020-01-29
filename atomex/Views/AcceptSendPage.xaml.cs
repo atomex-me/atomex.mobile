@@ -7,21 +7,18 @@ namespace atomex
 {
     public partial class AcceptSendPage : ContentPage
     {
-
-        private Transaction _currentTransaction;
-
         public AcceptSendPage()
         {
             InitializeComponent();
         }
 
-        public AcceptSendPage(CurrencyViewModel selectedCurrency, Transaction transaction)
+        public AcceptSendPage(CurrencyViewModel currencyViewModel, string address, string amount)
         {
             InitializeComponent();
-            if (selectedCurrency != null && transaction != null) {
-                _currentTransaction = transaction;
-                FromWallet.Detail = selectedCurrency.Address;
-                BindingContext = _currentTransaction;
+            if (address != null && amount != null) {
+                AddressFrom.Detail = currencyViewModel.Address;
+                AddressTo.Detail = address;
+                Amount.Detail = amount.ToString();
             }
         }
 

@@ -10,15 +10,14 @@
                        RowHeight="70">
                 <TableRoot>
                     <TableSection Title="Confirm transaction">
-                        <TextCell x:Name="FromWallet"
+                        <TextCell x:Name="AddressFrom"
                                   Text="From"
-                                  Detail=""
                                   DetailColor="CadetBlue" />
-                        <TextCell Text="To"
-                                  Detail="{Binding To}"
+                        <TextCell x:Name="AddressTo"
+                                  Text="To"
                                   DetailColor="CadetBlue"/>
-                        <TextCell Text="Amount"
-                                  Detail="{Binding Amount}"
+                        <TextCell x:Name="Amount"
+                                  Text="Amount"
                                   DetailColor="CadetBlue"/>
                     </TableSection>
                 </TableRoot>

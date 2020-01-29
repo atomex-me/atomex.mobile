@@ -4,7 +4,7 @@ using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.TransactionViewModels
 {
     public class TransactionViewModel : BaseViewModel
     {

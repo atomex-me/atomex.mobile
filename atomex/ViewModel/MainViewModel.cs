@@ -14,7 +14,6 @@ namespace atomex.ViewModel
     public class MainViewModel : BaseViewModel
     {
         public CurrenciesViewModel CurrenciesViewModel { get; set; }
-        public TransactionsViewModel TransactionsViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
 
@@ -54,11 +53,12 @@ namespace atomex.ViewModel
                 .UseTerminal(new Terminal(configuration, account));
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
-            TransactionsViewModel = new TransactionsViewModel();
             SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
 
             AtomexApp.Start();
+
+
 
             //Test(account).FireAndForget();
 

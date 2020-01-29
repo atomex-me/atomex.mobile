@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using atomex.ViewModel.TransactionViewModels;
 using Atomex;
 using Atomex.Common;
 using Serilog;
@@ -52,21 +53,20 @@ namespace atomex.ViewModel
                     .GetTransactionsAsync(Name))
                     .ToList();
 
-                Console.WriteLine(transactions);
-
-                //await Device.InvokeOnMainThreadAsync(() =>
-                //{
-                //    Transactions = new ObservableCollection<TransactionViewModel>(
-                //        transactions.Select(t => TransactionViewModelCreator
-                //            .CreateViewModel(t))
-                //            .ToList()
-                //            .SortList((t1, t2) => t2.Time.CompareTo(t1.Time))
-                //            .ForEachDo(t =>
-                //            {
-                //                t.UpdateClicked += UpdateTransactonEventHandler;
-                //                t.RemoveClicked += RemoveTransactonEventHandler;
-                //            }));
-                //});
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Transactions = new ObservableCollection<TransactionViewModel>(
+                        transactions.Select(t => TransactionViewModelCreator
+                            .CreateViewModel(t))
+                            .ToList()
+                            .SortList((t1, t2) => t2.Time.CompareTo(t1.Time))
+                            .ForEachDo(t =>
+                            {
+                                //t.UpdateClicked += UpdateTransactonEventHandler;
+                                //t.RemoveClicked += RemoveTransactonEventHandler;
+                            }));
+                    Console.WriteLine(Transactions);
+                });
             }
             catch (Exception e)
             {

@@ -13,12 +13,12 @@
     <PackageReference Include="Microcharts" Version="0.7.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="CustomElements\" />
     <Folder Include="Services\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Helpers\" />
     <Folder Include="Views\" />
+    <Folder Include="ViewModel\TransactionViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

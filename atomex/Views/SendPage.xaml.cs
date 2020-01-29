@@ -7,7 +7,7 @@ namespace atomex
 {
     public partial class SendPage : ContentPage
     {
-        private CurrencyViewModel _currency;
+        private CurrencyViewModel currencyViewModel;
 
         public SendPage()
         {
@@ -19,8 +19,8 @@ namespace atomex
             InitializeComponent();
             if (selectedCurrency != null)
             {
-                _currency = selectedCurrency;
-                BindingContext = _currency;
+                currencyViewModel = selectedCurrency;
+                BindingContext = currencyViewModel;
             }
         }
 
@@ -36,9 +36,9 @@ namespace atomex
         }
 
         void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
-            if (_currency != null)
+            if (currencyViewModel != null)
             {
-                Amount.Text = _currency.Amount.ToString();
+                Amount.Text = currencyViewModel.Amount.ToString();
             }
         }
 
@@ -72,12 +72,7 @@ namespace atomex
             }
             else
             {
-                var transaction = new Transaction();
-                transaction.To = Address.Text;
-                
-               
-                transaction.Amount = float.Parse(Amount.Text);
-                await Navigation.PushAsync(new AcceptSendPage(_currency, transaction));
+                await Navigation.PushAsync(new AcceptSendPage(currencyViewModel, Address.Text, Amount.Text));
             }
         }
 

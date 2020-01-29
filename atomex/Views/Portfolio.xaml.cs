@@ -5,6 +5,7 @@ using SkiaSharp;
 using atomex.ViewModel;
 using atomex.CustomElements;
 using System.Linq;
+using System.Globalization;
 
 namespace atomex
 {

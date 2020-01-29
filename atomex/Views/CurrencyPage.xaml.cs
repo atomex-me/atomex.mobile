@@ -7,33 +7,33 @@ namespace atomex
 {
     public partial class CurrencyPage : ContentPage
     {
-        private CurrencyViewModel _currency;
+        private CurrencyViewModel _currencyViewModel;
         private INavigationService _navigationService;
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(CurrencyViewModel selectedCurrency, TransactionsViewModel transactionsViewModel, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
             InitializeComponent();
 
             _navigationService = navigationService;
 
-            if (selectedCurrency != null)
+            if (currencyViewModel != null)
             {
-                _currency = selectedCurrency;
-                BindingContext = _currency;
-                if (transactionsViewModel.GetTransactionsByCurrency(_currency.FullName).Count != 0)
+                _currencyViewModel = currencyViewModel;
+                BindingContext = _currencyViewModel;
+                if (currencyViewModel.Transactions.Count != 0)
                 {
                     transactionsList.IsVisible = true;
-                    transactionsList.ItemsSource = transactionsViewModel.GetTransactionsByCurrency(_currency.FullName);
+                    transactionsList.ItemsSource = currencyViewModel.Transactions;
                 }
                 else
                 {
                     transactionsList.IsVisible = false;
                 }
-                if (_currency.FullName == "Tezos")
+                if (_currencyViewModel.FullName == "Tezos")
                 {
                     DelegateOption.IsVisible = true;
                 }
@@ -41,18 +41,18 @@ namespace atomex
         }
 
         async void ShowReceivePage(object sender, EventArgs args) {
-            await Navigation.PushAsync(new ReceivePage(_currency));
+            await Navigation.PushAsync(new ReceivePage(_currencyViewModel));
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SendPage(_currency));
+            await Navigation.PushAsync(new SendPage(_currencyViewModel));
         }
         async void Copy(object sender, EventArgs args)
         {
-            if (_currency != null)
+            if (_currencyViewModel != null)
             {
-                await Clipboard.SetTextAsync(_currency.Address);
-                await DisplayAlert("Адрес скопирован", _currency.Address, "OK");
+                await Clipboard.SetTextAsync(_currencyViewModel.Address);
+                await DisplayAlert("Адрес скопирован", _currencyViewModel.Address, "OK");
             }
             else
             {
@@ -61,16 +61,16 @@ namespace atomex
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         {
-            if (_currency != null)
+            if (_currencyViewModel != null)
             {
                 await DisplayAlert("Оповещение", "В разработке", "OK");
             }
         }
         void ShowConversionPage(object sender, EventArgs args)
         {
-            if (_currency != null)
+            if (_currencyViewModel != null)
             {
-                _navigationService.ShowConversionPage(_currency);
+                _navigationService.ShowConversionPage(_currencyViewModel);
             }
         }
     }
