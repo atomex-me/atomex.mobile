@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Atomex.Wallet;
 using Atomex.Subsystems;
 using Atomex.Common;
+using System.Threading.Tasks;
 
 namespace atomex.ViewModel
 {
@@ -58,8 +59,6 @@ namespace atomex.ViewModel
 
             AtomexApp.Start();
 
-
-
             //Test(account).FireAndForget();
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
@@ -69,10 +68,11 @@ namespace atomex.ViewModel
 
         //private async Task Test(Account account)
         //{
-        //    await new HdWalletScanner(account).ScanAsync("ETH");
-        //    await account.UpdateBalanceAsync("ETH");
-        //    var balance = await account.GetBalanceAsync("ETH");
-        //    Console.WriteLine(balance);
+        //    await new HdWalletScanner(account).ScanAsync("XTZ");
+        //    //await account.UpdateBalanceAsync("XTZ");
+        //    //var balance = await account.GetBalanceAsync("XTZ");
+        //    var tx = await account.GetTransactionsAsync("XTZ");
+        //    Console.WriteLine(tx);
         //}
 
         public IAtomexApp GetAtomexApp() {
