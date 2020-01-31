@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Views.TransactionInfoPage"
+             Title="Transaction info">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Form"
+                       RowHeight="70">
+                <TableRoot>
+                    <TableSection Title="Transaction Info">
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="CenterAndExpand">
+                                    <Image HeightRequest="32"
+                                       WidthRequest="32"
+                                       Margin="5,0">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="Source"
+                                                        Value="ReceiveIcon"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="Source"
+                                                        Value="SendIcon"/>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                    <Label Text="{Binding Amount}"
+                                           VerticalTextAlignment="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Input">
+                                                <Setter Property="TextColor"
+                                                        Value="Green"/>
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='+{0}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Output">
+                                                <Setter Property="TextColor"
+                                                        Value="Red"/>
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='{0}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </StackLayout>
+                                <Frame Grid.Column="1"
+                                       CornerRadius="10"
+                                       Padding="0"
+                                       Margin="0,15,10,15" 
+                                       HasShadow="False">
+                                    <Frame.Triggers>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Confirmed">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Pending">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="SlateGray"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Failed">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="IndianRed"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Unconfirmed">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="DodgerBlue"/>
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <Label Margin="5"
+                                           FontSize="14"
+                                           TextColor="White"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Center"
+                                           BackgroundColor="Transparent" 
+                                           Text="{Binding State}" />
+                                </Frame>
+                            </Grid>  
+                        </ViewCell>
+                        <TextCell Text="Description"
+                                  Detail="{Binding Description}"
+                                  DetailColor="Gray" />
+                        <TextCell Text="Transaction ID"
+                                  Detail="{Binding Id}"
+                                  DetailColor="Gray"/>
+                        <ViewCell>
+                            <StackLayout VerticalOptions="CenterAndExpand"
+                                         Margin="20,0">
+                                <Label Text="Fee"/>
+                                <Label TextColor="Gray"
+                                       FontSize="12">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Fee} "/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding CurrencyCode}"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                        <TextCell Text="Transaction time"
+                                  Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                  DetailColor="Gray"/>
+                        <ViewCell>
+                            <Button Text="Show more"
+                                    TextColor="DodgerBlue"
+                                    FontSize="18"
+                                    Clicked="OnShowMoreClicked" /> 
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>       
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

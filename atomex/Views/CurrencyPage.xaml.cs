@@ -2,6 +2,8 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using atomex.ViewModel;
+using atomex.Views;
+using atomex.ViewModel.TransactionViewModels;
 
 namespace atomex
 {
@@ -71,6 +73,13 @@ namespace atomex
             if (_currencyViewModel != null)
             {
                 _navigationService.ShowConversionPage(_currencyViewModel);
+            }
+        }
+        async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+            {
+                await Navigation.PushAsync(new TransactionInfoPage(e.SelectedItem as TransactionViewModel));
             }
         }
     }

@@ -19,7 +19,7 @@ namespace atomex.ViewModel.TransactionViewModels
             From = tx.From;
             To = tx.To;
             GasLimit = tx.GasLimit;
-            Fee = tx.Fee;
+            Fee = tx.Fee.ToTez();
             IsInternal = tx.IsInternal;
         }
 

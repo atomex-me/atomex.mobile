@@ -185,7 +185,8 @@
                            VerticalOptions="CenterAndExpand" />
                 </Grid>-->
                 <ListView x:Name="transactionsList"
-                          HasUnevenRows="True">
+                          HasUnevenRows="True"
+                          ItemSelected="OnListViewItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
