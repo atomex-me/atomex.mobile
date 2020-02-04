@@ -44,7 +44,7 @@ namespace atomex.ViewModel
             //var account = new Account(new HdWallet(Network.TestNet), "", currenciesProvider, symbolsProvider);
             //var account = new Account(new HdWallet("atomex.wallet", ))
             var account = Account.LoadFromFile("atomex.wallet", "12345678".ToSecureString(), currenciesProvider, symbolsProvider);
-
+            
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)
                 .UseSymbolsProvider(symbolsProvider)

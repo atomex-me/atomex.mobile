@@ -7,17 +7,13 @@
              BackgroundColor="#f0f0f0">
     <ContentPage.Content>
         <StackLayout Margin="0,20,0,0">
-            <!--<Frame HasShadow="False" CornerRadius="0" Margin="0,10">
-                <controls:CustomEntry Placeholder="Address" HeightRequest="30"></controls:CustomEntry>
-            </Frame>
-            <Frame HasShadow="True" CornerRadius="0" Focused="">
-                <controls:CustomEntry Placeholder="Amount" Keyboard="Numeric" HeightRequest="30" Focused="EntryFocused"></controls:CustomEntry>
-            </Frame>-->
             <Grid ColumnSpacing="0"
                   RowSpacing="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="70" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="6*" />
@@ -27,7 +23,7 @@
                 <controls:CustomEntry x:Name="Address"
                                       Placeholder="Address"
                                       Keyboard="Text"
-                                      Focused="EntryFocused"
+                                      Focused="AddressEntryFocused"
                                       IsSpellCheckEnabled="False"
                                       IsTextPredictionEnabled="False" />
                 <Button Grid.Column="1"
@@ -42,21 +38,43 @@
                            BackgroundColor="White"
                            Clicked="OnScanButtonClicked"
                            Padding="20,0"/>
-                <controls:CustomEntry Grid.Row="1"
-                        x:Name="Amount"
-                        Placeholder="Amount"
-                        Keyboard="Numeric"
-                        Focused="EntryFocused"
-                        IsSpellCheckEnabled="False"
-                        IsTextPredictionEnabled="False" />
-                <Button Grid.Row="1"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
+                <Frame Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       x:Name="InvalidAddressFrame"
+                       HasShadow="False"
+                       IsVisible="False">
+                    <Label Text="Invalid address"
+                           TextColor="Red"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                </Frame>
+                <controls:CustomEntry Grid.Row="2"
+                                      Grid.ColumnSpan="2"
+                                      x:Name="Amount"
+                                      Placeholder="Amount"
+                                      Keyboard="Numeric"
+                                      Focused="AmountEntryFocused"
+                                      IsSpellCheckEnabled="False"
+                                      IsTextPredictionEnabled="False" />
+                <Button Grid.Row="2"
+                        Grid.Column="2"
                         Text="MAX"
                         FontSize="16"
                         HorizontalOptions="Fill"
                         BackgroundColor="White"
                         Clicked="OnSetMaxAmountButtonClicked"/>
+                <Frame Grid.Row="3"
+                       Grid.ColumnSpan="3"
+                       x:Name="InvalidAmountFrame"
+                       HasShadow="False"
+                       IsVisible="False">
+                    <Label Text="Invalid amount"
+                           x:Name="InvalidAmountLabel"
+                           TextColor="Red"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                </Frame>
+                
             </Grid>
             <Button Text="NEXT"
                     TextColor="White"

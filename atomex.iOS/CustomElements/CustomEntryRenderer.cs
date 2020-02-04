@@ -22,9 +22,9 @@ namespace atomex.iOS
                 Control.BorderStyle = UITextBorderStyle.None;
                 Control.Layer.BackgroundColor = UIColor.White.CGColor;
 
-                Control.LeftView = new UIView(new CGRect(0, 0, 15, 0));
+                Control.LeftView = new UIView(new CGRect(0, 0, 20, 0));
                 Control.LeftViewMode = UITextFieldViewMode.Always;
-                //ANDROID: Control.SetPadding(15, 15, 15, 0);
+                //ANDROID: Control.SetPadding(20, 20, 20, 0);
             }
 
             if (e.PropertyName == "IsFocused")
@@ -32,7 +32,7 @@ namespace atomex.iOS
                 if (Element.IsFocused) {
                     Control.Layer.BorderColor = UIColor.Gray.CGColor;
                     Control.Layer.BorderWidth = 1;
-                    Control.Layer.CornerRadius = 10;
+                    Control.Layer.CornerRadius = 6;
                 }
             }
         } 

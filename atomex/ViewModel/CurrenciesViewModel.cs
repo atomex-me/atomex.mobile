@@ -40,7 +40,6 @@ namespace atomex.ViewModel
 
         public CurrenciesViewModel(IAtomexApp app)
         {
-            //Currencies = WalletData.Wallets;
             App = app;
 
             //var terminal = app.Terminal;
@@ -62,6 +61,7 @@ namespace atomex.ViewModel
 
                 CurrencyViewModel currency = new CurrencyViewModel(App)
                 {
+                    Currency = c,
                     Amount = balance.Available,
                     Name = c.Name,
                     FullName = c.Description,

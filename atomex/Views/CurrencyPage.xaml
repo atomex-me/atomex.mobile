@@ -60,7 +60,7 @@
                                      HorizontalOptions="CenterAndExpand"
                                      VerticalOptions="CenterAndExpand"
                                      Clicked="ShowConversionPage"/>
-                        <Label Text="Receive"
+                        <Label Text="Convert"
                                FontAttributes="Bold"
                                HorizontalOptions="Center"
                                VerticalOptions="CenterAndExpand" />

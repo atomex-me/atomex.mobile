@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
 using Atomex.Common;
+using Atomex.Core;
 using Serilog;
 using Xamarin.Forms;
 
@@ -14,6 +15,7 @@ namespace atomex.ViewModel
     {
         private IAtomexApp App;
 
+        public Currency Currency { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
         public decimal Amount { get; set; }
@@ -65,7 +67,6 @@ namespace atomex.ViewModel
                                 //t.UpdateClicked += UpdateTransactonEventHandler;
                                 //t.RemoveClicked += RemoveTransactonEventHandler;
                             }));
-                    Console.WriteLine(Transactions);
                 });
             }
             catch (Exception e)
