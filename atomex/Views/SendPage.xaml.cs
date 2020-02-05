@@ -2,48 +2,61 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using Xamarin.Essentials;
+using Atomex;
 
 namespace atomex
 {
     public partial class SendPage : ContentPage
     {
-        private CurrencyViewModel currencyViewModel;
+        private CurrencyViewModel _currencyViewModel;
+
+        private IAtomexApp _app;
+
+        private decimal _maxAmount;
 
         public SendPage()
         {
             InitializeComponent();
         }
 
-        public SendPage(CurrencyViewModel selectedCurrency)
+        public SendPage(IAtomexApp app, CurrencyViewModel selectedCurrency)
         {
             InitializeComponent();
             if (selectedCurrency != null)
             {
-                currencyViewModel = selectedCurrency;
-                BindingContext = currencyViewModel;
+                _currencyViewModel = selectedCurrency;
+                _app = app;
+                EstimateMaxAmount();
             }
         }
 
-        public void AmountEntryFocused(object sender, FocusEventArgs e)
+        private void AmountEntryFocused(object sender, FocusEventArgs e)
         {
             //e.VisualElement.Focus();
             InvalidAmountFrame.IsVisible = false;
         }
 
-        public void AddressEntryFocused(object sender, FocusEventArgs e)
+        private void AddressEntryFocused(object sender, FocusEventArgs e)
         {
             //e.VisualElement.Focus();
             InvalidAddressFrame.IsVisible = false;
         }
 
-        void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
-            if (currencyViewModel != null)
-            {
-                Amount.Text = currencyViewModel.Amount.ToString();
-            }
+        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
+            InvalidAmountFrame.IsVisible = false;
+            EstimateMaxAmount();
+            Amount.Text = _maxAmount.ToString();
         }
 
-        async void OnScanButtonClicked(object sender, EventArgs args) {
+        private async void EstimateMaxAmount()
+        {
+            var (maxAmount, fee) = await _app.Account
+               .EstimateMaxAmountToSendAsync(_currencyViewModel.Name, Address.Text, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
+               .ConfigureAwait(false);
+            _maxAmount = maxAmount;
+        }
+
+        private async void OnScanButtonClicked(object sender, EventArgs args) {
 
             var optionsPage = new ScanningQrPage(selected =>
             {
@@ -53,7 +66,7 @@ namespace atomex
             await Navigation.PushAsync(optionsPage);
         }
 
-        async void OnPasteButtonClicked(object sender, EventArgs args) {
+        private async void OnPasteButtonClicked(object sender, EventArgs args) {
             if (Clipboard.HasText)
             {
                 var text = await Clipboard.GetTextAsync();
@@ -65,29 +78,36 @@ namespace atomex
             }
         }
 
-        async void OnNextButtonClicked(object sender, EventArgs args)
-        {   
+        private async void OnNextButtonClicked(object sender, EventArgs args)
+        {
             decimal amount = Convert.ToDecimal(Amount.Text);
             if (String.IsNullOrWhiteSpace(Address.Text) || String.IsNullOrWhiteSpace(Amount.Text))
             {
                 await DisplayAlert("Warning", "Все поля должны быть заполнены", "OK");
+                return;
             }
-            else if (!currencyViewModel.Currency.IsValidAddress(Address.Text)) {
+
+            if (!_currencyViewModel.Currency.IsValidAddress(Address.Text))
+            {
                 InvalidAddressFrame.IsVisible = true;
+                return;
             }
-            else if (amount <= 0)
+
+            if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + currencyViewModel.Name;
+                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _currencyViewModel.Name;
+                return;
             }
-            else if (amount > currencyViewModel.Amount)
+            if (amount > _maxAmount)
             {
                 InvalidAmountFrame.IsVisible = true;
                 InvalidAmountLabel.Text = "Insufficient funds";
+                return;
             }
             else
             {
-                await Navigation.PushAsync(new AcceptSendPage(currencyViewModel, Address.Text, Amount.Text));
+                await Navigation.PushAsync(new AcceptSendPage(_app, _currencyViewModel, Address.Text, amount));
             }
         }
     }

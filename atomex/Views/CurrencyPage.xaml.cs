@@ -4,6 +4,7 @@ using Xamarin.Essentials;
 using atomex.ViewModel;
 using atomex.Views;
 using atomex.ViewModel.TransactionViewModels;
+using Atomex;
 
 namespace atomex
 {
@@ -11,16 +12,18 @@ namespace atomex
     {
         private CurrencyViewModel _currencyViewModel;
         private INavigationService _navigationService;
+        private IAtomexApp _app;
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(CurrencyViewModel currencyViewModel, INavigationService navigationService)
+        public CurrencyPage(IAtomexApp app, CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
             InitializeComponent();
 
             _navigationService = navigationService;
+            _app = app;
 
             if (currencyViewModel != null)
             {
@@ -47,7 +50,7 @@ namespace atomex
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SendPage(_currencyViewModel));
+            await Navigation.PushAsync(new SendPage(_app, _currencyViewModel));
         }
         async void Copy(object sender, EventArgs args)
         {

@@ -55,7 +55,7 @@
                                       Keyboard="Numeric"
                                       Focused="AmountEntryFocused"
                                       IsSpellCheckEnabled="False"
-                                      IsTextPredictionEnabled="False" />
+                                      IsTextPredictionEnabled="False"/>
                 <Button Grid.Row="2"
                         Grid.Column="2"
                         Text="MAX"
@@ -74,7 +74,6 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"/>
                 </Frame>
-                
             </Grid>
             <Button Text="NEXT"
                     TextColor="White"
@@ -84,7 +83,7 @@
                     CornerRadius="3"
                     HorizontalOptions="Fill"
                     VerticalOptions="EndAndExpand"
-                    Clicked="OnNextButtonClicked" />
+                    Clicked="OnNextButtonClicked"/>
         </StackLayout>        
     </ContentPage.Content>
 </ContentPage>

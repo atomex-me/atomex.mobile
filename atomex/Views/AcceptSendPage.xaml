@@ -4,9 +4,17 @@
              x:Class="atomex.AcceptSendPage"
              Title="Confirmation">
     <ContentPage.Content>
-        <StackLayout>
+        <RelativeLayout>
+            <ActivityIndicator IsRunning="True"
+                               IsVisible="True"
+                               x:Name="Loader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                               Scale="3"
+                               Color="Black"
+                               />
+            <StackLayout x:Name="Content">
             <TableView Intent="Form"
-                       x:Name="transaction"
                        RowHeight="70">
                 <TableRoot>
                     <TableSection Title="Confirm transaction">
@@ -19,18 +27,24 @@
                         <TextCell x:Name="Amount"
                                   Text="Amount"
                                   DetailColor="CadetBlue"/>
+                        <TextCell x:Name="Fee"
+                                  Text="Fee"
+                                  DetailColor="CadetBlue"/>
+                        <ViewCell>
+                            <Button Text="SEND"
+                                    x:Name="SendButton"
+                                    TextColor="White"
+                                    FontSize="18"
+                                    HeightRequest="70"
+                                    BackgroundColor="CadetBlue"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="EndAndExpand"
+                                    Clicked="OnSendButtonClicked"/>
+                        </ViewCell>
                     </TableSection>
                 </TableRoot>
             </TableView>
-            <Button Text="SEND"
-                    TextColor="White"
-                    FontSize="18"
-                    HeightRequest="70"
-                    BackgroundColor="CadetBlue"
-                    CornerRadius="3"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="EndAndExpand"
-                    Clicked="OnSendButtonClicked" />
         </StackLayout>
+            </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

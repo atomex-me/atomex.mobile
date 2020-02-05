@@ -8,6 +8,8 @@ namespace atomex
     {
         private INavigationService _navigationService;
 
+        private IAtomexApp _app;
+
         public CurrenciesListPage()
         {
             InitializeComponent();
@@ -18,6 +20,7 @@ namespace atomex
             InitializeComponent();
 
             _navigationService = navigationService;
+            _app = AtomexApp;
 
             if (currenciesList != null)
             {
@@ -30,7 +33,7 @@ namespace atomex
         {
             if (e.SelectedItem != null)
             {
-                await Navigation.PushAsync(new CurrencyPage(e.SelectedItem as CurrencyViewModel, _navigationService));
+                await Navigation.PushAsync(new CurrencyPage(_app, e.SelectedItem as CurrencyViewModel, _navigationService));
             }
         }
     }
