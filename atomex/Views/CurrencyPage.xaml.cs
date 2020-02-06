@@ -29,15 +29,6 @@ namespace atomex
             {
                 _currencyViewModel = currencyViewModel;
                 BindingContext = _currencyViewModel;
-                if (currencyViewModel.Transactions.Count != 0)
-                {
-                    transactionsList.IsVisible = true;
-                    transactionsList.ItemsSource = currencyViewModel.Transactions;
-                }
-                else
-                {
-                    transactionsList.IsVisible = false;
-                }
                 if (_currencyViewModel.FullName == "Tezos")
                 {
                     DelegateOption.IsVisible = true;

@@ -152,6 +152,8 @@
     <ImageAsset Include="Assets.xcassets\ETH.imageset\eth.png" />
     <ImageAsset Include="Assets.xcassets\LTC.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LTC.imageset\litecoin.png" />
+    <ImageAsset Include="Assets.xcassets\CircleIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\CircleIcon.imageset\circle.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -198,6 +200,7 @@
     <Folder Include="Assets.xcassets\EthI.imageset\" />
     <Folder Include="Assets.xcassets\ETH.imageset\" />
     <Folder Include="Assets.xcassets\LTC.imageset\" />
+    <Folder Include="Assets.xcassets\CircleIcon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />

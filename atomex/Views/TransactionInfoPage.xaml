@@ -36,6 +36,12 @@
                                                 <Setter Property="Source"
                                                         Value="SendIcon"/>
                                             </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
+                                                <Setter Property="Source"
+                                                        Value="CircleIcon"/>
+                                            </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
                                     <Label Text="{Binding Amount}"
@@ -59,6 +65,21 @@
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Type}"
                                                          Value="Output">
+                                                <Setter Property="TextColor"
+                                                        Value="Red"/>
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='{0}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
                                                 <Setter Property="TextColor"
                                                         Value="Red"/>
                                                 <Setter Property="FormattedText">

@@ -1,21 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
+    public enum TransactionType
+    {
+        Input,
+        Output,
+        Self,
+        SwapPayment,
+        SwapRedeem,
+        SwapRefund
+    }
+
     public class TransactionViewModel : BaseViewModel
     {
-        public event EventHandler<TransactionEventArgs> UpdateClicked;
-        public event EventHandler<TransactionEventArgs> RemoveClicked;
-
         public IBlockchainTransaction Transaction { get; }
         public string Id { get; set; }
         public Currency Currency { get; set; }
         public BlockchainTransactionState State { get; set; }
-        public BlockchainTransactionType Type { get; set; }
+        //public BlockchainTransactionType Type { get; set; }
+
+        public TransactionType Type { get; set; }
+
 
         public string Description { get; set; }
         public decimal Amount { get; set; }
@@ -40,7 +50,7 @@ namespace atomex.ViewModel.TransactionViewModels
             Id = Transaction.Id;
             Currency = Transaction.Currency;
             State = Transaction.State;
-            Type = Transaction.Type;
+            Type = GetType(Transaction.Type);
             Amount = amount;
 
             AmountFormat = tx.Currency.Format;
@@ -73,6 +83,28 @@ namespace atomex.ViewModel.TransactionViewModels
             {
                 Description = "Unknown transaction";
             }
+        }
+
+        public TransactionType GetType(BlockchainTransactionType type)
+        {
+            if (type.HasFlag(BlockchainTransactionType.SwapPayment))
+                return TransactionType.SwapPayment;
+
+            if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
+                return TransactionType.SwapRedeem;
+
+            if (type.HasFlag(BlockchainTransactionType.SwapRefund))
+                return TransactionType.SwapRefund;
+
+            if (type.HasFlag(BlockchainTransactionType.Input) &&
+                type.HasFlag(BlockchainTransactionType.Output))
+                return TransactionType.Self;
+
+            if (type.HasFlag(BlockchainTransactionType.Input))
+                return TransactionType.Input;
+
+            //if (type.HasFlag(BlockchainTransactionType.Output))
+            return TransactionType.Output;
         }
     }
 }

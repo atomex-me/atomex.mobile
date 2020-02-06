@@ -7,12 +7,11 @@
         <RelativeLayout>
             <ActivityIndicator IsRunning="True"
                                IsVisible="True"
-                               x:Name="Loader"
+                               x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
                                Scale="3"
-                               Color="Black"
-                               />
+                               Color="Black"/>
             <StackLayout x:Name="Content">
             <TableView Intent="Form"
                        RowHeight="70">
@@ -27,9 +26,19 @@
                         <TextCell x:Name="Amount"
                                   Text="Amount"
                                   DetailColor="CadetBlue"/>
-                        <TextCell x:Name="Fee"
-                                  Text="Fee"
-                                  DetailColor="CadetBlue"/>
+                        <ViewCell>
+                            <StackLayout VerticalOptions="CenterAndExpand" Padding="20,0">
+                                <Label Text="Fee"/>
+                                <Label x:Name="Fee"
+                                       FontSize="12"
+                                       TextColor="CadetBlue"/>
+                                <ActivityIndicator IsRunning="True"
+                                                   IsVisible="True"
+                                                   x:Name="FeeLoader"
+                                                   HorizontalOptions="Start"
+                                                   Color="CadetBlue"/>
+                            </StackLayout>
+                        </ViewCell>
                         <ViewCell>
                             <Button Text="SEND"
                                     x:Name="SendButton"

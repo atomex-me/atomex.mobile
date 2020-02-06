@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using atomex.ViewModel;
 using Atomex;
@@ -43,21 +42,23 @@ namespace atomex
 
         async void EstimateFee(string to, decimal amount)
         {
+            ShowFeeLoader(true);
             var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.Name, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
             _fee = fee ?? 0;
             _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
             fee *= _feePrice;
-            Fee.Detail = fee.ToString() + " " + _currencyViewModel.Name;
+            Fee.Text = fee.ToString() + " " + _currencyViewModel.Name;
+            ShowFeeLoader(false);
         }
 
         async void OnSendButtonClicked(object sender, EventArgs args) {
             try
             {
-                ShowLoader(true);
+                BlockActions(true);
                 var error = await _app.Account.SendAsync(_currencyViewModel.Name, _to, _amount, _fee, _feePrice);
                 if (error != null)
                 {
-                    ShowLoader(false);
+                    BlockActions(false);
                     await DisplayAlert("Оповещение", "Ошибка при отправке транзы", "OK");
                     return;
                 }
@@ -65,7 +66,7 @@ namespace atomex
                 {
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 }
-                var res = await DisplayAlert("Оповещение", "Транзакция отправлена", null, "Ok");
+                var res = await DisplayAlert("Оповещение", _amount + " " + _currencyViewModel.Name + " успешно отправлено на адрес " + _to, null, "Ok");
                 if (!res)
                 {
                     await Navigation.PopAsync();
@@ -73,15 +74,14 @@ namespace atomex
             }
             catch (Exception e)
             {
+                BlockActions(false);
                 await DisplayAlert("Error", "An error has occurred while sending transaction", "OK");
-                ShowLoader(false);
             }
         }
 
-        private void ShowLoader(bool flag)
+        private void BlockActions(bool flag)
         {
-            Loader.IsVisible = flag;
-            Loader.IsRunning = flag;
+            SendingLoader.IsVisible = SendingLoader.IsRunning = flag;
             SendButton.IsEnabled = !flag;
             if (flag)
             {
@@ -91,6 +91,12 @@ namespace atomex
             {
                 Content.Opacity = 1;
             }
+        }
+
+        private void ShowFeeLoader(bool flag)
+        {
+            FeeLoader.IsVisible = FeeLoader.IsRunning = flag;
+            SendButton.IsEnabled = Fee.IsVisible = !flag;
         }
     }
 }

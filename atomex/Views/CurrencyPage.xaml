@@ -184,9 +184,10 @@
                            HorizontalOptions="Center"
                            VerticalOptions="CenterAndExpand" />
                 </Grid>-->
-                <ListView x:Name="transactionsList"
-                          HasUnevenRows="True"
-                          ItemSelected="OnListViewItemSelected">
+                <ListView ItemsSource="{Binding Transactions}"
+                          ItemSelected="OnListViewItemSelected"
+                          IsVisible="{Binding Transactions}"
+                          HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -227,6 +228,12 @@
                                                 <Setter Property="Source"
                                                         Value="SendIcon"/>
                                             </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
+                                                <Setter Property="Source"
+                                                        Value="CircleIcon"/>
+                                            </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
                                     <Label Grid.Row="1"
@@ -245,6 +252,12 @@
                                                          Value="Input">
                                                 <Setter Property="Text"
                                                         Value="Received"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
+                                                <Setter Property="Text"
+                                                        Value="Transaction to yourself"/>
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
@@ -274,6 +287,21 @@
                                             <DataTrigger TargetType="Label"
                                                          Binding="{Binding Type}"
                                                          Value="Output">
+                                                <Setter Property="TextColor"
+                                                        Value="Red"/>
+                                                 <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
                                                 <Setter Property="TextColor"
                                                         Value="Red"/>
                                                  <Setter Property="FormattedText">

@@ -12,7 +12,7 @@ namespace atomex.ViewModel
     {
         public event EventHandler QuotesUpdated;
 
-        private IAtomexApp App { get; }
+        private IAtomexApp _app { get; }
 
         private decimal _totalCost;
         public decimal TotalCost
@@ -40,26 +40,26 @@ namespace atomex.ViewModel
 
         public CurrenciesViewModel(IAtomexApp app)
         {
-            App = app;
+            _app = app;
 
             //var terminal = app.Terminal;
             //app.Terminal.SwapUpdated += Terminal_SwapUpdated;
 
-            coreCurrencies = App.Account.Currencies.ToList();
+            coreCurrencies = _app.Account.Currencies.ToList();
             Currencies = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
 
-            App.QuotesProvider.QuotesUpdated += QuotesProvider_QuotesUpdated;
+            _app.QuotesProvider.QuotesUpdated += QuotesProvider_QuotesUpdated;
         }
 
         private async Task FillCurrenciesAsync()
         {
             await Task.WhenAll(coreCurrencies.Select(async c =>
             {
-                var balance = await App.Account.GetBalanceAsync(c.Name);
-                var address = await App.Account.GetFreeExternalAddressAsync(c.Name);
+                var balance = await _app.Account.GetBalanceAsync(c.Name);
+                var address = await _app.Account.GetFreeExternalAddressAsync(c.Name);
 
-                CurrencyViewModel currency = new CurrencyViewModel(App)
+                CurrencyViewModel currency = new CurrencyViewModel(_app)
                 {
                     Currency = c,
                     Amount = balance.Available,
@@ -77,7 +77,7 @@ namespace atomex.ViewModel
             TotalCost = 0;
             foreach (var c in Currencies)
             {
-                var quote = App.QuotesProvider.GetQuote(c.Name, "USD");
+                var quote = _app.QuotesProvider.GetQuote(c.Name, "USD");
                 c.Price = quote.Bid;
                 c.Cost = c.Amount * quote.Bid;
                 TotalCost += c.Cost;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
+using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Serilog;
@@ -13,7 +14,7 @@ namespace atomex.ViewModel
 {
     public class CurrencyViewModel : BaseViewModel
     {
-        private IAtomexApp App;
+        private IAtomexApp _app;
 
         public Currency Currency { get; set; }
         public string Name { get; set; }
@@ -39,7 +40,26 @@ namespace atomex.ViewModel
 
         public CurrencyViewModel(IAtomexApp app)
         {
-            App = app;
+            _app = app;
+
+            _app.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
+        }
+
+        private void UnconfirmedTransactionAdded(
+            object sender,
+            TransactionEventArgs e)
+        {
+            try
+            {
+                if (e.Transaction.Currency.Name != Currency?.Name)
+                    return;
+
+                LoadTransactionsAsync().FireAndForget();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "LoadTransactionAsync error for {@currency}", Currency?.Name);
+            }
         }
 
         public async Task LoadTransactionsAsync()
@@ -48,10 +68,10 @@ namespace atomex.ViewModel
 
             try
             {
-                if (App.Account == null)
+                if (_app.Account == null)
                     return;
 
-                var transactions = (await App.Account
+                var transactions = (await _app.Account
                     .GetTransactionsAsync(Name))
                     .ToList();
 
@@ -61,12 +81,7 @@ namespace atomex.ViewModel
                         transactions.Select(t => TransactionViewModelCreator
                             .CreateViewModel(t))
                             .ToList()
-                            .SortList((t1, t2) => t2.Time.CompareTo(t1.Time))
-                            .ForEachDo(t =>
-                            {
-                                //t.UpdateClicked += UpdateTransactonEventHandler;
-                                //t.RemoveClicked += RemoveTransactonEventHandler;
-                            }));
+                            .SortList((t1, t2) => t2.Time.CompareTo(t1.Time)));
                 });
             }
             catch (Exception e)
