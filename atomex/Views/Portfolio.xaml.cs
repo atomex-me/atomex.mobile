@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xamarin.Forms;
 using SkiaSharp;
 using atomex.ViewModel;
 using atomex.CustomElements;
 using System.Linq;
-using System.Globalization;
 
 namespace atomex
 {
@@ -21,13 +19,14 @@ namespace atomex
         public Portfolio(CurrenciesViewModel currenciesViewModel)
         {
             InitializeComponent();
-            currenciesList.SeparatorVisibility = SeparatorVisibility.None;
             _currenciesViewModel = currenciesViewModel;
 
             _currenciesViewModel.QuotesUpdated += (s, a) =>
             {
                 Device.BeginInvokeOnMainThread(UpdateChart);   
             };
+
+            BindingContext = currenciesViewModel;
 
             //walletsViewModel.WalletsUpdated += (s, a) =>
             //{
@@ -37,12 +36,10 @@ namespace atomex
             UpdateChart();
         }
 
-        private void UpdateChart() {
-            List<CurrencyViewModel> currencies = _currenciesViewModel.Currencies;
-            if (currencies != null)
+        private void UpdateChart()
+        {
+            if (_currenciesViewModel.Currencies != null)
             {
-                currenciesList.ItemsSource = currencies;
-                walletsBalance.Text = string.Format("{0:f1} $", _currenciesViewModel.TotalCost);
                 if (_currenciesViewModel.TotalCost == 0)
                 {
                     portfolioChart.IsVisible = false;
@@ -50,7 +47,7 @@ namespace atomex
                 else
                 {
                     portfolioChart.IsVisible = true;
-                    var nonzeroWallets = currencies.Where(w => w.Amount != 0).ToList();
+                    var nonzeroWallets = _currenciesViewModel.Currencies.Where(w => w.Amount != 0).ToList();
                     var entries = new Microcharts.Entry[nonzeroWallets.Count];
                     for (int i = 0; i < nonzeroWallets.Count; i++)
                     {

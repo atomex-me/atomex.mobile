@@ -23,7 +23,6 @@ namespace atomex.ViewModel.TransactionViewModels
         public Currency Currency { get; set; }
         public BlockchainTransactionState State { get; set; }
         //public BlockchainTransactionType Type { get; set; }
-
         public TransactionType Type { get; set; }
 
 

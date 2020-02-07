@@ -6,9 +6,9 @@
              Icon="NavBar__wallets">
         <ContentPage.Content>
             <StackLayout>
-                <ListView x:Name="currenciesList"
+                <ListView ItemsSource="{Binding Currencies}"
                           HasUnevenRows="True"
-                          ItemSelected="OnListViewItemSelected">
+                          ItemTapped="OnListViewItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

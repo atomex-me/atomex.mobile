@@ -18,22 +18,16 @@ namespace atomex
         public CurrenciesListPage(IAtomexApp AtomexApp, CurrenciesViewModel CurrenciesViewModel, INavigationService navigationService)
         {
             InitializeComponent();
-
             _navigationService = navigationService;
-            _app = AtomexApp;
-
-            if (currenciesList != null)
-            {
-                //currenciesList.SeparatorVisibility = SeparatorVisibility.None;
-                currenciesList.ItemsSource = CurrenciesViewModel.Currencies;
-            }
+            _app = AtomexApp;            
+            BindingContext = CurrenciesViewModel;
         }
 
-        async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.SelectedItem != null)
+            if (e.Item != null)
             {
-                await Navigation.PushAsync(new CurrencyPage(_app, e.SelectedItem as CurrencyViewModel, _navigationService));
+                await Navigation.PushAsync(new CurrencyPage(_app, e.Item as CurrencyViewModel, _navigationService));
             }
         }
     }

@@ -10,25 +10,20 @@
                 <local:ChartView x:Name="portfolioChart"
                                  HeightRequest="180"
                                  Margin="10,30,10,0"/>
-                <Label x:Name="walletsBalance"
-                       FontAttributes="Bold"
+                <Label FontAttributes="Bold"
                        FontSize="22"
                        HorizontalTextAlignment="Center"
-                       Margin="0,30,0,0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding totalAmount}"></Span>
-                            <Span Text=" $"></Span>
-                        </FormattedString>
-                    </Label.FormattedText>
+                       Margin="0,30,0,0"
+                       Text="{Binding TotalCost, StringFormat='{0:f1} $'}">
                 </Label>
                 <Label Text="Main wallet"
                        TextColor="Gray"
                        FontSize="14"
                        HorizontalTextAlignment="Center"/>
-                <ListView x:Name="currenciesList"
-                          HasUnevenRows="true"
-                          Margin="0,20">
+                <ListView ItemsSource="{Binding Currencies}"
+                          HasUnevenRows="True"
+                          Margin="0,20"
+                          SeparatorVisibility="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

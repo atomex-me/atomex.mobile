@@ -69,11 +69,11 @@ namespace atomex
                 _navigationService.ShowConversionPage(_currencyViewModel);
             }
         }
-        async void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+        async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.SelectedItem != null)
+            if (e.Item != null)
             {
-                await Navigation.PushAsync(new TransactionInfoPage(e.SelectedItem as TransactionViewModel));
+                await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
             }
         }
     }
