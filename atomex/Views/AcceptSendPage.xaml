@@ -5,55 +5,52 @@
              Title="Confirmation">
     <ContentPage.Content>
         <RelativeLayout>
-            <ActivityIndicator IsRunning="True"
-                               IsVisible="True"
-                               x:Name="SendingLoader"
+            <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
                                Scale="3"
                                Color="Black"/>
             <StackLayout x:Name="Content">
-            <TableView Intent="Form"
-                       RowHeight="70">
-                <TableRoot>
-                    <TableSection Title="Confirm transaction">
-                        <TextCell x:Name="AddressFrom"
-                                  Text="From"
-                                  DetailColor="CadetBlue" />
-                        <TextCell x:Name="AddressTo"
-                                  Text="To"
-                                  DetailColor="CadetBlue"/>
-                        <TextCell x:Name="Amount"
-                                  Text="Amount"
-                                  DetailColor="CadetBlue"/>
-                        <ViewCell>
-                            <StackLayout VerticalOptions="CenterAndExpand" Padding="20,0">
-                                <Label Text="Fee"/>
-                                <Label x:Name="Fee"
-                                       FontSize="12"
-                                       TextColor="CadetBlue"/>
-                                <ActivityIndicator IsRunning="True"
-                                                   IsVisible="True"
-                                                   x:Name="FeeLoader"
-                                                   HorizontalOptions="Start"
-                                                   Color="CadetBlue"/>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <Button Text="SEND"
-                                    x:Name="SendButton"
-                                    TextColor="White"
-                                    FontSize="18"
-                                    HeightRequest="70"
-                                    BackgroundColor="CadetBlue"
-                                    HorizontalOptions="Fill"
-                                    VerticalOptions="EndAndExpand"
-                                    Clicked="OnSendButtonClicked"/>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>
-        </StackLayout>
-            </RelativeLayout>
+                <TableView Intent="Form"
+                           RowHeight="70">
+                    <TableRoot>
+                        <TableSection Title="Confirm transaction">
+                            <TextCell x:Name="AddressFrom"
+                                      Text="From"
+                                      DetailColor="CadetBlue" />
+                            <TextCell x:Name="AddressTo"
+                                      Text="To"
+                                      DetailColor="CadetBlue"/>
+                            <TextCell x:Name="Amount"
+                                      Text="Amount"
+                                      DetailColor="CadetBlue"/>
+                            <ViewCell>
+                                <StackLayout VerticalOptions="CenterAndExpand"
+                                             Padding="20,0">
+                                    <Label Text="Fee"/>
+                                    <Label x:Name="Fee"
+                                           FontSize="12"
+                                           TextColor="CadetBlue"/>
+                                    <ActivityIndicator x:Name="FeeLoader"
+                                                       HorizontalOptions="Start"
+                                                       Color="CadetBlue"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <Button Text="SEND"
+                                        x:Name="SendButton"
+                                        TextColor="White"
+                                        FontSize="18"
+                                        HeightRequest="70"
+                                        BackgroundColor="CadetBlue"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="EndAndExpand"
+                                        Clicked="OnSendButtonClicked"/>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </StackLayout>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

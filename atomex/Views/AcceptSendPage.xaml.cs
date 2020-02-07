@@ -62,13 +62,13 @@ namespace atomex
                     await DisplayAlert("Оповещение", "Ошибка при отправке транзы", "OK");
                     return;
                 }
-                for (var i = 1; i < BACK_COUNT; i++)
-                {
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                }
                 var res = await DisplayAlert("Оповещение", _amount + " " + _currencyViewModel.Name + " успешно отправлено на адрес " + _to, null, "Ok");
                 if (!res)
                 {
+                    for (var i = 1; i < BACK_COUNT; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
                     await Navigation.PopAsync();
                 }
             }
