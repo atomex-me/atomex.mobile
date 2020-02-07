@@ -7,6 +7,7 @@ using Atomex;
 using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
+using Atomex.Wallet;
 using Serilog;
 using Xamarin.Forms;
 
@@ -19,7 +20,12 @@ namespace atomex.ViewModel
         public Currency Currency { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
-        public decimal Amount { get; set; }
+        private decimal _amount;
+        public decimal Amount
+        {
+            get => _amount;
+            set { _amount = value; OnPropertyChanged(nameof(Amount)); }
+        }
         public decimal Price { get; set; }
         public decimal Cost { get; set; }
         public string Address { get; set; }
@@ -43,11 +49,21 @@ namespace atomex.ViewModel
             _app = app;
 
             _app.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
+            _app.Account.BalanceUpdated += BalanceUpdated;
+        }
+
+        private async void BalanceUpdated(object sender, CurrencyEventArgs e)
+        {
+            if (e.Currency.Name != Currency?.Name)
+                return;
+            var balance = await _app.Account.GetBalanceAsync(e.Currency.Name);
+            Currency = e.Currency;
+            Amount = balance.Available;
         }
 
         private void UnconfirmedTransactionAdded(
-            object sender,
-            TransactionEventArgs e)
+           object sender,
+           TransactionEventArgs e)
         {
             try
             {

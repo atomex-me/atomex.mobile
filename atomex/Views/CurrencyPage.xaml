@@ -348,6 +348,18 @@
                                                     </Setter.Value>
                                                 </Setter>
                                             </DataTrigger>
+                                             <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="Self">
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="Address: "/>
+                                                            <Span Text="{Binding To, FallbackValue='Unknown'}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
                                 </Grid>
