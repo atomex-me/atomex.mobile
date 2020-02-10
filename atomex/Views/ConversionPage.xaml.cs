@@ -34,28 +34,6 @@ namespace atomex
             
         }
 
-        private void OnPickerFromCurrencySelectedIndexChanged(object sender, EventArgs args)
-        {
-            var picker = sender as Picker;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-                //Console.WriteLine(picker.Items[selectedIndex]);
-                var wallet = picker.SelectedItem as CurrencyViewModel;
-                Amount.Placeholder = "Amount, " + wallet.Name;
-            }
-        }
-
-        private void OnPickerToCurrencySelectedIndexChanged(object sender, EventArgs args)
-        {
-            //var picker = sender as Picker;
-            //int selectedIndex = picker.SelectedIndex;
-            //if (selectedIndex != -1 && pickerFrom.SelectedIndex != -1)
-            //{
-            //    ConvertBtn.Opacity = 1f;
-            //}
-        }
-
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))

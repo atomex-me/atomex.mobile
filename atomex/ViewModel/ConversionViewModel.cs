@@ -102,7 +102,6 @@ namespace atomex.ViewModel
                     FullName = c.Description,
                     Address = address.Address
                 });
-                //FromCurrencies = _currencyViewModels.ToList();
                 FromCurrency = _currencyViewModels.FirstOrDefault();
             }));
         }
