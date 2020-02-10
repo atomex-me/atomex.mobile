@@ -4,101 +4,106 @@ using Atomex;
 using Atomex.Core;
 using System.Threading.Tasks;
 using Atomex.Common;
+using System;
 
 namespace atomex.ViewModel
 {
     public class ConversionViewModel : BaseViewModel
     {
-        private List<Currency> coreCurrencies;
-        private IAtomexApp App;
+        private List<Currency> _coreCurrencies;
+        private IAtomexApp _app;
 
-        private decimal amount;
+        private decimal _amount;
         public decimal Amount
         {
-            get => amount; set { amount = value; OnPropertyChanged(nameof(Amount)); }
+            get => _amount; set { _amount = value; OnPropertyChanged(nameof(Amount)); }
         }
-        private List<CurrencyViewModel> fromCurrencies;
+        private decimal _targetAmount;
+        public decimal TargetAmount
+        {
+            get => _targetAmount; set { _targetAmount = value; OnPropertyChanged(nameof(TargetAmount)); }
+        }
+        private List<CurrencyViewModel> _currencyViewModels;
+        private List<CurrencyViewModel> _fromCurrencies;
         public List<CurrencyViewModel> FromCurrencies
         {
-            get => fromCurrencies;
-            private set { fromCurrencies = value; OnPropertyChanged(nameof(FromCurrencies)); }
+            get => _fromCurrencies;
+            private set { _fromCurrencies = value; OnPropertyChanged(nameof(FromCurrencies)); }
         }
 
-        private List<CurrencyViewModel> toCurrencies;
+        private List<CurrencyViewModel> _toCurrencies;
         public List<CurrencyViewModel> ToCurrencies
         {
-            get => toCurrencies;
-            private set { toCurrencies = value; OnPropertyChanged(nameof(ToCurrencies)); }
+            get => _toCurrencies;
+            private set { _toCurrencies = value; OnPropertyChanged(nameof(ToCurrencies)); }
         }
 
-        private CurrencyViewModel fromCurrency;
+        private CurrencyViewModel _fromCurrency;
         public CurrencyViewModel FromCurrency
         {
-            get { return fromCurrency; }
+            get { return _fromCurrency; }
             set
             {
-                if (fromCurrency != value)
+                _fromCurrency = value;
+                OnPropertyChanged(nameof(FromCurrency));
+
+                if (_fromCurrency == null)
+                    return;
+
+                var oldToCurrency = ToCurrency;
+
+                ToCurrencies = _currencyViewModels
+                    .Where(c => _app.Account.Symbols.SymbolByCurrencies(c.Currency, _fromCurrency.Currency) != null)
+                    .ToList();
+
+                if (oldToCurrency != null && oldToCurrency != _fromCurrency &&
+                    ToCurrencies.FirstOrDefault(c => c.Name == oldToCurrency.Name) != null)
                 {
-                    fromCurrency = value;
-                    var _toCurrency = ToCurrency;
-                    if (_toCurrency != null && _toCurrency != fromCurrency &&
-                        ToCurrencies.FirstOrDefault(c => c.Name == _toCurrency.Name) != null)
-                    {
-                        ToCurrency = _toCurrency;
-                    }
-                    else
-                    {
-                        if (fromCurrencies != null)
-                        {
-                            ToCurrencies = fromCurrencies.Where(c => c.Name != fromCurrency.Name).ToList();
-                        }
-                    }
-                    
-                    OnPropertyChanged(nameof(FromCurrency));
-                    Amount = 0;
+                    ToCurrency = oldToCurrency;
                 }
+                else
+                {
+                    ToCurrency = ToCurrencies.First();  
+                }
+                Amount = 0;
             }
         }
 
-        private CurrencyViewModel toCurrency;
+        private CurrencyViewModel _toCurrency;
         public CurrencyViewModel ToCurrency
         {
-            get { return toCurrency; }
+            get { return _toCurrency; }
             set
             {
-                if (toCurrency != value)
-                {
-                    toCurrency = value;
-                    //FromCurrencies = toCurrencies.Where(c => c.Name != toCurrency.Name).ToList();
-                    OnPropertyChanged(nameof(ToCurrency));
-                }
+                _toCurrency = value;
+                OnPropertyChanged(nameof(ToCurrency));
             }
         }
 
         public ConversionViewModel(IAtomexApp app)
         {
-            App = app;
-            coreCurrencies = app.Account.Currencies.ToList();
-            FromCurrencies = ToCurrencies = new List<CurrencyViewModel>();
+            _app = app;
+            _coreCurrencies = app.Account.Currencies.ToList();
+            FromCurrencies = ToCurrencies = _currencyViewModels = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
-            FromCurrency = FromCurrencies[0];
-            ToCurrency = ToCurrencies[0];
         }
 
         private async Task FillCurrenciesAsync()
         {
-            await Task.WhenAll(coreCurrencies.Select(async c =>
+            await Task.WhenAll(_coreCurrencies.Select(async c =>
             {
-                var balance = await App.Account.GetBalanceAsync(c.Name);
-                var address = await App.Account.GetFreeExternalAddressAsync(c.Name);
-                FromCurrencies.Add(new CurrencyViewModel(App)
+                var balance = await _app.Account.GetBalanceAsync(c.Name);
+                var address = await _app.Account.GetFreeExternalAddressAsync(c.Name);
+                _currencyViewModels.Add(new CurrencyViewModel(_app)
                 {
+                    Currency = c,
                     Amount = balance.Available,
                     Name = c.Name,
                     FullName = c.Description,
                     Address = address.Address
                 });
-                ToCurrencies = FromCurrencies;
+                //FromCurrencies = _currencyViewModels.ToList();
+                FromCurrency = _currencyViewModels.FirstOrDefault();
             }));
         }
     }
