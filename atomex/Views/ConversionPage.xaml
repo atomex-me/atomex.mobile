@@ -29,7 +29,8 @@
                         ItemsSource="{Binding FromCurrencies}"
                         ItemDisplayBinding="{Binding FullName}"
                         SelectedItem="{Binding FromCurrency}"
-                        HorizontalOptions="FillAndExpand"/>
+                        HorizontalOptions="FillAndExpand"
+                        SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
                              IsVisible="{Binding FromCurrency}"
@@ -83,8 +84,9 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <custom:CustomEntry Text="{Binding Amount}"
-                                Keyboard="Numeric"
+            <custom:CustomEntry Keyboard="Numeric"
+                                x:Name="Amount"
+                                Placeholder="Amount"
                                 IsSpellCheckEnabled="False"
                                 IsTextPredictionEnabled="False"
                                 HeightRequest="70"
@@ -150,6 +152,30 @@
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"/>
             </Grid>
+            <Label HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Estimated price: "/>
+                        <Span Text="{Binding EstimatedPrice}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Estimated payment fee: "/>
+                        <Span Text="{Binding EstimatedPaymentFee}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Estimated redeem fee: "/>
+                        <Span Text="{Binding EstimatedRedeemFee}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
             <Button Text="Convert"
                     TextColor="White"
                     FontSize="18"
