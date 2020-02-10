@@ -5,7 +5,7 @@ using Atomex;
 
 namespace atomex
 {
-    public partial class AcceptSendPage : ContentPage
+    public partial class SendingConfirmationPage : ContentPage
     {
         private CurrencyViewModel _currencyViewModel;
 
@@ -21,12 +21,12 @@ namespace atomex
 
         private const int BACK_COUNT = 2;
 
-        public AcceptSendPage()
+        public SendingConfirmationPage()
         {
             InitializeComponent();
         }
 
-        public AcceptSendPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount)
+        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount)
         {
             InitializeComponent();
             _app = app;

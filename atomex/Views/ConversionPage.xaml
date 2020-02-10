@@ -8,7 +8,9 @@
              BackgroundColor="#f3f3f3">
     <ContentPage.Content>
         <StackLayout>
-            <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Margin="20,30,20,0">
+            <Grid VerticalOptions="Fill"
+                  HorizontalOptions="Fill"
+                  Margin="20,30,20,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
                     <RowDefinition Height="70" />
@@ -17,38 +19,32 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="8*" />
                 </Grid.ColumnDefinitions>
-            
-                <Label x:Name="walletFrom"
-                       Text="From:"
+                <Label Text="From:"
                        FontSize="18"
                        FontAttributes="Bold"
                        VerticalTextAlignment="Center"/>
                 <Picker Grid.Column="1"
                         x:Name="pickerFrom"
-                        Title="Select a wallet"
+                        Title="Select a currency"
                         ItemsSource="{Binding FromCurrencies}"
                         ItemDisplayBinding="{Binding FullName}"
                         SelectedItem="{Binding FromCurrency}"
                         SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"
-                        HorizontalOptions="FillAndExpand">
-                </Picker>
+                        HorizontalOptions="FillAndExpand"/>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
                              IsVisible="{Binding FromCurrency}"
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label IsVisible="{Binding FromCurrency.Amount}"
-                           Text="{Binding FromCurrency.Amount}"
+                    <Label Text="{Binding FromCurrency.Amount}"
                            VerticalTextAlignment="Center"
                            FontAttributes="Bold" />
                     <Image Source="{Binding FromCurrency.Name}"
                            HeightRequest="48"
                            WidthRequest="48" />
                 </StackLayout>
-
                 <Label Grid.Row="1"
-                       x:Name="walletTo"
                        Text="To:"
                        FontSize="18"
                        FontAttributes="Bold"
@@ -56,13 +52,12 @@
                 <Picker Grid.Row="1"
                         Grid.Column="1"
                         x:Name="pickerTo"
-                        Title="Select a wallet"
+                        Title="Select a currency"
                         ItemsSource="{Binding ToCurrencies}"
                         ItemDisplayBinding="{Binding FullName}"
                         SelectedItem="{Binding ToCurrency}"
                         SelectedIndexChanged="OnPickerToCurrencySelectedIndexChanged"
-                        HorizontalOptions="FillAndExpand">
-                </Picker>
+                        HorizontalOptions="FillAndExpand"/>
                 <StackLayout Grid.Row="1"
                              Grid.Column="1"
                              Orientation="Horizontal"
@@ -70,8 +65,7 @@
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label IsVisible="{Binding ToCurrency.Amount}"
-                           Text="{Binding ToCurrency.Amount}"
+                    <Label Text="{Binding ToCurrency.Amount}"
                            VerticalTextAlignment="Center"
                            FontAttributes="Bold" />
                     <Image Source="{Binding ToCurrency.Name}"
@@ -85,10 +79,73 @@
                                 IsSpellCheckEnabled="False"
                                 IsTextPredictionEnabled="False"
                                 HeightRequest="70"
-                                HorizontalTextAlignment="Center"/>
-
+                                HorizontalTextAlignment="Center"
+                                TextChanged="OnAmountTextChanged"/>
+            <Grid Margin="0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="10" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding FromCurrency.Name}"
+                       HeightRequest="48"
+                       WidthRequest="48" />
+                <Image Source="RightArrow"
+                       Grid.Column="1"
+                       Grid.RowSpan="3"
+                       WidthRequest="48"
+                       VerticalOptions="CenterAndExpand"/>
+                <Image Source="{Binding ToCurrency.Name}"
+                       Grid.Column="2"
+                       HeightRequest="48"
+                       WidthRequest="48" />
+                <Label Grid.Row="1"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Amount}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding FromCurrency.Name}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Row="1"
+                       Grid.Column="2"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="0"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding FromCurrency.Name}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Row="2"
+                       Text="0.0 $"
+                       FontSize="12"
+                       TextColor="Gray"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+                <Label Grid.Row="2"
+                       Grid.Column="2"
+                       Text="0.0 $"
+                       FontSize="12"
+                       TextColor="Gray"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+            </Grid>
             <Button Text="Convert"
-                    x:Name="ConvertBtn"
                     TextColor="White"
                     FontSize="18"
                     HeightRequest="70"

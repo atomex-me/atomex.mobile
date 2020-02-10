@@ -12,8 +12,8 @@ namespace atomex.ViewModel
         private List<Currency> coreCurrencies;
         private IAtomexApp App;
 
-        private float amount;
-        public float Amount
+        private decimal amount;
+        public decimal Amount
         {
             get => amount; set { amount = value; OnPropertyChanged(nameof(Amount)); }
         }
@@ -81,9 +81,8 @@ namespace atomex.ViewModel
             coreCurrencies = app.Account.Currencies.ToList();
             FromCurrencies = ToCurrencies = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
-
-            FromCurrency = new CurrencyViewModel(app);
-            ToCurrency = new CurrencyViewModel(app);
+            FromCurrency = FromCurrencies[0];
+            ToCurrency = ToCurrencies[0];
         }
 
         private async Task FillCurrenciesAsync()

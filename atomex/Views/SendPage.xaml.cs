@@ -107,7 +107,7 @@ namespace atomex
             }
             else
             {
-                await Navigation.PushAsync(new AcceptSendPage(_app, _currencyViewModel, Address.Text, amount));
+                await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount));
             }
         }
     }
