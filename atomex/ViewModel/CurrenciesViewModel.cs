@@ -62,7 +62,7 @@ namespace atomex.ViewModel
                 CurrencyViewModel currency = new CurrencyViewModel(_app)
                 {
                     Currency = c,
-                    Amount = balance.Available,
+                    AvailableAmount = balance.Available,
                     Name = c.Name,
                     FullName = c.Description,
                     Address = address.Address
@@ -79,7 +79,7 @@ namespace atomex.ViewModel
             {
                 var quote = _app.QuotesProvider.GetQuote(c.Name, "USD");
                 c.Price = quote.Bid;
-                c.Cost = c.Amount * quote.Bid;
+                c.Cost = c.AvailableAmount * quote.Bid;
                 TotalCost += c.Cost;
             }
 

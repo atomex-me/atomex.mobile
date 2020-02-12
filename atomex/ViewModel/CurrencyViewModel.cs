@@ -20,11 +20,11 @@ namespace atomex.ViewModel
         public Currency Currency { get; set; }
         public string Name { get; set; }
         public string FullName { get; set; }
-        private decimal _amount;
-        public decimal Amount
+        private decimal _availableAmount;
+        public decimal AvailableAmount
         {
-            get => _amount;
-            set { _amount = value; OnPropertyChanged(nameof(Amount)); }
+            get => _availableAmount;
+            set { _availableAmount = value; OnPropertyChanged(nameof(AvailableAmount)); }
         }
         public decimal Price { get; set; }
         public decimal Cost { get; set; }
@@ -58,7 +58,7 @@ namespace atomex.ViewModel
                 return;
             var balance = await _app.Account.GetBalanceAsync(e.Currency.Name);
             Currency = e.Currency;
-            Amount = balance.Available;
+            AvailableAmount = balance.Available;
         }
 
         private void UnconfirmedTransactionAdded(
@@ -104,6 +104,13 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "LoadTransactionAsync error for {@currency}", Name);
             }
+        }
+
+        public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
+        {
+            return await _app.Account
+               .EstimateMaxAmountToSendAsync(Name, address, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
+               .ConfigureAwait(false);
         }
     }
 }

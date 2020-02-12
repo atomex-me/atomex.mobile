@@ -26,7 +26,7 @@ namespace atomex
             InitializeComponent();
         }
 
-        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount)
+        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee)
         {
             InitializeComponent();
             _app = app;
@@ -37,19 +37,9 @@ namespace atomex
             AddressFrom.Detail = currencyViewModel.Address;
             AddressTo.Detail = to;
             Amount.Detail = amount.ToString() + " " + currencyViewModel.Name;
-            EstimateFee(to, amount);
+            Fee.Detail = fee.ToString() + " " + currencyViewModel.Name;
         }
 
-        async void EstimateFee(string to, decimal amount)
-        {
-            ShowFeeLoader(true);
-            var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.Name, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
-            _fee = fee ?? 0;
-            _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
-            fee *= _feePrice;
-            Fee.Text = fee.ToString() + " " + _currencyViewModel.Name;
-            ShowFeeLoader(false);
-        }
 
         async void OnSendButtonClicked(object sender, EventArgs args) {
             try
@@ -91,12 +81,6 @@ namespace atomex
             {
                 Content.Opacity = 1;
             }
-        }
-
-        private void ShowFeeLoader(bool flag)
-        {
-            FeeLoader.IsVisible = FeeLoader.IsRunning = flag;
-            SendButton.IsEnabled = Fee.IsVisible = !flag;
         }
     }
 }

@@ -54,6 +54,7 @@
                                       Placeholder="Amount"
                                       Keyboard="Numeric"
                                       Focused="AmountEntryFocused"
+                                      Unfocused="AmountEntryUnfocused"
                                       IsSpellCheckEnabled="False"
                                       IsTextPredictionEnabled="False"/>
                 <Button Grid.Row="2"
@@ -75,7 +76,36 @@
                            HorizontalTextAlignment="Start"/>
                 </Frame>
             </Grid>
+            <Label x:Name="FeeLabel"
+                   Margin="10,20"
+                   TextColor="Gray"
+                   IsVisible="False">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Estimated Fee: "/>
+                        <Span x:Name="FeeValue"
+                              FontAttributes="Bold"
+                              FontSize="16"
+                              TextColor="Black"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <StackLayout x:Name="EstimateFeeLayout"
+                         VerticalOptions="FillAndExpand"
+                         IsVisible="False">
+                <ActivityIndicator x:Name="FeeLoader"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="CenterAndExpand"
+                                   Color="CadetBlue"
+                                   Scale="2"/>
+                <Label Text="Calculating a fee..."
+                       VerticalOptions="StartAndExpand"
+                       HorizontalTextAlignment="Center"
+                       TextColor="Gray"
+                       FontSize="18"/>
+            </StackLayout>
             <Button Text="NEXT"
+                    x:Name="NextButton"
                     TextColor="White"
                     FontSize="18"
                     HeightRequest="70"

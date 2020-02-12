@@ -9,13 +9,13 @@
                        HeightRequest="64"
                        WidthRequest="64"
                        Margin="0,30,0,10" />
-                <Label Text="{Binding Amount}"
+                <Label Text="{Binding AvailableAmount}"
                        HorizontalOptions="Center"
                        FontSize="Large"
                        FontAttributes="Bold">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Amount}" />
+                            <Span Text="{Binding AvailableAmount}" />
                             <Span Text=" " /> 
                             <Span Text="{Binding Name}" />
                         </FormattedString>

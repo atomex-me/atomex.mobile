@@ -14,6 +14,8 @@ namespace atomex
 
         private decimal _maxAmount;
 
+        private decimal _fee;
+
         public SendPage()
         {
             InitializeComponent();
@@ -26,34 +28,53 @@ namespace atomex
             {
                 _currencyViewModel = selectedCurrency;
                 _app = app;
-                EstimateMaxAmount();
+                EstimateMaxAmount(null);
             }
         }
 
         private void AmountEntryFocused(object sender, FocusEventArgs e)
         {
-            //e.VisualElement.Focus();
             InvalidAmountFrame.IsVisible = false;
+        }
+
+        private void AmountEntryUnfocused(object sender, FocusEventArgs e)
+        {
+            EstimateFee(Address.Text, Convert.ToDecimal(Amount.Text));
         }
 
         private void AddressEntryFocused(object sender, FocusEventArgs e)
         {
-            //e.VisualElement.Focus();
             InvalidAddressFrame.IsVisible = false;
+        }
+
+        async void EstimateFee(string to, decimal amount)
+        {
+            ShowFeeLoader(true);
+            var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.Name, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
+            _fee = fee ?? 0;
+            var _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
+            fee = _fee * _feePrice;
+            FeeValue.Text = fee.ToString() + " " + _currencyViewModel.Name;
+            ShowFeeLoader(false);
+        }
+
+        async void EstimateMaxAmount(string address)
+        {
+            var (maxAmount, _, _) = await _currencyViewModel?.EstimateMaxAmount(address);
+            _maxAmount = maxAmount;
+        }
+
+        private void ShowFeeLoader(bool flag)
+        {
+            EstimateFeeLayout.IsVisible = FeeLoader.IsRunning = flag;
+            NextButton.IsEnabled = FeeLabel.IsVisible = !flag;
         }
 
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
             InvalidAmountFrame.IsVisible = false;
-            EstimateMaxAmount();
+            EstimateMaxAmount(Address.Text);
             Amount.Text = _maxAmount.ToString();
-        }
-
-        private async void EstimateMaxAmount()
-        {
-            var (maxAmount, fee) = await _app.Account
-               .EstimateMaxAmountToSendAsync(_currencyViewModel.Name, Address.Text, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
-               .ConfigureAwait(false);
-            _maxAmount = maxAmount;
+            EstimateFee(Address.Text, _maxAmount);
         }
 
         private async void OnScanButtonClicked(object sender, EventArgs args) {
@@ -80,7 +101,6 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            decimal amount = Convert.ToDecimal(Amount.Text);
             if (String.IsNullOrWhiteSpace(Address.Text) || String.IsNullOrWhiteSpace(Amount.Text))
             {
                 await DisplayAlert("Warning", "Все поля должны быть заполнены", "OK");
@@ -92,6 +112,8 @@ namespace atomex
                 InvalidAddressFrame.IsVisible = true;
                 return;
             }
+
+            decimal amount = Convert.ToDecimal(Amount.Text);
 
             if (amount <= 0)
             {
@@ -105,10 +127,7 @@ namespace atomex
                 InvalidAmountLabel.Text = "Insufficient funds";
                 return;
             }
-            else
-            {
-                await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount));
-            }
+            await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount, _fee));
         }
     }
 }

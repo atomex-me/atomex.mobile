@@ -212,11 +212,11 @@
     <BundleResource Include="Resources\NavBarIcons\baseline_settings_applications_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="atomex.wallet">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInPackage>true</IncludeInPackage>
-    </Content>
     <Content Include="configuration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="atomex.wallet">
+      <IncludeInPackage>true</IncludeInPackage>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

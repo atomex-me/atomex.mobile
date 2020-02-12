@@ -31,13 +31,13 @@
                                            FontAttributes="Bold"
                                            VerticalOptions="End"/>
                                     <Label Grid.Column="2"
-                                           Text="{Binding Amount}"
+                                           Text="{Binding AvailableAmount}"
                                            FontAttributes="Bold"
                                            HorizontalOptions="End"
                                            VerticalOptions="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:f2}'}" />
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:f2}'}" />
                                                 <Span Text=" " /> 
                                                 <Span Text="{Binding Name}" />
                                             </FormattedString>

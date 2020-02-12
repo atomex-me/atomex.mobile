@@ -23,6 +23,7 @@ namespace atomex
 
         private async void OnConvertButtonClicked(object sender, EventArgs args)
         {
+            
             if (pickerFrom.SelectedIndex != -1 && pickerTo.SelectedIndex != -1)
             {
                 await DisplayAlert("Оповещение", "В разработке", "OK");

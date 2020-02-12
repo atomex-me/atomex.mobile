@@ -24,18 +24,9 @@
                             <TextCell x:Name="Amount"
                                       Text="Amount"
                                       DetailColor="CadetBlue"/>
-                            <ViewCell>
-                                <StackLayout VerticalOptions="CenterAndExpand"
-                                             Padding="20,0">
-                                    <Label Text="Fee"/>
-                                    <Label x:Name="Fee"
-                                           FontSize="12"
-                                           TextColor="CadetBlue"/>
-                                    <ActivityIndicator x:Name="FeeLoader"
-                                                       HorizontalOptions="Start"
-                                                       Color="CadetBlue"/>
-                                </StackLayout>
-                            </ViewCell>
+                            <TextCell x:Name="Fee"
+                                      Text="Fee"
+                                      DetailColor="CadetBlue"/>
                             <ViewCell>
                                 <Button Text="SEND"
                                         x:Name="SendButton"

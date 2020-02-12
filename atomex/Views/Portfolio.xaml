@@ -9,7 +9,7 @@
             <StackLayout>
                 <local:ChartView x:Name="portfolioChart"
                                  HeightRequest="180"
-                                 Margin="10,30,10,0"/>
+                                 Margin="10,10,10,0"/>
                 <Label FontAttributes="Bold"
                        FontSize="22"
                        HorizontalTextAlignment="Center"
@@ -62,13 +62,13 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Column="3"
-                                           Text="{Binding Amount, StringFormat='{0:f2}'}"
+                                           Text="{Binding AvailableAmount, StringFormat='{0:f2}'}"
                                            HorizontalOptions="End"
                                            VerticalTextAlignment="End"
                                            FontAttributes="Bold">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:f2}'}" />
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:f2}'}" />
                                                 <Span Text=" " /> 
                                                 <Span Text="{Binding Name}" />
                                             </FormattedString>
