@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Xamarin.Forms;
 using atomex.ViewModel;
 
@@ -8,6 +7,8 @@ namespace atomex
     public partial class ConversionPage : ContentPage
     {
         private ConversionViewModel _conversionViewModel;
+
+        private decimal _maxAmount;
 
         public ConversionPage()
         {
@@ -26,11 +27,11 @@ namespace atomex
             
             if (pickerFrom.SelectedIndex != -1 && pickerTo.SelectedIndex != -1)
             {
-                await DisplayAlert("Оповещение", "В разработке", "OK");
+                await DisplayAlert("Warning", "In progress", "Ok");
             }
             else
             {
-                await DisplayAlert("Оповещение", "Выберите кошельки для конвертации", "OK");
+                await DisplayAlert("Warning", "Select currencies to convert", "Ok");
             }
             
         }
@@ -57,6 +58,18 @@ namespace atomex
             {
                 _conversionViewModel.Amount = 0;
             }
+        }
+
+        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
+        {
+            EstimateMaxAmount(null);
+            Amount.Text = _maxAmount.ToString();
+        }
+
+        async void EstimateMaxAmount(string address)
+        {
+            var (maxAmount, _, _) = await _conversionViewModel?.EstimateMaxAmount(address);
+            _maxAmount = maxAmount;
         }
     }
 }

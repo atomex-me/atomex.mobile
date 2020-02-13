@@ -5,6 +5,6 @@ namespace atomex
 {
     public interface INavigationService
     {
-        void ShowConversionPage(CurrencyViewModel wallet);
+        void ShowConversionPage(CurrencyViewModel currency);
     }
 }

@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.CustomElements;
 using Atomex;
+using System;
 
 namespace atomex
 {
@@ -52,8 +53,10 @@ namespace atomex
 
             if (conversionViewModel != null)
             {
+                Console.WriteLine(currency);
+                Console.WriteLine(conversionViewModel);
+                Console.WriteLine(conversionViewModel.FromCurrency);
                 conversionViewModel.FromCurrency = currency;
-                conversionViewModel.ToCurrency = null;
             }
         }
     }

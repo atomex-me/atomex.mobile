@@ -9,6 +9,8 @@ using Atomex.Wallet;
 using Atomex.Subsystems;
 using Atomex.Common;
 using System.IO;
+using Atomex.Subsystems.Abstract;
+using Atomex.MarketData;
 
 namespace atomex.ViewModel
 {
@@ -66,19 +68,57 @@ namespace atomex.ViewModel
                 .UseSymbolsProvider(symbolsProvider)
                 .UseQuotesProvider(new BitfinexQuotesProvider(
                     currencies: currenciesProvider.GetCurrencies(Network.TestNet),
-                    baseCurrency: BitfinexQuotesProvider.Usd))
-                .UseTerminal(new Terminal(configuration, account));
+                    baseCurrency: BitfinexQuotesProvider.Usd));
+                //.UseTerminal(new Terminal(configuration, account));
+
+            AtomexApp.Start();
+
+            SubscribeToServices();
+
+            AtomexApp.UseTerminal(new Terminal(configuration, account), restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
 
-            AtomexApp.Start();
-
             //Test(account).FireAndForget();
 
             //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
             // AtomexApp.Stop();
+        }
+
+        private void SubscribeToServices()
+        {
+            AtomexApp.TerminalChanged += OnTerminalChangedEventHandler;
+        }
+
+        private void OnTerminalChangedEventHandler(object sender, TerminalChangedEventArgs args)
+        {
+            var terminal = args.Terminal;
+
+            if (terminal?.Account == null)
+                return;
+
+            terminal.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
+            terminal.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
+
+            //var account = terminal.Account;
+            //account.Locked += OnAccountLockChangedEventHandler;
+            //account.Unlocked += OnAccountLockChangedEventHandler;
+            //IsLocked = account.IsLocked;
+        }
+
+        private void OnTerminalServiceStateChangedEventHandler(object sender, TerminalServiceEventArgs args)
+        {
+            if (!(sender is ITerminal terminal))
+                return;
+
+            // subscribe to symbols updates
+            if (args.Service == TerminalService.MarketData && terminal.IsServiceConnected(TerminalService.MarketData))
+            {
+                terminal.SubscribeToMarketData(SubscriptionType.TopOfBook);
+                terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);
+            }
         }
 
 

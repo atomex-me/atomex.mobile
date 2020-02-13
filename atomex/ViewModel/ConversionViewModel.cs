@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Atomex.Common;
 using System;
 using Atomex.Blockchain.Abstract;
+using Atomex.MarketData;
+using Atomex.Subsystems.Abstract;
+using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -68,6 +72,8 @@ namespace atomex.ViewModel
                 OnPropertyChanged(nameof(Amount));
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
                 OnPropertyChanged(nameof(EstimatedRedeemFee));
+
+                OnQuotesUpdatedEventHandler(_app.Terminal, null);
             }
         }
         private decimal _targetAmount;
@@ -88,7 +94,20 @@ namespace atomex.ViewModel
         private decimal _estimatedRedeemFee;
         public decimal EstimatedRedeemFee
         {
-            get => _estimatedRedeemFee; set { _estimatedRedeemFee = value; OnPropertyChanged(nameof(EstimatedRedeemFee)); }
+            get => _estimatedRedeemFee;
+            set { _estimatedRedeemFee = value; OnPropertyChanged(nameof(EstimatedRedeemFee)); }
+        }
+        private decimal _estimatedMaxAmount;
+        public decimal EstimatedMaxAmount
+        {
+            get => _estimatedMaxAmount;
+            set { _estimatedMaxAmount = value; OnPropertyChanged(nameof(EstimatedMaxAmount)); }
+        }
+        private string _priceFormat;
+        public string PriceFormat
+        {
+            get => _priceFormat;
+            set { _priceFormat = value; OnPropertyChanged(nameof(PriceFormat)); }
         }
         private List<CurrencyViewModel> _currencyViewModels;
         private List<CurrencyViewModel> _fromCurrencies;
@@ -102,7 +121,11 @@ namespace atomex.ViewModel
         public List<CurrencyViewModel> ToCurrencies
         {
             get => _toCurrencies;
-            private set { _toCurrencies = value; OnPropertyChanged(nameof(ToCurrencies)); }
+            private set
+            {
+                _toCurrencies = value;
+                OnPropertyChanged(nameof(ToCurrencies));
+            }
         }
 
         private CurrencyViewModel _fromCurrency;
@@ -132,6 +155,11 @@ namespace atomex.ViewModel
                 {
                     ToCurrency = ToCurrencies.First();  
                 }
+
+                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                if (symbol != null)
+                    PriceFormat = $"F{symbol.Quote.Digits}";
+
                 Amount = 0;
             }
         }
@@ -144,6 +172,10 @@ namespace atomex.ViewModel
             {
                 _toCurrency = value;
                 OnPropertyChanged(nameof(ToCurrency));
+                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                if (symbol != null)
+                    PriceFormat = $"F{symbol.Quote.Digits}";
+                OnQuotesUpdatedEventHandler(_app.Terminal, null);
             }
         }
 
@@ -171,6 +203,65 @@ namespace atomex.ViewModel
                 });
                 FromCurrency = _currencyViewModels.FirstOrDefault();
             }));
+        }
+
+        public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
+        {
+            return await _app.Account
+               .EstimateMaxAmountToSendAsync(FromCurrency.Name, address, BlockchainTransactionType.Output)
+               .ConfigureAwait(false);
+        }
+
+        private async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
+        {
+            try
+            {
+                if (!(sender is ITerminal terminal))
+                    return;
+
+                if (ToCurrency == null)
+                    return;
+
+                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                if (symbol == null)
+                    return;
+
+                var side = symbol.OrderSideForBuyCurrency(ToCurrency.Currency);
+                var orderBook = terminal.GetOrderBook(symbol);
+
+                if (orderBook == null)
+                    return;
+
+                _estimatedPrice = orderBook.EstimatedDealPrice(side, Amount);
+                _estimatedMaxAmount = orderBook.EstimateMaxAmount(side);
+
+                //_isNoLiquidity = Amount != 0 && _estimatedPrice == 0;
+
+                if (symbol.IsBaseCurrency(ToCurrency.Currency))
+                {
+                    _targetAmount = _estimatedPrice != 0
+                        ? Amount / _estimatedPrice
+                        : 0m;
+                }
+                else if (symbol.IsQuoteCurrency(ToCurrency.Currency))
+                {
+                    _targetAmount = Amount * _estimatedPrice;
+                }
+
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    OnPropertyChanged(nameof(EstimatedPrice));
+                    OnPropertyChanged(nameof(EstimatedMaxAmount));
+                    OnPropertyChanged(nameof(TargetAmount));
+                    OnPropertyChanged(nameof(PriceFormat));
+                    //UpdateTargetAmountInBase(App.QuotesProvider);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Quotes updated event handler error");
+            }
         }
     }
 }

@@ -48,18 +48,18 @@ namespace atomex
             if (_currencyViewModel != null)
             {
                 await Clipboard.SetTextAsync(_currencyViewModel.Address);
-                await DisplayAlert("Адрес скопирован", _currencyViewModel.Address, "OK");
+                await DisplayAlert("Address copied", _currencyViewModel.Address, "Ok");
             }
             else
             {
-                await DisplayAlert("Ошибка", "Ошибка при копировании!", "OK");
+                await DisplayAlert("Error", "Copy error", "Ok");
             }
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         {
             if (_currencyViewModel != null)
             {
-                await DisplayAlert("Оповещение", "В разработке", "OK");
+                await DisplayAlert("Warning", "In progress", "Ok");
             }
         }
         void ShowConversionPage(object sender, EventArgs args)

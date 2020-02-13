@@ -80,15 +80,27 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <custom:CustomEntry Keyboard="Numeric"
-                                x:Name="Amount"
-                                Placeholder="Amount"
-                                
-                                IsSpellCheckEnabled="False"
-                                IsTextPredictionEnabled="False"
-                                HeightRequest="50"
-                                HorizontalTextAlignment="Center"
-                                TextChanged="OnAmountTextChanged"/>
+            <Grid ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <custom:CustomEntry Keyboard="Numeric"
+                                    x:Name="Amount"
+                                    Placeholder="Amount"
+                                    Text="{Binding Amount}"
+                                    IsSpellCheckEnabled="False"
+                                    IsTextPredictionEnabled="False"
+                                    HeightRequest="50"
+                                    HorizontalTextAlignment="Center"
+                                    TextChanged="OnAmountTextChanged"/>
+                <Button Grid.Column="1"
+                        Text="MAX"
+                        FontSize="16"
+                        HorizontalOptions="Fill"
+                        BackgroundColor="White"
+                        Clicked="OnSetMaxAmountButtonClicked"/>
+            </Grid>
             <Grid Margin="0,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80" />
@@ -115,7 +127,7 @@
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Amount}"/>
+                            <Span Text="{Binding Amount, StringFormat='{0:f8}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrency.Name}" />
                         </FormattedString>
@@ -129,7 +141,7 @@
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="0"/>
+                            <Span Text="{Binding TargetAmount, StringFormat='{0:f8}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding ToCurrency.Name}" />
                         </FormattedString>
@@ -153,7 +165,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Estimated price: "/>
-                        <Span Text="{Binding EstimatedPrice}"/>
+                        <Span Text="{Binding EstimatedPrice}"
+                              FontAttributes="Bold"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -161,9 +174,11 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Estimated payment fee: "/>
-                        <Span Text="{Binding EstimatedPaymentFee}"/>
+                        <Span Text="{Binding EstimatedPaymentFee}"
+                              FontAttributes="Bold"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding FromCurrency.Name}"/>
+                        <Span Text="{Binding FromCurrency.Name}"
+                              FontAttributes="Bold"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -171,9 +186,11 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Estimated redeem fee: "/>
-                        <Span Text="{Binding EstimatedRedeemFee}"/>
+                        <Span Text="{Binding EstimatedRedeemFee}"
+                              FontAttributes="Bold"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding ToCurrency.Name}"/>
+                        <Span Text="{Binding ToCurrency.Name}"
+                              FontAttributes="Bold"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
