@@ -33,7 +33,6 @@ namespace atomex
             _currencyViewModel = currencyViewModel;
             _to = to;
             _amount = amount;
-            currencyViewModel.Currency.GetDefaultFeePrice();
             AddressFrom.Detail = currencyViewModel.Address;
             AddressTo.Detail = to;
             Amount.Detail = amount.ToString() + " " + currencyViewModel.Name;
@@ -49,10 +48,10 @@ namespace atomex
                 if (error != null)
                 {
                     BlockActions(false);
-                    await DisplayAlert("Оповещение", "Ошибка при отправке транзы", "OK");
+                    await DisplayAlert("Error", "Sending transaction error", "Ok");
                     return;
                 }
-                var res = await DisplayAlert("Оповещение", _amount + " " + _currencyViewModel.Name + " успешно отправлено на адрес " + _to, null, "Ok");
+                var res = await DisplayAlert("Success", _amount + " " + _currencyViewModel.Name + " sent to " + _to, null, "Ok");
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)

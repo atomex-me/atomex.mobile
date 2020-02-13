@@ -25,11 +25,11 @@ namespace atomex
             if (_currency != null)
             {
                 await Clipboard.SetTextAsync(_currency.Address);
-                await DisplayAlert("Адрес скопирован", _currency.Address, "OK");
+                await DisplayAlert("Address copied", _currency.Address, "Ok");
             }
             else
             {
-                await DisplayAlert("Ошибка", "Ошибка при копировании", "OK");
+                await DisplayAlert("Error", "Copy error", "Ok");
             }
         }
 
@@ -37,7 +37,7 @@ namespace atomex
         {
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = "Мой публичный адрес для получения " + _currency.Name + ":\r\n" + _currency.Address,
+                Text = "My public address to receive " + _currency.Name + ":\r\n" + _currency.Address,
                 Uri = _currency.Address,
                 Title = "Address sharing"
             });

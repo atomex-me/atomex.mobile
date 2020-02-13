@@ -10,7 +10,8 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
                                Scale="3"
                                Color="Black"/>
-            <StackLayout x:Name="Content">
+            <StackLayout x:Name="Content"
+                         VerticalOptions="FillAndExpand">
                 <TableView Intent="Form"
                            RowHeight="70">
                     <TableRoot>
@@ -27,7 +28,7 @@
                             <TextCell x:Name="Fee"
                                       Text="Fee"
                                       DetailColor="CadetBlue"/>
-                            <ViewCell>
+                            <ViewCell Height="70">
                                 <Button Text="SEND"
                                         x:Name="SendButton"
                                         TextColor="White"
@@ -35,7 +36,6 @@
                                         HeightRequest="70"
                                         BackgroundColor="CadetBlue"
                                         HorizontalOptions="Fill"
-                                        VerticalOptions="EndAndExpand"
                                         Clicked="OnSendButtonClicked"/>
                             </ViewCell>
                         </TableSection>

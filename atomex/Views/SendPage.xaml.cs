@@ -95,7 +95,7 @@ namespace atomex
             }
             else
             {
-                await DisplayAlert("Ошибка", "Буфер обмена пуст", "OK");
+                await DisplayAlert("Error", "Clipboard is empty", "Ok");
             }
         }
 
@@ -103,7 +103,7 @@ namespace atomex
         {
             if (String.IsNullOrWhiteSpace(Address.Text) || String.IsNullOrWhiteSpace(Amount.Text))
             {
-                await DisplayAlert("Warning", "Все поля должны быть заполнены", "OK");
+                await DisplayAlert("Warning", "All fields must be filled", "Ok");
                 return;
             }
 
