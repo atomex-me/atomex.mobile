@@ -8,7 +8,8 @@
             <StackLayout>
                 <ListView ItemsSource="{Binding Currencies}"
                           HasUnevenRows="True"
-                          ItemTapped="OnListViewItemTapped">
+                          ItemTapped="OnListViewItemTapped"
+                          SeparatorVisibility="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

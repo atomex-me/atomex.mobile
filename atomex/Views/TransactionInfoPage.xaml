@@ -162,10 +162,10 @@
                                   Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                   DetailColor="Gray"/>
                         <ViewCell>
-                            <Button Text="Show more"
+                            <Button Text="Show in explorer"
                                     TextColor="DodgerBlue"
                                     FontSize="18"
-                                    Clicked="OnShowMoreClicked" /> 
+                                    Clicked="OnShowInExplorerClicked" /> 
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

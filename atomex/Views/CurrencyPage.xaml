@@ -65,19 +65,6 @@
                                HorizontalOptions="Center"
                                VerticalOptions="CenterAndExpand" />
                     </StackLayout>
-                    <StackLayout>
-                        <ImageButton Source="CopyIcon"
-                                     Margin="10"
-                                     HeightRequest="40"
-                                     WidthRequest="40"
-                                     HorizontalOptions="CenterAndExpand"
-                                     VerticalOptions="CenterAndExpand"
-                                     Clicked="Copy"/>
-                        <Label Text="Copy"
-                               FontAttributes="Bold"
-                               HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand" />
-                    </StackLayout>
                     <StackLayout x:Name="DelegateOption"
                                  IsVisible="false">
                         <ImageButton Source="DelegateIcon"
@@ -230,7 +217,6 @@
                                            VerticalOptions="StartAndExpand"
                                            TextColor="Gray"
                                            FontSize="12"
-                                           Margin="10,0"
                                            LineBreakMode="MiddleTruncation">
                                         <Label.Triggers>             
                                             <DataTrigger TargetType="Label"

@@ -17,7 +17,7 @@ namespace atomex.Views
             }
         }
 
-        private void OnShowMoreClicked(object sender, EventArgs args)
+        private void OnShowInExplorerClicked(object sender, EventArgs args)
         {
             if (_transactionViewModel != null)
             {

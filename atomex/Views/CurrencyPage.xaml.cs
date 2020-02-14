@@ -43,18 +43,6 @@ namespace atomex
         {
             await Navigation.PushAsync(new SendPage(_app, _currencyViewModel));
         }
-        async void Copy(object sender, EventArgs args)
-        {
-            if (_currencyViewModel != null)
-            {
-                await Clipboard.SetTextAsync(_currencyViewModel.Address);
-                await DisplayAlert("Address copied", _currencyViewModel.Address, "Ok");
-            }
-            else
-            {
-                await DisplayAlert("Error", "Copy error", "Ok");
-            }
-        }
         async void ShowDelegationPage(object sender, EventArgs args)
         {
             if (_currencyViewModel != null)
