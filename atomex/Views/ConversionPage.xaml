@@ -165,18 +165,32 @@
                     </Label.FormattedText>
                 </Label>
                 <Label Grid.Row="2"
-                       Text="0.0 $"
+                       Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
                        TextColor="Gray"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding AmountInBase, StringFormat='{0:f2}'}"/>
+                            <Span Text=" $"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Label Grid.Row="2"
                        Grid.Column="2"
-                       Text="0.0 $"
+                       Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
                        TextColor="Gray"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"/>
+                            <Span Text=" $"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </Grid>
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
