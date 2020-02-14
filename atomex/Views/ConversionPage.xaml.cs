@@ -24,16 +24,21 @@ namespace atomex
 
         private async void OnConvertButtonClicked(object sender, EventArgs args)
         {
-            
-            if (pickerFrom.SelectedIndex != -1 && pickerTo.SelectedIndex != -1)
+            decimal amount = Convert.ToDecimal(Amount.Text);
+
+            if (amount <= 0)
             {
-                await DisplayAlert("Warning", "In progress", "Ok");
+                InvalidAmountFrame.IsVisible = true;
+                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrency.Name;
+                return;
             }
-            else
+            if (amount > _maxAmount)
             {
-                await DisplayAlert("Warning", "Select currencies to convert", "Ok");
+                InvalidAmountFrame.IsVisible = true;
+                InvalidAmountLabel.Text = "Insufficient funds";
+                return;
             }
-            
+            await DisplayAlert("Warning","In progress","Ok");
         }
 
         private void OnPickerFromCurrencySelectedIndexChanged(object sender, EventArgs args)
@@ -46,6 +51,16 @@ namespace atomex
                 Amount.Placeholder = "Amount, " + wallet.Name;
                 Amount.Text = "";
             }
+        }
+
+        private void AmountEntryFocused(object sender, FocusEventArgs e)
+        {
+            InvalidAmountFrame.IsVisible = false;
+        }
+
+        private void AmountEntryUnfocused(object sender, FocusEventArgs e)
+        {
+            _conversionViewModel.Amount = decimal.Parse(Amount.Text);
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -62,13 +77,15 @@ namespace atomex
 
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            EstimateMaxAmount(null);
+            InvalidAmountFrame.IsVisible = false;
+            EstimateMaxAmount();
             Amount.Text = _maxAmount.ToString();
+            _conversionViewModel.Amount = decimal.Parse(Amount.Text);
         }
 
-        async void EstimateMaxAmount(string address)
+        async void EstimateMaxAmount()
         {
-            var (maxAmount, _, _) = await _conversionViewModel?.EstimateMaxAmount(address);
+            var (maxAmount, _, _) = await _conversionViewModel?.EstimateMaxAmount();
             _maxAmount = maxAmount;
         }
     }

@@ -24,7 +24,6 @@ namespace atomex.ViewModel
             get => _amount;
             set
             {
-                var previousAmount = _amount;
                 _amount = value;
 
                 var (maxAmount, maxFee, _) = _app.Account
@@ -43,37 +42,31 @@ namespace atomex.ViewModel
                         : null)
                     : 0;
 
-                if (estimatedPaymentFee == null)
+                if (estimatedPaymentFee != null)
                 {
-                    if (maxAmount > 0)
+                    _estimatedPaymentFee = estimatedPaymentFee.Value;
+                    _estimatedRedeemFee = ToCurrency.Currency.GetDefaultRedeemFee();
+
+                    if (ToCurrency.AvailableAmount == 0 && !(ToCurrency.Currency is BitcoinBasedCurrency))
                     {
-                        _amount = maxAmount;
-                        estimatedPaymentFee = maxFee;
+                        _estimatedRedeemFee *= 2;
                     }
-                    else
-                    {
-                        _amount = previousAmount;
-                        // todo: insufficient funds warning
-                        return;
-                    }
+
+                    if (_amount + _estimatedPaymentFee > availableAmount)
+                        _amount = Math.Max(availableAmount - _estimatedPaymentFee, 0);
+
+                    OnQuotesUpdatedEventHandler(_app.Terminal, null);
                 }
-
-                _estimatedPaymentFee = estimatedPaymentFee.Value;
-                _estimatedRedeemFee = ToCurrency.Currency.GetDefaultRedeemFee();
-
-                if (ToCurrency.AvailableAmount == 0 && !(ToCurrency.Currency is BitcoinBasedCurrency))
+                else
                 {
-                    _estimatedRedeemFee *= 2;
+                    _targetAmount = 0;
+                    _estimatedPaymentFee = 0;
+                    OnPropertyChanged(nameof(TargetAmount));
                 }
-
-                if (_amount + _estimatedPaymentFee > availableAmount)
-                    _amount = Math.Max(availableAmount - _estimatedPaymentFee, 0);
 
                 OnPropertyChanged(nameof(Amount));
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
                 OnPropertyChanged(nameof(EstimatedRedeemFee));
-
-                OnQuotesUpdatedEventHandler(_app.Terminal, null);
             }
         }
         private decimal _targetAmount;
@@ -153,12 +146,12 @@ namespace atomex.ViewModel
                 }
                 else
                 {
-                    ToCurrency = ToCurrencies.First();  
+                    ToCurrency = ToCurrencies.First();
                 }
 
-                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
-                if (symbol != null)
-                    PriceFormat = $"F{symbol.Quote.Digits}";
+                //var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                //if (symbol != null)
+                //    PriceFormat = $"F{symbol.Quote.Digits}";
 
                 Amount = 0;
             }
@@ -172,9 +165,9 @@ namespace atomex.ViewModel
             {
                 _toCurrency = value;
                 OnPropertyChanged(nameof(ToCurrency));
-                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
-                if (symbol != null)
-                    PriceFormat = $"F{symbol.Quote.Digits}";
+                //var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                //if (symbol != null)
+                //    PriceFormat = $"F{symbol.Quote.Digits}";
                 OnQuotesUpdatedEventHandler(_app.Terminal, null);
             }
         }
@@ -205,10 +198,10 @@ namespace atomex.ViewModel
             }));
         }
 
-        public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
+        public async Task<(decimal, decimal, decimal)> EstimateMaxAmount()
         {
             return await _app.Account
-               .EstimateMaxAmountToSendAsync(FromCurrency.Name, address, BlockchainTransactionType.Output)
+               .EstimateMaxAmountToSendAsync(FromCurrency.Name, null, BlockchainTransactionType.SwapPayment)
                .ConfigureAwait(false);
         }
 

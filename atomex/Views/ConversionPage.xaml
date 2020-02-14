@@ -80,7 +80,12 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Grid ColumnSpacing="0">
+            <Grid ColumnSpacing="0"
+                  RowSpacing="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="8*"/>
                     <ColumnDefinition Width="2*"/>
@@ -88,10 +93,11 @@
                 <custom:CustomEntry Keyboard="Numeric"
                                     x:Name="Amount"
                                     Placeholder="Amount"
-                                    Text="{Binding Amount}"
                                     IsSpellCheckEnabled="False"
                                     IsTextPredictionEnabled="False"
                                     HeightRequest="50"
+                                    Focused="AmountEntryFocused"
+                                    Unfocused="AmountEntryUnfocused"
                                     HorizontalTextAlignment="Center"
                                     TextChanged="OnAmountTextChanged"/>
                 <Button Grid.Column="1"
@@ -100,6 +106,17 @@
                         HorizontalOptions="Fill"
                         BackgroundColor="White"
                         Clicked="OnSetMaxAmountButtonClicked"/>
+                <Frame Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       x:Name="InvalidAmountFrame"
+                       HasShadow="False"
+                       IsVisible="False">
+                    <Label Text="Invalid amount"
+                           x:Name="InvalidAmountLabel"
+                           TextColor="Red"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                 </Frame>
             </Grid>
             <Grid Margin="0,10">
                 <Grid.RowDefinitions>
