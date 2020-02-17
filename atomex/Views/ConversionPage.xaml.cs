@@ -1,11 +1,14 @@
 ﻿using System;
 using Xamarin.Forms;
 using atomex.ViewModel;
+using Atomex;
 
 namespace atomex
 {
     public partial class ConversionPage : ContentPage
     {
+        private IAtomexApp _app;
+
         private ConversionViewModel _conversionViewModel;
 
         private decimal _maxAmount;
@@ -15,15 +18,22 @@ namespace atomex
             InitializeComponent();
         }
 
-        public ConversionPage(ConversionViewModel conversionViewModel)
+        public ConversionPage(IAtomexApp app, ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
+            _app = app;
             _conversionViewModel = conversionViewModel;
             BindingContext = _conversionViewModel;
         }
 
-        private async void OnConvertButtonClicked(object sender, EventArgs args)
+        private async void OnNextButtonClicked(object sender, EventArgs args)
         {
+            if (String.IsNullOrWhiteSpace(Amount.Text))
+            {
+                await DisplayAlert("Warning", "Enter amount", "Ok");
+                return;
+            }
+                
             decimal amount = Convert.ToDecimal(Amount.Text);
 
             if (amount <= 0)
@@ -38,7 +48,7 @@ namespace atomex
                 InvalidAmountLabel.Text = "Insufficient funds";
                 return;
             }
-            await DisplayAlert("Warning","In progress","Ok");
+            await Navigation.PushAsync(new ConversionConfirmationPage(_app, _conversionViewModel));
         }
 
         private void OnPickerFromCurrencySelectedIndexChanged(object sender, EventArgs args)
@@ -60,7 +70,13 @@ namespace atomex
 
         private void AmountEntryUnfocused(object sender, FocusEventArgs e)
         {
-            _conversionViewModel.Amount = decimal.Parse(Amount.Text);
+            if (String.IsNullOrWhiteSpace(Amount.Text))
+            {
+                _conversionViewModel.Amount = 0;
+                return;
+            }
+
+            _conversionViewModel.Amount = Convert.ToDecimal(Amount.Text);
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -83,7 +99,7 @@ namespace atomex
             _conversionViewModel.Amount = decimal.Parse(Amount.Text);
         }
 
-        async void EstimateMaxAmount()
+        private async void EstimateMaxAmount()
         {
             var (maxAmount, _, _) = await _conversionViewModel?.EstimateMaxAmount();
             _maxAmount = maxAmount;

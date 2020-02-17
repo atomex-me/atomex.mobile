@@ -12,6 +12,7 @@ using Serilog;
 using Xamarin.Forms;
 using Atomex.MarketData.Abstract;
 using Atomex.Subsystems;
+using System.Globalization;
 
 namespace atomex.ViewModel
 {

@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.ConversionConfirmationPage"
+             Title="Confirmation"
+             Icon="NavBar__conversion"
+             BackgroundColor="#f3f3f3">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <ActivityIndicator x:Name="SendingLoader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                               Scale="3"
+                               Color="Black"/>
+            <StackLayout x:Name="Content"
+                         VerticalOptions="FillAndExpand">
+                <Grid Margin="0,20,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding FromCurrency.Name}" />
+                    <Image Source="RightArrow"
+                           Grid.Column="1"
+                           Grid.RowSpan="3"
+                           WidthRequest="48"
+                           VerticalOptions="CenterAndExpand"/>
+                    <Image Source="{Binding ToCurrency.Name}"
+                           Grid.Column="2" />
+                    <Label Grid.Row="1"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding FromCurrency.Name}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.#####}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding ToCurrency.Name}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="2"
+                           Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
+                           FontSize="12"
+                           TextColor="Gray"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding AmountInBase, StringFormat='{0:f2}'}"/>
+                                <Span Text=" $"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="2"
+                           Grid.Column="2"
+                           Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
+                           FontSize="12"
+                           TextColor="Gray"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"/>
+                                <Span Text=" $"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+                <TableView Intent="Form"
+                           RowHeight="70">
+                    <TableRoot>
+                        <TableSection Title="Confirm transaction">
+                            <ViewCell>
+                                <StackLayout Margin="20,0"
+                                             VerticalOptions="Center">
+                                    <Label Text="Estimated price"/>
+                                    <Label Text="{Binding EstimatedPrice}"
+                                           VerticalOptions="CenterAndExpand"
+                                           TextColor="CadetBlue"
+                                           FontAttributes="Bold"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Margin="20,0"
+                                             VerticalOptions="Center">
+                                    <Label Text="Estimated payment fee"/>
+                                    <Label VerticalOptions="CenterAndExpand"
+                                           TextColor="CadetBlue"
+                                           FontAttributes="Bold">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding EstimatedPaymentFee}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding FromCurrency.Name}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label> 
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Margin="20,0"
+                                             VerticalOptions="Center">
+                                    <Label Text="Estimated redeem fee"/>
+                                    <Label VerticalOptions="CenterAndExpand"
+                                           TextColor="CadetBlue"
+                                           FontAttributes="Bold">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding EstimatedRedeemFee}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding ToCurrency.Name}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                     </Label> 
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell Height="70">
+                                <Button Text="CONVERT"
+                                        x:Name="ConvertButton"
+                                        TextColor="White"
+                                        FontSize="18"
+                                        HeightRequest="70"
+                                        BackgroundColor="CadetBlue"
+                                        HorizontalOptions="Fill"
+                                        Clicked="OnConvertButtonClicked"/>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

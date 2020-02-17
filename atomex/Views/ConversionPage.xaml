@@ -116,7 +116,7 @@
                            TextColor="Red"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"/>
-                 </Frame>
+                </Frame>
             </Grid>
             <Grid Margin="0,10">
                 <Grid.RowDefinitions>
@@ -144,7 +144,7 @@
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Amount, StringFormat='{0:f8}'}"/>
+                            <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrency.Name}" />
                         </FormattedString>
@@ -158,7 +158,7 @@
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding TargetAmount, StringFormat='{0:f8}'}"/>
+                            <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding ToCurrency.Name}" />
                         </FormattedString>
@@ -225,7 +225,7 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button Text="Convert"
+            <Button Text="NEXT"
                     TextColor="White"
                     FontSize="18"
                     HeightRequest="70"
@@ -233,7 +233,7 @@
                     CornerRadius="3"
                     HorizontalOptions="Fill"
                     VerticalOptions="EndAndExpand"
-                    Clicked="OnConvertButtonClicked" />
+                    Clicked="OnNextButtonClicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
