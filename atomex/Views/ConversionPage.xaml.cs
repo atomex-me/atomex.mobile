@@ -24,6 +24,7 @@ namespace atomex
             _app = app;
             _conversionViewModel = conversionViewModel;
             BindingContext = _conversionViewModel;
+            EstimateMaxAmount();
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
@@ -60,6 +61,7 @@ namespace atomex
                 var wallet = picker.SelectedItem as CurrencyViewModel;
                 Amount.Placeholder = "Amount, " + wallet.Name;
                 Amount.Text = "";
+                EstimateMaxAmount();
             }
         }
 
@@ -94,9 +96,8 @@ namespace atomex
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
             InvalidAmountFrame.IsVisible = false;
-            EstimateMaxAmount();
             Amount.Text = _maxAmount.ToString();
-            _conversionViewModel.Amount = decimal.Parse(Amount.Text);
+            _conversionViewModel.Amount = _maxAmount;
         }
 
         private async void EstimateMaxAmount()

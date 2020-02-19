@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.ViewModel;
 using Atomex;
+using Atomex.Core;
 using Xamarin.Forms;
 
 namespace atomex
@@ -27,7 +29,28 @@ namespace atomex
         private async void OnConvertButtonClicked(object sender, EventArgs args)
         {
             BlockActions(true);
-            await DisplayAlert("Warning","In progress","Ok");
+            var error = await _conversionViewModel.ConvertAsync();
+
+            if (error != null)
+            {
+                BlockActions(false);
+                if (error.Code == Errors.PriceHasChanged)
+                {
+                    await DisplayAlert("Price has changed", error.Description, "Ok");
+                }
+                else
+                {
+                    await DisplayAlert("Error", error.Description, "Ok");
+                }
+                return;
+            }
+            BlockActions(false);
+            var res = await DisplayAlert("Success","Swap succesfully created", null, "Ok");
+            if (!res)
+            {
+                _conversionViewModel.Amount = 0;
+                await Navigation.PopAsync();
+            }
         }
 
         private void BlockActions(bool flag)

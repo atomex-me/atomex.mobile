@@ -24,6 +24,10 @@ namespace atomex.ViewModel
 
         private string BASE_CURRENCY_CODE = "USD";
 
+        private static TimeSpan SWAP_TIMEOUT = TimeSpan.FromSeconds(60);
+
+        private static TimeSpan SWAP_CHECK_INTERVAL = TimeSpan.FromSeconds(3);
+
         private List<CurrencyViewModel> _currencyViewModels;
 
         private List<CurrencyViewModel> _fromCurrencies;
@@ -71,9 +75,6 @@ namespace atomex.ViewModel
                 {
                     ToCurrency = ToCurrencies.First();
                 }
-
-                //CurrencyCode = _fromCurrency?.Currency.Name;
-                //BaseCurrencyCode = "USD";
 
                 //var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
                 //if (symbol != null)
@@ -349,6 +350,94 @@ namespace atomex.ViewModel
             var quote = provider.GetQuote(ToCurrency.Currency.Name, BASE_CURRENCY_CODE);
 
             TargetAmountInBase = _targetAmount * (quote?.Bid ?? 0m);
+        }
+        public async Task<Error> ConvertAsync()
+        {
+            try
+            {
+                var account = _app.Account;
+
+                var fromWallets = (await account
+                    .GetUnspentAddressesAsync(
+                        toAddress: null,
+                        currency: FromCurrency.Name,
+                        amount: Amount,
+                        fee: 0,
+                        feePrice: 0,
+                        feeUsagePolicy: FeeUsagePolicy.EstimatedFee,
+                        addressUsagePolicy: AddressUsagePolicy.UseMinimalBalanceFirst,
+                        transactionType: BlockchainTransactionType.SwapPayment))
+                    .ToList();
+
+                if (Amount == 0)
+                    return new Error(Errors.SwapError, "Amount to convert must be greater than zero");
+
+                if (Amount > 0 && !fromWallets.Any())
+                    return new Error(Errors.SwapError, "Insufficient funds");
+
+                var symbol = _app.Account.Symbols.SymbolByCurrencies(FromCurrency.Currency, ToCurrency.Currency);
+                var side = symbol.OrderSideForBuyCurrency(ToCurrency.Currency);
+                var terminal = _app.Terminal;
+                var price = EstimatedPrice;
+
+                if (price == 0)
+                    return new Error(Errors.NoLiquidity, "Not enough liquidity to convert a specified amount.");
+
+                var qty = Math.Round(AmountHelper.AmountToQty(side, Amount, price), symbol.Base.Digits);
+
+                if (qty < symbol.MinimumQty)
+                {
+                    var minimumAmount = Math.Round(AmountHelper.QtyToAmount(side, symbol.MinimumQty, price), FromCurrency.Currency.Digits);
+                    var message = string.Format(CultureInfo.InvariantCulture, "The amount must be greater than or equal to the minimum allowed amount {0} {1}", minimumAmount, FromCurrency.Name);
+
+                    return new Error(Errors.SwapError, message);
+                }
+
+                var order = new Order
+                {
+                    Symbol = symbol,
+                    TimeStamp = DateTime.UtcNow,
+                    Price = price,
+                    Qty = qty,
+                    Side = side,
+                    Type = OrderType.FillOrKill,
+                    FromWallets = fromWallets.ToList()
+                };
+
+                await order.CreateProofOfPossessionAsync(account);
+
+                terminal.OrderSendAsync(order);
+
+                // wait for swap confirmation
+                var timeStamp = DateTime.UtcNow;
+
+                while (DateTime.UtcNow < timeStamp + SWAP_TIMEOUT)
+                {
+                    await Task.Delay(SWAP_CHECK_INTERVAL);
+
+                    var currentOrder = terminal.Account.GetOrderById(order.ClientOrderId);
+
+                    if (currentOrder == null)
+                        continue;
+
+                    if (currentOrder.Status == OrderStatus.PartiallyFilled || currentOrder.Status == OrderStatus.Filled)
+                        return null;
+
+                    if (currentOrder.Status == OrderStatus.Canceled)
+                        return new Error(Errors.PriceHasChanged, "Oops, the price has changed during the order sending. Please try again");
+
+                    if (currentOrder.Status == OrderStatus.Rejected)
+                        return new Error(Errors.OrderRejected, "Order rejected");
+                }
+
+                return new Error(Errors.TimeoutReached, "Atomex is not responding for a long time");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Conversion error");
+
+                return new Error(Errors.SwapError, "Conversion error. Please contant technical support");
+            }
         }
     }
 }
