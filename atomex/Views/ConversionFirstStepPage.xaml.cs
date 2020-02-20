@@ -47,7 +47,7 @@ namespace atomex
         {
             if (_conversionViewModel.FromCurrency != null)
             {
-                var (maxAmount, _, _) = await _conversionViewMode?.EstimateMaxAmount();
+                var (maxAmount, _, _) = await _conversionViewModel.EstimateMaxAmount();
                 _maxAmount = maxAmount;
             }
         }
