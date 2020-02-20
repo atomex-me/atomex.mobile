@@ -26,13 +26,15 @@ namespace atomex
             InitializeComponent();
         }
 
-        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee)
+        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee, decimal feePrice)
         {
             InitializeComponent();
             _app = app;
             _currencyViewModel = currencyViewModel;
             _to = to;
             _amount = amount;
+            _fee = fee;
+            _feePrice = feePrice;
             AddressFrom.Detail = currencyViewModel.Address;
             AddressTo.Detail = to;
             Amount.Detail = amount.ToString() + " " + currencyViewModel.Name;

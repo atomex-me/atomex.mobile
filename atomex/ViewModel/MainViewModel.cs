@@ -11,6 +11,7 @@ using Atomex.Common;
 using System.IO;
 using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
+using System.Threading.Tasks;
 
 namespace atomex.ViewModel
 {

@@ -16,6 +16,8 @@ namespace atomex
 
         private decimal _fee;
 
+        private decimal _feePrice;
+
         public SendPage()
         {
             InitializeComponent();
@@ -59,7 +61,7 @@ namespace atomex
             ShowFeeLoader(true);
             var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.Name, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
             _fee = fee ?? 0;
-            var _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
+            _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
             fee = _fee * _feePrice;
             FeeValue.Text = fee.ToString() + " " + _currencyViewModel.Name;
             ShowFeeLoader(false);
@@ -134,7 +136,7 @@ namespace atomex
                 InvalidAmountLabel.Text = "Insufficient funds";
                 return;
             }
-            await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount, _fee));
+            await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount, _fee, _feePrice));
         }
     }
 }

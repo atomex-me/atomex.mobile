@@ -45,7 +45,7 @@
                                      HorizontalOptions="End"
                                      BackgroundColor="White"
                                      Clicked="OnScanButtonClicked"
-                                     Padding="10"/>
+                                     Padding="10,10,20,10"/>
                     </StackLayout>
                 </Frame>
                 <Frame Grid.Row="1"
@@ -56,6 +56,7 @@
                        Padding="5">
                     <Label Text="Invalid address"
                            TextColor="Red"
+                           Margin="20"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"/>
                 </Frame>
@@ -81,7 +82,7 @@
                                 Grid.Column="2"
                                 Text="MAX"
                                 FontSize="16"
-                                Padding="10"
+                                Padding="20"
                                 HorizontalOptions="End"
                                 BackgroundColor="White"
                                 Clicked="OnSetMaxAmountButtonClicked"/>
