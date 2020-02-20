@@ -13,6 +13,7 @@ using Xamarin.Forms;
 using Atomex.MarketData.Abstract;
 using Atomex.Subsystems;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace atomex.ViewModel
 {
@@ -212,8 +213,6 @@ namespace atomex.ViewModel
         }
 
 
-
-
         public ConversionViewModel(IAtomexApp app)
         {
             _app = app;
@@ -251,6 +250,7 @@ namespace atomex.ViewModel
             {
                 var balance = await _app.Account.GetBalanceAsync(c.Name);
                 var address = await _app.Account.GetFreeExternalAddressAsync(c.Name);
+
                 _currencyViewModels.Add(new CurrencyViewModel(_app)
                 {
                     Currency = c,
@@ -259,15 +259,16 @@ namespace atomex.ViewModel
                     FullName = c.Description,
                     Address = address.Address
                 });
-                FromCurrency = _currencyViewModels.FirstOrDefault();
             }));
+
+            FromCurrency = _currencyViewModels.FirstOrDefault();
         }
 
         public async Task<(decimal, decimal, decimal)> EstimateMaxAmount()
         {
             return await _app.Account
-               .EstimateMaxAmountToSendAsync(FromCurrency.Name, null, BlockchainTransactionType.SwapPayment)
-               .ConfigureAwait(false);
+                .EstimateMaxAmountToSendAsync(FromCurrency.Name, null, BlockchainTransactionType.SwapPayment)
+                .ConfigureAwait(false);
         }
 
         private void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)

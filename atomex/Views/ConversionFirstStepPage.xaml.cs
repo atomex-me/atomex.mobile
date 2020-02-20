@@ -45,8 +45,11 @@ namespace atomex
 
         private async void EstimateMaxAmount()
         {
-            var (maxAmount, _, _) = await _conversionViewModel?.EstimateMaxAmount();
-            _maxAmount = maxAmount;
+            if (_conversionViewModel.FromCurrency != null)
+            {
+                var (maxAmount, _, _) = await _conversionViewMode?.EstimateMaxAmount();
+                _maxAmount = maxAmount;
+            }
         }
     }
 }

@@ -46,14 +46,16 @@ namespace atomex
 
         }
 
-        public void ShowConversionPage(CurrencyViewModel currency = null)
+        public void ShowConversionPage(IAtomexApp app, CurrencyViewModel currency = null)
         {
             this.CurrentPage = navigationConversionPage;
 
             var conversionViewModel = navigationConversionPage.RootPage.BindingContext as ConversionViewModel;
-
+            Console.WriteLine(conversionViewModel);
             if (conversionViewModel != null)
             {
+                navigationConversionPage.PushAsync(new ConversionFirstStepPage(app, conversionViewModel));
+
                 Console.WriteLine(currency);
                 Console.WriteLine(conversionViewModel);
                 Console.WriteLine(conversionViewModel.FromCurrency);

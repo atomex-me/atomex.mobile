@@ -34,7 +34,6 @@
                         SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
-                             IsVisible="{Binding FromCurrency}"
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">

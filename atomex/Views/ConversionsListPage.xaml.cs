@@ -27,7 +27,7 @@ namespace atomex
                 _app = app;
                 _currencyViewModel = currencyViewModel;
                 _conversionViewModel = conversionViewModel;
-                BindingContext = _currencyViewModel;
+                BindingContext = conversionViewModel;
             }
         }
         private async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
