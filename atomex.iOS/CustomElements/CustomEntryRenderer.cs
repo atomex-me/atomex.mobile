@@ -27,14 +27,14 @@ namespace atomex.iOS
                 //ANDROID: Control.SetPadding(20, 20, 20, 0);
             }
 
-            if (e.PropertyName == "IsFocused")
-            {
-                if (Element.IsFocused) {
-                    Control.Layer.BorderColor = UIColor.Gray.CGColor;
-                    Control.Layer.BorderWidth = 1;
-                    Control.Layer.CornerRadius = 6;
-                }
-            }
+            //if (e.PropertyName == "IsFocused")
+            //{
+            //    if (Element.IsFocused) {
+            //        Control.Layer.BorderColor = UIColor.Gray.CGColor;
+            //        Control.Layer.BorderWidth = 1;
+            //        Control.Layer.CornerRadius = 6;
+            //    }
+            //}
         } 
     }
 }

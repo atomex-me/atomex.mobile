@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.ConversionConfirmationPage"
-             Title="Confirmation"
+             Title="Create swap - confirmation"
              Icon="NavBar__conversion"
-             BackgroundColor="#f3f3f3">
+             BackgroundColor="#f2f2f7">
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
@@ -14,7 +14,7 @@
                                Color="Black"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
-                <Grid Margin="0,20,0,10">
+                <Grid Margin="0,30,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80" />
                         <RowDefinition Height="20" />
@@ -136,7 +136,7 @@
                                      </Label> 
                                 </StackLayout>
                             </ViewCell>
-                            <ViewCell Height="70">
+                            <!--<ViewCell Height="70">
                                 <Button Text="CONVERT"
                                         x:Name="ConvertButton"
                                         TextColor="White"
@@ -145,11 +145,22 @@
                                         BackgroundColor="CadetBlue"
                                         HorizontalOptions="Fill"
                                         Clicked="OnConvertButtonClicked"/>
-                            </ViewCell>
+                            </ViewCell>-->
                         </TableSection>
                     </TableRoot>
                 </TableView>
             </StackLayout>
+            <Button Text="CONVERT"
+                    x:Name="ConvertButton"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.9}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                    TextColor="White"
+                    FontSize="18"
+                    HeightRequest="70"
+                    CornerRadius="0"
+                    BackgroundColor="CadetBlue"
+                    Clicked="OnConvertButtonClicked"/>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

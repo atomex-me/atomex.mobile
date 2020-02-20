@@ -2,110 +2,50 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             x:Class="atomex.ConversionPage"
-             Title="Conversion"
-             Icon="NavBar__conversion"
-             BackgroundColor="#f3f3f3">
+             x:Class="atomex.ConversionSecondStepPage"
+             Title="Create swap - step 2"
+             BackgroundColor="#f2f2f7">
     <ContentPage.Content>
         <StackLayout>
-            <Grid VerticalOptions="Fill"
-                  HorizontalOptions="Fill"
-                  Margin="20,20,20,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="60" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="8*" />
-                </Grid.ColumnDefinitions>
-                <Label Text="From:"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       VerticalTextAlignment="Center"/>
-                <Picker Grid.Column="1"
-                        x:Name="pickerFrom"
-                        Title="Select a currency"
-                        ItemsSource="{Binding FromCurrencies}"
-                        ItemDisplayBinding="{Binding FullName}"
-                        SelectedItem="{Binding FromCurrency}"
-                        HorizontalOptions="FillAndExpand"
-                        SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
-                <StackLayout Grid.Column="1"
-                             Orientation="Horizontal"
-                             IsVisible="{Binding FromCurrency}"
-                             Padding="20"
-                             HorizontalOptions="EndAndExpand"
-                             IsEnabled="False">
-                    <Label Text="{Binding FromCurrency.AvailableAmount}"
-                           VerticalTextAlignment="Center"
-                           Margin="10,0"/>
-                    <Image Source="{Binding FromCurrency.Name}"/>
-                </StackLayout>
-                <Label Grid.Row="1"
-                       Text="To:"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       VerticalTextAlignment="Center"/>
-                <Picker Grid.Row="1"
-                        Grid.Column="1"
-                        x:Name="pickerTo"
-                        Title="Select a currency"
-                        ItemsSource="{Binding ToCurrencies}"
-                        ItemDisplayBinding="{Binding FullName}"
-                        SelectedItem="{Binding ToCurrency}"
-                        HorizontalOptions="FillAndExpand"/>
-                <StackLayout Grid.Row="1"
-                             Grid.Column="1"
-                             Orientation="Horizontal"
-                             IsVisible="{Binding FullName}"
-                             Padding="20"
-                             HorizontalOptions="EndAndExpand"
-                             IsEnabled="False">
-                    <Label Text="{Binding ToCurrency.AvailableAmount}"
-                           VerticalTextAlignment="Center"
-                           Margin="10,0" />
-                    <Image Source="{Binding ToCurrency.Name}" />
-                </StackLayout>
-            </Grid>
-            <Label Text="Amount:"
-                   Margin="20,10,0,0"
-                   FontAttributes="Bold">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Amount"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding FromCurrency.Name}" />
-                        <Span Text=":"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+            <Label Text="Enter amount:"
+                   Margin="20,30,20,10"
+                   FontSize="18"/>
             <Grid ColumnSpacing="0"
                   RowSpacing="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="70"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="8*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <custom:CustomEntry Keyboard="Numeric"
-                                    x:Name="Amount"
-                                    Placeholder="Amount"
-                                    IsSpellCheckEnabled="False"
-                                    IsTextPredictionEnabled="False"
-                                    HeightRequest="50"
-                                    Focused="AmountEntryFocused"
-                                    Unfocused="AmountEntryUnfocused"
-                                    HorizontalTextAlignment="Center"
-                                    TextChanged="OnAmountTextChanged"/>
-                <Button Grid.Column="1"
-                        Text="MAX"
-                        FontSize="16"
-                        HorizontalOptions="Fill"
-                        BackgroundColor="White"
-                        Clicked="OnSetMaxAmountButtonClicked"/>
+                <Frame Grid.ColumnSpan="2"
+                       x:Name="AmountFrame"
+                       Padding="5"
+                       HasShadow="False">
+                    <StackLayout Orientation="Horizontal"
+                                 Grid.ColumnSpan="2">
+                        <custom:CustomEntry Keyboard="Numeric"
+                                            x:Name="Amount"
+                                            Placeholder="Amount"
+                                            IsSpellCheckEnabled="False"
+                                            IsTextPredictionEnabled="False"
+                                            Focused="AmountEntryFocused"
+                                            Unfocused="AmountEntryUnfocused"
+                                            HorizontalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalOptions="FillAndExpand"
+                                            TextChanged="OnAmountTextChanged"/>
+                        <Button Grid.Column="1"
+                                Text="MAX"
+                                FontSize="16"
+                                Padding="10"
+                                HorizontalOptions="Center"
+                                BackgroundColor="White"
+                                Clicked="OnSetMaxAmountButtonClicked"/>
+                     </StackLayout>
+                </Frame>
                 <Frame Grid.Row="1"
                        Grid.ColumnSpan="2"
                        x:Name="InvalidAmountFrame"

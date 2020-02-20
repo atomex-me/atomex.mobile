@@ -34,17 +34,24 @@ namespace atomex
 
         private void AmountEntryFocused(object sender, FocusEventArgs e)
         {
+            AmountFrame.HasShadow = true;
             InvalidAmountFrame.IsVisible = false;
         }
 
         private void AmountEntryUnfocused(object sender, FocusEventArgs e)
         {
+            AmountFrame.HasShadow = false;
             EstimateFee(Address.Text, Convert.ToDecimal(Amount.Text));
         }
 
         private void AddressEntryFocused(object sender, FocusEventArgs e)
         {
+            AddressFrame.HasShadow = true;
             InvalidAddressFrame.IsVisible = false;
+        }
+        private void AddressEntryUnfocused(object sender, FocusEventArgs e)
+        {
+            AddressFrame.HasShadow = false;
         }
 
         async void EstimateFee(string to, decimal amount)

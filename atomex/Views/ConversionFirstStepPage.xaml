@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.ConversionFirstStepPage"
+             Title="Create swap - step 1"
+             BackgroundColor="#f2f2f7">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Select currencies:"
+                   Margin="20,30,20,10"
+                   FontSize="18"/>
+            <Grid VerticalOptions="Fill"
+                  HorizontalOptions="Fill"
+                  Margin="20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="From"
+                       TextColor="Gray"
+                       FontSize="16"
+                       VerticalTextAlignment="Center"/>
+                <Picker Grid.Column="1"
+                        x:Name="pickerFrom"
+                        Title="Select a currency"
+                        ItemsSource="{Binding FromCurrencies}"
+                        ItemDisplayBinding="{Binding FullName}"
+                        SelectedItem="{Binding FromCurrency}"
+                        HorizontalOptions="FillAndExpand"
+                        SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
+                <StackLayout Grid.Column="1"
+                             Orientation="Horizontal"
+                             IsVisible="{Binding FromCurrency}"
+                             Padding="20"
+                             HorizontalOptions="EndAndExpand"
+                             IsEnabled="False">
+                    <Label Text="{Binding FromCurrency.AvailableAmount}"
+                           VerticalTextAlignment="Center"
+                           Margin="10,0"/>
+                    <Image Source="{Binding FromCurrency.Name}"/>
+                </StackLayout>
+                <Label Grid.Row="1"
+                       Text="To"
+                       TextColor="Gray"
+                       FontSize="16"
+                       VerticalTextAlignment="Center"/>
+                <Picker Grid.Row="1"
+                        Grid.Column="1"
+                        x:Name="pickerTo"
+                        Title="Select a currency"
+                        ItemsSource="{Binding ToCurrencies}"
+                        ItemDisplayBinding="{Binding FullName}"
+                        SelectedItem="{Binding ToCurrency}"
+                        HorizontalOptions="FillAndExpand"/>
+                <StackLayout Grid.Row="1"
+                             Grid.Column="1"
+                             Orientation="Horizontal"
+                             IsVisible="{Binding FullName}"
+                             Padding="20"
+                             HorizontalOptions="EndAndExpand"
+                             IsEnabled="False">
+                    <Label Text="{Binding ToCurrency.AvailableAmount}"
+                           VerticalTextAlignment="Center"
+                           Margin="10,0" />
+                    <Image Source="{Binding ToCurrency.Name}" />
+                </StackLayout>
+            </Grid>
+            <Button Text="NEXT"
+                    TextColor="White"
+                    FontSize="18"
+                    HeightRequest="70"
+                    BackgroundColor="CadetBlue"
+                    CornerRadius="0"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="OnNextButtonClicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

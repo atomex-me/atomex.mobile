@@ -34,6 +34,7 @@
                                         TextColor="White"
                                         FontSize="18"
                                         HeightRequest="70"
+                                        CornerRadius="0"
                                         BackgroundColor="CadetBlue"
                                         HorizontalOptions="Fill"
                                         Clicked="OnSendButtonClicked"/>
