@@ -30,7 +30,8 @@ namespace atomex.iOS
 
             //if (e.PropertyName == "IsFocused")
             //{
-            //    if (Element.IsFocused) {
+            //    if (Element.IsFocused)
+            //    {
             //        Control.Layer.BorderColor = UIColor.Gray.CGColor;
             //        Control.Layer.BorderWidth = 1;
             //        Control.Layer.CornerRadius = 6;

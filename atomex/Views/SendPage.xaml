@@ -26,14 +26,29 @@
                        HasShadow="False">
                     <StackLayout Orientation="Horizontal"
                                  Grid.ColumnSpan="3">
-                        <controls:CustomEntry x:Name="Address"
-                                              Placeholder="Address"
-                                              Keyboard="Text"
-                                              Focused="AddressEntryFocused"
-                                              Unfocused="AddressEntryUnfocused"
-                                              IsSpellCheckEnabled="False"
-                                              IsTextPredictionEnabled="False"
-                                              HorizontalOptions="FillAndExpand"/>
+                        <Frame Padding="0"
+                               HasShadow="False"
+                               HorizontalOptions="FillAndExpand"
+                               Grid.Row="1">
+                            <StackLayout>
+                                <Label x:Name="AddressHint"
+                                       Margin="20,5,0,0"
+                                       FontSize="14"
+                                       VerticalTextAlignment="End"
+                                       TextColor="CadetBlue"
+                                       IsVisible="False"/>
+                                 <controls:CustomEntry x:Name="Address"
+                                                       Placeholder="Address"
+                                                       Keyboard="Text"
+                                                       Focused="AddressEntryFocused"
+                                                       Unfocused="AddressEntryUnfocused"
+                                                       IsSpellCheckEnabled="False"
+                                                       IsTextPredictionEnabled="False"
+                                                       HorizontalOptions="FillAndExpand"
+                                                       VerticalOptions="FillAndExpand"
+                                                       TextChanged="OnAddressTextChanged"/>
+                            </StackLayout>
+                        </Frame>
                         <Button Grid.Column="1"
                                 Text="Paste"
                                 FontSize="16"
@@ -68,7 +83,18 @@
                     <StackLayout Orientation="Horizontal"
                                  Grid.Row="2"
                                  Grid.ColumnSpan="3">
-                        <controls:CustomEntry Grid.Row="2"
+                        <Frame Padding="0"
+                               HasShadow="False"
+                               HorizontalOptions="FillAndExpand"
+                               Grid.Row="1">
+                            <StackLayout>
+                                <Label x:Name="AmountHint"
+                                       Margin="20,5,0,0"
+                                       FontSize="14"
+                                       VerticalTextAlignment="End"
+                                       TextColor="CadetBlue"
+                                       IsVisible="False"/>
+                                <controls:CustomEntry Grid.Row="2"
                                               Grid.ColumnSpan="2"
                                               x:Name="Amount"
                                               Placeholder="Amount"
@@ -77,7 +103,11 @@
                                               Unfocused="AmountEntryUnfocused"
                                               IsSpellCheckEnabled="False"
                                               IsTextPredictionEnabled="False"
-                                              HorizontalOptions="FillAndExpand"/>
+                                                    VerticalOptions="FillAndExpand"
+                                                    HorizontalTextAlignment="Start"
+                                                    TextChanged="OnAmountTextChanged"/>
+                            </StackLayout>
+                        </Frame>
                         <Button Grid.Row="2"
                                 Grid.Column="2"
                                 Text="MAX"

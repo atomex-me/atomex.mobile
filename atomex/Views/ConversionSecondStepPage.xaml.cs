@@ -24,6 +24,7 @@ namespace atomex
             _app = app;
             _conversionViewModel = conversionViewModel;
             _maxAmount = maxAmount;
+            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrency.Name;
             BindingContext = _conversionViewModel;
         }
         private void AmountEntryFocused(object sender, FocusEventArgs e)
@@ -48,10 +49,16 @@ namespace atomex
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
+                if (!AmountHint.IsVisible)
+                {
+                    AmountHint.IsVisible = true;
+                    AmountHint.Text = Amount.Placeholder;
+                }
                 _conversionViewModel.Amount = decimal.Parse(args.NewTextValue);
             }
             else
             {
+                AmountHint.IsVisible = false;
                 _conversionViewModel.Amount = 0;
             }
         }

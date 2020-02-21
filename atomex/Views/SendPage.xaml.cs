@@ -30,6 +30,7 @@ namespace atomex
             {
                 _currencyViewModel = selectedCurrency;
                 _app = app;
+                Amount.Placeholder = "Amount, " + _currencyViewModel.Name;
                 EstimateMaxAmount(null);
             }
         }
@@ -54,6 +55,38 @@ namespace atomex
         private void AddressEntryUnfocused(object sender, FocusEventArgs e)
         {
             AddressFrame.HasShadow = false;
+        }
+
+        private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (!String.IsNullOrEmpty(args.NewTextValue))
+            {
+                if (!AmountHint.IsVisible)
+                {
+                    AmountHint.IsVisible = true;
+                    AmountHint.Text = Amount.Placeholder;
+                }
+            }
+            else
+            {
+                AmountHint.IsVisible = false;
+            }
+        }
+
+        private void OnAddressTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (!String.IsNullOrEmpty(args.NewTextValue))
+            {
+                if (!AddressHint.IsVisible)
+                {
+                    AddressHint.IsVisible = true;
+                    AddressHint.Text = Address.Placeholder;
+                }
+            }
+            else
+            {
+                AddressHint.IsVisible = false;
+            }
         }
 
         async void EstimateFee(string to, decimal amount)

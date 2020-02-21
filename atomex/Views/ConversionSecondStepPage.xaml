@@ -26,18 +26,32 @@
                        HasShadow="False">
                     <StackLayout Orientation="Horizontal"
                                  Grid.ColumnSpan="2">
-                        <custom:CustomEntry Keyboard="Numeric"
-                                            x:Name="Amount"
-                                            Placeholder="Amount"
-                                            IsSpellCheckEnabled="False"
-                                            IsTextPredictionEnabled="False"
-                                            Focused="AmountEntryFocused"
-                                            Unfocused="AmountEntryUnfocused"
-                                            HorizontalOptions="FillAndExpand"
-                                            HorizontalTextAlignment="Center"
-                                            VerticalOptions="FillAndExpand"
-                                            TextChanged="OnAmountTextChanged"/>
+                        <Frame Padding="0"
+                               HasShadow="False"
+                               HorizontalOptions="FillAndExpand"
+                               Grid.Row="1">
+                            <StackLayout>
+                                <Label x:Name="AmountHint"
+                                       Margin="20,5,0,0"
+                                       FontSize="14"
+                                       VerticalTextAlignment="End"
+                                       TextColor="CadetBlue"
+                                       IsVisible="False"/>
+                                <custom:CustomEntry Keyboard="Numeric"
+                                                    x:Name="Amount"
+                                                    Placeholder="Amount, " 
+                                                    IsSpellCheckEnabled="False"
+                                                    IsTextPredictionEnabled="False"
+                                                    Focused="AmountEntryFocused"
+                                                    Unfocused="AmountEntryUnfocused"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="FillAndExpand"
+                                                    HorizontalTextAlignment="Start"
+                                                    TextChanged="OnAmountTextChanged"/>
+                            </StackLayout>
+                        </Frame>
                         <Button Grid.Column="1"
+                                Grid.Row="2"
                                 Text="MAX"
                                 FontSize="16"
                                 Padding="10"
@@ -46,7 +60,7 @@
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                      </StackLayout>
                 </Frame>
-                <Frame Grid.Row="1"
+                <Frame Grid.Row="2"
                        Grid.ColumnSpan="2"
                        x:Name="InvalidAmountFrame"
                        HasShadow="False"
