@@ -14,6 +14,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.Subsystems;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Atomex.Swaps;
 
 namespace atomex.ViewModel
 {
@@ -211,6 +212,12 @@ namespace atomex.ViewModel
             get => _priceFormat;
             set { _priceFormat = value; OnPropertyChanged(nameof(PriceFormat)); }
         }
+        private ObservableCollection<SwapViewModel> _swaps;
+        public ObservableCollection<SwapViewModel> Swaps
+        {
+            get => _swaps;
+            set { _swaps = value; OnPropertyChanged(nameof(Swaps)); }
+        }
 
 
         public ConversionViewModel(IAtomexApp app)
@@ -238,10 +245,11 @@ namespace atomex.ViewModel
                 return;
 
             terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            terminal.SwapUpdated += OnSwapEventHandler;
 
             // Get swaps
             //terminal.SwapUpdated += OnSwapEventHandler;
-            //OnSwapEventHandler(this, null);
+            OnSwapEventHandler(this, null);
         }
 
         private async Task FillCurrenciesAsync()
@@ -260,7 +268,6 @@ namespace atomex.ViewModel
                     Address = address.Address
                 });
             }));
-
             FromCurrency = _currencyViewModels.FirstOrDefault();
         }
 
@@ -438,6 +445,33 @@ namespace atomex.ViewModel
                 Log.Error(e, "Conversion error");
 
                 return new Error(Errors.SwapError, "Conversion error. Please contant technical support");
+            }
+        }
+
+        private async void OnSwapEventHandler(object sender, SwapEventArgs args)
+        {
+            try
+            {
+                var swaps = await _app.Account
+                    .GetSwapsAsync();
+
+                
+                
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        //var swapViewModels = swaps
+                        //    .Select(SwapViewModelFactory.CreateSwapViewModel)
+                        //    .ToList()
+                        //    .SortList((s1, s2) => s2.Time.ToUniversalTime()
+                        //        .CompareTo(s1.Time.ToUniversalTime()));
+
+                        //Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
+                    });
+                
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Swaps update error");
             }
         }
     }
