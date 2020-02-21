@@ -145,8 +145,10 @@ namespace atomex.ViewModel
                 else
                 {
                     _targetAmount = _estimatedPaymentFee = _estimatedPrice = 0;
+                    _isNoLiquidity = true;
                     OnPropertyChanged(nameof(TargetAmount));
                     OnPropertyChanged(nameof(EstimatedPrice));
+                    OnPropertyChanged(nameof(IsNoLiquidity));
                 }
 
                 OnPropertyChanged(nameof(Amount));
@@ -211,6 +213,12 @@ namespace atomex.ViewModel
         {
             get => _priceFormat;
             set { _priceFormat = value; OnPropertyChanged(nameof(PriceFormat)); }
+        }
+        private bool _isNoLiquidity;
+        public bool IsNoLiquidity
+        {
+            get => _isNoLiquidity;
+            set { _isNoLiquidity = value; OnPropertyChanged(nameof(IsNoLiquidity)); }
         }
         private ObservableCollection<SwapViewModel> _swaps;
         public ObservableCollection<SwapViewModel> Swaps
@@ -319,7 +327,7 @@ namespace atomex.ViewModel
                 _estimatedPrice = orderBook.EstimatedDealPrice(side, Amount);
                 _estimatedMaxAmount = orderBook.EstimateMaxAmount(side);
 
-                //_isNoLiquidity = Amount != 0 && _estimatedPrice == 0;
+                _isNoLiquidity = Amount != 0 && _estimatedPrice == 0;
 
                 if (symbol.IsBaseCurrency(ToCurrency.Currency))
                 {
@@ -339,6 +347,7 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(EstimatedMaxAmount));
                     OnPropertyChanged(nameof(TargetAmount));
                     OnPropertyChanged(nameof(PriceFormat));
+                    OnPropertyChanged(nameof(IsNoLiquidity));
                     UpdateTargetAmountInBase(_app.QuotesProvider);
                 });
             }

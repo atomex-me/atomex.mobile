@@ -72,6 +72,10 @@
                            HorizontalTextAlignment="Start"/>
                 </Frame>
             </Grid>
+            <Label Text="No liquidity"
+                   TextColor="Red"
+                   Margin="20,0"
+                   IsVisible="{Binding IsNoLiquidity}"/>
             <Label FontSize="14"
                    Margin="20,0"
                    VerticalTextAlignment="Center">

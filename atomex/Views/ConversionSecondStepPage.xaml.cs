@@ -91,6 +91,11 @@ namespace atomex
                 InvalidAmountLabel.Text = "Insufficient funds";
                 return;
             }
+            if (_conversionViewModel.IsNoLiquidity)
+            {
+                await DisplayAlert("Warning", "Not enough liquidity to convert a specified amount", "Ok");
+                return;
+            }
             await Navigation.PushAsync(new ConversionConfirmationPage(_app, _conversionViewModel));
         }
     }
