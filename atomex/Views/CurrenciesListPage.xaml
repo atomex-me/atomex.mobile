@@ -38,7 +38,7 @@
                                            VerticalOptions="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:f2}'}" />
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
                                                 <Span Text=" " /> 
                                                 <Span Text="{Binding Name}" />
                                             </FormattedString>
@@ -46,13 +46,13 @@
                                     </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
-                                           Text="{Binding Price, StringFormat='{0:f1} $'}"
+                                           Text="{Binding Price, StringFormat='{0:f2} $'}"
                                            TextColor="Gray"
                                            FontSize="12"
                                            VerticalOptions="Start" />
                                     <Label Grid.Row="1"
                                            Grid.Column="2"
-                                           Text="{Binding Cost, StringFormat='{0:f1} $'}"
+                                           Text="{Binding Cost, StringFormat='{0:f2} $'}"
                                            TextColor="Gray"
                                            FontSize="12"
                                            VerticalOptions="Start"

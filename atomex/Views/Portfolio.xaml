@@ -62,13 +62,12 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Column="3"
-                                           Text="{Binding AvailableAmount, StringFormat='{0:f2}'}"
                                            HorizontalOptions="End"
                                            VerticalTextAlignment="End"
                                            FontAttributes="Bold">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:f2}'}" />
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
                                                 <Span Text=" " /> 
                                                 <Span Text="{Binding Name}" />
                                             </FormattedString>
@@ -76,13 +75,13 @@
                                     </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
-                                           Text="{Binding Price, StringFormat='{0:f1} $'}"
+                                           Text="{Binding Price, StringFormat='{0:f2} $'}"
                                            VerticalOptions="Start"
                                            TextColor="Gray"
                                            FontSize="12"/>
                                     <Label Grid.Row="1"
                                            Grid.Column="3"
-                                           Text="{Binding Cost, StringFormat='{0:f1} $'}"
+                                           Text="{Binding Cost, StringFormat='{0:f2} $'}"
                                            VerticalOptions="Start"
                                            HorizontalOptions="EndAndExpand"
                                            TextColor="Gray"

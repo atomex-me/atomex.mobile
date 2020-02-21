@@ -55,7 +55,7 @@ namespace atomex
                         entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                         {
                             Label = nonzeroWallets[i].Name,
-                            ValueLabel = string.Format("{0:f2}", nonzeroWallets[i].AvailableAmount),
+                            ValueLabel = string.Format("{0:0.#####}", nonzeroWallets[i].AvailableAmount),
                             Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
                         };
                     }
