@@ -68,6 +68,15 @@
                     <Image Source="{Binding ToCurrency.Name}" />
                 </StackLayout>
             </Grid>
+            <Label Margin="20">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Estimated price: "
+                              TextColor="Gray"/>
+                        <Span Text="{Binding EstimatedPrice}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
             <Button Text="NEXT"
                     TextColor="White"
                     FontSize="18"
