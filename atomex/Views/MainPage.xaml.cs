@@ -31,7 +31,7 @@ namespace atomex
             navigationPortfolio.Title = "Portfolio";
 
             //navigationConversionPage = new NavigationPage(new ConversionPage(AtomexApp, _mainViewModel.ConversionViewModel));
-            navigationConversionPage = new NavigationPage(new ConversionsListPage(AtomexApp, _mainViewModel.CurrenciesViewModel.Currencies[3], _mainViewModel.ConversionViewModel));
+            navigationConversionPage = new NavigationPage(new ConversionsListPage(AtomexApp, _mainViewModel.ConversionViewModel));
             navigationConversionPage.IconImageSource = "NavBar__conversion";
             navigationConversionPage.Title = "Conversion";
 

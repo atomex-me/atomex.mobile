@@ -5,9 +5,9 @@
              Title="Conversions">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
-            <ListView ItemsSource="{Binding Transactions}"
+            <ListView ItemsSource="{Binding Swaps}"
                       ItemTapped="OnListViewItemTapped"
-                      IsVisible="{Binding Transactions}"
+                      IsVisible="{Binding Swaps}"
                       HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -26,7 +26,7 @@
                                         <ColumnDefinition Width="3.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.ColumnSpan="3"
-                                           Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                           Text="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                            Margin="10,0"
                                            FontAttributes="Bold"
                                            FontSize="12"

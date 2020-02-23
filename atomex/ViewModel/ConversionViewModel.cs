@@ -234,6 +234,7 @@ namespace atomex.ViewModel
             _coreCurrencies = app.Account.Currencies.ToList();
             FromCurrencies = ToCurrencies = _currencyViewModels = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
+            GetSwaps().FireAndForget();
             SubscribeToServices();
         }
 
@@ -277,6 +278,18 @@ namespace atomex.ViewModel
                 });
             }));
             FromCurrency = _currencyViewModels.FirstOrDefault();
+        }
+
+        private async Task GetSwaps()
+        {
+            var swaps = await _app.Account.GetSwapsAsync();
+
+            var swapViewModels = swaps
+                               .Select(SwapViewModelFactory.CreateSwapViewModel)
+                               .ToList()
+                               .SortList((s1, s2) => s2.Time.ToUniversalTime()
+                                   .CompareTo(s1.Time.ToUniversalTime()));
+            Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
         }
 
         public async Task<(decimal, decimal, decimal)> EstimateMaxAmount()

@@ -8,7 +8,6 @@ namespace atomex
 {
     public partial class ConversionsListPage : ContentPage
     {
-        private CurrencyViewModel _currencyViewModel;
 
         private ConversionViewModel _conversionViewModel;
 
@@ -19,13 +18,12 @@ namespace atomex
             InitializeComponent();
         }
 
-        public ConversionsListPage(IAtomexApp app, CurrencyViewModel currencyViewModel, ConversionViewModel conversionViewModel)
+        public ConversionsListPage(IAtomexApp app, ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            if (currencyViewModel != null)
+            if (conversionViewModel != null)
             {
                 _app = app;
-                _currencyViewModel = currencyViewModel;
                 _conversionViewModel = conversionViewModel;
                 BindingContext = conversionViewModel;
             }
