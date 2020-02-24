@@ -13,6 +13,8 @@ namespace atomex
 
         private ConversionViewModel _conversionViewModel;
 
+        private const int BACK_COUNT = 3;
+
         public ConversionConfirmationPage()
         {
             InitializeComponent();
@@ -49,6 +51,10 @@ namespace atomex
             if (!res)
             {
                 _conversionViewModel.Amount = 0;
+                for (var i = 1; i < BACK_COUNT; i++)
+                {
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                }
                 await Navigation.PopAsync();
             }
         }

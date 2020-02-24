@@ -256,8 +256,6 @@ namespace atomex.ViewModel
             terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
             terminal.SwapUpdated += OnSwapEventHandler;
 
-            // Get swaps
-            //terminal.SwapUpdated += OnSwapEventHandler;
             OnSwapEventHandler(this, null);
         }
 

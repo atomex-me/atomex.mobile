@@ -97,7 +97,7 @@
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
-                                                     Value="InProgress">
+                                                     Value="In Progress">
                                             <Setter Property="BackgroundColor"
                                                     Value="SlateGray"/>
                                         </DataTrigger>
