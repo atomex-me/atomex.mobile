@@ -98,6 +98,7 @@ namespace atomex.ViewModel
                             .CreateViewModel(t))
                             .ToList()
                             .SortList((t1, t2) => t2.Time.CompareTo(t1.Time)));
+                    OnPropertyChanged(nameof(Transactions));
                 });
             }
             catch (Exception e)
