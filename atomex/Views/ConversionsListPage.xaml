@@ -4,11 +4,18 @@
              x:Class="atomex.ConversionsListPage"
              Title="Conversions">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand">
+        <StackLayout>
+            <Label Text="Swap history"
+                   TextColor="Gray"
+                   Margin="0,20"
+                   FontSize="18"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
             <ListView ItemsSource="{Binding Swaps}"
                       ItemTapped="OnListViewItemTapped"
                       IsVisible="{Binding Swaps}"
-                      HasUnevenRows="True">
+                      HasUnevenRows="True"
+                      Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -35,15 +42,15 @@
                                              Grid.RowSpan="2"
                                              Orientation="Horizontal"
                                              HorizontalOptions="Center">
-                                    <Label Text="{Binding FromCurrencyCode}"
-                                           FontSize="16"
-                                           VerticalTextAlignment="Center"/>
+                                    <Image Source="{Binding FromCurrencyCode}"
+                                           HeightRequest="24"
+                                           WidthRequest="24"/>
                                     <Image Source="RightArrow"
                                            WidthRequest="24"
                                            HeightRequest="24"/>
-                                    <Label Text="{Binding ToCurrencyCode}"
-                                           FontSize="16"
-                                           VerticalTextAlignment="Center"/>
+                                    <Image Source="{Binding ToCurrencyCode}"
+                                           HeightRequest="24"
+                                           WidthRequest="24"/>
                                 </StackLayout>
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
