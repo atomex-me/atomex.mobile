@@ -23,6 +23,7 @@ namespace atomex.ViewModel
         private List<Currency> _coreCurrencies;
 
         private IAtomexApp _app;
+        private ITerminal _terminal;
 
         private string BASE_CURRENCY_CODE = "USD";
 
@@ -234,13 +235,13 @@ namespace atomex.ViewModel
             _coreCurrencies = app.Account.Currencies.ToList();
             FromCurrencies = ToCurrencies = _currencyViewModels = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
-            UpdateSwaps().FireAndForget();
             SubscribeToServices();
         }
 
         private void SubscribeToServices()
         {
             _app.TerminalChanged += OnTerminalChangedEventHandler;
+            OnTerminalChangedEventHandler(this, new TerminalChangedEventArgs(_app.Terminal));
 
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
@@ -250,11 +251,19 @@ namespace atomex.ViewModel
         {
             var terminal = args.Terminal;
 
-            if (terminal?.Account == null)
+            if (_terminal != terminal && _terminal != null)
+            {
+                _terminal.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+                _terminal.SwapUpdated -= OnSwapEventHandler;
+            }
+
+            _terminal = terminal;
+
+            if (_terminal?.Account == null)
                 return;
 
-            terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
-            terminal.SwapUpdated += OnSwapEventHandler;
+            _terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            _terminal.SwapUpdated += OnSwapEventHandler;
 
             OnSwapEventHandler(this, null);
         }

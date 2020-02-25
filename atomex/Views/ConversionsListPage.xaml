@@ -99,19 +99,25 @@
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
                                             <Setter Property="BackgroundColor"
-                                                    Value="SlateGray"/>
+                                                    Value="MediumBlue"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Canceled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="IndianRed"/>
+                                                    Value="SlateGray"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Refunded">
                                             <Setter Property="BackgroundColor"
-                                                    Value="DodgerBlue"/>
+                                                    Value="YellowGreen"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Unsettled">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="IndianRed"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label Margin="5"

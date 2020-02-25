@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using atomex.ViewModel;
 using Atomex;
 using Atomex.Core;
