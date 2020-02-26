@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using atomex.ViewModel;
-using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
 {
     public partial class ConversionSecondStepPage : ContentPage
     {
-        private IAtomexApp _app;
-
         private decimal _maxAmount;
 
         private ConversionViewModel _conversionViewModel;
@@ -18,10 +14,9 @@ namespace atomex
         {
             InitializeComponent();
         }
-        public ConversionSecondStepPage(IAtomexApp app, ConversionViewModel conversionViewModel, decimal maxAmount)
+        public ConversionSecondStepPage(ConversionViewModel conversionViewModel, decimal maxAmount)
         {
             InitializeComponent();
-            _app = app;
             _conversionViewModel = conversionViewModel;
             _maxAmount = maxAmount;
             Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrency.Name;
@@ -96,7 +91,7 @@ namespace atomex
                 await DisplayAlert("Warning", "Not enough liquidity to convert a specified amount", "Ok");
                 return;
             }
-            await Navigation.PushAsync(new ConversionConfirmationPage(_app, _conversionViewModel));
+            await Navigation.PushAsync(new ConversionConfirmationPage(_conversionViewModel));
         }
     }
 }

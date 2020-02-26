@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using atomex.ViewModel;
-using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
 {
     public partial class ConversionFirstStepPage : ContentPage
     {
-        private IAtomexApp _app;
-
         private decimal _maxAmount;
 
         private ConversionViewModel _conversionViewModel;
@@ -19,10 +15,9 @@ namespace atomex
             InitializeComponent();
         }
 
-        public ConversionFirstStepPage(IAtomexApp app, ConversionViewModel conversionViewModel)
+        public ConversionFirstStepPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            _app = app;
             _conversionViewModel = conversionViewModel;
             BindingContext = _conversionViewModel;
             EstimateMaxAmount();
@@ -30,7 +25,7 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new ConversionSecondStepPage(_app, _conversionViewModel, _maxAmount));
+            await Navigation.PushAsync(new ConversionSecondStepPage(_conversionViewModel, _maxAmount));
         }
 
         private void OnPickerFromCurrencySelectedIndexChanged(object sender, EventArgs args)

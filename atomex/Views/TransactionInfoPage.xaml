@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.Views.TransactionInfoPage"
+             x:Class="atomex.TransactionInfoPage"
              Title="Transaction info">
     <ContentPage.Content>
         <StackLayout>
@@ -115,7 +115,7 @@
                                     </Label>
                                 </StackLayout>
                                 <Frame Grid.Column="1"
-                                       CornerRadius="10"
+                                       CornerRadius="6"
                                        Padding="0"
                                        Margin="0,15,10,15" 
                                        HasShadow="False">

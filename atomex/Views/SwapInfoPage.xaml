@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.SwapInfoPage"
+             Title="Swap info">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Form"
+                       RowHeight="70">
+                <TableRoot>
+                    <TableSection Title="Swap Info">
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="ConversionIcon"
+                                       HeightRequest="32"
+                                       WidthRequest="32"
+                                       Margin="20,0,5,0">
+                                </Image>
+                                <StackLayout VerticalOptions="CenterAndExpand"
+                                             Padding="10,0">
+                                    <Label Text="{Binding FromAmount}"
+                                           VerticalTextAlignment="Center"
+                                           TextColor="Red">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="-"/>
+                                                <Span Text="{Binding FromAmount, StringFormat='{0}'}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding FromCurrencyCode}"/>
+                                             </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{Binding ToAmount}"
+                                           VerticalTextAlignment="Center"
+                                           TextColor="Green">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="+"/>
+                                                <Span Text="{Binding ToAmount, StringFormat='{0}'}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding ToCurrencyCode}"/>
+                                             </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="State"
+                                       Margin="20"
+                                       FontSize="18"/>
+                                <Frame CornerRadius="6"
+                                       Padding="10"
+                                       Margin="20,15" 
+                                       HasShadow="False"
+                                       HorizontalOptions="EndAndExpand">
+                                    <Frame.Triggers>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding CompactState}"
+                                                     Value="Completed">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding CompactState}"
+                                                     Value="InProgress">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="MediumBlue"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding CompactState}"
+                                                     Value="Canceled">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="SlateGray"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding CompactState}"
+                                                     Value="Refunded">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="YellowGreen"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding CompactState}"
+                                                     Value="Unsettled">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="IndianRed"/>
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <Label Margin="5"
+                                           FontSize="14"
+                                           TextColor="White"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Center"
+                                           BackgroundColor="Transparent" 
+                                           Text="{Binding CompactState}" />
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                        <TextCell Text="Transaction ID"
+                                  Detail="{Binding Id}"
+                                  DetailColor="Gray"/>
+                        <TextCell Text="Price"
+                                  Detail="{Binding Price}"
+                                  DetailColor="Gray"/>
+                        <TextCell Text="Transaction time"
+                                  Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                  DetailColor="Gray"/>
+                    </TableSection>
+                </TableRoot>
+            </TableView>       
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

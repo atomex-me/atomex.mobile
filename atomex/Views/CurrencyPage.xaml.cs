@@ -1,7 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
 using atomex.ViewModel;
-using atomex.Views;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
 
@@ -53,7 +52,7 @@ namespace atomex
         {
             if (_currencyViewModel != null)
             {
-                _navigationService.ShowConversionPage(_app, _currencyViewModel);
+                _navigationService.ShowConversionPage(_currencyViewModel);
             }
         }
         async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)

@@ -1,11 +1,9 @@
-﻿using System;
-using atomex.ViewModel;
-using Atomex;
+﻿using atomex.ViewModel;
 
 namespace atomex
 {
     public interface INavigationService
     {
-        void ShowConversionPage(IAtomexApp app, CurrencyViewModel currency);
+        void ShowConversionPage(CurrencyViewModel currency);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using atomex.ViewModel;
-using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
@@ -11,19 +9,16 @@ namespace atomex
 
         private ConversionViewModel _conversionViewModel;
 
-        private IAtomexApp _app;
-
         public ConversionsListPage()
         {
             InitializeComponent();
         }
 
-        public ConversionsListPage(IAtomexApp app, ConversionViewModel conversionViewModel)
+        public ConversionsListPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
             if (conversionViewModel != null)
             {
-                _app = app;
                 _conversionViewModel = conversionViewModel;
                 BindingContext = conversionViewModel;
             }
@@ -32,12 +27,12 @@ namespace atomex
         {
             if (e.Item != null)
             {
-                //await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
+                await Navigation.PushAsync(new SwapInfoPage(e.Item as SwapViewModel));
             }
         }
         private async void OnCreateSwapButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new ConversionFirstStepPage(_app, _conversionViewModel));
+            await Navigation.PushAsync(new ConversionFirstStepPage(_conversionViewModel));
         }
     }
 }

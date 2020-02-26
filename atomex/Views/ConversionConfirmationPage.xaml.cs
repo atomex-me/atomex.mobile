@@ -1,6 +1,5 @@
 ﻿using System;
 using atomex.ViewModel;
-using Atomex;
 using Atomex.Core;
 using Xamarin.Forms;
 
@@ -8,8 +7,6 @@ namespace atomex
 {
     public partial class ConversionConfirmationPage : ContentPage
     {
-        private IAtomexApp _app;
-
         private ConversionViewModel _conversionViewModel;
 
         private const int BACK_COUNT = 3;
@@ -19,10 +16,9 @@ namespace atomex
             InitializeComponent();
         }
 
-        public ConversionConfirmationPage(IAtomexApp app,  ConversionViewModel conversionViewModel)
+        public ConversionConfirmationPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            _app = app;
             _conversionViewModel = conversionViewModel;
             BindingContext = _conversionViewModel;
         }

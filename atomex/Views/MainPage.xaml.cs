@@ -31,7 +31,7 @@ namespace atomex
             navigationPortfolio.Title = "Portfolio";
 
             //navigationConversionPage = new NavigationPage(new ConversionPage(AtomexApp, _mainViewModel.ConversionViewModel));
-            navigationConversionPage = new NavigationPage(new ConversionsListPage(AtomexApp, _mainViewModel.ConversionViewModel));
+            navigationConversionPage = new NavigationPage(new ConversionsListPage(_mainViewModel.ConversionViewModel));
             navigationConversionPage.IconImageSource = "NavBar__conversion";
             navigationConversionPage.Title = "Conversion";
 
@@ -46,7 +46,7 @@ namespace atomex
 
         }
 
-        public void ShowConversionPage(IAtomexApp app, CurrencyViewModel currency = null)
+        public void ShowConversionPage(CurrencyViewModel currency = null)
         {
             this.CurrentPage = navigationConversionPage;
 
@@ -54,7 +54,7 @@ namespace atomex
             Console.WriteLine(conversionViewModel);
             if (conversionViewModel != null)
             {
-                navigationConversionPage.PushAsync(new ConversionFirstStepPage(app, conversionViewModel));
+                navigationConversionPage.PushAsync(new ConversionFirstStepPage(conversionViewModel));
 
                 Console.WriteLine(currency);
                 Console.WriteLine(conversionViewModel);

@@ -5,10 +5,10 @@
              Title="Conversions">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Swap history"
+            <Label Text="Swaps history"
                    TextColor="Gray"
-                   Margin="0,20"
-                   FontSize="18"
+                   Margin="0,20,0,10"
+                   FontSize="20"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
             <ListView ItemsSource="{Binding Swaps}"
@@ -86,7 +86,7 @@
                                        Grid.RowSpan="3"
                                        CornerRadius="6"
                                        Padding="0"
-                                       Margin="10,0"
+                                       Margin="10,5"
                                        HasShadow="False">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
