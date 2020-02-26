@@ -42,6 +42,12 @@
                                                 <Setter Property="Source"
                                                         Value="CircleIcon"/>
                                             </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Type}"
+                                                         Value="SwapPayment">
+                                                <Setter Property="Source"
+                                                        Value="ConversionIcon"/>
+                                            </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
                                     <Label Text="{Binding Amount}"
@@ -82,6 +88,19 @@
                                                          Value="Self">
                                                 <Setter Property="TextColor"
                                                         Value="Red"/>
+                                                <Setter Property="FormattedText">
+                                                    <Setter.Value>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Amount, StringFormat='{0}'}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding Currency.Name}"/>
+                                                        </FormattedString>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Type}"
+                                                         Value="SwapPayment">
                                                 <Setter Property="FormattedText">
                                                     <Setter.Value>
                                                         <FormattedString>

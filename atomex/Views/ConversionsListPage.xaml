@@ -86,7 +86,7 @@
                                        Grid.RowSpan="3"
                                        CornerRadius="6"
                                        Padding="0"
-                                       Margin="10,0,10,5" 
+                                       Margin="10,0"
                                        HasShadow="False">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
