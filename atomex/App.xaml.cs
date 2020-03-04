@@ -1,6 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
 namespace atomex
 {
@@ -9,11 +7,6 @@ namespace atomex
         public App()
         {
             InitializeComponent();
-
-            //MainPage = new MainPage();
-            //MainPage = new NavigationPage(new MainPage());
-            //MainPage = new NavigationPage(new TabPage());
-            //MainPage = new NavigationPage(new Portfolio());
             MainPage = new MainPage();
         }
 

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrencyPage"
              Title="{Binding Name}">
-        <ContentPage.Content>
             <StackLayout>
                 <Image Source="{Binding Name}"
                        HeightRequest="64"
@@ -288,5 +287,5 @@
                     </ListView.ItemTemplate>
                 </ListView>                      
             </StackLayout>
-        </ContentPage.Content>
+        
 </ContentPage>

@@ -64,6 +64,10 @@ namespace atomex.ViewModel
 
             var account = Account.LoadFromFile(pathToWallet, "12345678".ToSecureString(), currenciesProvider, symbolsProvider);
 
+            //new HdWalletScanner(account)
+            //    .ScanAsync("ETH")
+            //    .WaitForResult();
+
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)
                 .UseSymbolsProvider(symbolsProvider)
