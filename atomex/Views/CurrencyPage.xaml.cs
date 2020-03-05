@@ -62,5 +62,11 @@ namespace atomex
                 await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
             }
         }
+        async void SwipeDown(object sender, EventArgs args)
+        {
+            Loader.IsRunning = Loader.IsVisible = true;
+            await _currencyViewModel.UpdateCurrencyAsync();
+            Loader.IsRunning = Loader.IsVisible = false;
+        }
     }
 }

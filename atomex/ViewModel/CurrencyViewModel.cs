@@ -107,6 +107,11 @@ namespace atomex.ViewModel
             }
         }
 
+        public async Task UpdateCurrencyAsync()
+        {
+            await new HdWalletScanner(_app.Account).ScanAsync(Currency.Name);
+        }
+
         public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
         {
             return await _app.Account

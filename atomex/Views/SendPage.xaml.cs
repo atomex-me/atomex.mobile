@@ -44,7 +44,12 @@ namespace atomex
         private void AmountEntryUnfocused(object sender, FocusEventArgs e)
         {
             AmountFrame.HasShadow = false;
-            EstimateFee(Address.Text, Convert.ToDecimal(Amount.Text));
+            decimal amount;
+            if (String.IsNullOrEmpty(Amount?.Text) || String.IsNullOrWhiteSpace(Amount?.Text))
+                amount = 0;
+            else
+                amount = Convert.ToDecimal(Amount?.Text);
+            EstimateFee(Address?.Text, amount);
         }
 
         private void AddressEntryFocused(object sender, FocusEventArgs e)
