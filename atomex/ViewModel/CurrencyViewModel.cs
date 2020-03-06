@@ -47,18 +47,30 @@ namespace atomex.ViewModel
         public CurrencyViewModel(IAtomexApp app)
         {
             _app = app;
+            SubscibeToServices();
+        }
 
+        private void SubscibeToServices()
+        {
             _app.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
             _app.Account.BalanceUpdated += BalanceUpdated;
         }
 
-        private async void BalanceUpdated(object sender, CurrencyEventArgs e)
+        private async void BalanceUpdated(object sender, CurrencyEventArgs args)
         {
-            if (e.Currency.Name != Currency?.Name)
-                return;
-            var balance = await _app.Account.GetBalanceAsync(e.Currency.Name);
-            Currency = e.Currency;
-            AvailableAmount = balance.Available;
+            try
+            {
+                if (args.Currency.Name != Currency?.Name)
+                    return;
+                var balance = await _app.Account.GetBalanceAsync(args.Currency.Name);
+                Currency = args.Currency;
+                AvailableAmount = balance.Available;
+                await LoadTransactionsAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Account balance updated event handler error");
+            }
         }
 
         private void UnconfirmedTransactionAdded(

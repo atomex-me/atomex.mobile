@@ -129,8 +129,12 @@ namespace atomex.ViewModel
 
                 if (estimatedPaymentFee != null)
                 {
+                    var redeemAddress = _app.Account
+                        .GetRedeemAddressAsync(ToCurrency.Name)
+                        .WaitForResult();
+
                     _estimatedPaymentFee = estimatedPaymentFee.Value;
-                    _estimatedRedeemFee = ToCurrency.Currency.GetDefaultRedeemFee();
+                    _estimatedRedeemFee = ToCurrency.Currency.GetDefaultRedeemFee(redeemAddress);
 
                     if (ToCurrency.AvailableAmount == 0 && !(ToCurrency.Currency is BitcoinBasedCurrency))
                     {

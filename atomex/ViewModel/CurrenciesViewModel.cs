@@ -42,13 +42,15 @@ namespace atomex.ViewModel
         {
             _app = app;
 
-            //var terminal = app.Terminal;
-            //app.Terminal.SwapUpdated += Terminal_SwapUpdated;
-
             coreCurrencies = _app.Account.Currencies.ToList();
             Currencies = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
 
+            SubscribeToServices();
+        }
+
+        private void SubscribeToServices()
+        {
             _app.QuotesProvider.QuotesUpdated += QuotesProvider_QuotesUpdated;
         }
 
@@ -92,13 +94,6 @@ namespace atomex.ViewModel
             }
 
             QuotesUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Terminal_SwapUpdated(object sender, Atomex.Swaps.SwapEventArgs e)
-        {
-            //var swap = e.Swap;
-            //e.Swap;
-            //throw new System.NotImplementedException();
         }
     }
 }

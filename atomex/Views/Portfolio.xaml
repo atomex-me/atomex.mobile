@@ -9,7 +9,7 @@
             <StackLayout>
                 <local:ChartView x:Name="portfolioChart"
                                  HeightRequest="180"
-                                 Margin="10,10,10,0"/>
+                                 Margin="10,20,10,0"/>
                 <Label FontAttributes="Bold"
                        FontSize="22"
                        HorizontalTextAlignment="Center"
