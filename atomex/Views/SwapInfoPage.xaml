@@ -48,13 +48,13 @@
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="State"
-                                       Margin="20"
+                                       Margin="20,0,0,0"
+                                       VerticalTextAlignment="Center"
                                        FontSize="18"/>
-                                <Frame CornerRadius="6"
+                                <Frame CornerRadius="3"
                                        Padding="10"
-                                       Margin="20,15" 
-                                       HasShadow="False"
-                                       HorizontalOptions="EndAndExpand">
+                                       Margin="20"
+                                       HasShadow="False">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
@@ -87,7 +87,7 @@
                                                     Value="IndianRed"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label Margin="5"
+                                    <Label Padding="5"
                                            FontSize="14"
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
@@ -97,9 +97,6 @@
                                 </Frame>
                             </StackLayout>
                         </ViewCell>
-                        <TextCell Text="Transaction ID"
-                                  Detail="{Binding Id}"
-                                  DetailColor="Gray"/>
                         <TextCell Text="Price"
                                   Detail="{Binding Price}"
                                   DetailColor="Gray"/>

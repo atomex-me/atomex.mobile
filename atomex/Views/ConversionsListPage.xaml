@@ -19,7 +19,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10"
+                            <Grid Padding="8"
                                   RowSpacing="0"
                                   ColumnSpacing="0">
                                 <Grid.RowDefinitions>
@@ -29,8 +29,8 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="4.5*" />
+                                    <ColumnDefinition Width="2.5*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.ColumnSpan="3"
                                        Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
@@ -84,9 +84,9 @@
                                 </Label>
                                 <Frame Grid.Column="2"
                                        Grid.RowSpan="3"
-                                       CornerRadius="6"
+                                       CornerRadius="3"
                                        Padding="0"
-                                       Margin="10,5"
+                                       Margin="0,10"
                                        HasShadow="False">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
