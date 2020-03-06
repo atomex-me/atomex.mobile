@@ -11,6 +11,38 @@
                    FontSize="20"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
+            <Image Source="ConversionIcon"
+                   WidthRequest="48"
+                   HeightRequest="48"
+                   VerticalOptions="EndAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   IsVisible="False">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                 Binding="{Binding Swaps.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <Label HorizontalTextAlignment="Center"
+                   IsVisible="False"
+                   VerticalOptions="StartAndExpand"
+                   VerticalTextAlignment="Center"
+                   FontSize="18"
+                   Margin="0,10">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding Swaps.Count}"
+                                 Value="0">
+                         <Setter Property="IsVisible"
+                                 Value="True"/>
+                         <Setter Property="Text"
+                                 Value="No swaps yet"/>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
             <ListView ItemsSource="{Binding Swaps}"
                       ItemTapped="OnListViewItemTapped"
                       IsVisible="{Binding Swaps}"
