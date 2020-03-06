@@ -301,6 +301,17 @@
                                             </Setter.Value>
                                         </Setter>
                                     </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Type}"
+                                                 Value="SwapPayment">
+                                        <Setter Property="FormattedText">
+                                            <Setter.Value>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Description, FallbackValue='Unknown'}"/>
+                                                </FormattedString>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
                                 </Label.Triggers>
                             </Label>
                         </Grid>
