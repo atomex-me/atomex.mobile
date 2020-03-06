@@ -1,5 +1,6 @@
 ﻿using System;
 using atomex.ViewModel.TransactionViewModels;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -17,11 +18,24 @@ namespace atomex
             }
         }
 
+        private async void OnCopyButtonClicked(object sender, EventArgs args)
+        {
+            if (_transactionViewModel != null)
+            {
+                await Clipboard.SetTextAsync(_transactionViewModel.Id);
+                await DisplayAlert("Transaction ID copied", _transactionViewModel.Id, "Ok");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Copy error", "Ok");
+            }
+        }
+
         private void OnShowInExplorerClicked(object sender, EventArgs args)
         {
             if (_transactionViewModel != null)
             {
-                Device.OpenUri(new Uri(_transactionViewModel.TxExplorerUri));
+                Launcher.OpenAsync(new Uri(_transactionViewModel.TxExplorerUri));
             }
         }
     }

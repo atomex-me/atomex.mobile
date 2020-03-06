@@ -13,13 +13,21 @@
             <StackLayout>
                 <ActivityIndicator x:Name="Loader"
                                    Color="CadetBlue"
-                                   Margin="0,30,0,-10"
+                                   Margin="0,30,0,0"
                                    IsVisible="False"/>
+                <Label x:Name="LoaderLabel"
+                       Text="Balance updating..."
+                       TextColor="CadetBlue"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontAttributes="Italic"
+                       IsVisible="False"/>
                 <Image Source="{Binding Name}"
                        HeightRequest="64"
                        WidthRequest="64"
                        Margin="0,30,0,10" />
                 <Label Text="{Binding AvailableAmount}"
+                       x:Name="AvailableAmountLabel"
                        HorizontalOptions="Center"
                        FontSize="Large"
                        FontAttributes="Bold">

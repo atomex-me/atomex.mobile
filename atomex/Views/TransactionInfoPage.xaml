@@ -148,9 +148,24 @@
                         <TextCell Text="Description"
                                   Detail="{Binding Description}"
                                   DetailColor="Gray" />
-                        <TextCell Text="Transaction ID"
-                                  Detail="{Binding Id}"
-                                  DetailColor="Gray"/>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Margin="20">
+                                    <Label Text="Transaction ID"/>
+                                    <Label Text="{Binding Id}"
+                                           TextColor="Gray"
+                                           FontSize="12"
+                                           LineBreakMode="MiddleTruncation"/>
+                                </StackLayout>
+                                <ImageButton Source="CopyIcon"
+                                             HeightRequest="24"
+                                             WidthRequest="24"
+                                             HorizontalOptions="EndAndExpand"
+                                             Margin="20,0"
+                                             VerticalOptions="CenterAndExpand"
+                                             Clicked="OnCopyButtonClicked"/>
+                            </StackLayout>
+                        </ViewCell>
                         <ViewCell>
                             <StackLayout VerticalOptions="CenterAndExpand"
                                          Margin="20,0">
