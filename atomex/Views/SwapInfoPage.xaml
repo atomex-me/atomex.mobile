@@ -52,7 +52,7 @@
                                        VerticalTextAlignment="Center"
                                        FontSize="18"/>
                                 <Frame CornerRadius="3"
-                                       Padding="10"
+                                       Padding="0"
                                        Margin="20"
                                        HasShadow="False">
                                     <Frame.Triggers>
@@ -87,7 +87,7 @@
                                                     Value="IndianRed"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label Padding="5"
+                                    <Label Padding="10"
                                            FontSize="14"
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
