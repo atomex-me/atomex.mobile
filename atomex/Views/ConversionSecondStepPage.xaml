@@ -72,10 +72,6 @@
                            HorizontalTextAlignment="Start"/>
                 </Frame>
             </Grid>
-            <Label Text="No liquidity"
-                   TextColor="Red"
-                   Margin="20,0"
-                   IsVisible="{Binding IsNoLiquidity}"/>
             <Label FontSize="14"
                    Margin="20,0"
                    VerticalTextAlignment="Center">
@@ -120,12 +116,29 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
+                <Label Text="No liquidity"
+                       Grid.Row="1"
+                       Grid.Column="2"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       TextColor="Red"
+                       IsVisible="{Binding IsNoLiquidity}"/>
                 <Label Grid.Row="1"
                        Grid.Column="2"
                        FontSize="14"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding IsNoLiquidity}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Label.Triggers>
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
