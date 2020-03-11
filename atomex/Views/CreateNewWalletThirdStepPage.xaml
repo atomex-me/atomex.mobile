@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.CreateNewWalletThirdStepPage">
+    <StackLayout HorizontalOptions="CenterAndExpand"
+                 VerticalOptions="CenterAndExpand"
+                 Margin="20,0">
+        <Label Text="Step 3: Mnemonic phrase"
+               FontSize="22"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"/>
+        <Label Text="   Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place."
+               Padding="20"/>
+        <Picker HorizontalOptions="FillAndExpand"
+                SelectedIndexChanged="OnPickerLanguageSelectedIndexChanged"
+                HeightRequest="70"/>
+        <Picker HorizontalOptions="FillAndExpand"
+                SelectedIndexChanged="OnPickerWordCountSelectedIndexChanged"
+                HeightRequest="70"/>
+        <StackLayout Orientation="Horizontal">
+            <Entry IsReadOnly="True"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="FillAndExpand"
+                   HeightRequest="70"/>
+            <Button Text="Generate"
+                    TextColor="CadetBlue"
+                    BorderWidth="1"
+                    BorderColor="CadetBlue"
+                    Padding="5"/>
+        </StackLayout>
+        <Button Text="Next"
+                Margin="0,20"
+                TextColor="White"
+                FontSize="18"
+                HeightRequest="70"
+                CornerRadius="0"
+                BackgroundColor="CadetBlue"
+                HorizontalOptions="Fill"
+                Clicked="OnNextButtonClicked"/>
+    </StackLayout>
+</ContentPage>

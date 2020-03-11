@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.CreateNewWalletFirstStepPage">
+    <StackLayout HorizontalOptions="CenterAndExpand"
+                 VerticalOptions="CenterAndExpand">
+        <Label Text="Step 1: Wallet type"
+               FontSize="22"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               Margin="0,0,0,20"/>
+        <Label Text="Please select your wallet type:"/>
+        <Picker HorizontalOptions="FillAndExpand"
+                SelectedIndexChanged="OnPickerSelectedIndexChanged"
+                HeightRequest="70"/>
+        <Button Text="Next"
+                Margin="0,20"
+                TextColor="White"
+                FontSize="18"
+                HeightRequest="70"
+                CornerRadius="0"
+                BackgroundColor="CadetBlue"
+                HorizontalOptions="Fill"
+                Clicked="OnNextButtonClicked"/>
+    </StackLayout> 
+   
+</ContentPage>
