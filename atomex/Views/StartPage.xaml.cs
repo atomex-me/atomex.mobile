@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Xamarin.Forms;
 
@@ -7,9 +6,13 @@ namespace atomex
 {
     public partial class StartPage : ContentPage
     {
+
+        private CreateNewWalletViewModel _createNewWalletViewModel;
+
         public StartPage()
         {
             InitializeComponent();
+            _createNewWalletViewModel = new CreateNewWalletViewModel();
         }
         private async void ShowMyWalletsButtonClicked(object sender, EventArgs args)
         {
@@ -17,7 +20,7 @@ namespace atomex
         }
         private async void CreateNewWalletButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new CreateNewWalletFirstStepPage());
+            await Navigation.PushAsync(new CreateNewWalletFirstStepPage(_createNewWalletViewModel));
         }
     }
 }

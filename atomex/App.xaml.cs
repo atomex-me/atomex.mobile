@@ -7,8 +7,9 @@ namespace atomex
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new StartPage());
-            //MainPage = new MainPage();
+            //MainPage = new NavigationPage(new StartPage());
+            //((NavigationPage)MainPage).BarBackgroundColor = Color.CadetBlue;
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()

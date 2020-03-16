@@ -6,34 +6,36 @@ namespace atomex
 {
     public partial class CreateNewWalletThirdStepPage : ContentPage
     {
+
+        private CreateNewWalletViewModel _createNewWalletViewModel;
+
         public CreateNewWalletThirdStepPage()
         {
             InitializeComponent();
         }
 
-        private void OnPickerLanguageSelectedIndexChanged(object sender, EventArgs args)
+        public CreateNewWalletThirdStepPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
-            var picker = sender as Picker;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-
-            }
-        }
-
-        private void OnPickerWordCountSelectedIndexChanged(object sender, EventArgs args)
-        {
-            var picker = sender as Picker;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex != -1)
-            {
-
-            }
+            InitializeComponent();
+            _createNewWalletViewModel = createNewWalletViewModel;
+            BindingContext = createNewWalletViewModel;
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new CreateNewWalletFourthPage());
+            if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
+            {
+                await DisplayAlert("Alert", "Click Generate", "Ok");
+            }
+            else
+            {
+                await Navigation.PushAsync(new CreateNewWalletFourthPage(_createNewWalletViewModel));
+            }
+        }
+
+        private void OnGenerateButtonClicked(object sender, EventArgs args)
+        {
+            _createNewWalletViewModel.GenerateMnemonic();
         }
     }
 }

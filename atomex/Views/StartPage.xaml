@@ -2,13 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.StartPage">
-    <StackLayout>
-        <Label Text="Atomex image or backgroud"
-               FontSize="18"
+    <StackLayout BackgroundColor="#f0f0f0">
+        <Image Source="Logo"
                HeightRequest="200"
-               FontAttributes="Italic"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
         <Label Text="Atomex app description"
                FontSize="18"
                HeightRequest="100"
@@ -26,8 +24,10 @@
                         HeightRequest="70"
                         BorderColor="CadetBlue"
                         BorderWidth="1"
+                        ImageSource="NavBar__wallets"
                         TextColor="CadetBlue"
-                        Clicked="ShowMyWalletsButtonClicked"/>
+                        Clicked="ShowMyWalletsButtonClicked">
+                </Button>
                 <Button Text="Create new wallet"
                         HorizontalOptions="Fill"
                         VerticalOptions="StartAndExpand"
@@ -37,6 +37,7 @@
                         HeightRequest="70"
                         BorderColor="CadetBlue"
                         BorderWidth="1"
+                        ImageSource="NavBar__wallets"
                         TextColor="CadetBlue"
                         Clicked="CreateNewWalletButtonClicked"/>
             </StackLayout>

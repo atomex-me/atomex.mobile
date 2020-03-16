@@ -11,7 +11,8 @@
                Margin="0,0,0,20"/>
         <Label Text="Please select your wallet type:"/>
         <Picker HorizontalOptions="FillAndExpand"
-                SelectedIndexChanged="OnPickerSelectedIndexChanged"
+                ItemsSource="{Binding Networks}"
+                SelectedItem="{Binding Network}"
                 HeightRequest="70"/>
         <Button Text="Next"
                 Margin="0,20"

@@ -6,14 +6,25 @@ namespace atomex
 {
     public partial class CreateNewWalletFifthStepPage : ContentPage
     {
+
+        private CreateNewWalletViewModel _createNewWalletViewModel;
+
         public CreateNewWalletFifthStepPage()
         {
             InitializeComponent();
         }
 
+        public CreateNewWalletFifthStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        {
+            InitializeComponent();
+            _createNewWalletViewModel = createNewWalletViewModel;
+            BindingContext = createNewWalletViewModel;
+        }
+
         private void PasswordEntryFocused(object sender, FocusEventArgs e)
         {
             PasswordFrame.HasShadow = true;
+            Error.IsVisible = false;
         }
         private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
         {
@@ -34,11 +45,13 @@ namespace atomex
             {
                 PasswordHint.IsVisible = false;
             }
+            _createNewWalletViewModel.SetPassword("StoragePassword", args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs e)
         {
             PasswordConfirmationFrame.HasShadow = true;
+            Error.IsVisible = false;
         }
         private void PasswordConfirmationEntryUnfocused(object sender, FocusEventArgs e)
         {
@@ -59,11 +72,21 @@ namespace atomex
             {
                 PasswordConfirmationHint.IsVisible = false;
             }
+            _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
         }
 
-        private async void OnCreateButtonClicked(object sender, EventArgs args)
+        private void OnCreateButtonClicked(object sender, EventArgs args)
         {
-            //await Navigation.PushAsync(new CreateNewWalletFifthStepPage());
+            var result = _createNewWalletViewModel.CheckStoragePassword();
+            if (result == null)
+            {
+                _createNewWalletViewModel.CreateHdWallet();
+            }
+            else
+            {
+                Error.Text = result;
+                Error.IsVisible = true;
+            }
         }
     }
 }

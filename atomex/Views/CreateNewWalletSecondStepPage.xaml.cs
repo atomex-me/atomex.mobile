@@ -6,14 +6,24 @@ namespace atomex
 {
     public partial class CreateNewWalletSecondStepPage : ContentPage
     {
+        private CreateNewWalletViewModel _createNewWalletViewModel;
+
         public CreateNewWalletSecondStepPage()
         {
             InitializeComponent();
         }
 
+        public CreateNewWalletSecondStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        {
+            InitializeComponent();
+            _createNewWalletViewModel = createNewWalletViewModel;
+            BindingContext = createNewWalletViewModel;
+        }
+
         private void EntryFocused(object sender, FocusEventArgs e)
         {
             Frame.HasShadow = true;
+            Error.IsVisible = false;
         }
         private void EntryUnfocused(object sender, FocusEventArgs e)
         {
@@ -38,7 +48,16 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new CreateNewWalletThirdStepPage());
+            var result = _createNewWalletViewModel.SaveWalletName();
+            if (result == null)
+            {
+                await Navigation.PushAsync(new CreateNewWalletThirdStepPage(_createNewWalletViewModel));
+            }
+            else
+            {
+                Error.Text = result;
+                Error.IsVisible = true;
+            }
         }
     }
 }

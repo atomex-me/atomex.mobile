@@ -25,20 +25,20 @@
                         FontSize="16"
                         Clicked="OnWalletClicked"/>
             </Frame>
-             <Frame Margin="20,10"
-                   CornerRadius="10">
-                <Button Text="Wallet name"
-                        TextColor="CadetBlue"
-                        FontSize="16"
-                        Clicked="OnWalletClicked"/>
-            </Frame>
-             <Frame Margin="20,10"
-                   CornerRadius="10">
-                <Button Text="Wallet name"
-                        TextColor="CadetBlue"
-                        FontSize="16"
-                        Clicked="OnWalletClicked"/>
-            </Frame>
+            <ListView ItemsSource="{Binding Wallets}"
+                      Footer="">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="20,10"
+                               CornerRadius="10">
+                            <Button Text="Wallet name"
+                                    TextColor="CadetBlue"
+                                    FontSize="16"
+                                    Clicked="OnWalletClicked"/>
+                        </Frame>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </RelativeLayout>
     </ContentPage.Content>

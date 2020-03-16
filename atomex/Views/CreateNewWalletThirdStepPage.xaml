@@ -12,21 +12,50 @@
         <Label Text="   Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place."
                Padding="20"/>
         <Picker HorizontalOptions="FillAndExpand"
-                SelectedIndexChanged="OnPickerLanguageSelectedIndexChanged"
+                
+                ItemsSource="{Binding Languages}"
+
+                SelectedItem="{Binding Language}"
                 HeightRequest="70"/>
         <Picker HorizontalOptions="FillAndExpand"
-                SelectedIndexChanged="OnPickerWordCountSelectedIndexChanged"
+                ItemsSource="{Binding WordCountToEntropyLength}"
+                SelectedItem="{Binding EntropyLength}"
                 HeightRequest="70"/>
         <StackLayout Orientation="Horizontal">
-            <Entry IsReadOnly="True"
-                   HorizontalOptions="FillAndExpand"
-                   VerticalOptions="FillAndExpand"
-                   HeightRequest="70"/>
+            <Frame HasShadow="False"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center">
+                    <Label Text="Mnemonic phrase"
+                           TextColor="Gray"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="{Binding Mnemonic}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"
+                           FontSize="12"/>
+                </StackLayout>
+            </Frame>
+
+            <!--<Editor Text="{Binding Mnemonic}"
+                    Placeholder="Mnemonic phrase"
+                    WidthRequest="300"
+                    VerticalOptions="FillAndExpand"
+                    Keyboard="Chat"
+                    IsReadOnly="True"/>-->
+
+
             <Button Text="Generate"
                     TextColor="CadetBlue"
                     BorderWidth="1"
                     BorderColor="CadetBlue"
-                    Padding="5"/>
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    Padding="5"
+                    HeightRequest="70"
+                    Clicked="OnGenerateButtonClicked"/>
         </StackLayout>
         <Button Text="Next"
                 Margin="0,20"

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Xamarin.Forms;
 
@@ -10,6 +9,8 @@ namespace atomex
         public MyWalletsPage()
         {
             InitializeComponent();
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.White;
+            //BindingContext = Wallets;
         }
 
         private void OnWalletClicked(object sender, EventArgs args)

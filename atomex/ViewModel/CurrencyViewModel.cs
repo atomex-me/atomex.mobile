@@ -41,7 +41,12 @@ namespace atomex.ViewModel
         public ObservableCollection<TransactionViewModel> Transactions
         {
             get => _transactions;
-            set { _transactions = value; OnPropertyChanged(nameof(Transactions)); }
+            set
+            {
+                _transactions = value;
+                OnPropertyChanged(nameof(Transactions));
+                Console.WriteLine(_transactions);
+            }
         }
 
         public CurrencyViewModel(IAtomexApp app)
