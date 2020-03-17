@@ -6,18 +6,25 @@ namespace atomex
 {
     public partial class MyWalletsPage : ContentPage
     {
+
+        private LoginViewModel _loginViewModel;
+
         public MyWalletsPage()
         {
             InitializeComponent();
-            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.White;
+        }
+
+        public MyWalletsPage(LoginViewModel loginViewModel)
+        {
+            InitializeComponent();
+            _loginViewModel = loginViewModel;
+            //((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.White;
             //BindingContext = Wallets;
         }
 
-        private void OnWalletClicked(object sender, EventArgs args)
+        private async void OnWalletTappeed(object sender, EventArgs args)
         {
-            Content.Opacity = 0.5f;
-            Loader.IsRunning = true;
-            Application.Current.MainPage = new MainPage();
+            await Navigation.PushAsync(new LoginPage(_loginViewModel));
         }
     }
 }

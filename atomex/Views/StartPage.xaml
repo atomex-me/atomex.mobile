@@ -1,46 +1,68 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.StartPage">
-    <StackLayout BackgroundColor="#f0f0f0">
-        <Image Source="Logo"
-               HeightRequest="200"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"/>
-        <Label Text="Atomex app description"
-               FontSize="18"
-               HeightRequest="100"
-               FontAttributes="Italic"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
-        <Frame Margin="10">
-            <StackLayout>
-                <Button Text="My wallet"
-                        HorizontalOptions="Fill"
-                        VerticalOptions="Start"
-                        CornerRadius="3"
-                        FontSize="18"
-                        Margin="10"
-                        HeightRequest="70"
-                        BorderColor="CadetBlue"
-                        BorderWidth="1"
-                        ImageSource="NavBar__wallets"
-                        TextColor="CadetBlue"
-                        Clicked="ShowMyWalletsButtonClicked">
-                </Button>
-                <Button Text="Create new wallet"
-                        HorizontalOptions="Fill"
-                        VerticalOptions="StartAndExpand"
-                        CornerRadius="3"
-                        FontSize="18"
-                        Margin="10"
-                        HeightRequest="70"
-                        BorderColor="CadetBlue"
-                        BorderWidth="1"
-                        ImageSource="NavBar__wallets"
-                        TextColor="CadetBlue"
-                        Clicked="CreateNewWalletButtonClicked"/>
-            </StackLayout>
-        </Frame>
+             x:Class="atomex.StartPage"
+             BackgroundColor="#F0F0F0">
+    <StackLayout>
+        <StackLayout BackgroundColor="CadetBlue">
+            <ImageButton Source="Logo"
+                         CornerRadius="100"
+                         WidthRequest="200"
+                         HeightRequest="200"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Padding="40"
+                         Margin="0,30,0,0"
+                         BackgroundColor="LightCyan"/>
+            <Label Text="ATOMEX"
+                   FontSize="24"
+                   Padding="10"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
+            <Label Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
+                   FontSize="18"
+                   Padding="20,0,20,20"
+                   TextColor="White"
+                   FontAttributes="Italic"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
+        </StackLayout>
+        <StackLayout VerticalOptions="FillAndExpand">
+            <Button Text="MY WALLETS"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    CornerRadius="3"
+                    FontSize="18"
+                    HeightRequest="70"
+                    Margin="20,20,20,0"
+                    BorderColor="CadetBlue"
+                    BorderWidth="1"
+                    ImageSource="NavBar__wallets"
+                    TextColor="White"
+                    BackgroundColor="CadetBlue"
+                    Clicked="ShowMyWalletsButtonClicked">                        
+            </Button>
+            <Button Text="CREATE NEW WALLET"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    CornerRadius="3"
+                    FontSize="18"
+                    HeightRequest="70"
+                    Margin="20,0,20,10"
+                    BorderColor="CadetBlue"
+                    BorderWidth="1"
+                    ImageSource="NavBar__wallets"
+                    TextColor="White"
+                    BackgroundColor="CadetBlue"
+                    Clicked="CreateNewWalletButtonClicked"/>
+            <Label Text="Forgot password?"
+                   TextColor="CadetBlue"
+                   HorizontalTextAlignment="Center"/>
+            <Label Text="Restore wallet"
+                   TextColor="CadetBlue"
+                   HorizontalTextAlignment="Center"/>
+        </StackLayout>
     </StackLayout>
 </ContentPage>

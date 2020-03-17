@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
+             x:Class="atomex.LoginPage"
+             Title="Log In"
+             BackgroundColor="#F5F5F5">
+    <RelativeLayout>
+        <ActivityIndicator x:Name="Loader"
+                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                           Scale="3"
+                           Color="Black"
+                           IsRunning="False"/>
+        <StackLayout x:Name="Content"
+                     Padding="30"
+                     VerticalOptions="Center"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <Label Text="Please enter your password:"/>
+            <Frame x:Name="PasswordFrame"
+                   Padding="0"
+                   HasShadow="False"
+                   CornerRadius="0"
+                   HorizontalOptions="FillAndExpand">
+                <StackLayout HeightRequest="70">
+                    <Label x:Name="PasswordHint"
+                            Margin="20,5,0,0"
+                            FontSize="14"
+                            VerticalTextAlignment="End"
+                            TextColor="CadetBlue"
+                            IsVisible="False"/>
+                    <controls:CustomEntry x:Name="PasswordEntry"
+                                          Placeholder="Password"
+                                          Keyboard="Text"
+                                          Focused="PasswordEntryFocused"
+                                          Unfocused="PasswordEntryUnfocused"
+                                          IsPassword="True"
+                                          IsSpellCheckEnabled="False"
+                                          IsTextPredictionEnabled="False"
+                                          HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="FillAndExpand"
+                                          TextChanged="OnPasswordTextChanged"/>
+                </StackLayout>
+            </Frame>
+            <Label x:Name="Error"
+               TextColor="Red"
+               IsVisible="False"
+               Margin="0,10"/>
+            <Button Text="Log In"
+                    Margin="0,20"
+                    TextColor="White"
+                    FontSize="18"
+                    HeightRequest="70"
+                    CornerRadius="0"
+                    BackgroundColor="CadetBlue"
+                    HorizontalOptions="Fill"
+                    Clicked="OnLoginButtonClicked"/>
+        </StackLayout>
+    </RelativeLayout>
+</ContentPage>

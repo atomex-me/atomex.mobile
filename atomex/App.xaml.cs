@@ -8,7 +8,8 @@ namespace atomex
         {
             InitializeComponent();
             //MainPage = new NavigationPage(new StartPage());
-            //((NavigationPage)MainPage).BarBackgroundColor = Color.CadetBlue;
+            //((NavigationPage)MainPage).BarBackgroundColor = Color.FromHex("#F5F5F5");
+            //((NavigationPage)MainPage).BarBackgroundColor = Color.FromRgba(95, 158, 160, 127);
             MainPage = new MainPage();
         }
 

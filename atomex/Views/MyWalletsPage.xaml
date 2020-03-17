@@ -1,31 +1,35 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.MyWalletsPage">
+             x:Class="atomex.MyWalletsPage"
+             Title="My wallets"
+             BackgroundColor="#F5F5F5">
     <ContentPage.Content>
-    <RelativeLayout>
-        <ActivityIndicator x:Name="Loader"
-                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                           Scale="3"
-                           Color="Black"
-                           IsRunning="False"/>
-        <StackLayout x:Name="Content"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+        <StackLayout>
             <Label Text="Select a wallet..."
-                   TextColor="Gray"
-                   Margin="0,10"
+                   TextColor="CadetBlue"
+                   Margin="0,30,0,0"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
             <Frame Margin="20,10"
-                   CornerRadius="10">
-                <Button Text="Wallet name"
-                        TextColor="CadetBlue"
-                        FontSize="16"
-                        Clicked="OnWalletClicked"/>
+                   CornerRadius="0"
+                   HasShadow="False"
+                   HeightRequest="50"
+                   BorderColor="#E8E8E8">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnWalletTappeed"/>
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Image Source="NavBar__wallets"/>
+                    <Label Text="Wallet name"
+                           TextColor="CadetBlue"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"
+                           FontSize="18"/>
+                </StackLayout>
             </Frame>
-            <ListView ItemsSource="{Binding Wallets}"
+            <!--<ListView ItemsSource="{Binding Wallets}"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -38,8 +42,7 @@
                         </Frame>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            </ListView>-->
         </StackLayout>
-    </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

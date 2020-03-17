@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.CreateNewWalletFirstStepPage">
+             x:Class="atomex.CreateNewWalletFirstStepPage"
+             Title="Create new wallet"
+             BackgroundColor="#F5F5F5">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="Step 1: Wallet type"
@@ -10,10 +12,16 @@
                HorizontalTextAlignment="Center"
                Margin="0,0,0,20"/>
         <Label Text="Please select your wallet type:"/>
-        <Picker HorizontalOptions="FillAndExpand"
-                ItemsSource="{Binding Networks}"
-                SelectedItem="{Binding Network}"
-                HeightRequest="70"/>
+        <Frame Padding="0"
+               HasShadow="False"
+               x:Name="Frame">
+            <Picker HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding Networks}"
+                    SelectedItem="{Binding Network}"
+                    HeightRequest="70"
+                    Focused="OnPickerFocused"
+                    Unfocused="OnPickerUnfocused"/>
+        </Frame>
         <Button Text="Next"
                 Margin="0,20"
                 TextColor="White"
