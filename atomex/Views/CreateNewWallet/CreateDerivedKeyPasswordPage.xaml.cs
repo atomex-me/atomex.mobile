@@ -1,34 +1,29 @@
 ﻿using System;
-
 using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CreateNewWalletFifthStepPage : ContentPage
+    public partial class CreateDerivedKeyPasswordPage : ContentPage
     {
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public CreateNewWalletFifthStepPage()
+        public CreateDerivedKeyPasswordPage()
         {
             InitializeComponent();
         }
 
-        public CreateNewWalletFifthStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        public CreateDerivedKeyPasswordPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
         }
 
-        private void PasswordEntryFocused(object sender, FocusEventArgs e)
+        private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
-            PasswordFrame.HasShadow = true;
+            PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            PasswordFrame.HasShadow = false;
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -45,17 +40,13 @@ namespace atomex
             {
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("StoragePassword", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword("DerivedPassword", args.NewTextValue);
         }
 
-        private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs e)
+        private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
-            PasswordConfirmationFrame.HasShadow = true;
+            PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void PasswordConfirmationEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            PasswordConfirmationFrame.HasShadow = false;
         }
 
         private void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
@@ -72,15 +63,15 @@ namespace atomex
             {
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword("DerivedPasswordConfirmation", args.NewTextValue);
         }
 
-        private void OnCreateButtonClicked(object sender, EventArgs args)
+        private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            var result = _createNewWalletViewModel.CheckStoragePassword();
+            var result = _createNewWalletViewModel.CheckDerivedPassword();
             if (result == null)
             {
-                _createNewWalletViewModel.CreateHdWallet();
+                await Navigation.PushAsync(new CreateStoragePasswordPage(_createNewWalletViewModel));
             }
             else
             {

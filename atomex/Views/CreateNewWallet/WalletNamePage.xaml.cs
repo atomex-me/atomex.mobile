@@ -1,19 +1,18 @@
 ﻿using System;
-
 using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CreateNewWalletSecondStepPage : ContentPage
+    public partial class WalletNamePage : ContentPage
     {
         private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public CreateNewWalletSecondStepPage()
+        public WalletNamePage()
         {
             InitializeComponent();
         }
 
-        public CreateNewWalletSecondStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        public WalletNamePage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
@@ -51,7 +50,16 @@ namespace atomex
             var result = _createNewWalletViewModel.SaveWalletName();
             if (result == null)
             {
-                await Navigation.PushAsync(new CreateNewWalletThirdStepPage(_createNewWalletViewModel));
+                if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Create)
+                {
+                    await Navigation.PushAsync(new CreateMnemonicPage(_createNewWalletViewModel));
+                    return;
+                }
+                if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore)
+                {
+                    await Navigation.PushAsync(new WriteMnemonicPage(_createNewWalletViewModel));
+                    return;
+                }
             }
             else
             {

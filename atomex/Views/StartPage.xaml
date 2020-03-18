@@ -57,12 +57,14 @@
                     TextColor="White"
                     BackgroundColor="CadetBlue"
                     Clicked="CreateNewWalletButtonClicked"/>
-            <Label Text="Forgot password?"
-                   TextColor="CadetBlue"
-                   HorizontalTextAlignment="Center"/>
             <Label Text="Restore wallet"
                    TextColor="CadetBlue"
-                   HorizontalTextAlignment="Center"/>
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRestoreWalletClicked"/>
+                </Label.GestureRecognizers>
+            </Label>
         </StackLayout>
     </StackLayout>
 </ContentPage>

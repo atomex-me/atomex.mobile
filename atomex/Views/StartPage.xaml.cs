@@ -8,25 +8,29 @@ namespace atomex
     {
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
-        private LoginViewModel _loginViewModel;
+        private UnlockViewModel _unlockViewModel;
 
         public StartPage()
         {
             InitializeComponent();
             _createNewWalletViewModel = new CreateNewWalletViewModel();
-            _loginViewModel = new LoginViewModel();
+            _unlockViewModel = new UnlockViewModel();
         }
         private async void ShowMyWalletsButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new MyWalletsPage(_loginViewModel));
+            await Navigation.PushAsync(new MyWalletsPage(_unlockViewModel));
         }
         private async void CreateNewWalletButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new CreateNewWalletFirstStepPage(_createNewWalletViewModel));
+            _createNewWalletViewModel.Clear();
+            _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
+            await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
         }
-
-        void Label_Focused(System.Object sender, Xamarin.Forms.FocusEventArgs e)
+        private async void OnRestoreWalletClicked(object sender, EventArgs args)
         {
+            _createNewWalletViewModel.Clear();
+            _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
+            await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
         }
     }
 }

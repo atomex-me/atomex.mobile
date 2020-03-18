@@ -3,7 +3,7 @@ using atomex.ViewModel;
 
 namespace atomex
 {
-    public class LoginViewModel : BaseViewModel
+    public class UnlockViewModel : BaseViewModel
     {
 
         private string _walletName;
@@ -20,7 +20,7 @@ namespace atomex
             set { _password = value; OnPropertyChanged(nameof(Password)); }
         }
 
-        public LoginViewModel()
+        public UnlockViewModel()
         {}
 
         private SecureString GenerateSecureString(string str)

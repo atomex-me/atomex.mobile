@@ -4,37 +4,48 @@ using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CreateNewWalletThirdStepPage : ContentPage
+    public partial class CreateMnemonicPage : ContentPage
     {
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public CreateNewWalletThirdStepPage()
+        public CreateMnemonicPage()
         {
             InitializeComponent();
         }
 
-        public CreateNewWalletThirdStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        public CreateMnemonicPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
         }
 
+        private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
+        {
+            LanguageFrame.HasShadow = args.IsFocused;
+        }
+
+        private void OnWordCountPickerFocused(object sender, FocusEventArgs args)
+        {
+            WordCountFrame.HasShadow = args.IsFocused;
+        }
+
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
-                await DisplayAlert("Alert", "Click Generate", "Ok");
+                await DisplayAlert("Warning", "Click Generate button", "Ok");
             }
             else
             {
-                await Navigation.PushAsync(new CreateNewWalletFourthPage(_createNewWalletViewModel));
+                await Navigation.PushAsync(new CreateDerivedKeyPasswordPage(_createNewWalletViewModel));
             }
         }
 
         private void OnGenerateButtonClicked(object sender, EventArgs args)
         {
+            MnemonicLabel.IsVisible = false;
             _createNewWalletViewModel.GenerateMnemonic();
         }
     }

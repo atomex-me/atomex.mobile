@@ -3,16 +3,16 @@ using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class LoginPage : ContentPage
+    public partial class UnlockWalletPage : ContentPage
     {
 
-        private LoginViewModel _loginViewModel;
-        public LoginPage()
+        private UnlockViewModel _loginViewModel;
+        public UnlockWalletPage()
         {
             InitializeComponent();
         }
 
-        public LoginPage(LoginViewModel loginViewModel)
+        public UnlockWalletPage(UnlockViewModel loginViewModel)
         {
             InitializeComponent();
             _loginViewModel = loginViewModel;

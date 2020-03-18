@@ -1,19 +1,20 @@
 ﻿using System;
+
 using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CreateNewWalletFourthPage : ContentPage
+    public partial class CreateStoragePasswordPage : ContentPage
     {
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public CreateNewWalletFourthPage()
+        public CreateStoragePasswordPage()
         {
             InitializeComponent();
         }
 
-        public CreateNewWalletFourthPage(CreateNewWalletViewModel createNewWalletViewModel)
+        public CreateStoragePasswordPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
@@ -44,7 +45,7 @@ namespace atomex
             {
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("DerivedPassword", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword("StoragePassword", args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs e)
@@ -71,15 +72,15 @@ namespace atomex
             {
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("DerivedPasswordConfirmation", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
         }
 
-        private async void OnNextButtonClicked(object sender, EventArgs args)
+        private void OnCreateButtonClicked(object sender, EventArgs args)
         {
-            var result = _createNewWalletViewModel.CheckDerivedPassword();
+            var result = _createNewWalletViewModel.CheckStoragePassword();
             if (result == null)
             {
-                await Navigation.PushAsync(new CreateNewWalletFifthStepPage(_createNewWalletViewModel));
+                _createNewWalletViewModel.CreateHdWallet();
             }
             else
             {

@@ -4,17 +4,17 @@ using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CreateNewWalletFirstStepPage : ContentPage
+    public partial class WalletTypePage : ContentPage
     {
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public CreateNewWalletFirstStepPage()
+        public WalletTypePage()
         {
             InitializeComponent();
         }
 
-        public CreateNewWalletFirstStepPage(CreateNewWalletViewModel createNewWalletViewModel)
+        public WalletTypePage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
@@ -33,7 +33,7 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new CreateNewWalletSecondStepPage(_createNewWalletViewModel));
+            await Navigation.PushAsync(new WalletNamePage(_createNewWalletViewModel));
         }
     }
 }

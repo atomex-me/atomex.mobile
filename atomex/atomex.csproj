@@ -19,8 +19,31 @@
     <Folder Include="Helpers\" />
     <Folder Include="Views\" />
     <Folder Include="ViewModel\TransactionViewModels\" />
+    <Folder Include="Views\CreateNewWallet\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\CreateMnemonicPage.xaml.cs">
+      <DependentUpon>CreateMnemonicPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\WalletTypePage.xaml.cs">
+      <DependentUpon>WalletTypePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\WalletNamePage.xaml.cs">
+      <DependentUpon>WalletNamePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\CreateDerivedKeyPasswordPage.xaml.cs">
+      <DependentUpon>CreateDerivedKeyPasswordPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\CreateStoragePasswordPage.xaml.cs">
+      <DependentUpon>CreateStoragePasswordPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
