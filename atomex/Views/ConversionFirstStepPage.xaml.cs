@@ -46,5 +46,15 @@ namespace atomex
                 _maxAmount = maxAmount;
             }
         }
+
+        private void OnFromCurrencyPickerFocused(object sender, FocusEventArgs args)
+        {
+            FromCurrencyFrame.HasShadow = args.IsFocused;
+        }
+
+        private void OnToCurrencyPickerFocused(object sender, FocusEventArgs args)
+        {
+            ToCurrencyFrame.HasShadow = args.IsFocused;
+        }
     }
 }

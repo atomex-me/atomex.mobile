@@ -24,20 +24,27 @@
                        TextColor="Gray"
                        FontSize="16"
                        VerticalTextAlignment="Center"/>
-                <Picker Grid.Column="1"
-                        x:Name="pickerFrom"
-                        Title="Select a currency"
-                        ItemsSource="{Binding FromCurrencies}"
-                        ItemDisplayBinding="{Binding FullName}"
-                        SelectedItem="{Binding FromCurrency}"
-                        HorizontalOptions="FillAndExpand"
-                        SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
+                <Frame Grid.Column="1"
+                       HasShadow="False"
+                       Padding="0"
+                       x:Name="FromCurrencyFrame">
+                    <Picker x:Name="pickerFrom"
+                            Title="Select a currency"
+                            ItemsSource="{Binding FromCurrencies}"
+                            ItemDisplayBinding="{Binding FullName}"
+                            SelectedItem="{Binding FromCurrency}"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Focused="OnFromCurrencyPickerFocused"
+                            Unfocused="OnFromCurrencyPickerFocused"
+                            SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
+                </Frame>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label Text="{Binding FromCurrency.AvailableAmount}"
+                    <Label Text="{Binding FromCurrency.AvailableAmount, StringFormat='{0:0.#####}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0"/>
                     <Image Source="{Binding FromCurrency.Name}"/>
@@ -47,14 +54,22 @@
                        TextColor="Gray"
                        FontSize="16"
                        VerticalTextAlignment="Center"/>
-                <Picker Grid.Row="1"
-                        Grid.Column="1"
-                        x:Name="pickerTo"
-                        Title="Select a currency"
-                        ItemsSource="{Binding ToCurrencies}"
-                        ItemDisplayBinding="{Binding FullName}"
-                        SelectedItem="{Binding ToCurrency}"
-                        HorizontalOptions="FillAndExpand"/>
+                <Frame Grid.Row="1"
+                       Grid.Column="1"
+                       HasShadow="False"
+                       Padding="0"
+                       x:Name="ToCurrencyFrame">
+                    <Picker Grid.Row="1"
+                            Grid.Column="1"
+                            x:Name="pickerTo"
+                            Title="Select a currency"
+                            ItemsSource="{Binding ToCurrencies}"
+                            ItemDisplayBinding="{Binding FullName}"
+                            SelectedItem="{Binding ToCurrency}"
+                            Focused="OnToCurrencyPickerFocused"
+                            Unfocused="OnToCurrencyPickerFocused"
+                            HorizontalOptions="FillAndExpand"/>
+                </Frame>
                 <StackLayout Grid.Row="1"
                              Grid.Column="1"
                              Orientation="Horizontal"
@@ -62,7 +77,7 @@
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label Text="{Binding ToCurrency.AvailableAmount}"
+                    <Label Text="{Binding ToCurrency.AvailableAmount, StringFormat='{0:0.#########}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0" />
                     <Image Source="{Binding ToCurrency.Name}" />
