@@ -281,13 +281,13 @@ namespace atomex
             {
                 if (DerivedPasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
                 {
-                    return "Password Insufficient Complexity";
+                    return "Password has insufficient complexity";
                 }
 
                 if (DerivedPasswordConfirmation != null &&
                     !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
                 {
-                    return "Passwords Do Not Match";
+                    return "Passwords do not match";
                 }
             }
             return null;
@@ -297,14 +297,14 @@ namespace atomex
         {
             if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
             {
-                return "Password Insufficient Complexity";
+                return "Password has insufficient complexity";
             }
 
             if (StoragePassword != null &&
                 StoragePasswordConfirmation != null &&
                 !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
             {
-                return "Passwords Do Not Match";
+                return "Passwords do not match";
             }
             return null;
         }
@@ -350,6 +350,7 @@ namespace atomex
         {
             WalletName = string.Empty;
             Language = Wordlist.English;
+            Mnemonic = string.Empty;
             DerivedPassword = null;
             DerivedPasswordConfirmation = null;
             DerivedPasswordScore = 0;

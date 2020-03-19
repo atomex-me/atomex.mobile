@@ -39,9 +39,7 @@
                     Margin="20,20,20,0"
                     BorderColor="CadetBlue"
                     BorderWidth="1"
-                    ImageSource="NavBar__wallets"
-                    TextColor="White"
-                    BackgroundColor="CadetBlue"
+                    TextColor="CadetBlue"
                     Clicked="ShowMyWalletsButtonClicked">                        
             </Button>
             <Button Text="CREATE NEW WALLET"
@@ -53,9 +51,7 @@
                     Margin="20,0,20,10"
                     BorderColor="CadetBlue"
                     BorderWidth="1"
-                    ImageSource="NavBar__wallets"
-                    TextColor="White"
-                    BackgroundColor="CadetBlue"
+                    TextColor="CadetBlue"
                     Clicked="CreateNewWalletButtonClicked"/>
             <Label Text="Restore wallet"
                    TextColor="CadetBlue"

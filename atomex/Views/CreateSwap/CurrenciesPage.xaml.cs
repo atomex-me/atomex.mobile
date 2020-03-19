@@ -2,20 +2,20 @@
 using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.CreateSwap
 {
-    public partial class ConversionFirstStepPage : ContentPage
+    public partial class CurrenciesPage : ContentPage
     {
         private decimal _maxAmount;
 
         private ConversionViewModel _conversionViewModel;
 
-        public ConversionFirstStepPage()
+        public CurrenciesPage()
         {
             InitializeComponent();
         }
 
-        public ConversionFirstStepPage(ConversionViewModel conversionViewModel)
+        public CurrenciesPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
@@ -25,7 +25,7 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new ConversionSecondStepPage(_conversionViewModel, _maxAmount));
+            await Navigation.PushAsync(new AmountPage(_conversionViewModel, _maxAmount));
         }
 
         private void OnPickerFromCurrencySelectedIndexChanged(object sender, EventArgs args)

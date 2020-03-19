@@ -2,13 +2,13 @@
 using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.SettingsOptions
 {
-    public partial class SettingsPeriodOfInactiveListOptionsPage : ContentPage
+    public partial class PeriodOfInactiveListPage : ContentPage
     {
         public Action<int> OnOptionSelected;
 
-        public SettingsPeriodOfInactiveListOptionsPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
+        public PeriodOfInactiveListPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
         {
             InitializeComponent();
             OnOptionSelected = onOptionSelected;

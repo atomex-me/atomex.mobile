@@ -2,7 +2,7 @@
 
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.CreateNewWallet
 {
     public partial class CreateStoragePasswordPage : ContentPage
     {

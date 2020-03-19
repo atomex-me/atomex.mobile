@@ -2,13 +2,13 @@
 using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.SettingsOptions
 {
-    public partial class SettingsBalanceUpdateIntervalListOptionsPage : ContentPage
+    public partial class BalanceUpdateIntervalListPage : ContentPage
     {
         public Action<int> OnOptionSelected;
 
-        public SettingsBalanceUpdateIntervalListOptionsPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
+        public BalanceUpdateIntervalListPage(SettingsViewModel settingsViewModel, Action<int> onOptionSelected)
         {
             InitializeComponent();
             OnOptionSelected = onOptionSelected;

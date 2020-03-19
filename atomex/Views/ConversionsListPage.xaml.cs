@@ -1,5 +1,6 @@
 ﻿using System;
 using atomex.ViewModel;
+using atomex.Views.CreateSwap;
 using Xamarin.Forms;
 
 namespace atomex
@@ -32,7 +33,7 @@ namespace atomex
         }
         private async void OnCreateSwapButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new ConversionFirstStepPage(_conversionViewModel));
+            await Navigation.PushAsync(new CurrenciesPage(_conversionViewModel));
         }
     }
 }

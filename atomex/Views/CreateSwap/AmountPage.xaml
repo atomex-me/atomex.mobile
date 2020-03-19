@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             x:Class="atomex.ConversionSecondStepPage"
+             x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="Create swap - step 2"
              BackgroundColor="#f2f2f7">
     <ContentPage.Content>

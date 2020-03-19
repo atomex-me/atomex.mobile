@@ -4,6 +4,7 @@ using atomex.ViewModel;
 using atomex.CustomElements;
 using Atomex;
 using System;
+using atomex.Views.CreateSwap;
 
 namespace atomex
 {
@@ -54,7 +55,7 @@ namespace atomex
             Console.WriteLine(conversionViewModel);
             if (conversionViewModel != null)
             {
-                navigationConversionPage.PushAsync(new ConversionFirstStepPage(conversionViewModel));
+                navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
 
                 Console.WriteLine(currency);
                 Console.WriteLine(conversionViewModel);

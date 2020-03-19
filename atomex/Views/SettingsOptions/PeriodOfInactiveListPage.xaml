@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.SettingsBalanceUpdateIntervalListOptionsPage">
+             x:Class="atomex.Views.SettingsOptions.PeriodOfInactiveListPage">
     <ContentPage.Content>
         <TableView Intent="Settings">
             <TableRoot>
@@ -13,7 +13,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="30 sec"
+                                <Label Text="5 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -22,7 +22,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="30">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="5">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -37,7 +37,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="60 sec"
+                                <Label Text="10 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -46,7 +46,7 @@
                                        Margin="10,0"
                                        IsVisible="False">
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="60">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="10">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -61,7 +61,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="120 sec"
+                                <Label Text="30 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -70,7 +70,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="120">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="30">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -85,7 +85,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="240 sec"
+                                <Label Text="60 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -94,7 +94,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="240">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="60">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -109,7 +109,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="360 sec"
+                                <Label Text="90 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -118,7 +118,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="360">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="90">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -133,7 +133,7 @@
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="600 sec"
+                                <Label Text="180 min"
                                        VerticalOptions="Center"
                                        Margin="20,0">
                                 </Label>
@@ -142,7 +142,7 @@
                                        Margin="10,0"
                                        IsVisible="False" >
                                     <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding BalanceUpdateIntervalInSec}" Value="600">
+                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="180">
                                             <Setter Property="IsVisible" Value="True"></Setter>
                                         </DataTrigger>
                                     </Image.Triggers>

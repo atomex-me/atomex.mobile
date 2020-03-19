@@ -2,19 +2,19 @@
 using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.CreateSwap
 {
-    public partial class ConversionSecondStepPage : ContentPage
+    public partial class AmountPage : ContentPage
     {
         private decimal _maxAmount;
 
         private ConversionViewModel _conversionViewModel;
 
-        public ConversionSecondStepPage()
+        public AmountPage()
         {
             InitializeComponent();
         }
-        public ConversionSecondStepPage(ConversionViewModel conversionViewModel, decimal maxAmount)
+        public AmountPage(ConversionViewModel conversionViewModel, decimal maxAmount)
         {
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
@@ -91,7 +91,7 @@ namespace atomex
                 await DisplayAlert("Warning", "Not enough liquidity to convert a specified amount", "Ok");
                 return;
             }
-            await Navigation.PushAsync(new ConversionConfirmationPage(_conversionViewModel));
+            await Navigation.PushAsync(new ConfirmationPage(_conversionViewModel));
         }
     }
 }

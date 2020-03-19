@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.CreateNewWallet
 {
     public partial class CreateDerivedKeyPasswordPage : ContentPage
     {

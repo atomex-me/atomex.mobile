@@ -3,20 +3,20 @@ using atomex.ViewModel;
 using Atomex.Core;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.CreateSwap
 {
-    public partial class ConversionConfirmationPage : ContentPage
+    public partial class ConfirmationPage : ContentPage
     {
         private ConversionViewModel _conversionViewModel;
 
         private const int BACK_COUNT = 3;
 
-        public ConversionConfirmationPage()
+        public ConfirmationPage()
         {
             InitializeComponent();
         }
 
-        public ConversionConfirmationPage(ConversionViewModel conversionViewModel)
+        public ConfirmationPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
