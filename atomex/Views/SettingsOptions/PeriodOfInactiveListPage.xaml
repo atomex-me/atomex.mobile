@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.Views.SettingsOptions.PeriodOfInactiveListPage">
+             x:Class="atomex.Views.SettingsOptions.PeriodOfInactiveListPage"
+             Title="Period of inactive">
     <ContentPage.Content>
-        <TableView Intent="Settings">
+        <TableView Intent="Settings" BackgroundColor="#F5F5F5">
             <TableRoot>
                 <TableSection>
                     <ViewCell x:Name="Option1" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
@@ -32,7 +33,7 @@
                     </ViewCell>
                     <ViewCell x:Name="Option2" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
@@ -56,7 +57,7 @@
                     </ViewCell>
                     <ViewCell x:Name="Option3" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
@@ -80,7 +81,7 @@
                     </ViewCell>
                     <ViewCell x:Name="Option4" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
@@ -104,7 +105,7 @@
                     </ViewCell>
                     <ViewCell x:Name="Option5" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>
@@ -128,7 +129,7 @@
                     </ViewCell>
                     <ViewCell x:Name="Option6" Tapped="OnOptionTapped">
                         <ViewCell.View>
-                            <Grid>
+                            <Grid BackgroundColor="White">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="9*"/>
                                     <ColumnDefinition Width="1*"/>

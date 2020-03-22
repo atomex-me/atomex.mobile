@@ -22,6 +22,7 @@
     <Folder Include="Views\CreateNewWallet\" />
     <Folder Include="Views\CreateSwap\" />
     <Folder Include="Views\SettingsOptions\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

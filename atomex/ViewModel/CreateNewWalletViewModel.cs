@@ -309,19 +309,13 @@ namespace atomex
             return null;
         }
 
-        public async void CreateHdWallet()
+        public void CreateHdWallet()
         {
             Wallet = new HdWallet(
                 mnemonic: Mnemonic,
                 wordList: Language,
                 passPhrase: DerivedPassword,
                 network: Network);
-
-            //await wallet.EncryptAsync(StoragePassword);
-
-            //wallet.SaveToFile($"/{WalletName}.wallet", StoragePassword);
-
-            // todo: Load wallet
         }
 
         public async void ConnectToWallet()

@@ -9,12 +9,14 @@ namespace atomex
 
         private CreateNewWalletViewModel _createNewWalletViewModel;
         private UnlockViewModel _unlockViewModel;
+        private StartViewModel _startViewModel;
 
         public StartPage()
         {
             InitializeComponent();
             _createNewWalletViewModel = new CreateNewWalletViewModel();
             _unlockViewModel = new UnlockViewModel();
+            _startViewModel = new StartViewModel();
         }
         private async void ShowMyWalletsButtonClicked(object sender, EventArgs args)
         {

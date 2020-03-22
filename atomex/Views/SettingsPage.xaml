@@ -5,12 +5,16 @@
                Title="Settings"
                Icon="NavBar__settings">
         <ContentPage.Content>
-            <TableView Intent="Settings">
+            <TableView Intent="Settings"
+                       BackgroundColor="White">
                 <TableRoot>
-                    <TableSection Title="Security">
+                    <TableSection Title="Security"
+                                  TextColor="CadetBlue">
                         <SwitchCell Text="Show Warnings"
+                                    OnColor="CadetBlue"
                                     On="{Binding ShowActiveSwapWarning, Mode=TwoWay}"/>
                         <SwitchCell Text="Automatic sign out"
+                                    OnColor="CadetBlue"
                                     On="{Binding AutoSignOut, Mode=TwoWay}"/>
                         <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
                             <ViewCell.View>
@@ -22,7 +26,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Text="Period of inactive"
                                            VerticalOptions="Center"
-                                           Margin="15,0">
+                                           Margin="20,0">
                                     </Label>
                                     <Label Grid.Column="1"
                                            Text="{Binding PeriodOfInactivityInMin}"
@@ -45,7 +49,8 @@
                             </ViewCell.View>
                         </ViewCell>
                     </TableSection>
-                    <TableSection Title="Blockchain">
+                    <TableSection Title="Blockchain"
+                                  TextColor="CadetBlue">
                         <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
                             <ViewCell.View>
                                 <Grid>
@@ -54,27 +59,9 @@
                                         <ColumnDefinition Width="3*"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <!--<Image Source="CopyIcon"
-                                           HeightRequest="24"
-                                           Margin="10, 0"/>
-                                    <Label Grid.Column="1"
-                                           Text="Label"
-                                           VerticalOptions="Center" >
-                                    </Label>
-                                    <Label Grid.Column="2"
-                                           Text="{Binding Setting1}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           HorizontalOptions="End"
-                                           TextColor="Gray"/>
-                                    <Image Grid.Column="3"
-                                           Source="RightArrowIcon"
-                                           HeightRequest="18"
-                                           Margin="10,0" />-->
                                     <Label Text="Balance update interval"
                                            VerticalOptions="Center"
-                                           
-                                           Margin="15,0,0,0">
+                                           Margin="20,0,0,0">
                                     </Label>
                                     <Label Grid.Column="1"
                                            Text="{Binding BalanceUpdateIntervalInSec}"

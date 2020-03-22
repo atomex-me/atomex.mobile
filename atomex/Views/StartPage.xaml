@@ -15,6 +15,7 @@
                          Margin="0,30,0,0"
                          BackgroundColor="LightCyan"/>
             <Label Text="ATOMEX"
+                   TextDecorations="Underline"
                    FontSize="24"
                    Padding="10"
                    FontAttributes="Bold"
@@ -60,6 +61,12 @@
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnRestoreWalletClicked"/>
                 </Label.GestureRecognizers>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Restore wallet"
+                              TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
             </Label>
         </StackLayout>
     </StackLayout>
