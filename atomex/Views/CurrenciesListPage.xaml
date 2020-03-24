@@ -6,7 +6,7 @@
              Icon="NavBar__wallets">
         <ContentPage.Content>
             <StackLayout>
-                <ListView ItemsSource="{Binding Currencies}"
+                <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"
                           ItemTapped="OnListViewItemTapped"
                           SeparatorVisibility="None">
@@ -24,11 +24,11 @@
                                         <ColumnDefinition Width="4*" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
-                                           Source="{Binding Name}"
+                                           Source="{Binding CurrencyCode}"
                                            HeightRequest="48"
                                            WidthRequest="48" />
                                     <Label Grid.Column="1"
-                                           Text="{Binding FullName}"
+                                           Text="{Binding Currency.Description}"
                                            FontAttributes="Bold"
                                            VerticalOptions="End"/>
                                     <Label Grid.Column="2"
@@ -40,7 +40,7 @@
                                             <FormattedString>
                                                 <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
                                                 <Span Text=" " /> 
-                                                <Span Text="{Binding Name}" />
+                                                <Span Text="{Binding CurrencyCode}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

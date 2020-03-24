@@ -14,14 +14,14 @@
             </zxing:ZXingBarcodeImageView>-->
             <zxing:ZXingBarcodeImageView WidthRequest="300"
                                          HeightRequest="300"
-                                         BarcodeValue="{Binding Address}"
+                                         BarcodeValue="{Binding FreeExternalAddress}"
                                          BarcodeFormat="QR_CODE"
                                          x:Name="IMG">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                     <zxcm:EncodingOptions Width="300" Height="300" />
                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
             </zxing:ZXingBarcodeImageView>
-            <Label Text="{Binding Address}"
+            <Label Text="{Binding FreeExternalAddress}"
                    TextColor="Gray"
                    HorizontalTextAlignment="Center"
                    FontSize="24"

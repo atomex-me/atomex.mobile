@@ -1,14 +1,22 @@
-﻿using Atomex.Common;
+﻿using Atomex.Abstract;
+using Atomex.Common;
 using Atomex.Core;
 
 namespace atomex
 {
     public static class SwapViewModelFactory
     {
-        public static SwapViewModel CreateSwapViewModel(Swap swap)
+        public static SwapViewModel CreateSwapViewModel(Swap swap, ICurrencies currencies)
         {
-            var fromAmount = AmountHelper.QtyToAmount(swap.Side, swap.Qty, swap.Price);
-            var toAmount = AmountHelper.QtyToAmount(swap.Side.Opposite(), swap.Qty, swap.Price);
+            var soldCurrency = currencies.GetByName(swap.SoldCurrency);
+            var purchasedCurrency = currencies.GetByName(swap.PurchasedCurrency);
+
+            var fromAmount = AmountHelper.QtyToAmount(swap.Side, swap.Qty, swap.Price, soldCurrency.DigitsMultiplier);
+            var toAmount = AmountHelper.QtyToAmount(swap.Side.Opposite(), swap.Qty, swap.Price, purchasedCurrency.DigitsMultiplier);
+
+            var quoteCurrency = swap.Symbol.QuoteCurrency() == swap.SoldCurrency
+                ? soldCurrency
+                : purchasedCurrency;
 
             return new SwapViewModel
             {
@@ -18,13 +26,13 @@ namespace atomex
                 Time = swap.TimeStamp,
 
                 FromAmount = fromAmount,
-                FromCurrencyCode = swap.SoldCurrency.Name,
+                FromCurrencyCode = soldCurrency.Name,
 
                 ToAmount = toAmount,
-                ToCurrencyCode = swap.PurchasedCurrency.Name,
+                ToCurrencyCode = purchasedCurrency.Name,
 
                 Price = swap.Price,
-                PriceFormat = $"F{swap.Symbol.Quote.Digits}"
+                PriceFormat = $"F{quoteCurrency.Digits}"
             };
         }
 

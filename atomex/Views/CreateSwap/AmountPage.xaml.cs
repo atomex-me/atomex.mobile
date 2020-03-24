@@ -19,7 +19,7 @@ namespace atomex.Views.CreateSwap
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
             _maxAmount = maxAmount;
-            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrency.Name;
+            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrency.CurrencyCode;
             BindingContext = _conversionViewModel;
         }
         private void AmountEntryFocused(object sender, FocusEventArgs e)
@@ -77,7 +77,7 @@ namespace atomex.Views.CreateSwap
             if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrency.Name;
+                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrency.CurrencyCode;
                 return;
             }
             if (amount > _maxAmount)

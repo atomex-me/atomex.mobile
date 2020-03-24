@@ -35,10 +35,10 @@ namespace atomex
             _amount = amount;
             _fee = fee;
             _feePrice = feePrice;
-            AddressFrom.Detail = currencyViewModel.Address;
+            AddressFrom.Detail = currencyViewModel.FreeExternalAddress;
             AddressTo.Detail = to;
-            Amount.Detail = amount.ToString() + " " + currencyViewModel.Name;
-            Fee.Detail = fee.ToString() + " " + currencyViewModel.Name;
+            Amount.Detail = amount.ToString() + " " + currencyViewModel.CurrencyCode;
+            Fee.Detail = fee.ToString() + " " + currencyViewModel.CurrencyCode;
         }
 
 
@@ -46,14 +46,14 @@ namespace atomex
             try
             {
                 BlockActions(true);
-                var error = await _app.Account.SendAsync(_currencyViewModel.Name, _to, _amount, _fee, _feePrice);
+                var error = await _app.Account.SendAsync(_currencyViewModel.CurrencyCode, _to, _amount, _fee, _feePrice);
                 if (error != null)
                 {
                     BlockActions(false);
                     await DisplayAlert("Error", "Sending transaction error", "Ok");
                     return;
                 }
-                var res = await DisplayAlert("Success", _amount + " " + _currencyViewModel.Name + " sent to " + _to, null, "Ok");
+                var res = await DisplayAlert("Success", _amount + " " + _currencyViewModel.CurrencyCode + " sent to " + _to, null, "Ok");
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)

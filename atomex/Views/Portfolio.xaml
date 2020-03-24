@@ -20,7 +20,7 @@
                        TextColor="Gray"
                        FontSize="14"
                        HorizontalTextAlignment="Center"/>
-                <ListView ItemsSource="{Binding Currencies}"
+                <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"
                           Margin="0,20"
                           SeparatorVisibility="None">
@@ -39,13 +39,13 @@
                                         <ColumnDefinition Width="3.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
-                                           Source="{Binding Name}"
+                                           Source="{Binding CurrencyCode}"
                                            HeightRequest="38"
                                            WidthRequest="38"
                                            VerticalOptions="Center"
                                            HorizontalOptions="Center"/>
                                     <Label Grid.Column="1"
-                                           Text="{Binding FullName}"
+                                           Text="{Binding Currency.Description}"
                                            FontAttributes="Bold"
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.RowSpan="2"
@@ -69,7 +69,7 @@
                                             <FormattedString>
                                                 <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
                                                 <Span Text=" " /> 
-                                                <Span Text="{Binding Name}" />
+                                                <Span Text="{Binding CurrencyCode}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

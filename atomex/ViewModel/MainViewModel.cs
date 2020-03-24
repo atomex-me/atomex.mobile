@@ -13,6 +13,7 @@ using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
 using System.Threading.Tasks;
 
+
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
@@ -42,7 +43,7 @@ namespace atomex.ViewModel
                 .Build();
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
-            var symbolsProvider = new SymbolsProvider(symbolsConfiguration, currenciesProvider);
+            var symbolsProvider = new SymbolsProvider(symbolsConfiguration);
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var library = Path.Combine(documents, "..", "Library");
@@ -76,7 +77,7 @@ namespace atomex.ViewModel
 
             SubscribeToServices();
 
-            AtomexApp.UseTerminal(new Terminal(configuration, account), restart: true);
+            AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(account);
@@ -111,7 +112,7 @@ namespace atomex.ViewModel
 
         private void OnTerminalServiceStateChangedEventHandler(object sender, TerminalServiceEventArgs args)
         {
-            if (!(sender is ITerminal terminal))
+            if (!(sender is IAtomexClient terminal))
                 return;
 
             // subscribe to symbols updates

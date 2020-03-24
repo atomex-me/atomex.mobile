@@ -27,7 +27,7 @@ namespace atomex
             {
                 _currencyViewModel = currencyViewModel;
                 BindingContext = _currencyViewModel;
-                if (_currencyViewModel.FullName == "Tezos")
+                if (_currencyViewModel.CurrencyCode == "XTZ")
                 {
                     DelegateOption.IsVisible = true;
                 }

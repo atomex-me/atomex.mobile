@@ -30,7 +30,7 @@ namespace atomex
             {
                 _currencyViewModel = selectedCurrency;
                 _app = app;
-                Amount.Placeholder = "Amount, " + _currencyViewModel.Name;
+                Amount.Placeholder = "Amount, " + _currencyViewModel.CurrencyCode;
                 EstimateMaxAmount(null);
             }
         }
@@ -97,11 +97,11 @@ namespace atomex
         async void EstimateFee(string to, decimal amount)
         {
             ShowFeeLoader(true);
-            var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.Name, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
+            var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.CurrencyCode, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
             _fee = fee ?? 0;
             _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
             fee = _fee * _feePrice;
-            FeeValue.Text = fee.ToString() + " " + _currencyViewModel.Name;
+            FeeValue.Text = fee.ToString() + " " + _currencyViewModel.CurrencyCode;
             ShowFeeLoader(false);
         }
 
@@ -165,7 +165,7 @@ namespace atomex
             if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _currencyViewModel.Name;
+                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _currencyViewModel.CurrencyCode;
                 return;
             }
             if (amount > _maxAmount)

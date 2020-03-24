@@ -15,20 +15,16 @@ namespace atomex.ViewModel
 {
     public class CurrencyViewModel : BaseViewModel
     {
-        private IAtomexApp _app;
+        private IAtomexApp App { get; set; }
 
         public Currency Currency { get; set; }
-        public string Name { get; set; }
-        public string FullName { get; set; }
-        private decimal _availableAmount;
-        public decimal AvailableAmount
-        {
-            get => _availableAmount;
-            set { _availableAmount = value; OnPropertyChanged(nameof(AvailableAmount)); }
-        }
+        public decimal TotalAmount { get; set; }
+        public decimal AvailableAmount { get; set; }
+        public decimal UnconfirmedAmount { get; set; }
+        public string FreeExternalAddress { get; set; }
+        public string CurrencyCode => Currency.Name;
         public decimal Price { get; set; }
         public decimal Cost { get; set; }
-        public string Address { get; set; }
 
         private float _portfolioPercent;
         public float PortfolioPercent
@@ -45,37 +41,57 @@ namespace atomex.ViewModel
             {
                 _transactions = value;
                 OnPropertyChanged(nameof(Transactions));
-                Console.WriteLine(_transactions);
             }
         }
 
         public CurrencyViewModel(IAtomexApp app)
         {
-            _app = app;
+            App = app;
             SubscibeToServices();
         }
 
         private void SubscibeToServices()
         {
-            _app.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
-            _app.Account.BalanceUpdated += BalanceUpdated;
+            App.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
+            App.Account.BalanceUpdated += BalanceUpdated;
         }
 
         private async void BalanceUpdated(object sender, CurrencyEventArgs args)
         {
             try
             {
-                if (args.Currency.Name != Currency?.Name)
-                    return;
-                var balance = await _app.Account.GetBalanceAsync(args.Currency.Name);
-                Currency = args.Currency;
-                AvailableAmount = balance.Available;
-                await LoadTransactionsAsync();
+                if (Currency.Name.Equals(args.Currency))
+                {
+                    await UpdateBalanceAsync().ConfigureAwait(false);
+                    await LoadTransactionsAsync().ConfigureAwait(false);
+                    await UpdateFreeExternalAddressAsync().ConfigureAwait(false);
+                }
             }
             catch (Exception e)
             {
-                Log.Error(e, "Account balance updated event handler error");
+                Log.Error(e, $"Error for currency {args.Currency}");
             }
+        }
+
+        private async Task UpdateBalanceAsync() {
+            var balance = await App.Account
+                .GetBalanceAsync(Currency.Name)
+                .ConfigureAwait(false);
+
+            TotalAmount = balance.Confirmed;
+            OnPropertyChanged(nameof(TotalAmount));
+
+            AvailableAmount = balance.Available;
+            OnPropertyChanged(nameof(AvailableAmount));
+
+            UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
+            OnPropertyChanged(nameof(UnconfirmedAmount));
+        }
+
+        public async Task UpdateFreeExternalAddressAsync()
+        {
+            var walletAddress = await App.Account.GetFreeExternalAddressAsync(CurrencyCode);
+            FreeExternalAddress = walletAddress.Address;
         }
 
         private void UnconfirmedTransactionAdded(
@@ -97,15 +113,15 @@ namespace atomex.ViewModel
 
         public async Task LoadTransactionsAsync()
         {
-            Log.Debug("LoadTransactionsAsync for {@currency}", Name);
+            Log.Debug("LoadTransactionsAsync for {@currency}", Currency.Name);
 
             try
             {
-                if (_app.Account == null)
+                if (App.Account == null)
                     return;
 
-                var transactions = (await _app.Account
-                    .GetTransactionsAsync(Name))
+                var transactions = (await App.Account
+                    .GetTransactionsAsync(Currency.Name))
                     .ToList();
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -120,19 +136,19 @@ namespace atomex.ViewModel
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransactionAsync error for {@currency}", Name);
+                Log.Error(e, "LoadTransactionAsync error for {@currency}", Currency.Name);
             }
         }
 
         public async Task UpdateCurrencyAsync()
         {
-            await new HdWalletScanner(_app.Account).ScanAsync(Currency.Name);
+            await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
         }
 
         public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
         {
-            return await _app.Account
-               .EstimateMaxAmountToSendAsync(Name, address, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
+            return await App.Account
+               .EstimateMaxAmountToSendAsync(Currency.Name, address, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
                .ConfigureAwait(false);
         }
     }

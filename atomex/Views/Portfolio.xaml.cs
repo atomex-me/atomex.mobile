@@ -38,7 +38,7 @@ namespace atomex
 
         private void UpdateChart()
         {
-            if (_currenciesViewModel.Currencies != null)
+            if (_currenciesViewModel.CurrencyViewModels != null)
             {
                 if (_currenciesViewModel.TotalCost == 0)
                 {
@@ -47,14 +47,14 @@ namespace atomex
                 else
                 {
                     portfolioChart.IsVisible = true;
-                    var nonzeroWallets = _currenciesViewModel.Currencies.Where(w => w.AvailableAmount != 0).ToList();
+                    var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.AvailableAmount != 0).ToList();
                     var entries = new Microcharts.Entry[nonzeroWallets.Count];
                     for (int i = 0; i < nonzeroWallets.Count; i++)
                     {
                         Random rnd = new Random();
                         entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                         {
-                            Label = nonzeroWallets[i].Name,
+                            Label = nonzeroWallets[i].CurrencyCode,
                             ValueLabel = string.Format("{0:0.#####}", nonzeroWallets[i].AvailableAmount),
                             Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
                         };

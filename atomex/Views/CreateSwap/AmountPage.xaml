@@ -81,7 +81,7 @@
                                   TextColor="Gray"/>
                             <Span Text="{Binding EstimatedMaxAmount}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding FromCurrency.Name}"/>
+                            <Span Text="{Binding FromCurrency.CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
             </Label>
@@ -96,12 +96,12 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding FromCurrency.Name}" />
+                <Image Source="{Binding FromCurrency.CurrencyCode}" />
                 <Image Source="RightArrow"
                        Grid.Column="1"
                        WidthRequest="48"
                        VerticalOptions="CenterAndExpand"/>
-                <Image Source="{Binding ToCurrency.Name}"
+                <Image Source="{Binding ToCurrency.CurrencyCode}"
                        Grid.Column="2" />
                 <Label Grid.Row="1"
                        FontSize="14"
@@ -112,7 +112,7 @@
                         <FormattedString>
                             <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding FromCurrency.Name}" />
+                            <Span Text="{Binding FromCurrency.CurrencyCode}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -143,7 +143,7 @@
                         <FormattedString>
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding ToCurrency.Name}" />
+                            <Span Text="{Binding ToCurrency.CurrencyCode}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -191,7 +191,7 @@
                         <Span Text="{Binding EstimatedPaymentFee}"
                               FontAttributes="Bold"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding FromCurrency.Name}"
+                        <Span Text="{Binding FromCurrency.CurrencyCode}"
                               FontAttributes="Bold"/>
                     </FormattedString>
                 </Label.FormattedText>
@@ -203,7 +203,7 @@
                         <Span Text="{Binding EstimatedRedeemFee}"
                               FontAttributes="Bold"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding ToCurrency.Name}"
+                        <Span Text="{Binding ToCurrency.CurrencyCode}"
                               FontAttributes="Bold"/>
                     </FormattedString>
                 </Label.FormattedText>

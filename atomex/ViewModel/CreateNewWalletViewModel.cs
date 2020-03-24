@@ -17,7 +17,7 @@ namespace atomex
     public class CreateNewWalletViewModel : BaseViewModel
     {
 
-        private IAtomexApp _app;
+        private IAtomexApp App;
 
         public enum Action
         {
@@ -160,7 +160,7 @@ namespace atomex
 
         public CreateNewWalletViewModel(IAtomexApp app)
         {
-            _app = app;
+            App = app;
 
             Network = Atomex.Core.Network.MainNet;
 
@@ -330,8 +330,8 @@ namespace atomex
                 var account = new Account(
                     wallet: Wallet,
                     password: StoragePassword,
-                    currenciesProvider: _app.CurrenciesProvider,
-                    symbolsProvider: _app.SymbolsProvider);
+                    currenciesProvider: App.CurrenciesProvider,
+                    symbolsProvider: App.SymbolsProvider);
             }
             catch (Exception e)
             {

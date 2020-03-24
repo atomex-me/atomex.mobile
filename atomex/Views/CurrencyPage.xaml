@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrencyPage"
-             Title="{Binding Name}">
+             Title="{Binding Currency.Description}">
     <StackLayout>
         <SwipeView>
             <SwipeView.TopItems>
@@ -22,7 +22,7 @@
                        VerticalTextAlignment="Center"
                        FontAttributes="Italic"
                        IsVisible="False"/>
-                <Image Source="{Binding Name}"
+                <Image Source="{Binding CurrencyCode}"
                        HeightRequest="64"
                        WidthRequest="64"
                        Margin="0,30,0,10" />
@@ -35,11 +35,11 @@
                         <FormattedString>
                             <Span Text="{Binding AvailableAmount}" />
                             <Span Text=" " /> 
-                            <Span Text="{Binding Name}" />
+                            <Span Text="{Binding CurrencyCode}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Text="{Binding FullName}"
+                <Label Text="{Binding Currency.Description}"
                        HorizontalOptions="Center"/>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
@@ -103,8 +103,16 @@
         </SwipeView>
         <ListView ItemsSource="{Binding Transactions}"
                   ItemTapped="OnListViewItemTapped"
-                  IsVisible="{Binding Transactions}"
-                  HasUnevenRows="True">
+                  HasUnevenRows="True"
+                  Footer="">
+            <ListView.Triggers>
+                <DataTrigger TargetType="ListView"
+                             Binding="{Binding Transactions.Count}"
+                             Value="0">
+                    <Setter Property="IsVisible"
+                            Value="False"></Setter>
+                </DataTrigger>
+            </ListView.Triggers>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

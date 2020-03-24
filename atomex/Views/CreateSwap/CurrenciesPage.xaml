@@ -31,7 +31,7 @@
                     <Picker x:Name="pickerFrom"
                             Title="Select a currency"
                             ItemsSource="{Binding FromCurrencies}"
-                            ItemDisplayBinding="{Binding FullName}"
+                            ItemDisplayBinding="{Binding Currency.Description}"
                             SelectedItem="{Binding FromCurrency}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
@@ -47,7 +47,7 @@
                     <Label Text="{Binding FromCurrency.AvailableAmount, StringFormat='{0:0.#####}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0"/>
-                    <Image Source="{Binding FromCurrency.Name}"/>
+                    <Image Source="{Binding FromCurrency.CurrencyCode}"/>
                 </StackLayout>
                 <Label Grid.Row="1"
                        Text="To"
@@ -64,7 +64,7 @@
                             x:Name="pickerTo"
                             Title="Select a currency"
                             ItemsSource="{Binding ToCurrencies}"
-                            ItemDisplayBinding="{Binding FullName}"
+                            ItemDisplayBinding="{Binding Currency.Description}"
                             SelectedItem="{Binding ToCurrency}"
                             Focused="OnToCurrencyPickerFocused"
                             Unfocused="OnToCurrencyPickerFocused"
@@ -73,14 +73,13 @@
                 <StackLayout Grid.Row="1"
                              Grid.Column="1"
                              Orientation="Horizontal"
-                             IsVisible="{Binding FullName}"
                              Padding="20"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
                     <Label Text="{Binding ToCurrency.AvailableAmount, StringFormat='{0:0.#########}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0" />
-                    <Image Source="{Binding ToCurrency.Name}" />
+                    <Image Source="{Binding ToCurrency.CurrencyCode}" />
                 </StackLayout>
             </Grid>
             <Label Margin="20">

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Atomex;
+using Atomex.Abstract;
 using Atomex.Common;
-using Atomex.Core;
 
 namespace atomex.ViewModel
 {
@@ -12,7 +12,7 @@ namespace atomex.ViewModel
     {
         public event EventHandler QuotesUpdated;
 
-        private IAtomexApp _app { get; }
+        private IAtomexApp App { get; }
 
         private decimal _totalCost;
         public decimal TotalCost
@@ -21,65 +21,57 @@ namespace atomex.ViewModel
             set { _totalCost = value; OnPropertyChanged(nameof(TotalCost)); }
         }
 
-        private List<Currency> coreCurrencies;
 
-        private List<CurrencyViewModel> currencies;
-
-        public List<CurrencyViewModel> Currencies
+        private ICurrencies Currencies
         {
-            get { return currencies; }
-            set
+            get
             {
-                if (currencies != value)
-                {
-                    currencies = value;
-                    OnPropertyChanged(nameof(Currencies));
-                }
+                return App.Account.Currencies;
             }
         }
 
+        public List<CurrencyViewModel> CurrencyViewModels { get; set; }
+
         public CurrenciesViewModel(IAtomexApp app)
         {
-            _app = app;
-
-            coreCurrencies = _app.Account.Currencies.ToList();
-            Currencies = new List<CurrencyViewModel>();
+            App = app;
+            CurrencyViewModels = new List<CurrencyViewModel>();
             FillCurrenciesAsync().FireAndForget();
-
             SubscribeToServices();
         }
 
         private void SubscribeToServices()
         {
-            _app.QuotesProvider.QuotesUpdated += QuotesProvider_QuotesUpdated;
+            App.QuotesProvider.QuotesUpdated += QuotesUpdatedEventHandler;
         }
 
         private async Task FillCurrenciesAsync()
         {
-            await Task.WhenAll(coreCurrencies.Select(async c =>
+            await Task.WhenAll(Currencies.Select(async c =>
             {
-                var balance = await _app.Account.GetBalanceAsync(c.Name);
-                var address = await _app.Account.GetFreeExternalAddressAsync(c.Name);
+                var balance = await App.Account.GetBalanceAsync(c.Name);
+                var address = await App.Account.GetFreeExternalAddressAsync(c.Name);
 
-                CurrencyViewModel currency = new CurrencyViewModel(_app)
+                CurrencyViewModel currency = new CurrencyViewModel(App)
                 {
                     Currency = c,
+                    TotalAmount = balance.Confirmed,
                     AvailableAmount = balance.Available,
-                    Name = c.Name,
-                    FullName = c.Description,
-                    Address = address.Address
+                    UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
+                    FreeExternalAddress = address.Address
                 };
-                Currencies.Add(currency);
+                CurrencyViewModels.Add(currency);
+                //currency.UpdateCurrencyAsync().FireAndForget();
                 currency.LoadTransactionsAsync().FireAndForget();
             }));
         }
 
-        private void QuotesProvider_QuotesUpdated(object sender, EventArgs e)
+        private void QuotesUpdatedEventHandler(object sender, EventArgs e)
         {
             TotalCost = 0;
-            foreach (var c in Currencies)
+            foreach (var c in CurrencyViewModels)
             {
-                var quote = _app.QuotesProvider.GetQuote(c.Name, "USD");
+                var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, "USD");
                 c.Price = quote.Bid;
                 c.Cost = c.AvailableAmount * quote.Bid;
                 TotalCost += c.Cost;
@@ -87,7 +79,7 @@ namespace atomex.ViewModel
 
             if (TotalCost != 0)
             {
-                foreach (var c in Currencies)
+                foreach (var c in CurrencyViewModels)
                 {
                     c.PortfolioPercent = (float)(c.Cost / TotalCost * 100);
                 }
