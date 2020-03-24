@@ -2,15 +2,12 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using Xamarin.Essentials;
-using Atomex;
 
 namespace atomex
 {
     public partial class SendPage : ContentPage
     {
         private CurrencyViewModel _currencyViewModel;
-
-        private IAtomexApp _app;
 
         private decimal _maxAmount;
 
@@ -23,13 +20,12 @@ namespace atomex
             InitializeComponent();
         }
 
-        public SendPage(IAtomexApp app, CurrencyViewModel selectedCurrency)
+        public SendPage(CurrencyViewModel selectedCurrency)
         {
             InitializeComponent();
             if (selectedCurrency != null)
             {
                 _currencyViewModel = selectedCurrency;
-                _app = app;
                 Amount.Placeholder = "Amount, " + _currencyViewModel.CurrencyCode;
                 EstimateMaxAmount(null);
             }
@@ -94,10 +90,10 @@ namespace atomex
             }
         }
 
-        async void EstimateFee(string to, decimal amount)
+        private async void EstimateFee(string to, decimal amount)
         {
             ShowFeeLoader(true);
-            var fee = (await _app.Account.EstimateFeeAsync(_currencyViewModel.CurrencyCode, to, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output));
+            var fee = await _currencyViewModel.EstimateFeeAsync(to, amount);
             _fee = fee ?? 0;
             _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
             fee = _fee * _feePrice;
@@ -105,9 +101,9 @@ namespace atomex
             ShowFeeLoader(false);
         }
 
-        async void EstimateMaxAmount(string address)
+        private async void EstimateMaxAmount(string address)
         {
-            var (maxAmount, _, _) = await _currencyViewModel?.EstimateMaxAmount(address);
+            var (maxAmount, _, _) = await _currencyViewModel?.EstimateMaxAmountToSendAsync(address);
             _maxAmount = maxAmount;
         }
 
@@ -174,7 +170,7 @@ namespace atomex
                 InvalidAmountLabel.Text = "Insufficient funds";
                 return;
             }
-            await Navigation.PushAsync(new SendingConfirmationPage(_app, _currencyViewModel, Address.Text, amount, _fee, _feePrice));
+            await Navigation.PushAsync(new SendingConfirmationPage(_currencyViewModel, Address.Text, amount, _fee, _feePrice));
         }
     }
 }

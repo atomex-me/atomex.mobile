@@ -22,8 +22,8 @@ namespace atomex
         {
 
             _mainViewModel = new MainViewModel();
-            IAtomexApp AtomexApp = _mainViewModel.GetAtomexApp();
-            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(AtomexApp, _mainViewModel.CurrenciesViewModel, this));
+            //IAtomexApp AtomexApp = _mainViewModel.GetAtomexApp();
+            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, this));
             navigationWalletsListPage.IconImageSource = "NavBar__wallets";
             navigationWalletsListPage.Title = "Wallets";
 

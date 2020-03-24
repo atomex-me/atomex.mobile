@@ -95,17 +95,17 @@
                                        TextColor="CadetBlue"
                                        IsVisible="False"/>
                                 <controls:CustomEntry Grid.Row="2"
-                                              Grid.ColumnSpan="2"
-                                              x:Name="Amount"
-                                              Placeholder="Amount"
-                                              Keyboard="Numeric"
-                                              Focused="AmountEntryFocused"
-                                              Unfocused="AmountEntryUnfocused"
-                                              IsSpellCheckEnabled="False"
-                                              IsTextPredictionEnabled="False"
-                                                    VerticalOptions="FillAndExpand"
-                                                    HorizontalTextAlignment="Start"
-                                                    TextChanged="OnAmountTextChanged"/>
+                                                      Grid.ColumnSpan="2"
+                                                      x:Name="Amount"
+                                                      Placeholder="Amount"
+                                                      Keyboard="Numeric"
+                                                      Focused="AmountEntryFocused"
+                                                      Unfocused="AmountEntryUnfocused"
+                                                      IsSpellCheckEnabled="False"
+                                                      IsTextPredictionEnabled="False"
+                                                      VerticalOptions="FillAndExpand"
+                                                      HorizontalTextAlignment="Start"
+                                                      TextChanged="OnAmountTextChanged"/>
                             </StackLayout>
                         </Frame>
                         <Button Grid.Row="2"

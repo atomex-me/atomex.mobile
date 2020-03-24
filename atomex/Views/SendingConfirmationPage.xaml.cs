@@ -1,15 +1,12 @@
 ﻿using System;
 using Xamarin.Forms;
 using atomex.ViewModel;
-using Atomex;
 
 namespace atomex
 {
     public partial class SendingConfirmationPage : ContentPage
     {
         private CurrencyViewModel _currencyViewModel;
-
-        private IAtomexApp _app;
 
         private string _to;
 
@@ -26,10 +23,9 @@ namespace atomex
             InitializeComponent();
         }
 
-        public SendingConfirmationPage(IAtomexApp app, CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee, decimal feePrice)
+        public SendingConfirmationPage(CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee, decimal feePrice)
         {
             InitializeComponent();
-            _app = app;
             _currencyViewModel = currencyViewModel;
             _to = to;
             _amount = amount;
@@ -46,7 +42,7 @@ namespace atomex
             try
             {
                 BlockActions(true);
-                var error = await _app.Account.SendAsync(_currencyViewModel.CurrencyCode, _to, _amount, _fee, _feePrice);
+                var error = await _currencyViewModel.SendAsync(_to, _amount, _fee, _feePrice);
                 if (error != null)
                 {
                     BlockActions(false);

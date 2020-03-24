@@ -10,18 +10,15 @@ namespace atomex
     {
         private CurrencyViewModel _currencyViewModel;
         private INavigationService _navigationService;
-        private IAtomexApp _app;
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(IAtomexApp app, CurrencyViewModel currencyViewModel, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
             InitializeComponent();
-
             _navigationService = navigationService;
-            _app = app;
 
             if (currencyViewModel != null)
             {
@@ -39,7 +36,7 @@ namespace atomex
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SendPage(_app, _currencyViewModel));
+            await Navigation.PushAsync(new SendPage(_currencyViewModel));
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         {

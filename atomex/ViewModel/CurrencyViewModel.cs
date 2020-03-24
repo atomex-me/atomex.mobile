@@ -145,11 +145,23 @@ namespace atomex.ViewModel
             await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
         }
 
-        public async Task<(decimal, decimal, decimal)> EstimateMaxAmount(string address)
+        public async Task<(decimal, decimal, decimal)> EstimateMaxAmountToSendAsync(string address)
         {
             return await App.Account
                .EstimateMaxAmountToSendAsync(Currency.Name, address, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
                .ConfigureAwait(false);
+        }
+
+        public async Task<decimal?> EstimateFeeAsync(string toAddress, decimal amount)
+        {
+            return await App.Account
+                .EstimateFeeAsync(CurrencyCode, toAddress, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<Error> SendAsync(string toAddress, decimal amount, decimal fee, decimal feePrice)
+        {
+            return await App.Account.SendAsync(CurrencyCode, toAddress, amount, fee, feePrice);
         }
     }
 }
