@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
              Title="Create new wallet"
-             BackgroundColor="#F5F5F5">
+             BackgroundColor="#ebedec">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="Step 1: Wallet type"

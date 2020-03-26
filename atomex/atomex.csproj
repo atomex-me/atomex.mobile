@@ -11,6 +11,7 @@
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
+    <PackageReference Include="Syncfusion.Xamarin.Core" Version="17.4.0.55" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />

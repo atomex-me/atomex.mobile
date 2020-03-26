@@ -162,6 +162,10 @@
     <ImageAsset Include="Assets.xcassets\USDT.imageset\iconfinder_Tether_2785374.png" />
     <ImageAsset Include="Assets.xcassets\FA12.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\FA12.imageset\xtz.png" />
+    <ImageAsset Include="Assets.xcassets\LockIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
+    <ImageAsset Include="Assets.xcassets\Login.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Login.imageset\entry.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -213,6 +217,9 @@
     <Folder Include="Assets.xcassets\Logo.imageset\" />
     <Folder Include="Assets.xcassets\USDT.imageset\" />
     <Folder Include="Assets.xcassets\FA12.imageset\" />
+    <Folder Include="Assets.xcassets\LogIn.imageset\" />
+    <Folder Include="Assets.xcassets\LockIcon.imageset\" />
+    <Folder Include="Assets.xcassets\Login.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />

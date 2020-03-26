@@ -1,10 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.StartPage"
-             BackgroundColor="#F0F0F0">
-    <StackLayout>
-        <StackLayout BackgroundColor="CadetBlue">
+             xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+             x:Class="atomex.StartPage">
+    <Grid>
+        <gradient:SfGradientView>
+            <gradient:SfGradientView.BackgroundBrush>
+                <gradient:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <gradient:SfLinearGradientBrush.GradientStops>
+                        <gradient:SfGradientStop Color="CadetBlue" Offset="0.0" />
+                        <gradient:SfGradientStop Color="#96ded1" Offset="1.0" />
+                    </gradient:SfLinearGradientBrush.GradientStops>
+                </gradient:SfLinearGradientBrush>
+            </gradient:SfGradientView.BackgroundBrush>
+        </gradient:SfGradientView>
+        <StackLayout>
             <ImageButton Source="Logo"
                          CornerRadius="100"
                          WidthRequest="200"
@@ -14,7 +24,8 @@
                          Padding="40"
                          Margin="0,30,0,0"
                          BackgroundColor="LightCyan"/>
-            <Label Text="ATOMEX"
+            <Label Grid.Row="1"
+                   Text="ATOMEX"
                    TextDecorations="Underline"
                    FontSize="24"
                    Padding="10"
@@ -22,52 +33,55 @@
                    TextColor="White"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
-            <Label Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
+            <Label Grid.Row="2"
+                   Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
                    FontSize="18"
                    Padding="20,0,20,20"
                    TextColor="White"
                    FontAttributes="Italic"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
+
+            <StackLayout Grid.Row="3" VerticalOptions="FillAndExpand">
+                <Button Text="MY WALLETS"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Center"
+                        CornerRadius="3"
+                        FontSize="18"
+                        HeightRequest="70"
+                        Margin="20,20,20,0"
+                        BorderColor="CadetBlue"
+                        BorderWidth="2"
+                        TextColor="White"
+                        Clicked="ShowMyWalletsButtonClicked">                        
+                </Button>
+                <Button Text="CREATE NEW WALLET"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Center"
+                        CornerRadius="3"
+                        FontSize="18"
+                        HeightRequest="70"
+                        Margin="20,0,20,10"
+                        BorderColor="CadetBlue"
+                        BorderWidth="2"
+                        TextColor="White"
+                        Clicked="CreateNewWalletButtonClicked"/>
+                <Label Text="Restore wallet"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRestoreWalletClicked"/>
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Restore wallet"
+                                  TextDecorations="Underline"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
         </StackLayout>
-        <StackLayout VerticalOptions="FillAndExpand">
-            <Button Text="MY WALLETS"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    CornerRadius="3"
-                    FontSize="18"
-                    HeightRequest="70"
-                    Margin="20,20,20,0"
-                    BorderColor="CadetBlue"
-                    BorderWidth="1"
-                    TextColor="CadetBlue"
-                    Clicked="ShowMyWalletsButtonClicked">                        
-            </Button>
-            <Button Text="CREATE NEW WALLET"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    CornerRadius="3"
-                    FontSize="18"
-                    HeightRequest="70"
-                    Margin="20,0,20,10"
-                    BorderColor="CadetBlue"
-                    BorderWidth="1"
-                    TextColor="CadetBlue"
-                    Clicked="CreateNewWalletButtonClicked"/>
-            <Label Text="Restore wallet"
-                   TextColor="CadetBlue"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnRestoreWalletClicked"/>
-                </Label.GestureRecognizers>
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Restore wallet"
-                              TextDecorations="Underline"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-        </StackLayout>
-    </StackLayout>
+       
+    </Grid>
 </ContentPage>

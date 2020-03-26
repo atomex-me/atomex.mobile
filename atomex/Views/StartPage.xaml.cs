@@ -1,5 +1,6 @@
 ﻿using System;
 using atomex.Views.CreateNewWallet;
+using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
@@ -11,10 +12,10 @@ namespace atomex
         private UnlockViewModel _unlockViewModel;
         private StartViewModel _startViewModel;
 
-        public StartPage()
+        public StartPage(IAtomexApp app)
         {
             InitializeComponent();
-            _createNewWalletViewModel = new CreateNewWalletViewModel();
+            _createNewWalletViewModel = new CreateNewWalletViewModel(app);
             _unlockViewModel = new UnlockViewModel();
             _startViewModel = new StartViewModel();
         }

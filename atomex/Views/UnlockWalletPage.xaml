@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.UnlockWalletPage"
              Title="Unlock wallet"
-             BackgroundColor="#F5F5F5">
+             BackgroundColor="#ebedec">
     <RelativeLayout>
         <ActivityIndicator x:Name="Loader"
                            RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
@@ -14,33 +14,46 @@
                            IsRunning="False"/>
         <StackLayout x:Name="Content"
                      Padding="30"
-                     VerticalOptions="Center"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <ImageButton Source="Login"
+                         BackgroundColor="LightCyan"
+                         CornerRadius="90"
+                         Padding="30"
+                         Margin="0,20"
+                         HorizontalOptions="Center"
+                         WidthRequest="180"
+                         HeightRequest="180"/>
             <Label Text="Please enter your password:"/>
             <Frame x:Name="PasswordFrame"
                    Padding="0"
                    HasShadow="False"
                    CornerRadius="0"
                    HorizontalOptions="FillAndExpand">
-                <StackLayout HeightRequest="70">
-                    <Label x:Name="PasswordHint"
-                            Margin="20,5,0,0"
-                            FontSize="14"
-                            VerticalTextAlignment="End"
-                            TextColor="CadetBlue"
-                            IsVisible="False"/>
-                    <controls:CustomEntry x:Name="PasswordEntry"
-                                          Placeholder="Password"
-                                          Keyboard="Text"
-                                          Focused="PasswordEntryFocused"
-                                          Unfocused="PasswordEntryUnfocused"
-                                          IsPassword="True"
-                                          IsSpellCheckEnabled="False"
-                                          IsTextPredictionEnabled="False"
-                                          HorizontalOptions="FillAndExpand"
-                                          VerticalOptions="FillAndExpand"
-                                          TextChanged="OnPasswordTextChanged"/>
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="LockIcon"
+                           Margin="10,0,0,0"
+                           HeightRequest="24"/>
+                    <StackLayout HeightRequest="70"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label x:Name="PasswordHint"
+                               Padding="20,10,0,0"
+                               FontSize="14"
+                               VerticalTextAlignment="End"
+                               TextColor="CadetBlue"
+                               IsVisible="False"/>
+                        <controls:CustomEntry x:Name="PasswordEntry"
+                                              Placeholder="Password"
+                                              Keyboard="Text"
+                                              Focused="PasswordEntryFocused"
+                                              Unfocused="PasswordEntryFocused"
+                                              IsPassword="True"
+                                              IsSpellCheckEnabled="False"
+                                              IsTextPredictionEnabled="False"
+                                              HorizontalOptions="FillAndExpand"
+                                              VerticalOptions="FillAndExpand"
+                                              TextChanged="OnPasswordTextChanged"/>
+                </StackLayout>
                 </StackLayout>
             </Frame>
             <Label x:Name="Error"

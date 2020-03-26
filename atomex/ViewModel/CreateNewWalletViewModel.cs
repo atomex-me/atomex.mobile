@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security;
 using atomex.ViewModel;
 using Atomex;
@@ -33,18 +34,37 @@ namespace atomex
             Atomex.Core.Network.TestNet
         };
 
-        public IEnumerable<KeyValuePair<string, Wordlist>> Languages { get; } = new List<KeyValuePair<string, Wordlist>>
+        //public List<KeyValuePair<Wordlist, string>> Languages { get; } = new List<KeyValuePair<Wordlist, string>>
+        //{
+        //    new KeyValuePair<Wordlist, string>(Wordlist.English, "English"),
+        //    new KeyValuePair<Wordlist, string>(Wordlist.French, "French")
+        //};
+
+        public List<KeyValuePair<string, Wordlist>> Languages { get; set; } = new List<KeyValuePair<string, Wordlist>>
         {
-            new KeyValuePair<string, Wordlist>("English", Wordlist.English),
-            new KeyValuePair<string, Wordlist>("French", Wordlist.French),
-            new KeyValuePair<string, Wordlist>("Japanese", Wordlist.Japanese),
-            new KeyValuePair<string, Wordlist>("Spanish", Wordlist.Spanish),
-            new KeyValuePair<string, Wordlist>("Portuguese Brazil", Wordlist.PortugueseBrazil),
-            new KeyValuePair<string, Wordlist>("Chinese Traditional", Wordlist.ChineseTraditional),
-            new KeyValuePair<string, Wordlist>("Chinese Simplified", Wordlist.ChineseSimplified)
+             new KeyValuePair<string, Wordlist>("English", Wordlist.English),
+             new KeyValuePair<string, Wordlist>("French", Wordlist.French)
+            //{ "English", Wordlist.English },
+            //{ "French", Wordlist.French },
+            //{ "Japanese", Wordlist.Japanese },
+            //{ "Spanish", Wordlist.Spanish },
+            //{ "Portuguese Brazil", Wordlist.PortugueseBrazil },
+            //{ "Chinese Traditional", Wordlist.ChineseTraditional },
+            //{ "Chinese Simplified", Wordlist.ChineseSimplified }
         };
 
-        public IEnumerable<KeyValuePair<string, int>> WordCountToEntropyLength { get; } = new List<KeyValuePair<string, int>>
+        //public List<Wordlist> Languages { get; private set; } = new List<Wordlist>
+        //{
+        //    Wordlist.English,
+        //    Wordlist.French,
+        //    Wordlist.Japanese,
+        //    Wordlist.Spanish,
+        //    Wordlist.PortugueseBrazil,
+        //    Wordlist.ChineseTraditional,
+        //    Wordlist.ChineseSimplified
+        //};
+
+        public List<KeyValuePair<string, int>> WordCountToEntropyLength { get; } = new List<KeyValuePair<string, int>>
         {
             new KeyValuePair<string, int>("12", 128),
             new KeyValuePair<string, int>("15", 160),
@@ -168,7 +188,7 @@ namespace atomex
             //foreach (KeyValuePair<string, Wordlist> kvp in Languages)
             //    kvp.Key
             Console.WriteLine(Language);
-            Console.WriteLine(Languages);
+            //Console.WriteLine(Languages);
             Console.WriteLine(EntropyLength);
         }
 

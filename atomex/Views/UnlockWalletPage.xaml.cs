@@ -18,14 +18,10 @@ namespace atomex
             _loginViewModel = loginViewModel;
         }
 
-        private void PasswordEntryFocused(object sender, FocusEventArgs e)
+        private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
-            PasswordFrame.HasShadow = true;
+            PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            PasswordFrame.HasShadow = false;
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -34,12 +30,14 @@ namespace atomex
             {
                 if (!PasswordHint.IsVisible)
                 {
+                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
                 }
             }
             else
             {
+                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
             _loginViewModel.SetPassword(args.NewTextValue);

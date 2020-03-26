@@ -3,19 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.MyWalletsPage"
              Title="My wallets"
-             BackgroundColor="#F5F5F5">
+             BackgroundColor="#ebedec">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Select a wallet..."
+            <Label Text="SELECT A WALLET"
                    TextColor="CadetBlue"
                    Margin="0,30,0,0"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
             <Frame Margin="20,10"
-                   CornerRadius="0"
+                   CornerRadius="3"
                    HasShadow="False"
-                   HeightRequest="50"
-                   BorderColor="#E8E8E8">
+                   BorderColor="#E8E8E8"
+                   HeightRequest="50">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnWalletTapped"/>
                 </Frame.GestureRecognizers>
