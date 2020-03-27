@@ -8,7 +8,8 @@
             <TableView Intent="Form"
                        RowHeight="70">
                 <TableRoot>
-                    <TableSection Title="Transaction Info">
+                    <TableSection Title="Transaction Info"
+                                  TextColor="CadetBlue">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Image HeightRequest="32"

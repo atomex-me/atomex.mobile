@@ -8,7 +8,8 @@
             <TableView Intent="Form"
                        RowHeight="70">
                 <TableRoot>
-                    <TableSection Title="Swap Info">
+                    <TableSection Title="Swap Info"
+                                  TextColor="CadetBlue">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="ConversionIcon"
@@ -66,7 +67,7 @@
                                                      Binding="{Binding CompactState}"
                                                      Value="InProgress">
                                             <Setter Property="BackgroundColor"
-                                                    Value="MediumBlue"/>
+                                                    Value="DodgerBlue"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
@@ -78,7 +79,7 @@
                                                      Binding="{Binding CompactState}"
                                                      Value="Refunded">
                                             <Setter Property="BackgroundColor"
-                                                    Value="YellowGreen"/>
+                                                    Value="MediumPurple"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
