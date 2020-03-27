@@ -9,20 +9,32 @@
                 <gradient:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <gradient:SfLinearGradientBrush.GradientStops>
                         <gradient:SfGradientStop Color="CadetBlue" Offset="0.0" />
-                        <gradient:SfGradientStop Color="#96ded1" Offset="1.0" />
+                        <gradient:SfGradientStop Color="#c4ede6" Offset="1.0" />
                     </gradient:SfLinearGradientBrush.GradientStops>
                 </gradient:SfLinearGradientBrush>
             </gradient:SfGradientView.BackgroundBrush>
         </gradient:SfGradientView>
+        <!--<gradient:SfGradientView>
+            <gradient:SfGradientView.BackgroundBrush>
+                <gradient:SfRadialGradientBrush Radius="1" Center="0.5,0.5">
+                    <gradient:SfRadialGradientBrush.GradientStops>
+                        <gradient:SfGradientStop Color="#c4ede6" Offset="0.0" />
+                        <gradient:SfGradientStop Color="CadetBlue" Offset="1.0" />
+                    </gradient:SfRadialGradientBrush.GradientStops>
+                </gradient:SfRadialGradientBrush>
+            </gradient:SfGradientView.BackgroundBrush>
+        </gradient:SfGradientView>-->
         <StackLayout>
             <ImageButton Source="Logo"
                          CornerRadius="100"
                          WidthRequest="200"
                          HeightRequest="200"
+                         BorderColor="CadetBlue"
+                         BorderWidth="3"
                          HorizontalOptions="Center"
                          VerticalOptions="Center"
                          Padding="40"
-                         Margin="0,30,0,0"
+                         Margin="0,60,0,30"
                          BackgroundColor="LightCyan"/>
             <Label Grid.Row="1"
                    Text="ATOMEX"
@@ -50,9 +62,9 @@
                         FontSize="18"
                         HeightRequest="70"
                         Margin="20,20,20,0"
-                        BorderColor="CadetBlue"
+                        BorderColor="#cd726f"
                         BorderWidth="2"
-                        TextColor="White"
+                        TextColor="#cd726f"
                         Clicked="ShowMyWalletsButtonClicked">                        
                 </Button>
                 <Button Text="CREATE NEW WALLET"
@@ -62,12 +74,12 @@
                         FontSize="18"
                         HeightRequest="70"
                         Margin="20,0,20,10"
-                        BorderColor="CadetBlue"
+                        BorderColor="#cd726f"
                         BorderWidth="2"
-                        TextColor="White"
+                        TextColor="#cd726f"
                         Clicked="CreateNewWalletButtonClicked"/>
                 <Label Text="Restore wallet"
-                       TextColor="White"
+                       TextColor="#cd726f"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center">
                     <Label.GestureRecognizers>

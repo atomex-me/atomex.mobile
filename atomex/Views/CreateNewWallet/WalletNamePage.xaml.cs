@@ -19,14 +19,10 @@ namespace atomex.Views.CreateNewWallet
             BindingContext = createNewWalletViewModel;
         }
 
-        private void EntryFocused(object sender, FocusEventArgs e)
+        private void EntryFocused(object sender, FocusEventArgs args)
         {
-            Frame.HasShadow = true;
+            Frame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void EntryUnfocused(object sender, FocusEventArgs e)
-        {
-            Frame.HasShadow = false;
         }
 
         private void OnTextChanged(object sender, TextChangedEventArgs args)
@@ -37,11 +33,13 @@ namespace atomex.Views.CreateNewWallet
                 {
                     NameHint.IsVisible = true;
                     NameHint.Text = Entry.Placeholder;
+                    Entry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
                 NameHint.IsVisible = false;
+                Entry.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 

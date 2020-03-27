@@ -35,7 +35,7 @@ namespace atomex.Views.CreateNewWallet
         {
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
-                await DisplayAlert("Warning", "Click Generate button", "Ok");
+                await DisplayAlert("Warning", "Generate mnemonic phrase", "Ok");
             }
             else
             {

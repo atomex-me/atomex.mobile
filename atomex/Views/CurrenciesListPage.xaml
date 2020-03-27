@@ -5,7 +5,7 @@
              Title="Wallets"
              Icon="NavBar__wallets">
         <ContentPage.Content>
-            <StackLayout>
+            <StackLayout Margin="0,20">
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"
                           ItemTapped="OnListViewItemTapped"

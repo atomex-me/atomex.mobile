@@ -34,10 +34,12 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
+                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
+                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword("DerivedPassword", args.NewTextValue);
@@ -57,10 +59,12 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordConfirmationHint.IsVisible = true;
                     PasswordConfirmationHint.Text = PasswordConfirmationEntry.Placeholder;
+                    PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
+                PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordConfirmationHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword("DerivedPasswordConfirmation", args.NewTextValue);

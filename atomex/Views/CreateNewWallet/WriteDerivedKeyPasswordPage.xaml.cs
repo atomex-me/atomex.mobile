@@ -33,10 +33,12 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
+                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
+                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
         }

@@ -166,6 +166,8 @@
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
     <ImageAsset Include="Assets.xcassets\Login.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Login.imageset\entry.png" />
+    <ImageAsset Include="Assets.xcassets\WalletIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WalletIcon.imageset\outline_account_balance_wallet_black_48pt_1x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -220,6 +222,7 @@
     <Folder Include="Assets.xcassets\LogIn.imageset\" />
     <Folder Include="Assets.xcassets\LockIcon.imageset\" />
     <Folder Include="Assets.xcassets\Login.imageset\" />
+    <Folder Include="Assets.xcassets\WalletIcon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />

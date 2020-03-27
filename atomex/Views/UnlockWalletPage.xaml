@@ -18,6 +18,8 @@
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
             <ImageButton Source="Login"
                          BackgroundColor="LightCyan"
+                         BorderColor="CadetBlue"
+                         BorderWidth="3"
                          CornerRadius="90"
                          Padding="30"
                          Margin="0,20"
@@ -30,12 +32,17 @@
                    HasShadow="False"
                    CornerRadius="0"
                    HorizontalOptions="FillAndExpand">
-                <StackLayout Orientation="Horizontal">
-                    <Image Source="LockIcon"
-                           Margin="10,0,0,0"
-                           HeightRequest="24"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Frame HasShadow="False"
+                           
+                           BackgroundColor="LightCyan">
+                        <Image Source="LockIcon"
+                           HeightRequest="24"
+                           WidthRequest="24"/>
+                    </Frame>
                     <StackLayout HeightRequest="70"
-                                 HorizontalOptions="FillAndExpand">
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="White">
                         <Label x:Name="PasswordHint"
                                Padding="20,10,0,0"
                                FontSize="14"

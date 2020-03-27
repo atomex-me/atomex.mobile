@@ -18,13 +18,15 @@ namespace atomex
         {
             InitializeComponent();
             _unlockViewModel = unlockViewModel;
-            //((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.White;
             //BindingContext = Wallets;
         }
 
         private async void OnWalletTapped(object sender, EventArgs args)
         {
+            Frame walletFrame = sender as Frame;
+            walletFrame.HasShadow = true;
             await Navigation.PushAsync(new UnlockWalletPage(_unlockViewModel));
+            walletFrame.HasShadow = false;
         }
     }
 }

@@ -21,14 +21,10 @@ namespace atomex.Views.CreateNewWallet
             BindingContext = createNewWalletViewModel;
         }
 
-        private void PasswordEntryFocused(object sender, FocusEventArgs e)
+        private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
-            PasswordFrame.HasShadow = true;
+            PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            PasswordFrame.HasShadow = false;
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -39,23 +35,21 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
+                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
+                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword("StoragePassword", args.NewTextValue);
         }
 
-        private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs e)
+        private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
-            PasswordConfirmationFrame.HasShadow = true;
+            PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
-        }
-        private void PasswordConfirmationEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            PasswordConfirmationFrame.HasShadow = false;
         }
 
         private void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
@@ -66,10 +60,12 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordConfirmationHint.IsVisible = true;
                     PasswordConfirmationHint.Text = PasswordConfirmationEntry.Placeholder;
+                    PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
+                PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordConfirmationHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
