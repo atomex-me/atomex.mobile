@@ -9,7 +9,7 @@
                 <gradient:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <gradient:SfLinearGradientBrush.GradientStops>
                         <gradient:SfGradientStop Color="CadetBlue" Offset="0.0" />
-                        <gradient:SfGradientStop Color="#c4ede6" Offset="1.0" />
+                        <gradient:SfGradientStop Color="LightCyan" Offset="1.0" />
                     </gradient:SfLinearGradientBrush.GradientStops>
                 </gradient:SfLinearGradientBrush>
             </gradient:SfGradientView.BackgroundBrush>
@@ -29,42 +29,43 @@
                          CornerRadius="100"
                          WidthRequest="200"
                          HeightRequest="200"
-                         BorderColor="CadetBlue"
+                         BorderColor="#1f6568"
                          BorderWidth="3"
                          HorizontalOptions="Center"
                          VerticalOptions="Center"
                          Padding="40"
-                         Margin="0,60,0,30"
+                         Margin="0,60,0,20"
                          BackgroundColor="LightCyan"/>
             <Label Grid.Row="1"
                    Text="ATOMEX"
                    TextDecorations="Underline"
-                   FontSize="24"
+                   FontSize="36"
                    Padding="10"
                    FontAttributes="Bold"
-                   TextColor="White"
+                   TextColor="#1f6568"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
             <Label Grid.Row="2"
                    Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
                    FontSize="18"
-                   Padding="20,0,20,20"
+                   Padding="20,0,20,40"
                    TextColor="White"
                    FontAttributes="Italic"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"/>
 
-            <StackLayout Grid.Row="3" VerticalOptions="FillAndExpand">
-                <Button Text="MY WALLETS"
+            <StackLayout Grid.Row="3"
+                         VerticalOptions="FillAndExpand">
+                     <Button Text="MY WALLETS"
                         HorizontalOptions="Fill"
                         VerticalOptions="Center"
                         CornerRadius="3"
                         FontSize="18"
                         HeightRequest="70"
                         Margin="20,20,20,0"
-                        BorderColor="#cd726f"
+                        BorderColor="#A66731"
                         BorderWidth="2"
-                        TextColor="#cd726f"
+                        TextColor="#A66731"
                         Clicked="ShowMyWalletsButtonClicked">                        
                 </Button>
                 <Button Text="CREATE NEW WALLET"
@@ -74,12 +75,12 @@
                         FontSize="18"
                         HeightRequest="70"
                         Margin="20,0,20,10"
-                        BorderColor="#cd726f"
+                        BorderColor="#A66731"
                         BorderWidth="2"
-                        TextColor="#cd726f"
+                        TextColor="#A66731"
                         Clicked="CreateNewWalletButtonClicked"/>
                 <Label Text="Restore wallet"
-                       TextColor="#cd726f"
+                       TextColor="#A66731"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center">
                     <Label.GestureRecognizers>

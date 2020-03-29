@@ -49,11 +49,9 @@
                                  CornerRadius="24"
                                  WidthRequest="48"
                                  HeightRequest="48"
-                                 
-                                 BorderColor="#cd726f"
-                        BorderWidth="2"
-                                 
-                                 
+                                 BackgroundColor="#FFE0C6"
+                                 BorderColor="#A66731"
+                                 BorderWidth="2"   
                                  Padding="10"/>
                     <Label Text="Starik 4mo"
                            TextColor="Black"

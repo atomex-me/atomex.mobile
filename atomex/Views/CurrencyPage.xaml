@@ -11,17 +11,17 @@
                 </SwipeItems>
             </SwipeView.TopItems>
             <StackLayout>
-                <ActivityIndicator x:Name="Loader"
-                                   Color="CadetBlue"
-                                   Margin="0,30,0,0"
-                                   IsVisible="False"/>
                 <Label x:Name="LoaderLabel"
                        Text="Balance updating..."
                        TextColor="CadetBlue"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        FontAttributes="Italic"
-                       IsVisible="False"/>
+                       IsVisible="False"
+                       Margin="0,20,0,10"/>
+                <ActivityIndicator x:Name="Loader"
+                                   Color="CadetBlue"
+                                   IsVisible="False"/>
                 <Image Source="{Binding CurrencyCode}"
                        HeightRequest="64"
                        WidthRequest="64"
@@ -116,10 +116,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame HasShadow="True"
+                        <Frame HasShadow="False"
                                BackgroundColor="#ebedec"
                                Padding="0"
-                               Margin="10,5">
+                               Margin="10,2">
                             <Grid Padding="10"
                                   RowSpacing="0"
                                   ColumnSpacing="0">

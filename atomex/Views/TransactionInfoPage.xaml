@@ -145,7 +145,7 @@
                                 </Label>
                                 <Frame CornerRadius="3"
                                        Padding="5"
-                                       Margin="10,20"
+                                       Margin="20"
                                        HasShadow="False"
                                        HorizontalOptions="EndAndExpand">
                                     <Frame.Triggers>

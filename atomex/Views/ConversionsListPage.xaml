@@ -46,7 +46,7 @@
                             <Frame HasShadow="False"
                                    BackgroundColor="#ebedec"
                                    Padding="0"
-                                   Margin="10,5">
+                                   Margin="10,2">
                                 <Grid Padding="8"
                                       RowSpacing="0"
                                       ColumnSpacing="0">
