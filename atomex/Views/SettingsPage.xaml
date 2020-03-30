@@ -9,12 +9,12 @@
                        BackgroundColor="White">
                 <TableRoot>
                     <TableSection Title="Security"
-                                  TextColor="CadetBlue">
+                                  TextColor="#296e6b">
                         <SwitchCell Text="Show Warnings"
-                                    OnColor="CadetBlue"
+                                    OnColor="#415f60"
                                     On="{Binding ShowActiveSwapWarning, Mode=TwoWay}"/>
                         <SwitchCell Text="Automatic sign out"
-                                    OnColor="CadetBlue"
+                                    OnColor="#415f60"
                                     On="{Binding AutoSignOut, Mode=TwoWay}"/>
                         <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
                             <ViewCell.View>
@@ -50,7 +50,7 @@
                         </ViewCell>
                     </TableSection>
                     <TableSection Title="Blockchain"
-                                  TextColor="CadetBlue">
+                                  TextColor="#296e6b">
                         <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
                             <ViewCell.View>
                                 <Grid>

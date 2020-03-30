@@ -66,7 +66,7 @@ namespace atomex
             AtomexApp.Start();
 
             MainPage = new NavigationPage(new StartPage(AtomexApp));
-            ((NavigationPage)MainPage).BarBackgroundColor = Color.CadetBlue;
+            ((NavigationPage)MainPage).BarBackgroundColor = Color.FromHex("#415f60");
             ((NavigationPage)MainPage).BarTextColor = Color.White;
 
             //MainPage = new MainPage();

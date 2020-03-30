@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="Create new wallet"
-             BackgroundColor="#ebedec">
+             BackgroundColor="#dae4e5">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="Step 2: Wallet name"
@@ -24,7 +24,7 @@
                        Padding="20,10,0,0"
                        FontSize="14"
                        VerticalTextAlignment="End"
-                       TextColor="CadetBlue"
+                       TextColor="#296e6b"
                        IsVisible="False"/>
                 <controls:CustomEntry x:Name="Entry"
                                       Placeholder="Wallet name"
@@ -49,7 +49,7 @@
                 FontSize="18"
                 HeightRequest="70"
                 CornerRadius="0"
-                BackgroundColor="CadetBlue"
+                BackgroundColor="#415f60"
                 HorizontalOptions="Fill"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout> 

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
-             BackgroundColor="#ebedec"
+             BackgroundColor="#dae4e5"
              Title="Create new wallet">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand"
@@ -48,7 +48,7 @@
                 FontSize="18"
                 HeightRequest="70"
                 CornerRadius="0"
-                BackgroundColor="CadetBlue"
+                BackgroundColor="#415f60"
                 HorizontalOptions="Fill"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout>

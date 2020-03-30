@@ -117,7 +117,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <Frame HasShadow="False"
-                               BackgroundColor="#ebedec"
+                               BackgroundColor="#dae4e5"
                                Padding="0"
                                Margin="10,2">
                             <Grid Padding="10"

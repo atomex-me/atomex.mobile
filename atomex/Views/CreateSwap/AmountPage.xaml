@@ -212,7 +212,7 @@
                     TextColor="White"
                     FontSize="18"
                     HeightRequest="70"
-                    BackgroundColor="CadetBlue"
+                    BackgroundColor="#415f60"
                     CornerRadius="0"
                     HorizontalOptions="Fill"
                     VerticalOptions="EndAndExpand"

@@ -159,7 +159,7 @@
                     FontSize="18"
                     HeightRequest="70"
                     CornerRadius="0"
-                    BackgroundColor="CadetBlue"
+                    BackgroundColor="#415f60"
                     Clicked="OnConvertButtonClicked"/>
         </RelativeLayout>
     </ContentPage.Content>

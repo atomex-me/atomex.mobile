@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Swaps history"
-                   TextColor="CadetBlue"
+                   TextColor="#415f60"
                    Margin="0,20,0,10"
                    FontSize="20"
                    HorizontalTextAlignment="Center"
@@ -44,7 +44,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <Frame HasShadow="False"
-                                   BackgroundColor="#ebedec"
+                                   BackgroundColor="#dae4e5"
                                    Padding="0"
                                    Margin="10,2">
                                 <Grid Padding="8"
@@ -166,7 +166,7 @@
                     TextColor="White"
                     FontSize="18"
                     HeightRequest="70"
-                    BackgroundColor="CadetBlue"
+                    BackgroundColor="#415f60"
                     CornerRadius="0"
                     HorizontalOptions="Fill"
                     VerticalOptions="EndAndExpand"

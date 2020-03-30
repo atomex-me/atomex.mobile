@@ -47,7 +47,7 @@ namespace atomex
         {
             Content.Opacity = 0.3f;
             Loader.IsRunning = true;
-            //Application.Current.MainPage = new MainPage();
+            Application.Current.MainPage = new MainPage();
         }
     }
 }

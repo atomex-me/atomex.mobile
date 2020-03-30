@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.MyWalletsPage"
              Title="My wallets"
-             BackgroundColor="#ebedec">
+             BackgroundColor="#dae4e5">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="SELECT A WALLET"
-                   TextColor="Black"
+                   TextColor="#2b4a4a"
                    Margin="0,30,0,10"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
@@ -23,12 +23,12 @@
                                  CornerRadius="24"
                                  WidthRequest="48"
                                  HeightRequest="48"
-                                 BorderColor="CadetBlue"
+                                 BorderColor="#2b4a4a"
                                  BackgroundColor="LightCyan"
                                  BorderWidth="2"
                                  Padding="10"/>
                     <Label Text="Atomex"
-                           TextColor="Black"
+                           TextColor="#2b4a4a"
                            VerticalTextAlignment="Center"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Start"
@@ -49,12 +49,12 @@
                                  CornerRadius="24"
                                  WidthRequest="48"
                                  HeightRequest="48"
-                                 BackgroundColor="#FFE0C6"
+                                 BackgroundColor="#BDA592"
                                  BorderColor="#A66731"
                                  BorderWidth="2"   
                                  Padding="10"/>
                     <Label Text="Starik 4mo"
-                           TextColor="Black"
+                           TextColor="#2b4a4a"
                            VerticalTextAlignment="Center"
                            HorizontalOptions="FillAndExpand"
                            HorizontalTextAlignment="Start"

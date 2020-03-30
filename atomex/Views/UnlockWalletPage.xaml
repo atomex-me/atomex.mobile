@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.UnlockWalletPage"
              Title="Unlock wallet"
-             BackgroundColor="#ebedec">
+             BackgroundColor="#dae4e5">
     <RelativeLayout>
         <ActivityIndicator x:Name="Loader"
                            RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
@@ -18,7 +18,7 @@
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
             <ImageButton Source="Login"
                          BackgroundColor="LightCyan"
-                         BorderColor="CadetBlue"
+                         BorderColor="#2b4a4a"
                          BorderWidth="3"
                          CornerRadius="90"
                          Padding="30"
@@ -26,15 +26,16 @@
                          HorizontalOptions="Center"
                          WidthRequest="180"
                          HeightRequest="180"/>
-            <Label Text="Please enter your password:"/>
+            <Label Text="Please enter your password:"
+                   Margin="0,10"/>
             <Frame x:Name="PasswordFrame"
                    Padding="0"
                    HasShadow="False"
+                   BorderColor="#69a4a2"
                    CornerRadius="0"
                    HorizontalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Frame HasShadow="False"
-                           
+                    <Frame HasShadow="False" 
                            BackgroundColor="LightCyan">
                         <Image Source="LockIcon"
                            HeightRequest="24"
@@ -73,7 +74,7 @@
                     FontSize="18"
                     HeightRequest="70"
                     CornerRadius="0"
-                    BackgroundColor="CadetBlue"
+                    BackgroundColor="#2b4a4a"
                     HorizontalOptions="Fill"
                     Clicked="OnLoginButtonClicked"/>
         </StackLayout>

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="Create new wallet"
-             BackgroundColor="#ebedec">
+             BackgroundColor="#dae4e5">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand"
                  Margin="20,0">
@@ -13,29 +13,51 @@
                HorizontalTextAlignment="Center"/>
         <Label Text="   Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place."
                Padding="20"/>
-        <Frame HasShadow="False"
-               x:Name="LanguageFrame"
-               Padding="0"
-               BorderColor="LightGray">
-            <Picker HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding Languages}"
-                    SelectedItem="{Binding Language}"
-                    Focused="OnLanguagePickerFocused"
-                    Unfocused="OnLanguagePickerFocused"
-                    HeightRequest="70"/>
-        </Frame>
-        <Frame HasShadow="False"
-               x:Name="WordCountFrame"
-               Padding="0"
-               BorderColor="LightGray">
-            <Picker HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding WordCountToEntropyLength}"
-                    SelectedItem="{Binding EntropyLength}"
-                    Focused="OnWordCountPickerFocused"
-                    Unfocused="OnWordCountPickerFocused"
-                    HeightRequest="70"/>
-        </Frame>
         <StackLayout Orientation="Horizontal">
+            <Frame CornerRadius="3"
+                   HasShadow="False"
+                   BackgroundColor="#94c0c2"
+                   WidthRequest="90">
+                <Label Text="Language:"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#2b4a4a"/>
+            </Frame>
+            <Frame HasShadow="False"
+                   x:Name="LanguageFrame"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                <Picker ItemsSource="{Binding Languages}"
+                        SelectedItem="{Binding Language}"
+                        Focused="OnLanguagePickerFocused"
+                        Unfocused="OnLanguagePickerFocused"
+                        HeightRequest="70"/>
+            </Frame>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Frame CornerRadius="3"
+                   HasShadow="False"
+                   BackgroundColor="#94c0c2"
+                   WidthRequest="90">
+                <Label Text="Word count:"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#2b4a4a"/>
+            </Frame>
+            <Frame HasShadow="False"
+                   x:Name="WordCountFrame"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                <Picker ItemsSource="{Binding WordCountToEntropyLength}"
+                        SelectedItem="{Binding EntropyLength}"
+                        Focused="OnWordCountPickerFocused"
+                        Unfocused="OnWordCountPickerFocused"
+                        HeightRequest="70"/>
+            </Frame>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" HeightRequest="80">
             <Frame HasShadow="False"
                    Padding="0"
                    BorderColor="LightGray"
@@ -54,13 +76,13 @@
                 </StackLayout>
             </Frame>
             <Button Text="Generate"
-                    TextColor="CadetBlue"
+                    TextColor="#1F6568"
                     BorderWidth="1"
-                    BorderColor="CadetBlue"
+                    BorderColor="#1F6568"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
                     Padding="5"
-                    HeightRequest="70"
+                    HeightRequest="80"
                     Clicked="OnGenerateButtonClicked"/>
         </StackLayout>
         <Button Text="Next"
@@ -69,7 +91,7 @@
                 FontSize="18"
                 HeightRequest="70"
                 CornerRadius="0"
-                BackgroundColor="CadetBlue"
+                BackgroundColor="#415f60"
                 HorizontalOptions="Fill"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout>
