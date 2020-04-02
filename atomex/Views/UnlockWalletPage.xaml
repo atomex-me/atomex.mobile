@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.UnlockWalletPage"
              Title="Unlock wallet"
-             BackgroundColor="#dae4e5">
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <RelativeLayout>
         <ActivityIndicator x:Name="Loader"
                            RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
@@ -27,14 +27,11 @@
                          WidthRequest="180"
                          HeightRequest="180"/>
             <Label Text="Please enter your password:"
-                   Margin="0,10"/>
+                   Style="{DynamicResource UnlockWalletTextStyle}"/>
             <Frame x:Name="PasswordFrame"
-                   Padding="0"
-                   HasShadow="False"
-                   BorderColor="#69a4a2"
-                   CornerRadius="0"
-                   HorizontalOptions="FillAndExpand">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                   Style="{DynamicResource EntryFrameStyle}">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
                     <Frame HasShadow="False" 
                            BackgroundColor="LightCyan">
                         <Image Source="LockIcon"
@@ -45,23 +42,16 @@
                                  HorizontalOptions="FillAndExpand"
                                  BackgroundColor="White">
                         <Label x:Name="PasswordHint"
-                               Padding="20,10,0,0"
-                               FontSize="14"
-                               VerticalTextAlignment="End"
-                               TextColor="CadetBlue"
-                               IsVisible="False"/>
+                               Style="{DynamicResource EntryHintStyle}"/>
                         <controls:CustomEntry x:Name="PasswordEntry"
                                               Placeholder="Password"
                                               Keyboard="Text"
                                               Focused="PasswordEntryFocused"
                                               Unfocused="PasswordEntryFocused"
                                               IsPassword="True"
-                                              IsSpellCheckEnabled="False"
-                                              IsTextPredictionEnabled="False"
-                                              HorizontalOptions="FillAndExpand"
-                                              VerticalOptions="FillAndExpand"
+                                              Style="{DynamicResource EntryStyle}"
                                               TextChanged="OnPasswordTextChanged"/>
-                </StackLayout>
+                    </StackLayout>
                 </StackLayout>
             </Frame>
             <Label x:Name="Error"
@@ -70,12 +60,7 @@
                Margin="0,10"/>
             <Button Text="Unlock"
                     Margin="0,20"
-                    TextColor="White"
-                    FontSize="18"
-                    HeightRequest="70"
-                    CornerRadius="0"
-                    BackgroundColor="#2b4a4a"
-                    HorizontalOptions="Fill"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnLoginButtonClicked"/>
         </StackLayout>
     </RelativeLayout>

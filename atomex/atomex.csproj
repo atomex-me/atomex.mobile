@@ -11,7 +11,6 @@
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
-    <PackageReference Include="Syncfusion.Xamarin.Core" Version="17.4.0.55" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -24,6 +23,9 @@
     <Folder Include="Views\CreateSwap\" />
     <Folder Include="Views\SettingsOptions\" />
     <Folder Include="Common\" />
+    <Folder Include="Styles\" />
+    <Folder Include="Styles\Fonts\" />
+    <Folder Include="Styles\Themes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

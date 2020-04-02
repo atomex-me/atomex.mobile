@@ -41,5 +41,17 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-</dict>
+	<key>UIAppFonts</key>
+		<array>
+			<string>Roboto-Bold.ttf</string>
+			<string>Roboto-Black.ttf</string>
+			<string>Roboto-Light.ttf</string>
+		    	<string>Roboto-Regular.ttf</string>
+			<string>Roboto-Italic.ttf</string>
+			<string>Roboto-Medium.ttf</string>
+			<string>Roboto-Thin.ttf</string>
+		    	<string>Comfortaa-Regular.ttf</string>
+		    	<string>Agency-FB.ttf</string>
+		</array>
+	</dict>
 </plist>

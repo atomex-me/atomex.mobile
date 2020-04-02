@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <OnPlatform x:TypeArguments="x:String" x:Key="BlackFont">
+        <On Platform="iOS" Value="Roboto-Black" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
+        <On Platform="iOS" Value="Roboto-Bold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="LightFont">
+        <On Platform="iOS" Value="Roboto-Light" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="RegularFont">
+        <!--<On Platform="Android" Value="OpenSans-Regular.ttf#Open Sans" />-->
+        <On Platform="iOS" Value="Roboto-Regular" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="ItalicFont">
+        <On Platform="iOS" Value="Roboto-Italic" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="MediumFont">
+        <On Platform="iOS" Value="Roboto-Medium" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="ThinFont">
+        <On Platform="iOS" Value="Roboto-Thin" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="LogoFont">
+        <On Platform="iOS" Value="Comfortaa-Regular" />
+    </OnPlatform>
+</ResourceDictionary>

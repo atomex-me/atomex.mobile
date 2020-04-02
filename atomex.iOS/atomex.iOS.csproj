@@ -229,6 +229,15 @@
     <BundleResource Include="Resources\NavBarIcons\baseline_compare_arrows_black_18dp.png" />
     <BundleResource Include="Resources\NavBarIcons\baseline_pie_chart_black_18dp.png" />
     <BundleResource Include="Resources\NavBarIcons\baseline_settings_applications_black_18dp.png" />
+    <BundleResource Include="Resources\Agency-FB.ttf" />
+    <BundleResource Include="Resources\Comfortaa-Regular.ttf" />
+    <BundleResource Include="Resources\Roboto-Black.ttf" />
+    <BundleResource Include="Resources\Roboto-Bold.ttf" />
+    <BundleResource Include="Resources\Roboto-Italic.ttf" />
+    <BundleResource Include="Resources\Roboto-Light.ttf" />
+    <BundleResource Include="Resources\Roboto-Medium.ttf" />
+    <BundleResource Include="Resources\Roboto-Regular.ttf" />
+    <BundleResource Include="Resources\Roboto-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">

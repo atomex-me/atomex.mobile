@@ -1,100 +1,55 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
              x:Class="atomex.StartPage">
-    <Grid>
-        <gradient:SfGradientView>
-            <gradient:SfGradientView.BackgroundBrush>
-                <gradient:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <gradient:SfLinearGradientBrush.GradientStops>
-                        <gradient:SfGradientStop Color="#2b4a4a" Offset="0.0" />
-                        <gradient:SfGradientStop Color="LightCyan" Offset="1.0" />
-                    </gradient:SfLinearGradientBrush.GradientStops>
-                </gradient:SfLinearGradientBrush>
-            </gradient:SfGradientView.BackgroundBrush>
-        </gradient:SfGradientView>
-        <!--<gradient:SfGradientView>
-            <gradient:SfGradientView.BackgroundBrush>
-                <gradient:SfRadialGradientBrush Radius="1" Center="0.5,0.5">
-                    <gradient:SfRadialGradientBrush.GradientStops>
-                        <gradient:SfGradientStop Color="#c4ede6" Offset="0.0" />
-                        <gradient:SfGradientStop Color="CadetBlue" Offset="1.0" />
-                    </gradient:SfRadialGradientBrush.GradientStops>
-                </gradient:SfRadialGradientBrush>
-            </gradient:SfGradientView.BackgroundBrush>
-        </gradient:SfGradientView>-->
-        <StackLayout VerticalOptions="FillAndExpand">
-            <ImageButton Source="Logo"
-                         CornerRadius="100"
-                         WidthRequest="200"
-                         HeightRequest="200"
-                         BorderColor="#0E3030"
-                         BorderWidth="3"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
-                         Padding="40"
-                         Margin="0,20,0,0"
-                         BackgroundColor="LightCyan"/>
-            <Label Grid.Row="1"
-                   Text="ATOMEX"
-                   TextDecorations="Underline"
-                   FontSize="36"
-                   Padding="10"
-                   FontAttributes="Bold"
-                   TextColor="#0E3030"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"/>
-            <Label Grid.Row="2"
-                   Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
-                   FontSize="20"
-                   Padding="20,0,20,20"
-                   TextColor="White"
-                   FontAttributes="Italic"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"/>
-
-            <StackLayout Grid.Row="3"
-                         VerticalOptions="FillAndExpand">
-                <Button Text="MY WALLETS"
-                        HorizontalOptions="Fill"
-                        VerticalOptions="Center"
-                        CornerRadius="3"
-                        FontSize="18"
-                        HeightRequest="70"
-                        Margin="20,0"
-                        BorderColor="#503117"
-                        BorderWidth="2"
-                        TextColor="#503117"
-                        Clicked="ShowMyWalletsButtonClicked">                        
-                </Button>
-                <Button Text="CREATE NEW WALLET"
-                        HorizontalOptions="Fill"
-                        VerticalOptions="Center"
-                        CornerRadius="3"
-                        FontSize="18"
-                        HeightRequest="70"
-                        Margin="20,0,20,10"
-                        BorderColor="#503117"
-                        BorderWidth="2"
-                        TextColor="#503117"
-                        Clicked="CreateNewWalletButtonClicked"/>
-                <Label Text="Restore wallet"
-                       TextColor="#503117"
-                       HorizontalOptions="Center"
-                       HorizontalTextAlignment="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnRestoreWalletClicked"/>
-                    </Label.GestureRecognizers>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Restore wallet"
-                                  TextDecorations="Underline"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
+    <StackLayout VerticalOptions="FillAndExpand">
+        <ImageButton Source="Logo"
+                     CornerRadius="100"
+                     WidthRequest="200"
+                     HeightRequest="200"
+                     BorderColor="#0E3030"
+                     BorderWidth="3"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Padding="40"
+                     Margin="0,20,0,0"
+                     BackgroundColor="LightCyan"/>
+        <Label Grid.Row="1"
+               Text="atomex"
+               FontFamily="{DynamicResource LogoFont}"
+               FontSize="36"
+               Padding="10"
+               TextColor="{DynamicResource LogoTextColor}"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"/>
+        <Label Grid.Row="2"
+               Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
+               FontSize="20"
+               Padding="20,0,20,20"
+               TextColor="{DynamicResource MainTextColor}"
+               FontFamily="{DynamicResource LightFont}"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"/>
+        <StackLayout Grid.Row="4"
+                     VerticalOptions="FillAndExpand">
+            <Button Text="MY WALLETS"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    Margin="20,0"
+                    Style="{DynamicResource MainButtonStyle}"
+                    Clicked="ShowMyWalletsButtonClicked"/>
+            <Button Text="CREATE NEW WALLET"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    Margin="20,0"
+                    Style="{DynamicResource AdditionalButtonStyle}"
+                    Clicked="CreateNewWalletButtonClicked"/>
+            <Button Text="RESTORE WALLET"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    Margin="20,0"
+                    Style="{DynamicResource AdditionalButtonStyle}"
+                    Clicked="OnRestoreWalletButtonClicked"/>
         </StackLayout>
-       
-    </Grid>
+    </StackLayout>
 </ContentPage>

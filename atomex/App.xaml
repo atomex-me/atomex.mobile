@@ -1,5 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="atomex.App">
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="atomex.App">
     <Application.Resources>
+        <!--<ResourceDictionary Source="Styles/Themes/Light.xaml"/>
+        <ResourceDictionary Source="Styles/Fonts/Fonts.xaml"/>-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Themes/Light.xaml"/>
+                <ResourceDictionary Source="Styles/Fonts/Roboto.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!--<OnPlatform x:TypeArguments="x:String" x:Key="RobotoLight">
+                <On Platform="iOS" Value="Roboto-Light" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="RobotoRegular">
+                <On Platform="iOS" Value="Roboto-Regular" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="RobotoItalic">
+                <On Platform="iOS" Value="Roboto-Italic" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="RobotoMedium">
+                <On Platform="iOS" Value="Roboto-Medium" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ComfortaaRegular">
+                <On Platform="iOS" Value="Comfortaa-Regular" />
+            </OnPlatform>
+            <Color x:Key="MainBackgroundColor">#ff0000</Color>-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

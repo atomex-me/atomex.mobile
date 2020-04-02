@@ -21,7 +21,6 @@ namespace atomex.iOS
             Xamarin.Forms.Forms.SetFlags("SwipeView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
-            Syncfusion.XForms.iOS.Graphics.SfGradientViewRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

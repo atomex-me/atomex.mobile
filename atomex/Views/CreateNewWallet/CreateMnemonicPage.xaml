@@ -3,25 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="Create new wallet"
-             BackgroundColor="#dae4e5">
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand"
                  Margin="20,0">
         <Label Text="Step 3: Mnemonic phrase"
-               FontSize="22"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"/>
+               Style="{DynamicResource CreateNewWalletTitleStyle}"/>
         <Label Text="   Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place."
-               Padding="20"/>
+               Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal">
-            <Frame CornerRadius="3"
-                   HasShadow="False"
-                   BackgroundColor="#94c0c2"
-                   WidthRequest="90">
+            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
                 <Label Text="Language:"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       TextColor="#2b4a4a"/>
+                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
             </Frame>
             <Frame HasShadow="False"
                    x:Name="LanguageFrame"
@@ -36,14 +29,9 @@
             </Frame>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
-            <Frame CornerRadius="3"
-                   HasShadow="False"
-                   BackgroundColor="#94c0c2"
-                   WidthRequest="90">
+            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
                 <Label Text="Word count:"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       TextColor="#2b4a4a"/>
+                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
             </Frame>
             <Frame HasShadow="False"
                    x:Name="WordCountFrame"
@@ -76,23 +64,14 @@
                 </StackLayout>
             </Frame>
             <Button Text="Generate"
-                    TextColor="#1F6568"
-                    BorderWidth="1"
-                    BorderColor="#1F6568"
+                    Style="{DynamicResource GenerateButtonStyle}"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
-                    Padding="5"
-                    HeightRequest="80"
                     Clicked="OnGenerateButtonClicked"/>
         </StackLayout>
         <Button Text="Next"
                 Margin="0,20"
-                TextColor="White"
-                FontSize="18"
-                HeightRequest="70"
-                CornerRadius="0"
-                BackgroundColor="#415f60"
-                HorizontalOptions="Fill"
+                Style="{DynamicResource MainButtonStyle}"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout>
 </ContentPage>

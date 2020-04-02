@@ -3,22 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.MyWalletsPage"
              Title="My wallets"
-             BackgroundColor="#dae4e5">
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="SELECT A WALLET"
-                   TextColor="#2b4a4a"
-                   Margin="0,30,0,10"
+            <Label Text="PLEASE SELECT YOUR WALLET"
+                   TextColor="{DynamicResource MainTextColor}"
+                   Padding="20,50"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
-            <Frame CornerRadius="3"
-                   HasShadow="False"
-                   HeightRequest="50">
+            <Frame Style="{DynamicResource MainNetWalletFrameStyle}">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnWalletTapped"/>
                 </Frame.GestureRecognizers>
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Horizontal">
                     <ImageButton Source="WalletIcon"
                                  CornerRadius="24"
                                  WidthRequest="48"
@@ -27,24 +24,16 @@
                                  BackgroundColor="LightCyan"
                                  BorderWidth="2"
                                  Padding="10"/>
-                    <Label Text="Atomex"
-                           TextColor="#2b4a4a"
-                           VerticalTextAlignment="Center"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Start"
-                           Padding="10,0"
-                           FontSize="18"/>
+                    <Label Text="ATOMEX"
+                           Style="{DynamicResource MainNetWalletlButtonTextStyle}"/>
                     <Image Source="RightArrowIcon"/>
                 </StackLayout>
             </Frame>
-            <Frame CornerRadius="3"
-                   HasShadow="False"
-                   HeightRequest="50">
+            <Frame Style="{DynamicResource TestNetWalletFrameStyle}">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnWalletTapped"/>
                 </Frame.GestureRecognizers>
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Horizontal">
                     <ImageButton Source="WalletIcon"
                                  CornerRadius="24"
                                  WidthRequest="48"
@@ -53,13 +42,8 @@
                                  BorderColor="#A66731"
                                  BorderWidth="2"   
                                  Padding="10"/>
-                    <Label Text="Starik 4mo"
-                           TextColor="#2b4a4a"
-                           VerticalTextAlignment="Center"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="Start"
-                           Padding="10,0"
-                           FontSize="18"/>
+                    <Label Text="STARIK"
+                           Style="{DynamicResource TestNetWalletlButtonTextStyle}"/>
                     <Image Source="RightArrowIcon"/>
                 </StackLayout>
             </Frame>

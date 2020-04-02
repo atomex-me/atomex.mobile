@@ -33,8 +33,8 @@ namespace atomex.iOS.CustomElements
         protected override void OnElementChanged(VisualElementChangedEventArgs e)
         {
             base.OnElementChanged(e);
-            TabBar.TintColor = new UIColor(red: 0.23f, green: 0.56f, blue: 0.20f, alpha: 1.0f);
-            TabBar.UnselectedItemTintColor = new UIColor(red: 0.34f, green: 0.34f, blue: 0.34f, alpha: 1.0f);
+            TabBar.TintColor = new UIColor(red: 0.97f, green: 0.96f, blue: 0.98f, alpha: 1.00f);
+            TabBar.UnselectedItemTintColor = new UIColor(red: 0.66f, green: 0.66f, blue: 0.66f, alpha: 1.00f);
         }
 
         private void UpdateTabBarItem(UITabBarItem item, ImageSource icon)
@@ -42,13 +42,13 @@ namespace atomex.iOS.CustomElements
             if (item == null || icon == null)
                 return;
 
-            TabBar.SelectedImageTintColor = new UIColor(red: 0.255f, green: 0.372f, blue: 0.376f, alpha: 1.0f);
+            TabBar.SelectedImageTintColor = new UIColor(red: 0.23f, green: 0.42f, blue: 0.69f, alpha: 1.00f);
             //foreach (var uiTabBarItem in TabBar.Items)
             //{
             //    //var fontSize = new UITextAttributes() { Font = UIFont.SystemFontOfSize(13) };
             //    //uiTabBarItem.SetTitleTextAttributes(fontSize, UIControlState.Normal);
             //    //uiTabBarItem.TitlePositionAdjustment = new UIOffset(0, 1);
- 
+
             //    uiTabBarItem.ImageInsets = new UIEdgeInsets(0, 0, -20, 0);
             //}
 

@@ -2,28 +2,32 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
-             BackgroundColor="#dae4e5"
-             Title="Create new wallet">
+             Title="Create new wallet"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand"
                  Margin="20,0">
         <Label Text="Step 3: Mnemonic phrase"
-               FontSize="22"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"/>
+               Style="{DynamicResource CreateNewWalletTitleStyle}"/>
         <Label Text="   Please, enter a mnemonic phrase for your wallet."
-               Margin="0,20,0,0"/>
-        <Frame HasShadow="False"
-               x:Name="PickerFrame"
-               Padding="0"
-               BorderColor="LightGray">
-            <Picker HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding Languages}"
-                    SelectedItem="{Binding Language}"
-                    HeightRequest="70"
-                    Focused="OnPickerFocused"
-                    Unfocused="OnPickerFocused"/>
-        </Frame>
+               Style="{DynamicResource CreateNewWalletTextStyle}"/>
+        <StackLayout Orientation="Horizontal">
+            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
+                <Label Text="Language:"
+                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
+            </Frame>
+                <Frame HasShadow="False"
+                       x:Name="PickerFrame"
+                       Padding="0"
+                       BorderColor="LightGray"
+                       HorizontalOptions="FillAndExpand">
+                <Picker ItemsSource="{Binding Languages}"
+                        SelectedItem="{Binding Language}"
+                        HeightRequest="70"
+                        Focused="OnPickerFocused"
+                        Unfocused="OnPickerFocused"/>
+            </Frame>
+        </StackLayout>
         <Frame HasShadow="False"
                x:Name="EditorFrame"
                Padding="0"
@@ -31,10 +35,9 @@
             <Editor Placeholder="Enter mnemonic phrase here"
                     x:Name="Editor"
                     Text="{Binding Mnemonic}"
-                    PlaceholderColor="CadetBlue"
+                    PlaceholderColor="{DynamicResource EntryHintTextColor}"
+                    Style="{DynamicResource EntryStyle}"
                     HeightRequest="70"
-                    IsTextPredictionEnabled="False"
-                    IsSpellCheckEnabled="False"
                     Focused="OnEditorFocused"
                     Unfocused="OnEditorFocused"/>
         </Frame>
@@ -44,12 +47,7 @@
                Margin="0,10"/>
         <Button Text="Next"
                 Margin="0,20"
-                TextColor="White"
-                FontSize="18"
-                HeightRequest="70"
-                CornerRadius="0"
-                BackgroundColor="#415f60"
-                HorizontalOptions="Fill"
+                Style="{DynamicResource MainButtonStyle}"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout>
 </ContentPage>

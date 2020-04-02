@@ -29,7 +29,7 @@ namespace atomex
             _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
             await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
         }
-        private async void OnRestoreWalletClicked(object sender, EventArgs args)
+        private async void OnRestoreWalletButtonClicked(object sender, EventArgs args)
         {
             _createNewWalletViewModel.Clear();
             _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
