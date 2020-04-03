@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,19 @@ namespace atomex.ViewModel
                 OnPropertyChanged(nameof(Transactions));
             }
         }
+
+        public class Grouping<K, T> : ObservableCollection<T>
+        {
+            public K Date { get; private set; }
+            public Grouping(K date, IEnumerable<T> items)
+            {
+                Date = date;
+                foreach (T item in items)
+                    Items.Add(item);
+            }
+        }
+
+        public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
 
         public CurrencyViewModel(IAtomexApp app)
         {
@@ -127,11 +141,14 @@ namespace atomex.ViewModel
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
-                        transactions.Select(t => TransactionViewModelCreator
-                            .CreateViewModel(t))
-                            .ToList()
-                            .SortList((t1, t2) => t2.Time.CompareTo(t1.Time)));
+                       transactions.Select(t => TransactionViewModelCreator
+                           .CreateViewModel(t))
+                           .ToList()
+                           .SortList((t1, t2) => t2.Time.CompareTo(t1.Time)));
+                    var groups = Transactions.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
+                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
                     OnPropertyChanged(nameof(Transactions));
+                    OnPropertyChanged(nameof(GroupedTransactions));
                 });
             }
             catch (Exception e)

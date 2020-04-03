@@ -154,6 +154,9 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
 
+    <!-- Currency Page -->
+    <Color x:Key="TransactionDateBackgroundColor">#f5f5f5</Color>
+
     <!-- Create Mnemonic Page -->
     <Color x:Key="CreateMnemonicLabelColor">#ffffff</Color>
     <Color x:Key="CreateMnemonicFrameBackgroundColor">#3a6cb1</Color>
