@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.SendingConfirmationPage"
-             Title="Confirmation">
+             Title="Confirmation"
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
@@ -18,26 +19,23 @@
                         <TableSection Title="Confirm transaction">
                             <TextCell x:Name="AddressFrom"
                                       Text="From"
-                                      DetailColor="CadetBlue" />
+                                      DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="AddressTo"
                                       Text="To"
-                                      DetailColor="CadetBlue"/>
+                                      DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="Amount"
                                       Text="Amount"
-                                      DetailColor="CadetBlue"/>
+                                      DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="Fee"
                                       Text="Fee"
-                                      DetailColor="CadetBlue"/>
+                                      DetailColor="{DynamicResource HintTextColor}"/>
                             <ViewCell Height="70">
-                                <Button Text="SEND"
-                                        x:Name="SendButton"
-                                        TextColor="White"
-                                        FontSize="18"
-                                        HeightRequest="70"
-                                        CornerRadius="0"
-                                        BackgroundColor="CadetBlue"
-                                        HorizontalOptions="Fill"
-                                        Clicked="OnSendButtonClicked"/>
+                                <StackLayout Padding="20">
+                                    <Button Text="SEND"
+                                            x:Name="SendButton"
+                                            Style="{DynamicResource MainButtonStyle}"
+                                            Clicked="OnSendButtonClicked"/>
+                                </StackLayout>
                             </ViewCell>
                         </TableSection>
                     </TableRoot>

@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="Create new wallet"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="Step 2: Wallet name"

@@ -2,15 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrencyPage"
-             Title="{Binding Currency.Description}">
+             Title="{Binding Currency.Description}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout>
-        <SwipeView>
+        <SwipeView BackgroundColor="{DynamicResource MainBackgroundColor}">
             <SwipeView.TopItems>
                 <SwipeItems Mode="Execute">
                     <SwipeItem Invoked="SwipeDown"/>
                 </SwipeItems>
             </SwipeView.TopItems>
-            <StackLayout>
+            <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <Label x:Name="LoaderLabel"
                        Text="Balance updating..."
                        TextColor="CadetBlue"
@@ -101,6 +102,7 @@
             </StackLayout>
         </SwipeView>
         <ListView ItemsSource="{Binding GroupedTransactions}"
+                  BackgroundColor="{DynamicResource MainBackgroundColor}"
                   IsGroupingEnabled="True"
                   ItemTapped="OnListViewItemTapped"
                   HasUnevenRows="True"
@@ -118,12 +120,13 @@
                 <DataTemplate>
                     <ViewCell Height="20">
                         <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                               BackgroundColor="{DynamicResource TransactionDateBackgroundColor}"
+                               BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                                TextColor="{DynamicResource AdditionalTextColor}"
+                               Padding="10,0"
                                FontSize="12"
                                VerticalTextAlignment="Center"
                                VerticalOptions="CenterAndExpand"
-                               Margin="10,0"/>
+                               />
                      </ViewCell>
                 </DataTemplate>
             </ListView.GroupHeaderTemplate>

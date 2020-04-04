@@ -3,7 +3,8 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
      <!-- Base Colors -->
-    <Color x:Key="PageBackgroundColor">#ffffff</Color>
+    <Color x:Key="MainBackgroundColor">#ffffff</Color>
+    <Color x:Key="AdditionalBackgroundColor">#f7f5fa</Color>
     <Color x:Key="NavigationBarBackgroundColor">#223a66</Color>
     <Color x:Key="TabBarBackgroundColor">#f7f5fa</Color>
 
@@ -17,9 +18,9 @@
     <Color x:Key="FrameBorderColor">LightGray</Color>
 
     <Color x:Key="MainTextColor">#000000</Color>
-    <Color x:Key="AdditionalTextColor">#a3a3a3</Color>
+    <Color x:Key="AdditionalTextColor">#918f92</Color>
     <Color x:Key="LogoTextColor">#223a66</Color>
-    <Color x:Key="EntryHintTextColor">#3a6cb1</Color>
+    <Color x:Key="HintTextColor">#3a6cb1</Color>
 
 
     <!-- Fonts -->
@@ -72,12 +73,20 @@
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
 
-    <!-- Entry -->
+    <!-- Entries -->
     <Style x:Key="EntryStyle" TargetType="Entry">
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+    </Style>
+        <Style x:Key="EntryHintStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalTextAlignment" Value="End"/>
+        <Setter Property="Padding" Value="20,10,0,0"/>
+        <Setter Property="IsVisible" Value="False"/>
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
     </Style>
 
     <!-- Frames -->
@@ -90,7 +99,7 @@
     </Style>
 
 
-    <!-- Labels -->
+    <!-- Create New Wallet Pages -->
     <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
         <Setter Property="FontSize" Value="24"/>
@@ -107,14 +116,7 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="5"/>
     </Style>
-    <Style x:Key="EntryHintStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="VerticalTextAlignment" Value="End"/>
-        <Setter Property="Padding" Value="20,10,0,0"/>
-        <Setter Property="IsVisible" Value="False"/>
-        <Setter Property="TextColor" Value="{DynamicResource EntryHintTextColor}"/>
-    </Style>
+
 
     <!-- My Wallets Page -->
     <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
@@ -154,8 +156,21 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
 
-    <!-- Currency Page -->
-    <Color x:Key="TransactionDateBackgroundColor">#f5f5f5</Color>
+    <!-- Settings Pages -->
+    <Style x:Key="OptionLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="Margin" Value="20,0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="OptionValueLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="End"/>                                   
+        <Setter Property="HorizontalTextAlignment" Value="End"/>
+    </Style>
 
     <!-- Create Mnemonic Page -->
     <Color x:Key="CreateMnemonicLabelColor">#ffffff</Color>

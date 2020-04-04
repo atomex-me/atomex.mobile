@@ -2,14 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.TransactionInfoPage"
-             Title="Transaction info">
+             Title="Transaction info"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Form"
-                       RowHeight="70">
+                       RowHeight="70"
+                       BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
                     <TableSection Title="Transaction Info"
-                                  TextColor="CadetBlue">
+                                  TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Image HeightRequest="32"
@@ -55,7 +57,8 @@
                                     </Image.Triggers>
                                 </Image>
                                 <Label Text="{Binding Amount}"
-                                       VerticalTextAlignment="Center">
+                                       VerticalTextAlignment="Center"
+                                       FontFamily="{DynamicResource BoldFont}">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
@@ -226,7 +229,7 @@
                                   DetailColor="Gray"/>
                         <ViewCell>
                             <Button Text="Show in explorer"
-                                    TextColor="DodgerBlue"
+                                    TextColor="{DynamicResource HintTextColor}"
                                     FontSize="18"
                                     Clicked="OnShowInExplorerClicked"/> 
                         </ViewCell>

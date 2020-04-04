@@ -1,67 +1,69 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-    <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrenciesListPage"
              Title="Wallets"
-             Icon="NavBar__wallets">
-        <ContentPage.Content>
-            <StackLayout Margin="0,20">
-                <ListView ItemsSource="{Binding CurrencyViewModels}"
-                          HasUnevenRows="True"
-                          ItemTapped="OnListViewItemTapped"
-                          SeparatorVisibility="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid Padding="15">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="4*" />
-                                        <ColumnDefinition Width="4*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           Source="{Binding CurrencyCode}"
-                                           HeightRequest="48"
-                                           WidthRequest="48" />
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Currency.Description}"
-                                           FontAttributes="Bold"
-                                           VerticalOptions="End"/>
-                                    <Label Grid.Column="2"
-                                           Text="{Binding AvailableAmount}"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="End"
-                                           VerticalOptions="End">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
-                                                <Span Text=" " /> 
-                                                <Span Text="{Binding CurrencyCode}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Text="{Binding Price, StringFormat='{0:f2} $'}"
-                                           TextColor="Gray"
-                                           FontSize="12"
-                                           VerticalOptions="Start" />
-                                    <Label Grid.Row="1"
-                                           Grid.Column="2"
-                                           Text="{Binding Cost, StringFormat='{0:f2} $'}"
-                                           TextColor="Gray"
-                                           FontSize="12"
-                                           VerticalOptions="Start"
-                                           HorizontalOptions="EndAndExpand" />
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>            
-            </StackLayout>
-        </ContentPage.Content>
-    </ContentPage>
+             Icon="NavBar__wallets"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
+    <ContentPage.Content>
+        <StackLayout Margin="0,20">
+            <ListView ItemsSource="{Binding CurrencyViewModels}"
+                      BackgroundColor="{DynamicResource MainBackgroundColor}"
+                      HasUnevenRows="True"
+                      ItemTapped="OnListViewItemTapped"
+                      SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="4*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       Source="{Binding CurrencyCode}"
+                                       HeightRequest="48"
+                                       WidthRequest="48" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Currency.Description}"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="End"/>
+                                <Label Grid.Column="2"
+                                       Text="{Binding AvailableAmount}"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="End"
+                                       VerticalOptions="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{Binding Price, StringFormat='{0:f2} $'}"
+                                       TextColor="Gray"
+                                       FontSize="12"
+                                       VerticalOptions="Start" />
+                                <Label Grid.Row="1"
+                                       Grid.Column="2"
+                                       Text="{Binding Cost, StringFormat='{0:f2} $'}"
+                                       TextColor="Gray"
+                                       FontSize="12"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="EndAndExpand" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -4,7 +4,7 @@
              x:Class="atomex.Views.SettingsOptions.PeriodOfInactiveListPage"
              Title="Period of inactive">
     <ContentPage.Content>
-        <TableView Intent="Settings" BackgroundColor="#F5F5F5">
+        <TableView Intent="Settings">
             <TableRoot>
                 <TableSection>
                     <ViewCell x:Name="Option1" Tapped="OnOptionTapped">
@@ -15,8 +15,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="5 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -39,8 +38,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="10 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -63,8 +61,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="30 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -87,8 +84,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="60 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -111,8 +107,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="90 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -135,8 +130,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="180 min"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"

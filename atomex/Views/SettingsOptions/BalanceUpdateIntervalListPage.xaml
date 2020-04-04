@@ -4,8 +4,7 @@
              x:Class="atomex.Views.SettingsOptions.BalanceUpdateIntervalListPage"
              Title="Balance update interval">
     <ContentPage.Content>
-        <TableView Intent="Settings"
-                   BackgroundColor="#F5F5F5">
+        <TableView Intent="Settings">
             <TableRoot>
                 <TableSection>
                     <ViewCell x:Name="Option1" Tapped="OnOptionTapped">
@@ -16,8 +15,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="30 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -40,8 +38,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="60 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -64,8 +61,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="120 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -88,8 +84,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="240 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -112,8 +107,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="360 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"
@@ -136,8 +130,7 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="600 sec"
-                                       VerticalOptions="Center"
-                                       Margin="20,0">
+                                       Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
                                 <Image Grid.Column="1"
                                        Source="CheckedIcon"

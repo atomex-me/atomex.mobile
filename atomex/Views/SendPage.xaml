@@ -4,9 +4,10 @@
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              Title="Send"
-             BackgroundColor="#f0f0f0">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout Margin="0,20,0,0">
+        <StackLayout VerticalOptions="FillAndExpand"
+                     Padding="20">
             <Grid ColumnSpacing="0"
                   RowSpacing="2">
                 <Grid.RowDefinitions>
@@ -22,30 +23,22 @@
                 </Grid.ColumnDefinitions>
                 <Frame Grid.ColumnSpan="3"
                        x:Name="AddressFrame"
-                       Padding="5"
-                       HasShadow="False">
+                       Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  Grid.ColumnSpan="3">
-                        <Frame Padding="0"
-                               HasShadow="False"
+                        <Frame HasShadow="False"
                                HorizontalOptions="FillAndExpand"
+                               Padding="0"
                                Grid.Row="1">
                             <StackLayout>
                                 <Label x:Name="AddressHint"
-                                       Margin="20,5,0,0"
-                                       FontSize="14"
-                                       VerticalTextAlignment="End"
-                                       TextColor="CadetBlue"
-                                       IsVisible="False"/>
+                                       Style="{DynamicResource EntryHintStyle}"/>
                                  <controls:CustomEntry x:Name="Address"
                                                        Placeholder="Address"
                                                        Keyboard="Text"
                                                        Focused="AddressEntryFocused"
                                                        Unfocused="AddressEntryUnfocused"
-                                                       IsSpellCheckEnabled="False"
-                                                       IsTextPredictionEnabled="False"
-                                                       HorizontalOptions="FillAndExpand"
-                                                       VerticalOptions="FillAndExpand"
+                                                       Style="{DynamicResource EntryStyle}"
                                                        TextChanged="OnAddressTextChanged"/>
                             </StackLayout>
                         </Frame>
@@ -54,6 +47,7 @@
                                 FontSize="16"
                                 BackgroundColor="White"
                                 Clicked="OnPasteButtonClicked"
+                                TextColor="{DynamicResource HintTextColor}"
                                 HorizontalOptions="End"/>
                         <ImageButton Grid.Column="2"
                                      Source="ScanIcon"
@@ -78,8 +72,7 @@
                 <Frame Grid.Row="2"
                        Grid.ColumnSpan="3"
                        x:Name="AmountFrame"
-                       Padding="5"
-                       HasShadow="False">
+                       Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  Grid.Row="2"
                                  Grid.ColumnSpan="3">
@@ -89,11 +82,7 @@
                                Grid.Row="1">
                             <StackLayout>
                                 <Label x:Name="AmountHint"
-                                       Margin="20,5,0,0"
-                                       FontSize="14"
-                                       VerticalTextAlignment="End"
-                                       TextColor="CadetBlue"
-                                       IsVisible="False"/>
+                                       Style="{DynamicResource EntryHintStyle}"/>
                                 <controls:CustomEntry Grid.Row="2"
                                                       Grid.ColumnSpan="2"
                                                       x:Name="Amount"
@@ -101,10 +90,7 @@
                                                       Keyboard="Numeric"
                                                       Focused="AmountEntryFocused"
                                                       Unfocused="AmountEntryUnfocused"
-                                                      IsSpellCheckEnabled="False"
-                                                      IsTextPredictionEnabled="False"
-                                                      VerticalOptions="FillAndExpand"
-                                                      HorizontalTextAlignment="Start"
+                                                      Style="{DynamicResource EntryStyle}"
                                                       TextChanged="OnAmountTextChanged"/>
                             </StackLayout>
                         </Frame>
@@ -112,6 +98,7 @@
                                 Grid.Column="2"
                                 Text="MAX"
                                 FontSize="16"
+                                TextColor="{DynamicResource HintTextColor}"
                                 Padding="20"
                                 HorizontalOptions="End"
                                 BackgroundColor="White"
@@ -145,28 +132,22 @@
                 </Label.FormattedText>
             </Label>
             <StackLayout x:Name="EstimateFeeLayout"
-                         VerticalOptions="FillAndExpand"
-                         IsVisible="False">
+                         IsVisible="False"
+                         BackgroundColor="Green">
                 <ActivityIndicator x:Name="FeeLoader"
                                    HorizontalOptions="Center"
                                    VerticalOptions="CenterAndExpand"
                                    Color="CadetBlue"
                                    Scale="2"/>
                 <Label Text="Calculating a fee..."
-                       VerticalOptions="StartAndExpand"
                        HorizontalTextAlignment="Center"
                        TextColor="Gray"
                        FontSize="18"/>
             </StackLayout>
             <Button Text="NEXT"
                     x:Name="NextButton"
-                    TextColor="White"
-                    FontSize="18"
-                    HeightRequest="70"
-                    BackgroundColor="CadetBlue"
-                    CornerRadius="0"
-                    HorizontalOptions="Fill"
                     VerticalOptions="EndAndExpand"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>
         </StackLayout>        
     </ContentPage.Content>

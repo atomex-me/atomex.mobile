@@ -6,15 +6,16 @@
                Icon="NavBar__settings">
         <ContentPage.Content>
             <TableView Intent="Settings"
-                       BackgroundColor="White">
+                       BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
                     <TableSection Title="Security"
-                                  TextColor="#296e6b">
+                                  TextColor="{DynamicResource HintTextColor}">
                         <SwitchCell Text="Show Warnings"
-                                    OnColor="#415f60"
-                                    On="{Binding ShowActiveSwapWarning, Mode=TwoWay}"/>
+                                    OnColor="{DynamicResource MainButtonBackgroundColor}"
+                                    On="{Binding ShowActiveSwapWarning, Mode=TwoWay}">
+                        </SwitchCell>
                         <SwitchCell Text="Automatic sign out"
-                                    OnColor="#415f60"
+                                    OnColor="{DynamicResource MainButtonBackgroundColor}"
                                     On="{Binding AutoSignOut, Mode=TwoWay}"/>
                         <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
                             <ViewCell.View>
@@ -25,15 +26,11 @@
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Label Text="Period of inactive"
-                                           VerticalOptions="Center"
-                                           Margin="20,0">
+                                           Style="{DynamicResource OptionLabelStyle}">
                                     </Label>
                                     <Label Grid.Column="1"
                                            Text="{Binding PeriodOfInactivityInMin}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           HorizontalOptions="End"
-                                           TextColor="Gray">
+                                           Style="{DynamicResource OptionValueLabelStyle}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding PeriodOfInactivityInMin}"/>
@@ -44,13 +41,13 @@
                                     <Image Grid.Column="2"
                                            Source="RightArrowIcon"
                                            HeightRequest="18"
-                                           Margin="10,0" />
+                                           Margin="10,0"/>
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>
                     </TableSection>
                     <TableSection Title="Blockchain"
-                                  TextColor="#296e6b">
+                                  TextColor="{DynamicResource HintTextColor}">
                         <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
                             <ViewCell.View>
                                 <Grid>
@@ -60,15 +57,11 @@
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Label Text="Balance update interval"
-                                           VerticalOptions="Center"
-                                           Margin="20,0,0,0">
+                                           Style="{DynamicResource OptionLabelStyle}">
                                     </Label>
                                     <Label Grid.Column="1"
                                            Text="{Binding BalanceUpdateIntervalInSec}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="End"
-                                           HorizontalOptions="End"
-                                           TextColor="Gray">
+                                           Style="{DynamicResource OptionValueLabelStyle}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding BalanceUpdateIntervalInSec}"/>
@@ -83,10 +76,6 @@
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>
-                        <!--<EntryCell Label="setting #1"
-                                   Placeholder="Enter value"
-                                   HorizontalTextAlignment="End"/>
-                        <TextCell Text="Test option" />-->
                     </TableSection>
                 </TableRoot>
             </TableView>
