@@ -255,6 +255,19 @@ namespace atomex.ViewModel
             set { _swaps = value; OnPropertyChanged(nameof(Swaps)); }
         }
 
+        public class Grouping<K, T> : ObservableCollection<T>
+        {
+            public K Date { get; private set; }
+            public Grouping(K date, IEnumerable<T> items)
+            {
+                Date = date;
+                foreach (T item in items)
+                    Items.Add(item);
+            }
+        }
+
+        public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
+
 
         public ConversionViewModel(IAtomexApp app)
         {
@@ -324,9 +337,13 @@ namespace atomex.ViewModel
                                    .CompareTo(s1.Time.ToUniversalTime()));
             Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
 
+            var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
+            GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+
             await Device.InvokeOnMainThreadAsync(() =>
             {
                 OnPropertyChanged(nameof(Swaps));
+                OnPropertyChanged(nameof(GroupedSwaps));
             });
         }
 
