@@ -12,9 +12,9 @@
         <Label Text="   Please, enter a mnemonic phrase for your wallet."
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal">
-            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
                 <Label Text="Language:"
-                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
                 <Frame HasShadow="False"
                        x:Name="PickerFrame"
@@ -35,7 +35,7 @@
             <Editor Placeholder="Enter mnemonic phrase here"
                     x:Name="Editor"
                     Text="{Binding Mnemonic}"
-                    PlaceholderColor="{DynamicResource EntryHintTextColor}"
+                    PlaceholderColor="{DynamicResource HintTextColor}"
                     Style="{DynamicResource EntryStyle}"
                     HeightRequest="70"
                     Focused="OnEditorFocused"

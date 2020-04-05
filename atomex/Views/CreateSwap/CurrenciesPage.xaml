@@ -3,14 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
              Title="Create swap - step 1"
-             BackgroundColor="#f2f2f7">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Select currencies:"
-                   Margin="20,30,20,10"
-                   FontSize="18"/>
+                   HorizontalTextAlignment="Center"
+                   Padding="20,30,20,10"
+                   FontSize="22"
+                   FontFamily="{DynamicResource BoldFont}"/>
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
+                  ColumnSpacing="0"
                   Margin="20,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
@@ -20,10 +23,11 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="8*" />
                 </Grid.ColumnDefinitions>
-                <Label Text="From"
-                       TextColor="Gray"
-                       FontSize="16"
-                       VerticalTextAlignment="Center"/>
+                <Frame Padding="5"
+                       Style="{DynamicResource FrameCaptionStyle}">
+                    <Label Text="From:"
+                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
                 <Frame Grid.Column="1"
                        HasShadow="False"
                        Padding="0"
@@ -49,11 +53,12 @@
                            Margin="10,0"/>
                     <Image Source="{Binding FromCurrency.CurrencyCode}"/>
                 </StackLayout>
-                <Label Grid.Row="1"
-                       Text="To"
-                       TextColor="Gray"
-                       FontSize="16"
-                       VerticalTextAlignment="Center"/>
+                <Frame Grid.Row="1"
+                       Padding="5"
+                       Style="{DynamicResource FrameCaptionStyle}">
+                    <Label Text="To:"
+                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
                 <Frame Grid.Row="1"
                        Grid.Column="1"
                        HasShadow="False"
@@ -86,19 +91,17 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Estimated price: "
-                              TextColor="Gray"/>
-                        <Span Text="{Binding EstimatedPrice}"/>
+                              FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text="{Binding EstimatedPrice}"
+                              FontSize="18"
+                              FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
             <Button Text="NEXT"
-                    TextColor="White"
-                    FontSize="18"
-                    HeightRequest="70"
-                    BackgroundColor="#415f60"
-                    CornerRadius="0"
-                    HorizontalOptions="Fill"
+                    Margin="20"
                     VerticalOptions="EndAndExpand"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>
         </StackLayout>
     </ContentPage.Content>

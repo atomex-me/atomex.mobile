@@ -61,63 +61,59 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid Padding="8"
-                                    RowSpacing="0"
-                                    ColumnSpacing="0">
+                                  RowSpacing="0"
+                                  ColumnSpacing="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20" />
-                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="50" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="4.5*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="6*" />
                                     <ColumnDefinition Width="2.5*" />
-                                </Grid.ColumnDefinitions>                         
-                                <StackLayout Grid.RowSpan="2"
-                                             Orientation="Horizontal"
-                                             HorizontalOptions="Center">
+                                </Grid.ColumnDefinitions> 
+                                <RelativeLayout VerticalOptions="CenterAndExpand">
                                     <Image Source="{Binding FromCurrencyCode}"
-                                           HeightRequest="24"
-                                           WidthRequest="24"/>
-                                    <Image Source="RightArrow"
-                                           WidthRequest="24"
-                                           HeightRequest="24"/>
+                                           x:Name="FromCurrencyIcon"
+                                           HeightRequest="32"
+                                           WidthRequest="32"/>
                                     <Image Source="{Binding ToCurrencyCode}"
-                                           HeightRequest="24"
-                                            WidthRequest="24"/>
-                                </StackLayout>
+                                           HeightRequest="32"
+                                           WidthRequest="32"
+                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
+                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+18}"/>
+                                </RelativeLayout>
                                 <Label Grid.Column="1"
-                                       Text="{Binding FromAmount}"
-                                       TextColor="Red"
-                                       HorizontalTextAlignment="Start"
-                                       Margin="10,0">
+                                       VerticalTextAlignment="Center"
+                                       Padding="5"
+                                       FontSize="14">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="-"/>
-                                            <Span Text="{Binding FromAmount,StringFormat='{0:0.########}'}"/>
+                                            <Span Text="Convert "
+                                                  FontFamily="{DynamicResource RegularFont}"
+                                                  FontSize="14"/>
+                                            <Span Text="{Binding FromAmount, StringFormat='{0:0.####}'}"
+                                                  FontFamily="{DynamicResource BoldFont}"
+                                                  FontSize="14"/>
                                             <Span Text=" "/>
-                                            <Span Text="{Binding FromCurrencyCode}"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Label Grid.Row="1"
-                                       Grid.Column="1"
-                                       Text="{Binding ToAmount}"
-                                       TextColor="Green"
-                                       HorizontalTextAlignment="Start"
-                                       Margin="10,0">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="+"/>
-                                            <Span Text="{Binding ToAmount, StringFormat='{0:0.########}'}"/>
+                                            <Span Text="{Binding FromCurrencyCode}"
+                                                  FontFamily="{DynamicResource BoldFont}"
+                                                  FontSize="14"/>
+                                            <Span Text=" to "
+                                                  FontFamily="{DynamicResource RegularFont}"
+                                                  FontSize="14"/>
+                                            <Span Text="{Binding ToAmount, StringFormat='{0:0.####}'}"
+                                                  FontFamily="{DynamicResource BoldFont}"
+                                                  FontSize="14"/>
                                             <Span Text=" "/>
-                                            <Span Text="{Binding ToCurrencyCode}"/>
+                                            <Span Text="{Binding ToCurrencyCode}"
+                                                  FontFamily="{DynamicResource BoldFont}"
+                                                  FontSize="14"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
                                 <Frame Grid.Column="2"
-                                       Grid.RowSpan="3"
                                        CornerRadius="8"
-                                       Padding="0"
+                                       Padding="2"
                                        Margin="0,10"
                                        HasShadow="False">
                                     <Frame.Triggers>
@@ -125,47 +121,47 @@
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="Green"/>
+                                                    Value="{DynamicResource ComletedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
                                             <Setter Property="BackgroundColor"
-                                                    Value="DodgerBlue"/>
+                                                    Value="{DynamicResource InProgressStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Canceled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="SlateGray"/>
+                                                    Value="{DynamicResource CanceledStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Refunded">
                                             <Setter Property="BackgroundColor"
-                                                    Value="MediumPurple"/>
+                                                    Value="{DynamicResource RefundedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Unsettled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="IndianRed"/>
+                                                    Value="{DynamicResource UnsettledStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label Margin="5"
-                                           FontSize="14"
-                                           TextColor="White"
+                                    <Label TextColor="White"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent" 
-                                           Text="{Binding State}" />
-                                </Frame>         
+                                           BackgroundColor="Transparent"
+                                           FontFamily="{DynamicResource BoldFont}"
+                                           Text="{Binding State}"
+                                           FontSize="14"/>
+                                </Frame>  
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Create a new swap"
+            <Button Text="CREATE NEW SWAP"
                     Style="{DynamicResource MainButtonStyle}"
                     Margin="20"
                     Clicked="OnCreateSwapButtonClicked"/>

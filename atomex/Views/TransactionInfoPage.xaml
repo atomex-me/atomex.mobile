@@ -146,7 +146,7 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Frame CornerRadius="3"
+                                <Frame CornerRadius="8"
                                        Padding="5"
                                        Margin="20"
                                        HasShadow="False"
@@ -156,25 +156,31 @@
                                                      Binding="{Binding State}"
                                                      Value="Confirmed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="Green"/>
+                                                    Value="{DynamicResource ConfirmedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Pending">
                                             <Setter Property="BackgroundColor"
-                                                    Value="SlateGray"/>
+                                                    Value="{DynamicResource PendingStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Failed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="IndianRed"/>
+                                                    Value="{DynamicResource FailedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"
                                                      Value="Unconfirmed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="DodgerBlue"/>
+                                                    Value="{DynamicResource UnconfirmedStateColor}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding State}"
+                                                     Value="Unknown">
+                                            <Setter Property="BackgroundColor"
+                                                    Value="{DynamicResource UnknownStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label Margin="5"
@@ -182,7 +188,8 @@
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent" 
+                                           BackgroundColor="Transparent"
+                                           FontFamily="{DynamicResource BoldFont}"
                                            Text="{Binding State}" />
                                 </Frame>
                             </StackLayout>

@@ -9,14 +9,22 @@
                        RowHeight="70">
                 <TableRoot>
                     <TableSection Title="Swap Info"
-                                  TextColor="CadetBlue">
+                                  TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Image Source="ConversionIcon"
-                                       HeightRequest="32"
-                                       WidthRequest="32"
-                                       Margin="20,0,5,0">
-                                </Image>
+                            <StackLayout Orientation="Horizontal"
+                                         Padding="20,0">
+                                <RelativeLayout VerticalOptions="CenterAndExpand"
+                                                HorizontalOptions="Start">
+                                    <Image Source="{Binding FromCurrencyCode}"
+                                           x:Name="FromCurrencyIcon"
+                                           HeightRequest="48"
+                                           WidthRequest="48"/>
+                                    <Image Source="{Binding ToCurrencyCode}"
+                                           HeightRequest="48"
+                                           WidthRequest="48"
+                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
+                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+27}"/>
+                                </RelativeLayout>
                                 <StackLayout VerticalOptions="CenterAndExpand"
                                              Padding="10,0">
                                     <Label Text="{Binding FromAmount}"
@@ -52,7 +60,7 @@
                                        Margin="20,0,0,0"
                                        VerticalTextAlignment="Center"
                                        FontSize="18"/>
-                                <Frame CornerRadius="3"
+                                <Frame CornerRadius="8"
                                        Padding="0"
                                        Margin="20"
                                        HasShadow="False">
@@ -61,31 +69,31 @@
                                                      Binding="{Binding CompactState}"
                                                      Value="Completed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="Green"/>
+                                                    Value="{DynamicResource ComletedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="InProgress">
                                             <Setter Property="BackgroundColor"
-                                                    Value="DodgerBlue"/>
+                                                    Value="{DynamicResource InProgressStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Canceled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="SlateGray"/>
+                                                    Value="{DynamicResource CanceledStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Refunded">
                                             <Setter Property="BackgroundColor"
-                                                    Value="MediumPurple"/>
+                                                    Value="{DynamicResource RefundedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Unsettled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="IndianRed"/>
+                                                    Value="{DynamicResource UnsettledStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label Padding="10"
@@ -93,7 +101,8 @@
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent" 
+                                           BackgroundColor="Transparent"
+                                           FontFamily="{DynamicResource BoldFont}"
                                            Text="{Binding CompactState}" />
                                 </Frame>
                             </StackLayout>

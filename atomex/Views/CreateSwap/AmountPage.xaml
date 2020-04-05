@@ -4,12 +4,14 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="Create swap - step 2"
-             BackgroundColor="#f2f2f7">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Enter amount:"
-                   Margin="20,30,20,10"
-                   FontSize="18"/>
+                   HorizontalTextAlignment="Center"
+                   Padding="20,30,20,10"
+                   FontSize="22"
+                   FontFamily="{DynamicResource BoldFont}"/>
             <Grid ColumnSpacing="0"
                   RowSpacing="2">
                 <Grid.RowDefinitions>
@@ -22,8 +24,7 @@
                 </Grid.ColumnDefinitions>
                 <Frame Grid.ColumnSpan="2"
                        x:Name="AmountFrame"
-                       Padding="5"
-                       HasShadow="False">
+                       Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  Grid.ColumnSpan="2">
                         <Frame Padding="0"
@@ -32,21 +33,13 @@
                                Grid.Row="1">
                             <StackLayout>
                                 <Label x:Name="AmountHint"
-                                       Margin="20,5,0,0"
-                                       FontSize="14"
-                                       VerticalTextAlignment="End"
-                                       TextColor="CadetBlue"
-                                       IsVisible="False"/>
+                                       Style="{DynamicResource EntryHintStyle}"/>
                                 <custom:CustomEntry Keyboard="Numeric"
                                                     x:Name="Amount"
-                                                    Placeholder="Amount, " 
-                                                    IsSpellCheckEnabled="False"
-                                                    IsTextPredictionEnabled="False"
+                                                    Placeholder="Amount, "
+                                                    Style="{DynamicResource EntryStyle}"
                                                     Focused="AmountEntryFocused"
                                                     Unfocused="AmountEntryUnfocused"
-                                                    HorizontalOptions="FillAndExpand"
-                                                    VerticalOptions="FillAndExpand"
-                                                    HorizontalTextAlignment="Start"
                                                     TextChanged="OnAmountTextChanged"/>
                             </StackLayout>
                         </Frame>
@@ -55,6 +48,7 @@
                                 Text="MAX"
                                 FontSize="16"
                                 Padding="10"
+                                TextColor="{DynamicResource HintTextColor}"
                                 HorizontalOptions="Center"
                                 BackgroundColor="White"
                                 Clicked="OnSetMaxAmountButtonClicked"/>
@@ -72,16 +66,19 @@
                            HorizontalTextAlignment="Start"/>
                 </Frame>
             </Grid>
-            <Label FontSize="14"
-                   Margin="20,0"
+            <Label Margin="20,0"
                    VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Available market volume: "
-                                  TextColor="Gray"/>
-                            <Span Text="{Binding EstimatedMaxAmount}"/>
+                                  FontFamily="{DynamicResource RegularFont}"/>
+                            <Span Text="{Binding EstimatedMaxAmount}"
+                                  FontFamily="{DynamicResource BoldFont}"
+                                  FontSize="18"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding FromCurrency.CurrencyCode}"/>
+                            <Span Text="{Binding FromCurrency.CurrencyCode}"
+                                  FontFamily="{DynamicResource BoldFont}"
+                                  FontSize="18"/>
                         </FormattedString>
                     </Label.FormattedText>
             </Label>
@@ -104,8 +101,7 @@
                 <Image Source="{Binding ToCurrency.CurrencyCode}"
                        Grid.Column="2" />
                 <Label Grid.Row="1"
-                       FontSize="14"
-                       FontAttributes="Bold"
+                       FontFamily="{DynamicResource BoldFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
@@ -119,16 +115,14 @@
                 <Label Text="No liquidity"
                        Grid.Row="1"
                        Grid.Column="2"
-                       FontSize="14"
-                       FontAttributes="Bold"
+                       FontFamily="{DynamicResource BoldFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        TextColor="Red"
                        IsVisible="{Binding IsNoLiquidity}"/>
                 <Label Grid.Row="1"
                        Grid.Column="2"
-                       FontSize="14"
-                       FontAttributes="Bold"
+                       FontFamily="{DynamicResource BoldFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center">
                     <Label.Triggers>
@@ -150,7 +144,8 @@
                 <Label Grid.Row="2"
                        Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
-                       TextColor="Gray"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
@@ -164,7 +159,8 @@
                        Grid.Column="2"
                        Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
-                       TextColor="Gray"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
@@ -178,44 +174,43 @@
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated price: "/>
+                        <Span Text="Estimated price: "
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text="{Binding EstimatedPrice}"
-                              FontAttributes="Bold"/>
+                              FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated payment fee: "/>
+                        <Span Text="Estimated payment fee: "
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text="{Binding EstimatedPaymentFee}"
-                              FontAttributes="Bold"/>
+                              FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding FromCurrency.CurrencyCode}"
-                              FontAttributes="Bold"/>
+                              FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated redeem fee: "/>
+                        <Span Text="Estimated redeem fee: "
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text="{Binding EstimatedRedeemFee}"
-                              FontAttributes="Bold"/>
+                              FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding ToCurrency.CurrencyCode}"
-                              FontAttributes="Bold"/>
+                              FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
             <Button Text="NEXT"
-                    TextColor="White"
-                    FontSize="18"
-                    HeightRequest="70"
-                    BackgroundColor="#415f60"
-                    CornerRadius="0"
-                    HorizontalOptions="Fill"
+                    Margin="20"
                     VerticalOptions="EndAndExpand"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked" />
         </StackLayout>
     </ContentPage.Content>

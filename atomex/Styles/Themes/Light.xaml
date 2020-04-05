@@ -22,7 +22,6 @@
     <Color x:Key="LogoTextColor">#223a66</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
 
-
     <!-- Fonts -->
     <OnPlatform x:TypeArguments="x:String" x:Key="BlackFont">
           <On Platform="iOS" Value="Roboto-Black" />
@@ -49,7 +48,6 @@
     <OnPlatform x:TypeArguments="x:String" x:Key="LogoFont">
         <On Platform="iOS" Value="Comfortaa-Regular" />
     </OnPlatform>
-
 
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -98,6 +96,37 @@
         <Setter Property="BorderColor" Value="{DynamicResource FrameBorderColor}"/>
     </Style>
 
+    <Color x:Key="LabelFrameCaptionColor">#ffffff</Color>
+    <Color x:Key="FrameCaptionBackgroundColor">#3a6cb1</Color>
+
+    <Style x:Key="FrameCaptionStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="WidthRequest" Value="90"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource FrameCaptionBackgroundColor}"/>
+    </Style>
+
+    <Style x:Key="LabelFrameCaptionStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{DynamicResource LabelFrameCaptionColor}"/>
+    </Style>
+
+    <!-- Swap states colors  -->
+    <Color x:Key="ComletedStateColor">#3a6cb1</Color>
+    <Color x:Key="CanceledStateColor">#303740</Color>
+    <Color x:Key="InProgressStateColor">#14a4be</Color>
+    <Color x:Key="RefundedStateColor">#ffc300</Color>
+    <Color x:Key="UnsettledStateColor">#cd3e4a</Color>
+
+    <!-- Transaction states colors  -->
+    <Color x:Key="ConfirmedStateColor">#3a6cb1</Color>
+    <Color x:Key="PendingStateColor">#14a4be</Color>
+    <Color x:Key="FailedStateColor">#cd3e4a</Color>
+    <Color x:Key="UnconfirmedStateColor">#ffc300</Color>
+    <Color x:Key="UnknownStateColor">#303740</Color>
 
     <!-- Create New Wallet Pages -->
     <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
@@ -173,24 +202,6 @@
     </Style>
 
     <!-- Create Mnemonic Page -->
-    <Color x:Key="CreateMnemonicLabelColor">#ffffff</Color>
-    <Color x:Key="CreateMnemonicFrameBackgroundColor">#3a6cb1</Color>
-
-    <Style x:Key="CreateMnemonicFrameStyle" TargetType="Frame">
-        <Setter Property="CornerRadius" Value="3"/>
-        <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="WidthRequest" Value="90"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource CreateMnemonicFrameBackgroundColor}"/>
-    </Style>
-
-    <Style x:Key="CreateMnemonicFramesLabelStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="TextColor" Value="{DynamicResource CreateMnemonicLabelColor}"/>
-    </Style>
-
     <Style x:Key="GenerateButtonStyle" TargetType="Button">
         <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
         <Setter Property="BorderWidth" Value="1"/>

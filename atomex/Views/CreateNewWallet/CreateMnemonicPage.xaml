@@ -12,9 +12,9 @@
         <Label Text="   Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place."
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal">
-            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
                 <Label Text="Language:"
-                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
             <Frame HasShadow="False"
                    x:Name="LanguageFrame"
@@ -29,9 +29,9 @@
             </Frame>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
-            <Frame Style="{DynamicResource CreateMnemonicFrameStyle}">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
                 <Label Text="Word count:"
-                       Style="{DynamicResource CreateMnemonicFramesLabelStyle}"/>
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
             <Frame HasShadow="False"
                    x:Name="WordCountFrame"
