@@ -19,13 +19,50 @@ namespace atomex.ViewModel
         private IAtomexApp App { get; set; }
 
         public Currency Currency { get; set; }
-        public decimal TotalAmount { get; set; }
-        public decimal AvailableAmount { get; set; }
-        public decimal UnconfirmedAmount { get; set; }
-        public string FreeExternalAddress { get; set; }
+
+        private decimal _totalAmount;
+        public decimal TotalAmount
+        {
+            get => _totalAmount;
+            set { _totalAmount = value; OnPropertyChanged(nameof(TotalAmount)); }
+        }
+
+        private decimal _availableAmount;
+        public decimal AvailableAmount
+        {
+            get => _availableAmount;
+            set { _availableAmount = value; OnPropertyChanged(nameof(AvailableAmount)); }
+        }
+
+        private decimal _unconfirmedAmount;
+        public decimal UnconfirmedAmount
+        {
+            get => _unconfirmedAmount;
+            set { _unconfirmedAmount = value; OnPropertyChanged(nameof(UnconfirmedAmount)); }
+        }
+
+        private string _freeExternalAddress;
+        public string FreeExternalAddress
+        {
+            get => _freeExternalAddress;
+            set { _freeExternalAddress = value; OnPropertyChanged(nameof(FreeExternalAddress)); }
+        }
+
         public string CurrencyCode => Currency.Name;
-        public decimal Price { get; set; }
-        public decimal Cost { get; set; }
+
+        private decimal _price;
+        public decimal Price
+        {
+            get => _price;
+            set { _price = value; OnPropertyChanged(nameof(Price)); }
+        }
+
+        private decimal _cost;
+        public decimal Cost
+        {
+            get => _cost;
+            set { _cost = value; OnPropertyChanged(nameof(Cost)); }
+        }
 
         private float _portfolioPercent;
         public float PortfolioPercent

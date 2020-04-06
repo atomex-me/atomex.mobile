@@ -14,34 +14,42 @@
             <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <Label x:Name="LoaderLabel"
                        Text="Balance updating..."
-                       TextColor="CadetBlue"
+                       TextColor="{DynamicResource HintTextColor}"
+                       FontFamily="{DynamicResource ItalicFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
-                       FontAttributes="Italic"
                        IsVisible="False"
                        Margin="0,20,0,10"/>
                 <ActivityIndicator x:Name="Loader"
-                                   Color="CadetBlue"
+                                   Color="{DynamicResource HintTextColor}"
                                    IsVisible="False"/>
                 <Image Source="{Binding CurrencyCode}"
-                       HeightRequest="64"
-                       WidthRequest="64"
-                       Margin="0,30,0,10" />
+                       HeightRequest="96"
+                       WidthRequest="96"
+                       Margin="0,30,0,20" />
                 <Label Text="{Binding AvailableAmount}"
                        x:Name="AvailableAmountLabel"
                        HorizontalOptions="Center"
-                       FontSize="Large"
-                       FontAttributes="Bold">
+                       FontSize="20"
+                       FontFamily="{DynamicResource BoldFont}">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding AvailableAmount}" />
+                            <Span Text="{Binding AvailableAmount}"/>
                             <Span Text=" " /> 
-                            <Span Text="{Binding CurrencyCode}" />
+                            <Span Text="{Binding CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Text="{Binding Currency.Description}"
-                       HorizontalOptions="Center"/>
+                <Label FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource AdditionalTextColor}"
+                       HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Cost, StringFormat='{0:0.##}'}"/>
+                            <Span Text=" $"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
                              Margin="10,20">
