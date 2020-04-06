@@ -3,6 +3,8 @@ using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Blockchain.Ethereum;
 using Atomex.Blockchain.Tezos;
+using Atomex.EthereumTokens;
+using Atomex.TezosTokens;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
@@ -14,8 +16,14 @@ namespace atomex.ViewModel.TransactionViewModels
             {
                 case BitcoinBasedCurrency _:
                     return new BitcoinBasedTransactionViewModel((IBitcoinBasedTransaction)tx);
+                case Tether _:
+                    return new EthereumERC20TransactionViewModel((EthereumTransaction)tx);
                 case Ethereum _:
                     return new EthereumTransactionViewModel((EthereumTransaction)tx);
+                case TZBTC _:
+                    return new TezosTransactionViewModel((TezosTransaction)tx);
+                case FA12 _:
+                    return new TezosTransactionViewModel((TezosTransaction)tx);
                 case Tezos _:
                     return new TezosTransactionViewModel((TezosTransaction)tx);
             }
