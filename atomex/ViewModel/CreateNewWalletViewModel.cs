@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using atomex.Models;
 using atomex.ViewModel;
 using Atomex;
 using Atomex.Common;
@@ -34,43 +35,25 @@ namespace atomex
             Atomex.Core.Network.TestNet
         };
 
-        //public List<KeyValuePair<Wordlist, string>> Languages { get; } = new List<KeyValuePair<Wordlist, string>>
-        //{
-        //    new KeyValuePair<Wordlist, string>(Wordlist.English, "English"),
-        //    new KeyValuePair<Wordlist, string>(Wordlist.French, "French")
-        //};
 
-        public List<KeyValuePair<string, Wordlist>> Languages { get; set; } = new List<KeyValuePair<string, Wordlist>>
+        public List<CustomWordlist> Languages { get; } = new List<CustomWordlist>
         {
-             new KeyValuePair<string, Wordlist>("English", Wordlist.English),
-             new KeyValuePair<string, Wordlist>("French", Wordlist.French)
-            //{ "English", Wordlist.English },
-            //{ "French", Wordlist.French },
-            //{ "Japanese", Wordlist.Japanese },
-            //{ "Spanish", Wordlist.Spanish },
-            //{ "Portuguese Brazil", Wordlist.PortugueseBrazil },
-            //{ "Chinese Traditional", Wordlist.ChineseTraditional },
-            //{ "Chinese Simplified", Wordlist.ChineseSimplified }
+            new CustomWordlist { Name = "English", Wordlist = Wordlist.English },
+            new CustomWordlist { Name = "French", Wordlist = Wordlist.French },
+            new CustomWordlist { Name = "Japanese", Wordlist = Wordlist.Japanese },
+            new CustomWordlist { Name = "Spanish", Wordlist = Wordlist.Spanish },
+            new CustomWordlist { Name = "Portuguese Brazil", Wordlist = Wordlist.PortugueseBrazil },
+            new CustomWordlist { Name = "Chinese Traditional", Wordlist = Wordlist.ChineseTraditional },
+            new CustomWordlist { Name = "Chinese Simplified", Wordlist = Wordlist.ChineseSimplified },
         };
 
-        //public List<Wordlist> Languages { get; private set; } = new List<Wordlist>
-        //{
-        //    Wordlist.English,
-        //    Wordlist.French,
-        //    Wordlist.Japanese,
-        //    Wordlist.Spanish,
-        //    Wordlist.PortugueseBrazil,
-        //    Wordlist.ChineseTraditional,
-        //    Wordlist.ChineseSimplified
-        //};
-
-        public List<KeyValuePair<string, int>> WordCountToEntropyLength { get; } = new List<KeyValuePair<string, int>>
+        public List<CustomEntropy> WordCountToEntropyLength { get; } = new List<CustomEntropy>
         {
-            new KeyValuePair<string, int>("12", 128),
-            new KeyValuePair<string, int>("15", 160),
-            new KeyValuePair<string, int>("18", 192),
-            new KeyValuePair<string, int>("21", 224),
-            new KeyValuePair<string, int>("24", 256)
+            new CustomEntropy { WordCount = "12", Length = 128 },
+            new CustomEntropy { WordCount = "15", Length = 160 },
+            new CustomEntropy { WordCount = "18", Length = 192 },
+            new CustomEntropy { WordCount = "21", Length = 224 },
+            new CustomEntropy { WordCount = "24", Length = 256 }
         };
 
         private Atomex.Core.Network _network;
@@ -87,8 +70,8 @@ namespace atomex
             set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
         }
 
-        private Wordlist _language = Wordlist.English;
-        public Wordlist Language
+        private CustomWordlist _language;
+        public CustomWordlist Language
         {
             get => _language;
             set
@@ -101,15 +84,15 @@ namespace atomex
             }
         }
 
-        private int _entropyLength = 192;
-        public int EntropyLength
+        private CustomEntropy _entropy;
+        public CustomEntropy Entropy
         {
-            get => _entropyLength;
+            get => _entropy;
             set
             {
-                if (_entropyLength != value)
+                if (_entropy != value)
                 {
-                    _entropyLength = value;
+                    _entropy = value;
                     Mnemonic = string.Empty;
                 }
             }
@@ -183,13 +166,8 @@ namespace atomex
             App = app;
 
             Network = Atomex.Core.Network.MainNet;
-
-            //Language = Wordlist.English;
-            //foreach (KeyValuePair<string, Wordlist> kvp in Languages)
-            //    kvp.Key
-            Console.WriteLine(Language);
-            //Console.WriteLine(Languages);
-            Console.WriteLine(EntropyLength);
+            Language = Languages.FirstOrDefault();
+            Entropy = WordCountToEntropyLength.FirstOrDefault();
         }
 
         public string SaveWalletName()
@@ -230,11 +208,8 @@ namespace atomex
         }
         public void GenerateMnemonic()
         {
-            var entropy = Rand.SecureRandomBytes(EntropyLength / 8);
-            Console.WriteLine(EntropyLength);
-            Console.WriteLine(entropy);
-            
-            Mnemonic = new Mnemonic(Language, entropy).ToString();
+            var entropy = Rand.SecureRandomBytes(Entropy.Length / 8);
+            Mnemonic = new Mnemonic(Language.Wordlist, entropy).ToString();
         }
 
         public string WriteMnemonic()
@@ -246,7 +221,7 @@ namespace atomex
 
             try
             {
-                var unused = new Mnemonic(Mnemonic, Language);
+                var unused = new Mnemonic(Mnemonic, Language.Wordlist);
                 return null;
             }
             catch (Exception e)
@@ -333,7 +308,7 @@ namespace atomex
         {
             Wallet = new HdWallet(
                 mnemonic: Mnemonic,
-                wordList: Language,
+                wordList: Language.Wordlist,
                 passPhrase: DerivedPassword,
                 network: Network);
         }
@@ -363,7 +338,8 @@ namespace atomex
         public void Clear()
         {
             WalletName = string.Empty;
-            Language = Wordlist.English;
+            Language = Languages.FirstOrDefault();
+            Entropy = WordCountToEntropyLength.FirstOrDefault();
             Mnemonic = string.Empty;
             DerivedPassword = null;
             DerivedPasswordConfirmation = null;

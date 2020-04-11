@@ -22,6 +22,7 @@
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
                 <Picker ItemsSource="{Binding Languages}"
+                        ItemDisplayBinding="{Binding Name}"
                         SelectedItem="{Binding Language}"
                         Focused="OnLanguagePickerFocused"
                         Unfocused="OnLanguagePickerFocused"
@@ -39,7 +40,8 @@
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
                 <Picker ItemsSource="{Binding WordCountToEntropyLength}"
-                        SelectedItem="{Binding EntropyLength}"
+                        ItemDisplayBinding="{Binding WordCount}"
+                        SelectedItem="{Binding Entropy}"
                         Focused="OnWordCountPickerFocused"
                         Unfocused="OnWordCountPickerFocused"
                         HeightRequest="70"/>
