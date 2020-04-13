@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
+using Atomex;
 
 namespace atomex
 {
@@ -9,15 +10,17 @@ namespace atomex
     {
         private CurrencyViewModel _currencyViewModel;
         private INavigationService _navigationService;
+        private IAtomexApp _app;
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(CurrencyViewModel currencyViewModel, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel currencyViewModel, IAtomexApp app, INavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
+            _app = app;
 
             if (currencyViewModel != null)
             {
@@ -39,7 +42,7 @@ namespace atomex
         }
         async void ShowDelegatePage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new DelegatePage(new DelegateViewModel()));
+            await Navigation.PushAsync(new DelegatePage(new DelegateViewModel(_app)));
         }
         void ShowConversionPage(object sender, EventArgs args)
         {

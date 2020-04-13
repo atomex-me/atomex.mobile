@@ -147,7 +147,7 @@
                                     </Label.Triggers>
                                 </Label>
                                 <Frame CornerRadius="8"
-                                       Padding="5"
+                                       Padding="2"
                                        Margin="20"
                                        HasShadow="False"
                                        HorizontalOptions="EndAndExpand">
@@ -183,8 +183,8 @@
                                                     Value="{DynamicResource UnknownStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label Margin="5"
-                                           FontSize="14"
+                                    <Label FontSize="14"
+                                           Padding="10"
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"

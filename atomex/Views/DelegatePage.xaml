@@ -7,10 +7,10 @@
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout Padding="20">
         <Label Text="Delegating to a bakery"
-               FontFamily="{DynamicResource BoldFont}"
+               FontFamily="{DynamicResource RegularFont}"
                FontSize="20"
                HorizontalTextAlignment="Center"
-               Padding="20"/>
+               Padding="20,10"/>
         <Grid VerticalOptions="Fill"
               HorizontalOptions="Fill"
               ColumnSpacing="0"
@@ -84,24 +84,11 @@
                        FontSize="14">
             </Label>
             </StackLayout>
-       
-            
         </Grid>
-        <!--<Frame HasShadow="False"
-               x:Name="BakerFrame"
-               Padding="0"
-               BorderColor="LightGray"
-               HorizontalOptions="FillAndExpand">
-            <Picker ItemsSource="{Binding FromBakersList}"
-                    ItemDisplayBinding="{Binding Name}"
-                    SelectedItem="{Binding Baker}"
-                    Focused="OnBakerPickerFocused"
-                    Unfocused="OnBakerPickerFocused"
-                    HeightRequest="70"/>
-        </Frame>-->
         <StackLayout Orientation="Horizontal"
                      HeightRequest="80">
-            <Frame Style="{DynamicResource FrameCaptionStyle}">
+            <Frame Style="{DynamicResource FrameCaptionStyle}"
+                   WidthRequest="60">
                 <Label Text="To Address:"
                        Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
@@ -116,28 +103,63 @@
                                       Text="{Binding Address}"/>
             </Frame>
         </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     HeightRequest="80">
-            <Frame Style="{DynamicResource FrameCaptionStyle}">
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Frame Style="{DynamicResource FrameCaptionStyle}"
+                    Grid.RowSpan="2">
                 <Label Text="From Address:"
-                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                        Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
-            <Frame HasShadow="False"
-                   x:Name="FromAddressFrame"
-                   Padding="0"
-                   BorderColor="LightGray"
-                   HorizontalOptions="FillAndExpand">
-                 <Picker ItemsSource="{Binding FromAddresses}"
-                        ItemDisplayBinding="{Binding Name}"
-                        SelectedItem="{Binding FromAddress}"
-                        Focused="OnFromAddressPickerFocused"
-                        Unfocused="OnFromAddressPickerFocused"
-                        HeightRequest="70"/>
+            <Frame Grid.RowSpan="2"
+                    Grid.Column="1"
+                    HasShadow="False"
+                    x:Name="FromAddressFrame"
+                    Padding="0"
+                    BorderColor="LightGray">
+                    <Picker ItemsSource="{Binding FromAddressList}"
+                            ItemDisplayBinding="{Binding Address}"
+                            FontSize="14"
+                            SelectedItem="{Binding WalletAddressViewModel}"
+                            Focused="OnFromAddressPickerFocused"
+                            Unfocused="OnFromAddressPickerFocused"
+                            TextColor="#ffffff"/>
             </Frame>
-        </StackLayout>
+            <Label Grid.Row="0"
+                    Grid.Column="1"
+                    Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                    FontFamily="{DynamicResource RegularFont}"
+                    LineBreakMode="MiddleTruncation"
+                    Padding="20,0"
+                    VerticalTextAlignment="End"
+                    IsEnabled="False"/>
+            <Label Grid.Row="1"
+                    Grid.Column="1"
+                    Padding="25,0"
+                    HorizontalTextAlignment="End"
+                    VerticalTextAlignment="Center"
+                    FontFamily="{DynamicResource ItalicFont}"
+                    TextColor="{DynamicResource HintTextColor}"
+                    IsEnabled="False">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Balance "/>
+                        <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"/>
+                        <Span Text=" xtz"/>
+                </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </Grid>
         <StackLayout Orientation="Horizontal"
                      HeightRequest="80">
-            <Frame Style="{DynamicResource FrameCaptionStyle}">
+            <Frame Style="{DynamicResource FrameCaptionStyle}"
+                   WidthRequest="60">
                 <Label Text="Fee:"
                        Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>

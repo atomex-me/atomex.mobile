@@ -22,16 +22,16 @@ namespace atomex.ViewModel
         private IAtomexApp App { get; }
 
         private readonly Tezos _tezos;
-        private WalletAddress _walletAddress;
+        private WalletAddressViewModel _walletAddressViewModel;
         private TezosTransaction _tx;
 
-        public WalletAddress WalletAddress
+        public WalletAddressViewModel WalletAddressViewModel
         {
-            get => _walletAddress;
+            get => _walletAddressViewModel;
             set
             {
-                _walletAddress = value;
-                OnPropertyChanged(nameof(WalletAddress));
+                _walletAddressViewModel = value;
+                OnPropertyChanged(nameof(WalletAddressViewModel));
             }
         }
 
@@ -48,42 +48,18 @@ namespace atomex.ViewModel
             }
         }
 
-        public DelegateViewModel()
+        private List<WalletAddressViewModel> _fromAddressList;
+        public List<WalletAddressViewModel> FromAddressList
         {
-            FromBakersList = new List<BakerViewModel>()
+            get => _fromAddressList;
+            private set
             {
-                new BakerViewModel()
-                {
-                    Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
-                    Name = "TezosHODL",
-                    Address = "tz1sdfldjsflksjdlkf123sfa",
-                    Fee = 5,
-                    MinDelegation = 10,
-                    StakingAvailable = 10000.000000m
-                },
-                new BakerViewModel()
-                {
-                    Logo = "XTZ",
-                    Name = "Tezgate",
-                    Address = "tz761sdfldflksdslkf123sjk",
-                    Fee = 9.90m,
-                    MinDelegation = 100,
-                    StakingAvailable = 1356622.776437m
-                }
-            };
-        }
-        //private List<WalletAddressViewModel> _fromAddressList;
-        //public List<WalletAddressViewModel> FromAddressList
-        //{
-        //    get => _fromAddressList;
-        //    private set
-        //    {
-        //        _fromAddressList = value;
-        //        OnPropertyChanged(nameof(FromAddressList));
+                _fromAddressList = value;
+                OnPropertyChanged(nameof(FromAddressList));
 
-        //        WalletAddress = FromAddressList.FirstOrDefault().WalletAddress;
-        //    }
-        //}
+                WalletAddressViewModel = FromAddressList.FirstOrDefault();
+            }
+        }
 
         private BakerViewModel _bakerViewModel;
         public BakerViewModel BakerViewModel
@@ -276,23 +252,57 @@ namespace atomex.ViewModel
         //    private readonly Action _onDelegate;
 
 
-        //    public DelegateViewModel(
-        //        IAtomexApp app,
-        //        Action onDelegate = null)
-        //    {
-        //        App = app ?? throw new ArgumentNullException(nameof(app));
-        //        _onDelegate = onDelegate;
+        public DelegateViewModel(IAtomexApp app)
+        {
+            FromBakersList = new List<BakerViewModel>()
+            {
+                new BakerViewModel()
+                {
+                    Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
+                    Name = "TezosHODL",
+                    Address = "tz1sdfldjsflksjdlkf123sfa",
+                    Fee = 5,
+                    MinDelegation = 10,
+                    StakingAvailable = 10000.000000m
+                },
+                new BakerViewModel()
+                {
+                    Logo = "XTZ",
+                    Name = "Tezgate",
+                    Address = "tz761sdfldflksdslkf123sjk",
+                    Fee = 9.90m,
+                    MinDelegation = 100,
+                    StakingAvailable = 1356622.776437m
+                }
+            };
 
-        //        _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
-        //        FeeCurrencyCode = _tezos.FeeCode;
-        //        BaseCurrencyCode = "USD";
-        //        BaseCurrencyFormat = "$0.00";
-        //        UseDefaultFee = true;
+            App = app ?? throw new ArgumentNullException(nameof(app));
 
-        //        SubscribeToServices();
-        //        LoadBakerList().FireAndForget();
-        //        PrepareWallet().WaitForResult();
-        //    }
+            _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
+            FeeCurrencyCode = _tezos.FeeCode;
+            BaseCurrencyCode = "USD";
+            BaseCurrencyFormat = "$0.00";
+            UseDefaultFee = true;
+            PrepareWallet().WaitForResult();
+        }
+
+        public DelegateViewModel(
+            IAtomexApp app,
+            Action onDelegate = null)
+        {
+            App = app ?? throw new ArgumentNullException(nameof(app));
+            //_onDelegate = onDelegate;
+
+            _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
+            FeeCurrencyCode = _tezos.FeeCode;
+            BaseCurrencyCode = "USD";
+            BaseCurrencyFormat = "$0.00";
+            UseDefaultFee = true;
+
+            SubscribeToServices();
+            //LoadBakerList().FireAndForget();
+            PrepareWallet().WaitForResult();
+        }
 
         //    private async Task LoadBakerList()
         //    {
@@ -328,22 +338,22 @@ namespace atomex.ViewModel
         //        }, DispatcherPriority.Background);
         //    }
 
-        //    private async Task PrepareWallet(CancellationToken cancellationToken = default)
-        //    {
-        //        FromAddressList = (await App.Account
-        //            .GetUnspentAddressesAsync(_tezos.Name, cancellationToken).ConfigureAwait(false))
-        //            .OrderByDescending(x => x.Balance)
-        //            .Select(w => new WalletAddressViewModel(w, _tezos.Format))
-        //            .ToList();
+        private async Task PrepareWallet(CancellationToken cancellationToken = default)
+        {
+            FromAddressList = (await App.Account
+                .GetUnspentAddressesAsync(_tezos.Name, cancellationToken).ConfigureAwait(false))
+                .OrderByDescending(x => x.Balance)
+                .Select(w => new WalletAddressViewModel(w, _tezos.Format))
+                .ToList();
 
-        //        if (!FromAddressList?.Any() ?? false)
-        //        {
-        //            Warning = "You don't have non-empty accounts";
-        //            return;
-        //        }
+            if (!FromAddressList?.Any() ?? false)
+            {
+                Warning = "You don't have non-empty accounts";
+                return;
+            }
 
-        //        WalletAddress = FromAddressList.FirstOrDefault().WalletAddress;
-        //    }
+            WalletAddressViewModel = FromAddressList.FirstOrDefault();
+        }
 
         //    private async Task<Result<string>> GetDelegate(
         //        CancellationToken cancellationToken = default)
@@ -404,22 +414,22 @@ namespace atomex.ViewModel
         //        return "Successful check";
         //    }
 
-        //    private void SubscribeToServices()
-        //    {
-        //        if (App.HasQuotesProvider)
-        //            App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
-        //    }
+        private void SubscribeToServices()
+        {
+            if (App.HasQuotesProvider)
+                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+        }
 
-        //    private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
-        //    {
-        //        if (!(sender is ICurrencyQuotesProvider quotesProvider))
-        //            return;
+        private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        {
+            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+                return;
 
-        //        var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
+            var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
 
-        //        if (quote != null)
-        //            FeeInBase = Fee * quote.Bid;
-        //    }
+            if (quote != null)
+                FeeInBase = Fee * quote.Bid;
+        }
 
         //    private void DesignerMode()
         //    {

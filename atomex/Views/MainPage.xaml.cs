@@ -23,7 +23,7 @@ namespace atomex
 
             _mainViewModel = new MainViewModel();
             //IAtomexApp AtomexApp = _mainViewModel.GetAtomexApp();
-            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, this));
+            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.GetAtomexApp(), this));
             navigationWalletsListPage.IconImageSource = "NavBar__wallets";
             navigationWalletsListPage.Title = "Wallets";
             navigationWalletsListPage.BarBackgroundColor = Color.FromHex("#223a66");

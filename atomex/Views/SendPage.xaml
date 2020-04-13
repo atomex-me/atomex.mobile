@@ -132,8 +132,7 @@
                 </Label.FormattedText>
             </Label>
             <StackLayout x:Name="EstimateFeeLayout"
-                         IsVisible="False"
-                         BackgroundColor="Green">
+                         IsVisible="False">
                 <ActivityIndicator x:Name="FeeLoader"
                                    HorizontalOptions="Center"
                                    VerticalOptions="CenterAndExpand"
