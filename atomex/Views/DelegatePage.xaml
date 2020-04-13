@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
+             x:Class="atomex.DelegatePage"
+             Title="Delegate"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
+    <StackLayout Padding="20">
+        <Label Text="Delegating to a bakery"
+               FontFamily="{DynamicResource BoldFont}"
+               FontSize="20"
+               HorizontalTextAlignment="Center"
+               Padding="20"/>
+        <Grid VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              ColumnSpacing="0"
+              RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Frame Grid.ColumnSpan="3"
+                   Grid.RowSpan="2"
+                   HasShadow="False"
+                   Padding="0"
+                   x:Name="BakerFrame">
+                <Picker x:Name="pickerFrom"
+                        ItemsSource="{Binding FromBakersList}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding BakerViewModel}"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        Focused="OnBakerPickerFocused"
+                        Unfocused="OnBakerPickerFocused"
+                        TextColor="#ffffff">
+                </Picker>
+            </Frame>
+            <Image Grid.RowSpan="2"
+                   Source="{Binding BakerViewModel.Logo}"
+                   Margin="10"
+                   IsEnabled="False"/>
+            <StackLayout Grid.Column="1"
+                         Grid.RowSpan="2"
+                         IsEnabled="False"
+                         VerticalOptions="Center">
+                <Label Text="{Binding BakerViewModel.Name}"
+                       VerticalTextAlignment="End"
+                       FontFamily="{DynamicResource BoldFont}"
+                       FontSize="20"/>
+                <Label 
+                   VerticalTextAlignment="Start"
+                   FontFamily="{DynamicResource LightFont}"
+                   FontSize="14">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding BakerViewModel.Fee}"/>
+                        <Span Text=" % "/>
+                        <Span Text="(min "/>
+                        <Span Text="{Binding BakerViewModel.MinDelegation}"/>
+                        <Span Text=" tez)"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            </StackLayout>
+            <StackLayout Grid.Column="2"
+                         Grid.RowSpan="2"
+                         IsEnabled="False"
+                         VerticalOptions="Center"
+                         Padding="20,0">
+                <Label Text="Available"
+                       VerticalTextAlignment="End"
+                       HorizontalTextAlignment="End"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"/>
+                <Label Text="{Binding BakerViewModel.StakingAvailable, StringFormat='{0:0.##}'}"
+                       VerticalTextAlignment="Start"
+                       HorizontalTextAlignment="End"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14">
+            </Label>
+            </StackLayout>
+       
+            
+        </Grid>
+        <!--<Frame HasShadow="False"
+               x:Name="BakerFrame"
+               Padding="0"
+               BorderColor="LightGray"
+               HorizontalOptions="FillAndExpand">
+            <Picker ItemsSource="{Binding FromBakersList}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding Baker}"
+                    Focused="OnBakerPickerFocused"
+                    Unfocused="OnBakerPickerFocused"
+                    HeightRequest="70"/>
+        </Frame>-->
+        <StackLayout Orientation="Horizontal"
+                     HeightRequest="80">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
+                <Label Text="To Address:"
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
+            </Frame>
+            <Frame HasShadow="False"
+                   x:Name="ToAddressFrame"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                <controls:CustomEntry x:Name="ToAddressEntry"
+                                      Keyboard="Text"
+                                      Style="{DynamicResource EntryStyle}"
+                                      Text="{Binding Address}"/>
+            </Frame>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     HeightRequest="80">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
+                <Label Text="From Address:"
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
+            </Frame>
+            <Frame HasShadow="False"
+                   x:Name="FromAddressFrame"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                 <Picker ItemsSource="{Binding FromAddresses}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding FromAddress}"
+                        Focused="OnFromAddressPickerFocused"
+                        Unfocused="OnFromAddressPickerFocused"
+                        HeightRequest="70"/>
+            </Frame>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     HeightRequest="80">
+            <Frame Style="{DynamicResource FrameCaptionStyle}">
+                <Label Text="Fee:"
+                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
+            </Frame>
+            <Frame HasShadow="False"
+                   Padding="0"
+                   BorderColor="LightGray"
+                   HorizontalOptions="FillAndExpand">
+                <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                      Text="{Binding Fee}"
+                                      IsReadOnly="True"/>
+            </Frame>
+        </StackLayout>
+        <Button Text="Delegate"
+                Margin="0,20"
+                VerticalOptions="EndAndExpand"
+                Style="{DynamicResource MainButtonStyle}"
+                Clicked="OnDelegateButtonClicked"/>
+    </StackLayout>
+</ContentPage>

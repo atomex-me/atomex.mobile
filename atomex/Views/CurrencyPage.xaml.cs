@@ -2,7 +2,6 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
-using Atomex;
 
 namespace atomex
 {
@@ -38,12 +37,9 @@ namespace atomex
         {
             await Navigation.PushAsync(new SendPage(_currencyViewModel));
         }
-        async void ShowDelegationPage(object sender, EventArgs args)
+        async void ShowDelegatePage(object sender, EventArgs args)
         {
-            if (_currencyViewModel != null)
-            {
-                await DisplayAlert("Warning", "In progress", "Ok");
-            }
+            await Navigation.PushAsync(new DelegatePage(new DelegateViewModel()));
         }
         void ShowConversionPage(object sender, EventArgs args)
         {

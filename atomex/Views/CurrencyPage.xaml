@@ -100,7 +100,7 @@
                                      WidthRequest="40"
                                      HorizontalOptions="CenterAndExpand"
                                      VerticalOptions="CenterAndExpand"
-                                     Clicked="ShowDelegationPage"/>
+                                     Clicked="ShowDelegatePage"/>
                         <Label Text="Delegate"
                                FontAttributes="Bold"
                                HorizontalOptions="Center"
