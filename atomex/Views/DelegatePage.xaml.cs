@@ -7,6 +7,8 @@ namespace atomex
 {
     public partial class DelegatePage : ContentPage
     {
+        private DelegateViewModel _delegateViewModel;
+
         public DelegatePage()
         {
             InitializeComponent();
@@ -15,7 +17,7 @@ namespace atomex
         public DelegatePage(DelegateViewModel delegateViewModel)
         {
             InitializeComponent();
-
+            _delegateViewModel = delegateViewModel;
             BindingContext = delegateViewModel;
         }
 
@@ -29,9 +31,18 @@ namespace atomex
             FromAddressFrame.HasShadow = args.IsFocused;
         }
 
-        private async void OnDelegateButtonClicked(object sender, EventArgs args)
+        private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            await DisplayAlert("Warning", "In progress", "Ok");
+            var error = await _delegateViewModel.Validate();
+            if (error != null)
+            {
+                await DisplayAlert("Error", error, "Ok");
+                return;
+            }
+            else
+            {
+                await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
+            }
         }
     }
 }

@@ -80,10 +80,11 @@ namespace atomex.ViewModel
             get => Fee.ToString(_tezos.FeeFormat, CultureInfo.InvariantCulture);
             set
             {
-                //if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
-                //    return;
+                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                    return;
 
-                //Fee = fee.TruncateByFormat(_tezos.FeeFormat);
+                string feeString = fee.ToString(_tezos.FeeFormat, CultureInfo.InvariantCulture);
+                Fee = decimal.Parse(feeString, CultureInfo.InvariantCulture);
             }
         }
 
@@ -95,20 +96,20 @@ namespace atomex.ViewModel
             {
                 _fee = value;
 
-                //if (!UseDefaultFee)
-                //{
-                //    var feeAmount = _fee;
+                if (!UseDefaultFee)
+                {
+                    var feeAmount = _fee;
 
-                //    if (feeAmount > _walletAddress.Balance)
-                //        feeAmount = _walletAddress.Balance;
+                    if (feeAmount > _walletAddressViewModel.WalletAddress.Balance)
+                        feeAmount = _walletAddressViewModel.WalletAddress.Balance;
 
-                //    _fee = feeAmount;
+                    _fee = feeAmount;
 
-                //    OnPropertyChanged(nameof(FeeString));
-                //    Warning = string.Empty;
-                //}
+                    OnPropertyChanged(nameof(FeeString));
+                    Warning = string.Empty;
+                }
 
-                //OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
         }
 
@@ -176,80 +177,36 @@ namespace atomex.ViewModel
             set { _warning = value; OnPropertyChanged(nameof(Warning)); }
         }
 
-        private bool _delegationCheck;
-        public bool DelegationCheck
+        public async Task<string> Validate()
         {
-            get => _delegationCheck;
-            set { _delegationCheck = value; OnPropertyChanged(nameof(DelegationCheck)); }
-        }
+            if (string.IsNullOrEmpty(Address))
+            {
+                Warning = "Empty Address";
+                return "Empty Address";
+            }
 
-        //    private ICommand _nextCommand;
-        //    public ICommand NextCommand => _nextCommand ?? (_nextCommand = new Command(async () =>
-        //    {
-        //        if (DelegationCheck)
-        //            return;
+            if (!_tezos.IsValidAddress(Address))
+            {
+                Warning = "Invalid Address Error";
+                return "Invalid Address Error";
+            }
 
-        //        DelegationCheck = true;
+            if (Fee < 0)
+            {
+                Warning = "Commission Less Than Zero Error";
+                return "Commission Less Than Zero Error";
+            }
 
-        //        try
-        //        {
-        //            if (string.IsNullOrEmpty(Address))
-        //            {
-        //                Warning = Resources.SvEmptyAddressError;
-        //                return;
-        //            }
+            var result = await GetDelegate();
 
-        //            if (!_tezos.IsValidAddress(Address))
-        //            {
-        //                Warning = Resources.SvInvalidAddressError;
-        //                return;
-        //            }
+            if (result.HasError)
+            {
+                Warning = result.Error.Description;
+                return result.Error.Description;
+            }
 
-        //            if (Fee < 0)
-        //            {
-        //                Warning = Resources.SvCommissionLessThanZeroError;
-        //                return;
-        //            }
-
-        //            /*
-        //            if (xTezos.GetFeeAmount(Fee, FeePrice) > CurrencyViewModel.AvailableAmount) {
-        //                Warning = Resources.SvAvailableFundsError;
-        //                return;
-        //            }*/
-
-        //            var result = await GetDelegate();
-
-        //            if (result.HasError)
-        //                Warning = result.Error.Description;
-        //            else
-        //            {
-        //                var confirmationViewModel = new DelegateConfirmationViewModel(DialogViewer, _onDelegate)
-        //                {
-        //                    Currency = _tezos,
-        //                    WalletAddress = WalletAddress,
-        //                    UseDefaultFee = UseDefaultFee,
-        //                    Tx = _tx,
-        //                    From = WalletAddress.Address,
-        //                    To = Address,
-        //                    IsAmountLessThanMin = WalletAddress.Balance < BakerViewModel.MinDelegation,
-        //                    BaseCurrencyCode = BaseCurrencyCode,
-        //                    BaseCurrencyFormat = BaseCurrencyFormat,
-        //                    Fee = Fee,
-        //                    FeeInBase = FeeInBase,
-        //                    CurrencyCode = _tezos.FeeCode,
-        //                    CurrencyFormat = _tezos.FeeFormat
-        //                };
-
-        //                DialogViewer.PushPage(Dialogs.Delegate, Pages.DelegateConfirmation, confirmationViewModel);
-        //            }
-        //        }
-        //        finally
-        //        {
-        //            DelegationCheck = false;
-        //        }
-        //    }));
-
-        //    private readonly Action _onDelegate;
+            return null;
+        } 
 
 
         public DelegateViewModel(IAtomexApp app)
@@ -269,7 +226,7 @@ namespace atomex.ViewModel
                 {
                     Logo = "XTZ",
                     Name = "Tezgate",
-                    Address = "tz761sdfldflksdslkf123sjk",
+                    Address = "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf",
                     Fee = 9.90m,
                     MinDelegation = 100,
                     StakingAvailable = 1356622.776437m
@@ -284,14 +241,14 @@ namespace atomex.ViewModel
             BaseCurrencyFormat = "$0.00";
             UseDefaultFee = true;
             PrepareWallet().WaitForResult();
+            _fee = 5;
+            _feeInBase = 123m;
         }
 
         public DelegateViewModel(
-            IAtomexApp app,
-            Action onDelegate = null)
+            IAtomexApp app, string test)
         {
             App = app ?? throw new ArgumentNullException(nameof(app));
-            //_onDelegate = onDelegate;
 
             _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
             FeeCurrencyCode = _tezos.FeeCode;
@@ -355,64 +312,88 @@ namespace atomex.ViewModel
             WalletAddressViewModel = FromAddressList.FirstOrDefault();
         }
 
-        //    private async Task<Result<string>> GetDelegate(
-        //        CancellationToken cancellationToken = default)
-        //    {
-        //        if (_walletAddress == null)
-        //            return new Error(Errors.InvalidWallets, "You don't have non-empty accounts");
+        private async Task<Result<string>> GetDelegate(
+            CancellationToken cancellationToken = default)
+        {
+            if (_walletAddressViewModel.WalletAddress == null)
+                return new Error(Errors.InvalidWallets, "You don't have non-empty accounts");
 
-        //        var wallet = (HdWallet)App.Account.Wallet;
-        //        var keyStorage = wallet.KeyStorage;
-        //        var rpc = new Rpc(_tezos.RpcNodeUri);
+            var wallet = (HdWallet)App.Account.Wallet;
+            var keyStorage = wallet.KeyStorage;
+            var rpc = new Rpc(_tezos.RpcNodeUri);
 
-        //        JObject delegateData;
-        //        try
-        //        {
-        //            delegateData = await rpc
-        //                .GetDelegate(_address)
-        //                .ConfigureAwait(false);
-        //        }
-        //        catch
-        //        {
-        //            return new Error(Errors.WrongDelegationAddress, "Wrong delegation address");
-        //        }
+            JObject delegateData;
+            try
+            {
+                delegateData = await rpc
+                    .GetDelegate(_address)
+                    .ConfigureAwait(false);
+            }
+            catch
+            {
+                return new Error(Errors.WrongDelegationAddress, "Wrong delegation address");
+            }
 
-        //        if (delegateData["deactivated"].Value<bool>())
-        //            return new Error(Errors.WrongDelegationAddress, "Baker is deactivated. Pick another one");
+            if (delegateData["deactivated"].Value<bool>())
+                return new Error(Errors.WrongDelegationAddress, "Baker is deactivated. Pick another one");
 
-        //        var delegators = delegateData["delegated_contracts"]?.Values<string>();
+            var delegators = delegateData["delegated_contracts"]?.Values<string>();
 
-        //        if (delegators.Contains(_walletAddress.Address))
-        //            return new Error(Errors.AlreadyDelegated, $"Already delegated from {_walletAddress.Address} to {_address}");
+            if (delegators.Contains(WalletAddressViewModel.WalletAddress.Address))
+                return new Error(Errors.AlreadyDelegated, $"Already delegated from {WalletAddressViewModel.WalletAddress.Address} to {_address}");
 
-        //        var tx = new TezosTransaction
-        //        {
-        //            StorageLimit = _tezos.StorageLimit,
-        //            GasLimit = _tezos.GasLimit,
-        //            From = _walletAddress.Address,
-        //            To = _address,
-        //            Fee = Fee.ToMicroTez(),
-        //            Currency = _tezos,
-        //            CreationTime = DateTime.UtcNow,
-        //        };
+            var tx = new TezosTransaction
+            {
+                StorageLimit = _tezos.StorageLimit,
+                GasLimit = _tezos.GasLimit,
+                From = WalletAddressViewModel.WalletAddress.Address,
+                To = _address,
+                Fee = Fee.ToMicroTez(),
+                Currency = _tezos,
+                CreationTime = DateTime.UtcNow,
+            };
 
-        //        try
-        //        {
-        //            var calculatedFee = await tx.AutoFillAsync(keyStorage, _walletAddress, UseDefaultFee);
-        //            if (!calculatedFee)
-        //                return new Error(Errors.TransactionCreationError, $"Autofill transaction failed");
+            try
+            {
+                var calculatedFee = await tx.AutoFillAsync(keyStorage, WalletAddressViewModel.WalletAddress, UseDefaultFee);
+                if (!calculatedFee)
+                    return new Error(Errors.TransactionCreationError, $"Autofill transaction failed");
 
-        //            Fee = tx.Fee;
-        //            _tx = tx;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Log.Error(e, "Autofill delegation error");
-        //            return new Error(Errors.TransactionCreationError, $"Autofill delegation error. Try again later");
-        //        }
+                Fee = tx.Fee;
+                _tx = tx;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Autofill delegation error");
+                return new Error(Errors.TransactionCreationError, $"Autofill delegation error. Try again later");
+            }
 
-        //        return "Successful check";
-        //    }
+            return "Successful check";
+        }
+
+        public async Task<Result<string>> Delegate()
+        {
+            var wallet = (HdWallet)App.Account.Wallet;
+            var keyStorage = wallet.KeyStorage;
+
+            try
+            {
+                var signResult = await _tx.SignDelegationOperationAsync(keyStorage, WalletAddressViewModel.WalletAddress, default);
+
+                if (!signResult)
+                {
+                    Log.Error("Transaction signing error");
+                }
+                var result = await _tezos.BlockchainApi.TryBroadcastAsync(_tx);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "delegation send error.");
+                return "An error has occurred while delegation.";
+            }
+        }
+
 
         private void SubscribeToServices()
         {
@@ -430,28 +411,6 @@ namespace atomex.ViewModel
             if (quote != null)
                 FeeInBase = Fee * quote.Bid;
         }
-
-        //    private void DesignerMode()
-        //    {
-        //        FromBakersList = new List<BakerViewModel>()
-        //        {
-        //            new BakerViewModel()
-        //            {
-        //                Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
-        //                Name = "TezosHODL",
-        //                Address = "tz1sdfldjsflksjdlkf123sfa",
-        //                Fee = 5,
-        //                MinDelegation = 10,
-        //                StakingAvailable = 10000.000000m
-        //            }
-        //        };
-
-        //        BakerViewModel = FromBakersList.FirstOrDefault();
-
-        //        _address = "tz1sdfldjsflksjdlkf123sfa";
-        //        _fee = 5;
-        //        _feeInBase = 123m;
-        //    }
     }
 }
 

@@ -52,20 +52,19 @@
                        VerticalTextAlignment="End"
                        FontFamily="{DynamicResource BoldFont}"
                        FontSize="20"/>
-                <Label 
-                   VerticalTextAlignment="Start"
-                   FontFamily="{DynamicResource LightFont}"
-                   FontSize="14">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding BakerViewModel.Fee}"/>
-                        <Span Text=" % "/>
-                        <Span Text="(min "/>
-                        <Span Text="{Binding BakerViewModel.MinDelegation}"/>
-                        <Span Text=" tez)"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                <Label VerticalTextAlignment="Start"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding BakerViewModel.Fee}"/>
+                            <Span Text=" % "/>
+                            <Span Text="(min "/>
+                            <Span Text="{Binding BakerViewModel.MinDelegation}"/>
+                            <Span Text=" tez)"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
             <StackLayout Grid.Column="2"
                          Grid.RowSpan="2"
@@ -168,14 +167,42 @@
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
                 <controls:CustomEntry Style="{DynamicResource EntryStyle}"
-                                      Text="{Binding Fee}"
-                                      IsReadOnly="True"/>
+                                      Text="{Binding FeeString}">
+                    <controls:CustomEntry.Triggers>
+                        <DataTrigger TargetType="controls:CustomEntry"
+                                     Binding="{Binding UseDefaultFee}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="LightGray"/>
+                            <Setter Property="IsReadOnly"
+                                    Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="controls:CustomEntry"
+                                     Binding="{Binding UseDefaultFee}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource MainBackgroundColor}"/>
+                            <Setter Property="IsReadOnly"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </controls:CustomEntry.Triggers>
+                </controls:CustomEntry>
             </Frame>
         </StackLayout>
-        <Button Text="Delegate"
+         <TableView Intent="Settings"
+                    BackgroundColor="{DynamicResource MainBackgroundColor}">
+            <TableRoot>
+                <TableSection TextColor="{DynamicResource HintTextColor}">
+                    <SwitchCell Text="Use default fee"
+                                OnColor="{DynamicResource MainButtonBackgroundColor}"
+                                On="{Binding UseDefaultFee}"/>
+                </TableSection>
+            </TableRoot>
+         </TableView>
+        <Button Text="Next"
                 Margin="0,20"
                 VerticalOptions="EndAndExpand"
                 Style="{DynamicResource MainButtonStyle}"
-                Clicked="OnDelegateButtonClicked"/>
+                Clicked="OnNextButtonClicked"/>
     </StackLayout>
 </ContentPage>

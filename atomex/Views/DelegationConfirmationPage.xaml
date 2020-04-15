@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.DelegationConfirmationPage"
+             Title="Confirmation"
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <ActivityIndicator x:Name="SendingLoader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                               Scale="3"
+                               Color="Black"/>
+            <StackLayout x:Name="Content"
+                         VerticalOptions="FillAndExpand">
+                <TableView Intent="Form"
+                           RowHeight="70">
+                    <TableRoot>
+                        <TableSection Title="Do you really want to delegate?">
+                            <TextCell Text="From"
+                                      Detail="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <TextCell Text="Amount"
+                                      Detail="{Binding WalletAddressViewModel.WalletAddress.Balance}"
+                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <TextCell Text="To"
+                                      Detail="{Binding Address}"
+                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <TextCell Text="With commision"
+                                      Detail="{Binding FeeString}"
+                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <ViewCell Height="70">
+                                <StackLayout Padding="20">
+                                    <Button Text="DELEGATE"
+                                            x:Name="DelegateButton"
+                                            Style="{DynamicResource MainButtonStyle}"
+                                            Clicked="OnDelegateButtonClicked"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>
