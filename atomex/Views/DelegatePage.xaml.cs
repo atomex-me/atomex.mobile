@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -33,15 +32,39 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            var error = await _delegateViewModel.Validate();
-            if (error != null)
+            try
             {
-                await DisplayAlert("Error", error, "Ok");
-                return;
+                BlockActions(true);
+                var error = await _delegateViewModel.Validate();
+                BlockActions(false);
+                if (error != null)
+                {
+                    await DisplayAlert("Error", error, "Ok");
+                    return;
+                }
+                else
+                {
+                    await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
+                }
+            }
+            catch (Exception e)
+            {
+                BlockActions(false);
+                await DisplayAlert("Error", "An error has occurred while delegation validation.", "OK");
+            }
+        }
+
+        private void BlockActions(bool flag)
+        {
+            ValidatingLoader.IsVisible = ValidatingLoader.IsRunning = flag;
+            NextButton.IsEnabled = !flag;
+            if (flag)
+            {
+                Content.Opacity = 0.5;
             }
             else
             {
-                await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
+                Content.Opacity = 1;
             }
         }
     }

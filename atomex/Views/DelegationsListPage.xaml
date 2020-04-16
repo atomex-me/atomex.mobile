@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.DelegationsListPage"
+             Title="Delegetion list">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Padding="20"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding Delegations.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Image Source="ConversionIcon"
+                       WidthRequest="48"
+                       HeightRequest="48"
+                       VerticalOptions="EndAndExpand"
+                       HorizontalOptions="CenterAndExpand"/>
+                <Label Text="No delegations yet"
+                       FontFamily="{DynamicResource BoldFont}"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="StartAndExpand"
+                       FontSize="22"
+                       Margin="0,20"/>
+            </StackLayout>
+        
+            <ListView ItemsSource="{Binding Delegations}"
+                      BackgroundColor="{DynamicResource MainBackgroundColor}"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding Delegations.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="2"
+                                  ColumnSpacing="2"
+                                  BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="70" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions> 
+                                <Image Source="{Binding Baker.Logo}"
+                                       HeightRequest="32"
+                                       WidthRequest="32"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Address}"
+                                       VerticalTextAlignment="Center"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       LineBreakMode="MiddleTruncation"
+                                       Padding="5"
+                                       FontSize="14">
+                                </Label>
+                                <Label Grid.Column="2"
+                                       VerticalTextAlignment="Center"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource HintTextColor}"
+                                       Padding="5"
+                                       HorizontalTextAlignment="Center"
+                                       FontSize="14">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Balance}"/>
+                                            <Span Text=" XTZ"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="NEW DELEGATION"
+                    Style="{DynamicResource MainButtonStyle}"
+                    Margin="20"
+                    Clicked="OnNewDelegationButtonClicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

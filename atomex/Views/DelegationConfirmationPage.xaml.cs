@@ -24,32 +24,32 @@ namespace atomex
 
         async void OnDelegateButtonClicked(object sender, EventArgs args)
         {
-            await DisplayAlert("Warning", "In progress", "Ok");
-            //try
-            //{
-            //    BlockActions(true);
-            //    var result = await _delegateViewModel.Delegate();
-            //    if (result.Error != null)
-            //    {
-            //        BlockActions(false);
-            //        await DisplayAlert("Error", result.Error.Description , "Ok");
-            //        return;
-            //    }
-            //    var res = await DisplayAlert("Successful delegation", "Explorer Uri: " + result.Value, null, "Ok");
-            //    if (!res)
-            //    {
-            //        for (var i = 1; i < BACK_COUNT; i++)
-            //        {
-            //            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-            //        }
-            //        await Navigation.PopAsync();
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    BlockActions(false);
-            //    await DisplayAlert("Error", "An error has occurred while delegation.", "OK");
-            //}
+            try
+            {
+                BlockActions(true);
+                var result = await _delegateViewModel.Delegate();
+                if (result.Error != null)
+                {
+                    BlockActions(false);
+                    await DisplayAlert("Error", result.Error.Description, "Ok");
+                    return;
+                }
+                await _delegateViewModel.LoadDelegationInfoAsync();
+                var res = await DisplayAlert("Successful delegation", "Explorer Uri: " + result.Value, null, "Ok");
+                if (!res)
+                {
+                    for (var i = 1; i < BACK_COUNT; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
+                    await Navigation.PopAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                BlockActions(false);
+                await DisplayAlert("Error", "An error has occurred while delegation.", "OK");
+            }
         }
 
         private void BlockActions(bool flag)

@@ -1,24 +1,23 @@
 ﻿using Xamarin.Forms;
 using atomex.ViewModel;
-using Atomex;
 
 namespace atomex
 {
     public partial class CurrenciesListPage : ContentPage
     {
         private INavigationService _navigationService;
-        private IAtomexApp _app;
+        private DelegateViewModel _delegateViewModel;
 
         public CurrenciesListPage()
         {
             InitializeComponent();
         }
 
-        public CurrenciesListPage(CurrenciesViewModel currenciesViewModel, IAtomexApp app, INavigationService navigationService)
+        public CurrenciesListPage(CurrenciesViewModel currenciesViewModel, DelegateViewModel delegateViewModel, INavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
-            _app = app;
+            _delegateViewModel = delegateViewModel;
             BindingContext = currenciesViewModel;
         }
 
@@ -26,7 +25,7 @@ namespace atomex
         {
             if (e.Item != null)
             {
-                await Navigation.PushAsync(new CurrencyPage(e.Item as CurrencyViewModel, _app, _navigationService));
+                await Navigation.PushAsync(new CurrencyPage(e.Item as CurrencyViewModel, _delegateViewModel, _navigationService));
             }
         }
     }

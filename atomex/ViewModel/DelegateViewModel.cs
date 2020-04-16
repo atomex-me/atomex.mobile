@@ -14,9 +14,17 @@ using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
+    public class Delegation
+    {
+        public BakerData Baker { get; set; }
+        public string Address { get; set; }
+        public decimal Balance { get; set; }
+    }
+
     public class DelegateViewModel : BaseViewModel
     {
         private IAtomexApp App { get; }
@@ -24,6 +32,21 @@ namespace atomex.ViewModel
         private readonly Tezos _tezos;
         private WalletAddressViewModel _walletAddressViewModel;
         private TezosTransaction _tx;
+
+
+        private bool _canDelegate;
+        public bool CanDelegate
+        {
+            get => _canDelegate;
+            set { _canDelegate = value; OnPropertyChanged(nameof(CanDelegate)); }
+        }
+
+        private List<Delegation> _delegations;
+        public List<Delegation> Delegations
+        {
+            get => _delegations;
+            set { _delegations = value; OnPropertyChanged(nameof(Delegations)); }
+        }
 
         public WalletAddressViewModel WalletAddressViewModel
         {
@@ -209,44 +232,40 @@ namespace atomex.ViewModel
         } 
 
 
+        //public DelegateViewModel(IAtomexApp app)
+        //{
+        //    FromBakersList = new List<BakerViewModel>()
+        //    {
+        //        new BakerViewModel()
+        //        {
+        //            Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
+        //            Name = "TezosHODL",
+        //            Address = "tz1sdfldjsflksjdlkf123sfa",
+        //            Fee = 5,
+        //            MinDelegation = 10,
+        //            StakingAvailable = 10000.000000m
+        //        },
+        //        new BakerViewModel()
+        //        {
+        //            Logo = "XTZ",
+        //            Name = "Tezgate",
+        //            Address = "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf",
+        //            Fee = 9.90m,
+        //            MinDelegation = 100,
+        //            StakingAvailable = 1356622.776437m
+        //        }
+        //    };
+        //    App = app ?? throw new ArgumentNullException(nameof(app));
+        //    _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
+        //    FeeCurrencyCode = _tezos.FeeCode;
+        //    BaseCurrencyCode = "USD";
+        //    BaseCurrencyFormat = "$0.00";
+        //    UseDefaultFee = true;
+        //    LoadDelegationInfoAsync().FireAndForget();
+        //    PrepareWallet().WaitForResult();
+        //}
+
         public DelegateViewModel(IAtomexApp app)
-        {
-            FromBakersList = new List<BakerViewModel>()
-            {
-                new BakerViewModel()
-                {
-                    Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
-                    Name = "TezosHODL",
-                    Address = "tz1sdfldjsflksjdlkf123sfa",
-                    Fee = 5,
-                    MinDelegation = 10,
-                    StakingAvailable = 10000.000000m
-                },
-                new BakerViewModel()
-                {
-                    Logo = "XTZ",
-                    Name = "Tezgate",
-                    Address = "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf",
-                    Fee = 9.90m,
-                    MinDelegation = 100,
-                    StakingAvailable = 1356622.776437m
-                }
-            };
-
-            App = app ?? throw new ArgumentNullException(nameof(app));
-
-            _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
-            FeeCurrencyCode = _tezos.FeeCode;
-            BaseCurrencyCode = "USD";
-            BaseCurrencyFormat = "$0.00";
-            UseDefaultFee = true;
-            PrepareWallet().WaitForResult();
-            _fee = 5;
-            _feeInBase = 123m;
-        }
-
-        public DelegateViewModel(
-            IAtomexApp app, string test)
         {
             App = app ?? throw new ArgumentNullException(nameof(app));
 
@@ -257,43 +276,44 @@ namespace atomex.ViewModel
             UseDefaultFee = true;
 
             SubscribeToServices();
-            //LoadBakerList().FireAndForget();
+            LoadDelegationInfoAsync().FireAndForget();
+            LoadBakerList().FireAndForget();
             PrepareWallet().WaitForResult();
         }
 
-        //    private async Task LoadBakerList()
-        //    {
-        //        List<BakerViewModel> bakers = null;
+        private async Task LoadBakerList()
+        {
+            List<BakerViewModel> bakers = null;
 
-        //        try
-        //        {
-        //            await Task.Run(async () =>
-        //            {
-        //                bakers = (await BbApi
-        //                    .GetBakers(App.Account.Network)
-        //                    .ConfigureAwait(false))
-        //                    .Select(x => new BakerViewModel
-        //                    {
-        //                        Address = x.Address,
-        //                        Logo = x.Logo,
-        //                        Name = x.Name,
-        //                        Fee = x.Fee,
-        //                        MinDelegation = x.MinDelegation,
-        //                        StakingAvailable = x.StakingAvailable
-        //                    })
-        //                    .ToList();
-        //            });
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Log.Error(e.Message, "Error while fetching bakers list");
-        //        }
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    bakers = (await BbApi
+                        .GetBakers(App.Account.Network)
+                        .ConfigureAwait(false))
+                        .Select(x => new BakerViewModel
+                        {
+                            Address = x.Address,
+                            Logo = x.Logo,
+                            Name = x.Name,
+                            Fee = x.Fee,
+                            MinDelegation = x.MinDelegation,
+                            StakingAvailable = x.StakingAvailable
+                        })
+                        .ToList();
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message, "Error while fetching bakers list");
+            }
 
-        //        await Application.Current.Dispatcher.InvokeAsync(() =>
-        //        {
-        //            FromBakersList = bakers;
-        //        }, DispatcherPriority.Background);
-        //    }
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                FromBakersList = bakers;
+            });
+        }
 
         private async Task PrepareWallet(CancellationToken cancellationToken = default)
         {
@@ -394,6 +414,57 @@ namespace atomex.ViewModel
             }
         }
 
+        public async Task LoadDelegationInfoAsync()
+        {
+            try
+            {
+                var balance = await App.Account
+                    .GetBalanceAsync(_tezos.Name)
+                    .ConfigureAwait(false);
+
+                var addresses = await App.Account
+                    .GetUnspentAddressesAsync(_tezos.Name)
+                    .ConfigureAwait(false);
+
+                var rpc = new Rpc(_tezos.RpcNodeUri);
+
+                var delegations = new List<Delegation>();
+
+                foreach (var wa in addresses)
+                {
+                    var accountData = await rpc
+                        .GetAccount(wa.Address)
+                        .ConfigureAwait(false);
+
+                    var @delegate = accountData["delegate"]?.ToString();
+
+                    if (string.IsNullOrEmpty(@delegate))
+                        continue;
+
+
+                    var baker = await BbApi
+                        .GetBaker(@delegate, App.Account.Network)
+                        .ConfigureAwait(false);
+
+                    delegations.Add(new Delegation
+                    {
+                        Baker = baker,
+                        Address = wa.Address,
+                        Balance = wa.Balance
+                    });
+                }
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    CanDelegate = balance.Available > 0;
+                    Delegations = delegations;
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "LoadDelegationInfoAsync error");
+            }
+        }
 
         private void SubscribeToServices()
         {

@@ -5,7 +5,15 @@
              x:Class="atomex.DelegatePage"
              Title="Delegate"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <StackLayout Padding="20">
+    <RelativeLayout>
+    <ActivityIndicator x:Name="ValidatingLoader"
+                        RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                        Scale="3"
+                        Color="Black"/>
+    <StackLayout x:Name="Content"
+                 VerticalOptions="FillAndExpand"
+                 Margin="20">
         <Label Text="Delegating to a bakery"
                FontFamily="{DynamicResource RegularFont}"
                FontSize="20"
@@ -34,7 +42,6 @@
                         ItemDisplayBinding="{Binding Name}"
                         SelectedItem="{Binding BakerViewModel}"
                         VerticalOptions="FillAndExpand"
-                        HorizontalOptions="FillAndExpand"
                         Focused="OnBakerPickerFocused"
                         Unfocused="OnBakerPickerFocused"
                         TextColor="#ffffff">
@@ -102,7 +109,8 @@
                                       Text="{Binding Address}"/>
             </Frame>
         </StackLayout>
-        <Grid RowSpacing="0">
+        <Grid RowSpacing="0"
+              ColumnSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
@@ -167,6 +175,7 @@
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
                 <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                      Keyboard="Numeric"
                                       Text="{Binding FeeString}">
                     <controls:CustomEntry.Triggers>
                         <DataTrigger TargetType="controls:CustomEntry"
@@ -176,6 +185,8 @@
                                     Value="LightGray"/>
                             <Setter Property="IsReadOnly"
                                     Value="True"/>
+                            <Setter Property="TextColor"
+                                    Value="Gray"/>
                         </DataTrigger>
                         <DataTrigger TargetType="controls:CustomEntry"
                                      Binding="{Binding UseDefaultFee}"
@@ -184,25 +195,29 @@
                                     Value="{DynamicResource MainBackgroundColor}"/>
                             <Setter Property="IsReadOnly"
                                     Value="False"/>
+                            <Setter Property="TextColor"
+                                    Value="Black"/>
                         </DataTrigger>
                     </controls:CustomEntry.Triggers>
                 </controls:CustomEntry>
             </Frame>
         </StackLayout>
-         <TableView Intent="Settings"
-                    BackgroundColor="{DynamicResource MainBackgroundColor}">
-            <TableRoot>
-                <TableSection TextColor="{DynamicResource HintTextColor}">
-                    <SwitchCell Text="Use default fee"
-                                OnColor="{DynamicResource MainButtonBackgroundColor}"
-                                On="{Binding UseDefaultFee}"/>
-                </TableSection>
-            </TableRoot>
-         </TableView>
-        <Button Text="Next"
+        <StackLayout Orientation="Horizontal"
+                     Padding="20">
+            <Label Text="Use default fee:"
+                   FontAttributes="{DynamicResource RegularFont}"
+                   FontSize="18"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"/>
+            <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
+                    IsToggled="{Binding UseDefaultFee}"
+                    HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+        <Button Text="NEXT"
+                x:Name="NextButton"
                 Margin="0,20"
-                VerticalOptions="EndAndExpand"
                 Style="{DynamicResource MainButtonStyle}"
                 Clicked="OnNextButtonClicked"/>
     </StackLayout>
+    </RelativeLayout>
 </ContentPage>

@@ -2,34 +2,30 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
-using Atomex;
 
 namespace atomex
 {
     public partial class CurrencyPage : ContentPage
     {
         private CurrencyViewModel _currencyViewModel;
+        private DelegateViewModel _delegateViewModel;
         private INavigationService _navigationService;
-        private IAtomexApp _app;
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(CurrencyViewModel currencyViewModel, IAtomexApp app, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel currencyViewModel, DelegateViewModel delegateViewModel, INavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
-            _app = app;
 
-            if (currencyViewModel != null)
+            _currencyViewModel = currencyViewModel;
+            _delegateViewModel = delegateViewModel;
+            BindingContext = _currencyViewModel;
+            if (_currencyViewModel.CurrencyCode == "XTZ")
             {
-                _currencyViewModel = currencyViewModel;
-                BindingContext = _currencyViewModel;
-                if (_currencyViewModel.CurrencyCode == "XTZ")
-                {
-                    DelegateOption.IsVisible = true;
-                }
+                DelegateOption.IsVisible = true;
             }
         }
 
@@ -40,9 +36,9 @@ namespace atomex
         {
             await Navigation.PushAsync(new SendPage(_currencyViewModel));
         }
-        async void ShowDelegatePage(object sender, EventArgs args)
-        {
-            await Navigation.PushAsync(new DelegatePage(new DelegateViewModel(_app)));
+        async void ShowDelegationPage(object sender, EventArgs args)
+        { 
+            await Navigation.PushAsync(new DelegationsListPage(_delegateViewModel));
         }
         void ShowConversionPage(object sender, EventArgs args)
         {

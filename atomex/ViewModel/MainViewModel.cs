@@ -21,6 +21,7 @@ namespace atomex.ViewModel
         public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
+        public DelegateViewModel DelegateViewModel { get; set; }
 
         private IAtomexApp AtomexApp;
 
@@ -82,6 +83,7 @@ namespace atomex.ViewModel
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
+            DelegateViewModel = new DelegateViewModel(AtomexApp);
 
             //Test(account).FireAndForget();
 
