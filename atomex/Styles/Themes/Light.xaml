@@ -203,7 +203,7 @@
 
      <!-- Currency Page -->
     <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
         <Setter Property="WidthRequest" Value="80"/>

@@ -29,8 +29,8 @@
                             <TextCell x:Name="Fee"
                                       Text="Fee"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <ViewCell Height="70">
-                                <StackLayout Padding="20">
+                            <ViewCell>
+                                <StackLayout Padding="20,0">
                                     <Button Text="SEND"
                                             x:Name="SendButton"
                                             Style="{DynamicResource MainButtonStyle}"

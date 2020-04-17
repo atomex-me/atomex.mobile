@@ -65,10 +65,12 @@ namespace atomex
             NextButton.IsEnabled = !flag;
             if (flag)
             {
+                NextButton.Text = "";
                 Content.Opacity = 0.5;
             }
             else
             {
+                NextButton.Text = "NEXT";
                 Content.Opacity = 1;
             }
         }
