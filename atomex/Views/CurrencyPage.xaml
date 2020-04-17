@@ -5,14 +5,15 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <StackLayout>
+    <StackLayout Spacing="0">
         <SwipeView BackgroundColor="{DynamicResource MainBackgroundColor}">
             <SwipeView.TopItems>
                 <SwipeItems Mode="Execute">
                     <SwipeItem Invoked="SwipeDown"/>
                 </SwipeItems>
             </SwipeView.TopItems>
-            <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
+            <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
+                         Spacing="0">
                 <Label x:Name="LoaderLabel"
                        Text="Balance updating..."
                        TextColor="{DynamicResource HintTextColor}"
@@ -27,22 +28,27 @@
                 <Image Source="{Binding CurrencyCode}"
                        HeightRequest="96"
                        WidthRequest="96"
-                       Margin="0,30,0,20" />
+                       Margin="20"/>
                 <Label Text="{Binding AvailableAmount}"
                        x:Name="AvailableAmountLabel"
-                       HorizontalOptions="Center"
-                       FontSize="20"
-                       FontFamily="{DynamicResource BoldFont}">
+                       HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding AvailableAmount}"/>
+                            <Span Text="{Binding AvailableAmount}"
+                                  FontSize="20"
+                                  FontFamily="{DynamicResource BoldFont}"/>
                             <Span Text=" " /> 
-                            <Span Text="{Binding CurrencyCode}"/>
+                            <Span Text="{Binding CurrencyCode}"
+                                  FontSize="16"
+                                  FontFamily="{DynamicResource BoldFont}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label FontFamily="{DynamicResource RegularFont}"
+                <Label x:Name="AvailableAmountInBaseLabel"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
                        TextColor="{DynamicResource AdditionalTextColor}"
+                       VerticalTextAlignment="Start"
                        HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
@@ -53,8 +59,9 @@
                 </Label>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="Center"
-                             HeightRequest="50"
-                             Margin="10,20">
+                             HeightRequest="40"
+                             Margin="10,20"
+                             Spacing="0">
                     <controls:LeftRoundedButton Text="SEND"
                                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                                 Clicked="ShowSendPage"/>
@@ -159,7 +166,7 @@
                                 </Image.Triggers>
                             </Image>
                             <Label Grid.Column="1"
-                                   FontFamily="{DynamicResource MediumFont}"
+                                   FontFamily="{DynamicResource RegularFont}"
                                    VerticalOptions="EndAndExpand">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
@@ -202,9 +209,6 @@
                             </Label>
                             <Label Grid.Column="2"
                                    Grid.RowSpan="2"
-                                   Text="{Binding Amount, StringFormat='{0}'}"
-                                   FontFamily="{DynamicResource BoldFont}"
-                                   FontSize="18"
                                    HorizontalOptions="End"
                                    VerticalOptions="Center"
                                    VerticalTextAlignment="Center">
@@ -217,9 +221,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -232,9 +240,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -247,9 +259,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -260,9 +276,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -273,9 +293,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -286,9 +310,13 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"/>
+                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="16"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"/>
+                                                    <Span Text="{Binding Currency.Name}"
+                                                          FontFamily="{DynamicResource RegularFont}"
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>

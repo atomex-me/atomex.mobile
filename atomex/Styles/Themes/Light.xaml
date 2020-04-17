@@ -206,7 +206,9 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
-        <Setter Property="WidthRequest" Value="85"/>
+        <Setter Property="WidthRequest" Value="80"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Margin" Value="1,0"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
     </Style>
 
