@@ -201,6 +201,15 @@
         <Setter Property="HorizontalTextAlignment" Value="End"/>
     </Style>
 
+     <!-- Currency Page -->
+    <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="WidthRequest" Value="85"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+    </Style>
+
     <!-- Create Mnemonic Page -->
     <Style x:Key="GenerateButtonStyle" TargetType="Button">
         <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>

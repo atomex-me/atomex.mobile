@@ -25,7 +25,7 @@ namespace atomex
             BindingContext = _currencyViewModel;
             if (_currencyViewModel.CurrencyCode == "XTZ")
             {
-                DelegateOption.IsVisible = true;
+                DelegateButton.IsVisible = true;
             }
         }
 

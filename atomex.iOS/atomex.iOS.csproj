@@ -71,6 +71,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
     <Compile Include="CustomElements\CustomTabbedPageRenderer.cs" />
+    <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
+    <Compile Include="CustomElements\RightRoundedButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

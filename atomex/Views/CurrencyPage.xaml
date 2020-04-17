@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrencyPage"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout>
@@ -51,61 +52,23 @@
                     </Label.FormattedText>
                 </Label>
                 <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="CenterAndExpand"
+                             HorizontalOptions="Center"
+                             HeightRequest="50"
                              Margin="10,20">
-                    <StackLayout>
-                        <ImageButton Source="SendIcon"
-                                     Margin="10"
-                                     HeightRequest="40"
-                                     WidthRequest="40"
-                                     HorizontalOptions="CenterAndExpand"
-                                     VerticalOptions="CenterAndExpand"
-                                     Clicked="ShowSendPage"/>
-                        <Label Text="Send"
-                               FontAttributes="Bold"
-                               HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand" />
-                    </StackLayout>
-                    <StackLayout>
-                        <ImageButton Source="ReceiveIcon"
-                                     Margin="10"
-                                     HeightRequest="40"
-                                     WidthRequest="40"
-                                     HorizontalOptions="CenterAndExpand"
-                                     VerticalOptions="CenterAndExpand"
-                                     Clicked="ShowReceivePage"/>
-                        <Label Text="Receive"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               VerticalOptions="CenterAndExpand" />
-                    </StackLayout>
-                    <StackLayout>
-                        <ImageButton Source="ConversionIcon"
-                                     Margin="10"
-                                     HeightRequest="40"
-                                     WidthRequest="40"
-                                     HorizontalOptions="CenterAndExpand"
-                                     VerticalOptions="CenterAndExpand"
-                                     Clicked="ShowConversionPage"/>
-                        <Label Text="Convert"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               VerticalOptions="CenterAndExpand" />
-                    </StackLayout>
-                    <StackLayout x:Name="DelegateOption"
-                                 IsVisible="false">
-                        <ImageButton Source="DelegateIcon"
-                                     Margin="10"
-                                     HeightRequest="40"
-                                     WidthRequest="40"
-                                     HorizontalOptions="CenterAndExpand"
-                                     VerticalOptions="CenterAndExpand"
-                                     Clicked="ShowDelegationPage"/>
-                        <Label Text="Delegate"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               VerticalOptions="CenterAndExpand"/>
-                    </StackLayout>
+                    <controls:LeftRoundedButton Text="SEND"
+                                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                                Clicked="ShowSendPage"/>
+                    <Button Text="RECEIVE"
+                            Style="{DynamicResource CurrencyActionButtonStyle}"
+                            Clicked="ShowReceivePage"/>
+                    <Button Text="DELEGATE"
+                            x:Name="DelegateButton"
+                            IsVisible="false"
+                            Style="{DynamicResource CurrencyActionButtonStyle}"
+                            Clicked="ShowDelegationPage"/>
+                    <controls:RightRoundedButton Text="CONVERT"
+                                                 Style="{DynamicResource CurrencyActionButtonStyle}"
+                                                 Clicked="ShowConversionPage"/>
                 </StackLayout>
             </StackLayout>
         </SwipeView>
