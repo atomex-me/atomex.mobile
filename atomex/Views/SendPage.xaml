@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              Title="Send"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
@@ -49,12 +50,17 @@
                                 Clicked="OnPasteButtonClicked"
                                 TextColor="{DynamicResource HintTextColor}"
                                 HorizontalOptions="End"/>
-                        <ImageButton Grid.Column="2"
-                                     Source="ScanIcon"
-                                     HorizontalOptions="End"
-                                     BackgroundColor="White"
-                                     Clicked="OnScanButtonClicked"
-                                     Padding="10,10,20,10"/>
+                        <StackLayout Grid.Column="2">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnScanButtonClicked"/>
+                            </StackLayout.GestureRecognizers>
+                            <ffimageloadingsvg:SvgCachedImage Source="Scan.svg"
+                                                              HeightRequest="36"
+                                                              WidthRequest="36"
+                                                              VerticalOptions="CenterAndExpand"
+                                                              HorizontalOptions="End"
+                                                              Margin="10,10,20,10"/>
+                        </StackLayout>
                     </StackLayout>
                 </Frame>
                 <Frame Grid.Row="1"

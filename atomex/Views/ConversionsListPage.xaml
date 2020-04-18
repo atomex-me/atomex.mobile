@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.ConversionsListPage"
              Title="Conversions">
     <ContentPage.Content>
@@ -73,15 +74,15 @@
                                     <ColumnDefinition Width="2.5*" />
                                 </Grid.ColumnDefinitions> 
                                 <RelativeLayout VerticalOptions="CenterAndExpand">
-                                    <Image Source="{Binding FromCurrencyCode}"
-                                           x:Name="FromCurrencyIcon"
-                                           HeightRequest="32"
-                                           WidthRequest="32"/>
-                                    <Image Source="{Binding ToCurrencyCode}"
-                                           HeightRequest="32"
-                                           WidthRequest="32"
-                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
-                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+18}"/>
+                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyCode, StringFormat='{0}.svg'}"
+                                                                      x:Name="FromCurrencyIcon"
+                                                                      HeightRequest="32"
+                                                                      WidthRequest="32"/>
+                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrencyCode, StringFormat='{0}.svg'}"
+                                                                      HeightRequest="32"
+                                                                      WidthRequest="32"
+                                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
+                                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+18}"/>
                                 </RelativeLayout>
                                 <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"

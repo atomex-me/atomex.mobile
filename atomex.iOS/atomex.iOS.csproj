@@ -118,13 +118,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\SendIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ReceiveIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ConversionIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\CopyIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ConversionIcon.imageset\conversion-1.png" />
-    <ImageAsset Include="Assets.xcassets\CopyIcon.imageset\copy-1.png" />
-    <ImageAsset Include="Assets.xcassets\ReceiveIcon.imageset\receive-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\portfolio.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Contents.json" />
@@ -133,8 +128,6 @@
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\wallets.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\exchange-2.png" />
-    <ImageAsset Include="Assets.xcassets\ScanIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ScanIcon.imageset\barcode.png" />
     <ImageAsset Include="Assets.xcassets\RightArrowIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrowIcon.imageset\baseline_keyboard_arrow_right_black_18dp.png" />
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\Contents.json" />
@@ -143,27 +136,10 @@
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\baseline_pie_chart_black_24dp.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\round_settings_applications_black_24dp.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\baseline_account_balance_wallet_black_24dp.png" />
-    <ImageAsset Include="Assets.xcassets\SendIcon.imageset\send.png" />
-    <ImageAsset Include="Assets.xcassets\DelegateIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\DelegateIcon.imageset\line.png" />
-    <ImageAsset Include="Assets.xcassets\XTZ.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\XTZ.imageset\e294b1cf6ec96713bf6a15e72b13313e446489d7709cda328f825679370b46b9.png" />
-    <ImageAsset Include="Assets.xcassets\BTC.imageset\btc.png" />
-    <ImageAsset Include="Assets.xcassets\BTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ETH.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ETH.imageset\eth.png" />
-    <ImageAsset Include="Assets.xcassets\LTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LTC.imageset\litecoin.png" />
-    <ImageAsset Include="Assets.xcassets\CircleIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\CircleIcon.imageset\circle.png" />
     <ImageAsset Include="Assets.xcassets\RightArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrow.imageset\right-arrow.png" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\login_window_logo.png" />
-    <ImageAsset Include="Assets.xcassets\USDT.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\USDT.imageset\iconfinder_Tether_2785374.png" />
-    <ImageAsset Include="Assets.xcassets\FA12.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\FA12.imageset\xtz.png" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
     <ImageAsset Include="Assets.xcassets\Login.imageset\Contents.json" />
@@ -214,7 +190,6 @@
     <Folder Include="Assets.xcassets\XTZ.imageset\" />
     <Folder Include="Assets.xcassets\BTC.imageset\" />
     <Folder Include="Assets.xcassets\EthI.imageset\" />
-    <Folder Include="Assets.xcassets\ETH.imageset\" />
     <Folder Include="Assets.xcassets\LTC.imageset\" />
     <Folder Include="Assets.xcassets\CircleIcon.imageset\" />
     <Folder Include="Assets.xcassets\RightArrow.imageset\" />
@@ -225,6 +200,7 @@
     <Folder Include="Assets.xcassets\LockIcon.imageset\" />
     <Folder Include="Assets.xcassets\Login.imageset\" />
     <Folder Include="Assets.xcassets\WalletIcon.imageset\" />
+    <Folder Include="Assets.xcassets\.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />
@@ -240,6 +216,20 @@
     <BundleResource Include="Resources\Roboto-Medium.ttf" />
     <BundleResource Include="Resources\Roboto-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
+    <BundleResource Include="Resources\Down-arrow.svg" />
+    <BundleResource Include="Resources\Refresh-arrow.svg" />
+    <BundleResource Include="Resources\Right-arrow.svg" />
+    <BundleResource Include="Resources\Spin-arrow.svg" />
+    <BundleResource Include="Resources\Up-arrow.svg" />
+    <BundleResource Include="Resources\Copy.svg" />
+    <BundleResource Include="Resources\Share.svg" />
+    <BundleResource Include="Resources\BTC.svg" />
+    <BundleResource Include="Resources\ETH.svg" />
+    <BundleResource Include="Resources\LTC.svg" />
+    <BundleResource Include="Resources\USDT.svg" />
+    <BundleResource Include="Resources\XTZ.svg" />
+    <BundleResource Include="Resources\FA12.svg" />
+    <BundleResource Include="Resources\Scan.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">

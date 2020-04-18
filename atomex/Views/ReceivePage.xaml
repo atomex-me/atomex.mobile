@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.ReceivePage"
              Title="Receive">
     <ScrollView>
-        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Padding="20">
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                     <zxcm:EncodingOptions Width="300" Height="100" />
@@ -23,46 +26,53 @@
             </zxing:ZXingBarcodeImageView>
             <Label Text="{Binding FreeExternalAddress}"
                    TextColor="Gray"
+                   FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Center"
-                   FontSize="24"
-                   Margin="20,0"/>
-             <Grid RowSpacing="0" ColumnSpacing="50" Margin="20,40,20,0">
+                   FontSize="24"/>
+             <Grid RowSpacing="0"
+                   ColumnSpacing="50"
+                   Margin="0,40">
                  <Grid.RowDefinitions>
                      <RowDefinition Height="*" />
                      <RowDefinition Height="*" />
                  </Grid.RowDefinitions>
                  <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="*" />
-                     <ColumnDefinition Width="*" />
+                     <ColumnDefinition Width="5*" />
+                     <ColumnDefinition Width="5*" />
                  </Grid.ColumnDefinitions>
-
-                 <ImageButton Grid.Column="0"
-                           Source="CopyIcon"
-                           HeightRequest="40"
-                           WidthRequest="40"
-                           HorizontalOptions="End"
-                           VerticalOptions="CenterAndExpand"
-                           Clicked="OnCopyButtonClicked" />
-                 <ImageButton Grid.Column="1"
-                           Source="SendIcon"
-                           HeightRequest="40"
-                           WidthRequest="40"
-                           HorizontalOptions="Start"
-                           VerticalOptions="CenterAndExpand"
-                           Clicked="OnShareButtonClicked" />
-
+                 <StackLayout>
+                     <StackLayout.GestureRecognizers>
+                         <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
+                     </StackLayout.GestureRecognizers>
+                     <ffimageloadingsvg:SvgCachedImage Grid.Column="0"
+                                                       WidthRequest="40"
+                                                       HeightRequest="40"
+                                                       HorizontalOptions="End"
+                                                       VerticalOptions="Center"
+                                                       Source="Copy.svg"/>
+                 </StackLayout>
+                 <StackLayout Grid.Column="1">
+                     <StackLayout.GestureRecognizers>
+                         <TapGestureRecognizer Tapped="OnShareButtonClicked"/>
+                     </StackLayout.GestureRecognizers>
+                     <ffimageloadingsvg:SvgCachedImage Grid.Column="0"
+                                                       WidthRequest="40"
+                                                       HeightRequest="40"
+                                                       HorizontalOptions="Start"
+                                                       VerticalOptions="Center"
+                                                       Source="Share.svg"/>
+                 </StackLayout>
                  <Label Grid.Row="1"
-                        Grid.Column="0"
                         Text="Copy"
-                        FontAttributes="Bold"
+                        FontFamily="{DynamicResource RegularFont}"
                         HorizontalOptions="End"
-                        VerticalOptions="CenterAndExpand" />
+                        VerticalOptions="Center" />
                  <Label Grid.Row="1"
                         Grid.Column="1"
                         Text="Share"
-                        FontAttributes="Bold"
+                        FontFamily="{DynamicResource RegularFont}"
                         HorizontalOptions="Start"
-                        VerticalOptions="CenterAndExpand" />
+                        VerticalOptions="Center" />
              </Grid>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>

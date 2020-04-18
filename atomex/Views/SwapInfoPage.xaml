@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.SwapInfoPage"
              Title="Swap info">
     <ContentPage.Content>
@@ -15,15 +16,15 @@
                                          Padding="20,0">
                                 <RelativeLayout VerticalOptions="CenterAndExpand"
                                                 HorizontalOptions="Start">
-                                    <Image Source="{Binding FromCurrencyCode}"
-                                           x:Name="FromCurrencyIcon"
-                                           HeightRequest="48"
-                                           WidthRequest="48"/>
-                                    <Image Source="{Binding ToCurrencyCode}"
-                                           HeightRequest="48"
-                                           WidthRequest="48"
-                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
-                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+27}"/>
+                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyCode, StringFormat='{0}.svg'}"
+                                                                      x:Name="FromCurrencyIcon"
+                                                                      HeightRequest="48"
+                                                                      WidthRequest="48"/>
+                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrencyCode, StringFormat='{0}.svg'}"
+                                                                      HeightRequest="48"
+                                                                      WidthRequest="48"
+                                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
+                                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+27}"/>
                                 </RelativeLayout>
                                 <StackLayout VerticalOptions="CenterAndExpand"
                                              Padding="10,0">

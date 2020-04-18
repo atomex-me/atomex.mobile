@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
              Title="Create swap - step 1"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
@@ -45,13 +46,13 @@
                 </Frame>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
-                             Padding="20"
+                             Padding="15"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
                     <Label Text="{Binding FromCurrency.AvailableAmount, StringFormat='{0:0.#####}'}"
                            VerticalTextAlignment="Center"
-                           Margin="10,0"/>
-                    <Image Source="{Binding FromCurrency.CurrencyCode}"/>
+                           Margin="5,0"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                 </StackLayout>
                 <Frame Grid.Row="1"
                        Padding="5"
@@ -78,13 +79,13 @@
                 <StackLayout Grid.Row="1"
                              Grid.Column="1"
                              Orientation="Horizontal"
-                             Padding="20"
+                             Padding="15"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
                     <Label Text="{Binding ToCurrency.AvailableAmount, StringFormat='{0:0.#########}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0" />
-                    <Image Source="{Binding ToCurrency.CurrencyCode}" />
+                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                 </StackLayout>
             </Grid>
             <Label Margin="20">

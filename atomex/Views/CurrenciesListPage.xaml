@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.CurrenciesListPage"
              Title="Wallets"
              Icon="NavBar__wallets"
@@ -25,10 +26,10 @@
                                     <ColumnDefinition Width="4*" />
                                     <ColumnDefinition Width="4*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Grid.RowSpan="2"
-                                       Source="{Binding CurrencyCode}"
-                                       HeightRequest="48"
-                                       WidthRequest="48" />
+                                <ffimageloadingsvg:SvgCachedImage Grid.RowSpan="2"
+                                                                  WidthRequest="48"
+                                                                  HeightRequest="48"
+                                                                  Source="{Binding CurrencyCode, StringFormat='{0}.svg'}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding Currency.Description}"
                                        FontAttributes="Bold"

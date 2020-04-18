@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="Create swap - step 2"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
@@ -93,13 +94,13 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding FromCurrency.CurrencyCode}" />
+                <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                 <Image Source="RightArrow"
                        Grid.Column="1"
                        WidthRequest="48"
                        VerticalOptions="CenterAndExpand"/>
-                <Image Source="{Binding ToCurrency.CurrencyCode}"
-                       Grid.Column="2" />
+                <ffimageloadingsvg:SvgCachedImage Grid.Column="2"
+                                                  Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                 <Label Grid.Row="1"
                        FontFamily="{DynamicResource BoldFont}"
                        HorizontalTextAlignment="Center"
