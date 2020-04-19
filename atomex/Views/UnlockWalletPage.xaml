@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.UnlockWalletPage"
              Title="Unlock wallet"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
@@ -16,16 +17,10 @@
                      Padding="30"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-            <ImageButton Source="Login"
-                         BackgroundColor="LightCyan"
-                         BorderColor="#2b4a4a"
-                         BorderWidth="3"
-                         CornerRadius="90"
-                         Padding="30"
-                         Margin="0,20"
-                         HorizontalOptions="Center"
-                         WidthRequest="180"
-                         HeightRequest="180"/>
+            <ffimageloadingsvg:SvgCachedImage WidthRequest="180"
+                                              HeightRequest="180"
+                                              Margin="0,0,0,20"
+                                              Source="Entry.svg"/>
             <Label Text="Please enter your password:"
                    Style="{DynamicResource UnlockWalletTextStyle}"/>
             <Frame x:Name="PasswordFrame"
@@ -34,9 +29,9 @@
                              HorizontalOptions="FillAndExpand">
                     <Frame HasShadow="False" 
                            BackgroundColor="LightCyan">
-                        <Image Source="LockIcon"
-                           HeightRequest="24"
-                           WidthRequest="24"/>
+                        <ffimageloadingsvg:SvgCachedImage WidthRequest="24"
+                                                          HeightRequest="24"
+                                                          Source="Password.svg"/>
                     </Frame>
                     <StackLayout HeightRequest="70"
                                  HorizontalOptions="FillAndExpand"

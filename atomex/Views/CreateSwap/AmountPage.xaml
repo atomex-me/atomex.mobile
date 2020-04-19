@@ -95,14 +95,14 @@
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
                 <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
-                <Image Source="RightArrow"
-                       Grid.Column="1"
-                       WidthRequest="48"
-                       VerticalOptions="CenterAndExpand"/>
+                <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-3.svg"
+                                                  Grid.Column="1"
+                                                  WidthRequest="40"
+                                                  VerticalOptions="CenterAndExpand"/>
                 <ffimageloadingsvg:SvgCachedImage Grid.Column="2"
                                                   Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                 <Label Grid.Row="1"
-                       FontFamily="{DynamicResource BoldFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center">
                     <Label.FormattedText>
@@ -116,14 +116,14 @@
                 <Label Text="No liquidity"
                        Grid.Row="1"
                        Grid.Column="2"
-                       FontFamily="{DynamicResource BoldFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        TextColor="Red"
                        IsVisible="{Binding IsNoLiquidity}"/>
                 <Label Grid.Row="1"
                        Grid.Column="2"
-                       FontFamily="{DynamicResource BoldFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center">
                     <Label.Triggers>
@@ -145,7 +145,7 @@
                 <Label Grid.Row="2"
                        Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
+                       FontFamily="{DynamicResource LightFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">
@@ -160,7 +160,7 @@
                        Grid.Column="2"
                        Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
                        FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
+                       FontFamily="{DynamicResource LightFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">

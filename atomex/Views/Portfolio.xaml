@@ -11,7 +11,7 @@
                 <local:ChartView x:Name="portfolioChart"
                                  HeightRequest="220"
                                  Margin="10,20,10,0"/>
-                <Label FontAttributes="Bold"
+                <Label FontFamily="{DynamicResource BoldFont}"
                        FontSize="22"
                        HorizontalTextAlignment="Center"
                        Margin="0,30,0,0"
@@ -19,6 +19,7 @@
                 </Label>
                 <Label Text="Main wallet"
                        TextColor="Gray"
+                       FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        HorizontalTextAlignment="Center"/>
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
@@ -47,10 +48,11 @@
                                                                       Source="{Binding CurrencyCode, StringFormat='{0}.svg'}"/>
                                     <Label Grid.Column="1"
                                            Text="{Binding Currency.Description}"
-                                           FontAttributes="Bold"
+                                           FontFamily="{DynamicResource RegularFont}"
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.RowSpan="2"
                                            Grid.Column="2"
+                                           FontFamily="{DynamicResource RegularFont}"
                                            Text="{Binding PortfolioPercent, StringFormat='{0:f1}'}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
@@ -63,9 +65,9 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Column="3"
+                                           FontFamily="{DynamicResource RegularFont}"
                                            HorizontalOptions="End"
-                                           VerticalTextAlignment="End"
-                                           FontAttributes="Bold">
+                                           VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}" />
@@ -78,11 +80,13 @@
                                            Grid.Column="1"
                                            Text="{Binding Price, StringFormat='{0:f2} $'}"
                                            VerticalOptions="Start"
+                                           FontFamily="{DynamicResource LightFont}"
                                            TextColor="Gray"
                                            FontSize="12"/>
                                     <Label Grid.Row="1"
                                            Grid.Column="3"
                                            Text="{Binding Cost, StringFormat='{0:f2} $'}"
+                                           FontFamily="{DynamicResource LightFont}"
                                            VerticalOptions="Start"
                                            HorizontalOptions="EndAndExpand"
                                            TextColor="Gray"

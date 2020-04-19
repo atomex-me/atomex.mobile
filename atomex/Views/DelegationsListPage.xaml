@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.DelegationsListPage"
              Title="Delegetion list">
     <ContentPage.Content>
@@ -16,13 +16,13 @@
                                 Value="True"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Image Source="ConversionIcon"
-                       WidthRequest="48"
-                       HeightRequest="48"
-                       VerticalOptions="EndAndExpand"
-                       HorizontalOptions="CenterAndExpand"/>
+                <ffimageloadingsvg:SvgCachedImage Source="Spin-arrow.svg"       
+                                                  HeightRequest="48"
+                                                  WidthRequest="48"
+                                                  VerticalOptions="EndAndExpand"
+                                                  HorizontalOptions="CenterAndExpand"/>
                 <Label Text="No delegations yet"
-                       FontFamily="{DynamicResource BoldFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="StartAndExpand"
                        FontSize="22"

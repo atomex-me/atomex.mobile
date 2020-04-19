@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.MyWalletsPage"
              Title="My wallets"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
@@ -16,14 +17,10 @@
                     <TapGestureRecognizer Tapped="OnWalletTapped"/>
                 </Frame.GestureRecognizers>
                 <StackLayout Orientation="Horizontal">
-                    <ImageButton Source="WalletIcon"
-                                 CornerRadius="24"
-                                 WidthRequest="48"
-                                 HeightRequest="48"
-                                 BorderColor="#2b4a4a"
-                                 BackgroundColor="LightCyan"
-                                 BorderWidth="2"
-                                 Padding="10"/>
+                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
+                                                      HeightRequest="48"
+                                                      Margin="10,0"
+                                                      Source="Wallet.svg"/>
                     <Label Text="ATOMEX"
                            Style="{DynamicResource MainNetWalletlButtonTextStyle}"/>
                     <Image Source="RightArrowIcon"/>
@@ -34,14 +31,10 @@
                     <TapGestureRecognizer Tapped="OnWalletTapped"/>
                 </Frame.GestureRecognizers>
                 <StackLayout Orientation="Horizontal">
-                    <ImageButton Source="WalletIcon"
-                                 CornerRadius="24"
-                                 WidthRequest="48"
-                                 HeightRequest="48"
-                                 BackgroundColor="#BDA592"
-                                 BorderColor="#A66731"
-                                 BorderWidth="2"   
-                                 Padding="10"/>
+                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
+                                                      HeightRequest="48"
+                                                      Margin="10,0"
+                                                      Source="Wallet.svg"/>
                     <Label Text="STARIK"
                            Style="{DynamicResource TestNetWalletlButtonTextStyle}"/>
                     <Image Source="RightArrowIcon"/>

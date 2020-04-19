@@ -118,8 +118,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\ConversionIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ConversionIcon.imageset\conversion-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\portfolio.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Contents.json" />
@@ -132,20 +130,14 @@
     <ImageAsset Include="Assets.xcassets\RightArrowIcon.imageset\baseline_keyboard_arrow_right_black_18dp.png" />
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\baseline_check_black_18dp.png" />
-    <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\round_compare_arrows_black_24dp.png" />
-    <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\baseline_pie_chart_black_24dp.png" />
-    <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\round_settings_applications_black_24dp.png" />
-    <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\baseline_account_balance_wallet_black_24dp.png" />
-    <ImageAsset Include="Assets.xcassets\RightArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrow.imageset\right-arrow.png" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\login_window_logo.png" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
-    <ImageAsset Include="Assets.xcassets\Login.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Login.imageset\entry.png" />
-    <ImageAsset Include="Assets.xcassets\WalletIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\WalletIcon.imageset\outline_account_balance_wallet_black_48pt_1x.png" />
+    <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Pie-chart-1.png" />
+    <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Settings-2.png" />
+    <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\Wallet.png" />
+    <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\Arrows.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -177,7 +169,6 @@
     <Folder Include="Assets.xcassets\ReceiveIcon.imageset\" />
     <Folder Include="Assets.xcassets\ConversionIcon.imageset\" />
     <Folder Include="Assets.xcassets\CopyIcon.imageset\" />
-    <Folder Include="Resources\NavBarIcons\" />
     <Folder Include="Assets.xcassets\NavBar__portfolio.imageset\" />
     <Folder Include="Assets.xcassets\NavBar__settings.imageset\" />
     <Folder Include="Assets.xcassets\NavBar__wallets.imageset\" />
@@ -203,10 +194,6 @@
     <Folder Include="Assets.xcassets\.imageset\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\NavBarIcons\baseline_account_balance_wallet_black_18dp.png" />
-    <BundleResource Include="Resources\NavBarIcons\baseline_compare_arrows_black_18dp.png" />
-    <BundleResource Include="Resources\NavBarIcons\baseline_pie_chart_black_18dp.png" />
-    <BundleResource Include="Resources\NavBarIcons\baseline_settings_applications_black_18dp.png" />
     <BundleResource Include="Resources\Agency-FB.ttf" />
     <BundleResource Include="Resources\Comfortaa-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Black.ttf" />
@@ -230,6 +217,12 @@
     <BundleResource Include="Resources\XTZ.svg" />
     <BundleResource Include="Resources\FA12.svg" />
     <BundleResource Include="Resources\Scan.svg" />
+    <BundleResource Include="Resources\Entry.svg" />
+    <BundleResource Include="Resources\Password.svg" />
+    <BundleResource Include="Resources\Right-arrow-2.svg" />
+    <BundleResource Include="Resources\Right-arrow-3.svg" />
+    <BundleResource Include="Resources\Tick.svg" />
+    <BundleResource Include="Resources\Wallet.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">

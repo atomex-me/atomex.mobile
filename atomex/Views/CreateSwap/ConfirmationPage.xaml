@@ -27,11 +27,10 @@
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
                     <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
-                    <Image Source="RightArrow"
-                           Grid.Column="1"
-                           Grid.RowSpan="3"
-                           WidthRequest="48"
-                           VerticalOptions="CenterAndExpand"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-3.svg"
+                                                      Grid.Column="1"
+                                                      WidthRequest="40"
+                                                      VerticalOptions="CenterAndExpand"/>
                     <ffimageloadingsvg:SvgCachedImage Grid.Column="2"
                                                       Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
                     <Label Grid.Row="1"
