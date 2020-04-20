@@ -42,7 +42,7 @@ namespace atomex.iOS.CustomElements
             if (item == null || icon == null)
                 return;
 
-            TabBar.SelectedImageTintColor = new UIColor(red: 0.23f, green: 0.42f, blue: 0.69f, alpha: 1.00f);
+            TabBar.SelectedImageTintColor = new UIColor(red: 0.17f, green: 0.32f, blue: 0.53f, alpha: 1.00f);
             //foreach (var uiTabBarItem in TabBar.Items)
             //{
             //    //var fontSize = new UITextAttributes() { Font = UIFont.SystemFontOfSize(13) };

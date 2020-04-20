@@ -5,7 +5,7 @@
      <!-- Base Colors -->
     <Color x:Key="MainBackgroundColor">#ffffff</Color>
     <Color x:Key="AdditionalBackgroundColor">#f7f5fa</Color>
-    <Color x:Key="NavigationBarBackgroundColor">#223a66</Color>
+    <Color x:Key="NavigationBarBackgroundColor">#2B5286</Color>
     <Color x:Key="TabBarBackgroundColor">#f7f5fa</Color>
 
     <Color x:Key="MainButtonBackgroundColor">#3a6cb1</Color>
@@ -55,9 +55,9 @@
         <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
         <Setter Property="BorderWidth" Value="1"/>
-        <Setter Property="CornerRadius" Value="35"/>
-        <Setter Property="HeightRequest" Value="70"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
     <Style x:Key="AdditionalButtonStyle" TargetType="Button">
@@ -65,9 +65,9 @@
         <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
         <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
         <Setter Property="BorderWidth" Value="1"/>
-        <Setter Property="CornerRadius" Value="35"/>
-        <Setter Property="HeightRequest" Value="70"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
 

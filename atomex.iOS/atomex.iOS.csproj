@@ -131,8 +131,6 @@
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\baseline_check_black_18dp.png" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LockIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Pie-chart-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Settings-2.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\Wallet.png" />
@@ -141,6 +139,8 @@
     <ImageAsset Include="Assets.xcassets\Logo.imageset\logo.png" />
     <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\label.png" />
+    <ImageAsset Include="Assets.xcassets\StartPage-bg.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\StartPage-bg.imageset\StartPage-bg.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -197,6 +197,7 @@
     <Folder Include="Assets.xcassets\.imageset\" />
     <Folder Include="Assets.xcassets\LaunchScreen.imageset\" />
     <Folder Include="Assets.xcassets\LogoLabel.imageset\" />
+    <Folder Include="Assets.xcassets\StartPage-bg.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

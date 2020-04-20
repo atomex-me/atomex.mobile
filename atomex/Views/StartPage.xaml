@@ -2,54 +2,30 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.StartPage">
-    <StackLayout VerticalOptions="FillAndExpand">
-        <ImageButton Source="Logo"
-                     CornerRadius="100"
-                     WidthRequest="200"
-                     HeightRequest="200"
-                     BorderColor="#0E3030"
-                     BorderWidth="3"
-                     HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     Padding="40"
-                     Margin="0,20,0,0"
-                     BackgroundColor="LightCyan"/>
-        <Label Grid.Row="1"
-               Text="atomex"
-               FontFamily="{DynamicResource LogoFont}"
-               FontSize="36"
-               Padding="10"
-               TextColor="{DynamicResource LogoTextColor}"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
-        <Label Grid.Row="2"
-               Text="Multicurrency HD wallet with built-in hybrid atomic swap exchange"
-               FontSize="20"
-               Padding="20,0,20,20"
-               TextColor="{DynamicResource MainTextColor}"
-               FontFamily="{DynamicResource LightFont}"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
-        <StackLayout Grid.Row="4"
-                     VerticalOptions="FillAndExpand">
+    <RelativeLayout VerticalOptions="StartAndExpand">
+        <StackLayout Orientation="Vertical"
+                     VerticalOptions="Start"
+                     HorizontalOptions="FillAndExpand"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <Image Source="StartPage-bg"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
+                   Margin="0"/>
+        </StackLayout>
+        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-140}" 
+                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=+130}">
             <Button Text="MY WALLETS"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    Margin="20,0"
+                    WidthRequest="280"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="ShowMyWalletsButtonClicked"/>
             <Button Text="CREATE NEW WALLET"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    Margin="20,0"
                     Style="{DynamicResource AdditionalButtonStyle}"
                     Clicked="CreateNewWalletButtonClicked"/>
             <Button Text="RESTORE WALLET"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    Margin="20,0"
                     Style="{DynamicResource AdditionalButtonStyle}"
                     Clicked="OnRestoreWalletButtonClicked"/>
         </StackLayout>
-    </StackLayout>
+    </RelativeLayout>
+    
 </ContentPage>
