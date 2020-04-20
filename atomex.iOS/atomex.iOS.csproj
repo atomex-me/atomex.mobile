@@ -131,13 +131,16 @@
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\baseline_check_black_18dp.png" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo.imageset\login_window_logo.png" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LockIcon.imageset\password.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Pie-chart-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Settings-2.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\Wallet.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\Arrows.png" />
+    <InterfaceDefinition Include="AtomexLaunchScreen.storyboard" />
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\logo.png" />
+    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\label.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -192,6 +195,8 @@
     <Folder Include="Assets.xcassets\Login.imageset\" />
     <Folder Include="Assets.xcassets\WalletIcon.imageset\" />
     <Folder Include="Assets.xcassets\.imageset\" />
+    <Folder Include="Assets.xcassets\LaunchScreen.imageset\" />
+    <Folder Include="Assets.xcassets\LogoLabel.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
