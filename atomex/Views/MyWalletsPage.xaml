@@ -9,7 +9,8 @@
         <StackLayout>
             <Label Text="PLEASE SELECT YOUR WALLET"
                    TextColor="{DynamicResource MainTextColor}"
-                   Padding="20,50"
+                   FontFamily="{DynamicResource MediumFont}"
+                   Padding="20,40"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
             <Frame Style="{DynamicResource MainNetWalletFrameStyle}">
@@ -20,10 +21,11 @@
                     <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
                                                       HeightRequest="48"
                                                       Margin="10,0"
-                                                      Source="Wallet.svg"/>
+                                                      Source="Wallet__white.svg"/>
                     <Label Text="ATOMEX"
                            Style="{DynamicResource MainNetWalletlButtonTextStyle}"/>
-                    <Image Source="RightArrowIcon"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-2__white.svg"
+                                                      HeightRequest="12"/>
                 </StackLayout>
             </Frame>
             <Frame Style="{DynamicResource TestNetWalletFrameStyle}">
@@ -34,26 +36,13 @@
                     <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
                                                       HeightRequest="48"
                                                       Margin="10,0"
-                                                      Source="Wallet.svg"/>
+                                                      Source="Wallet__blue.svg"/>
                     <Label Text="STARIK"
                            Style="{DynamicResource TestNetWalletlButtonTextStyle}"/>
-                    <Image Source="RightArrowIcon"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-2__blue.svg"
+                                                      HeightRequest="12"/>
                 </StackLayout>
             </Frame>
-            <!--<ListView ItemsSource="{Binding Wallets}"
-                      Footer="">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Margin="20,10"
-                               CornerRadius="10">
-                            <Button Text="Wallet name"
-                                    TextColor="CadetBlue"
-                                    FontSize="16"
-                                    Clicked="OnWalletClicked"/>
-                        </Frame>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

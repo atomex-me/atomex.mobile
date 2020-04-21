@@ -126,10 +126,6 @@
     <ImageAsset Include="Assets.xcassets\NavBar__wallets.imageset\wallets.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__conversion.imageset\exchange-2.png" />
-    <ImageAsset Include="Assets.xcassets\RightArrowIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrowIcon.imageset\baseline_keyboard_arrow_right_black_18dp.png" />
-    <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\CheckedIcon.imageset\baseline_check_black_18dp.png" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBar__portfolio.imageset\Pie-chart-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBar__settings.imageset\Settings-2.png" />
@@ -225,10 +221,13 @@
     <BundleResource Include="Resources\Scan.svg" />
     <BundleResource Include="Resources\Entry.svg" />
     <BundleResource Include="Resources\Password.svg" />
-    <BundleResource Include="Resources\Right-arrow-2.svg" />
+    <BundleResource Include="Resources\Right-arrow-2__white.svg" />
     <BundleResource Include="Resources\Right-arrow-3.svg" />
     <BundleResource Include="Resources\Tick.svg" />
-    <BundleResource Include="Resources\Wallet.svg" />
+    <BundleResource Include="Resources\Wallet__white.svg" />
+    <BundleResource Include="Resources\Wallet__blue.svg" />
+    <BundleResource Include="Resources\Right-arrow-2__blue.svg" />
+    <BundleResource Include="Resources\Right-arrow-2__black.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">

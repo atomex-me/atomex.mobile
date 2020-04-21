@@ -153,7 +153,7 @@
         <Setter Property="Margin" Value="20,0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="HeightRequest" Value="40"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
     </Style>
@@ -162,7 +162,7 @@
         <Setter Property="Margin" Value="20,0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="HeightRequest" Value="40"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
     </Style>

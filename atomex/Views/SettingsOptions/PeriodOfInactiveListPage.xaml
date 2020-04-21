@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.Views.SettingsOptions.PeriodOfInactiveListPage"
              Title="Period of inactive">
     <ContentPage.Content>
@@ -17,16 +17,19 @@
                                 <Label Text="5 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False" >
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="5">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="5">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -40,16 +43,19 @@
                                 <Label Text="10 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False">
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="10">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="10">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -63,16 +69,19 @@
                                 <Label Text="30 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False" >
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="30">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="30">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -86,16 +95,19 @@
                                 <Label Text="60 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False" >
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="60">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="60">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -109,16 +121,19 @@
                                 <Label Text="90 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False" >
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="90">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="90">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -132,16 +147,19 @@
                                 <Label Text="180 min"
                                        Style="{DynamicResource OptionLabelStyle}">
                                 </Label>
-                                <Image Grid.Column="1"
-                                       Source="CheckedIcon"
-                                       Margin="10,0"
-                                       IsVisible="False" >
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image" Binding="{Binding PeriodOfInactivityInMin}" Value="180">
-                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                <ffimageloadingsvg:SvgCachedImage Source="Tick.svg"
+                                                                  Grid.Column="1"
+                                                                  Margin="10,12"
+                                                                  IsVisible="False">
+                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                     Binding="{Binding PeriodOfInactivityInMin}"
+                                                     Value="180">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
                                         </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
+                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                </ffimageloadingsvg:SvgCachedImage>
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
