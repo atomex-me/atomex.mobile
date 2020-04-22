@@ -43,6 +43,7 @@ namespace atomex.ViewModel
         private void SubscribeToServices()
         {
             App.QuotesProvider.QuotesUpdated += QuotesUpdatedEventHandler;
+            QuotesUpdatedEventHandler(this, EventArgs.Empty);
         }
 
         private async Task FillCurrenciesAsync()
@@ -61,7 +62,7 @@ namespace atomex.ViewModel
                     FreeExternalAddress = address.Address
                 };
                 CurrencyViewModels.Add(currency);
-                //currency.UpdateCurrencyAsync().FireAndForget();
+                currency.UpdateBalanceAsync().FireAndForget();
                 currency.LoadTransactionsAsync().FireAndForget();
             }));
         }

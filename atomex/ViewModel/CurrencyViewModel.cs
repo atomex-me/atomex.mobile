@@ -124,7 +124,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private async Task UpdateBalanceAsync() {
+        public async Task UpdateBalanceAsync() {
             var balance = await App.Account
                 .GetBalanceAsync(Currency.Name)
                 .ConfigureAwait(false);
