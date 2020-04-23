@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
+using atomex.ViewModel.SendViewModels;
 
 namespace atomex
 {
@@ -34,7 +35,7 @@ namespace atomex
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new SendPage(_currencyViewModel));
+            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(_currencyViewModel)));
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         { 

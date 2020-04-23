@@ -1,61 +1,68 @@
 ﻿using System;
 using Xamarin.Forms;
-using atomex.ViewModel;
 using Xamarin.Essentials;
+using atomex.ViewModel.SendViewModels;
 
 namespace atomex
 {
     public partial class SendPage : ContentPage
     {
-        private CurrencyViewModel _currencyViewModel;
 
-        private decimal _maxAmount;
+        private SendViewModel _sendViewModel;
 
-        private decimal _fee;
-
-        private decimal _feePrice;
-
-        public SendPage()
+        public SendPage(SendViewModel sendViewModel)
         {
             InitializeComponent();
+            _sendViewModel = sendViewModel;
+            if (sendViewModel.Currency.Name == "ETH" ||
+                sendViewModel.Currency.Name =="USDT")
+            {
+                GasLayout.IsVisible = true;
+                UseDefaultFeeSwitch.Opacity = 0.5;
+                FeeLayout.IsVisible = UseDefaultFeeSwitch.IsEnabled = false;
+            }
+            BindingContext = sendViewModel;
         }
 
-        public SendPage(CurrencyViewModel selectedCurrency)
+        private void AmountEntryFocused(object sender, FocusEventArgs args)
         {
-            InitializeComponent();
-            if (selectedCurrency != null)
+            AmountFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
             {
-                _currencyViewModel = selectedCurrency;
-                Amount.Placeholder = "Amount, " + _currencyViewModel.CurrencyCode;
-                EstimateMaxAmount(null);
+                decimal amount;
+                if (String.IsNullOrEmpty(Amount?.Text) || String.IsNullOrWhiteSpace(Amount?.Text))
+                    amount = 0;
+                else
+                    amount = Convert.ToDecimal(Amount?.Text);
+                _sendViewModel.UpdateAmount(amount);
+                Amount.Text = _sendViewModel.AmountString;
+                Fee.Text = _sendViewModel.FeeString;
             }
         }
 
-        private void AmountEntryFocused(object sender, FocusEventArgs e)
+        private void FeeEntryFocused(object sender, FocusEventArgs args)
         {
-            AmountFrame.HasShadow = true;
-            InvalidAmountFrame.IsVisible = false;
+            FeeFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
+            {
+                decimal fee;
+                if (String.IsNullOrEmpty(Fee?.Text) || String.IsNullOrWhiteSpace(Fee?.Text))
+                    fee = 0;
+                else
+                    fee = Convert.ToDecimal(Fee?.Text);
+                _sendViewModel.UpdateFee(fee);
+                Fee.Text = _sendViewModel.FeeString;
+            }
         }
+        
 
-        private void AmountEntryUnfocused(object sender, FocusEventArgs e)
+        private void AddressEntryFocused(object sender, FocusEventArgs args)
         {
-            AmountFrame.HasShadow = false;
-            decimal amount;
-            if (String.IsNullOrEmpty(Amount?.Text) || String.IsNullOrWhiteSpace(Amount?.Text))
-                amount = 0;
-            else
-                amount = Convert.ToDecimal(Amount?.Text);
-            EstimateFee(Address?.Text, amount);
-        }
-
-        private void AddressEntryFocused(object sender, FocusEventArgs e)
-        {
-            AddressFrame.HasShadow = true;
-            InvalidAddressFrame.IsVisible = false;
-        }
-        private void AddressEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            AddressFrame.HasShadow = false;
+            AddressFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
+            {
+                _sendViewModel.EstimateMaxAmountAndFee();
+            }
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -65,7 +72,7 @@ namespace atomex
                 if (!AmountHint.IsVisible)
                 {
                     AmountHint.IsVisible = true;
-                    AmountHint.Text = Amount.Placeholder;
+                    AmountHint.Text = Amount.Placeholder + ", " + _sendViewModel.CurrencyCode;
                 }
             }
             else
@@ -90,37 +97,15 @@ namespace atomex
             }
         }
 
-        private async void EstimateFee(string to, decimal amount)
+        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            ShowFeeLoader(true);
-            var fee = await _currencyViewModel.EstimateFeeAsync(to, amount);
-            _fee = fee ?? 0;
-            _feePrice = _currencyViewModel.Currency.GetDefaultFeePrice();
-            fee = _fee * _feePrice;
-            FeeValue.Text = fee.ToString() + " " + _currencyViewModel.CurrencyCode;
-            ShowFeeLoader(false);
+            _sendViewModel.EstimateMaxAmountAndFee();
+            Amount.Text = _sendViewModel.AmountString;
+            Fee.Text = _sendViewModel.FeeString;
         }
 
-        private async void EstimateMaxAmount(string address)
+        private async void OnScanButtonClicked(object sender, EventArgs args)
         {
-            var (maxAmount, _, _) = await _currencyViewModel?.EstimateMaxAmountToSendAsync(address);
-            _maxAmount = maxAmount;
-        }
-
-        private void ShowFeeLoader(bool flag)
-        {
-            EstimateFeeLayout.IsVisible = FeeLoader.IsRunning = flag;
-            NextButton.IsEnabled = FeeLabel.IsVisible = !flag;
-        }
-
-        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args) {
-            InvalidAmountFrame.IsVisible = false;
-            EstimateMaxAmount(Address.Text);
-            Amount.Text = _maxAmount.ToString();
-            EstimateFee(Address.Text, _maxAmount);
-        }
-
-        private async void OnScanButtonClicked(object sender, EventArgs args) {
 
             var optionsPage = new ScanningQrPage(selected =>
             {
@@ -130,7 +115,8 @@ namespace atomex
             await Navigation.PushAsync(optionsPage);
         }
 
-        private async void OnPasteButtonClicked(object sender, EventArgs args) {
+        private async void OnPasteButtonClicked(object sender, EventArgs args)
+        {
             if (Clipboard.HasText)
             {
                 var text = await Clipboard.GetTextAsync();
@@ -144,33 +130,15 @@ namespace atomex
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            if (String.IsNullOrWhiteSpace(Address.Text) || String.IsNullOrWhiteSpace(Amount.Text))
+            var error = _sendViewModel.OnNextCommand();
+            if (error != null)
             {
-                await DisplayAlert("Warning", "All fields must be filled", "Ok");
-                return;
+                await DisplayAlert("Warning", error, "Ok");
             }
-
-            if (!_currencyViewModel.Currency.IsValidAddress(Address.Text))
+            else
             {
-                InvalidAddressFrame.IsVisible = true;
-                return;
+                await Navigation.PushAsync(new SendingConfirmationPage(_sendViewModel));
             }
-
-            decimal amount = Convert.ToDecimal(Amount.Text);
-
-            if (amount <= 0)
-            {
-                InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _currencyViewModel.CurrencyCode;
-                return;
-            }
-            if (amount > _maxAmount)
-            {
-                InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Insufficient funds";
-                return;
-            }
-            await Navigation.PushAsync(new SendingConfirmationPage(_currencyViewModel, Address.Text, amount, _fee, _feePrice));
         }
     }
 }

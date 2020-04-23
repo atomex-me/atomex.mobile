@@ -1,40 +1,22 @@
 ﻿using System;
 using Xamarin.Forms;
 using atomex.ViewModel;
+using atomex.ViewModel.SendViewModels;
 
 namespace atomex
 {
     public partial class SendingConfirmationPage : ContentPage
     {
-        private CurrencyViewModel _currencyViewModel;
 
-        private string _to;
-
-        private decimal _amount;
-
-        private decimal _fee;
-
-        private decimal _feePrice;
+        private SendViewModel _sendViewModel;
 
         private const int BACK_COUNT = 2;
 
-        public SendingConfirmationPage()
+        public SendingConfirmationPage(SendViewModel sendViewModel)
         {
             InitializeComponent();
-        }
-
-        public SendingConfirmationPage(CurrencyViewModel currencyViewModel, string to, decimal amount, decimal fee, decimal feePrice)
-        {
-            InitializeComponent();
-            _currencyViewModel = currencyViewModel;
-            _to = to;
-            _amount = amount;
-            _fee = fee;
-            _feePrice = feePrice;
-            AddressFrom.Detail = currencyViewModel.FreeExternalAddress;
-            AddressTo.Detail = to;
-            Amount.Detail = amount.ToString() + " " + currencyViewModel.CurrencyCode;
-            Fee.Detail = fee.ToString() + " " + currencyViewModel.CurrencyCode;
+            _sendViewModel = sendViewModel;
+            BindingContext = sendViewModel;
         }
 
 
@@ -42,14 +24,15 @@ namespace atomex
             try
             {
                 BlockActions(true);
-                var error = await _currencyViewModel.SendAsync(_to, _amount, _fee, _feePrice);
+
+                var error = await _sendViewModel.Send();
                 if (error != null)
                 {
                     BlockActions(false);
-                    await DisplayAlert("Error", "Sending transaction error", "Ok");
+                    await DisplayAlert("Error", error, "Ok");
                     return;
                 }
-                var res = await DisplayAlert("Success", _amount + " " + _currencyViewModel.CurrencyCode + " sent to " + _to, null, "Ok");
+                var res = await DisplayAlert("Success", _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + " sent to " + _sendViewModel.To, null, "Ok");
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)

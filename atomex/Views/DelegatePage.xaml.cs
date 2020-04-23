@@ -33,7 +33,7 @@ namespace atomex
         private void OnToAddressEntryFocused(object sender, FocusEventArgs args)
         {
             ToAddressFrame.HasShadow = args.IsFocused;
-        }       
+        }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {

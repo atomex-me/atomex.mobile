@@ -10,12 +10,10 @@
         <StackLayout VerticalOptions="FillAndExpand"
                      Padding="20">
             <Grid ColumnSpacing="0"
-                  RowSpacing="2">
+                  RowSpacing="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="70" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="6*" />
@@ -35,10 +33,11 @@
                                 <Label x:Name="AddressHint"
                                        Style="{DynamicResource EntryHintStyle}"/>
                                  <controls:CustomEntry x:Name="Address"
+                                                       Text="{Binding To}"
                                                        Placeholder="Address"
                                                        Keyboard="Text"
                                                        Focused="AddressEntryFocused"
-                                                       Unfocused="AddressEntryUnfocused"
+                                                       Unfocused="AddressEntryFocused"
                                                        Style="{DynamicResource EntryStyle}"
                                                        TextChanged="OnAddressTextChanged"/>
                             </StackLayout>
@@ -65,22 +64,10 @@
                 </Frame>
                 <Frame Grid.Row="1"
                        Grid.ColumnSpan="3"
-                       x:Name="InvalidAddressFrame"
-                       HasShadow="False"
-                       IsVisible="False"
-                       Padding="5">
-                    <Label Text="Invalid address"
-                           TextColor="Red"
-                           Margin="20"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start"/>
-                </Frame>
-                <Frame Grid.Row="2"
-                       Grid.ColumnSpan="3"
                        x:Name="AmountFrame"
                        Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
-                                 Grid.Row="2"
+                                 Grid.Row="1"
                                  Grid.ColumnSpan="3">
                         <Frame Padding="0"
                                HasShadow="False"
@@ -95,12 +82,12 @@
                                                       Placeholder="Amount"
                                                       Keyboard="Numeric"
                                                       Focused="AmountEntryFocused"
-                                                      Unfocused="AmountEntryUnfocused"
+                                                      Unfocused="AmountEntryFocused"
                                                       Style="{DynamicResource EntryStyle}"
                                                       TextChanged="OnAmountTextChanged"/>
                             </StackLayout>
                         </Frame>
-                        <Button Grid.Row="2"
+                        <Button Grid.Row="1"
                                 Grid.Column="2"
                                 Text="MAX"
                                 FontSize="16"
@@ -111,43 +98,145 @@
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                     </StackLayout>
                 </Frame>
-                <Frame Grid.Row="3"
-                       Grid.ColumnSpan="3"
-                       x:Name="InvalidAmountFrame"
-                       HasShadow="False"
-                       IsVisible="False">
-                    <Label Text="Invalid amount"
-                           x:Name="InvalidAmountLabel"
-                           TextColor="Red"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start"/>
-                </Frame>
             </Grid>
-            <Label x:Name="FeeLabel"
-                   Margin="10,20"
-                   TextColor="Gray"
-                   IsVisible="False">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Estimated Fee: "/>
-                        <Span x:Name="FeeValue"
-                              FontAttributes="Bold"
-                              FontSize="16"
-                              TextColor="Black"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <StackLayout x:Name="EstimateFeeLayout"
+            <StackLayout Orientation="Horizontal"
+                         x:Name="FeeLayout"
+                         Spacing="0">
+                <Frame Style="{DynamicResource FrameCaptionStyle}"
+                       WidthRequest="60"
+                       Padding="20">
+                    <Label Text="Fee:"
+                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
+                <Frame HasShadow="False"
+                       x:Name="FeeFrame"
+                       Padding="0"
+                       BorderColor="LightGray"
+                       HorizontalOptions="FillAndExpand">
+                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                          x:Name="Fee"
+                                          Keyboard="Numeric"
+                                          Focused="FeeEntryFocused"
+                                          Unfocused="FeeEntryFocused">
+                        <controls:CustomEntry.Triggers>
+                            <DataTrigger TargetType="controls:CustomEntry"
+                                         Binding="{Binding UseDefaultFee}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="LightGray"/>
+                                <Setter Property="IsReadOnly"
+                                        Value="True"/>
+                                <Setter Property="TextColor"
+                                        Value="Gray"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="controls:CustomEntry"
+                                         Binding="{Binding UseDefaultFee}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{DynamicResource MainBackgroundColor}"/>
+                                <Setter Property="IsReadOnly"
+                                        Value="False"/>
+                                <Setter Property="TextColor"
+                                        Value="Black"/>
+                            </DataTrigger>
+                        </controls:CustomEntry.Triggers>
+                    </controls:CustomEntry>
+                </Frame>
+            </StackLayout>
+            <StackLayout x:Name="GasLayout"
                          IsVisible="False">
-                <ActivityIndicator x:Name="FeeLoader"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="CenterAndExpand"
-                                   Color="CadetBlue"
-                                   Scale="2"/>
-                <Label Text="Calculating a fee..."
-                       HorizontalTextAlignment="Center"
-                       TextColor="Gray"
-                       FontSize="18"/>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="0">
+                    <Frame Style="{DynamicResource FrameCaptionStyle}"
+                           WidthRequest="60"
+                           Padding="20">
+                        <Label Text="Gas price:"
+                               Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                    </Frame>
+                    <Frame HasShadow="False"
+                           Padding="0"
+                           BorderColor="LightGray"
+                           HorizontalOptions="FillAndExpand">
+                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                              Keyboard="Numeric"
+                                              Text="{Binding FeePriceString}">
+                            <controls:CustomEntry.Triggers>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="LightGray"/>
+                                    <Setter Property="IsReadOnly"
+                                            Value="True"/>
+                                    <Setter Property="TextColor"
+                                            Value="Gray"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{DynamicResource MainBackgroundColor}"/>
+                                    <Setter Property="IsReadOnly"
+                                            Value="False"/>
+                                    <Setter Property="TextColor"
+                                            Value="Black"/>
+                                </DataTrigger>
+                            </controls:CustomEntry.Triggers>
+                        </controls:CustomEntry>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="0">
+                    <Frame Style="{DynamicResource FrameCaptionStyle}"
+                           WidthRequest="60"
+                           Padding="20">
+                        <Label Text="Gas limit:"
+                               Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                    </Frame>
+                    <Frame HasShadow="False"
+                           Padding="0"
+                           BorderColor="LightGray"
+                           HorizontalOptions="FillAndExpand">
+                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                              Keyboard="Numeric"
+                                              Text="{Binding GasString}">
+                            <controls:CustomEntry.Triggers>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="LightGray"/>
+                                    <Setter Property="IsReadOnly"
+                                            Value="True"/>
+                                    <Setter Property="TextColor"
+                                            Value="Gray"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{DynamicResource MainBackgroundColor}"/>
+                                    <Setter Property="IsReadOnly"
+                                            Value="False"/>
+                                    <Setter Property="TextColor"
+                                            Value="Black"/>
+                                </DataTrigger>
+                            </controls:CustomEntry.Triggers>
+                        </controls:CustomEntry>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Padding="20">
+                <Label Text="Use default fee:"
+                       FontAttributes="{DynamicResource RegularFont}"
+                       FontSize="18"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"/>
+                <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
+                        IsToggled="{Binding UseDefaultFee}"
+                        HorizontalOptions="EndAndExpand"
+                        x:Name="UseDefaultFeeSwitch"/>
             </StackLayout>
             <Button Text="NEXT"
                     x:Name="NextButton"

@@ -194,6 +194,11 @@ namespace atomex.ViewModel
             }
         }
 
+        public IAtomexApp GetAtomexApp()
+        {
+            return App;
+        }
+
         public async Task UpdateCurrencyAsync()
         {
             await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);

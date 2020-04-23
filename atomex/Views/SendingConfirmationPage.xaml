@@ -17,20 +17,20 @@
                            RowHeight="70">
                     <TableRoot>
                         <TableSection Title="Confirm transaction">
-                            <TextCell x:Name="AddressFrom"
-                                      Text="From"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="AddressTo"
                                       Text="To"
+                                      Detail="{Binding To}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="Amount"
                                       Text="Amount"
+                                      Detail="{Binding Amount}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <TextCell x:Name="Fee"
                                       Text="Fee"
+                                      Detail="{Binding Fee}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <ViewCell>
-                                <StackLayout Padding="20,0">
+                                <StackLayout Padding="20,10">
                                     <Button Text="SEND"
                                             x:Name="SendButton"
                                             Style="{DynamicResource MainButtonStyle}"
