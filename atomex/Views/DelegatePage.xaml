@@ -176,11 +176,14 @@
                 </Frame>
                 <Frame HasShadow="False"
                        Padding="0"
+                       x:Name="FeeFrame"
                        BorderColor="LightGray"
                        HorizontalOptions="FillAndExpand">
                     <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                          x:Name="Fee"
                                           Keyboard="Numeric"
-                                          Text="{Binding FeeString}">
+                                          Focused="OnFeeEntryFocused"
+                                          Unfocused="OnFeeEntryFocused">
                         <controls:CustomEntry.Triggers>
                             <DataTrigger TargetType="controls:CustomEntry"
                                          Binding="{Binding UseDefaultFee}"

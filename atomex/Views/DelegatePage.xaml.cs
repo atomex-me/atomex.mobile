@@ -35,6 +35,21 @@ namespace atomex
             ToAddressFrame.HasShadow = args.IsFocused;
         }
 
+        private void OnFeeEntryFocused(object sender, FocusEventArgs args)
+        {
+            FeeFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
+            {
+                decimal fee;
+                if (String.IsNullOrEmpty(Fee?.Text) || String.IsNullOrWhiteSpace(Fee?.Text))
+                    fee = 0;
+                else
+                    fee = Convert.ToDecimal(Fee?.Text);
+                _delegateViewModel.Fee = fee;
+                Fee.Text = _delegateViewModel.FeeString;
+            }
+        }
+
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
             try
