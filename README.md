@@ -1,1 +1,1 @@
-# Atomex iOS/Android App
+# Atomex Mobile platform App
