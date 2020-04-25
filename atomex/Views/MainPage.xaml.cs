@@ -67,8 +67,8 @@ namespace atomex
 
                 Console.WriteLine(currency);
                 Console.WriteLine(conversionViewModel);
-                Console.WriteLine(conversionViewModel.FromCurrency);
-                conversionViewModel.FromCurrency = currency;
+                Console.WriteLine(conversionViewModel.FromCurrencyViewModel);
+                conversionViewModel.FromCurrencyViewModel = currency;
             }
         }
     }

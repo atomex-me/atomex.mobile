@@ -37,22 +37,21 @@
                             Title="Select a currency"
                             ItemsSource="{Binding FromCurrencies}"
                             ItemDisplayBinding="{Binding Currency.Description}"
-                            SelectedItem="{Binding FromCurrency}"
+                            SelectedItem="{Binding FromCurrencyViewModel}"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             Focused="OnFromCurrencyPickerFocused"
-                            Unfocused="OnFromCurrencyPickerFocused"
-                            SelectedIndexChanged="OnPickerFromCurrencySelectedIndexChanged"/>
+                            Unfocused="OnFromCurrencyPickerFocused"/>
                 </Frame>
                 <StackLayout Grid.Column="1"
                              Orientation="Horizontal"
                              Padding="15"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label Text="{Binding FromCurrency.AvailableAmount, StringFormat='{0:0.#####}'}"
+                    <Label Text="{Binding FromCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#####}'}"
                            VerticalTextAlignment="Center"
                            Margin="5,0"/>
-                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
                 </StackLayout>
                 <Frame Grid.Row="1"
                        Padding="5"
@@ -71,7 +70,7 @@
                             Title="Select a currency"
                             ItemsSource="{Binding ToCurrencies}"
                             ItemDisplayBinding="{Binding Currency.Description}"
-                            SelectedItem="{Binding ToCurrency}"
+                            SelectedItem="{Binding ToCurrencyViewModel}"
                             Focused="OnToCurrencyPickerFocused"
                             Unfocused="OnToCurrencyPickerFocused"
                             HorizontalOptions="FillAndExpand"/>
@@ -82,10 +81,10 @@
                              Padding="15"
                              HorizontalOptions="EndAndExpand"
                              IsEnabled="False">
-                    <Label Text="{Binding ToCurrency.AvailableAmount, StringFormat='{0:0.#########}'}"
+                    <Label Text="{Binding ToCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#########}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0" />
-                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
                 </StackLayout>
             </Grid>
             <Label Margin="20">

@@ -6,7 +6,6 @@ namespace atomex.Views.CreateSwap
 {
     public partial class AmountPage : ContentPage
     {
-        private decimal _maxAmount;
 
         private ConversionViewModel _conversionViewModel;
 
@@ -14,12 +13,11 @@ namespace atomex.Views.CreateSwap
         {
             InitializeComponent();
         }
-        public AmountPage(ConversionViewModel conversionViewModel, decimal maxAmount)
+        public AmountPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
-            _maxAmount = maxAmount;
-            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrency.CurrencyCode;
+            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
             BindingContext = _conversionViewModel;
         }
         private void AmountEntryFocused(object sender, FocusEventArgs e)
@@ -61,8 +59,8 @@ namespace atomex.Views.CreateSwap
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
             InvalidAmountFrame.IsVisible = false;
-            Amount.Text = _maxAmount.ToString();
-            _conversionViewModel.Amount = _maxAmount;
+            Amount.Text = _conversionViewModel.MaxAmount.ToString();
+            _conversionViewModel.Amount = _conversionViewModel.MaxAmount;
         }
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
@@ -77,10 +75,10 @@ namespace atomex.Views.CreateSwap
             if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrency.CurrencyCode;
+                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
                 return;
             }
-            if (amount > _maxAmount)
+            if (amount > _conversionViewModel.MaxAmount)
             {
                 InvalidAmountFrame.IsVisible = true;
                 InvalidAmountLabel.Text = "Insufficient funds";

@@ -26,23 +26,23 @@
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
-                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
                     <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-3.svg"
                                                       Grid.Column="1"
                                                       WidthRequest="40"
                                                       VerticalOptions="CenterAndExpand"/>
                     <ffimageloadingsvg:SvgCachedImage Grid.Column="2"
-                                                      Source="{Binding ToCurrency.CurrencyCode, StringFormat='{0}.svg'}"/>
+                                                      Source="{Binding ToCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
                     <Label Grid.Row="1"
                            FontSize="14"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"
                                       FontFamily="{DynamicResource BoldFont}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding FromCurrency.CurrencyCode}"
+                                <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
                                       FontFamily="{DynamicResource BoldFont}"/>
                             </FormattedString>
                         </Label.FormattedText>
@@ -54,10 +54,10 @@
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.#####}'}"
+                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"
                                       FontFamily="{DynamicResource BoldFont}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding ToCurrency.CurrencyCode}"
+                                <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
                                       FontFamily="{DynamicResource BoldFont}"/>
                             </FormattedString>
                         </Label.FormattedText>
@@ -121,7 +121,7 @@
                                             <FormattedString>
                                                 <Span Text="{Binding EstimatedPaymentFee}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding FromCurrency.CurrencyCode}"/>
+                                                <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label> 
@@ -139,19 +139,12 @@
                                             <FormattedString>
                                                 <Span Text="{Binding EstimatedRedeemFee}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding ToCurrency.CurrencyCode}"/>
+                                                <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                      </Label> 
                                 </StackLayout>
                             </ViewCell>
-                            <!--<ViewCell>
-                                <Button Text="CONVERT"
-                                        x:Name="ConvertButton"
-                                        Margin="20"
-                                        Style="{DynamicResource MainButtonStyle}"
-                                        Clicked="OnConvertButtonClicked"/>
-                            </ViewCell>-->
                         </TableSection>
                     </TableRoot>
                 </TableView>

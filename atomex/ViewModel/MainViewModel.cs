@@ -11,7 +11,6 @@ using Atomex.Common;
 using System.IO;
 using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
-using System.Threading.Tasks;
 
 
 namespace atomex.ViewModel
@@ -84,11 +83,6 @@ namespace atomex.ViewModel
             SettingsViewModel = new SettingsViewModel(account);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             DelegateViewModel = new DelegateViewModel(AtomexApp);
-
-            //Test(account).FireAndForget();
-
-            //AtomexApp.Terminal.SubscribeToMarketData(new SubscriptionType})
-            // AtomexApp.Stop();
         }
 
         private void SubscribeToServices()
@@ -124,16 +118,6 @@ namespace atomex.ViewModel
                 terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);
             }
         }
-
-
-        //private async Task Test(Account account)
-        //{
-        //    await new HdWalletScanner(account).ScanAsync("XTZ");
-        //    //await account.UpdateBalanceAsync("XTZ");
-        //    //var balance = await account.GetBalanceAsync("XTZ");
-        //    var tx = await account.GetTransactionsAsync("XTZ");
-        //    Console.WriteLine(tx);
-        //}
 
         public IAtomexApp GetAtomexApp() {
             return AtomexApp;

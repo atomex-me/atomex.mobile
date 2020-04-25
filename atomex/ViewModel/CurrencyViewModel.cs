@@ -20,6 +20,10 @@ namespace atomex.ViewModel
 
         public Currency Currency { get; set; }
 
+        public string CurrencyCode => Currency.Name;
+        public string FeeCurrencyCode => Currency.FeeCode;
+        public string BaseCurrencyCode => "USD";
+
         private decimal _totalAmount;
         public decimal TotalAmount
         {
@@ -47,8 +51,6 @@ namespace atomex.ViewModel
             get => _freeExternalAddress;
             set { _freeExternalAddress = value; OnPropertyChanged(nameof(FreeExternalAddress)); }
         }
-
-        public string CurrencyCode => Currency.Name;
 
         private decimal _price;
         public decimal Price
@@ -202,25 +204,6 @@ namespace atomex.ViewModel
         public async Task UpdateCurrencyAsync()
         {
             await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
-        }
-
-        public async Task<(decimal, decimal, decimal)> EstimateMaxAmountToSendAsync(string address)
-        {
-            return await App.Account
-               .EstimateMaxAmountToSendAsync(Currency.Name, address, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
-               .ConfigureAwait(false);
-        }
-
-        public async Task<decimal?> EstimateFeeAsync(string toAddress, decimal amount)
-        {
-            return await App.Account
-                .EstimateFeeAsync(CurrencyCode, toAddress, amount, Atomex.Blockchain.Abstract.BlockchainTransactionType.Output)
-                .ConfigureAwait(false);
-        }
-
-        public async Task<Error> SendAsync(string toAddress, decimal amount, decimal fee, decimal feePrice)
-        {
-            return await App.Account.SendAsync(CurrencyCode, toAddress, amount, fee, feePrice);
         }
     }
 }

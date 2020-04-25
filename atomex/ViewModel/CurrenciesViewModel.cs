@@ -72,7 +72,7 @@ namespace atomex.ViewModel
             TotalCost = 0;
             foreach (var c in CurrencyViewModels)
             {
-                var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, "USD");
+                var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
                 c.Price = quote.Bid;
                 c.Cost = c.AvailableAmount * quote.Bid;
                 TotalCost += c.Cost;
