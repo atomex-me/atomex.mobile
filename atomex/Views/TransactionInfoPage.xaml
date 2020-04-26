@@ -68,11 +68,11 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              FontSize="20"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -87,11 +87,11 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="20"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -106,11 +106,11 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="20"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -119,15 +119,17 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="SwapPayment">
+                                            <Setter Property="TextColor"
+                                                    Value="Red"/>
                                             <Setter Property="FormattedText">
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="20"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -136,15 +138,17 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRedeem">
+                                            <Setter Property="TextColor"
+                                                    Value="Green"/>
                                             <Setter Property="FormattedText">
                                                 <Setter.Value>
                                                     <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="20"
+                                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -153,15 +157,17 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRefund">
+                                            <Setter Property="TextColor"
+                                                    Value="Green"/>
                                             <Setter Property="FormattedText">
                                                 <Setter.Value>
                                                     <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="20"
+                                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                                              FontSize="16"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="16"
+                                                              FontSize="12"
                                                               FontFamily="{DynamicResource RegularFont}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
@@ -240,13 +246,6 @@
                                                                        VerticalOptions="CenterAndExpand"
                                                                        Source="Copy.svg"/>
                                 </StackLayout>
-                                <!--<ImageButton Source="CopyIcon"
-                                             HeightRequest="24"
-                                             WidthRequest="24"
-                                             HorizontalOptions="EndAndExpand"
-                                             Margin="20,0"
-                                             VerticalOptions="CenterAndExpand"
-                                             Clicked="OnCopyButtonClicked"/>-->
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>

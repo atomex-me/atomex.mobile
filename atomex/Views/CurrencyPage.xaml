@@ -192,19 +192,19 @@
                                                  Binding="{Binding Type}"
                                                  Value="SwapPayment">
                                         <Setter Property="Text"
-                                                Value="Swap"/>
+                                                Value="Swap payment"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRedeem">
                                         <Setter Property="Text"
-                                                Value="Swap"/>
+                                                Value="Swap redeem"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRefund">
                                         <Setter Property="Text"
-                                                Value="Swap"/>
+                                                Value="Swap refund"/>
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
@@ -274,6 +274,8 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="SwapPayment">
+                                        <Setter Property="TextColor"
+                                                Value="Red"/>
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
@@ -291,10 +293,12 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRedeem">
+                                        <Setter Property="TextColor"
+                                                Value="Green"/>
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
                                                           FontFamily="{DynamicResource RegularFont}"
                                                           FontSize="16"/>
                                                     <Span Text=" "/>
@@ -308,10 +312,12 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRefund">
+                                        <Setter Property="TextColor"
+                                                Value="Green"/>
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
                                                           FontFamily="{DynamicResource RegularFont}"
                                                           FontSize="16"/>
                                                     <Span Text=" "/>
@@ -374,7 +380,8 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Description, FallbackValue='Unknown'}"/>
+                                                    <Span Text="To: "/>
+                                                    <Span Text="{Binding To, FallbackValue='Unknown'}"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -385,7 +392,8 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Description, FallbackValue='Unknown'}"/>
+                                                    <Span Text="From: "/>
+                                                    <Span Text="{Binding From, FallbackValue='Unknown'}"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
@@ -396,7 +404,8 @@
                                         <Setter Property="FormattedText">
                                             <Setter.Value>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Description, FallbackValue='Unknown'}"/>
+                                                    <Span Text="From: "/>
+                                                    <Span Text="{Binding From, FallbackValue='Unknown'}"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>
