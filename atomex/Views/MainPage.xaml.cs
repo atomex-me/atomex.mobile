@@ -2,8 +2,6 @@
 using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.CustomElements;
-using Atomex;
-using System;
 using atomex.Views.CreateSwap;
 
 namespace atomex
@@ -55,20 +53,14 @@ namespace atomex
 
         }
 
-        public void ShowConversionPage(CurrencyViewModel currency = null)
+        public void ConvertCurrency(string currencyCode)
         {
             this.CurrentPage = navigationConversionPage;
-
             var conversionViewModel = navigationConversionPage.RootPage.BindingContext as ConversionViewModel;
-            Console.WriteLine(conversionViewModel);
             if (conversionViewModel != null)
             {
                 navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
-
-                Console.WriteLine(currency);
-                Console.WriteLine(conversionViewModel);
-                Console.WriteLine(conversionViewModel.FromCurrencyViewModel);
-                conversionViewModel.FromCurrencyViewModel = currency;
+                conversionViewModel.SetFromCurrency(currencyCode);
             }
         }
     }

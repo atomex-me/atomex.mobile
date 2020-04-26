@@ -45,7 +45,7 @@ namespace atomex
         {
             if (_currencyViewModel != null)
             {
-                _navigationService.ShowConversionPage(_currencyViewModel);
+                _navigationService.ConvertCurrency(_currencyViewModel.CurrencyCode);
             }
         }
         async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)

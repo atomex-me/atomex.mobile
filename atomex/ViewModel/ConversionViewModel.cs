@@ -285,6 +285,12 @@ namespace atomex.ViewModel
             }
         }
 
+        public void SetFromCurrency(string currencyCode)
+        {
+            FromCurrencyViewModel = _currencyViewModels.
+                Where(c => c.CurrencyCode == currencyCode).First();
+        }
+
         public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
 
         public ConversionViewModel(IAtomexApp app)

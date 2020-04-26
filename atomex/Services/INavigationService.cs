@@ -1,9 +1,7 @@
-﻿using atomex.ViewModel;
-
-namespace atomex
+﻿namespace atomex
 {
     public interface INavigationService
     {
-        void ShowConversionPage(CurrencyViewModel currency);
+        void ConvertCurrency(string currencyCode);
     }
 }
