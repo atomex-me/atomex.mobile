@@ -7,25 +7,26 @@ namespace atomex
 {
     public partial class ReceivePage : ContentPage
     {
-        private CurrencyViewModel _currency;    
+
+        private ReceiveViewModel _receiveViewModel;
 
         public ReceivePage()
         {
             InitializeComponent();
         }
 
-        public ReceivePage(CurrencyViewModel currency)
+        public ReceivePage(CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
-            _currency = currency;
-            BindingContext = currency;
+            _receiveViewModel = new ReceiveViewModel(currencyViewModel);
+            BindingContext = _receiveViewModel;
         }
 
         async void OnCopyButtonClicked(object sender, EventArgs args) {
-            if (_currency != null)
+            if (_receiveViewModel.SelectedAddress != null)
             {
-                await Clipboard.SetTextAsync(_currency.FreeExternalAddress);
-                await DisplayAlert("Address copied", _currency.FreeExternalAddress, "Ok");
+                await Clipboard.SetTextAsync(_receiveViewModel.SelectedAddress.Address);
+                await DisplayAlert("Address copied", _receiveViewModel.SelectedAddress.Address, "Ok");
             }
             else
             {
@@ -37,8 +38,8 @@ namespace atomex
         {
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = "My public address to receive " + _currency.CurrencyCode + ":\r\n" + _currency.FreeExternalAddress,
-                Uri = _currency.FreeExternalAddress,
+                Text = "My public address to receive " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
+                Uri = _receiveViewModel.SelectedAddress.Address,
                 Title = "Address sharing"
             });
         }
