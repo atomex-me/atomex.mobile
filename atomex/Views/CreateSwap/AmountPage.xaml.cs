@@ -20,22 +20,19 @@ namespace atomex.Views.CreateSwap
             Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
             BindingContext = _conversionViewModel;
         }
-        private void AmountEntryFocused(object sender, FocusEventArgs e)
+        private void AmountEntryFocused(object sender, FocusEventArgs args)
         {
             InvalidAmountFrame.IsVisible = false;
-            AmountFrame.HasShadow = true;
-        }
-
-        private void AmountEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            AmountFrame.HasShadow = false;
-            if (String.IsNullOrWhiteSpace(Amount.Text))
+            AmountFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
             {
-                _conversionViewModel.Amount = 0;
-                return;
+                if (String.IsNullOrWhiteSpace(Amount.Text))
+                {
+                    _conversionViewModel.Amount = 0;
+                    return;
+                }
+                _conversionViewModel.Amount = Convert.ToDecimal(Amount.Text);
             }
-
-            _conversionViewModel.Amount = Convert.ToDecimal(Amount.Text);
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -46,6 +43,7 @@ namespace atomex.Views.CreateSwap
                 {
                     AmountHint.IsVisible = true;
                     AmountHint.Text = Amount.Placeholder;
+                    Amount.VerticalTextAlignment = TextAlignment.Start;
                 }
                 _conversionViewModel.Amount = decimal.Parse(args.NewTextValue);
             }
@@ -53,6 +51,7 @@ namespace atomex.Views.CreateSwap
             {
                 AmountHint.IsVisible = false;
                 _conversionViewModel.Amount = 0;
+                Amount.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 

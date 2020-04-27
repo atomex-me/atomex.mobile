@@ -73,11 +73,13 @@ namespace atomex
                 {
                     AmountHint.IsVisible = true;
                     AmountHint.Text = Amount.Placeholder + ", " + _sendViewModel.CurrencyCode;
+                    Amount.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
                 AmountHint.IsVisible = false;
+                Amount.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 
@@ -89,11 +91,13 @@ namespace atomex
                 {
                     AddressHint.IsVisible = true;
                     AddressHint.Text = Address.Placeholder;
+                    Address.VerticalTextAlignment = TextAlignment.Start;
                 }
             }
             else
             {
                 AddressHint.IsVisible = false;
+                Address.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 
@@ -107,12 +111,12 @@ namespace atomex
         private async void OnScanButtonClicked(object sender, EventArgs args)
         {
 
-            var optionsPage = new ScanningQrPage(selected =>
+            var scanningQrPage = new ScanningQrPage(selected =>
             {
                 Address.Text = selected;
             });
 
-            await Navigation.PushAsync(optionsPage);
+            await Navigation.PushAsync(scanningQrPage);
         }
 
         private async void OnPasteButtonClicked(object sender, EventArgs args)
