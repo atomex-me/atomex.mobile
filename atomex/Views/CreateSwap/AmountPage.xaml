@@ -7,7 +7,7 @@
              Title="Create swap - step 2"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="20,0">
             <Label Text="Enter amount:"
                    HorizontalTextAlignment="Center"
                    Padding="20,30,20,10"
@@ -77,9 +77,9 @@
                                   FontFamily="{DynamicResource BoldFont}"
                                   FontSize="18"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding FromCurrency.CurrencyCode}"
+                            <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
                                   FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="18"/>
+                                  FontSize="14"/>
                         </FormattedString>
                     </Label.FormattedText>
             </Label>
@@ -109,7 +109,8 @@
                         <FormattedString>
                             <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}" />
+                            <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                                  FontSize="14"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -138,14 +139,15 @@
                         <FormattedString>
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}" />
+                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                                  FontSize="14"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Label Grid.Row="2"
                        Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
-                       FontSize="12"
-                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">
@@ -159,8 +161,8 @@
                 <Label Grid.Row="2"
                        Grid.Column="2"
                        Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
-                       FontSize="12"
-                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start">
@@ -191,7 +193,11 @@
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                              FontFamily="{DynamicResource BoldFont}"/>
+                              FontFamily="{DynamicResource BoldFont}"
+                              FontSize="14"/>
+                        <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
+                              FontSize="14"
+                              TextColor="Gray"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -204,7 +210,11 @@
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
-                              FontFamily="{DynamicResource BoldFont}"/>
+                              FontFamily="{DynamicResource BoldFont}"
+                              FontSize="14"/>
+                        <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
+                              FontSize="14"
+                              TextColor="Gray"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

@@ -17,18 +17,55 @@
                            RowHeight="70">
                     <TableRoot>
                         <TableSection Title="Confirm transaction">
-                            <TextCell x:Name="AddressTo"
-                                      Text="To"
-                                      Detail="{Binding To}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell x:Name="Amount"
-                                      Text="Amount"
-                                      Detail="{Binding Amount}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell x:Name="Fee"
-                                      Text="Fee"
-                                      Detail="{Binding Fee}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <ViewCell>
+                                <StackLayout Padding="20,10">
+                                    <Label Text="To"
+                                           FontSize="16"
+                                           FontFamily="{DynamicResource RegularFont}"/>
+                                    <Label TextColor="{DynamicResource HintTextColor}"
+                                           Text="{Binding To}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Padding="20,10">
+                                    <Label Text="Amount"
+                                           FontSize="16"
+                                           FontFamily="{DynamicResource RegularFont}"/>
+                                    <Label TextColor="{DynamicResource HintTextColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Amount}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                                      FontSize="14"/>
+                                                <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
+                                                      TextColor="Gray"
+                                                      FontSize="14"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Padding="20,10">
+                                    <Label Text="Fee"
+                                           FontSize="16"
+                                           FontFamily="{DynamicResource RegularFont}"/>
+                                    <Label TextColor="{DynamicResource HintTextColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Fee}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                                      FontSize="14"/>
+                                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                                      TextColor="Gray"
+                                                      FontSize="14"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </ViewCell>
                             <ViewCell>
                                 <StackLayout Padding="20,10">
                                     <Button Text="SEND"
