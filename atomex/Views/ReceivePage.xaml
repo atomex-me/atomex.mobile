@@ -18,11 +18,14 @@
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame HasShadow="False"
+                       x:Name="AddressFrame"
                        HorizontalOptions="FillAndExpand"
                        Padding="0">
                     <Picker ItemsSource="{Binding FromAddressList}"
                             ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                            SelectedItem="{Binding SelectedAddress}"/>
+                            SelectedItem="{Binding SelectedAddress}"
+                            Focused="OnPickerFocused"
+                            Unfocused="OnPickerFocused"/>
                 </Frame>
             </StackLayout>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">

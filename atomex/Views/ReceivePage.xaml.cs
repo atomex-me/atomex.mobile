@@ -22,6 +22,11 @@ namespace atomex
             BindingContext = _receiveViewModel;
         }
 
+        private void OnPickerFocused(object sender, FocusEventArgs args)
+        {
+            AddressFrame.HasShadow = args.IsFocused;
+        }
+
         async void OnCopyButtonClicked(object sender, EventArgs args) {
             if (_receiveViewModel.SelectedAddress != null)
             {
