@@ -179,34 +179,36 @@
                        x:Name="FeeFrame"
                        BorderColor="LightGray"
                        HorizontalOptions="FillAndExpand">
-                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
-                                          x:Name="Fee"
-                                          Keyboard="Numeric"
-                                          Focused="OnFeeEntryFocused"
-                                          Unfocused="OnFeeEntryFocused">
-                        <controls:CustomEntry.Triggers>
-                            <DataTrigger TargetType="controls:CustomEntry"
-                                         Binding="{Binding UseDefaultFee}"
-                                         Value="True">
-                                <Setter Property="BackgroundColor"
-                                        Value="LightGray"/>
-                                <Setter Property="IsReadOnly"
-                                        Value="True"/>
-                                <Setter Property="TextColor"
-                                        Value="Gray"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="controls:CustomEntry"
-                                         Binding="{Binding UseDefaultFee}"
-                                         Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{DynamicResource MainBackgroundColor}"/>
-                                <Setter Property="IsReadOnly"
-                                        Value="False"/>
-                                <Setter Property="TextColor"
-                                        Value="Black"/>
-                            </DataTrigger>
-                        </controls:CustomEntry.Triggers>
-                    </controls:CustomEntry>
+                    <StackLayout Orientation="Horizontal">
+                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                              x:Name="Fee"
+                                              Keyboard="Numeric"
+                                              Focused="OnFeeEntryFocused"
+                                              Unfocused="OnFeeEntryFocused">
+                            <controls:CustomEntry.Triggers>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="True">
+                                    <Setter Property="IsReadOnly"
+                                            Value="True"/>
+                                    <Setter Property="TextColor"
+                                            Value="Gray"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="controls:CustomEntry"
+                                             Binding="{Binding UseDefaultFee}"
+                                             Value="False">
+                                    <Setter Property="IsReadOnly"
+                                            Value="False"/>
+                                    <Setter Property="TextColor"
+                                            Value="Black"/>
+                                </DataTrigger>
+                            </controls:CustomEntry.Triggers>
+                        </controls:CustomEntry>
+                        <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
+                               TextColor="Gray"
+                               VerticalTextAlignment="Center"
+                               Padding="20,0"/>
+                    </StackLayout>
                 </Frame>
             </StackLayout>
             <StackLayout Orientation="Horizontal"
