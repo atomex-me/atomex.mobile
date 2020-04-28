@@ -55,11 +55,11 @@ namespace atomex
                         entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                         {
                             Label = nonzeroWallets[i].CurrencyCode,
-                            ValueLabel = string.Format("{0:0.#####}", nonzeroWallets[i].AvailableAmount),
+                            ValueLabel = string.Format("{0:0.#} %", nonzeroWallets[i].PortfolioPercent),
                             Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
                         };
                     }
-                    portfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 32, FontFamily = "Roboto" };
+                    portfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 26, FontFamily = "Roboto-Thin" };
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using atomex.Helpers;
 using Microcharts;
@@ -18,6 +19,7 @@ namespace atomex.CustomElements
         public float HoleRadius { get; set; } = 0;
         public string FontFamily { get; set; }
         public SKColor LabelColor { get; set; } = SKColor.Parse("#000000");
+
 
         #endregion
 
@@ -139,7 +141,7 @@ namespace atomex.CustomElements
                         captionX -= captionMargin;
                     }
 
-                    //this.DrawCaptionLabels(canvas, entry.Label, entry.TextColor, entry.ValueLabel, entry.Color, this.LabelTextSize, new SKPoint(captionX, y + (this.LabelTextSize / 2)), isLeft ? SKTextAlign.Left : SKTextAlign.Right);
+                    this.DrawCaptionLabels(canvas, entry.Label, entry.TextColor, entry.ValueLabel, entry.Color, this.LabelTextSize, new SKPoint(captionX, y + (this.LabelTextSize / 2)), isLeft ? SKTextAlign.Left : SKTextAlign.Right);
                 }
             }
         }
@@ -148,6 +150,9 @@ namespace atomex.CustomElements
         {
             var hasLabel = !string.IsNullOrEmpty(label);
             var hasValueLabel = !string.IsNullOrEmpty(value);
+
+            var folderPath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.Combine(folderPath, FontFamily + ".ttf");
 
             if (hasLabel || hasValueLabel)
             {
@@ -165,7 +170,8 @@ namespace atomex.CustomElements
                         Color = LabelColor,
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
-                        Typeface = SKTypeface.FromFamilyName(FontFamily)
+                        //Typeface = SKTypeface.FromFamilyName(FontFamily)
+                        Typeface = SKTypeface.FromFile(filePath)
                     })
                     {
                         var bounds = new SKRect();
@@ -189,7 +195,8 @@ namespace atomex.CustomElements
                         Color = LabelColor,
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
-                        Typeface = SKTypeface.FromFamilyName(FontFamily)
+                        //Typeface = SKTypeface.FromFamilyName(FontFamily)
+                        Typeface = SKTypeface.FromFile(filePath)
                     })
                     {
                         var bounds = new SKRect();
