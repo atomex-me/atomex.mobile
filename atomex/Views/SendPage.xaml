@@ -167,7 +167,7 @@
                            HorizontalOptions="FillAndExpand">
                         <controls:CustomEntry Style="{DynamicResource EntryStyle}"
                                               Keyboard="Numeric"
-                                              Text="{Binding FeePriceString}">
+                                              Text="{Binding FeePriceString, StringFormat='{0} GWEI'}">
                             <controls:CustomEntry.Triggers>
                                 <DataTrigger TargetType="controls:CustomEntry"
                                              Binding="{Binding UseDefaultFee}"
@@ -207,7 +207,7 @@
                            HorizontalOptions="FillAndExpand">
                         <controls:CustomEntry Style="{DynamicResource EntryStyle}"
                                               Keyboard="Numeric"
-                                              Text="{Binding GasString}">
+                                              Text="{Binding GasString, StringFormat='{0} GAS'}">
                             <controls:CustomEntry.Triggers>
                                 <DataTrigger TargetType="controls:CustomEntry"
                                              Binding="{Binding UseDefaultFee}"

@@ -14,11 +14,12 @@
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
                 <TableView Intent="Form"
-                           RowHeight="70">
+                           RowHeight="80">
                     <TableRoot>
                         <TableSection Title="Confirm transaction">
                             <ViewCell>
-                                <StackLayout Padding="20,10">
+                                <StackLayout Padding="20,10"
+                                             VerticalOptions="CenterAndExpand">
                                     <Label Text="To"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
@@ -27,7 +28,8 @@
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10">
+                                <StackLayout Padding="20,10"
+                                             VerticalOptions="CenterAndExpand">
                                     <Label Text="Amount"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
@@ -47,16 +49,33 @@
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10">
+                                <StackLayout Padding="20,10"
+                                             VerticalOptions="CenterAndExpand">
                                     <Label Text="Fee"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
-                                    <Label TextColor="{DynamicResource HintTextColor}">
+                                    <Label TextColor="{DynamicResource HintTextColor}"
+                                           x:Name="FeeValue">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Fee}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
+                                                      FontSize="14"/>
+                                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                                      TextColor="Gray"
+                                                      FontSize="14"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label TextColor="{DynamicResource HintTextColor}"
+                                           x:Name="EthereumFeeValue"
+                                           IsVisible="False">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TotalFeeString}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
                                                       FontSize="14"/>
                                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                                       TextColor="Gray"
@@ -67,7 +86,8 @@
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10">
+                                <StackLayout Padding="20,10"
+                                    VerticalOptions="CenterAndExpand">
                                     <Button Text="SEND"
                                             x:Name="SendButton"
                                             Style="{DynamicResource MainButtonStyle}"
