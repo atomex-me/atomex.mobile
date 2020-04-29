@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using atomex.Common;
-using Xamarin.Forms;
+using atomex.ViewModel;
 
 namespace atomex
 {
-    public class StartViewModel : ContentPage
+    public class StartViewModel : BaseViewModel
     {
         private bool _hasWallets;
         public bool HasWallets

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using atomex.Common;
 using atomex.Models;
 using atomex.ViewModel;
 using Atomex;
@@ -69,6 +70,8 @@ namespace atomex
             get => _walletName;
             set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
         }
+
+        public string PathToWallet { get; set; }
 
         private CustomWordlist _language;
         public CustomWordlist Language
@@ -183,11 +186,13 @@ namespace atomex
                 return "Invalid wallet name";
             }
 
-            //var pathToWallet = $"{WalletInfo.CurrentWalletDirectory}/{WalletName}/{WalletInfo.DefaultWalletFileName}";
-
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var library = Path.Combine(documents, "..", "Library");
-            var pathToWallet = Path.Combine(library, $"{WalletName}.wallet");
+            var walletsFolder = Path.Combine(documents, "..", "Library", WalletInfo.DefaultWalletsDirectory);
+            if (!Directory.Exists(walletsFolder))
+            {
+                Directory.CreateDirectory(walletsFolder);
+            }
+            var pathToWallet = Path.Combine(walletsFolder, $"{WalletName}", WalletInfo.DefaultWalletFileName);
 
             try
             {
@@ -202,6 +207,8 @@ namespace atomex
             {
                 return "Wallet with the same name already exists";
             }
+
+            PathToWallet = pathToWallet;
 
             return null;
 
@@ -310,7 +317,10 @@ namespace atomex
                 mnemonic: Mnemonic,
                 wordList: Language.Wordlist,
                 passPhrase: DerivedPassword,
-                network: Network);
+                network: Network)
+            {
+                PathToWallet = PathToWallet
+            };
         }
 
         public async void ConnectToWallet()
@@ -327,6 +337,7 @@ namespace atomex
                     password: StoragePassword,
                     currenciesProvider: App.CurrenciesProvider,
                     symbolsProvider: App.SymbolsProvider);
+                // todo: connect to wallet 
             }
             catch (Exception e)
             {

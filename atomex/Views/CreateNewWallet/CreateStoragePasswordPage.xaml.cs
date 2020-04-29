@@ -76,7 +76,7 @@ namespace atomex.Views.CreateNewWallet
             var result = _createNewWalletViewModel.CheckStoragePassword();
             if (result == null)
             {
-                _createNewWalletViewModel.CreateHdWallet();
+                _createNewWalletViewModel.ConnectToWallet();
             }
             else
             {

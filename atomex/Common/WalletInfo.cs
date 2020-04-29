@@ -9,7 +9,7 @@ namespace atomex.Common
 {
     public class WalletInfo
     {
-        private const string DefaultWalletsDirectory = "wallets";
+        public const string DefaultWalletsDirectory = "wallets";
         public const string DefaultWalletFileName = "atomex.wallet";
 
         public string Name { get; set; }
@@ -17,18 +17,22 @@ namespace atomex.Common
         public Network Network { get; set; }
         public string Description => Network == Network.MainNet
             ? Name
-            : $"[test] {Name}";
+            : $"{Name} [TEST]";
+
+
 
         public static IEnumerable<WalletInfo> AvailableWallets()
         {
             var result = new List<WalletInfo>();
 
-            if (!Directory.Exists(DefaultWalletsDirectory))
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var walletsFolder = System.IO.Path.Combine(documents, "..", "Library", DefaultWalletsDirectory);
+            if (!Directory.Exists(walletsFolder))
+            {
                 return result;
+            }
 
-            var walletsDirectory = new DirectoryInfo(
-                $"{AppDomain.CurrentDomain.BaseDirectory}{DefaultWalletsDirectory}");
-
+            var walletsDirectory = new DirectoryInfo(walletsFolder);
             foreach (var directory in walletsDirectory.GetDirectories())
             {
                 var walletFile = directory
@@ -66,9 +70,6 @@ namespace atomex.Common
 
             return result;
         }
-
-        public static string CurrentWalletDirectory =>
-            $"{AppDomain.CurrentDomain.BaseDirectory}{DefaultWalletsDirectory}";
     }
 }
 

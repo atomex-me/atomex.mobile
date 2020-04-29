@@ -75,6 +75,7 @@ namespace atomex.Views.CreateNewWallet
             var result = _createNewWalletViewModel.CheckDerivedPassword();
             if (result == null)
             {
+                _createNewWalletViewModel.CreateHdWallet();
                 await Navigation.PushAsync(new CreateStoragePasswordPage(_createNewWalletViewModel));
             }
             else
