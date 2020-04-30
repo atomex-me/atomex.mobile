@@ -1,4 +1,5 @@
 ﻿using Atomex.Wallet;
+using Atomex.Wallet.Abstract;
 
 namespace atomex.ViewModel
 {
@@ -7,7 +8,7 @@ namespace atomex.ViewModel
 
         public UserSettings Settings { get; }
 
-        private Account Account;
+        private IAccount Account;
 
         public int PeriodOfInactivityInMin
         {
@@ -65,7 +66,7 @@ namespace atomex.ViewModel
             }
         }
 
-        public SettingsViewModel(Account account)
+        public SettingsViewModel(IAccount account)
         {
             Account = account;
             Settings = account.UserSettings;

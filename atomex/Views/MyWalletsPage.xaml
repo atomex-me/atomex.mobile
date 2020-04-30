@@ -10,39 +10,95 @@
             <Label Text="PLEASE SELECT YOUR WALLET"
                    TextColor="{DynamicResource MainTextColor}"
                    FontFamily="{DynamicResource MediumFont}"
-                   Padding="20,40"
+                   Padding="20,30,20,10"
                    FontSize="22"
                    HorizontalTextAlignment="Center"/>
-            <Frame Style="{DynamicResource MainNetWalletFrameStyle}">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnWalletTapped"/>
-                </Frame.GestureRecognizers>
-                <StackLayout Orientation="Horizontal">
-                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
-                                                      HeightRequest="48"
-                                                      Margin="10,0"
-                                                      Source="Wallet__white.svg"/>
-                    <Label Text="ATOMEX"
-                           Style="{DynamicResource MainNetWalletlButtonTextStyle}"/>
-                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-2__white.svg"
-                                                      HeightRequest="12"/>
-                </StackLayout>
-            </Frame>
-            <Frame Style="{DynamicResource TestNetWalletFrameStyle}">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnWalletTapped"/>
-                </Frame.GestureRecognizers>
-                <StackLayout Orientation="Horizontal">
-                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
-                                                      HeightRequest="48"
-                                                      Margin="10,0"
-                                                      Source="Wallet__blue.svg"/>
-                    <Label Text="STARIK"
-                           Style="{DynamicResource TestNetWalletlButtonTextStyle}"/>
-                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-2__blue.svg"
-                                                      HeightRequest="12"/>
-                </StackLayout>
-            </Frame>
+            <ListView ItemsSource="{Binding Wallets}"
+                      ItemTapped="OnWalletTapped"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      Footer="">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame>
+                                <Frame.Triggers>
+                                    <DataTrigger TargetType="Frame"
+                                                 Binding="{Binding Network}"
+                                                 Value="MainNet">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource MainNetWalletFrameStyle}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Frame"
+                                                 Binding="{Binding Network}"
+                                                 Value="TestNet">
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource TestNetWalletFrameStyle}"/>
+                                    </DataTrigger>
+                                </Frame.Triggers>
+                                <StackLayout Orientation="Horizontal">
+                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
+                                                                      HeightRequest="48"
+                                                                      Margin="10,0">
+                                        <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                         Binding="{Binding Network}"
+                                                         Value="MainNet">
+                                                <Setter Property="Source"
+                                                        Value="Wallet__white.svg"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                         Binding="{Binding Network}"
+                                                         Value="TestNet">
+                                                <Setter Property="Source"
+                                                        Value="Wallet__blue.svg"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                         Binding="{Binding Network}"
+                                                         Value="TestNet">
+                                                <Setter Property="Source"
+                                                        Value="Wallet__blue.svg"/>
+                                            </DataTrigger> 
+                                        </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                    <Label Text="{Binding Description}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Network}"
+                                                         Value="MainNet">
+                                                <Setter Property="Style"
+                                                        Value="{DynamicResource MainNetWalletlButtonTextStyle}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Network}"
+                                                         Value="TestNet">
+                                                <Setter Property="Style"
+                                                        Value="{DynamicResource TestNetWalletlButtonTextStyle}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <ffimageloadingsvg:SvgCachedImage HeightRequest="12">
+                                        <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                         Binding="{Binding Network}"
+                                                         Value="MainNet">
+                                                <Setter Property="Source"
+                                                        Value="Right-arrow-2__white.svg"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                                         Binding="{Binding Network}"
+                                                         Value="MainNet">
+                                                <Setter Property="Source"
+                                                        Value="Right-arrow-2__blue.svg"/>
+                                            </DataTrigger>
+                                        </ffimageloadingsvg:SvgCachedImage.Triggers>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

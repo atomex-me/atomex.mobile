@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using atomex.Common;
 using atomex.Models;
 using atomex.ViewModel;
 using Atomex;
 using Atomex.Common;
-using Atomex.Core;
 using Atomex.Cryptography;
 using Atomex.Wallet;
 using NBitcoin;
-using Nethereum.HdWallet;
 using Serilog;
 
 namespace atomex
@@ -20,7 +20,7 @@ namespace atomex
     public class CreateNewWalletViewModel : BaseViewModel
     {
 
-        private IAtomexApp App;
+        public IAtomexApp AtomexApp { get; private set; }
 
         public enum Action
         {
@@ -161,12 +161,9 @@ namespace atomex
 
         private HdWallet Wallet { get; set; }
 
-        public CreateNewWalletViewModel()
-        {}
-
         public CreateNewWalletViewModel(IAtomexApp app)
         {
-            App = app;
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
             Network = Atomex.Core.Network.MainNet;
             Language = Languages.FirstOrDefault();
@@ -323,7 +320,7 @@ namespace atomex
             };
         }
 
-        public async void ConnectToWallet()
+        public async Task<Account> ConnectToWallet()
         {
             try
             {
@@ -332,17 +329,25 @@ namespace atomex
 
                 Wallet.SaveToFile(Wallet.PathToWallet, StoragePassword);
 
-                var account = new Account(
-                    wallet: Wallet,
-                    password: StoragePassword,
-                    currenciesProvider: App.CurrenciesProvider,
-                    symbolsProvider: App.SymbolsProvider);
-                // todo: connect to wallet 
+                try
+                {
+                    var account = new Account(
+                        wallet: Wallet,
+                        password: StoragePassword,
+                        currenciesProvider: AtomexApp.CurrenciesProvider,
+                        symbolsProvider: AtomexApp.SymbolsProvider);
+                    return account;
+                }
+                catch (CryptographicException e)
+                {
+                    Log.Error("Create wallet error");
+                    return null;
+                }
             }
             catch (Exception e)
             {
-                // todo: warning
                 Log.Error(e, "Create wallet error");
+                return null;
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using atomex.ViewModel;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -71,12 +71,20 @@ namespace atomex.Views.CreateNewWallet
             _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
         }
 
-        private void OnCreateButtonClicked(object sender, EventArgs args)
+        private async void OnCreateButtonClicked(object sender, EventArgs args)
         {
             var result = _createNewWalletViewModel.CheckStoragePassword();
             if (result == null)
             {
-                _createNewWalletViewModel.ConnectToWallet();
+                var account = await _createNewWalletViewModel.ConnectToWallet();
+                if (account != null)
+                {
+                    Application.Current.MainPage = new MainPage(new MainViewModel(_createNewWalletViewModel.AtomexApp, account));
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Invalid password", "Ok");
+                }
             }
             else
             {

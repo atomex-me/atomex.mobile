@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.ViewModel;
 using Xamarin.Forms;
 
 namespace atomex
@@ -6,16 +7,17 @@ namespace atomex
     public partial class UnlockWalletPage : ContentPage
     {
 
-        private UnlockViewModel _loginViewModel;
+        private UnlockViewModel _unlockViewModel;
         public UnlockWalletPage()
         {
             InitializeComponent();
         }
 
-        public UnlockWalletPage(UnlockViewModel loginViewModel)
+        public UnlockWalletPage(UnlockViewModel unlockViewModel)
         {
             InitializeComponent();
-            _loginViewModel = loginViewModel;
+            _unlockViewModel = unlockViewModel;
+            BindingContext = unlockViewModel;
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
@@ -40,14 +42,25 @@ namespace atomex
                 PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
-            _loginViewModel.SetPassword(args.NewTextValue);
+            _unlockViewModel.SetPassword(args.NewTextValue);
         }
 
-        private void OnLoginButtonClicked(object sender, EventArgs args)
+        private async void OnUnlockButtonClicked(object sender, EventArgs args)
         {
             Content.Opacity = 0.3f;
             Loader.IsRunning = true;
-            Application.Current.MainPage = new MainPage();
+
+            var account = _unlockViewModel.Unlock();
+            if (account != null)
+            {
+                Application.Current.MainPage = new MainPage(new MainViewModel(_unlockViewModel.AtomexApp, account));
+            }
+            else
+            {
+                Content.Opacity = 1f;
+                Loader.IsRunning = false;
+                await DisplayAlert("Error", "Invalid password", "Ok");
+            }
         }
     }
 }

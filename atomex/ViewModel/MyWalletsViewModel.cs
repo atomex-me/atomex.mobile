@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using atomex.Common;
 using atomex.ViewModel;
+using Atomex;
 
 namespace atomex
 {
     public class MyWalletsViewModel : BaseViewModel
     {
-        public IEnumerable<WalletInfo> Wallets { get; set; }
+        public IAtomexApp AtomexApp { get; private set; }
 
-        public MyWalletsViewModel()
+        public List<WalletInfo> Wallets { get; set; }
+
+        public MyWalletsViewModel(IAtomexApp app)
         {
-            Wallets = WalletInfo.AvailableWallets();
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            Wallets = WalletInfo.AvailableWallets().ToList();
         }
     }
 }

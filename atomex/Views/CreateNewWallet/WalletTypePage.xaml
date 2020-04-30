@@ -18,7 +18,7 @@
                     SelectedItem="{Binding Network}"
                     HeightRequest="70"
                     Focused="OnPickerFocused"
-                    Unfocused="OnPickerUnfocused"/>
+                    Unfocused="OnPickerFocused"/>
         </Frame>
         <Button Text="Next"
                 Margin="0,20"

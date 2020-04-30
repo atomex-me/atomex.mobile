@@ -13,12 +13,28 @@
                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
                    Margin="0"/>
         </StackLayout>
-        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-140}" 
-                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=+130}">
+        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
+                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=+130}"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}">
             <Button Text="MY WALLETS"
-                    WidthRequest="280"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="ShowMyWalletsButtonClicked"/>
+                    IsEnabled="{Binding HasWallets}"
+                    Clicked="ShowMyWalletsButtonClicked">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding HasWallets}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding HasWallets}"
+                                 Value="False">
+                        <Setter Property="Opacity"
+                                Value="0.7"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
             <Button Text="CREATE NEW WALLET"
                     Style="{DynamicResource AdditionalButtonStyle}"
                     Clicked="CreateNewWalletButtonClicked"/>

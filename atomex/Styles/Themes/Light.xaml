@@ -150,7 +150,7 @@
     <!-- My Wallets Page -->
     <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="15"/>
-        <Setter Property="Margin" Value="20,0"/>
+        <Setter Property="Margin" Value="20,5"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="40"/>
@@ -159,7 +159,7 @@
     </Style>
     <Style x:Key="MainNetWalletFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="15"/>
-        <Setter Property="Margin" Value="20,0"/>
+        <Setter Property="Margin" Value="20,5"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="40"/>

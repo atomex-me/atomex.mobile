@@ -21,14 +21,9 @@ namespace atomex.Views.CreateNewWallet
             BindingContext = createNewWalletViewModel;
         }
 
-        private void OnPickerFocused(object sender, EventArgs args)
+        private void OnPickerFocused(object sender, FocusEventArgs args)
         {
-            Frame.HasShadow = true;
-        }
-
-        private void OnPickerUnfocused(object sender, EventArgs args)
-        {
-            Frame.HasShadow = false;
+            Frame.HasShadow = args.IsFocused;
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

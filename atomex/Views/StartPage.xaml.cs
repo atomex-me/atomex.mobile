@@ -8,20 +8,19 @@ namespace atomex
     public partial class StartPage : ContentPage
     {
 
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-        private UnlockViewModel _unlockViewModel;
         private StartViewModel _startViewModel;
+        private CreateNewWalletViewModel _createNewWalletViewModel;
 
-        public StartPage(IAtomexApp app)
+        public StartPage(StartViewModel startViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = new CreateNewWalletViewModel(app);
-            _unlockViewModel = new UnlockViewModel();
-            _startViewModel = new StartViewModel();
+            _startViewModel = startViewModel;
+            BindingContext = startViewModel;
+            _createNewWalletViewModel = new CreateNewWalletViewModel(startViewModel.AtomexApp);
         }
         private async void ShowMyWalletsButtonClicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new MyWalletsPage(_unlockViewModel));
+            await Navigation.PushAsync(new MyWalletsPage(new MyWalletsViewModel(_startViewModel.AtomexApp)));
         }
         private async void CreateNewWalletButtonClicked(object sender, EventArgs args)
         {

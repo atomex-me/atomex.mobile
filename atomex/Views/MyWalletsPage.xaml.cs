@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿using atomex.Common;
 using Xamarin.Forms;
 
 namespace atomex
@@ -7,26 +6,26 @@ namespace atomex
     public partial class MyWalletsPage : ContentPage
     {
 
-        private UnlockViewModel _unlockViewModel;
+        private MyWalletsViewModel _myWalletsViewModel;
 
         public MyWalletsPage()
         {
             InitializeComponent();
         }
 
-        public MyWalletsPage(UnlockViewModel unlockViewModel)
+        public MyWalletsPage(MyWalletsViewModel myWalletsViewModel)
         {
             InitializeComponent();
-            _unlockViewModel = unlockViewModel;
-            //BindingContext = Wallets;
+            _myWalletsViewModel = myWalletsViewModel;
+            BindingContext = myWalletsViewModel;
         }
 
-        private async void OnWalletTapped(object sender, EventArgs args)
+        private async void OnWalletTapped(object sender, ItemTappedEventArgs args)
         {
-            Frame walletFrame = sender as Frame;
-            walletFrame.HasShadow = true;
-            await Navigation.PushAsync(new UnlockWalletPage(_unlockViewModel));
-            walletFrame.HasShadow = false;
+            if (args.Item != null)
+            {
+                await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(_myWalletsViewModel.AtomexApp, args.Item as WalletInfo)));
+            }
         }
     }
 }
