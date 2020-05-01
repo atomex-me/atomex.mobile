@@ -21,11 +21,21 @@
                        x:Name="AddressFrame"
                        HorizontalOptions="FillAndExpand"
                        Padding="0">
-                    <Picker ItemsSource="{Binding FromAddressList}"
-                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                            SelectedItem="{Binding SelectedAddress}"
-                            Focused="OnPickerFocused"
-                            Unfocused="OnPickerFocused"/>
+                    <RelativeLayout>
+                        <Picker ItemsSource="{Binding FromAddressList}"
+                                ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
+                                SelectedItem="{Binding SelectedAddress}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                HeightRequest="70"
+                                x:Name="AddressPicker"
+                                Focused="OnPickerFocused"
+                                Unfocused="OnPickerFocused"/>
+                        <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
+                                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Width, Factor=0.9}"
+                                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Height, Factor=0.5, Constant=-5}"
+                                                   WidthRequest="10"
+                                                   HeightRequest="10"/>
+                    </RelativeLayout>
                 </Frame>
             </StackLayout>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">

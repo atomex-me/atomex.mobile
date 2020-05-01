@@ -229,7 +229,7 @@ namespace atomex.ViewModel
             }
 
             return null;
-        } 
+        }
 
 
         //public DelegateViewModel(IAtomexApp app)

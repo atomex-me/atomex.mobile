@@ -87,7 +87,7 @@
                                             </DataTrigger>
                                             <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
                                                          Binding="{Binding Network}"
-                                                         Value="MainNet">
+                                                         Value="TestNet">
                                                 <Setter Property="Source"
                                                         Value="Right-arrow-2__blue.svg"/>
                                             </DataTrigger>

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="Create new wallet"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -16,29 +17,38 @@
                 <Label Text="Language:"
                        Style="{DynamicResource LabelFrameCaptionStyle}"/>
             </Frame>
-                <Frame HasShadow="False"
-                       x:Name="PickerFrame"
-                       Padding="0"
-                       BorderColor="LightGray"
-                       HorizontalOptions="FillAndExpand">
+            <Frame HasShadow="False"
+                    x:Name="PickerFrame"
+                    Padding="0"
+                    BorderColor="LightGray"
+                    HorizontalOptions="FillAndExpand">
+            <RelativeLayout>
                 <Picker ItemsSource="{Binding Languages}"
                         ItemDisplayBinding="{Binding Name}"
                         SelectedItem="{Binding Language}"
+                        x:Name="LanguagesPicker"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                         HeightRequest="70"
                         Focused="OnPickerFocused"
                         Unfocused="OnPickerFocused"/>
-            </Frame>
+                <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
+                                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
+                                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
+                                                   WidthRequest="10"
+                                                   HeightRequest="10"/>
+            </RelativeLayout>
+        </Frame>
         </StackLayout>
         <Frame HasShadow="False"
                x:Name="EditorFrame"
-               Padding="0"
+               Padding="5"
                BorderColor="LightGray">
             <Editor Placeholder="Enter mnemonic phrase here"
                     x:Name="Editor"
                     Text="{Binding Mnemonic}"
                     PlaceholderColor="{DynamicResource HintTextColor}"
                     Style="{DynamicResource EntryStyle}"
-                    HeightRequest="70"
+                    HeightRequest="80"
                     Focused="OnEditorFocused"
                     Unfocused="OnEditorFocused"/>
         </Frame>

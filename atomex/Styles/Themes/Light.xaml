@@ -220,6 +220,6 @@
         <Setter Property="HeightRequest" Value="80"/>
         <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="TextColor" Value="{DynamicResource CreateMnemonicFrameBackgroundColor}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonBorderColor}"/>
     </Style>
 </ResourceDictionary>

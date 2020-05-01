@@ -208,6 +208,7 @@
     <BundleResource Include="Resources\FA12.svg" />
     <BundleResource Include="Resources\TZBTC.svg" />
     <BundleResource Include="Resources\XTZ.svg" />
+    <BundleResource Include="Resources\Down-arrow-2.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="Create new wallet"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -21,12 +22,21 @@
                    Padding="0"
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
-                <Picker ItemsSource="{Binding Languages}"
-                        ItemDisplayBinding="{Binding Name}"
-                        SelectedItem="{Binding Language}"
-                        Focused="OnLanguagePickerFocused"
-                        Unfocused="OnLanguagePickerFocused"
-                        HeightRequest="70"/>
+                <RelativeLayout>
+                    <Picker ItemsSource="{Binding Languages}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding Language}"
+                            x:Name="LanguagePicker"
+                            Focused="OnLanguagePickerFocused"
+                            Unfocused="OnLanguagePickerFocused"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                            HeightRequest="70"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
+                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Width, Factor=0.9}"
+                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Height, Factor=0.5, Constant=-5}"
+                                                      WidthRequest="10"
+                                                      HeightRequest="10"/>
+                </RelativeLayout>
             </Frame>
         </StackLayout>
         <StackLayout Orientation="Horizontal">
@@ -39,12 +49,21 @@
                    Padding="0"
                    BorderColor="LightGray"
                    HorizontalOptions="FillAndExpand">
-                <Picker ItemsSource="{Binding WordCountToEntropyLength}"
-                        ItemDisplayBinding="{Binding WordCount}"
-                        SelectedItem="{Binding Entropy}"
-                        Focused="OnWordCountPickerFocused"
-                        Unfocused="OnWordCountPickerFocused"
-                        HeightRequest="70"/>
+                <RelativeLayout>
+                    <Picker ItemsSource="{Binding WordCountToEntropyLength}"
+                            ItemDisplayBinding="{Binding WordCount}"
+                            SelectedItem="{Binding Entropy}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                            x:Name="WordCountPicker"
+                            Focused="OnWordCountPickerFocused"
+                            Unfocused="OnWordCountPickerFocused"
+                            HeightRequest="70"/>
+                    <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
+                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9}"
+                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Height, Factor=0.5, Constant=-5}"
+                                                      WidthRequest="10"
+                                                      HeightRequest="10"/>
+                </RelativeLayout>
             </Frame>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HeightRequest="80">

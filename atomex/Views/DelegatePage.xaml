@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:atomex.CustomElements"
+             xmlns:controls="clr-namespace:atomex.CustomElements" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              x:Class="atomex.DelegatePage"
              Title="Delegate"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -23,10 +23,11 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="4.5*" />
+                    <ColumnDefinition Width="2.5*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Frame Grid.ColumnSpan="3"
+                <Frame Grid.ColumnSpan="4"
                        Grid.RowSpan="2"
                        HasShadow="False"
                        Padding="0"
@@ -72,7 +73,7 @@
                              Grid.RowSpan="2"
                              IsEnabled="False"
                              VerticalOptions="Center"
-                             Padding="20,0"
+                             Padding="10,0,0,0"
                              Spacing="0">
                     <Label Text="Available"
                            VerticalTextAlignment="End"
@@ -85,6 +86,11 @@
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"/>
                 </StackLayout>
+                <ffimageloadingsvg:SvgCachedImage Grid.Column="3"
+                                                  Grid.RowSpan="2"
+                                                  Source="Down-arrow-2.svg"
+                                                  Margin="0,34"
+                                                  IsEnabled="False"/>
             </Grid>
             <StackLayout Orientation="Horizontal"
                          Spacing="0"
@@ -119,7 +125,8 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        Grid.RowSpan="2"
@@ -129,6 +136,7 @@
                 </Frame>
                 <Frame Grid.RowSpan="2"
                        Grid.Column="1"
+                       Grid.ColumnSpan="3"
                        HasShadow="False"
                        x:Name="FromAddressFrame"
                        Padding="0"
@@ -143,15 +151,17 @@
                 </Frame>
                 <Label Grid.Row="0"
                        Grid.Column="1"
+                       Grid.ColumnSpan="2"
                        Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                        FontFamily="{DynamicResource RegularFont}"
                        LineBreakMode="MiddleTruncation"
-                       Padding="20,0"
+                       Padding="10,0"
                        VerticalTextAlignment="End"
                        IsEnabled="False"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Padding="25,0"
+                       Grid.ColumnSpan="2"
+                       Padding="15,0"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Center"
                        FontFamily="{DynamicResource ItalicFont}"
@@ -165,6 +175,13 @@
                     </FormattedString>
                     </Label.FormattedText>
                 </Label>
+                <StackLayout Grid.Column="3"
+                             Grid.RowSpan="2">
+                     <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
+                                                       Margin="6,34"
+                                                       IsEnabled="False"/>
+                </StackLayout>
+               
             </Grid>
             <StackLayout Orientation="Horizontal"
                          Spacing="0">
