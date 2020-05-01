@@ -13,18 +13,22 @@
                     <local:ChartView x:Name="portfolioChart"
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
-                    <Label FontFamily="{DynamicResource BoldFont}"
-                           FontSize="22"
-                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Width, Factor =.5, Constant=-45}"
-	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Height, Factor =.5, Constant=-15}"
-                           Text="{Binding TotalCost, StringFormat='{0:f1} $'}">
-                    </Label>
-                    <Label Text="Main wallet"
-                           TextColor="Gray"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="14"
-                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Width, Factor =.5, Constant=-35}"
-	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Height, Factor =.5, Constant=+10}"/>
+                    <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Height, Factor=1}"
+                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Width, Factor=1}"
+                                 VerticalOptions="Center"
+                                 Spacing="0">
+                        <Label FontFamily="{DynamicResource BoldFont}"
+                               FontSize="22"
+                               Text="{Binding TotalCost, StringFormat='{0:f1} $'}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"/>
+                        <Label Text="Main wallet"
+                               TextColor="Gray"
+                               FontFamily="{DynamicResource LightFont}"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"/>
+                    </StackLayout>
                 </RelativeLayout>
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"

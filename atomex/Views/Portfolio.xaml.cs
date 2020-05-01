@@ -28,11 +28,6 @@ namespace atomex
 
             BindingContext = currenciesViewModel;
 
-            //walletsViewModel.WalletsUpdated += (s, a) =>
-            //{
-            //    Device.BeginInvokeOnMainThread(UpdateChart);
-            //};
-
             UpdateChart();
         }
 
@@ -42,11 +37,17 @@ namespace atomex
             {
                 if (_currenciesViewModel.TotalCost == 0)
                 {
-                    portfolioChart.IsVisible = false;
+                    var entry = new Microcharts.Entry[]
+                    {
+                        new Microcharts.Entry(100)
+                        {
+                             Color = SKColor.Parse("#dcdcdc")
+                        }
+                    };
+                    portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f };
                 }
                 else
                 {
-                    portfolioChart.IsVisible = true;
                     var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.AvailableAmount != 0).ToList();
                     var entries = new Microcharts.Entry[nonzeroWallets.Count];
                     for (int i = 0; i < nonzeroWallets.Count; i++)
