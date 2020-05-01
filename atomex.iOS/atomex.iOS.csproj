@@ -195,8 +195,6 @@
     <BundleResource Include="Resources\ETH.svg" />
     <BundleResource Include="Resources\LTC.svg" />
     <BundleResource Include="Resources\USDT.svg" />
-    <BundleResource Include="Resources\XTZ.svg" />
-    <BundleResource Include="Resources\FA12.svg" />
     <BundleResource Include="Resources\Scan.svg" />
     <BundleResource Include="Resources\Entry.svg" />
     <BundleResource Include="Resources\Password.svg" />
@@ -207,6 +205,9 @@
     <BundleResource Include="Resources\Wallet__blue.svg" />
     <BundleResource Include="Resources\Right-arrow-2__blue.svg" />
     <BundleResource Include="Resources\Right-arrow-2__black.svg" />
+    <BundleResource Include="Resources\FA12.svg" />
+    <BundleResource Include="Resources\TZBTC.svg" />
+    <BundleResource Include="Resources\XTZ.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">
