@@ -83,7 +83,7 @@ namespace atomex.Views.CreateNewWallet
                 }
                 else
                 {
-                    await DisplayAlert("Error", "Invalid password", "Ok");
+                    await DisplayAlert("Error", "Create wallet error", "Ok");
                 }
             }
             else

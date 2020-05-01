@@ -242,9 +242,12 @@ namespace atomex
         private SecureString GenerateSecureString(string str)
         {
             var secureString = new SecureString();
-            foreach (char c in str)
+            if (!string.IsNullOrEmpty(str))
             {
-                secureString.AppendChar(c);
+                foreach (char c in str)
+                {
+                    secureString.AppendChar(c);
+                }
             }
             return secureString;
         }
