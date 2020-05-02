@@ -45,8 +45,8 @@ namespace atomex.iOS
             if (Element == null)
                 return;
             // Check only for Numeric keyboard
-            if (this.Element.Keyboard == Keyboard.Numeric)
-                this.AddDoneButton();
+            //if (this.Element.Keyboard == Keyboard.Numeric)
+            this.AddDoneButton();
         }
         /// <summary>
         /// <para>Add toolbar with Done button</para>

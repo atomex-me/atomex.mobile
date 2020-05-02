@@ -56,7 +56,7 @@ namespace atomex
                 .UseCurrenciesProvider(currenciesProvider)
                 .UseSymbolsProvider(symbolsProvider)
                 .UseQuotesProvider(new BitfinexQuotesProvider(
-                    currencies: currenciesProvider.GetCurrencies(Network.TestNet),
+                    currencies: currenciesProvider.GetCurrencies(Network.MainNet),
                     baseCurrency: BitfinexQuotesProvider.Usd));
             //.UseTerminal(new Terminal(configuration, account));
 
@@ -66,7 +66,6 @@ namespace atomex
             MainPage = new NavigationPage(new StartPage(startViewModel));
             ((NavigationPage)MainPage).BarBackgroundColor = Color.FromHex("#2B5286");
             ((NavigationPage)MainPage).BarTextColor = Color.White;
-            //var test = Color.FromHex(Application.Current.Resources["AdditionalBackgroundColor1"].ToString());
         }
 
         protected override void OnStart()

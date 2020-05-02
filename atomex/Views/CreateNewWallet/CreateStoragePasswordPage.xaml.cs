@@ -25,6 +25,15 @@ namespace atomex.Views.CreateNewWallet
         {
             PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            {
+                if (args.IsFocused)
+                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
+                else
+                    ScrollView.ScrollToAsync(0, 0, true);
+                return false;
+            });
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -50,6 +59,15 @@ namespace atomex.Views.CreateNewWallet
         {
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            {
+                if (args.IsFocused)
+                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
+                else
+                    ScrollView.ScrollToAsync(0, 0, true);
+                return false;
+            });
         }
 
         private void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)

@@ -23,6 +23,14 @@ namespace atomex.Views.CreateNewWallet
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
+            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            {
+                if (args.IsFocused)
+                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
+                else
+                    ScrollView.ScrollToAsync(0, 0, true);
+                return false;
+            });
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
