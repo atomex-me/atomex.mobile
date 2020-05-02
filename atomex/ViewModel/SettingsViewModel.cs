@@ -1,10 +1,13 @@
-﻿using Atomex.Wallet;
+﻿using System;
+using Atomex;
+using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 
 namespace atomex.ViewModel
 {
     public class SettingsViewModel : BaseViewModel
     {
+        public IAtomexApp AtomexApp { get; private set; }
 
         public UserSettings Settings { get; }
 
@@ -66,10 +69,16 @@ namespace atomex.ViewModel
             }
         }
 
-        public SettingsViewModel(IAccount account)
+        public void LogOut()
         {
-            Account = account;
-            Settings = account.UserSettings;
+            AtomexApp.UseTerminal(null);
+        }
+
+        public SettingsViewModel(IAtomexApp app)
+        {
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            Account = app.Account;
+            Settings = app.Account.UserSettings;
         }
     }
 }

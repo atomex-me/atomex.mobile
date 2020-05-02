@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Atomex;
 using Atomex.Common.Configuration;

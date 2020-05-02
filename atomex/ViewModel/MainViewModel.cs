@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Atomex;
 using Microsoft.Extensions.Configuration;
 using Atomex.Subsystems;
@@ -33,7 +32,7 @@ namespace atomex.ViewModel
             AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
-            SettingsViewModel = new SettingsViewModel(account);
+            SettingsViewModel = new SettingsViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             DelegateViewModel = new DelegateViewModel(AtomexApp);
         }

@@ -41,5 +41,19 @@ namespace atomex
 
             await Navigation.PushAsync(optionsPage);
         }
+
+        private async void OnLogOutButtonClicked(object sender, EventArgs args)
+        {
+            var res = await DisplayAlert("Log out", "Are you sure?", "Ok", "Cancel");
+            if (res)
+            {
+                _settingsViewModel.LogOut();
+                StartViewModel startViewModel = new StartViewModel(_settingsViewModel.AtomexApp);
+                Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
+                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#2B5286");
+                ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
+                //todo: check nav stack after logout
+            }
+        }
     }
 }

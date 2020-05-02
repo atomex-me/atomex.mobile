@@ -76,6 +76,17 @@
                             </ViewCell.View>
                         </ViewCell>
                     </TableSection>
+                    <TableSection Title="Account"
+                                  TextColor="{DynamicResource HintTextColor}">
+                        <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
+                            <ViewCell.View>
+                                <Button Text="Log out"
+                                        TextColor="{DynamicResource HintTextColor}"
+                                        FontSize="18"
+                                        Clicked="OnLogOutButtonClicked"/>
+                        </ViewCell.View>
+                        </ViewCell>
+                    </TableSection>
                 </TableRoot>
             </TableView>
         </ContentPage.Content>
