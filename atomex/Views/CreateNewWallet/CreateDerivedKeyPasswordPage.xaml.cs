@@ -42,7 +42,7 @@ namespace atomex.Views.CreateNewWallet
                 PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("DerivedPassword", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
@@ -67,7 +67,7 @@ namespace atomex.Views.CreateNewWallet
                 PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("DerivedPasswordConfirmation", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPasswordConfirmation, args.NewTextValue);
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

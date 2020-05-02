@@ -41,7 +41,7 @@ namespace atomex.Views.CreateNewWallet
                 PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("DerivedPassword", PasswordEntry.Text);
+            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, PasswordEntry.Text);
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

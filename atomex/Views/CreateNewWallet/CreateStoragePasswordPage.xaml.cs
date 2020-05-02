@@ -43,7 +43,7 @@ namespace atomex.Views.CreateNewWallet
                 PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("StoragePassword", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePassword, args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
@@ -68,7 +68,7 @@ namespace atomex.Views.CreateNewWallet
                 PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Center;
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword("StoragePasswordConfirmation", args.NewTextValue);
+            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePasswordConfirmation, args.NewTextValue);
         }
 
         private async void OnCreateButtonClicked(object sender, EventArgs args)

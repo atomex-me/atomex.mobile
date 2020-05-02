@@ -28,6 +28,14 @@ namespace atomex
             Restore
         }
 
+        public enum PasswordType
+        {
+            DerivedPassword,
+            DerivedPasswordConfirmation,
+            StoragePassword,
+            StoragePasswordConfirmation
+        }
+
         public Action CurrentAction { get; set; }
 
         public List<Atomex.Core.Network> Networks { get; } = new List<Atomex.Core.Network>
@@ -252,25 +260,25 @@ namespace atomex
             return secureString;
         }
 
-        public void SetPassword(string pswdType, string pswd)
+        public void SetPassword(PasswordType pswdType, string pswd)
         {
             SecureString secureString = GenerateSecureString(pswd);
-            if (pswdType == "StoragePassword")
+            if (pswdType == PasswordType.StoragePassword)
             {
                 StoragePassword = secureString;
                 return;
             }
-            if (pswdType == "DerivedPassword")
+            if (pswdType == PasswordType.DerivedPassword)
             {
                 DerivedPassword = secureString;
                 return;
             }
-            if (pswdType == "StoragePasswordConfirmation")
+            if (pswdType == PasswordType.StoragePasswordConfirmation)
             {
                 StoragePasswordConfirmation = secureString;
                 return;
             }
-            if (pswdType == "DerivedPasswordConfirmation")
+            if (pswdType == PasswordType.DerivedPasswordConfirmation)
             {
                 DerivedPasswordConfirmation = secureString;
                 return;
