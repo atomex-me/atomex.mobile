@@ -23,7 +23,6 @@ namespace atomex
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
-            Error.IsVisible = false;
         }
 
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)

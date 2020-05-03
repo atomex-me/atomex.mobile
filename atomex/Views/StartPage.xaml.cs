@@ -13,6 +13,7 @@ namespace atomex
         public StartPage(StartViewModel startViewModel)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             _startViewModel = startViewModel;
             BindingContext = startViewModel;
             _createNewWalletViewModel = new CreateNewWalletViewModel(startViewModel.AtomexApp);

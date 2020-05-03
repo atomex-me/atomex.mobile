@@ -11,7 +11,7 @@
                    TextColor="{DynamicResource MainTextColor}"
                    FontFamily="{DynamicResource MediumFont}"
                    Padding="20,30,20,10"
-                   FontSize="22"
+                   FontSize="20"
                    HorizontalTextAlignment="Center"/>
             <ListView ItemsSource="{Binding Wallets}"
                       ItemTapped="OnWalletTapped"
@@ -38,8 +38,7 @@
                                 </Frame.Triggers>
                                 <StackLayout Orientation="Horizontal">
                                     <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
-                                                                      HeightRequest="48"
-                                                                      Margin="10,0">
+                                                                      HeightRequest="48">
                                         <ffimageloadingsvg:SvgCachedImage.Triggers>
                                             <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
                                                          Binding="{Binding Network}"

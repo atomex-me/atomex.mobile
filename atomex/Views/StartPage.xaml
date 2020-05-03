@@ -13,9 +13,9 @@
                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
                    Margin="0"/>
         </StackLayout>
-        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
-                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=+130}"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}">
+        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
+                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}">
             <Button Text="MY WALLETS"
                     Style="{DynamicResource MainButtonStyle}"
                     IsEnabled="{Binding HasWallets}"

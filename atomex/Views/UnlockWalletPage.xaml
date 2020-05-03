@@ -6,57 +6,55 @@
              x:Class="atomex.UnlockWalletPage"
              Title="Unlock wallet"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
-    <RelativeLayout>
-        <ActivityIndicator x:Name="Loader"
-                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                           Scale="3"
-                           Color="Black"
-                           IsRunning="False"/>
-        <StackLayout x:Name="Content"
-                     Padding="30"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-            <ffimageloadingsvg:SvgCachedImage WidthRequest="180"
-                                              HeightRequest="180"
-                                              Margin="0,0,0,20"
-                                              Source="Entry.svg"/>
-            <Label Text="Please enter your password:"
-                   Style="{DynamicResource UnlockWalletTextStyle}"/>
-            <Frame x:Name="PasswordFrame"
-                   Style="{DynamicResource EntryFrameStyle}">
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="FillAndExpand">
-                    <Frame HasShadow="False" 
-                           BackgroundColor="LightCyan">
-                        <ffimageloadingsvg:SvgCachedImage WidthRequest="24"
-                                                          HeightRequest="24"
-                                                          Source="Password.svg"/>
-                    </Frame>
-                    <StackLayout HeightRequest="70"
-                                 HorizontalOptions="FillAndExpand"
-                                 BackgroundColor="White">
-                        <Label x:Name="PasswordHint"
-                               Style="{DynamicResource EntryHintStyle}"/>
-                        <controls:CustomEntry x:Name="PasswordEntry"
-                                              Placeholder="Password"
-                                              Keyboard="Text"
-                                              Focused="PasswordEntryFocused"
-                                              Unfocused="PasswordEntryFocused"
-                                              IsPassword="True"
-                                              Style="{DynamicResource EntryStyle}"
-                                              TextChanged="OnPasswordTextChanged"/>
+    <ScrollView x:Name="ScrollView">
+        <RelativeLayout>
+            <ActivityIndicator x:Name="Loader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                               Scale="3"
+                               Color="Black"
+                               IsRunning="False"/>
+            <StackLayout x:Name="Content"
+                         Padding="30"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                <ffimageloadingsvg:SvgCachedImage WidthRequest="180"
+                                                  HeightRequest="180"
+                                                  Source="Entry.svg"/>
+                <Label Text="Please enter your password:"
+                       Style="{DynamicResource UnlockWalletTextStyle}"
+                       x:Name="Label"/>
+                <Frame x:Name="PasswordFrame"
+                       Style="{DynamicResource EntryFrameStyle}">
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
+                        <Frame HasShadow="False" 
+                               BackgroundColor="LightCyan">
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="24"
+                                                              HeightRequest="24"
+                                                              Source="Password.svg"/>
+                        </Frame>
+                        <StackLayout HeightRequest="70"
+                                     HorizontalOptions="FillAndExpand"
+                                     BackgroundColor="White">
+                            <Label x:Name="PasswordHint"
+                                   Style="{DynamicResource EntryHintStyle}"/>
+                            <controls:CustomEntry x:Name="PasswordEntry"
+                                                  Placeholder="Password"
+                                                  Keyboard="Text"
+                                                  Focused="PasswordEntryFocused"
+                                                  Unfocused="PasswordEntryFocused"
+                                                  IsPassword="True"
+                                                  Style="{DynamicResource EntryStyle}"
+                                                  TextChanged="OnPasswordTextChanged"/>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </Frame>
-            <Label x:Name="Error"
-               TextColor="Red"
-               IsVisible="False"
-               Margin="0,10"/>
-            <Button Text="Unlock"
-                    Margin="0,20"
-                    Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnUnlockButtonClicked"/>
-        </StackLayout>
-    </RelativeLayout>
+                </Frame>
+                <Button Text="Unlock"
+                        Margin="0,20"
+                        Style="{DynamicResource MainButtonStyle}"
+                        Clicked="OnUnlockButtonClicked"/>
+            </StackLayout>
+        </RelativeLayout>
+    </ScrollView>
 </ContentPage>

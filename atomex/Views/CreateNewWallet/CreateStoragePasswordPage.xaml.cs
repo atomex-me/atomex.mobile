@@ -94,6 +94,9 @@ namespace atomex.Views.CreateNewWallet
             var result = _createNewWalletViewModel.CheckStoragePassword();
             if (result == null)
             {
+                Content.Opacity = 0.3f;
+                Loader.IsRunning = true;
+
                 var account = await _createNewWalletViewModel.ConnectToWallet();
                 if (account != null)
                 {
@@ -101,6 +104,8 @@ namespace atomex.Views.CreateNewWallet
                 }
                 else
                 {
+                    Content.Opacity = 1f;
+                    Loader.IsRunning = false;
                     await DisplayAlert("Error", "Create wallet error", "Ok");
                 }
             }
