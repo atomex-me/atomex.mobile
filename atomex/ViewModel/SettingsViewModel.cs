@@ -69,11 +69,6 @@ namespace atomex.ViewModel
             }
         }
 
-        public void LogOut()
-        {
-            AtomexApp.UseTerminal(null);
-        }
-
         public SettingsViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));

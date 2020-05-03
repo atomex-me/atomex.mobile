@@ -14,7 +14,7 @@ namespace atomex
 
         private readonly NavigationPage navigationConversionPage;
 
-        private MainViewModel _mainViewModel;
+        public MainViewModel _mainViewModel { get; }
 
         public MainPage(MainViewModel mainViewModel)
         {
@@ -38,7 +38,7 @@ namespace atomex
             navigationConversionPage.BarBackgroundColor = Color.FromHex("#2B5286");
             navigationConversionPage.BarTextColor = Color.White;
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel));
+            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this));
             navigationSettingsPage.IconImageSource = "NavBar__settings";
             navigationSettingsPage.Title = "Settings";
             navigationSettingsPage.BarBackgroundColor = Color.FromHex("#2B5286");
@@ -49,6 +49,19 @@ namespace atomex
             Children.Add(navigationConversionPage);
             Children.Add(navigationSettingsPage);
 
+            mainViewModel.Locked += (s, a) =>
+            {
+                SignOut();
+            };
+        }
+
+        private void SignOut()
+        {
+            _mainViewModel.SignOut();
+            StartViewModel startViewModel = new StartViewModel(_mainViewModel.AtomexApp);
+            Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#2B5286");
+            ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
         public void ConvertCurrency(string currencyCode)

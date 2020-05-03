@@ -80,10 +80,10 @@
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell Tapped="OnBalanceUpdateIntervalSettingTapped">
                             <ViewCell.View>
-                                <Button Text="Log out"
+                                <Button Text="Sign out"
                                         TextColor="{DynamicResource HintTextColor}"
                                         FontSize="18"
-                                        Clicked="OnLogOutButtonClicked"/>
+                                        Clicked="OnSignOutButtonClicked"/>
                         </ViewCell.View>
                         </ViewCell>
                     </TableSection>

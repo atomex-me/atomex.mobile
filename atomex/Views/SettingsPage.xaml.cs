@@ -10,16 +10,19 @@ namespace atomex
         
         private SettingsViewModel _settingsViewModel;
 
+        private MainPage _mainPage;
+
         public SettingsPage()
         {
             InitializeComponent();
         }
 
-        public SettingsPage(SettingsViewModel settingsViewModel)
+        public SettingsPage(SettingsViewModel settingsViewModel, MainPage mainPage)
         {
             InitializeComponent();
             _settingsViewModel = settingsViewModel;
             BindingContext = settingsViewModel;
+            _mainPage = mainPage;
         }
 
         async void OnBalanceUpdateIntervalSettingTapped(object sender, EventArgs args)
@@ -42,17 +45,13 @@ namespace atomex
             await Navigation.PushAsync(optionsPage);
         }
 
-        private async void OnLogOutButtonClicked(object sender, EventArgs args)
+        private async void OnSignOutButtonClicked(object sender, EventArgs args)
         {
-            var res = await DisplayAlert("Log out", "Are you sure?", "Ok", "Cancel");
+            var res = await DisplayAlert("Sign out", "Are you sure?", "Ok", "Cancel");
             if (res)
             {
-                _settingsViewModel.LogOut();
-                StartViewModel startViewModel = new StartViewModel(_settingsViewModel.AtomexApp);
-                Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
-                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#2B5286");
-                ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
-                //todo: check nav stack after logout
+                _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                //todo: check nav stack + threads after logout
             }
         }
     }

@@ -5,6 +5,8 @@ using Atomex.Subsystems;
 using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
+using System.Threading.Tasks;
+using Atomex.Common;
 
 namespace atomex.ViewModel
 {
@@ -16,6 +18,8 @@ namespace atomex.ViewModel
         public DelegateViewModel DelegateViewModel { get; set; }
 
         public IAtomexApp AtomexApp { get; private set; }
+
+        public EventHandler Locked;
 
         public MainViewModel(IAtomexApp app, IAccount account)
         {
@@ -35,6 +39,23 @@ namespace atomex.ViewModel
             SettingsViewModel = new SettingsViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             DelegateViewModel = new DelegateViewModel(AtomexApp);
+
+            //ActivityObserver().FireAndForget();
+        }
+
+        //private async Task ActivityObserver()
+        //{
+        //    while (true)
+        //    {
+        //        await Task.Delay(TimeSpan.FromMinutes(SettingsViewModel.PeriodOfInactivityInMin));
+        //        Locked?.Invoke(this, EventArgs.Empty);
+        //        return;
+        //    }
+        //}
+
+        public void SignOut()
+        {
+            AtomexApp.UseTerminal(null);
         }
 
         private void SubscribeToServices()
