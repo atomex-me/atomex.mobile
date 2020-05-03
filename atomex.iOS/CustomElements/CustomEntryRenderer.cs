@@ -18,10 +18,10 @@ namespace atomex.iOS
             
             if (Control != null)
             {
-                Control.Layer.BorderWidth = 0;
-                Control.Layer.CornerRadius = 0;
+                //Control.Layer.BorderWidth = 0;
+                //Control.Layer.CornerRadius = 0;
                 Control.BorderStyle = UITextBorderStyle.None;
-                Control.Layer.BackgroundColor = UIColor.White.CGColor;
+                //Control.Layer.BackgroundColor = UIColor.White.CGColor;
 
                 Control.LeftView = new UIView(new CGRect(0, 0, 20, 0));
                 Control.LeftViewMode = UITextFieldViewMode.Always;
