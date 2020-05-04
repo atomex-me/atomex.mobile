@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
 using Xamarin.Forms;
@@ -33,16 +34,16 @@ namespace atomex.Views.CreateSwap
                 BlockActions(false);
                 if (error.Code == Errors.PriceHasChanged)
                 {
-                    await DisplayAlert("Price has changed", error.Description, "Ok");
+                    await DisplayAlert(AppResources.PriceChanged, error.Description, AppResources.AcceptButton);
                 }
                 else
                 {
-                    await DisplayAlert("Error", error.Description, "Ok");
+                    await DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
                 }
                 return;
             }
             BlockActions(false);
-            var res = await DisplayAlert("Success","Swap succesfully created", null, "Ok");
+            var res = await DisplayAlert(AppResources.Success, AppResources.SwapCreated, null, AppResources.AcceptButton);
             if (!res)
             {
                 _conversionViewModel.Amount = 0;

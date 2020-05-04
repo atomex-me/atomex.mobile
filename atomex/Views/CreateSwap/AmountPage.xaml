@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.AmountPage"
-             Title="Create swap - step 2"
+             Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout Padding="20,0">
-            <Label Text="Enter amount:"
+            <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
                    HorizontalTextAlignment="Center"
                    Padding="20,30,20,10"
                    FontSize="22"
@@ -37,7 +38,7 @@
                                        Style="{DynamicResource EntryHintStyle}"/>
                                 <custom:CustomEntry Keyboard="Numeric"
                                                     x:Name="Amount"
-                                                    Placeholder="Amount, "
+                                                    Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
                                                     Style="{DynamicResource EntryStyle}"
                                                     Focused="AmountEntryFocused"
                                                     Unfocused="AmountEntryFocused"
@@ -46,7 +47,7 @@
                         </Frame>
                         <Button Grid.Column="1"
                                 Grid.Row="1"
-                                Text="MAX"
+                                Text="{x:Static resources:AppResources.MaxButton}"
                                 FontSize="16"
                                 Padding="10"
                                 TextColor="{DynamicResource HintTextColor}"
@@ -60,7 +61,7 @@
                        x:Name="InvalidAmountFrame"
                        HasShadow="False"
                        IsVisible="False">
-                    <Label Text="Invalid amount"
+                    <Label Text="{x:Static resources:AppResources.InvalidAmount}"
                            x:Name="InvalidAmountLabel"
                            TextColor="Red"
                            VerticalTextAlignment="Center"
@@ -71,8 +72,9 @@
                    VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="Available market volume: "
+                            <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
                                   FontFamily="{DynamicResource RegularFont}"/>
+                            <Span Text=": "/>
                             <Span Text="{Binding EstimatedMaxAmount}"
                                   FontFamily="{DynamicResource BoldFont}"
                                   FontSize="18"/>
@@ -114,7 +116,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Text="No liquidity"
+                <Label Text="{x:Static resources:AppResources.NoLiquidityLabel}"
                        Grid.Row="1"
                        Grid.Column="2"
                        FontFamily="{DynamicResource RegularFont}"
@@ -177,8 +179,9 @@
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated price: "
+                        <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
                               FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text=": "/>
                         <Span Text="{Binding EstimatedPrice}"
                               FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
@@ -187,8 +190,9 @@
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated payment fee: "
+                        <Span Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
                               FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text=": "/>
                         <Span Text="{Binding EstimatedPaymentFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
@@ -204,8 +208,9 @@
             <Label HorizontalTextAlignment="Center">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated redeem fee: "
+                        <Span Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
                               FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text=": "/>
                         <Span Text="{Binding EstimatedRedeemFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
@@ -218,7 +223,7 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button Text="NEXT"
+            <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="20"
                     VerticalOptions="EndAndExpand"
                     Style="{DynamicResource MainButtonStyle}"

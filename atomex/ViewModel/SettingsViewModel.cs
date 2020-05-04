@@ -27,19 +27,6 @@ namespace atomex.ViewModel
             }
         }
 
-        public bool ShowActiveSwapWarning
-        {
-            get { return Settings.ShowActiveSwapWarning; }
-            set
-            {
-                if (Settings.ShowActiveSwapWarning != value)
-                {
-                    Settings.ShowActiveSwapWarning = value;
-                    Account.UseUserSettings(Settings);
-                    OnPropertyChanged(nameof(ShowActiveSwapWarning));
-                }
-            }
-        }
 
         public bool AutoSignOut
         {
@@ -51,20 +38,6 @@ namespace atomex.ViewModel
                     Settings.AutoSignOut = value;
                     Account.UseUserSettings(Settings);
                     OnPropertyChanged(nameof(AutoSignOut));
-                }
-            }
-        }
-
-        public int BalanceUpdateIntervalInSec
-        {
-            get { return Settings.BalanceUpdateIntervalInSec; }
-            set
-            {
-                if (Settings.BalanceUpdateIntervalInSec != value)
-                {
-                    Settings.BalanceUpdateIntervalInSec = value;
-                    Account.UseUserSettings(Settings);
-                    OnPropertyChanged(nameof(BalanceUpdateIntervalInSec));
                 }
             }
         }

@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.ConversionsListPage"
-             Title="Conversions">
+             Title="{x:Static resources:AppResources.ConfirmationLabel}">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="FillAndExpand"
@@ -22,7 +23,7 @@
                                                   WidthRequest="48"
                                                   VerticalOptions="EndAndExpand"
                                                   HorizontalOptions="CenterAndExpand"/>
-                <Label Text="No swaps yet"
+                <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="StartAndExpand"
@@ -90,9 +91,10 @@
                                        FontSize="14">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="Convert "
+                                            <Span Text="{x:Static resources:AppResources.Convert}"
                                                   FontFamily="{DynamicResource RegularFont}"
                                                   FontSize="14"/>
+                                            <Span Text=" "/>
                                             <Span Text="{Binding FromAmount, StringFormat='{0:0.####}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
                                                   FontSize="14"/>
@@ -163,7 +165,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="CREATE NEW SWAP"
+            <Button Text="{x:Static resources:AppResources.CreateSwapButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     Margin="20"
                     Clicked="OnCreateSwapButtonClicked"/>

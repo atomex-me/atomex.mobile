@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.ConfirmationPage"
-             Title="Create swap - confirmation"
+             Title="{x:Static resources:AppResources.ConfirmationLabel}"
              Icon="NavBar__conversion"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
@@ -98,12 +99,12 @@
                            RowHeight="70"
                            BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
                     <TableRoot>
-                        <TableSection Title="Confirm transaction"
+                        <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}"
                                       TextColor="{DynamicResource HintTextColor}">
                             <ViewCell>
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
-                                    <Label Text="Estimated price"
+                                    <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <Label Text="{Binding EstimatedPrice}"
                                            VerticalOptions="CenterAndExpand"
@@ -114,7 +115,7 @@
                             <ViewCell>
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
-                                    <Label Text="Estimated payment fee"
+                                    <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
@@ -139,7 +140,7 @@
                             <ViewCell>
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
-                                    <Label Text="Estimated redeem fee"
+                                    <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
@@ -165,7 +166,7 @@
                     </TableRoot>
                 </TableView>
             </StackLayout>
-            <Button Text="CONVERT"
+            <Button Text="{x:Static resources:AppResources.ConvertButton}"
                     x:Name="ConvertButton"
                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.8,Constant=0}"
                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

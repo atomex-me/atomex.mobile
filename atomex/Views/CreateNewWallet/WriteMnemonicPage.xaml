@@ -2,29 +2,30 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
-             Title="Create new wallet"
+             Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
                      Margin="20,0">
             <StackLayout x:Name="Labels">
-                <Label Text="Step 3: Mnemonic phrase"
+                <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-                <Label Text="   Please, enter a mnemonic phrase for your wallet."
+                <Label Text="{x:Static resources:AppResources.EnterMnemonicPhraseLabel}"
                        Style="{DynamicResource CreateNewWalletTextStyle}"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Frame Style="{DynamicResource FrameCaptionStyle}">
-                    <Label Text="Language:"
+                    <Label Text="{x:Static resources:AppResources.LanguageLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame HasShadow="False"
-                        x:Name="PickerFrame"
-                        Padding="0"
-                        BorderColor="LightGray"
-                        HorizontalOptions="FillAndExpand">
+                       x:Name="PickerFrame"
+                       Padding="0"
+                       BorderColor="LightGray"
+                       HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
                     <Picker ItemsSource="{Binding Languages}"
                             ItemDisplayBinding="{Binding Name}"
@@ -35,10 +36,10 @@
                             Focused="OnPickerFocused"
                             Unfocused="OnPickerFocused"/>
                     <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
-                                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
-                                                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
-                                                       WidthRequest="10"
-                                                       HeightRequest="10"/>
+                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
+                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
+                                                      WidthRequest="10"
+                                                      HeightRequest="10"/>
                 </RelativeLayout>
             </Frame>
             </StackLayout>
@@ -46,7 +47,7 @@
                    x:Name="EditorFrame"
                    Padding="5"
                    BorderColor="LightGray">
-                <Editor Placeholder="Enter mnemonic phrase here"
+                <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
                         PlaceholderColor="{DynamicResource HintTextColor}"
@@ -59,7 +60,7 @@
                    TextColor="Red"
                    IsVisible="False"
                    Margin="0,10"/>
-            <Button Text="Next"
+            <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>

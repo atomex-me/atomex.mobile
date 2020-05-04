@@ -2,14 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
-             Title="Create new wallet"
+             Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
-        <Label Text="Step 1: Wallet type"
+        <Label Text="{x:Static resources:AppResources.WalletTypeStepLabel}"
                Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-        <Label Text="Please select your wallet type:"
+        <Label Text="{x:Static resources:AppResources.SelectTypeLabel}"
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <Frame Padding="0"
                HasShadow="False"
@@ -29,7 +30,7 @@
                                                   HeightRequest="10"/>
             </RelativeLayout>
         </Frame>
-        <Button Text="Next"
+        <Button Text="{x:Static resources:AppResources.NextButton}"
                 Margin="0,20"
                 Style="{DynamicResource MainButtonStyle}"
                 Clicked="OnNextButtonClicked"/>

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using atomex.Resources;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -35,7 +35,7 @@ namespace atomex.Views.CreateNewWallet
         {
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
-                await DisplayAlert("Warning", "Generate mnemonic phrase", "Ok");
+                await DisplayAlert(AppResources.Warning, AppResources.GenerateMnemonic, AppResources.AcceptButton);
             }
             else
             {

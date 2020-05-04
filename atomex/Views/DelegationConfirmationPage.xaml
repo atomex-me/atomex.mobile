@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationConfirmationPage"
-             Title="Confirmation"
+             Title="{x:Static resources:AppResources.ConfirmationLabel}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <RelativeLayout>
@@ -16,22 +17,22 @@
                 <TableView Intent="Form"
                            RowHeight="70">
                     <TableRoot>
-                        <TableSection Title="Do you really want to delegate?">
-                            <TextCell Text="From"
+                        <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
+                            <TextCell Text="{x:Static resources:AppResources.FromLabel}"
                                       Detail="{Binding WalletAddressViewModel.WalletAddress.Address}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell Text="Amount"
+                            <TextCell Text="{x:Static resources:AppResources.AmountLabel}"
                                       Detail="{Binding WalletAddressViewModel.WalletAddress.Balance}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell Text="To"
+                            <TextCell Text="{x:Static resources:AppResources.ToLabel}"
                                       Detail="{Binding Address}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell Text="With commision"
+                            <TextCell Text="{x:Static resources:AppResources.WithCommision}"
                                       Detail="{Binding FeeString}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <ViewCell>
                                 <StackLayout Padding="20,0">
-                                    <Button Text="DELEGATE"
+                                    <Button Text="{x:Static resources:AppResources.DelegateButton}"
                                             x:Name="DelegateButton"
                                             Style="{DynamicResource MainButtonStyle}"
                                             Clicked="OnDelegateButtonClicked"/>

@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.MyWalletsPage"
-             Title="My wallets"
+             Title="{x:Static resources:AppResources.MyWalletsTitle}"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="PLEASE SELECT YOUR WALLET"
+            <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"
                    TextColor="{DynamicResource MainTextColor}"
                    FontFamily="{DynamicResource MediumFont}"
                    Padding="20,30,20,10"

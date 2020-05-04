@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.SettingsOptions;
 using Xamarin.Forms;
@@ -25,16 +26,6 @@ namespace atomex
             _mainPage = mainPage;
         }
 
-        async void OnBalanceUpdateIntervalSettingTapped(object sender, EventArgs args)
-        {
-            var optionsPage = new BalanceUpdateIntervalListPage(_settingsViewModel, selected =>
-            {
-                _settingsViewModel.BalanceUpdateIntervalInSec = selected;
-            });
-
-            await Navigation.PushAsync(optionsPage);
-        }
-
         async void OnPeriodOfInactiveSettingTapped(object sender, EventArgs args)
         {
             var optionsPage = new PeriodOfInactiveListPage(_settingsViewModel, selected =>
@@ -47,7 +38,7 @@ namespace atomex
 
         private async void OnSignOutButtonClicked(object sender, EventArgs args)
         {
-            var res = await DisplayAlert("Sign out", "Are you sure?", "Ok", "Cancel");
+            var res = await DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
             if (res)
             {
                 _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);

@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using atomex.Common;
 using atomex.Models;
+using atomex.Resources;
 using atomex.ViewModel;
 using Atomex;
 using Atomex.Common;
@@ -182,13 +183,13 @@ namespace atomex
         {
             if (string.IsNullOrEmpty(WalletName))
             {
-                return "Wallet name must be not empty";
+                return AppResources.ErrorEmptyWalletName;
             }
 
             if (WalletName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 ||
                 WalletName.IndexOf('.') != -1)
             {
-                return "Invalid wallet name";
+                return AppResources.ErrorInvalidWalletName;
             }
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -205,12 +206,12 @@ namespace atomex
             }
             catch (Exception)
             {
-                return "Invalid wallet name";
+                return AppResources.ErrorInvalidWalletName;
             }
 
             if (File.Exists(pathToWallet))
             {
-                return "Wallet with the same name already exists";
+                return AppResources.ErrorWalletAlreadyExists;
             }
 
             PathToWallet = pathToWallet;
@@ -228,7 +229,7 @@ namespace atomex
         {
             if (string.IsNullOrEmpty(Mnemonic))
             {
-                return "Mnemonic phrase can not be empty";
+                return AppResources.ErrorEmptyMnemonic;
             }
 
             try
@@ -239,11 +240,11 @@ namespace atomex
             catch (Exception e)
             {
                 if (e.Message.Contains("Word count should be"))
-                    return "Word count should be 12,15,18,21 or 24.";
+                    return AppResources.ErrorMnemonicWordCount;
                 else if (e.Message.Contains("is not in the wordlist"))
-                    return "Word " + e.Message.Split(' ')[1] + " is not in the wordlist for this language";
+                    return AppResources.Word + " " + e.Message.Split(' ')[1] + AppResources.isNotInWordlist;
                 else
-                    return "Invalid mnemonic phrase";
+                    return AppResources.InvalidMnemonic;
             }
         }
 
@@ -291,13 +292,13 @@ namespace atomex
             {
                 if (DerivedPasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
                 {
-                    return "Password has insufficient complexity";
+                    return AppResources.PasswordHasInsufficientComplexity;
                 }
 
                 if (DerivedPasswordConfirmation != null &&
                     !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
                 {
-                    return "Passwords do not match";
+                    return AppResources.PasswordsDoNotMatch;
                 }
             }
             return null;
@@ -307,14 +308,14 @@ namespace atomex
         {
             if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
             {
-                return "Password has insufficient complexity";
+                return AppResources.PasswordHasInsufficientComplexity;
             }
 
             if (StoragePassword != null &&
                 StoragePasswordConfirmation != null &&
                 !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
             {
-                return "Passwords do not match";
+                return AppResources.PasswordsDoNotMatch;
             }
             return null;
         }

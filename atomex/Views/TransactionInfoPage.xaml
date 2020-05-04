@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.TransactionInfoPage"
-             Title="Transaction info"
+             Title="{x:Static resources:AppResources.TransactionInfoPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
@@ -11,7 +12,7 @@
                        RowHeight="70"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
-                    <TableSection Title="Transaction Info"
+                    <TableSection Title="{x:Static resources:AppResources.TransactionInfo}"
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" Margin="20,0">
@@ -223,13 +224,13 @@
                                 </Frame>
                             </StackLayout>
                         </ViewCell>
-                        <TextCell Text="Description"
+                        <TextCell Text="{x:Static resources:AppResources.Description}"
                                   Detail="{Binding Description}"
                                   DetailColor="Gray" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Margin="20">
-                                    <Label Text="Transaction ID"/>
+                                    <Label Text="{x:Static resources:AppResources.TransactionId}"/>
                                     <Label Text="{Binding Id}"
                                            TextColor="Gray"
                                            FontSize="12"
@@ -251,7 +252,7 @@
                         <ViewCell>
                             <StackLayout VerticalOptions="CenterAndExpand"
                                          Margin="20,0">
-                                <Label Text="Fee"/>
+                                <Label Text="{x:Static resources:AppResources.FeeLabel}"/>
                                 <Label TextColor="Gray"
                                        FontSize="12">
                                     <Label.FormattedText>
@@ -264,11 +265,11 @@
                                 </Label>
                             </StackLayout>
                         </ViewCell>
-                        <TextCell Text="Transaction time"
+                        <TextCell Text="{x:Static resources:AppResources.TransactionTime} "
                                   Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                   DetailColor="Gray"/>
                         <ViewCell>
-                            <Button Text="Show in explorer"
+                            <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
                                     TextColor="{DynamicResource HintTextColor}"
                                     FontSize="18"
                                     Clicked="OnShowInExplorerClicked"/> 

@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel.TransactionViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -23,11 +24,11 @@ namespace atomex
             if (_transactionViewModel != null)
             {
                 await Clipboard.SetTextAsync(_transactionViewModel.Id);
-                await DisplayAlert("Transaction ID copied", _transactionViewModel.Id, "Ok");
+                await DisplayAlert(AppResources.TransactionIdCopied, _transactionViewModel.Id, AppResources.AcceptButton);
             }
             else
             {
-                await DisplayAlert("Error", "Copy error", "Ok");
+                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 

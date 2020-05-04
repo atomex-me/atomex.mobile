@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
-             Title="Portfolio"
+             Title="{x:Static resources:AppResources.PortfolioPageTitle}"
              Icon="NavBar__portfolio">
         <ContentPage.Content>
             <StackLayout>
@@ -22,7 +23,7 @@
                                Text="{Binding TotalCost, StringFormat='{0:f1} $'}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"/>
-                        <Label Text="Main wallet"
+                        <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
                                TextColor="Gray"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="14"

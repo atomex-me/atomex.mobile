@@ -4,7 +4,8 @@
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             Title="Send"
+             xmlns:resources="clr-namespace:atomex.Resources"
+             Title="{x:Static resources:AppResources.SendPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand"
@@ -34,7 +35,7 @@
                                        Style="{DynamicResource EntryHintStyle}"/>
                                  <controls:CustomEntry x:Name="Address"
                                                        Text="{Binding To}"
-                                                       Placeholder="Address"
+                                                       Placeholder="{x:Static resources:AppResources.AddressEntryPlaceholder}"
                                                        Keyboard="Text"
                                                        Focused="AddressEntryFocused"
                                                        Unfocused="AddressEntryFocused"
@@ -43,7 +44,7 @@
                             </StackLayout>
                         </Frame>
                         <Button Grid.Column="1"
-                                Text="Paste"
+                                Text="{x:Static resources:AppResources.PasteButton}"
                                 FontSize="16"
                                 BackgroundColor="White"
                                 Clicked="OnPasteButtonClicked"
@@ -79,7 +80,7 @@
                                 <controls:CustomEntry Grid.Row="1"
                                                       Grid.ColumnSpan="2"
                                                       x:Name="Amount"
-                                                      Placeholder="Amount"
+                                                      Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
                                                       Keyboard="Numeric"
                                                       Focused="AmountEntryFocused"
                                                       Unfocused="AmountEntryFocused"
@@ -94,7 +95,7 @@
                                TextColor="Gray"/>
                         <Button Grid.Row="1"
                                 Grid.Column="2"
-                                Text="MAX"
+                                Text="{x:Static resources:AppResources.MaxButton}"
                                 FontSize="16"
                                 TextColor="{DynamicResource HintTextColor}"
                                 Padding="20"
@@ -111,7 +112,7 @@
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        WidthRequest="60"
                        Padding="20">
-                    <Label Text="Fee:"
+                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame HasShadow="False"
@@ -158,7 +159,7 @@
                     <Frame Style="{DynamicResource FrameCaptionStyle}"
                            WidthRequest="60"
                            Padding="20">
-                        <Label Text="Gas price:"
+                        <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
                                Style="{DynamicResource LabelFrameCaptionStyle}"/>
                     </Frame>
                     <Frame HasShadow="False"
@@ -198,7 +199,7 @@
                     <Frame Style="{DynamicResource FrameCaptionStyle}"
                            WidthRequest="60"
                            Padding="20">
-                        <Label Text="Gas limit:"
+                        <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
                                Style="{DynamicResource LabelFrameCaptionStyle}"/>
                     </Frame>
                     <Frame HasShadow="False"
@@ -236,7 +237,7 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal"
                          Padding="20">
-                <Label Text="Use default fee:"
+                <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
                        FontAttributes="{DynamicResource RegularFont}"
                        FontSize="18"
                        VerticalTextAlignment="Center"
@@ -246,7 +247,7 @@
                         HorizontalOptions="EndAndExpand"
                         x:Name="UseDefaultFeeSwitch"/>
             </StackLayout>
-            <Button Text="NEXT"
+            <Button Text="{x:Static resources:AppResources.NextButton}"
                     x:Name="NextButton"
                     VerticalOptions="EndAndExpand"
                     Style="{DynamicResource MainButtonStyle}"

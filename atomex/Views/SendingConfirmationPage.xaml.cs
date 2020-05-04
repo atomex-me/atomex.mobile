@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using atomex.ViewModel.SendViewModels;
+using atomex.Resources;
 
 namespace atomex
 {
@@ -34,10 +35,10 @@ namespace atomex
                 if (error != null)
                 {
                     BlockActions(false);
-                    await DisplayAlert("Error", error, "Ok");
+                    await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
                     return;
                 }
-                var res = await DisplayAlert("Success", _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + " sent to " + _sendViewModel.To, null, "Ok");
+                var res = await DisplayAlert(AppResources.Success, _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + AppResources.sentTo + _sendViewModel.To, null, AppResources.AcceptButton);
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)
@@ -50,7 +51,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert("Error", "An error has occurred while sending transaction", "OK");
+                await DisplayAlert(AppResources.Error, AppResources.ErrorSendingTransaction, AppResources.AcceptButton);
             }
         }
 

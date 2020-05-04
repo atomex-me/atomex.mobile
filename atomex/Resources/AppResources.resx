@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    
+    <!-- Main -->
+    <data name="AcceptButton" xml:space="preserve">
+        <value>Ok</value>
+    </data>
+    <data name="CancelButton" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="NextButton" xml:space="preserve">
+        <value>NEXT</value>
+    </data>
+    <data name="PasswordEntryPlaceholder" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="PasswordConfirmationEntryPlaceholder" xml:space="preserve">
+        <value>Password confirmation</value>
+    </data>
+    <data name="AddressEntryPlaceholder" xml:space="preserve">
+        <value>Address</value>
+    </data>
+    <data name="AmountEntryPlaceholder" xml:space="preserve">
+        <value>Address</value>
+    </data>
+    <data name="UseDefaultFeeLabel" xml:space="preserve">
+        <value>Use default fee</value>
+    </data>
+    <data name="FeeLabel" xml:space="preserve">
+        <value>Fee</value>
+    </data>
+    <data name="ConfirmationLabel" xml:space="preserve">
+        <value>Confirmation</value>
+    </data>
+    <data name="AmountLabel" xml:space="preserve">
+        <value>Amount</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>To</value>
+    </data>
+    <data name="TransactionTime" xml:space="preserve">
+        <value>Transaction time</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>Price</value>
+    </data>
+    <data name="MaxButton" xml:space="preserve">
+        <value>MAX</value>
+    </data>
+    
+    <!-- Start Page -->
+    <data name="MyWalletsButton" xml:space="preserve">
+        <value>MY WALLETS</value>
+    </data>
+    <data name="CreateNewWalletButton" xml:space="preserve">
+        <value>CREATE NEW WALLET</value>
+    </data>
+    <data name="RestoreWalletButton" xml:space="preserve">
+        <value>RESTORE WALLET</value>
+    </data>
+    
+    <!-- My Wallets Page -->
+    <data name="SelectWalletLabel" xml:space="preserve">
+        <value>PLEASE SELECT YOUR WALLET</value>
+    </data>
+    <data name="MyWalletsTitle" xml:space="preserve">
+        <value>My wallets</value>
+    </data>
+    
+    <!-- Unlock Page -->
+    <data name="UnlockTitle" xml:space="preserve">
+        <value>Unlock wallet</value>
+    </data>
+    <data name="UnlockLabel" xml:space="preserve">
+        <value>Please enter your password</value>
+    </data>
+    <data name="UnlockButton" xml:space="preserve">
+        <value>UNLOCK</value>
+    </data>
+    
+    <!-- Create New Wallet Pages -->
+    <data name="CreateNewWalletPageTitle" xml:space="preserve">
+        <value>Create new wallet</value>
+    </data>
+    <data name="WalletTypeStepLabel" xml:space="preserve">
+        <value>Step 1: Wallet type</value>
+    </data>
+    <data name="SelectTypeLabel" xml:space="preserve">
+        <value>Please select your wallet type</value>
+    </data>
+    <data name="WalletNameStepLabel" xml:space="preserve">
+        <value>Step 1: Wallet name</value>
+    </data>
+    <data name="EnterNameLabel" xml:space="preserve">
+        <value>Please enter a name for your wallet</value>
+    </data>
+    <data name="WalletNameEntryPlaceholder" xml:space="preserve">
+        <value>Wallet name</value>
+    </data>
+    <data name="MnemonicPhraseStepLabel" xml:space="preserve">
+        <value>Step 3: Mnemonic phrase</value>
+    </data>
+    <data name="MnemonicDescriptionText" xml:space="preserve">
+        <value>     Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place</value>
+    </data>
+    <data name="LanguageLabel" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="WordCountLabel" xml:space="preserve">
+        <value>Word count</value>
+    </data>
+    <data name="MnemonicPhraseLabel" xml:space="preserve">
+        <value>Mnemonic phrase</value>
+    </data>
+    <data name="GenerateButton" xml:space="preserve">
+        <value>Generate</value>
+    </data>
+    <data name="EnterMnemonicPhraseLabel" xml:space="preserve">
+        <value>     Please enter a mnemonic phrase for your wallet</value>
+    </data>
+    <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
+        <value>Enter mnemonic phrase here</value>
+    </data>
+    <data name="DerivedPasswordStepLabel" xml:space="preserve">
+        <value>Step 4: Derived key password (optional)</value>
+    </data>
+    <data name="DerivedPasswordDescriptionText" xml:space="preserve">
+        <value>     This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and it password</value>
+    </data>
+    <data name="EnterDerivedPasswordText" xml:space="preserve">
+        <value>   If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
+    </data>
+    <data name="StoragePasswordStepLabel" xml:space="preserve">
+        <value>Step 5: Storage password</value>
+    </data>
+    <data name="StoragePasswordDescriptionText" xml:space="preserve">
+        <value>   This password is used to protect the stored secret keys and will be needed every time you start your wallet application.</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>CREATE</value>
+    </data>
+    
+    <!-- Portfolio Page -->
+    <data name="PortfolioPageTitle" xml:space="preserve">
+        <value>Portfolio</value>
+    </data>
+    <data name="MainWalletLabel" xml:space="preserve">
+        <value>Main wallet</value>
+    </data>
+    
+    <!-- Wallets Page -->
+    <data name="WalletsPageTitle" xml:space="preserve">
+        <value>Wallets</value>
+    </data>
+    
+    <!-- Currency Page -->
+    <data name="SendButton" xml:space="preserve">
+        <value>SEND</value>
+    </data>
+    <data name="ReceiveButton" xml:space="preserve">
+        <value>RECEIVE</value>
+    </data>
+    <data name="ConvertButton" xml:space="preserve">
+        <value>CONVERT</value>
+    </data>
+    <data name="DelegateButton" xml:space="preserve">
+        <value>DELEGATE</value>
+    </data>
+    <data name="BalanceUpdatingLabel" xml:space="preserve">
+        <value>Balance updating...</value>
+    </data>
+    
+    <!-- Transaction Page -->
+    <data name="TransactionInfoPageTitle" xml:space="preserve">
+        <value>Transaction info</value>
+    </data>
+    <data name="TransactionInfo" xml:space="preserve">
+        <value>Transaction info</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="TransactionId" xml:space="preserve">
+        <value>Transaction ID</value>
+    </data>
+    <data name="ShowInExplorerButton" xml:space="preserve">
+        <value>Show in explorer</value>
+    </data>
+    
+    <!-- Send Page -->
+    <data name="SendPageTitle" xml:space="preserve">
+        <value>Send</value>
+    </data>
+    <data name="PasteButton" xml:space="preserve">
+        <value>Paste</value>
+    </data>
+    <data name="GasPriceLabel" xml:space="preserve">
+        <value>Gas price</value>
+    </data>
+    <data name="GasLimitLabel" xml:space="preserve">
+        <value>Gas limit</value>
+    </data>
+    <data name="ConfirmTransactionLabel" xml:space="preserve">
+        <value>Confirm transaction</value>
+    </data>
+    
+    <!-- Receive Page -->
+    <data name="ReceivePageTitle" xml:space="preserve">
+        <value>Receive</value>
+    </data>
+    <data name="AddressLabel" xml:space="preserve">
+        <value>Address</value>
+    </data>
+    <data name="CopyButton" xml:space="preserve">
+        <value>Copy</value>
+    </data>
+    <data name="ShareButton" xml:space="preserve">
+        <value>Share</value>
+    </data>
+    
+    <!-- Delegation list Page -->
+    <data name="DelegationListPageTitle" xml:space="preserve">
+        <value>Delegation list</value>
+    </data>
+    <data name="NewDelegationButton" xml:space="preserve">
+        <value>NEW DELEGATION</value>
+    </data>
+     <data name="NoDelegationsLabel" xml:space="preserve">
+        <value>No delegations yet</value>
+    </data>
+    
+    <!-- Delegate Page -->
+    <data name="DelegatePageTitle" xml:space="preserve">
+        <value>Delegate</value>
+    </data>
+    <data name="DelegateToBakeryLabel" xml:space="preserve">
+        <value>Delegating to a bakery</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Available</value>
+    </data>
+    <data name="Balance" xml:space="preserve">
+        <value>Balance</value>
+    </data>
+    <data name="ToAddressLabel" xml:space="preserve">
+        <value>To Address</value>
+    </data>
+    <data name="FromAddressLabel" xml:space="preserve">
+        <value>From Address</value>
+    </data>
+    
+    <!-- Delegation Confirmation Page -->
+    <data name="WantToDelegate" xml:space="preserve">
+        <value>Do you really want to delegate?</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>To</value>
+    </data>
+    <data name="WithCommision" xml:space="preserve">
+        <value>With commision</value>
+    </data>
+    
+    <!-- Conversion list Page -->
+    <data name="ConversionsPageTitle" xml:space="preserve">
+        <value>Conversions</value>
+    </data>
+    <data name="NoSwapsLabel" xml:space="preserve">
+        <value>No swaps yet</value>
+    </data>
+    <data name="Convert" xml:space="preserve">
+        <value>Convert</value>
+    </data>
+    <data name="CreateSwapButton" xml:space="preserve">
+        <value>CREATE NEW SWAP</value>
+    </data>
+    
+    <!-- Swap Page -->
+    <data name="SwapInfoPageTitle" xml:space="preserve">
+        <value>Swap info</value>
+    </data>
+    <data name="SwapInfoLabel" xml:space="preserve">
+        <value>Swap info</value>
+    </data>
+    <data name="State" xml:space="preserve">
+        <value>State</value>
+    </data>
+    
+    <!-- Create Swap Pages -->
+    <data name="CreateSwapPageTitle" xml:space="preserve">
+        <value>Create swap</value>
+    </data>
+    <data name="SelectCurrenciesLabel" xml:space="preserve">
+        <value>Select currencies</value>
+    </data>
+    <data name="EstimatedPriceLabel" xml:space="preserve">
+        <value>Estimated price</value>
+    </data>
+    <data name="EnterAmountLabel" xml:space="preserve">
+        <value>Enter amount</value>
+    </data>
+    <data name="AvailableMarketVolumeLabel" xml:space="preserve">
+        <value>Available market volume</value>
+    </data>
+    <data name="NoLiquidityLabel" xml:space="preserve">
+        <value>No liquiditye</value>
+    </data>
+    <data name="EstimatedPaymentFeeLabel" xml:space="preserve">
+        <value>Estimated payment fee</value>
+    </data>
+    <data name="EstimatedRedeemFeeLabel" xml:space="preserve">
+        <value>Estimated redeeem fee</value>
+    </data>
+    
+    <!-- Settings Page -->
+    <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="SecurityLabel" xml:space="preserve">
+        <value>Security</value>
+    </data>
+    <data name="AutomaticSignOutLabel" xml:space="preserve">
+        <value>Automatic sign out</value>
+    </data>
+    <data name="PeriodOfInactiveLabel" xml:space="preserve">
+        <value>Period of inactive</value>
+    </data>
+    <data name="AccountLabel" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    
+    <!-- Messages -->
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="SignOut" xml:space="preserve">
+        <value>Sign out</value>
+    </data>
+    <data name="AreYouSure" xml:space="preserve">
+        <value>Are you sure?</value>
+    </data>
+    <data name="SuccessDelegation" xml:space="preserve">
+        <value>Successful delegation</value>
+    </data>
+    <data name="ExplorerUri" xml:space="preserve">
+        <value>Explorer Uri</value>
+    </data>
+    <data name="sentTo" xml:space="preserve">
+        <value>sent to</value>
+    </data>
+    <data name="isNotInWordlist" xml:space="preserve">
+        <value>is not in the wordlist for this language</value>
+    </data>
+    <data name="Word" xml:space="preserve">
+        <value>Word</value>
+    </data>
+    <data name="TransactionIdCopied" xml:space="preserve">
+        <value>Transaction ID copied</value>
+    </data>
+    <data name="InvalidPassword" xml:space="preserve">
+        <value>Invalid password</value>
+    </data>
+    <data name="PasswordsDoNotMatch" xml:space="preserve">
+        <value>Passwords do not match</value>
+    </data>
+    <data name="PasswordHasInsufficientComplexity" xml:space="preserve">
+        <value>Password has insufficient complexity</value>
+    </data>
+    <data name="InvalidAmount" xml:space="preserve">
+        <value>Invalid amount</value>
+    </data>
+    <data name="InvalidMnemonic" xml:space="preserve">
+        <value>Invalid mnemonic phrase</value>
+    </data>
+    <data name="InsufficientFunds" xml:space="preserve">
+        <value>Insufficient funds</value>
+    </data>
+    <data name="CopyError" xml:space="preserve">
+        <value>Copy error</value>
+    </data>
+    <data name="CreateWalletError" xml:space="preserve">
+        <value>Create wallet error</value>
+    </data>
+    <data name="GenerateMnemonic" xml:space="preserve">
+        <value>Generate mnemonic phrase</value>
+    </data>
+    <data name="EmptyClipboard" xml:space="preserve">
+        <value>Clipboard is empty</value>
+    </data>
+    <data name="ErrorSendingTransaction" xml:space="preserve">
+        <value>An error has occurred while sending transaction</value>
+    </data>
+    <data name="ErrorDelegation" xml:space="preserve">
+        <value>An error has occurred while delegation</value>
+    </data>
+    <data name="ErrorDelegationValidation" xml:space="preserve">
+        <value>An error has occurred while delegation validation</value>
+    </data>
+    <data name="ErrorNoXTZ" xml:space="preserve">
+        <value>You must have more than 0 XTZ</value>
+    </data>
+    <data name="ErrorZeroAmount" xml:space="preserve">
+        <value>Amount must be greater than 0</value>
+    </data>
+    <data name="ErrorNoLiquidity" xml:space="preserve">
+        <value>Not enough liquidity to convert a specified amount</value>
+    </data>
+    <data name="PriceChanged" xml:space="preserve">
+        <value>Price has changed</value>
+    </data>
+    <data name="SwapCreated" xml:space="preserve">
+        <value>Swap succesfully created</value>
+    </data>
+    <data name="ErrorPriceChanged" xml:space="preserve">
+        <value>Oops, the price has changed during the order sending. Please try again</value>
+    </data>
+    <data name="ErrorOrderRejected" xml:space="preserve">
+        <value>Order rejected</value>
+    </data>
+    <data name="ErrorAtomexNotResponding" xml:space="preserve">
+        <value>Atomex is not responding for a long time</value>
+    </data>
+    <data name="ErrorConversion" xml:space="preserve">
+        <value>Conversion error. Please contant technical support</value>
+    </data>
+    <data name="ErrorEmptyWalletName" xml:space="preserve">
+        <value>Wallet name must be not empty</value>
+    </data>
+    <data name="ErrorInvalidWalletName" xml:space="preserve">
+        <value>Invalid wallet name</value>
+    </data>
+    <data name="ErrorWalletAlreadyExists" xml:space="preserve">
+        <value>Wallet with the same name already exists</value>
+    </data>
+    <data name="ErrorEmptyMnemonic" xml:space="preserve">
+        <value>Mnemonic phrase can not be empty</value>
+    </data>
+    <data name="ErrorMnemonicWordCount" xml:space="preserve">
+        <value>Word count should be 12,15,18,21 or 24</value>
+    </data>
+</root>

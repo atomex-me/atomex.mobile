@@ -1,6 +1,6 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
-using Atomex;
 using Xamarin.Forms;
 
 namespace atomex
@@ -30,7 +30,7 @@ namespace atomex
             }
             else
             {
-                await DisplayAlert("Error", "You must have more than 0 XTZ", "Ok");
+                await DisplayAlert(AppResources.Error, AppResources.ErrorNoXTZ, AppResources.AcceptButton);
             }
         }
     }

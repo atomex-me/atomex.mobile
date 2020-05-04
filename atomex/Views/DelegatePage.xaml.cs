@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -59,7 +60,7 @@ namespace atomex
                 BlockActions(false);
                 if (error != null)
                 {
-                    await DisplayAlert("Error", error, "Ok");
+                    await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
                     return;
                 }
                 else
@@ -70,7 +71,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert("Error", "An error has occurred while delegation validation.", "OK");
+                await DisplayAlert(AppResources.Error, AppResources.ErrorDelegationValidation, AppResources.AcceptButton);
             }
         }
 
@@ -85,7 +86,7 @@ namespace atomex
             }
             else
             {
-                NextButton.Text = "NEXT";
+                NextButton.Text = AppResources.NextButton;
                 Content.Opacity = 1;
             }
         }

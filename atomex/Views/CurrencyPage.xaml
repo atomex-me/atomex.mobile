@@ -4,6 +4,7 @@
              x:Class="atomex.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <StackLayout Spacing="0">
@@ -16,7 +17,7 @@
             <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
                          Spacing="0">
                 <Label x:Name="LoaderLabel"
-                       Text="Balance updating..."
+                       Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
                        TextColor="{DynamicResource HintTextColor}"
                        FontFamily="{DynamicResource ItalicFont}"
                        HorizontalTextAlignment="Center"
@@ -63,18 +64,18 @@
                              HeightRequest="40"
                              Margin="10,20"
                              Spacing="0">
-                    <controls:LeftRoundedButton Text="SEND"
+                    <controls:LeftRoundedButton Text="{x:Static resources:AppResources.SendButton}"
                                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                                 Clicked="ShowSendPage"/>
-                    <Button Text="RECEIVE"
+                    <Button Text="{x:Static resources:AppResources.ReceiveButton}"
                             Style="{DynamicResource CurrencyActionButtonStyle}"
                             Clicked="ShowReceivePage"/>
-                    <Button Text="DELEGATE"
+                    <Button Text="{x:Static resources:AppResources.DelegateButton}"
                             x:Name="DelegateButton"
                             IsVisible="false"
                             Style="{DynamicResource CurrencyActionButtonStyle}"
                             Clicked="ShowDelegationPage"/>
-                    <controls:RightRoundedButton Text="CONVERT"
+                    <controls:RightRoundedButton Text="{x:Static resources:AppResources.ConvertButton}"
                                                  Style="{DynamicResource CurrencyActionButtonStyle}"
                                                  Clicked="ShowConversionPage"/>
                 </StackLayout>

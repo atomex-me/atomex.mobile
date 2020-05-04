@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -17,7 +18,7 @@ namespace atomex.Views.CreateSwap
         {
             InitializeComponent();
             _conversionViewModel = conversionViewModel;
-            Amount.Placeholder = "Amount, " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
+            Amount.Placeholder = AppResources.AmountEntryPlaceholder + ", " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
             BindingContext = _conversionViewModel;
         }
         private void AmountEntryFocused(object sender, FocusEventArgs args)
@@ -65,7 +66,7 @@ namespace atomex.Views.CreateSwap
         {
             if (String.IsNullOrWhiteSpace(Amount.Text))
             {
-                await DisplayAlert("Warning", "Enter amount", "Ok");
+                await DisplayAlert(AppResources.Warning, AppResources.EnterAmountLabel, AppResources.AcceptButton);
                 return;
             }
 
@@ -74,18 +75,18 @@ namespace atomex.Views.CreateSwap
             if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Amount must be greater than 0 " + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
+                InvalidAmountLabel.Text = AppResources.ErrorZeroAmount + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
                 return;
             }
             if (amount > _conversionViewModel.MaxAmount)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = "Insufficient funds";
+                InvalidAmountLabel.Text = AppResources.InsufficientFunds;
                 return;
             }
             if (_conversionViewModel.IsNoLiquidity)
             {
-                await DisplayAlert("Warning", "Not enough liquidity to convert a specified amount", "Ok");
+                await DisplayAlert(AppResources.Warning, AppResources.ErrorNoLiquidity, AppResources.AcceptButton);
                 return;
             }
             await Navigation.PushAsync(new ConfirmationPage(_conversionViewModel));

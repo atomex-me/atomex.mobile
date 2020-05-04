@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 using Atomex.Swaps;
 using Atomex.Abstract;
+using atomex.Resources;
 
 namespace atomex.ViewModel
 {
@@ -490,10 +491,10 @@ namespace atomex.ViewModel
                     .ToList();
 
                 if (Amount == 0)
-                    return new Error(Errors.SwapError, "Amount to convert must be greater than zero");
+                    return new Error(Errors.SwapError, AppResources.ErrorZeroAmount);
 
                 if (Amount > 0 && !fromWallets.Any())
-                    return new Error(Errors.SwapError, "Insufficient funds");
+                    return new Error(Errors.SwapError, AppResources.InsufficientFunds);
 
                 var symbol = App.Account.Symbols.SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
                 var baseCurrency = App.Account.Currencies.GetByName(symbol.Base);
@@ -503,7 +504,7 @@ namespace atomex.ViewModel
                 var orderPrice = _estimatedOrderPrice;
 
                 if (price == 0)
-                    return new Error(Errors.NoLiquidity, "Not enough liquidity to convert a specified amount.");
+                    return new Error(Errors.NoLiquidity, AppResources.ErrorNoLiquidity);
 
                 var qty = AmountHelper.AmountToQty(side, Amount, price, baseCurrency.DigitsMultiplier);
 
@@ -558,19 +559,19 @@ namespace atomex.ViewModel
                     }
 
                     if (currentOrder.Status == OrderStatus.Canceled)
-                        return new Error(Errors.PriceHasChanged, "Oops, the price has changed during the order sending. Please try again");
+                        return new Error(Errors.PriceHasChanged, AppResources.ErrorPriceChanged);
 
                     if (currentOrder.Status == OrderStatus.Rejected)
-                        return new Error(Errors.OrderRejected, "Order rejected");
+                        return new Error(Errors.OrderRejected, AppResources.ErrorOrderRejected);
                 }
 
-                return new Error(Errors.TimeoutReached, "Atomex is not responding for a long time");
+                return new Error(Errors.TimeoutReached, AppResources.ErrorAtomexNotResponding);
             }
             catch (Exception e)
             {
                 Log.Error(e, "Conversion error");
 
-                return new Error(Errors.SwapError, "Conversion error. Please contant technical support");
+                return new Error(Errors.SwapError, AppResources.ErrorConversion);
             }
         }
 

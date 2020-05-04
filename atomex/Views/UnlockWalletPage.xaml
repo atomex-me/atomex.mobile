@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.UnlockWalletPage"
-             Title="Unlock wallet"
+             Title="{x:Static resources:AppResources.UnlockTitle}"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <RelativeLayout>
@@ -21,7 +22,7 @@
                 <ffimageloadingsvg:SvgCachedImage WidthRequest="180"
                                                   HeightRequest="180"
                                                   Source="Entry.svg"/>
-                <Label Text="Please enter your password:"
+                <Label Text="{x:Static resources:AppResources.UnlockLabel}"
                        Style="{DynamicResource UnlockWalletTextStyle}"
                        x:Name="Label"/>
                 <Frame x:Name="PasswordFrame"
@@ -40,7 +41,7 @@
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"/>
                             <controls:CustomEntry x:Name="PasswordEntry"
-                                                  Placeholder="Password"
+                                                  Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
                                                   Keyboard="Text"
                                                   Focused="PasswordEntryFocused"
                                                   Unfocused="PasswordEntryFocused"
@@ -50,7 +51,7 @@
                         </StackLayout>
                     </StackLayout>
                 </Frame>
-                <Button Text="Unlock"
+                <Button Text="{x:Static resources:AppResources.UnlockButton}"
                         Margin="0,20"
                         Style="{DynamicResource MainButtonStyle}"
                         Clicked="OnUnlockButtonClicked"/>

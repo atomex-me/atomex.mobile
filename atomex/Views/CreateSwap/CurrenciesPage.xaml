@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
-             Title="Create swap - step 1"
+             Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Select currencies:"
+            <Label Text="{x:Static resources:AppResources.SelectCurrenciesLabel}"
                    HorizontalTextAlignment="Center"
                    Padding="20,30,20,10"
                    FontSize="22"
@@ -26,7 +27,7 @@
                 </Grid.ColumnDefinitions>
                 <Frame Padding="5"
                        Style="{DynamicResource FrameCaptionStyle}">
-                    <Label Text="From:"
+                    <Label Text="{x:Static resources:AppResources.FromLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame Grid.Column="1"
@@ -34,7 +35,6 @@
                        Padding="0"
                        x:Name="FromCurrencyFrame">
                     <Picker x:Name="pickerFrom"
-                            Title="Select a currency"
                             ItemsSource="{Binding FromCurrencies}"
                             ItemDisplayBinding="{Binding Currency.Description}"
                             SelectedItem="{Binding FromCurrencyViewModel}"
@@ -56,7 +56,7 @@
                 <Frame Grid.Row="1"
                        Padding="5"
                        Style="{DynamicResource FrameCaptionStyle}">
-                    <Label Text="To:"
+                    <Label Text="{x:Static resources:AppResources.ToLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame Grid.Row="1"
@@ -67,7 +67,6 @@
                     <Picker Grid.Row="1"
                             Grid.Column="1"
                             x:Name="pickerTo"
-                            Title="Select a currency"
                             ItemsSource="{Binding ToCurrencies}"
                             ItemDisplayBinding="{Binding Currency.Description}"
                             SelectedItem="{Binding ToCurrencyViewModel}"
@@ -90,15 +89,16 @@
             <Label Margin="20">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Estimated price: "
+                        <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
                               FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text=" "/>
                         <Span Text="{Binding EstimatedPrice}"
                               FontSize="18"
                               FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button Text="NEXT"
+            <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="20"
                     VerticalOptions="EndAndExpand"
                     Style="{DynamicResource MainButtonStyle}"

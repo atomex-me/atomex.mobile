@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -58,7 +59,7 @@ namespace atomex
             {
                 Content.Opacity = 1f;
                 Loader.IsRunning = false;
-                await DisplayAlert("Error", "Invalid password", "Ok");
+                await DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
             }
         }
     }

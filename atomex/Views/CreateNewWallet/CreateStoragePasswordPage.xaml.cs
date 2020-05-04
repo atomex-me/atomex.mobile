@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -106,7 +107,7 @@ namespace atomex.Views.CreateNewWallet
                 {
                     Content.Opacity = 1f;
                     Loader.IsRunning = false;
-                    await DisplayAlert("Error", "Create wallet error", "Ok");
+                    await DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
                 }
             }
             else

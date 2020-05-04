@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SendingConfirmationPage"
-             Title="Confirmation"
+             Title="{x:Static resources:AppResources.ConfirmationLabel}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <RelativeLayout>
@@ -16,11 +17,11 @@
                 <TableView Intent="Form"
                            RowHeight="80">
                     <TableRoot>
-                        <TableSection Title="Confirm transaction">
+                        <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}">
                             <ViewCell>
                                 <StackLayout Padding="20,10"
                                              VerticalOptions="CenterAndExpand">
-                                    <Label Text="To"
+                                    <Label Text="{x:Static resources:AppResources.ToLabel}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <Label TextColor="{DynamicResource HintTextColor}"
@@ -30,7 +31,7 @@
                             <ViewCell>
                                 <StackLayout Padding="20,10"
                                              VerticalOptions="CenterAndExpand">
-                                    <Label Text="Amount"
+                                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <Label TextColor="{DynamicResource HintTextColor}">
@@ -51,7 +52,7 @@
                             <ViewCell>
                                 <StackLayout Padding="20,10"
                                              VerticalOptions="CenterAndExpand">
-                                    <Label Text="Fee"
+                                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"/>
                                     <Label TextColor="{DynamicResource HintTextColor}"
@@ -88,7 +89,7 @@
                             <ViewCell>
                                 <StackLayout Padding="20,10"
                                     VerticalOptions="CenterAndExpand">
-                                    <Button Text="SEND"
+                                    <Button Text="{x:Static resources:AppResources.SendButton}"
                                             x:Name="SendButton"
                                             Style="{DynamicResource MainButtonStyle}"
                                             Clicked="OnSendButtonClicked"/>

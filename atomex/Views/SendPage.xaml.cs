@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using atomex.ViewModel.SendViewModels;
+using atomex.Resources;
 
 namespace atomex
 {
@@ -128,7 +129,7 @@ namespace atomex
             }
             else
             {
-                await DisplayAlert("Error", "Clipboard is empty", "Ok");
+                await DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
             }
         }
 
@@ -137,7 +138,7 @@ namespace atomex
             var error = _sendViewModel.OnNextCommand();
             if (error != null)
             {
-                await DisplayAlert("Warning", error, "Ok");
+                await DisplayAlert(AppResources.Warning, error, AppResources.AcceptButton);
             }
             else
             {

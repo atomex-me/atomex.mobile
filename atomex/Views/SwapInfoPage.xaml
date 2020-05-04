@@ -2,14 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SwapInfoPage"
-             Title="Swap info">
+             Title="{x:Static resources:AppResources.SwapInfoPageTitle}">
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Form"
                        RowHeight="70">
                 <TableRoot>
-                    <TableSection Title="Swap Info"
+                    <TableSection Title="{x:Static resources:AppResources.SwapInfoLabel}"
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal"
@@ -57,7 +58,7 @@
                         </ViewCell>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="State"
+                                <Label Text="{x:Static resources:AppResources.State}"
                                        Margin="20,0,0,0"
                                        VerticalTextAlignment="Center"
                                        FontSize="18"/>
@@ -108,10 +109,10 @@
                                 </Frame>
                             </StackLayout>
                         </ViewCell>
-                        <TextCell Text="Price"
+                        <TextCell Text="{x:Static resources:AppResources.Price}"
                                   Detail="{Binding Price}"
                                   DetailColor="Gray"/>
-                        <TextCell Text="Transaction time"
+                        <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
                                   Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                   DetailColor="Gray"/>
                     </TableSection>

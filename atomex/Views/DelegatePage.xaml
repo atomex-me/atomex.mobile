@@ -2,13 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegatePage"
-             Title="Delegate"
+             Title="{x:Static resources:AppResources.DelegatePageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
                      Margin="20">
-            <Label Text="Delegating to a bakery"
+            <Label Text="{x:Static resources:AppResources.DelegateToBakeryLabel}"
                    FontFamily="{DynamicResource RegularFont}"
                    FontSize="20"
                    HorizontalTextAlignment="Center"
@@ -75,7 +76,7 @@
                              VerticalOptions="Center"
                              Padding="10,0,0,0"
                              Spacing="0">
-                    <Label Text="Available"
+                    <Label Text="{x:Static resources:AppResources.Available}"
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="End"
                            FontFamily="{DynamicResource LightFont}"
@@ -98,7 +99,7 @@
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        WidthRequest="60"
                        Padding="20">
-                    <Label Text="To Address"
+                    <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame HasShadow="False"
@@ -131,7 +132,7 @@
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        Grid.RowSpan="2"
                        Padding="20">
-                    <Label Text="From Address"
+                    <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame Grid.RowSpan="2"
@@ -169,7 +170,8 @@
                        IsEnabled="False">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="Balance "/>
+                            <Span Text="{x:Static resources:AppResources.Balance}"/>
+                            <Span Text=" "/>
                             <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"/>
                             <Span Text=" xtz"/>
                     </FormattedString>
@@ -188,7 +190,7 @@
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        WidthRequest="60"
                        Padding="20">
-                    <Label Text="Fee:"
+                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
                 <Frame HasShadow="False"
@@ -230,7 +232,7 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal"
                          Padding="20">
-                <Label Text="Use default fee:"
+                <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
                        FontAttributes="{DynamicResource RegularFont}"
                        FontSize="18"
                        VerticalTextAlignment="Center"
@@ -240,7 +242,7 @@
                         HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <RelativeLayout>
-                <Button Text="NEXT"
+                <Button Text="{x:Static resources:AppResources.NextButton}"
                         x:Name="NextButton"
                         Style="{DynamicResource MainButtonStyle}"
                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

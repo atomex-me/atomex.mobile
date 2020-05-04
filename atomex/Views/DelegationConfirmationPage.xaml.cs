@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -31,11 +32,11 @@ namespace atomex
                 if (result.Error != null)
                 {
                     BlockActions(false);
-                    await DisplayAlert("Error", result.Error.Description, "Ok");
+                    await DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
                     return;
                 }
                 await _delegateViewModel.LoadDelegationInfoAsync();
-                var res = await DisplayAlert("Successful delegation", "Explorer Uri: " + result.Value, null, "Ok");
+                var res = await DisplayAlert(AppResources.SuccessDelegation, AppResources.ExplorerUri + ": " + result.Value, null, AppResources.AcceptButton);
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)
@@ -48,7 +49,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert("Error", "An error has occurred while delegation.", "OK");
+                await DisplayAlert(AppResources.Error, AppResources.ErrorDelegation, AppResources.AcceptButton);
             }
         }
 
