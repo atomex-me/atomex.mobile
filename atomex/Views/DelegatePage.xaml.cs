@@ -71,7 +71,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert(AppResources.Error, AppResources.ErrorDelegationValidation, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, AppResources.DelegationValidationError, AppResources.AcceptButton);
             }
         }
 

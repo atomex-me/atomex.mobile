@@ -491,7 +491,7 @@ namespace atomex.ViewModel
                     .ToList();
 
                 if (Amount == 0)
-                    return new Error(Errors.SwapError, AppResources.ErrorZeroAmount);
+                    return new Error(Errors.SwapError, AppResources.AmountLessThanZeroError);
 
                 if (Amount > 0 && !fromWallets.Any())
                     return new Error(Errors.SwapError, AppResources.InsufficientFunds);
@@ -504,7 +504,7 @@ namespace atomex.ViewModel
                 var orderPrice = _estimatedOrderPrice;
 
                 if (price == 0)
-                    return new Error(Errors.NoLiquidity, AppResources.ErrorNoLiquidity);
+                    return new Error(Errors.NoLiquidity, AppResources.NoLiquidityError);
 
                 var qty = AmountHelper.AmountToQty(side, Amount, price, baseCurrency.DigitsMultiplier);
 
@@ -559,19 +559,19 @@ namespace atomex.ViewModel
                     }
 
                     if (currentOrder.Status == OrderStatus.Canceled)
-                        return new Error(Errors.PriceHasChanged, AppResources.ErrorPriceChanged);
+                        return new Error(Errors.PriceHasChanged, AppResources.PriceChangedError);
 
                     if (currentOrder.Status == OrderStatus.Rejected)
-                        return new Error(Errors.OrderRejected, AppResources.ErrorOrderRejected);
+                        return new Error(Errors.OrderRejected, AppResources.OrderRejectedError);
                 }
 
-                return new Error(Errors.TimeoutReached, AppResources.ErrorAtomexNotResponding);
+                return new Error(Errors.TimeoutReached, AppResources.TimeoutReachedError);
             }
             catch (Exception e)
             {
                 Log.Error(e, "Conversion error");
 
-                return new Error(Errors.SwapError, AppResources.ErrorConversion);
+                return new Error(Errors.SwapError, AppResources.ConversionError);
             }
         }
 

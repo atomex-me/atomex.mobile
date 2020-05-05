@@ -51,7 +51,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert(AppResources.Error, AppResources.ErrorSendingTransaction, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
             }
         }
 

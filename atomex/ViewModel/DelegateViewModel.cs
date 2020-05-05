@@ -1,10 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -129,7 +129,6 @@ namespace atomex.ViewModel
                     _fee = feeAmount;
 
                     OnPropertyChanged(nameof(FeeString));
-                    Warning = string.Empty;
                 }
 
                 OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
@@ -193,38 +192,27 @@ namespace atomex.ViewModel
             }
         }
 
-        private string _warning;
-        public string Warning
-        {
-            get => _warning;
-            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
-        }
-
         public async Task<string> Validate()
         {
             if (string.IsNullOrEmpty(Address))
             {
-                Warning = "Empty Address";
-                return "Empty Address";
+                return AppResources.EmptyAddressError;
             }
 
             if (!_tezos.IsValidAddress(Address))
             {
-                Warning = "Invalid Address Error";
-                return "Invalid Address Error";
+                return AppResources.InvalidAddressError;
             }
 
             if (Fee < 0)
             {
-                Warning = "Commission Less Than Zero Error";
-                return "Commission Less Than Zero Error";
+                return AppResources.InvalidAddressError;
             }
 
             var result = await GetDelegate();
 
             if (result.HasError)
             {
-                Warning = result.Error.Description;
                 return result.Error.Description;
             }
 
@@ -325,7 +313,7 @@ namespace atomex.ViewModel
 
             if (!FromAddressList?.Any() ?? false)
             {
-                Warning = "You don't have non-empty accounts";
+                //Warning = "You don't have non-empty accounts";
                 return;
             }
 
@@ -336,7 +324,7 @@ namespace atomex.ViewModel
             CancellationToken cancellationToken = default)
         {
             if (_walletAddressViewModel.WalletAddress == null)
-                return new Error(Errors.InvalidWallets, "You don't have non-empty accounts");
+                return new Error(Errors.InvalidWallets, AppResources.DontHaveNonEmptyAccountsError);
 
             var wallet = (HdWallet)App.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
@@ -351,16 +339,16 @@ namespace atomex.ViewModel
             }
             catch
             {
-                return new Error(Errors.WrongDelegationAddress, "Wrong delegation address");
+                return new Error(Errors.WrongDelegationAddress, AppResources.WrongDelegationAddressError);
             }
 
             if (delegateData["deactivated"].Value<bool>())
-                return new Error(Errors.WrongDelegationAddress, "Baker is deactivated. Pick another one");
+                return new Error(Errors.WrongDelegationAddress, AppResources.BakerIsDeactivated);
 
             var delegators = delegateData["delegated_contracts"]?.Values<string>();
 
             if (delegators.Contains(WalletAddressViewModel.WalletAddress.Address))
-                return new Error(Errors.AlreadyDelegated, $"Already delegated from {WalletAddressViewModel.WalletAddress.Address} to {_address}");
+                return new Error(Errors.AlreadyDelegated, $"{AppResources.AlreadyDelegatedFrom} {WalletAddressViewModel.WalletAddress.Address} {AppResources.to} {_address}");
 
             var tx = new TezosTransaction
             {
@@ -377,7 +365,7 @@ namespace atomex.ViewModel
             {
                 var calculatedFee = await tx.AutoFillAsync(keyStorage, WalletAddressViewModel.WalletAddress, UseDefaultFee);
                 if (!calculatedFee)
-                    return new Error(Errors.TransactionCreationError, $"Autofill transaction failed");
+                    return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
 
                 Fee = tx.Fee;
                 _tx = tx;
@@ -385,10 +373,10 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Autofill delegation error");
-                return new Error(Errors.TransactionCreationError, $"Autofill delegation error. Try again later");
+                return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
             }
 
-            return "Successful check";
+            return AppResources.SuccessfulCheck;
         }
 
         public async Task<Result<string>> Delegate()
@@ -410,7 +398,7 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "delegation send error.");
-                return "An error has occurred while delegation.";
+                return AppResources.DelegationError;
             }
         }
 

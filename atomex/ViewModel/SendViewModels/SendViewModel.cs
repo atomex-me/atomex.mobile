@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
@@ -158,22 +159,22 @@ namespace atomex.ViewModel.SendViewModels
         {
             if (string.IsNullOrEmpty(To))
             {
-                return "Address does not empty";
+                return AppResources.EmptyAddressError;
             }
 
             if (!Currency.IsValidAddress(To))
             {
-                return "Invalid Address";
+                return AppResources.InvalidAddressError;
             }
 
             if (Amount <= 0)
             {
-                return "Amount less than zero";
+                return AppResources.AmountLessThanZeroError;
             }
 
             if (Fee <= 0)
             {
-                return "Commission less than zero";
+                return AppResources.CommissionLessThanZeroError;
             }
 
             var isToken = Currency.FeeCurrencyName != Currency.Name;
@@ -182,7 +183,7 @@ namespace atomex.ViewModel.SendViewModels
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
             {
-                return "Available funds error";
+                return AppResources.AvailableFundsError;
             }
 
             return null;
@@ -206,9 +207,8 @@ namespace atomex.ViewModel.SendViewModels
             }
             catch (Exception e)
             {
-                //return "An error has occurred while sending transaction.",
                 Log.Error(e, "Transaction send error.");
-                return "Transaction send error.";
+                return AppResources.SendingTransactionError;
             }
         }
 

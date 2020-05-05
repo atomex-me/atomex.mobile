@@ -605,6 +605,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string PeriodInactivePageTitle {
+            get {
+                return ResourceManager.GetString("PeriodInactivePageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string BalanceUpdateIntervalPageTitle {
+            get {
+                return ResourceManager.GetString("BalanceUpdateIntervalPageTitle", resourceCulture);
+            }
+        }
+        
         internal static string SecurityLabel {
             get {
                 return ResourceManager.GetString("SecurityLabel", resourceCulture);
@@ -677,6 +689,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string to {
+            get {
+                return ResourceManager.GetString("to", resourceCulture);
+            }
+        }
+        
         internal static string isNotInWordlist {
             get {
                 return ResourceManager.GetString("isNotInWordlist", resourceCulture);
@@ -731,15 +749,15 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string CopyError {
+        internal static string PriceChanged {
             get {
-                return ResourceManager.GetString("CopyError", resourceCulture);
+                return ResourceManager.GetString("PriceChanged", resourceCulture);
             }
         }
         
-        internal static string CreateWalletError {
+        internal static string SwapCreated {
             get {
-                return ResourceManager.GetString("CreateWalletError", resourceCulture);
+                return ResourceManager.GetString("SwapCreated", resourceCulture);
             }
         }
         
@@ -755,105 +773,165 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ErrorSendingTransaction {
+        internal static string EmptyWalletName {
             get {
-                return ResourceManager.GetString("ErrorSendingTransaction", resourceCulture);
+                return ResourceManager.GetString("EmptyWalletName", resourceCulture);
             }
         }
         
-        internal static string ErrorDelegation {
+        internal static string InvalidWalletName {
             get {
-                return ResourceManager.GetString("ErrorDelegation", resourceCulture);
+                return ResourceManager.GetString("InvalidWalletName", resourceCulture);
             }
         }
         
-        internal static string ErrorDelegationValidation {
+        internal static string WalletAlreadyExists {
             get {
-                return ResourceManager.GetString("ErrorDelegationValidation", resourceCulture);
+                return ResourceManager.GetString("WalletAlreadyExists", resourceCulture);
             }
         }
         
-        internal static string ErrorNoXTZ {
+        internal static string BakerIsDeactivated {
             get {
-                return ResourceManager.GetString("ErrorNoXTZ", resourceCulture);
+                return ResourceManager.GetString("BakerIsDeactivated", resourceCulture);
             }
         }
         
-        internal static string ErrorZeroAmount {
+        internal static string AlreadyDelegatedFrom {
             get {
-                return ResourceManager.GetString("ErrorZeroAmount", resourceCulture);
+                return ResourceManager.GetString("AlreadyDelegatedFrom", resourceCulture);
             }
         }
         
-        internal static string ErrorNoLiquidity {
+        internal static string AutofillTransactionFailed {
             get {
-                return ResourceManager.GetString("ErrorNoLiquidity", resourceCulture);
+                return ResourceManager.GetString("AutofillTransactionFailed", resourceCulture);
             }
         }
         
-        internal static string PriceChanged {
+        internal static string SuccessfulCheck {
             get {
-                return ResourceManager.GetString("PriceChanged", resourceCulture);
+                return ResourceManager.GetString("SuccessfulCheck", resourceCulture);
             }
         }
         
-        internal static string SwapCreated {
+        internal static string CopyError {
             get {
-                return ResourceManager.GetString("SwapCreated", resourceCulture);
+                return ResourceManager.GetString("CopyError", resourceCulture);
             }
         }
         
-        internal static string ErrorPriceChanged {
+        internal static string CreateWalletError {
             get {
-                return ResourceManager.GetString("ErrorPriceChanged", resourceCulture);
+                return ResourceManager.GetString("CreateWalletError", resourceCulture);
             }
         }
         
-        internal static string ErrorOrderRejected {
+        internal static string EmptyAddressError {
             get {
-                return ResourceManager.GetString("ErrorOrderRejected", resourceCulture);
+                return ResourceManager.GetString("EmptyAddressError", resourceCulture);
             }
         }
         
-        internal static string ErrorAtomexNotResponding {
+        internal static string InvalidAddressError {
             get {
-                return ResourceManager.GetString("ErrorAtomexNotResponding", resourceCulture);
+                return ResourceManager.GetString("InvalidAddressError", resourceCulture);
             }
         }
         
-        internal static string ErrorConversion {
+        internal static string CommissionLessThanZeroError {
             get {
-                return ResourceManager.GetString("ErrorConversion", resourceCulture);
+                return ResourceManager.GetString("CommissionLessThanZeroError", resourceCulture);
             }
         }
         
-        internal static string ErrorEmptyWalletName {
+        internal static string SendingTransactionError {
             get {
-                return ResourceManager.GetString("ErrorEmptyWalletName", resourceCulture);
+                return ResourceManager.GetString("SendingTransactionError", resourceCulture);
             }
         }
         
-        internal static string ErrorInvalidWalletName {
+        internal static string DelegationError {
             get {
-                return ResourceManager.GetString("ErrorInvalidWalletName", resourceCulture);
+                return ResourceManager.GetString("DelegationError", resourceCulture);
             }
         }
         
-        internal static string ErrorWalletAlreadyExists {
+        internal static string DelegationValidationError {
             get {
-                return ResourceManager.GetString("ErrorWalletAlreadyExists", resourceCulture);
+                return ResourceManager.GetString("DelegationValidationError", resourceCulture);
             }
         }
         
-        internal static string ErrorEmptyMnemonic {
+        internal static string NoTezosError {
             get {
-                return ResourceManager.GetString("ErrorEmptyMnemonic", resourceCulture);
+                return ResourceManager.GetString("NoTezosError", resourceCulture);
             }
         }
         
-        internal static string ErrorMnemonicWordCount {
+        internal static string AmountLessThanZeroError {
             get {
-                return ResourceManager.GetString("ErrorMnemonicWordCount", resourceCulture);
+                return ResourceManager.GetString("AmountLessThanZeroError", resourceCulture);
+            }
+        }
+        
+        internal static string NoLiquidityError {
+            get {
+                return ResourceManager.GetString("NoLiquidityError", resourceCulture);
+            }
+        }
+        
+        internal static string PriceChangedError {
+            get {
+                return ResourceManager.GetString("PriceChangedError", resourceCulture);
+            }
+        }
+        
+        internal static string OrderRejectedError {
+            get {
+                return ResourceManager.GetString("OrderRejectedError", resourceCulture);
+            }
+        }
+        
+        internal static string TimeoutReachedError {
+            get {
+                return ResourceManager.GetString("TimeoutReachedError", resourceCulture);
+            }
+        }
+        
+        internal static string ConversionError {
+            get {
+                return ResourceManager.GetString("ConversionError", resourceCulture);
+            }
+        }
+        
+        internal static string AvailableFundsError {
+            get {
+                return ResourceManager.GetString("AvailableFundsError", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyMnemonicError {
+            get {
+                return ResourceManager.GetString("EmptyMnemonicError", resourceCulture);
+            }
+        }
+        
+        internal static string MnemonicWordCountError {
+            get {
+                return ResourceManager.GetString("MnemonicWordCountError", resourceCulture);
+            }
+        }
+        
+        internal static string DontHaveNonEmptyAccountsError {
+            get {
+                return ResourceManager.GetString("DontHaveNonEmptyAccountsError", resourceCulture);
+            }
+        }
+        
+        internal static string WrongDelegationAddressError {
+            get {
+                return ResourceManager.GetString("WrongDelegationAddressError", resourceCulture);
             }
         }
     }

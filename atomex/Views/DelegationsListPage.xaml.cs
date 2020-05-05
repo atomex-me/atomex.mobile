@@ -30,7 +30,7 @@ namespace atomex
             }
             else
             {
-                await DisplayAlert(AppResources.Error, AppResources.ErrorNoXTZ, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, AppResources.NoTezosError, AppResources.AcceptButton);
             }
         }
     }

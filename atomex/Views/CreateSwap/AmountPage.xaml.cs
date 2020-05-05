@@ -75,7 +75,7 @@ namespace atomex.Views.CreateSwap
             if (amount <= 0)
             {
                 InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = AppResources.ErrorZeroAmount + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
+                InvalidAmountLabel.Text = AppResources.AmountLessThanZeroError + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
                 return;
             }
             if (amount > _conversionViewModel.MaxAmount)
@@ -86,7 +86,7 @@ namespace atomex.Views.CreateSwap
             }
             if (_conversionViewModel.IsNoLiquidity)
             {
-                await DisplayAlert(AppResources.Warning, AppResources.ErrorNoLiquidity, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Warning, AppResources.NoLiquidityError, AppResources.AcceptButton);
                 return;
             }
             await Navigation.PushAsync(new ConfirmationPage(_conversionViewModel));

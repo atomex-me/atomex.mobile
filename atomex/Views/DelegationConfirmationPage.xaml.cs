@@ -49,7 +49,7 @@ namespace atomex
             catch (Exception e)
             {
                 BlockActions(false);
-                await DisplayAlert(AppResources.Error, AppResources.ErrorDelegation, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, AppResources.DelegationError, AppResources.AcceptButton);
             }
         }
 

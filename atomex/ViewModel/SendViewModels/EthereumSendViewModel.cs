@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
-using Serilog;
 
 
 namespace atomex.ViewModel.SendViewModels
@@ -240,23 +240,22 @@ namespace atomex.ViewModel.SendViewModels
         {
             if (string.IsNullOrEmpty(To))
             {
-                return "Resources.SvEmptyAddressError";
+                return AppResources.EmptyAddressError;
             }
 
             if (!Currency.IsValidAddress(To))
             {
-                return "Resources.SvInvalidAddressError";
-                
+                return AppResources.InvalidAddressError;
             }
 
             if (Amount <= 0)
             {
-                return "Resources.SvAmountLessThanZeroError";
+                return AppResources.AmountLessThanZeroError;
             }
 
             if (Fee <= 0)
             {
-                return "Resources.SvCommissionLessThanZeroError";
+                return AppResources.CommissionLessThanZeroError;
             }
 
             var isToken = Currency.FeeCurrencyName != Currency.Name;
@@ -265,7 +264,7 @@ namespace atomex.ViewModel.SendViewModels
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
             {
-                return "Resources.SvAvailableFundsError";
+                return AppResources.AvailableFundsError;
             }
 
             return null;

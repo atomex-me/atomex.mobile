@@ -183,13 +183,13 @@ namespace atomex
         {
             if (string.IsNullOrEmpty(WalletName))
             {
-                return AppResources.ErrorEmptyWalletName;
+                return AppResources.EmptyWalletName;
             }
 
             if (WalletName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 ||
                 WalletName.IndexOf('.') != -1)
             {
-                return AppResources.ErrorInvalidWalletName;
+                return AppResources.InvalidWalletName;
             }
 
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -206,12 +206,12 @@ namespace atomex
             }
             catch (Exception)
             {
-                return AppResources.ErrorInvalidWalletName;
+                return AppResources.InvalidWalletName;
             }
 
             if (File.Exists(pathToWallet))
             {
-                return AppResources.ErrorWalletAlreadyExists;
+                return AppResources.WalletAlreadyExists;
             }
 
             PathToWallet = pathToWallet;
@@ -229,7 +229,7 @@ namespace atomex
         {
             if (string.IsNullOrEmpty(Mnemonic))
             {
-                return AppResources.ErrorEmptyMnemonic;
+                return AppResources.EmptyMnemonicError;
             }
 
             try
@@ -240,7 +240,7 @@ namespace atomex
             catch (Exception e)
             {
                 if (e.Message.Contains("Word count should be"))
-                    return AppResources.ErrorMnemonicWordCount;
+                    return AppResources.MnemonicWordCountError;
                 else if (e.Message.Contains("is not in the wordlist"))
                     return AppResources.Word + " " + e.Message.Split(' ')[1] + AppResources.isNotInWordlist;
                 else

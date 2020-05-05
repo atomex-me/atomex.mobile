@@ -330,6 +330,18 @@
     <data name="SettingsPageTitle" xml:space="preserve">
         <value>Settings</value>
     </data>
+    <data name="PeriodInactivePageTitle" xml:space="preserve">
+        <value>Period of inactive</value>
+    </data>
+    <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
+        <value>Balance update interval</value>
+    </data>
+    <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
+        <value>Balance update interval</value>
+    </data>
+    <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Settings</value>
+    </data>
     <data name="SecurityLabel" xml:space="preserve">
         <value>Security</value>
     </data>
@@ -368,6 +380,9 @@
     <data name="sentTo" xml:space="preserve">
         <value>sent to</value>
     </data>
+    <data name="to" xml:space="preserve">
+        <value>to</value>
+    </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>is not in the wordlist for this language</value>
     </data>
@@ -395,11 +410,11 @@
     <data name="InsufficientFunds" xml:space="preserve">
         <value>Insufficient funds</value>
     </data>
-    <data name="CopyError" xml:space="preserve">
-        <value>Copy error</value>
+    <data name="PriceChanged" xml:space="preserve">
+        <value>Price has changed</value>
     </data>
-    <data name="CreateWalletError" xml:space="preserve">
-        <value>Create wallet error</value>
+    <data name="SwapCreated" xml:space="preserve">
+        <value>Swap succesfully created</value>
     </data>
     <data name="GenerateMnemonic" xml:space="preserve">
         <value>Generate mnemonic phrase</value>
@@ -407,55 +422,85 @@
     <data name="EmptyClipboard" xml:space="preserve">
         <value>Clipboard is empty</value>
     </data>
-    <data name="ErrorSendingTransaction" xml:space="preserve">
-        <value>An error has occurred while sending transaction</value>
-    </data>
-    <data name="ErrorDelegation" xml:space="preserve">
-        <value>An error has occurred while delegation</value>
-    </data>
-    <data name="ErrorDelegationValidation" xml:space="preserve">
-        <value>An error has occurred while delegation validation</value>
-    </data>
-    <data name="ErrorNoXTZ" xml:space="preserve">
-        <value>You must have more than 0 XTZ</value>
-    </data>
-    <data name="ErrorZeroAmount" xml:space="preserve">
-        <value>Amount must be greater than 0</value>
-    </data>
-    <data name="ErrorNoLiquidity" xml:space="preserve">
-        <value>Not enough liquidity to convert a specified amount</value>
-    </data>
-    <data name="PriceChanged" xml:space="preserve">
-        <value>Price has changed</value>
-    </data>
-    <data name="SwapCreated" xml:space="preserve">
-        <value>Swap succesfully created</value>
-    </data>
-    <data name="ErrorPriceChanged" xml:space="preserve">
-        <value>Oops, the price has changed during the order sending. Please try again</value>
-    </data>
-    <data name="ErrorOrderRejected" xml:space="preserve">
-        <value>Order rejected</value>
-    </data>
-    <data name="ErrorAtomexNotResponding" xml:space="preserve">
-        <value>Atomex is not responding for a long time</value>
-    </data>
-    <data name="ErrorConversion" xml:space="preserve">
-        <value>Conversion error. Please contant technical support</value>
-    </data>
-    <data name="ErrorEmptyWalletName" xml:space="preserve">
+    <data name="EmptyWalletName" xml:space="preserve">
         <value>Wallet name must be not empty</value>
     </data>
-    <data name="ErrorInvalidWalletName" xml:space="preserve">
+    <data name="InvalidWalletName" xml:space="preserve">
         <value>Invalid wallet name</value>
     </data>
-    <data name="ErrorWalletAlreadyExists" xml:space="preserve">
+    <data name="WalletAlreadyExists" xml:space="preserve">
         <value>Wallet with the same name already exists</value>
     </data>
-    <data name="ErrorEmptyMnemonic" xml:space="preserve">
+    <data name="BakerIsDeactivated" xml:space="preserve">
+        <value>Baker is deactivated. Pick another one</value>
+    </data>
+    <data name="AlreadyDelegatedFrom" xml:space="preserve">
+        <value>Already delegated from</value>
+    </data>
+    <data name="AutofillTransactionFailed" xml:space="preserve">
+        <value>Autofill transaction failed</value>
+    </data>
+    <data name="SuccessfulCheck" xml:space="preserve">
+        <value>Successful check</value>
+    </data>
+    <data name="CopyError" xml:space="preserve">
+        <value>Copy error</value>
+    </data>
+    <data name="CreateWalletError" xml:space="preserve">
+        <value>Create wallet error</value>
+    </data>
+    <data name="EmptyAddressError" xml:space="preserve">
+        <value>Address must be not empty</value>
+    </data>
+    <data name="InvalidAddressError" xml:space="preserve">
+        <value>Address is invalid</value>
+    </data>
+    <data name="CommissionLessThanZeroError" xml:space="preserve">
+        <value>Commission must be a positive value</value>
+    </data>
+    <data name="SendingTransactionError" xml:space="preserve">
+        <value>An error has occurred while sending transaction</value>
+    </data>
+    <data name="DelegationError" xml:space="preserve">
+        <value>An error has occurred while delegation</value>
+    </data>
+    <data name="DelegationValidationError" xml:space="preserve">
+        <value>An error has occurred while delegation validation</value>
+    </data>
+    <data name="NoTezosError" xml:space="preserve">
+        <value>You must have more than 0 XTZ</value>
+    </data>
+    <data name="AmountLessThanZeroError" xml:space="preserve">
+        <value>Amount must be greater than 0</value>
+    </data>
+    <data name="NoLiquidityError" xml:space="preserve">
+        <value>Not enough liquidity to convert a specified amount</value>
+    </data>
+    <data name="PriceChangedError" xml:space="preserve">
+        <value>Oops, the price has changed during the order sending. Please try again</value>
+    </data>
+    <data name="OrderRejectedError" xml:space="preserve">
+        <value>Order rejected</value>
+    </data>
+    <data name="TimeoutReachedError" xml:space="preserve">
+        <value>Atomex is not responding for a long time</value>
+    </data>
+    <data name="ConversionError" xml:space="preserve">
+        <value>Conversion error. Please contant technical support</value>
+    </data>
+    <data name="AvailableFundsError" xml:space="preserve">
+        <value>The transfer amount (including commission) exceeds the amount of available funds</value>
+    </data>
+    <data name="EmptyMnemonicError" xml:space="preserve">
         <value>Mnemonic phrase can not be empty</value>
     </data>
-    <data name="ErrorMnemonicWordCount" xml:space="preserve">
+    <data name="MnemonicWordCountError" xml:space="preserve">
         <value>Word count should be 12,15,18,21 or 24</value>
+    </data>
+    <data name="DontHaveNonEmptyAccountsError" xml:space="preserve">
+        <value>You don't have non-empty accounts</value>
+    </data>
+    <data name="WrongDelegationAddressError" xml:space="preserve">
+        <value>Wrong delegation address</value>
     </data>
 </root>
