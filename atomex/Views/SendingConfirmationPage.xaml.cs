@@ -38,7 +38,7 @@ namespace atomex
                     await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
                     return;
                 }
-                var res = await DisplayAlert(AppResources.Success, _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + AppResources.sentTo + _sendViewModel.To, null, AppResources.AcceptButton);
+                var res = await DisplayAlert(AppResources.Success, _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + " " + AppResources.sentTo + " " + _sendViewModel.To, null, AppResources.AcceptButton);
                 if (!res)
                 {
                     for (var i = 1; i < BACK_COUNT; i++)
