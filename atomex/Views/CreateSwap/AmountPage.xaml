@@ -68,16 +68,16 @@
                            HorizontalTextAlignment="Start"/>
                 </Frame>
             </Grid>
-            <Label Margin="20,0"
+            <Label Margin="10,0"
                    VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
                                   FontFamily="{DynamicResource RegularFont}"/>
                             <Span Text=": "/>
-                            <Span Text="{Binding EstimatedMaxAmount}"
+                            <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.########}'}"
                                   FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="18"/>
+                                  FontSize="16"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
                                   FontFamily="{DynamicResource BoldFont}"

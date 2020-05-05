@@ -4,7 +4,7 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.ConversionsListPage"
-             Title="{x:Static resources:AppResources.ConfirmationLabel}">
+             Title="{x:Static resources:AppResources.DelegationListPageTitle}">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout VerticalOptions="FillAndExpand"
