@@ -53,12 +53,6 @@
                                                 <Setter Property="Source"
                                                         Value="Wallet__blue.svg"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
-                                                         Binding="{Binding Network}"
-                                                         Value="TestNet">
-                                                <Setter Property="Source"
-                                                        Value="Wallet__blue.svg"/>
-                                            </DataTrigger> 
                                         </ffimageloadingsvg:SvgCachedImage.Triggers>
                                     </ffimageloadingsvg:SvgCachedImage>
                                     <Label Text="{Binding Description}">
