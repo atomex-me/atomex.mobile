@@ -143,12 +143,6 @@
                                     </DataTrigger>
                                     <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
                                                  Binding="{Binding Type}"
-                                                 Value="Self">
-                                        <Setter Property="Source"
-                                                Value="Refresh-arrow.svg"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
-                                                 Binding="{Binding Type}"
                                                  Value="SwapPayment">
                                         <Setter Property="Source"
                                                 Value="Right-arrow.svg"/>
@@ -182,12 +176,6 @@
                                                  Value="Input">
                                         <Setter Property="Text"
                                                 Value="Received"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Self">
-                                        <Setter Property="Text"
-                                                Value="Transaction to yourself"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
@@ -237,25 +225,6 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding Type}"
                                                  Value="Output">
-                                        <Setter Property="TextColor"
-                                                Value="Red"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Self">
                                         <Setter Property="TextColor"
                                                 Value="Red"/>
                                         <Setter Property="FormattedText">
@@ -359,18 +328,6 @@
                                                 <FormattedString>
                                                     <Span Text="From: "/>
                                                     <Span Text="{Binding From, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Self">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="Address: "/>
-                                                    <Span Text="{Binding To, FallbackValue='Unknown'}"/>
                                                 </FormattedString>
                                             </Setter.Value>
                                         </Setter>

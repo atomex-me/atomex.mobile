@@ -59,7 +59,7 @@
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{x:Static resources:AppResources.State}"
-                                       Margin="20,0,0,0"
+                                       Margin="15,0,0,0"
                                        VerticalTextAlignment="Center"
                                        FontSize="18"/>
                                 <Frame CornerRadius="8"

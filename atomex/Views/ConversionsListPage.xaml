@@ -67,7 +67,7 @@
                                   RowSpacing="0"
                                   ColumnSpacing="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1.5*" />
@@ -87,31 +87,27 @@
                                 </RelativeLayout>
                                 <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
-                                       Padding="5"
-                                       FontSize="14">
+                                       Padding="2">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{x:Static resources:AppResources.Convert}"
                                                   FontFamily="{DynamicResource RegularFont}"
-                                                  FontSize="14"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding FromAmount, StringFormat='{0:0.####}'}"
+                                                  FontSize="12"/>
+                                            <Span Text="{Binding FromAmount, StringFormat=' {0:0.####}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
                                                   FontSize="14"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding FromCurrencyCode}"
+                                            <Span Text="{Binding FromCurrencyCode, StringFormat=' {0}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="14"/>
+                                                  FontSize="12"/>
                                             <Span Text=" to "
                                                   FontFamily="{DynamicResource RegularFont}"
-                                                  FontSize="14"/>
+                                                  FontSize="12"/>
                                             <Span Text="{Binding ToAmount, StringFormat='{0:0.####}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
                                                   FontSize="14"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding ToCurrencyCode}"
+                                            <Span Text="{Binding ToCurrencyCode, StringFormat=' {0}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="14"/>
+                                                  FontSize="12"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

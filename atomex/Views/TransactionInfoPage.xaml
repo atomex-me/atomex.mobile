@@ -32,12 +32,6 @@
                                         </DataTrigger>
                                         <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
                                                      Binding="{Binding Type}"
-                                                     Value="Self">
-                                            <Setter Property="Source"
-                                                    Value="Refresh-arrow.svg"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
-                                                     Binding="{Binding Type}"
                                                      Value="SwapPayment">
                                             <Setter Property="Source"
                                                     Value="Right-arrow.svg"/>
@@ -82,25 +76,6 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="Output">
-                                            <Setter Property="TextColor"
-                                                    Value="Red"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="Self">
                                             <Setter Property="TextColor"
                                                     Value="Red"/>
                                             <Setter Property="FormattedText">
@@ -229,7 +204,7 @@
                                   DetailColor="Gray" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <StackLayout Margin="20">
+                                <StackLayout Margin="15">
                                     <Label Text="{x:Static resources:AppResources.TransactionId}"/>
                                     <Label Text="{Binding Id}"
                                            TextColor="Gray"
@@ -251,7 +226,7 @@
                         </ViewCell>
                         <ViewCell>
                             <StackLayout VerticalOptions="CenterAndExpand"
-                                         Margin="20,0">
+                                         Margin="15,0">
                                 <Label Text="{x:Static resources:AppResources.FeeLabel}"/>
                                 <Label TextColor="Gray"
                                        FontSize="12">

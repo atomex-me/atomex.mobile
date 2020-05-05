@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
@@ -10,7 +9,6 @@ namespace atomex.ViewModel.TransactionViewModels
     {
         Input,
         Output,
-        Self,
         SwapPayment,
         SwapRedeem,
         SwapRefund
@@ -101,7 +99,7 @@ namespace atomex.ViewModel.TransactionViewModels
 
             if (type.HasFlag(BlockchainTransactionType.Input) &&
                 type.HasFlag(BlockchainTransactionType.Output))
-                return TransactionType.Self;
+                return TransactionType.Output;
 
             if (type.HasFlag(BlockchainTransactionType.Input))
                 return TransactionType.Input;

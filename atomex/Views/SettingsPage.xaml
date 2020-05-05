@@ -24,6 +24,8 @@
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{x:Static resources:AppResources.PeriodOfInactiveLabel}"
+                                           FontSize="17"
+                                           Margin="15"
                                            Style="{DynamicResource OptionLabelStyle}">
                                     </Label>
                                     <Label Grid.Column="1"

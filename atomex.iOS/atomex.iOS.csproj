@@ -185,7 +185,6 @@
     <BundleResource Include="Resources\Roboto-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
     <BundleResource Include="Resources\Down-arrow.svg" />
-    <BundleResource Include="Resources\Refresh-arrow.svg" />
     <BundleResource Include="Resources\Right-arrow.svg" />
     <BundleResource Include="Resources\Spin-arrow.svg" />
     <BundleResource Include="Resources\Up-arrow.svg" />
