@@ -134,6 +134,15 @@
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
     </PackageReference>
+    <PackageReference Include="SkiaSharp">
+      <Version>1.68.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Svg">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -208,6 +217,7 @@
     <BundleResource Include="Resources\TZBTC.svg" />
     <BundleResource Include="Resources\XTZ.svg" />
     <BundleResource Include="Resources\Down-arrow-2.svg" />
+    <BundleResource Include="Resources\Refresh-arrow.svg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json">
