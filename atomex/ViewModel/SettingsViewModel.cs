@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Atomex;
+using Atomex.Common;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 
@@ -11,7 +13,7 @@ namespace atomex.ViewModel
 
         public UserSettings Settings { get; }
 
-        private IAccount Account;
+        private IAccount _account;
 
         public int PeriodOfInactivityInMin
         {
@@ -21,7 +23,8 @@ namespace atomex.ViewModel
                 if (Settings.PeriodOfInactivityInMin != value)
                 {
                     Settings.PeriodOfInactivityInMin = value;
-                    Account.UseUserSettings(Settings);
+                    _account.UseUserSettings(Settings);
+                    Apply();
                     OnPropertyChanged(nameof(PeriodOfInactivityInMin));
                 }
             }
@@ -36,17 +39,27 @@ namespace atomex.ViewModel
                 if (Settings.AutoSignOut != value)
                 {
                     Settings.AutoSignOut = value;
-                    Account.UseUserSettings(Settings);
+                    _account.UseUserSettings(Settings);
+                    Apply();
                     OnPropertyChanged(nameof(AutoSignOut));
                 }
             }
         }
 
+        private string _pathToUserSettings;
+
         public SettingsViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Account = app.Account;
+            _account = app.Account;
             Settings = app.Account.UserSettings;
+            var pathToWallet = Path.GetDirectoryName(_account.Wallet.PathToWallet);
+            _pathToUserSettings = Path.Combine(pathToWallet, Account.DefaultUserSettingsFileName);
+        }
+
+        private void Apply()
+        {  
+            _account.UserSettings.SaveToFile(_pathToUserSettings, "12345678".ToSecureString());
         }
     }
 }

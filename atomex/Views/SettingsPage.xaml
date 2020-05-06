@@ -15,9 +15,24 @@
                         <SwitchCell Text="{x:Static resources:AppResources.AutomaticSignOutLabel}"
                                     OnColor="{DynamicResource MainButtonBackgroundColor}"
                                     On="{Binding AutoSignOut, Mode=TwoWay}"/>
-                        <ViewCell Tapped="OnPeriodOfInactiveSettingTapped">
+                        <ViewCell Tapped="OnPeriodOfInactiveSettingTapped"
+                                  IsEnabled="{Binding AutoSignOut}">
                             <ViewCell.View>
                                 <Grid>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid"
+                                                     Binding="{Binding AutoSignOut}"
+                                                     Value="True">
+                                            <Setter Property="Opacity"
+                                                    Value="1"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Grid"
+                                                     Binding="{Binding AutoSignOut}"
+                                                     Value="False">
+                                            <Setter Property="Opacity"
+                                                    Value="0.3"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="6*"/>
                                         <ColumnDefinition Width="3*"/>
@@ -25,7 +40,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{x:Static resources:AppResources.PeriodOfInactiveLabel}"
                                            FontSize="17"
-                                           Margin="15"
+                                           Margin="20,0"
                                            Style="{DynamicResource OptionLabelStyle}">
                                     </Label>
                                     <Label Grid.Column="1"
