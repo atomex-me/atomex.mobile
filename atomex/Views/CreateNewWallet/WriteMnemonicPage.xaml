@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
@@ -35,11 +34,11 @@
                             HeightRequest="70"
                             Focused="OnPickerFocused"
                             Unfocused="OnPickerFocused"/>
-                    <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
-                                                      RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
-                                                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
-                                                      WidthRequest="10"
-                                                      HeightRequest="10"/>
+                    <Image Source="DownArrow-picker"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
+                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
+                           WidthRequest="10"
+                           HeightRequest="10"/>
                 </RelativeLayout>
             </Frame>
             </StackLayout>

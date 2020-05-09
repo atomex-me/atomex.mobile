@@ -301,6 +301,9 @@
     </data>
     
     <!-- Create Swap Pages -->
+    <data name="SwapListPageTitle" xml:space="preserve">
+        <value>Swap list</value>
+    </data>
     <data name="CreateSwapPageTitle" xml:space="preserve">
         <value>Create swap</value>
     </data>
@@ -317,7 +320,7 @@
         <value>Available market volume</value>
     </data>
     <data name="NoLiquidityLabel" xml:space="preserve">
-        <value>No liquiditye</value>
+        <value>No liquidity</value>
     </data>
     <data name="EstimatedPaymentFeeLabel" xml:space="preserve">
         <value>Estimated payment fee</value>
@@ -442,6 +445,15 @@
     </data>
     <data name="SuccessfulCheck" xml:space="preserve">
         <value>Successful check</value>
+    </data>
+    <data name="AddressSharing" xml:space="preserve">
+        <value>Address sharing</value>
+    </data>
+    <data name="MyPublicAddress" xml:space="preserve">
+        <value>My public address to receive</value>
+    </data>
+    <data name="AddressCopied" xml:space="preserve">
+        <value>Address copied</value>
     </data>
     <data name="CopyError" xml:space="preserve">
         <value>Copy error</value>

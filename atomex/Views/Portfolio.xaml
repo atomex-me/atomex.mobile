@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
-             Icon="NavBar__portfolio">
+             Icon="NavBar-portfolio">
         <ContentPage.Content>
             <StackLayout>
                 <RelativeLayout HeightRequest="220"
                                 Margin="0,10">
-                    <local:ChartView x:Name="portfolioChart"
+                    <chart:ChartView x:Name="portfolioChart"
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
                     <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Height, Factor=1}"
@@ -48,12 +47,12 @@
                                         <ColumnDefinition Width="1.5*" />
                                         <ColumnDefinition Width="3.5*" />
                                     </Grid.ColumnDefinitions>
-                                    <ffimageloadingsvg:SvgCachedImage Grid.RowSpan="2"
-                                                                      HeightRequest="38"
-                                                                      WidthRequest="38"
-                                                                      VerticalOptions="Center"
-                                                                      HorizontalOptions="Center"
-                                                                      Source="{Binding CurrencyCode, StringFormat='{0}.svg'}"/>
+                                    <Image Grid.RowSpan="2"
+                                           HeightRequest="38"
+                                           WidthRequest="38"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"
+                                           Source="{Binding CurrencyCode}"/>
                                     <Label Grid.Column="1"
                                            Text="{Binding Currency.Description}"
                                            FontFamily="{DynamicResource RegularFont}"

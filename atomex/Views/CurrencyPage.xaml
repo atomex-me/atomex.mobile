@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -27,10 +26,10 @@
                 <ActivityIndicator x:Name="Loader"
                                    Color="{DynamicResource HintTextColor}"
                                    IsVisible="False"/>
-                <ffimageloadingsvg:SvgCachedImage WidthRequest="96"
-                                                  HeightRequest="96"
-                                                  Margin="20"
-                                                  Source="{Binding CurrencyCode, StringFormat='{0}.svg'}"/>
+                <Image WidthRequest="96"
+                       HeightRequest="96"
+                       Margin="20"
+                       Source="{Binding CurrencyCode}"/>
                 <Label Text="{Binding AvailableAmount}"
                        x:Name="AvailableAmountLabel"
                        HorizontalOptions="Center">
@@ -126,41 +125,41 @@
                                 <ColumnDefinition Width="5*" />
                                 <ColumnDefinition Width="3.5*" />
                             </Grid.ColumnDefinitions>
-                            <ffimageloadingsvg:SvgCachedImage Grid.RowSpan="2"
-                                                              Margin="4">
-                                <ffimageloadingsvg:SvgCachedImage.Triggers>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                            <Image Grid.RowSpan="2"
+                                   Margin="4">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding Type}"
                                                  Value="Input">
                                         <Setter Property="Source"
-                                                Value="Down-arrow.svg"/>
+                                                Value="Receive"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding Type}"
                                                  Value="Output">
                                         <Setter Property="Source"
-                                                Value="Up-arrow.svg"/>
+                                                Value="Send"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding Type}"
                                                  Value="SwapPayment">
                                         <Setter Property="Source"
-                                                Value="Right-arrow.svg"/>
+                                                Value="SwapPayment"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRedeem">
                                         <Setter Property="Source"
-                                                Value="Spin-arrow.svg"/>
+                                                Value="SwapRedeem"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding Type}"
                                                  Value="SwapRefund">
                                         <Setter Property="Source"
-                                                Value="Refresh-arrow.svg"/>
+                                                Value="SwapRefund"/>
                                     </DataTrigger>
-                                </ffimageloadingsvg:SvgCachedImage.Triggers>
-                            </ffimageloadingsvg:SvgCachedImage>
+                                </Image.Triggers>
+                            </Image>
                             <Label Grid.Column="1"
                                    FontFamily="{DynamicResource RegularFont}"
                                    VerticalOptions="EndAndExpand">

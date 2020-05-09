@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using atomex.ViewModel;
+using atomex.Resources;
 
 namespace atomex
 {
@@ -31,11 +32,11 @@ namespace atomex
             if (_receiveViewModel.SelectedAddress != null)
             {
                 await Clipboard.SetTextAsync(_receiveViewModel.SelectedAddress.Address);
-                await DisplayAlert("Address copied", _receiveViewModel.SelectedAddress.Address, "Ok");
+                await DisplayAlert(AppResources.AddressCopied, _receiveViewModel.SelectedAddress.Address, AppResources.AcceptButton);
             }
             else
             {
-                await DisplayAlert("Error", "Copy error", "Ok");
+                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 
@@ -43,9 +44,9 @@ namespace atomex
         {
             await Share.RequestAsync(new ShareTextRequest
             {
-                Text = "My public address to receive " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
+                Text = AppResources.MyPublicAddress + " " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
                 Uri = _receiveViewModel.SelectedAddress.Address,
-                Title = "Address sharing"
+                Title = AppResources.AddressSharing
             });
         }
     }

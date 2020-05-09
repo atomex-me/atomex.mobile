@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.ReceivePage"
              Title="{x:Static resources:AppResources.ReceivePageTitle}">
@@ -31,11 +30,11 @@
                                 x:Name="AddressPicker"
                                 Focused="OnPickerFocused"
                                 Unfocused="OnPickerFocused"/>
-                        <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
-                                                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Width, Factor=0.9}"
-                                                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Height, Factor=0.5, Constant=-5}"
-                                                          WidthRequest="10"
-                                                          HeightRequest="10"/>
+                        <Image Source="DownArrow-picker"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Width, Factor=0.9}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Height, Factor=0.5, Constant=-5}"
+                               WidthRequest="10"
+                               HeightRequest="10"/>
                     </RelativeLayout>
                 </Frame>
             </StackLayout>
@@ -73,22 +72,22 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
                     </StackLayout.GestureRecognizers>
-                    <ffimageloadingsvg:SvgCachedImage WidthRequest="40"
-                                                      HeightRequest="40"
-                                                      HorizontalOptions="End"
-                                                      VerticalOptions="Center"
-                                                      Source="Copy.svg"/>
+                    <Image WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="End"
+                           VerticalOptions="Center"
+                           Source="Copy"/>
                 </StackLayout>
                 <StackLayout Grid.Column="1">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnShareButtonClicked"/>
                     </StackLayout.GestureRecognizers>
-                    <ffimageloadingsvg:SvgCachedImage Grid.Column="0"
-                                                      WidthRequest="40"
-                                                      HeightRequest="40"
-                                                      HorizontalOptions="Start"
-                                                      VerticalOptions="Center"
-                                                      Source="Share.svg"/>
+                    <Image Grid.Column="0"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"
+                           Source="Share"/>
                 </StackLayout>
                 <Label Grid.Row="1"
                        Text="{x:Static resources:AppResources.CopyButton}"

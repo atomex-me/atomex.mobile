@@ -10,7 +10,7 @@ namespace atomex.ViewModel
         public string CurrencyFormat { get; }
         public bool IsFreeAddress { get; }
         public string DisplayAddressWithBalance =>
-            Address.Substring(0,6) + "..." + Address.Remove(0, Address.Length - 6) + " - " +
+            Address.Substring(0,5) + "..." + Address.Remove(0, Address.Length - 5) + " - " +
             AvailableBalance.ToString("0.######") + " " + WalletAddress.Currency;
 
         public WalletAddressViewModel(

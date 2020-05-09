@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.MyWalletsPage"
              Title="{x:Static resources:AppResources.MyWalletsTitle}"
@@ -38,23 +37,23 @@
                                     </DataTrigger>
                                 </Frame.Triggers>
                                 <StackLayout Orientation="Horizontal">
-                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="48"
-                                                                      HeightRequest="48">
-                                        <ffimageloadingsvg:SvgCachedImage.Triggers>
-                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <Image WidthRequest="48"
+                                           HeightRequest="48">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
                                                          Value="MainNet">
                                                 <Setter Property="Source"
-                                                        Value="Wallet__white.svg"/>
+                                                        Value="Wallet__white"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                            <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
                                                          Value="TestNet">
                                                 <Setter Property="Source"
-                                                        Value="Wallet__blue.svg"/>
+                                                        Value="Wallet__blue"/>
                                             </DataTrigger>
-                                        </ffimageloadingsvg:SvgCachedImage.Triggers>
-                                    </ffimageloadingsvg:SvgCachedImage>
+                                        </Image.Triggers>
+                                    </Image>
                                     <Label Text="{Binding Description}">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
@@ -71,22 +70,22 @@
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
-                                    <ffimageloadingsvg:SvgCachedImage HeightRequest="12">
-                                        <ffimageloadingsvg:SvgCachedImage.Triggers>
-                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                    <Image HeightRequest="12">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
                                                          Value="MainNet">
                                                 <Setter Property="Source"
-                                                        Value="Right-arrow-2__white.svg"/>
+                                                        Value="RightArrow-enter__white"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                            <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
                                                          Value="TestNet">
                                                 <Setter Property="Source"
-                                                        Value="Right-arrow-2__blue.svg"/>
+                                                        Value="RightArrow-enter__blue"/>
                                             </DataTrigger>
-                                        </ffimageloadingsvg:SvgCachedImage.Triggers>
-                                    </ffimageloadingsvg:SvgCachedImage>
+                                        </Image.Triggers>
+                                    </Image>
                                 </StackLayout>
                             </Frame>
                         </ViewCell>

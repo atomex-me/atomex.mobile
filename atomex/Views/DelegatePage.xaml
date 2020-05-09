@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:atomex.CustomElements" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegatePage"
              Title="{x:Static resources:AppResources.DelegatePageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
+    <ContentPage.Content>
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
                      Margin="20">
@@ -87,11 +88,11 @@
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"/>
                 </StackLayout>
-                <ffimageloadingsvg:SvgCachedImage Grid.Column="3"
-                                                  Grid.RowSpan="2"
-                                                  Source="Down-arrow-2.svg"
-                                                  Margin="0,34"
-                                                  IsEnabled="False"/>
+                <Image Grid.Column="3"
+                       Grid.RowSpan="2"
+                       Source="DownArrow-picker"
+                       Margin="0,34"
+                       IsEnabled="False"/>
             </Grid>
             <StackLayout Orientation="Horizontal"
                          Spacing="0"
@@ -179,9 +180,9 @@
                 </Label>
                 <StackLayout Grid.Column="3"
                              Grid.RowSpan="2">
-                     <ffimageloadingsvg:SvgCachedImage Source="Down-arrow-2.svg"
-                                                       Margin="6,34"
-                                                       IsEnabled="False"/>
+                     <Image Source="DownArrow-picker"
+                            Margin="6,34"
+                            IsEnabled="False"/>
                 </StackLayout>
                
             </Grid>
@@ -255,11 +256,5 @@
                                    Color="White"/>
             </RelativeLayout>
         </StackLayout>
-                <!--<RelativeLayout VerticalOptions="FillAndExpand">
-        <ActivityIndicator x:Name="ValidatingLoader"
-                            RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                            Scale="3"
-                            Color="Black"/>
-    </RelativeLayout>-->
+    </ContentPage.Content>
 </ContentPage>

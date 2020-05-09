@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
   <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
                xmlns:resources="clr-namespace:atomex.Resources"
                x:Class="atomex.SettingsPage"
                Title="{x:Static resources:AppResources.SettingsPageTitle}"
-               Icon="NavBar__settings">
+               Icon="NavBar-settings">
         <ContentPage.Content>
             <TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -53,9 +52,9 @@
                                         </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-2__black.svg"
-                                                                      Grid.Column="2"
-                                                                      Margin="10,16"/>
+                                    <Image Source="RightArrow-enter__black"
+                                           Grid.Column="2"
+                                           Margin="10,16"/>
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>

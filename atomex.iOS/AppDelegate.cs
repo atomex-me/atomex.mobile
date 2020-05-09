@@ -1,6 +1,4 @@
-﻿using FFImageLoading.Forms.Platform;
-using FFImageLoading.Svg.Forms;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace atomex.iOS
@@ -23,8 +21,6 @@ namespace atomex.iOS
             Xamarin.Forms.Forms.SetFlags("SwipeView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
-            CachedImageRenderer.Init();
-            var ignore = typeof(SvgCachedImage);
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationsListPage"
              Title="{x:Static resources:AppResources.DelegationListPageTitle}">
@@ -17,11 +17,11 @@
                                 Value="True"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <ffimageloadingsvg:SvgCachedImage Source="Spin-arrow.svg"       
-                                                  HeightRequest="48"
-                                                  WidthRequest="48"
-                                                  VerticalOptions="EndAndExpand"
-                                                  HorizontalOptions="CenterAndExpand"/>
+                <Image Source="SwapRedeem"       
+                       HeightRequest="48"
+                       WidthRequest="48"
+                       VerticalOptions="EndAndExpand"
+                       HorizontalOptions="CenterAndExpand"/>
                 <Label Text="{x:Static resources:AppResources.NoDelegationsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
@@ -29,7 +29,6 @@
                        FontSize="22"
                        Margin="0,20"/>
             </StackLayout>
-        
             <ListView ItemsSource="{Binding Delegations}"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       HasUnevenRows="True"

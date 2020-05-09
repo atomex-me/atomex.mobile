@@ -551,6 +551,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SwapListPageTitle {
+            get {
+                return ResourceManager.GetString("SwapListPageTitle", resourceCulture);
+            }
+        }
+        
         internal static string CreateSwapPageTitle {
             get {
                 return ResourceManager.GetString("CreateSwapPageTitle", resourceCulture);
@@ -812,6 +818,24 @@ namespace atomex.Resources {
         internal static string SuccessfulCheck {
             get {
                 return ResourceManager.GetString("SuccessfulCheck", resourceCulture);
+            }
+        }
+        
+        internal static string AddressSharing {
+            get {
+                return ResourceManager.GetString("AddressSharing", resourceCulture);
+            }
+        }
+        
+        internal static string MyPublicAddress {
+            get {
+                return ResourceManager.GetString("MyPublicAddress", resourceCulture);
+            }
+        }
+        
+        internal static string AddressCopied {
+            get {
+                return ResourceManager.GetString("AddressCopied", resourceCulture);
             }
         }
         

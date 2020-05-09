@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
@@ -96,13 +95,13 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-                <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
-                <ffimageloadingsvg:SvgCachedImage Source="Right-arrow-3.svg"
-                                                  Grid.Column="1"
-                                                  WidthRequest="40"
-                                                  VerticalOptions="CenterAndExpand"/>
-                <ffimageloadingsvg:SvgCachedImage Grid.Column="2"
-                                                  Source="{Binding ToCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
+                <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"/>
+                <Image Source="ConvertArrow"
+                       Grid.Column="1"
+                       WidthRequest="40"
+                       VerticalOptions="CenterAndExpand"/>
+                <Image Grid.Column="2"
+                       Source="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                 <Label Grid.Row="1"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"

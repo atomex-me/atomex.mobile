@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.TransactionInfoPage"
              Title="{x:Static resources:AppResources.TransactionInfoPageTitle}"
@@ -16,40 +15,40 @@
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
                             <StackLayout Orientation="Horizontal" Margin="20,0">
-                                <ffimageloadingsvg:SvgCachedImage Margin="0,10">
-                                    <ffimageloadingsvg:SvgCachedImage.Triggers>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                <Image Margin="0,10">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
                                                      Value="Input">
                                             <Setter Property="Source"
-                                                    Value="Down-arrow.svg"/>
+                                                    Value="Receive"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
                                                      Value="Output">
                                             <Setter Property="Source"
-                                                    Value="Up-arrow.svg"/>
+                                                    Value="Send"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
                                                      Value="SwapPayment">
                                             <Setter Property="Source"
-                                                    Value="Right-arrow.svg"/>
+                                                    Value="SwapPayment"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRedeem">
                                             <Setter Property="Source"
-                                                    Value="Spin-arrow.svg"/>
+                                                    Value="SwapRedeem"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRefund">
                                             <Setter Property="Source"
-                                                    Value="Refresh-arrow.svg"/>
+                                                    Value="SwapRefund"/>
                                         </DataTrigger>
-                                    </ffimageloadingsvg:SvgCachedImage.Triggers>
-                                </ffimageloadingsvg:SvgCachedImage>
+                                    </Image.Triggers>
+                                </Image>
                                 <Label Text="{Binding Amount}"
                                        VerticalTextAlignment="Center"
                                        Padding="10,0">
@@ -204,7 +203,7 @@
                                   DetailColor="Gray" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <StackLayout Margin="15">
+                                <StackLayout Margin="20">
                                     <Label Text="{x:Static resources:AppResources.TransactionId}"/>
                                     <Label Text="{Binding Id}"
                                            TextColor="Gray"
@@ -215,18 +214,18 @@
                                      <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
                                      </StackLayout.GestureRecognizers>
-                                     <ffimageloadingsvg:SvgCachedImage WidthRequest="24"
-                                                                       HeightRequest="24"
-                                                                       Margin="20,0"
-                                                                       HorizontalOptions="EndAndExpand"
-                                                                       VerticalOptions="CenterAndExpand"
-                                                                       Source="Copy.svg"/>
+                                     <Image WidthRequest="24"
+                                            HeightRequest="24"
+                                            Margin="20,0"
+                                            HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            Source="Copy"/>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
                             <StackLayout VerticalOptions="CenterAndExpand"
-                                         Margin="15,0">
+                                         Margin="20,0">
                                 <Label Text="{x:Static resources:AppResources.FeeLabel}"/>
                                 <Label TextColor="Gray"
                                        FontSize="12">

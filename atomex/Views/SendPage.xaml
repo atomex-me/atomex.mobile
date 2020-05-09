@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{x:Static resources:AppResources.SendPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
@@ -54,12 +53,12 @@
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnScanButtonClicked"/>
                             </StackLayout.GestureRecognizers>
-                            <ffimageloadingsvg:SvgCachedImage Source="Scan.svg"
-                                                              HeightRequest="36"
-                                                              WidthRequest="36"
-                                                              VerticalOptions="CenterAndExpand"
-                                                              HorizontalOptions="End"
-                                                              Margin="10,10,20,10"/>
+                            <Image Source="Scan"
+                                   HeightRequest="36"
+                                   WidthRequest="36"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="End"
+                                   Margin="10,10,20,10"/>
                         </StackLayout>
                     </StackLayout>
                 </Frame>

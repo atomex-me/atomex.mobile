@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
@@ -51,7 +50,7 @@
                     <Label Text="{Binding FromCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#####}'}"
                            VerticalTextAlignment="Center"
                            Margin="5,0"/>
-                    <ffimageloadingsvg:SvgCachedImage Source="{Binding FromCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
+                    <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"/>
                 </StackLayout>
                 <Frame Grid.Row="1"
                        Padding="5"
@@ -83,7 +82,7 @@
                     <Label Text="{Binding ToCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#########}'}"
                            VerticalTextAlignment="Center"
                            Margin="10,0" />
-                    <ffimageloadingsvg:SvgCachedImage Source="{Binding ToCurrencyViewModel.CurrencyCode, StringFormat='{0}.svg'}"/>
+                    <Image Source="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                 </StackLayout>
             </Grid>
             <Label Margin="20">
