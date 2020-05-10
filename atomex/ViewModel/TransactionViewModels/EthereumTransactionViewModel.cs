@@ -17,13 +17,14 @@ namespace atomex.ViewModel.TransactionViewModels
 
 
         public EthereumTransactionViewModel(EthereumTransaction tx)
-            : base(tx, GetAmount(tx))
+             : base(tx, GetAmount(tx), GetFee(tx))
         {
             From = tx.From;
             To = tx.To;
-            GasPrice = (decimal)tx.GasPrice;
+            GasPrice = Ethereum.WeiToGwei((decimal)tx.GasPrice);
             GasLimit = (decimal)tx.GasLimit;
             GasUsed = (decimal)tx.GasUsed;
+            Fee = Ethereum.WeiToEth(tx.GasUsed * tx.GasPrice);
             IsInternal = tx.IsInternal;
         }
 
@@ -38,6 +39,18 @@ namespace atomex.ViewModel.TransactionViewModels
                 result += -Ethereum.WeiToEth(tx.Amount + tx.GasUsed * tx.GasPrice);
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
+
+            return result;
+        }
+
+        private static decimal GetFee(EthereumTransaction tx)
+        {
+            var result = 0m;
+
+            if (tx.Type.HasFlag(BlockchainTransactionType.Output))
+                result += Ethereum.WeiToEth(tx.GasUsed * tx.GasPrice);
+
+            tx.InternalTxs?.ForEach(t => result += GetFee(t));
 
             return result;
         }

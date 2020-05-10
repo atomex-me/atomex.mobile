@@ -33,7 +33,7 @@
         <value>Address</value>
     </data>
     <data name="AmountEntryPlaceholder" xml:space="preserve">
-        <value>Address</value>
+        <value>Amount</value>
     </data>
     <data name="UseDefaultFeeLabel" xml:space="preserve">
         <value>Use default fee</value>

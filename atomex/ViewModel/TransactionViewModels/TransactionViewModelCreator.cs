@@ -21,9 +21,9 @@ namespace atomex.ViewModel.TransactionViewModels
                 case Ethereum _:
                     return new EthereumTransactionViewModel((EthereumTransaction)tx);
                 case TZBTC _:
-                    return new TezosTransactionViewModel((TezosTransaction)tx);
+                    return new TezosFA12TransactionViewModel((TezosTransaction)tx);
                 case FA12 _:
-                    return new TezosTransactionViewModel((TezosTransaction)tx);
+                    return new TezosFA12TransactionViewModel((TezosTransaction)tx);
                 case Tezos _:
                     return new TezosTransactionViewModel((TezosTransaction)tx);
             }

@@ -1,32 +1,30 @@
 ﻿using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Blockchain.Ethereum;
+using Atomex.Blockchain.Tezos;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
-    public class EthereumERC20TransactionViewModel : TransactionViewModel
+    public class TezosFA12TransactionViewModel : TransactionViewModel
     {
         public string From { get; set; }
         public string To { get; set; }
-        public decimal GasPrice { get; set; }
         public decimal GasLimit { get; set; }
-        public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
         public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
         public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
 
-        public EthereumERC20TransactionViewModel(EthereumTransaction tx)
-             : base(tx, GetAmount(tx), 0)
+
+        public TezosFA12TransactionViewModel(TezosTransaction tx)
+            : base(tx, GetAmount(tx), 0)
         {
             From = tx.From;
             To = tx.To;
-            GasPrice = Ethereum.WeiToGwei((decimal)tx.GasPrice);
-            GasLimit = (decimal)tx.GasLimit;
-            GasUsed = (decimal)tx.GasUsed;
+            GasLimit = tx.GasLimit;
+            Fee = Tezos.MtzToTz(tx.Fee);
             IsInternal = tx.IsInternal;
         }
 
-        public static decimal GetAmount(EthereumTransaction tx)
+        private static decimal GetAmount(TezosTransaction tx)
         {
             var Erc20 = tx.Currency as Atomex.EthereumTokens.ERC20;
 
@@ -35,12 +33,23 @@ namespace atomex.ViewModel.TransactionViewModels
             if (tx.Type.HasFlag(BlockchainTransactionType.Input) ||
                 tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
                 tx.Type.HasFlag(BlockchainTransactionType.SwapRefund))
-                result += Erc20.TokenDigitsToTokens(tx.Amount);
-
+                result += tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
             else if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -Erc20.TokenDigitsToTokens(tx.Amount);
+                result += -tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
+
+            return result;
+        }
+
+        private static decimal GetFee(TezosTransaction tx)
+        {
+            var result = 0m;
+
+            if (tx.Type.HasFlag(BlockchainTransactionType.Output))
+                result += Tezos.MtzToTz(tx.Fee);
+
+            tx.InternalTxs?.ForEach(t => result += GetFee(t));
 
             return result;
         }

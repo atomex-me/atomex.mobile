@@ -14,12 +14,12 @@ namespace atomex.ViewModel.TransactionViewModels
         public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
 
         public TezosTransactionViewModel(TezosTransaction tx)
-            : base(tx, GetAmount(tx))
+            : base(tx, GetAmount(tx), GetFee(tx))
         {
             From = tx.From;
             To = tx.To;
             GasLimit = tx.GasLimit;
-            Fee = tx.Fee.ToTez();
+            Fee = Tezos.MtzToTz(tx.Fee);
             IsInternal = tx.IsInternal;
         }
 
@@ -28,12 +28,27 @@ namespace atomex.ViewModel.TransactionViewModels
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Input))
-                result += Tezos.MtzToTz(tx.Amount);
+                result += tx.Amount / tx.Currency.DigitsMultiplier;
+
+            var includeFee = tx.Currency.Name == tx.Currency.FeeCurrencyName;
+            var fee = includeFee ? tx.Fee : 0;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -Tezos.MtzToTz(tx.Amount + tx.Fee);
+                result += -(tx.Amount + fee) / tx.Currency.DigitsMultiplier;
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
+
+            return result;
+        }
+
+        private static decimal GetFee(TezosTransaction tx)
+        {
+            var result = 0m;
+
+            if (tx.Type.HasFlag(BlockchainTransactionType.Output))
+                result += Tezos.MtzToTz(tx.Fee);
+
+            tx.InternalTxs?.ForEach(t => result += GetFee(t));
 
             return result;
         }
