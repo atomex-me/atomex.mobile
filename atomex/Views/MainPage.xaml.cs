@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel;
 using Xamarin.Forms;
 using atomex.ViewModel;
-using atomex.CustomElements;
 using atomex.Views.CreateSwap;
+using atomex.Resources;
 
 namespace atomex
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
-    public partial class MainPage : CustomTabbedPage, INavigationService
+    public partial class MainPage : TabbedPage, INavigationService
     {
 
         private readonly NavigationPage navigationConversionPage;
@@ -20,31 +20,55 @@ namespace atomex
         {
 
             _mainViewModel = mainViewModel;
-            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.DelegateViewModel, this));
-            navigationWalletsListPage.IconImageSource = "NavBar-wallets";
-            navigationWalletsListPage.Title = "Wallets";
-            navigationWalletsListPage.BarBackgroundColor = Color.FromHex("#2B5286");
-            navigationWalletsListPage.BarTextColor = Color.White;
 
-            var navigationPortfolio = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel));
-            navigationPortfolio.IconImageSource = "NavBar-portfolio";
-            navigationPortfolio.Title = "Portfolio";
-            navigationPortfolio.BarBackgroundColor = Color.FromHex("#2B5286");
-            navigationPortfolio.BarTextColor = Color.White;
+            var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel))
+            {
+                IconImageSource = "NavBar-portfolio",
+                Title = AppResources.PortfolioTab
+            };
 
-            navigationConversionPage = new NavigationPage(new ConversionsListPage(_mainViewModel.ConversionViewModel));
-            navigationConversionPage.IconImageSource = "NavBar-conversion";
-            navigationConversionPage.Title = "Conversion";
-            navigationConversionPage.BarBackgroundColor = Color.FromHex("#2B5286");
-            navigationConversionPage.BarTextColor = Color.White;
+            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.DelegateViewModel, this))
+            {
+                IconImageSource = "NavBar-wallets",
+                Title = AppResources.WalletsTab
+            };
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this));
-            navigationSettingsPage.IconImageSource = "NavBar-settings";
-            navigationSettingsPage.Title = "Settings";
-            navigationSettingsPage.BarBackgroundColor = Color.FromHex("#2B5286");
-            navigationSettingsPage.BarTextColor = Color.White;
+            navigationConversionPage = new NavigationPage(new ConversionsListPage(_mainViewModel.ConversionViewModel))
+            {
+                IconImageSource = "NavBar-conversion",
+                Title = AppResources.ConversionTab
+            };
 
-            Children.Add(navigationPortfolio);
+            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
+            {
+                IconImageSource = "NavBar-settings",
+                Title = AppResources.SettingsTab
+            };
+
+            if (Application.Current.Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
+                navigationWalletsListPage.BarBackgroundColor =
+                    navigationPortfolioPage.BarBackgroundColor =
+                    navigationConversionPage.BarBackgroundColor =
+                    navigationSettingsPage.BarBackgroundColor =
+                    (Color)navBarColor;
+            if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
+                navigationWalletsListPage.BarTextColor =
+                    navigationPortfolioPage.BarTextColor =
+                    navigationConversionPage.BarTextColor =
+                    navigationSettingsPage.BarTextColor =
+                    (Color)navBarTextColor;
+            if (Application.Current.Resources.TryGetValue("TabBarBackgroundColor", out var tabBarBackgroundColor))
+                navigationWalletsListPage.BackgroundColor =
+                    navigationPortfolioPage.BackgroundColor=
+                    navigationConversionPage.BackgroundColor =
+                    navigationSettingsPage.BackgroundColor =
+                    (Color)tabBarBackgroundColor;
+            if (Application.Current.Resources.TryGetValue("SelectedTabColor", out var selectedTabColor))
+                this.SelectedTabColor = (Color)selectedTabColor;
+            if (Application.Current.Resources.TryGetValue("UnselectedTabColor", out var unSelectedTabColor))
+                this.UnselectedTabColor = (Color)unSelectedTabColor;
+
+            Children.Add(navigationPortfolioPage);
             Children.Add(navigationWalletsListPage);
             Children.Add(navigationConversionPage);
             Children.Add(navigationSettingsPage);
@@ -60,8 +84,11 @@ namespace atomex
             _mainViewModel.SignOut();
             StartViewModel startViewModel = new StartViewModel(_mainViewModel.AtomexApp);
             Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
-            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#2B5286");
-            ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
+
+            if (Application.Current.Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
+                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
+            if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
+                ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
         public void ConvertCurrency(string currencyCode)

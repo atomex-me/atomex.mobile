@@ -358,6 +358,20 @@
         <value>Account</value>
     </data>
     
+    <!-- Tab bar -->
+    <data name="PortfolioTab" xml:space="preserve">
+        <value>Portfolio</value>
+    </data>
+    <data name="WalletsTab" xml:space="preserve">
+        <value>Wallets</value>
+    </data>
+    <data name="ConversionTab" xml:space="preserve">
+        <value>Conversion</value>
+    </data>
+    <data name="SettingsTab" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    
     <!-- Messages -->
     <data name="Error" xml:space="preserve">
         <value>Error</value>

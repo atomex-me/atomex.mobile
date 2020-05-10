@@ -647,6 +647,30 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string PortfolioTab {
+            get {
+                return ResourceManager.GetString("PortfolioTab", resourceCulture);
+            }
+        }
+        
+        internal static string WalletsTab {
+            get {
+                return ResourceManager.GetString("WalletsTab", resourceCulture);
+            }
+        }
+        
+        internal static string ConversionTab {
+            get {
+                return ResourceManager.GetString("ConversionTab", resourceCulture);
+            }
+        }
+        
+        internal static string SettingsTab {
+            get {
+                return ResourceManager.GetString("SettingsTab", resourceCulture);
+            }
+        }
+        
         internal static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);

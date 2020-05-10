@@ -5,8 +5,6 @@ using Atomex.Subsystems;
 using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
-using System.Threading.Tasks;
-using Atomex.Common;
 
 namespace atomex.ViewModel
 {

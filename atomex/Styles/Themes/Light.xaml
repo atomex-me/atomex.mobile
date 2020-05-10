@@ -7,6 +7,8 @@
     <Color x:Key="AdditionalBackgroundColor">#f7f5fa</Color>
     <Color x:Key="NavigationBarBackgroundColor">#2B5286</Color>
     <Color x:Key="TabBarBackgroundColor">#f7f5fa</Color>
+    <Color x:Key="SelectedTabColor">#3a6cb1</Color>
+    <Color x:Key="UnselectedTabColor">Gray</Color>
 
     <Color x:Key="MainButtonBackgroundColor">#3a6cb1</Color>
     <Color x:Key="MainButtonBorderColor">#3a6cb1</Color>
@@ -17,37 +19,11 @@
 
     <Color x:Key="FrameBorderColor">LightGray</Color>
 
+    <Color x:Key="NavigationBarTextColor">#ffffff</Color>
     <Color x:Key="MainTextColor">#000000</Color>
     <Color x:Key="AdditionalTextColor">#918f92</Color>
     <Color x:Key="LogoTextColor">#223a66</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
-
-    <!-- Fonts -->
-    <OnPlatform x:TypeArguments="x:String" x:Key="BlackFont">
-          <On Platform="iOS" Value="Roboto-Black" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
-        <On Platform="iOS" Value="Roboto-Bold" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="LightFont">
-        <On Platform="iOS" Value="Roboto-Light" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="RegularFont">
-        <!--<On Platform="Android" Value="OpenSans-Regular.ttf#Open Sans" />-->
-        <On Platform="iOS" Value="Roboto-Regular" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="ItalicFont">
-        <On Platform="iOS" Value="Roboto-Italic" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="MediumFont">
-        <On Platform="iOS" Value="Roboto-Medium" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="ThinFont">
-        <On Platform="iOS" Value="Roboto-Thin" />
-    </OnPlatform>
-    <OnPlatform x:TypeArguments="x:String" x:Key="LogoFont">
-        <On Platform="iOS" Value="Comfortaa-Regular" />
-    </OnPlatform>
 
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
