@@ -337,7 +337,6 @@ namespace atomex.ViewModel
             await Task.WhenAll(Currencies.Select(async c =>
             {
                 var balance = await App.Account.GetBalanceAsync(c.Name);
-                var address = await App.Account.GetFreeExternalAddressAsync(c.Name);
 
                 _currencyViewModels.Add(new CurrencyViewModel(App)
                 {
@@ -345,7 +344,6 @@ namespace atomex.ViewModel
                     TotalAmount = balance.Confirmed,
                     AvailableAmount = balance.Available,
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
-                    FreeExternalAddress = address.Address
                 });
             }));
             FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();

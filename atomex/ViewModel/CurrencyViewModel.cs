@@ -45,13 +45,6 @@ namespace atomex.ViewModel
             set { _unconfirmedAmount = value; OnPropertyChanged(nameof(UnconfirmedAmount)); }
         }
 
-        private string _freeExternalAddress;
-        public string FreeExternalAddress
-        {
-            get => _freeExternalAddress;
-            set { _freeExternalAddress = value; OnPropertyChanged(nameof(FreeExternalAddress)); }
-        }
-
         private decimal _price;
         public decimal Price
         {
@@ -117,7 +110,6 @@ namespace atomex.ViewModel
                 {
                     await UpdateBalanceAsync().ConfigureAwait(false);
                     await LoadTransactionsAsync().ConfigureAwait(false);
-                    await UpdateFreeExternalAddressAsync().ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -139,12 +131,6 @@ namespace atomex.ViewModel
 
             UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
             OnPropertyChanged(nameof(UnconfirmedAmount));
-        }
-
-        public async Task UpdateFreeExternalAddressAsync()
-        {
-            var walletAddress = await App.Account.GetFreeExternalAddressAsync(CurrencyCode);
-            FreeExternalAddress = walletAddress.Address;
         }
 
         private void UnconfirmedTransactionAdded(
