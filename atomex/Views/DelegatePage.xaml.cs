@@ -42,10 +42,14 @@ namespace atomex
             if (!args.IsFocused)
             {
                 decimal fee;
-                if (String.IsNullOrEmpty(Fee?.Text) || String.IsNullOrWhiteSpace(Fee?.Text))
-                    fee = 0;
-                else
+                try
+                {
                     fee = Convert.ToDecimal(Fee?.Text);
+                }
+                catch (FormatException)
+                {
+                    fee = 0;
+                }
                 _delegateViewModel.Fee = fee;
                 Fee.Text = _delegateViewModel.FeeString;
             }

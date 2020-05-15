@@ -31,10 +31,14 @@ namespace atomex
             if (!args.IsFocused)
             {
                 decimal amount;
-                if (String.IsNullOrEmpty(Amount?.Text) || String.IsNullOrWhiteSpace(Amount?.Text))
-                    amount = 0;
-                else
+                try
+                {
                     amount = Convert.ToDecimal(Amount?.Text);
+                }
+                catch (FormatException)
+                {
+                    amount = 0;
+                }
                 _sendViewModel.UpdateAmount(amount);
                 Amount.Text = _sendViewModel.AmountString;
                 Fee.Text = _sendViewModel.FeeString;

@@ -27,17 +27,30 @@ namespace atomex.Views.CreateSwap
             AmountFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
-                if (String.IsNullOrWhiteSpace(Amount.Text))
+                try
+                {
+                    _conversionViewModel.Amount = Convert.ToDecimal(Amount?.Text);
+                    Amount.Text = _conversionViewModel.Amount.ToString();
+                }
+                catch (FormatException)
                 {
                     _conversionViewModel.Amount = 0;
-                    return;
+                    Amount.Text = "0";
                 }
-                _conversionViewModel.Amount = Convert.ToDecimal(Amount.Text);
             }
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
+            try
+            {
+                _conversionViewModel.Amount = Convert.ToDecimal(args.NewTextValue);
+            }
+            catch (FormatException)
+            {
+                _conversionViewModel.Amount = 0;
+            }
+
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
                 if (!AmountHint.IsVisible)
@@ -46,12 +59,10 @@ namespace atomex.Views.CreateSwap
                     AmountHint.Text = Amount.Placeholder;
                     Amount.VerticalTextAlignment = TextAlignment.Start;
                 }
-                _conversionViewModel.Amount = decimal.Parse(args.NewTextValue);
             }
             else
             {
                 AmountHint.IsVisible = false;
-                _conversionViewModel.Amount = 0;
                 Amount.VerticalTextAlignment = TextAlignment.Center;
             }
         }
@@ -70,7 +81,15 @@ namespace atomex.Views.CreateSwap
                 return;
             }
 
-            decimal amount = Convert.ToDecimal(Amount.Text);
+            decimal amount;
+            try
+            {
+                amount = Convert.ToDecimal(Amount?.Text);
+            }
+            catch (FormatException)
+            {
+                amount = 0;
+            }
 
             if (amount <= 0)
             {
