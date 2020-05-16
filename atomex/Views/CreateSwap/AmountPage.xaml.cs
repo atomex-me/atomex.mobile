@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
@@ -29,7 +30,8 @@ namespace atomex.Views.CreateSwap
             {
                 try
                 {
-                    _conversionViewModel.Amount = Convert.ToDecimal(Amount?.Text);
+                    decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
+                    _conversionViewModel.Amount = amount;
                     Amount.Text = _conversionViewModel.Amount.ToString();
                 }
                 catch (FormatException)
@@ -44,7 +46,8 @@ namespace atomex.Views.CreateSwap
         {
             try
             {
-                _conversionViewModel.Amount = Convert.ToDecimal(args.NewTextValue);
+                decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
+                _conversionViewModel.Amount = amount;
             }
             catch (FormatException)
             {
@@ -84,7 +87,7 @@ namespace atomex.Views.CreateSwap
             decimal amount;
             try
             {
-                amount = Convert.ToDecimal(Amount?.Text);
+                decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
             }
             catch (FormatException)
             {

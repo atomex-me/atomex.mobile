@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using atomex.ViewModel.SendViewModels;
 using atomex.Resources;
+using System.Globalization;
 
 namespace atomex
 {
@@ -33,7 +34,7 @@ namespace atomex
                 decimal amount;
                 try
                 {
-                    amount = Convert.ToDecimal(Amount?.Text);
+                    decimal.TryParse(Amount.Text?.Replace(",","."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
                 }
                 catch (FormatException)
                 {
@@ -51,10 +52,14 @@ namespace atomex
             if (!args.IsFocused)
             {
                 decimal fee;
-                if (String.IsNullOrEmpty(Fee?.Text) || String.IsNullOrWhiteSpace(Fee?.Text))
+                try
+                {
+                    decimal.TryParse(Fee.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out fee);
+                }
+                catch (FormatException)
+                {
                     fee = 0;
-                else
-                    fee = Convert.ToDecimal(Fee?.Text);
+                }
                 _sendViewModel.UpdateFee(fee);
                 Fee.Text = _sendViewModel.FeeString;
             }
@@ -64,10 +69,6 @@ namespace atomex
         private void AddressEntryFocused(object sender, FocusEventArgs args)
         {
             AddressFrame.HasShadow = args.IsFocused;
-            if (!args.IsFocused)
-            {
-                _sendViewModel.EstimateMaxAmountAndFee();
-            }
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)

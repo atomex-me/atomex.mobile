@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
@@ -44,7 +45,7 @@ namespace atomex
                 decimal fee;
                 try
                 {
-                    fee = Convert.ToDecimal(Fee?.Text);
+                    decimal.TryParse(Fee.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out fee);
                 }
                 catch (FormatException)
                 {

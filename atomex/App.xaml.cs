@@ -52,6 +52,7 @@ namespace atomex
                 ((NavigationPage)MainPage).BarBackgroundColor = (Color)navBarColor;
             if (Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
                 ((NavigationPage)MainPage).BarTextColor = (Color)navBarTextColor;
+
         }
 
         protected override void OnStart()
