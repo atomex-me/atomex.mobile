@@ -3,26 +3,26 @@ using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.ViewModel.SendViewModels;
+using Atomex;
 
 namespace atomex
 {
     public partial class CurrencyPage : ContentPage
     {
         private CurrencyViewModel _currencyViewModel;
-        private DelegateViewModel _delegateViewModel;
-        private INavigationService _navigationService;
+        private INavigationService _navigationService { get; }
+        private IAtomexApp AtomexApp { get; }
 
         public CurrencyPage()
         {
             InitializeComponent();
         }
-        public CurrencyPage(CurrencyViewModel currencyViewModel, DelegateViewModel delegateViewModel, INavigationService navigationService)
+        public CurrencyPage(CurrencyViewModel currencyViewModel, IAtomexApp atomexApp, INavigationService navigationService)
         {
             InitializeComponent();
             _navigationService = navigationService;
-
             _currencyViewModel = currencyViewModel;
-            _delegateViewModel = delegateViewModel;
+            AtomexApp = atomexApp;
             BindingContext = _currencyViewModel;
             if (_currencyViewModel.CurrencyCode == "XTZ")
             {
@@ -39,7 +39,7 @@ namespace atomex
         }
         async void ShowDelegationPage(object sender, EventArgs args)
         { 
-            await Navigation.PushAsync(new DelegationsListPage(_delegateViewModel));
+            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp)));
         }
         void ShowConversionPage(object sender, EventArgs args)
         {

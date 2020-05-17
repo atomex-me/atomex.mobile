@@ -27,7 +27,7 @@ namespace atomex
                 Title = AppResources.PortfolioTab
             };
 
-            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.DelegateViewModel, this))
+            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
             {
                 IconImageSource = "NavBar-wallets",
                 Title = AppResources.WalletsTab

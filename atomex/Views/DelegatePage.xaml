@@ -144,7 +144,7 @@
                        Padding="0"
                        BorderColor="LightGray">
                     <Picker ItemsSource="{Binding FromAddressList}"
-                            ItemDisplayBinding="{Binding Address}"
+                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
                             SelectedItem="{Binding WalletAddressViewModel}"
                             FontSize="14"
                             Focused="OnFromAddressPickerFocused"
