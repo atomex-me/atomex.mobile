@@ -6,6 +6,18 @@
              Title="{x:Static resources:AppResources.DelegationListPageTitle}">
     <ContentPage.Content>
         <StackLayout>
+            <StackLayout IsVisible="{Binding LoadingDelegations}"
+                         Padding="0,10">
+                <Label Text="{x:Static resources:AppResources.LoadingLabel}"
+                       TextColor="{DynamicResource HintTextColor}"
+                       FontFamily="{DynamicResource ItalicFont}"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="16"
+                       Margin="0,10,0,0"/>
+                <ActivityIndicator Color="{DynamicResource HintTextColor}"                                
+                                   IsRunning="True"/>
+            </StackLayout>
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          IsVisible="False">

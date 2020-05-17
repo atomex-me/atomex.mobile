@@ -353,6 +353,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string LoadingLabel {
+            get {
+                return ResourceManager.GetString("LoadingLabel", resourceCulture);
+            }
+        }
+        
         internal static string TransactionInfoPageTitle {
             get {
                 return ResourceManager.GetString("TransactionInfoPageTitle", resourceCulture);

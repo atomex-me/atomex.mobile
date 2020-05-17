@@ -181,6 +181,9 @@
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Balance updating...</value>
     </data>
+    <data name="LoadingLabel" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
