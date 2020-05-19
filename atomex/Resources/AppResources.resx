@@ -263,6 +263,12 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>From Address</value>
     </data>
+    <data name="BakersNotFound" xml:space="preserve">
+        <value>Bakers not found</value>
+    </data>
+    <data name="BakerAddressPlaceholder" xml:space="preserve">
+        <value>Enter baker address...</value>
+    </data>
     
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">

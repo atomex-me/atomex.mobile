@@ -40,6 +40,16 @@ namespace atomex
         private void OnFeeEntryFocused(object sender, FocusEventArgs args)
         {
             FeeFrame.HasShadow = args.IsFocused;
+
+            Device.StartTimer(TimeSpan.FromSeconds(0.1), () =>
+            {
+                if (args.IsFocused)
+                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - FeeFrame.Height / 2, true);
+                else
+                    ScrollView.ScrollToAsync(0, 0, true);
+                return false;
+            });
+
             if (!args.IsFocused)
             {
                 decimal fee;
