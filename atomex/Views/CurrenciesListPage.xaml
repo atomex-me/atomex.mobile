@@ -7,12 +7,14 @@
              Icon="NavBar-wallets"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout Margin="0,20">
+        <StackLayout Margin="0,20"
+                     VerticalOptions="FillAndExpand">
             <ListView ItemsSource="{Binding CurrencyViewModels}"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       HasUnevenRows="True"
                       ItemTapped="OnListViewItemTapped"
-                      SeparatorVisibility="None">
+                      SeparatorVisibility="None"
+                      VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
