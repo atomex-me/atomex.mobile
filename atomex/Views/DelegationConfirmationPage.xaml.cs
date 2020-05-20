@@ -35,7 +35,7 @@ namespace atomex
                     await DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
                     return;
                 }
-                //await _delegateViewModel.LoadDelegationInfoAsync();
+                await _delegateViewModel.LoadDelegationInfoAsync();
                 var res = await DisplayAlert(AppResources.SuccessDelegation, AppResources.ExplorerUri + ": " + result.Value, null, AppResources.AcceptButton);
                 if (!res)
                 {

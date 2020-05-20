@@ -263,9 +263,6 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>From Address</value>
     </data>
-    <data name="BakersNotFound" xml:space="preserve">
-        <value>Bakers not found</value>
-    </data>
     <data name="BakerAddressPlaceholder" xml:space="preserve">
         <value>Enter baker address...</value>
     </data>
@@ -525,6 +522,9 @@
     </data>
     <data name="AvailableFundsError" xml:space="preserve">
         <value>The transfer amount (including commission) exceeds the amount of available funds</value>
+    </data>
+    <data name="CommissionLessThanZeroError" xml:space="preserve">
+        <value>Commission must be a positive value</value>
     </data>
     <data name="EmptyMnemonicError" xml:space="preserve">
         <value>Mnemonic phrase can not be empty</value>

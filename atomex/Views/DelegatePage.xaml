@@ -44,50 +44,16 @@
                             TextColor="#ffffff">
                     </Picker>
                 </Frame>
-                <Label Text="{x:Static resources:AppResources.BakersNotFound}"
-                       Grid.RowSpan="2"
-                       Grid.ColumnSpan="4"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="16"
-                       TextColor="Gray"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="False">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding FromBakersList.Count}"
-                                     Value="0">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
                 <Image Grid.RowSpan="2"
                        Source="{Binding BakerViewModel.Logo}"
                        Margin="10"
                        IsEnabled="False">
-                    <Image.Triggers>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding FromBakersList.Count}"
-                                     Value="0">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </Image.Triggers>
                 </Image>
                 <StackLayout Grid.Column="1"
                              Grid.RowSpan="2"
                              IsEnabled="False"
                              VerticalOptions="Center"
                              Spacing="0">
-                    <StackLayout.Triggers>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding FromBakersList.Count}"
-                                     Value="0">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </StackLayout.Triggers>
                     <Label Text="{Binding BakerViewModel.Name}"
                            VerticalTextAlignment="End"
                            FontFamily="{DynamicResource BoldFont}"
@@ -95,6 +61,14 @@
                     <Label VerticalTextAlignment="Start"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                     Binding="{Binding BakerViewModel.Name}"
+                                     Value="Custom Baker">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                        </DataTrigger>
+                        </Label.Triggers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding BakerViewModel.Fee, StringFormat='{0:P}'}"/>
@@ -113,8 +87,8 @@
                              Spacing="0">
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding FromBakersList.Count}"
-                                     Value="0">
+                                     Binding="{Binding BakerViewModel.Name}"
+                                     Value="Custom Baker">
                             <Setter Property="IsVisible"
                                     Value="False"/>
                         </DataTrigger>
@@ -145,7 +119,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="7*" />
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        Padding="20">
@@ -161,7 +135,6 @@
                                           PlaceholderColor="Gray"
                                           Focused="OnToAddressEntryFocused"
                                           Unfocused="OnToAddressEntryFocused"
-                                          Text="{Binding Address}"
                                           Style="{DynamicResource EntryStyle}"/>
                 </Frame>
             </Grid>
@@ -175,8 +148,8 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="6.5*" />
-                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        Grid.RowSpan="2"
@@ -186,7 +159,7 @@
                 </Frame>
                 <Frame Grid.RowSpan="2"
                        Grid.Column="1"
-                       Grid.ColumnSpan="3"
+                       Grid.ColumnSpan="2"
                        HasShadow="False"
                        x:Name="FromAddressFrame"
                        Padding="0"
@@ -201,7 +174,6 @@
                 </Frame>
                 <Label Grid.Row="0"
                        Grid.Column="1"
-                       Grid.ColumnSpan="2"
                        Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                        FontFamily="{DynamicResource RegularFont}"
                        LineBreakMode="MiddleTruncation"
@@ -210,7 +182,6 @@
                        IsEnabled="False"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Grid.ColumnSpan="2"
                        Padding="15,0"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Center"
@@ -226,13 +197,13 @@
                     </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Column="3"
+                <StackLayout Grid.Column="2"
                              Grid.RowSpan="2">
                      <Image Source="DownArrow-picker"
-                            Margin="10,34"
+                            Margin="12,34"
                             IsEnabled="False"/>
                 </StackLayout>
-            </Grid>
+            </Grid>    
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
                   RowSpacing="0"
@@ -242,7 +213,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="7*" />
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}">
                     <Label Text="{x:Static resources:AppResources.FeeLabel}"

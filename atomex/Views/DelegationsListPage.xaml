@@ -70,7 +70,8 @@
                                 </Grid.ColumnDefinitions> 
                                 <Image Source="{Binding Baker.Logo}"
                                        HeightRequest="32"
-                                       WidthRequest="32"/>
+                                       WidthRequest="32"
+                                       Margin="6"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding Address}"
                                        VerticalTextAlignment="Center"

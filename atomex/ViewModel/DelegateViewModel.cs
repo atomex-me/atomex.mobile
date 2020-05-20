@@ -97,26 +97,23 @@ namespace atomex.ViewModel
             get => _bakerViewModel;
             set
             {
+                if (_bakerViewModel == value)
+                    return;
+
                 _bakerViewModel = value;
                 OnPropertyChanged(nameof(BakerViewModel));
 
+                if (_bakerViewModel == FromBakersList.First())
+                {
+                    Address = null;
+                    return;
+                }
                 if (_bakerViewModel != null)
                     Address = _bakerViewModel.Address;
             }
         }
 
-        public string FeeString
-        {
-            get => Fee.ToString(_tezos.FeeFormat, CultureInfo.InvariantCulture);
-            set
-            {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
-                    return;
-
-                string feeString = fee.ToString(_tezos.FeeFormat, CultureInfo.InvariantCulture);
-                Fee = decimal.Parse(feeString, CultureInfo.InvariantCulture);
-            }
-        }
+        private decimal _minFee;
 
         private decimal _fee;
         public decimal Fee
@@ -130,14 +127,17 @@ namespace atomex.ViewModel
                 {
                     var feeAmount = _fee;
 
-                    if (feeAmount > _walletAddressViewModel.WalletAddress.Balance)
-                        feeAmount = _walletAddressViewModel.WalletAddress.Balance;
+                    if (feeAmount > _walletAddressViewModel?.WalletAddress?.Balance)
+                    {
+                        feeAmount = (decimal)_walletAddressViewModel?.WalletAddress?.Balance;
+                        _fee = feeAmount;
+                    }
 
-                    _fee = feeAmount;
-
-                    OnPropertyChanged(nameof(FeeString));
+                    if (feeAmount < _minFee)
+                        _fee = _minFee;
                 }
 
+                OnPropertyChanged(nameof(Fee));
                 OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
         }
@@ -177,6 +177,9 @@ namespace atomex.ViewModel
             set
             {
                 _useDefaultFee = value;
+                if (_useDefaultFee)
+                    Fee = _minFee;
+                OnPropertyChanged(nameof(Fee));
                 OnPropertyChanged(nameof(UseDefaultFee));
             }
         }
@@ -190,12 +193,15 @@ namespace atomex.ViewModel
                 _address = value;
                 OnPropertyChanged(nameof(Address));
 
-                var baker = FromBakersList.FirstOrDefault(b => b.Address == _address);
+                if (_address != null)
+                {
+                    var baker = FromBakersList.FirstOrDefault(b => b.Address == _address);
 
-                if (baker == null)
-                    BakerViewModel = null;
-                else if (baker != BakerViewModel)
-                    BakerViewModel = baker;
+                    if (baker == null)
+                        BakerViewModel = FromBakersList.First();
+                    else if (baker != BakerViewModel)
+                        BakerViewModel = baker;
+                }
             }
         }
 
@@ -211,9 +217,9 @@ namespace atomex.ViewModel
                 return AppResources.InvalidAddressError;
             }
 
-            if (Fee < 0)
+            if (Fee < _minFee)
             {
-                return AppResources.InvalidAddressError;
+                return AppResources.CommissionLessThanZeroError;
             }
 
             var result = await GetDelegate();
@@ -268,6 +274,7 @@ namespace atomex.ViewModel
             FeeCurrencyCode = _tezos.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
+            _minFee = 0.001258M;
             UseDefaultFee = true;
             LoadingDelegations = true;
 
@@ -298,6 +305,11 @@ namespace atomex.ViewModel
                             StakingAvailable = x.StakingAvailable
                         })
                         .ToList();
+                    bakers.Insert(0, new BakerViewModel
+                    {
+                        Name = "Custom Baker",
+                        Logo = "CustomBakerLogo"
+                    });
                 });
             }
             catch (Exception e)
@@ -377,6 +389,7 @@ namespace atomex.ViewModel
 
                 Fee = tx.Fee;
                 _tx = tx;
+
             }
             catch (Exception e)
             {

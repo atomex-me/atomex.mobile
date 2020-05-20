@@ -497,12 +497,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string BakersNotFound {
-            get {
-                return ResourceManager.GetString("BakersNotFound", resourceCulture);
-            }
-        }
-        
         internal static string BakerAddressPlaceholder {
             get {
                 return ResourceManager.GetString("BakerAddressPlaceholder", resourceCulture);

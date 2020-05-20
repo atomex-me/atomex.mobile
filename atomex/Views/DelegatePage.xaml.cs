@@ -20,11 +20,16 @@ namespace atomex
             InitializeComponent();
             _delegateViewModel = delegateViewModel;
             BindingContext = delegateViewModel;
+            Fee.Text = delegateViewModel.Fee.ToString();
         }
 
         private void OnBakerPickerFocused(object sender, FocusEventArgs args)
         {
             BakerFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
+            {
+                ToAddressEntry.Text = _delegateViewModel.Address;
+            }
         }
 
         private void OnFromAddressPickerFocused(object sender, FocusEventArgs args)
@@ -35,6 +40,10 @@ namespace atomex
         private void OnToAddressEntryFocused(object sender, FocusEventArgs args)
         {
             ToAddressFrame.HasShadow = args.IsFocused;
+            if (!args.IsFocused)
+            {
+                _delegateViewModel.Address = ToAddressEntry.Text;
+            }
         }
 
         private void OnFeeEntryFocused(object sender, FocusEventArgs args)
@@ -62,7 +71,7 @@ namespace atomex
                     fee = 0;
                 }
                 _delegateViewModel.Fee = fee;
-                Fee.Text = _delegateViewModel.FeeString;
+                Fee.Text = _delegateViewModel.Fee.ToString();
             }
         }
 

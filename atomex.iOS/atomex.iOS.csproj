@@ -221,6 +221,10 @@
     <ImageAsset Include="Assets.xcassets\RightArrow-enter__black.imageset\Right-arrow-2__black.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow-enter__black.imageset\Right-arrow-2__black-1.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow-enter__black.imageset\Right-arrow-2__black-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon.png" />
+    <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon-1.png" />
+    <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -308,6 +312,7 @@
     <Folder Include="Assets.xcassets\RightArrow-enter__white.imageset\" />
     <Folder Include="Assets.xcassets\Share.imageset\" />
     <Folder Include="Assets.xcassets\RightArrow-enter__black.imageset\" />
+    <Folder Include="Assets.xcassets\CustomBakerLogo.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
