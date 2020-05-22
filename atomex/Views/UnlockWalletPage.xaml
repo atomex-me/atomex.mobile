@@ -29,7 +29,7 @@
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <Frame HasShadow="False" 
-                               BackgroundColor="LightCyan">
+                               BackgroundColor="AliceBlue">
                             <Image WidthRequest="24"
                                    HeightRequest="24"
                                    Source="Lock"/>

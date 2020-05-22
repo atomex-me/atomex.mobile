@@ -134,7 +134,7 @@
         <value>     Please enter a mnemonic phrase for your wallet</value>
     </data>
     <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
-        <value>Enter mnemonic phrase here</value>
+        <value>Enter mnemonic phrase here...</value>
     </data>
     <data name="DerivedPasswordStepLabel" xml:space="preserve">
         <value>Step 4: Derived key password (optional)</value>

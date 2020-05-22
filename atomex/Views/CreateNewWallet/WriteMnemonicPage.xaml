@@ -44,14 +44,15 @@
             </StackLayout>
             <Frame HasShadow="False"
                    x:Name="EditorFrame"
-                   Padding="5"
+                   BackgroundColor="AliceBlue"
                    BorderColor="LightGray">
                 <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
+                        BackgroundColor="AliceBlue"
                         PlaceholderColor="{DynamicResource HintTextColor}"
                         Style="{DynamicResource EntryStyle}"
-                        HeightRequest="80"
+                        AutoSize="TextChanges"
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused"/>
             </Frame>
