@@ -12,31 +12,72 @@
             <StackLayout Orientation="Horizontal"
                          Spacing="0"
                          HeightRequest="70">
-                <Frame Padding="5"
-                       Style="{DynamicResource FrameCaptionStyle}">
-                    <Label Text="{x:Static resources:AppResources.AddressLabel}"
-                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
-                </Frame>
-                <Frame HasShadow="False"
-                       x:Name="AddressFrame"
-                       HorizontalOptions="FillAndExpand"
-                       Padding="0">
-                    <RelativeLayout>
+                <Grid VerticalOptions="Fill"
+                      HorizontalOptions="Fill"
+                      RowSpacing="0"
+                      ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="6*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.RowSpan="2"
+                           Padding="5"
+                           Style="{DynamicResource FrameCaptionStyle}">
+                        <Label Text="{x:Static resources:AppResources.AddressLabel}"
+                               Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                    </Frame>
+                    <Frame Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           Grid.Column="1"
+                           HasShadow="False"
+                           BorderColor="LightGray"
+                           x:Name="AddressFrame"
+                           Padding="0">
                         <Picker ItemsSource="{Binding FromAddressList}"
                                 ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
                                 SelectedItem="{Binding SelectedAddress}"
-                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                HeightRequest="70"
                                 x:Name="AddressPicker"
                                 Focused="OnPickerFocused"
-                                Unfocused="OnPickerFocused"/>
-                        <Image Source="DownArrow-picker"
-                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Width, Factor=0.9}"
-                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=AddressPicker, Property=Height, Factor=0.5, Constant=-5}"
-                               WidthRequest="10"
-                               HeightRequest="10"/>
-                    </RelativeLayout>
-                </Frame>
+                                Unfocused="OnPickerFocused"
+                                TextColor="#ffffff"/>
+                    </Frame>
+                    <Label Grid.Column="1"
+                           Text="{Binding SelectedAddress.Address}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           LineBreakMode="MiddleTruncation"
+                           Padding="10,0,0,0"
+                           VerticalTextAlignment="End"
+                           IsEnabled="False"/>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Padding="10,0,0,0"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           FontFamily="{DynamicResource ItalicFont}"
+                           TextColor="{DynamicResource HintTextColor}"
+                           IsEnabled="False">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{x:Static resources:AppResources.Balance}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding SelectedAddress.WalletAddress.Currency}"/>
+                        </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Image Source="DownArrow-picker"
+                           Grid.RowSpan="2"
+                           Grid.Column="2"
+                           WidthRequest="10"
+                           HeightRequest="10"
+                           Margin="0,30"/>
+                </Grid>
             </StackLayout>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
