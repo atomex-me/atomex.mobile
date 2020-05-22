@@ -20,7 +20,7 @@
             <Frame HasShadow="False"
                    x:Name="LanguageFrame"
                    Padding="0"
-                   BorderColor="LightGray"
+                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
                    HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
                     <Picker ItemsSource="{Binding Languages}"
@@ -29,6 +29,7 @@
                             x:Name="LanguagePicker"
                             Focused="OnLanguagePickerFocused"
                             Unfocused="OnLanguagePickerFocused"
+                            SelectedIndexChanged="MnemonicPhraseChanged"
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                             HeightRequest="70"/>
                     <Image Source="DownArrow-picker"
@@ -47,7 +48,7 @@
             <Frame HasShadow="False"
                    x:Name="WordCountFrame"
                    Padding="0"
-                   BorderColor="LightGray"
+                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
                    HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
                     <Picker ItemsSource="{Binding WordCountToEntropyLength}"
@@ -57,6 +58,7 @@
                             x:Name="WordCountPicker"
                             Focused="OnWordCountPickerFocused"
                             Unfocused="OnWordCountPickerFocused"
+                            SelectedIndexChanged="MnemonicPhraseChanged"
                             HeightRequest="70"/>
                     <Image Source="DownArrow-picker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9}"
@@ -66,20 +68,22 @@
                 </RelativeLayout>
             </Frame>
         </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     HeightRequest="80">
+        <StackLayout Orientation="Horizontal">
             <Frame HasShadow="False"
-                   Padding="0"
-                   BorderColor="LightGray"
-                   HorizontalOptions="FillAndExpand">
+                   x:Name="MnemonicPhraseFrame"
+                   Padding="10"
+                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Fill">
                 <StackLayout VerticalOptions="Center">
                     <Label Text="{x:Static resources:AppResources.MnemonicPhraseLabel}"
                            x:Name="MnemonicLabel"
-                           TextColor="Gray"
+                           TextColor="{DynamicResource AdditionalTextColor}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Center">
                     </Label>
                     <Label Text="{Binding Mnemonic}"
+                           TextColor="{DynamicResource MnemonicPhraseTextColor}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Center"
                            FontSize="14"/>
@@ -91,6 +95,13 @@
                     VerticalOptions="Start"
                     Clicked="OnGenerateButtonClicked"/>
         </StackLayout>
+        <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
+               x:Name="LoseMnemonicPhraseText"
+               FontFamily="{DynamicResource RegularFont}"
+               TextColor="{DynamicResource MnemonicPhraseTextColor}"
+               FontSize="14"
+               Padding="0,10"
+               IsVisible="False"/>
         <Button Text="{x:Static resources:AppResources.NextButton}"
                 Margin="0,20"
                 Style="{DynamicResource MainButtonStyle}"

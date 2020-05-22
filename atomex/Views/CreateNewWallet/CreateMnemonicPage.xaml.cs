@@ -19,6 +19,15 @@ namespace atomex.Views.CreateNewWallet
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
+            if (!string.IsNullOrEmpty(createNewWalletViewModel.Mnemonic))
+            {
+                HighlightMnemonicPhrase();
+            }
+            else
+            {
+                MnemonicLabel.IsVisible = true;
+                LoseMnemonicPhraseText.IsVisible = false;
+            }
         }
 
         private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
@@ -45,8 +54,33 @@ namespace atomex.Views.CreateNewWallet
 
         private void OnGenerateButtonClicked(object sender, EventArgs args)
         {
-            MnemonicLabel.IsVisible = false;
+            HighlightMnemonicPhrase();
             _createNewWalletViewModel.GenerateMnemonic();
+        }
+
+        private void MnemonicPhraseChanged(object sender, EventArgs args)
+        {
+            DeleteMnemonicPhrase();
+        }
+
+        private void DeleteMnemonicPhrase()
+        {
+            MnemonicLabel.IsVisible = true;
+            LoseMnemonicPhraseText.IsVisible = false;
+            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameDefaultBackgroundColor", out var bgColor))
+                MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
+            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameDefaultBorderColor", out var borderColor))
+                MnemonicPhraseFrame.BorderColor = (Color)borderColor;
+        }
+
+        private void HighlightMnemonicPhrase()
+        {
+            MnemonicLabel.IsVisible = false;
+            LoseMnemonicPhraseText.IsVisible = true;
+            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameBackgroundColor", out var bgColor))
+                MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
+            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameBorderColor", out var borderColor))
+                MnemonicPhraseFrame.BorderColor = (Color)borderColor;
         }
     }
 }

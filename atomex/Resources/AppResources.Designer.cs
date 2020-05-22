@@ -257,6 +257,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string LoseMnemonicPhraseText {
+            get {
+                return ResourceManager.GetString("LoseMnemonicPhraseText", resourceCulture);
+            }
+        }
+        
         internal static string EnterMnemonicPhraseLabel {
             get {
                 return ResourceManager.GetString("EnterMnemonicPhraseLabel", resourceCulture);
