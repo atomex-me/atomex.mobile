@@ -222,6 +222,11 @@ namespace atomex.ViewModel
                 return AppResources.CommissionLessThanZeroError;
             }
 
+            if (WalletAddressViewModel.AvailableBalance < BakerViewModel.MinDelegation)
+            {
+                return AppResources.AmountLessThanMinDelegation;
+            }
+
             var result = await GetDelegate();
 
             if (result.HasError)

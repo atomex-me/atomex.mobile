@@ -953,6 +953,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string AmountLessThanMinDelegation {
+            get {
+                return ResourceManager.GetString("AmountLessThanMinDelegation", resourceCulture);
+            }
+        }
+        
         internal static string NoLiquidityError {
             get {
                 return ResourceManager.GetString("NoLiquidityError", resourceCulture);

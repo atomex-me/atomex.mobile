@@ -514,6 +514,9 @@
     <data name="AmountLessThanZeroError" xml:space="preserve">
         <value>Amount must be greater than 0</value>
     </data>
+    <data name="AmountLessThanMinDelegation" xml:space="preserve">
+        <value>Amount must be greater than baker minimum delegation</value>
+    </data>
     <data name="NoLiquidityError" xml:space="preserve">
         <value>Not enough liquidity to convert a specified amount</value>
     </data>
