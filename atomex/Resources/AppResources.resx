@@ -283,6 +283,9 @@
     <data name="WithCommision" xml:space="preserve">
         <value>With commision</value>
     </data>
+    <data name="CopyAndExitButton" xml:space="preserve">
+        <value>Copy Uri and Exit</value>
+    </data>
     
     <!-- Conversion list Page -->
     <data name="ConversionsPageTitle" xml:space="preserve">
@@ -399,6 +402,9 @@
     </data>
     <data name="SuccessDelegation" xml:space="preserve">
         <value>Successful delegation</value>
+    </data>
+    <data name="DelegationListWillBeUpdated" xml:space="preserve">
+        <value>Delegation list will be updated after the operation is included in the block</value>
     </data>
     <data name="ExplorerUri" xml:space="preserve">
         <value>Explorer Uri</value>

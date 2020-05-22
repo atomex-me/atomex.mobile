@@ -1,6 +1,7 @@
 ﻿using System;
 using atomex.Resources;
 using atomex.ViewModel;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -36,9 +37,10 @@ namespace atomex
                     return;
                 }
                 await _delegateViewModel.LoadDelegationInfoAsync();
-                var res = await DisplayAlert(AppResources.SuccessDelegation, AppResources.ExplorerUri + ": " + result.Value, null, AppResources.AcceptButton);
+                var res = await DisplayAlert(AppResources.SuccessDelegation, AppResources.DelegationListWillBeUpdated + "\r\n" + AppResources.ExplorerUri + ": " + result.Value, null, AppResources.CopyAndExitButton);
                 if (!res)
                 {
+                    await Clipboard.SetTextAsync(result.Value);
                     for (var i = 1; i < BACK_COUNT; i++)
                     {
                         Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);

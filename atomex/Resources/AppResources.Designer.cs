@@ -527,6 +527,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string CopyAndExitButton {
+            get {
+                return ResourceManager.GetString("CopyAndExitButton", resourceCulture);
+            }
+        }
+        
         internal static string ConversionsPageTitle {
             get {
                 return ResourceManager.GetString("ConversionsPageTitle", resourceCulture);
@@ -722,6 +728,12 @@ namespace atomex.Resources {
         internal static string SuccessDelegation {
             get {
                 return ResourceManager.GetString("SuccessDelegation", resourceCulture);
+            }
+        }
+        
+        internal static string DelegationListWillBeUpdated {
+            get {
+                return ResourceManager.GetString("DelegationListWillBeUpdated", resourceCulture);
             }
         }
         
