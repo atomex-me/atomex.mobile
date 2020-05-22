@@ -25,6 +25,8 @@ namespace atomex.iOS
 
                 Control.LeftView = new UIView(new CGRect(0, 0, 20, 0));
                 Control.LeftViewMode = UITextFieldViewMode.Always;
+                Control.RightView = new UIView(new CGRect(0, 0, 0, 20));
+                Control.LeftViewMode = UITextFieldViewMode.Always;
                 //ANDROID: Control.SetPadding(20, 20, 20, 0);
             }
 

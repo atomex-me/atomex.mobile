@@ -32,7 +32,8 @@
                 </RelativeLayout>
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"
-                          SeparatorVisibility="None">
+                          SeparatorVisibility="None"
+                          IsEnabled="False">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
