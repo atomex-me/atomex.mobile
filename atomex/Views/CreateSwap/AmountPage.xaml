@@ -195,7 +195,7 @@
                         <Span Text="{Binding EstimatedPaymentFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                        <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
                               FontFamily="{DynamicResource BoldFont}"
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
@@ -213,7 +213,7 @@
                         <Span Text="{Binding EstimatedRedeemFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                        <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
                               FontFamily="{DynamicResource BoldFont}"
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"

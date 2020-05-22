@@ -125,7 +125,7 @@
                                                 <FormattedString>
                                                     <Span Text="{Binding EstimatedPaymentFee}"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                                                    <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
                                                           FontSize="14"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
@@ -150,7 +150,7 @@
                                                 <FormattedString>
                                                     <Span Text="{Binding EstimatedRedeemFee}"/>
                                                     <Span Text=" "/>
-                                                    <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                                                    <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
                                                           FontSize="14"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
