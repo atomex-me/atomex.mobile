@@ -62,6 +62,7 @@ namespace atomex
                 }
                 _sendViewModel.UpdateFee(fee);
                 Fee.Text = _sendViewModel.FeeString;
+                Amount.Text = _sendViewModel.AmountString;
             }
         }
         
@@ -104,6 +105,15 @@ namespace atomex
             {
                 AddressHint.IsVisible = false;
                 Address.VerticalTextAlignment = TextAlignment.Center;
+            }
+        }
+
+        private void OnUseDefaultFeeToggled(object sender, ToggledEventArgs args)
+        {
+            if (args.Value)
+            {
+                if (!string.IsNullOrEmpty(Amount.Text))
+                    Fee.Text = _sendViewModel.FeeString;
             }
         }
 

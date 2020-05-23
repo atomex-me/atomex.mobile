@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -222,7 +221,7 @@ namespace atomex.ViewModel
                 return AppResources.CommissionLessThanZeroError;
             }
 
-            if (WalletAddressViewModel.AvailableBalance < BakerViewModel.MinDelegation)
+            if (WalletAddressViewModel.AvailableBalance < BakerViewModel?.MinDelegation)
             {
                 return AppResources.AmountLessThanMinDelegation;
             }

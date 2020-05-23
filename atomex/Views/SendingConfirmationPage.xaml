@@ -88,7 +88,7 @@
                             </ViewCell>
                             <ViewCell>
                                 <StackLayout Padding="20,10"
-                                    VerticalOptions="CenterAndExpand">
+                                             VerticalOptions="CenterAndExpand">
                                     <Button Text="{x:Static resources:AppResources.SendButton}"
                                             x:Name="SendButton"
                                             Style="{DynamicResource MainButtonStyle}"

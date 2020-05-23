@@ -89,7 +89,7 @@
                                        FontSize="14">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Balance}"/>
+                                            <Span Text="{Binding Balance, StringFormat='{0:0.##}'}"/>
                                             <Span Text=" XTZ"/>
                                         </FormattedString>
                                     </Label.FormattedText>

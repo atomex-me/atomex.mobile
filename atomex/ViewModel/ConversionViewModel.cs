@@ -83,10 +83,10 @@ namespace atomex.ViewModel
                     .ToList();
 
                 if (oldToCurrencyViewModel != null &&
-                    oldToCurrencyViewModel != _fromCurrencyViewModel &&
+                    oldToCurrencyViewModel.Currency.Name != _fromCurrencyViewModel.Currency.Name &&
                     ToCurrencies.FirstOrDefault(c => c.Currency.Name == oldToCurrencyViewModel.Currency.Name) != null)
                 {
-                    ToCurrencyViewModel = oldToCurrencyViewModel;
+                    ToCurrencyViewModel = ToCurrencies.FirstOrDefault(c => c.Currency.Name == oldToCurrencyViewModel.Currency.Name);
                 }
                 else
                 {

@@ -6,7 +6,7 @@
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <RelativeLayout VerticalOptions="FillAndExpand">
+        <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
@@ -15,7 +15,7 @@
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
                 <TableView Intent="Form"
-                           RowHeight="70">
+                           RowHeight="80">
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
                             <TextCell Text="{x:Static resources:AppResources.FromLabel}"
@@ -32,7 +32,7 @@
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <ViewCell>
                                 <StackLayout Padding="20,10"
-                                             HeightRequest="70">
+                                             VerticalOptions="CenterAndExpand">
                                     <Button Text="{x:Static resources:AppResources.DelegateButton}"
                                             x:Name="DelegateButton"
                                             Style="{DynamicResource MainButtonStyle}"

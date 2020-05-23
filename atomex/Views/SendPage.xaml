@@ -244,6 +244,7 @@
                        HorizontalTextAlignment="Center"/>
                 <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
                         IsToggled="{Binding UseDefaultFee}"
+                        Toggled="OnUseDefaultFeeToggled"
                         HorizontalOptions="EndAndExpand"
                         x:Name="UseDefaultFeeSwitch"/>
             </StackLayout>

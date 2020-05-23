@@ -130,7 +130,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                var (maxAmount, maxFeeAmount, _) = await App.Account
+                var (maxAmount, _, _) = await App.Account
                     .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, false);
 
                 var availableAmount = Currency is BitcoinBasedCurrency
