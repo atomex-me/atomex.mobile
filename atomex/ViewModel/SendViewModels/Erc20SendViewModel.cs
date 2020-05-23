@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Common;
@@ -76,7 +77,7 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
         }
 
-        public override async void UpdateAmount(decimal amount)
+        public override async Task UpdateAmount(decimal amount)
         {
 
             var previousAmount = _amount;
@@ -152,7 +153,7 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
         }
 
-        public override async void UpdateFee(decimal fee)
+        public override async Task UpdateFee(decimal fee)
         {
             if (_amount == 0)
             {

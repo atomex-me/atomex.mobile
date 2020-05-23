@@ -26,7 +26,7 @@ namespace atomex
             BindingContext = sendViewModel;
         }
 
-        private void AmountEntryFocused(object sender, FocusEventArgs args)
+        private async void AmountEntryFocused(object sender, FocusEventArgs args)
         {
             AmountFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
@@ -40,13 +40,13 @@ namespace atomex
                 {
                     amount = 0;
                 }
-                _sendViewModel.UpdateAmount(amount);
+                await _sendViewModel.UpdateAmount(amount);
                 Amount.Text = _sendViewModel.AmountString;
                 Fee.Text = _sendViewModel.FeeString;
             }
         }
 
-        private void FeeEntryFocused(object sender, FocusEventArgs args)
+        private async void FeeEntryFocused(object sender, FocusEventArgs args)
         {
             FeeFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
@@ -60,7 +60,7 @@ namespace atomex
                 {
                     fee = 0;
                 }
-                _sendViewModel.UpdateFee(fee);
+                await _sendViewModel.UpdateFee(fee);
                 Fee.Text = _sendViewModel.FeeString;
                 Amount.Text = _sendViewModel.AmountString;
             }
@@ -117,9 +117,9 @@ namespace atomex
             }
         }
 
-        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
+        private async void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            _sendViewModel.EstimateMaxAmountAndFee();
+            await _sendViewModel.EstimateMaxAmountAndFee();
             Amount.Text = _sendViewModel.AmountString;
             Fee.Text = _sendViewModel.FeeString;
         }

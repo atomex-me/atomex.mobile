@@ -230,7 +230,7 @@ namespace atomex.ViewModel.SendViewModels
                 App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        public virtual async void UpdateAmount(decimal amount)
+        public virtual async Task UpdateAmount(decimal amount)
         {
             var previousAmount = _amount;
             _amount = amount;
@@ -298,14 +298,14 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
         }
 
-        public virtual async void EstimateMaxAmountAndFee()
+        public virtual async Task EstimateMaxAmountAndFee()
         { 
-            var (maxAmount, maxFee, _) = await App.Account
+            var (maxAmount, _z, _) = await App.Account
                 .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, true);
             UpdateAmount(maxAmount);
         }
 
-        public virtual async void UpdateFee(decimal fee)
+        public virtual async Task UpdateFee(decimal fee)
         {
             if (_amount == 0)
             {
