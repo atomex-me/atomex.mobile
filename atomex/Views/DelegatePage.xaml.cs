@@ -75,20 +75,19 @@ namespace atomex
             }
         }
 
+        private void OnUseDefaultFeeToggled(object sender, ToggledEventArgs args)
+        {
+            if (args.Value)
+            {
+                if (!string.IsNullOrEmpty(Fee.Text))
+                    Fee.Text = _delegateViewModel.Fee.ToString();
+            }
+        }
+
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
             try
             {
-                if (_delegateViewModel.BakerViewModel.IsFull)
-                {
-                    var res = await DisplayAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
-                    if(!res) return;
-                }
-                if (_delegateViewModel.BakerViewModel.MinDelegation > _delegateViewModel.WalletAddressViewModel.AvailableBalance)
-                {
-                    var res = await DisplayAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
-                    if (!res) return;
-                }
                 BlockActions(true);
                 var error = await _delegateViewModel.Validate();
                 BlockActions(false);
@@ -96,6 +95,16 @@ namespace atomex
                 {
                     await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
                     return;
+                }
+                if (_delegateViewModel.BakerViewModel.IsFull)
+                {
+                    var res = await DisplayAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if (!res) return;
+                }
+                if (_delegateViewModel.BakerViewModel.MinDelegation > _delegateViewModel.WalletAddressViewModel.AvailableBalance)
+                {
+                    var res = await DisplayAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if (!res) return;
                 }
                 await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
             }

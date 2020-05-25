@@ -135,25 +135,6 @@
                         </Label.Triggers>
                     </Label>
                 </StackLayout>
-                <!--<Label Grid.Column="2"
-                       Grid.RowSpan="2"
-                       IsEnabled="False"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       Padding="10"
-                       TextColor="Red"
-                       Text="Baker is full"
-                       FontFamily="{DynamicResource LightFont}"
-                       IsVisible="False">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding BakerViewModel.IsFull}"
-                                     Value="True">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>-->
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="DownArrow-picker"
@@ -316,6 +297,7 @@
                        HorizontalTextAlignment="Center"/>
                 <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
                         IsToggled="{Binding UseDefaultFee}"
+                        Toggled="OnUseDefaultFeeToggled"
                         HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <RelativeLayout>
