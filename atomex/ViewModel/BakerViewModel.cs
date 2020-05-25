@@ -9,6 +9,7 @@ namespace atomex.ViewModel
         public decimal Fee { get; set; }
         public decimal MinDelegation { get; set; }
         public decimal StakingAvailable { get; set; }
+        public decimal EstimatedRoi { get; set; }
 
         public bool IsFull => StakingAvailable <= 0;
         public bool IsMinDelegation => MinDelegation > 0;

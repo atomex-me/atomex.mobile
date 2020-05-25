@@ -306,7 +306,8 @@ namespace atomex.ViewModel
                             Name = x.Name,
                             Fee = x.Fee,
                             MinDelegation = x.MinDelegation,
-                            StakingAvailable = x.StakingAvailable
+                            StakingAvailable = x.StakingAvailable,
+                            EstimatedRoi = x.EstimatedRoi
                         })
                         .ToList();
                     bakers.Insert(0, new BakerViewModel

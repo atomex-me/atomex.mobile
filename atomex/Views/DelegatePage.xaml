@@ -71,7 +71,7 @@
                         </Label.Triggers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding BakerViewModel.Fee, StringFormat='{0:P}'}"/>
+                                <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"/>
                                 <Span Text=" (min "/>
                                 <Span Text="{Binding BakerViewModel.MinDelegation}"/>
                                 <Span Text=" tez)"/>
