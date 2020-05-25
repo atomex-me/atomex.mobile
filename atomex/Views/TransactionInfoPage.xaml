@@ -233,7 +233,7 @@
                                         <FormattedString>
                                             <Span Text="{Binding Fee} "/>
                                             <Span Text=" "/>
-                                            <Span Text="{Binding CurrencyCode}"></Span>
+                                            <Span Text="{Binding Currency.FeeCode}"></Span>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

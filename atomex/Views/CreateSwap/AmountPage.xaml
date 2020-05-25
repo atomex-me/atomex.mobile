@@ -74,7 +74,7 @@
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
                                   FontFamily="{DynamicResource RegularFont}"/>
                             <Span Text=": "/>
-                            <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.########}'}"
+                            <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
                                   FontFamily="{DynamicResource BoldFont}"
                                   FontSize="16"/>
                             <Span Text=" "/>

@@ -74,7 +74,7 @@
                                 <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"/>
                                 <Span Text=" (min "/>
                                 <Span Text="{Binding BakerViewModel.MinDelegation}"/>
-                                <Span Text=" tez)"/>
+                                <Span Text=" XTZ)"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

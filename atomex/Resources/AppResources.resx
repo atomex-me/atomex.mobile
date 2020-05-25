@@ -280,9 +280,6 @@
     <data name="ToLabel" xml:space="preserve">
         <value>To</value>
     </data>
-    <data name="WithCommision" xml:space="preserve">
-        <value>With commision</value>
-    </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Copy Uri and Exit</value>
     </data>

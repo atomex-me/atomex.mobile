@@ -12,24 +12,29 @@
                    Padding="20,30,20,10"
                    FontSize="22"
                    FontFamily="{DynamicResource BoldFont}"/>
-            <Grid VerticalOptions="Fill"
-                  HorizontalOptions="Fill"
+            <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
+                  RowSpacing="0"
                   Margin="20,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="60" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Frame Padding="5"
+                <Frame Grid.RowSpan="2"
+                       Padding="5"
                        Style="{DynamicResource FrameCaptionStyle}">
                     <Label Text="{x:Static resources:AppResources.FromLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
-                <Frame Grid.Column="1"
+                <Frame Grid.RowSpan="2"
+                       Grid.Column="1"
+                       Grid.ColumnSpan="3"
                        HasShadow="False"
                        Padding="0"
                        x:Name="FromCurrencyFrame">
@@ -40,50 +45,89 @@
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             Focused="OnFromCurrencyPickerFocused"
-                            Unfocused="OnFromCurrencyPickerFocused"/>
+                            Unfocused="OnFromCurrencyPickerFocused"
+                            TextColor="#ffffff"/>
                 </Frame>
-                <StackLayout Grid.Column="1"
-                             Orientation="Horizontal"
-                             Padding="15"
-                             HorizontalOptions="EndAndExpand"
-                             IsEnabled="False">
-                    <Label Text="{Binding FromCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#####}'}"
-                           VerticalTextAlignment="Center"
-                           Margin="5,0"/>
-                    <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"/>
-                </StackLayout>
-                <Frame Grid.Row="1"
-                       Padding="5"
+                <Image Grid.Column="1"
+                       Grid.RowSpan="2"
+                       Source="{Binding FromCurrencyViewModel.CurrencyCode}"
+                       Margin="12"
+                       IsEnabled="False"/>
+                <Label Grid.Column="2"
+                       Text="{Binding FromCurrencyViewModel.Currency.Description}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="18"
+                       VerticalTextAlignment="End"
+                       IsEnabled="False"/>
+                <Label Grid.Row="1"
+                       Grid.Column="2"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       FontFamily="{DynamicResource ItalicFont}"
+                       TextColor="{DynamicResource HintTextColor}"
+                       IsEnabled="False">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{x:Static resources:AppResources.Balance}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding FromCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#######}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Image Source="DownArrow-picker"
+                       Grid.RowSpan="2"
+                       Grid.Column="3"
+                       Margin="0,30"
+                       IsEnabled="False"/>
+            </Grid>
+            <Grid HorizontalOptions="Fill"
+                  ColumnSpacing="0"
+                  RowSpacing="0"
+                  Margin="20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Frame Padding="5"
                        Style="{DynamicResource FrameCaptionStyle}">
                     <Label Text="{x:Static resources:AppResources.ToLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
-                <Frame Grid.Row="1"
-                       Grid.Column="1"
+                <Frame Grid.Column="1"
+                       Grid.ColumnSpan="3"
                        HasShadow="False"
                        Padding="0"
                        x:Name="ToCurrencyFrame">
-                    <Picker Grid.Row="1"
-                            Grid.Column="1"
-                            x:Name="pickerTo"
+                    <Picker x:Name="pickerTo"
                             ItemsSource="{Binding ToCurrencies}"
                             ItemDisplayBinding="{Binding Currency.Description}"
                             SelectedItem="{Binding ToCurrencyViewModel}"
                             Focused="OnToCurrencyPickerFocused"
                             Unfocused="OnToCurrencyPickerFocused"
-                            HorizontalOptions="FillAndExpand"/>
+                            HorizontalOptions="FillAndExpand"
+                            TextColor="#ffffff"/>
                 </Frame>
-                <StackLayout Grid.Row="1"
-                             Grid.Column="1"
-                             Orientation="Horizontal"
-                             Padding="15"
-                             HorizontalOptions="EndAndExpand"
-                             IsEnabled="False">
-                    <Label Text="{Binding ToCurrencyViewModel.AvailableAmount, StringFormat='{0:0.#########}'}"
-                           VerticalTextAlignment="Center"
-                           Margin="10,0" />
-                    <Image Source="{Binding ToCurrencyViewModel.CurrencyCode}"/>
-                </StackLayout>
+                <Image Grid.Column="1"
+                       Source="{Binding ToCurrencyViewModel.CurrencyCode}"
+                       Margin="12"
+                       IsEnabled="False"/>
+                <Label Grid.Column="2"
+                       Text="{Binding ToCurrencyViewModel.Currency.Description}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="18"
+                       VerticalTextAlignment="Center"
+                       IsEnabled="False"/>
+                <Image Source="DownArrow-picker"
+                       Grid.Column="3"
+                       Margin="0,30"
+                       IsEnabled="False"/>
             </Grid>
             <Label Margin="20">
                 <Label.FormattedText>

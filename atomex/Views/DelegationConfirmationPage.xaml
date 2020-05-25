@@ -27,7 +27,7 @@
                             <TextCell Text="{x:Static resources:AppResources.ToLabel}"
                                       Detail="{Binding Address}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell Text="{x:Static resources:AppResources.WithCommision}"
+                            <TextCell Text="{x:Static resources:AppResources.FeeLabel}"
                                       Detail="{Binding Fee}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
                             <ViewCell>

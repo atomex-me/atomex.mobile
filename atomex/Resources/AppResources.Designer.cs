@@ -521,12 +521,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string WithCommision {
-            get {
-                return ResourceManager.GetString("WithCommision", resourceCulture);
-            }
-        }
-        
         internal static string CopyAndExitButton {
             get {
                 return ResourceManager.GetString("CopyAndExitButton", resourceCulture);
