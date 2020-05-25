@@ -511,9 +511,6 @@
     <data name="AmountLessThanZeroError" xml:space="preserve">
         <value>Amount must be greater than 0</value>
     </data>
-    <data name="AmountLessThanMinDelegation" xml:space="preserve">
-        <value>Amount must be greater than baker minimum delegation</value>
-    </data>
     <data name="NoLiquidityError" xml:space="preserve">
         <value>Not enough liquidity to convert a specified amount</value>
     </data>
@@ -546,5 +543,11 @@
     </data>
     <data name="WrongDelegationAddressError" xml:space="preserve">
         <value>Wrong delegation address</value>
+    </data>
+    <data name="DelegationLimitWarning" xml:space="preserve">
+        <value>The selected baker has a minimum delegation limit, which exceeds the balance of your selected wallet</value>
+    </data>
+    <data name="BakerIsOverdelegatedWarning" xml:space="preserve">
+        <value>This baker is overdelegated, it will be better to choose another</value>
     </data>
 </root>

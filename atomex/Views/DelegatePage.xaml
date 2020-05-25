@@ -97,13 +97,63 @@
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="End"
                            FontFamily="{DynamicResource LightFont}"
-                           FontSize="14"/>
+                           FontSize="14">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding BakerViewModel.IsFull}"
+                                         Value="True">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                     <Label Text="{Binding BakerViewModel.StakingAvailable, StringFormat='{0:0}'}"
                            VerticalTextAlignment="Start"
                            HorizontalTextAlignment="End"
                            FontFamily="{DynamicResource LightFont}"
-                           FontSize="14"/>
+                           FontSize="14">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding BakerViewModel.IsFull}"
+                                         Value="True">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label TextColor="Red"
+                           Text="Baker is full"
+                           FontFamily="{DynamicResource LightFont}"
+                           IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding BakerViewModel.IsFull}"
+                                         Value="True">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                 </StackLayout>
+                <!--<Label Grid.Column="2"
+                       Grid.RowSpan="2"
+                       IsEnabled="False"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       Padding="10"
+                       TextColor="Red"
+                       Text="Baker is full"
+                       FontFamily="{DynamicResource LightFont}"
+                       IsVisible="False">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding BakerViewModel.IsFull}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>-->
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="DownArrow-picker"

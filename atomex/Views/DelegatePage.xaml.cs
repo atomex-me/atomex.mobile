@@ -79,6 +79,16 @@ namespace atomex
         {
             try
             {
+                if (_delegateViewModel.BakerViewModel.IsFull)
+                {
+                    var res = await DisplayAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if(!res) return;
+                }
+                if (_delegateViewModel.BakerViewModel.MinDelegation > _delegateViewModel.WalletAddressViewModel.AvailableBalance)
+                {
+                    var res = await DisplayAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if (!res) return;
+                }
                 BlockActions(true);
                 var error = await _delegateViewModel.Validate();
                 BlockActions(false);
@@ -87,10 +97,7 @@ namespace atomex
                     await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
                     return;
                 }
-                else
-                {
-                    await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
-                }
+                await Navigation.PushAsync(new DelegationConfirmationPage(_delegateViewModel));
             }
             catch (Exception e)
             {

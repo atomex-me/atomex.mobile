@@ -947,12 +947,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string AmountLessThanMinDelegation {
-            get {
-                return ResourceManager.GetString("AmountLessThanMinDelegation", resourceCulture);
-            }
-        }
-        
         internal static string NoLiquidityError {
             get {
                 return ResourceManager.GetString("NoLiquidityError", resourceCulture);
@@ -1010,6 +1004,18 @@ namespace atomex.Resources {
         internal static string WrongDelegationAddressError {
             get {
                 return ResourceManager.GetString("WrongDelegationAddressError", resourceCulture);
+            }
+        }
+        
+        internal static string DelegationLimitWarning {
+            get {
+                return ResourceManager.GetString("DelegationLimitWarning", resourceCulture);
+            }
+        }
+        
+        internal static string BakerIsOverdelegatedWarning {
+            get {
+                return ResourceManager.GetString("BakerIsOverdelegatedWarning", resourceCulture);
             }
         }
     }
