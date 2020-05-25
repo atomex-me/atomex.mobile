@@ -24,9 +24,27 @@
                             <TextCell Text="{x:Static resources:AppResources.AmountLabel}"
                                       Detail="{Binding WalletAddressViewModel.WalletAddress.Balance}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
-                            <TextCell Text="{x:Static resources:AppResources.ToLabel}"
-                                      Detail="{Binding Address}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal"
+                                             Padding="20,10">
+                                    <Label Text="{x:Static resources:AppResources.ToLabel}"
+                                           VerticalTextAlignment="Center"
+                                           WidthRequest="20"/>
+                                    <Image Source="{Binding BakerViewModel.Logo}"
+                                           Margin="10,10,0,10"/>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Text="{Binding BakerViewModel.Name}"
+                                               VerticalTextAlignment="End"
+                                               FontFamily="{DynamicResource BoldFont}"
+                                               FontSize="16"/>
+                                        <Label Text="{Binding Address}"
+                                               VerticalTextAlignment="Start"
+                                               TextColor="{DynamicResource HintTextColor}"
+                                               FontSize="12"
+                                               LineBreakMode="MiddleTruncation"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
                             <TextCell Text="{x:Static resources:AppResources.FeeLabel}"
                                       Detail="{Binding Fee}"
                                       DetailColor="{DynamicResource HintTextColor}"/>
