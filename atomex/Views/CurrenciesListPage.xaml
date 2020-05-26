@@ -10,7 +10,6 @@
         <StackLayout Margin="0,20"
                      VerticalOptions="FillAndExpand">
             <ListView ItemsSource="{Binding CurrencyViewModels}"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
                       HasUnevenRows="True"
                       ItemTapped="OnListViewItemTapped"
                       SeparatorVisibility="None"

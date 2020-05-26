@@ -30,7 +30,8 @@ namespace atomex
             }
         }
 
-        async void ShowReceivePage(object sender, EventArgs args) {
+        async void ShowReceivePage(object sender, EventArgs args)
+        {
             await Navigation.PushAsync(new ReceivePage(_currencyViewModel));
         }
         async void ShowSendPage(object sender, EventArgs args)
@@ -38,7 +39,7 @@ namespace atomex
             await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(_currencyViewModel)));
         }
         async void ShowDelegationPage(object sender, EventArgs args)
-        { 
+        {
             await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp)));
         }
         void ShowConversionPage(object sender, EventArgs args)

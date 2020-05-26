@@ -32,7 +32,9 @@
                 </RelativeLayout>
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
                           HasUnevenRows="True"
-                          SeparatorVisibility="None">
+                          SeparatorVisibility="None"
+                          BackgroundColor="{DynamicResource MainBackgroundColor}"
+                          SelectionMode="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
