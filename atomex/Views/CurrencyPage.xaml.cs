@@ -58,15 +58,14 @@ namespace atomex
         }
         async void SwipeDown(object sender, EventArgs args)
         {
-            TxListView.IsRefreshing = false;
-            Loader.IsRunning = Loader.IsVisible = LoaderLabel.IsVisible = true;
+            RefreshView.IsRefreshing = LoaderLabel.IsVisible = true;
             Color availableAmountColor = AvailableAmountLabel.TextColor;
             Color availableAmountInBaseColor = AvailableAmountInBaseLabel.TextColor;
             AvailableAmountLabel.TextColor = AvailableAmountInBaseLabel.TextColor = Color.LightGray;
             await _currencyViewModel.UpdateCurrencyAsync();
             AvailableAmountLabel.TextColor = availableAmountColor;
             AvailableAmountInBaseLabel.TextColor = availableAmountInBaseColor;
-            Loader.IsRunning = Loader.IsVisible = LoaderLabel.IsVisible = false;
+            RefreshView.IsRefreshing = LoaderLabel.IsVisible = false;
         }
     }
 }

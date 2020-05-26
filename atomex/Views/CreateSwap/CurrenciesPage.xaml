@@ -65,6 +65,7 @@
                        VerticalTextAlignment="Start"
                        FontFamily="{DynamicResource ItalicFont}"
                        TextColor="{DynamicResource HintTextColor}"
+                       FontSize="14"
                        IsEnabled="False">
                     <Label.FormattedText>
                         <FormattedString>

@@ -6,98 +6,88 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <SwipeView BackgroundColor="{DynamicResource MainBackgroundColor}">
-        <SwipeView.TopItems>
-            <SwipeItems Mode="Execute">
-                <SwipeItem Invoked="SwipeDown"/>
-            </SwipeItems>
-        </SwipeView.TopItems>
+    <RefreshView BackgroundColor="{DynamicResource MainBackgroundColor}"
+                 RefreshColor="{DynamicResource HintTextColor}"
+                 Refreshing="SwipeDown"
+                 x:Name="RefreshView">
         <StackLayout>
-            <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
-                         Spacing="0">
-                <Label x:Name="LoaderLabel"
-                       Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
-                       TextColor="{DynamicResource HintTextColor}"
-                       FontFamily="{DynamicResource ItalicFont}"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"
-                       IsVisible="False"
-                       Margin="0,20,0,10"/>
-                <ActivityIndicator x:Name="Loader"
-                                   Color="{DynamicResource HintTextColor}"
-                                   IsVisible="False"/>
-                <Image WidthRequest="96"
-                       HeightRequest="96"
-                       Margin="20"
-                       Source="{Binding CurrencyCode}"/>
-                <Label Text="{Binding AvailableAmount}"
-                       x:Name="AvailableAmountLabel"
-                       HorizontalOptions="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding AvailableAmount}"
-                                  FontSize="20"
-                                  FontFamily="{DynamicResource BoldFont}"/>
-                            <Span Text=" " /> 
-                            <Span Text="{Binding CurrencyCode}"
-                                  FontSize="16"
-                                  FontFamily="{DynamicResource BoldFont}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label x:Name="AvailableAmountInBaseLabel"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{DynamicResource AdditionalTextColor}"
-                       VerticalTextAlignment="Start"
-                       HorizontalOptions="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding Cost, StringFormat='{0:0.##}'}"/>
-                            <Span Text=" $"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="Center"
-                             HeightRequest="40"
-                             Margin="10,20"
+            <SwipeView>
+                <SwipeView.TopItems>
+                    <SwipeItems Mode="Execute">
+                        <SwipeItem Invoked="SwipeDown"/>
+                    </SwipeItems>
+                </SwipeView.TopItems>
+                <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
                              Spacing="0">
-                    <controls:LeftRoundedButton Text="{x:Static resources:AppResources.SendButton}"
-                                                Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                Clicked="ShowSendPage"/>
-                    <Button Text="{x:Static resources:AppResources.ReceiveButton}"
-                            Style="{DynamicResource CurrencyActionButtonStyle}"
-                            Clicked="ShowReceivePage"/>
-                    <Button Text="{x:Static resources:AppResources.DelegateButton}"
-                            x:Name="DelegateButton"
-                            IsVisible="false"
-                            Style="{DynamicResource CurrencyActionButtonStyle}"
-                            Clicked="ShowDelegationPage"/>
-                    <controls:RightRoundedButton Text="{x:Static resources:AppResources.ConvertButton}"
-                                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                 Clicked="ShowConversionPage"/>
+                    <Image WidthRequest="96"
+                           HeightRequest="96"
+                           Margin="20"
+                           Source="{Binding CurrencyCode}"/>
+                    <Label Text="{Binding AvailableAmount}"
+                           x:Name="AvailableAmountLabel"
+                           HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding AvailableAmount}"
+                                      FontSize="20"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                                <Span Text=" " /> 
+                                <Span Text="{Binding CurrencyCode}"
+                                      FontSize="16"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label x:Name="AvailableAmountInBaseLabel"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{DynamicResource AdditionalTextColor}"
+                           VerticalTextAlignment="Start"
+                           HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Cost, StringFormat='{0:0.##}'}"/>
+                                <Span Text=" $"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Center"
+                                 HeightRequest="40"
+                                 Margin="10,20"
+                                 Spacing="0">
+                        <controls:LeftRoundedButton Text="{x:Static resources:AppResources.SendButton}"
+                                                    Style="{DynamicResource CurrencyActionButtonStyle}"
+                                                    Clicked="ShowSendPage"/>
+                        <Button Text="{x:Static resources:AppResources.ReceiveButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Clicked="ShowReceivePage"/>
+                        <Button Text="{x:Static resources:AppResources.DelegateButton}"
+                                x:Name="DelegateButton"
+                                IsVisible="false"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Clicked="ShowDelegationPage"/>
+                        <controls:RightRoundedButton Text="{x:Static resources:AppResources.ConvertButton}"
+                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
+                                                     Clicked="ShowConversionPage"/>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
+            </SwipeView>
+            <Label x:Name="LoaderLabel"
+                   Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
+                   TextColor="{DynamicResource HintTextColor}"
+                   FontFamily="{DynamicResource ItalicFont}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   IsVisible="False"/>
             <ListView ItemsSource="{Binding GroupedTransactions}"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       IsGroupingEnabled="True"
                       ItemTapped="OnListViewItemTapped"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
-                      IsPullToRefreshEnabled="True"
-                      Refreshing="SwipeDown"
-                      x:Name="TxListView"
-                      RefreshControlColor="{DynamicResource HintTextColor}"
+                      VerticalOptions="FillAndExpand"
                       Footer="">
-                <ListView.Triggers>
-                    <DataTrigger TargetType="ListView"
-                                 Binding="{Binding GroupedTransactions.Count}"
-                                 Value="0">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </ListView.Triggers>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="20">
@@ -107,8 +97,7 @@
                                    Padding="10,0"
                                    FontSize="12"
                                    VerticalTextAlignment="Center"
-                                   VerticalOptions="CenterAndExpand"
-                                   />
+                                   VerticalOptions="CenterAndExpand"/>
                          </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
@@ -378,5 +367,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-    </SwipeView>
+    </RefreshView>
 </ContentPage>
