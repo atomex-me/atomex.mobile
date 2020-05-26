@@ -1,10 +1,10 @@
 {
   "images": [
     {
-      "filename": "TZBTC.pdf",
       "idiom": "universal"
     },
     {
+      "filename": "tzbtc.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -17,10 +17,10 @@
       "idiom": "universal"
     },
     {
-      "filename": "TZBTC-1.pdf",
       "idiom": "iphone"
     },
     {
+      "filename": "tzbtc-1.png",
       "scale": "1x",
       "idiom": "iphone"
     },
@@ -38,10 +38,10 @@
       "idiom": "iphone"
     },
     {
-      "filename": "TZBTC-2.pdf",
       "idiom": "ipad"
     },
     {
+      "filename": "tzbtc-2.png",
       "scale": "1x",
       "idiom": "ipad"
     },
