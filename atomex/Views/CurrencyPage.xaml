@@ -6,13 +6,13 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <StackLayout Spacing="0">
-        <SwipeView BackgroundColor="{DynamicResource MainBackgroundColor}">
-            <SwipeView.TopItems>
-                <SwipeItems Mode="Execute">
-                    <SwipeItem Invoked="SwipeDown"/>
-                </SwipeItems>
-            </SwipeView.TopItems>
+    <SwipeView BackgroundColor="{DynamicResource MainBackgroundColor}">
+        <SwipeView.TopItems>
+            <SwipeItems Mode="Execute">
+                <SwipeItem Invoked="SwipeDown"/>
+            </SwipeItems>
+        </SwipeView.TopItems>
+        <StackLayout>
             <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
                          Spacing="0">
                 <Label x:Name="LoaderLabel"
@@ -79,300 +79,304 @@
                                                  Clicked="ShowConversionPage"/>
                 </StackLayout>
             </StackLayout>
-        </SwipeView>
-        <ListView ItemsSource="{Binding GroupedTransactions}"
-                  BackgroundColor="{DynamicResource MainBackgroundColor}"
-                  IsGroupingEnabled="True"
-                  ItemTapped="OnListViewItemTapped"
-                  HasUnevenRows="True"
-                  SeparatorVisibility="None"
-                  Footer="">
-            <ListView.Triggers>
-                <DataTrigger TargetType="ListView"
-                             Binding="{Binding GroupedTransactions.Count}"
-                             Value="0">
-                    <Setter Property="IsVisible"
-                            Value="False"/>
-                </DataTrigger>
-            </ListView.Triggers>
-            <ListView.GroupHeaderTemplate>
-                <DataTemplate>
-                    <ViewCell Height="20">
-                        <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                               BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                               TextColor="{DynamicResource AdditionalTextColor}"
-                               Padding="10,0"
-                               FontSize="12"
-                               VerticalTextAlignment="Center"
-                               VerticalOptions="CenterAndExpand"
-                               />
-                     </ViewCell>
-                </DataTemplate>
-            </ListView.GroupHeaderTemplate>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell Height="60">
-                        <Grid RowSpacing="0"
-                              ColumnSpacing="0"
-                              VerticalOptions="Center"
-                              Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="20" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*" />
-                                <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="3.5*" />
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.RowSpan="2"
-                                   Margin="4">
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Type}"
-                                                 Value="Input">
-                                        <Setter Property="Source"
-                                                Value="Receive"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Type}"
-                                                 Value="Output">
-                                        <Setter Property="Source"
-                                                Value="Send"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapPayment">
-                                        <Setter Property="Source"
-                                                Value="SwapPayment"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRedeem">
-                                        <Setter Property="Source"
-                                                Value="SwapRedeem"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRefund">
-                                        <Setter Property="Source"
-                                                Value="SwapRefund"/>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                            <Label Grid.Column="1"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   VerticalOptions="EndAndExpand">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Output">
-                                        <Setter Property="Text"
-                                                Value="Sent"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Input">
-                                        <Setter Property="Text"
-                                                Value="Received"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapPayment">
-                                        <Setter Property="Text"
-                                                Value="Swap payment"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRedeem">
-                                        <Setter Property="Text"
-                                                Value="Swap redeem"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRefund">
-                                        <Setter Property="Text"
-                                                Value="Swap refund"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label Grid.Column="2"
-                                   Grid.RowSpan="2"
-                                   HorizontalOptions="End"
-                                   VerticalOptions="Center"
-                                   VerticalTextAlignment="Center">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Input">
-                                        <Setter Property="TextColor"
-                                                Value="Green"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Output">
-                                        <Setter Property="TextColor"
-                                                Value="Red"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapPayment">
-                                        <Setter Property="TextColor"
-                                                Value="Red"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRedeem">
-                                        <Setter Property="TextColor"
-                                                Value="Green"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRefund">
-                                        <Setter Property="TextColor"
-                                                Value="Green"/>
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="16"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding Currency.Name}"
-                                                          FontFamily="{DynamicResource RegularFont}"
-                                                          FontSize="12"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label Grid.Row="1"
-                                   Grid.Column="1"
-                                   VerticalOptions="StartAndExpand"
-                                   FontFamily="{DynamicResource LightFont}"
-                                   TextColor="Gray"
+            <ListView ItemsSource="{Binding GroupedTransactions}"
+                      BackgroundColor="{DynamicResource MainBackgroundColor}"
+                      IsGroupingEnabled="True"
+                      ItemTapped="OnListViewItemTapped"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      IsPullToRefreshEnabled="True"
+                      Refreshing="SwipeDown"
+                      x:Name="TxListView"
+                      RefreshControlColor="{DynamicResource HintTextColor}"
+                      Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding GroupedTransactions.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="20">
+                            <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                   BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                                   TextColor="{DynamicResource AdditionalTextColor}"
+                                   Padding="10,0"
                                    FontSize="12"
-                                   LineBreakMode="MiddleTruncation">
-                                <Label.Triggers>             
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Output">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="To: "/>
-                                                    <Span Text="{Binding To, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="Input">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="From: "/>
-                                                    <Span Text="{Binding From, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapPayment">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="To: "/>
-                                                    <Span Text="{Binding To, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRedeem">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="From: "/>
-                                                    <Span Text="{Binding From, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Type}"
-                                                 Value="SwapRefund">
-                                        <Setter Property="FormattedText">
-                                            <Setter.Value>
-                                                <FormattedString>
-                                                    <Span Text="From: "/>
-                                                    <Span Text="{Binding From, FallbackValue='Unknown'}"/>
-                                                </FormattedString>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+                                   VerticalTextAlignment="Center"
+                                   VerticalOptions="CenterAndExpand"
+                                   />
+                         </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="60">
+                            <Grid RowSpacing="0"
+                                  ColumnSpacing="0"
+                                  VerticalOptions="Center"
+                                  Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       Margin="4">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="Input">
+                                            <Setter Property="Source"
+                                                    Value="Receive"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="Output">
+                                            <Setter Property="Source"
+                                                    Value="Send"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapPayment">
+                                            <Setter Property="Source"
+                                                    Value="SwapPayment"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRedeem">
+                                            <Setter Property="Source"
+                                                    Value="SwapRedeem"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRefund">
+                                            <Setter Property="Source"
+                                                    Value="SwapRefund"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label Grid.Column="1"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       VerticalOptions="EndAndExpand">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Output">
+                                            <Setter Property="Text"
+                                                    Value="Sent"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Input">
+                                            <Setter Property="Text"
+                                                    Value="Received"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapPayment">
+                                            <Setter Property="Text"
+                                                    Value="Swap payment"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRedeem">
+                                            <Setter Property="Text"
+                                                    Value="Swap redeem"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRefund">
+                                            <Setter Property="Text"
+                                                    Value="Swap refund"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.Column="2"
+                                       Grid.RowSpan="2"
+                                       HorizontalOptions="End"
+                                       VerticalOptions="Center"
+                                       VerticalTextAlignment="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Input">
+                                            <Setter Property="TextColor"
+                                                    Value="Green"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="16"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Output">
+                                            <Setter Property="TextColor"
+                                                    Value="Red"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="16"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapPayment">
+                                            <Setter Property="TextColor"
+                                                    Value="Red"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="16"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRedeem">
+                                            <Setter Property="TextColor"
+                                                    Value="Green"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="16"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRefund">
+                                            <Setter Property="TextColor"
+                                                    Value="Green"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="16"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       VerticalOptions="StartAndExpand"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       TextColor="Gray"
+                                       FontSize="12"
+                                       LineBreakMode="MiddleTruncation">
+                                    <Label.Triggers>             
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Output">
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="To: "/>
+                                                        <Span Text="{Binding To, FallbackValue='Unknown'}"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Input">
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="From: "/>
+                                                        <Span Text="{Binding From, FallbackValue='Unknown'}"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapPayment">
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="To: "/>
+                                                        <Span Text="{Binding To, FallbackValue='Unknown'}"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRedeem">
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="From: "/>
+                                                        <Span Text="{Binding From, FallbackValue='Unknown'}"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRefund">
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="From: "/>
+                                                        <Span Text="{Binding From, FallbackValue='Unknown'}"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </SwipeView>
 </ContentPage>

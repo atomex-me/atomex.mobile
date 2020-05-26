@@ -58,6 +58,7 @@ namespace atomex
         }
         async void SwipeDown(object sender, EventArgs args)
         {
+            TxListView.IsRefreshing = false;
             Loader.IsRunning = Loader.IsVisible = LoaderLabel.IsVisible = true;
             Color availableAmountColor = AvailableAmountLabel.TextColor;
             Color availableAmountInBaseColor = AvailableAmountInBaseLabel.TextColor;
