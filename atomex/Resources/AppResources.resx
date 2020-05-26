@@ -41,6 +41,9 @@
     <data name="FeeLabel" xml:space="preserve">
         <value>Fee</value>
     </data>
+    <data name="FeeRateLabel" xml:space="preserve">
+        <value>Fee Rate</value>
+    </data>
     <data name="ConfirmationLabel" xml:space="preserve">
         <value>Confirmation</value>
     </data>

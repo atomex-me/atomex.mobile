@@ -101,6 +101,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string FeeRateLabel {
+            get {
+                return ResourceManager.GetString("FeeRateLabel", resourceCulture);
+            }
+        }
+        
         internal static string ConfirmationLabel {
             get {
                 return ResourceManager.GetString("ConfirmationLabel", resourceCulture);

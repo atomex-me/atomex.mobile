@@ -16,14 +16,21 @@ namespace atomex
         {
             InitializeComponent();
             _sendViewModel = sendViewModel;
+            BindingContext = sendViewModel;
             if (sendViewModel.Currency.Name == "ETH" ||
                 sendViewModel.Currency.Name =="USDT")
             {
                 GasLayout.IsVisible = true;
                 UseDefaultFeeSwitch.Opacity = 0.5;
                 FeeLayout.IsVisible = UseDefaultFeeSwitch.IsEnabled = false;
+                return;
             }
-            BindingContext = sendViewModel;
+            if (sendViewModel.Currency.Name == "BTC" ||
+                sendViewModel.Currency.Name == "LTC")
+            {
+                FeeRateLayout.IsVisible = true;
+                return;
+            }
         }
 
         private async void AmountEntryFocused(object sender, FocusEventArgs args)

@@ -152,6 +152,29 @@
                     </StackLayout>
                 </Frame>
             </StackLayout>
+            <StackLayout x:Name="FeeRateLayout"
+                         Orientation="Horizontal"
+                         Spacing="0"
+                         IsVisible="False">
+                <Frame Style="{DynamicResource FrameCaptionStyle}"
+                       WidthRequest="60"
+                       Padding="20">
+                    <Label Text="{x:Static resources:AppResources.FeeRateLabel}"
+                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
+                <Frame HasShadow="False"
+                       Padding="0"
+                       BorderColor="LightGray"
+                       HorizontalOptions="FillAndExpand">
+                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                          Keyboard="Numeric"
+                                          IsReadOnly="True"
+                                          BackgroundColor="LightGray"
+                                          TextColor="Gray"
+                                          Text="{Binding FeeRate, StringFormat='{0} sat/byte'}">
+                    </controls:CustomEntry>
+                </Frame>
+            </StackLayout>
             <StackLayout x:Name="GasLayout"
                          IsVisible="False">
                 <StackLayout Orientation="Horizontal"
