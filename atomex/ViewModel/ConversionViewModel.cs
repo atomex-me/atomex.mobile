@@ -356,8 +356,7 @@ namespace atomex.ViewModel
             var swapViewModels = swaps
                                .Select(s => SwapViewModelFactory.CreateSwapViewModel(s, Currencies))
                                .ToList()
-                               .SortList((s1, s2) => s2.Time.ToUniversalTime()
-                                   .CompareTo(s1.Time.ToUniversalTime()));
+                               .SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
             Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
 
             var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));

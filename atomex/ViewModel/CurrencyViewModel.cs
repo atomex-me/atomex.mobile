@@ -169,8 +169,8 @@ namespace atomex.ViewModel
                        transactions.Select(t => TransactionViewModelCreator
                            .CreateViewModel(t))
                            .ToList()
-                           .SortList((t1, t2) => t2.Time.CompareTo(t1.Time)));
-                    var groups = Transactions.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
+                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
+                    var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));

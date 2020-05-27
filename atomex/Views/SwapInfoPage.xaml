@@ -112,7 +112,7 @@
                                   Detail="{Binding Price}"
                                   DetailColor="Gray"/>
                         <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
-                                  Detail="{Binding Time, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                  Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                   DetailColor="Gray"/>
                     </TableSection>
                 </TableRoot>

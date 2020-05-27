@@ -11,9 +11,7 @@ namespace atomex
         public SwapInfoPage(SwapViewModel swapViewModel)
         {
             InitializeComponent();
-            {
-                BindingContext = swapViewModel;
-            }
+            BindingContext = swapViewModel;
         }
     }
 }
