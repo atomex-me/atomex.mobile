@@ -32,7 +32,6 @@
         
             <ListView ItemsSource="{Binding GroupedSwaps}"
                       ItemTapped="OnListViewItemTapped"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"

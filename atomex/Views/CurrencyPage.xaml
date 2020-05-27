@@ -81,7 +81,6 @@
                    VerticalTextAlignment="Center"
                    IsVisible="False"/>
             <ListView ItemsSource="{Binding GroupedTransactions}"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
                       IsGroupingEnabled="True"
                       ItemTapped="OnListViewItemTapped"
                       HasUnevenRows="True"
