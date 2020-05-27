@@ -300,8 +300,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public virtual async Task EstimateMaxAmountAndFee()
         { 
-            var (maxAmount, _z, _) = await App.Account
-                .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, true);
+            var (maxAmount, _, _) = await App.Account
+                .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, UseDefaultFee);
             await UpdateAmount(maxAmount);
         }
 
