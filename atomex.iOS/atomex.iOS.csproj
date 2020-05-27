@@ -219,12 +219,12 @@
     <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon.png" />
     <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon-1.png" />
     <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon-2.png" />
-    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\tzbtc.png" />
-    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\tzbtc-1.png" />
-    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\tzbtc-2.png" />
-    <ImageAsset Include="Assets.xcassets\FA12.imageset\tzbtc.png" />
-    <ImageAsset Include="Assets.xcassets\FA12.imageset\tzbtc-1.png" />
-    <ImageAsset Include="Assets.xcassets\FA12.imageset\tzbtc-2.png" />
+    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC.pdf" />
+    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA12.imageset\TZBTC.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA12.imageset\TZBTC-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA12.imageset\TZBTC-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
