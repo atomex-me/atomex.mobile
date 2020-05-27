@@ -86,6 +86,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalOptions="FillAndExpand"
+                      IsPullToRefreshEnabled="True"
                       Footer="">
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
