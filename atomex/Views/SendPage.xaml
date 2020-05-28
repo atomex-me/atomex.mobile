@@ -120,35 +120,43 @@
                        Padding="0"
                        BorderColor="LightGray"
                        HorizontalOptions="FillAndExpand">
-                    <StackLayout Orientation="Horizontal">
-                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
-                                              x:Name="Fee"
-                                              Keyboard="Numeric"
-                                              Focused="FeeEntryFocused"
-                                              Unfocused="FeeEntryFocused">
-                            <controls:CustomEntry.Triggers>
-                                <DataTrigger TargetType="controls:CustomEntry"
-                                             Binding="{Binding UseDefaultFee}"
-                                             Value="True">
-                                    <Setter Property="IsReadOnly"
-                                            Value="True"/>
-                                    <Setter Property="TextColor"
-                                            Value="Gray"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="controls:CustomEntry"
-                                             Binding="{Binding UseDefaultFee}"
-                                             Value="False">
-                                    <Setter Property="IsReadOnly"
-                                            Value="False"/>
-                                    <Setter Property="TextColor"
-                                            Value="Black"/>
-                                </DataTrigger>
-                            </controls:CustomEntry.Triggers>
-                        </controls:CustomEntry>
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="FillAndExpand">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label x:Name="FeeHint"
+                                   Style="{DynamicResource EntryHintStyle}"/>
+                            <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                                  x:Name="Fee"
+                                                  Keyboard="Numeric"
+                                                  Placeholder="{x:Static resources:AppResources.FeeLabel}"
+                                                  Focused="FeeEntryFocused"
+                                                  Unfocused="FeeEntryFocused"
+                                                  TextChanged="OnFeeTextChanged">
+                                <controls:CustomEntry.Triggers>
+                                    <DataTrigger TargetType="controls:CustomEntry"
+                                                 Binding="{Binding UseDefaultFee}"
+                                                 Value="True">
+                                        <Setter Property="IsReadOnly"
+                                                Value="True"/>
+                                        <Setter Property="TextColor"
+                                                Value="Gray"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="controls:CustomEntry"
+                                                 Binding="{Binding UseDefaultFee}"
+                                                 Value="False">
+                                        <Setter Property="IsReadOnly"
+                                                Value="False"/>
+                                        <Setter Property="TextColor"
+                                                Value="Black"/>
+                                    </DataTrigger>
+                                </controls:CustomEntry.Triggers>
+                            </controls:CustomEntry>
+                        </StackLayout>
                         <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                TextColor="Gray"
                                VerticalTextAlignment="Center"
-                               Padding="20,0"/>
+                               Padding="0,0,20,0"
+                               IsEnabled="False"/>
                     </StackLayout>
                 </Frame>
             </StackLayout>

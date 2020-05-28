@@ -115,6 +115,24 @@ namespace atomex
             }
         }
 
+        private void OnFeeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (!String.IsNullOrEmpty(args.NewTextValue))
+            {
+                if (!FeeHint.IsVisible)
+                {
+                    FeeHint.IsVisible = true;
+                    FeeHint.Text = Fee.Placeholder + ", " + _sendViewModel.CurrencyViewModel.FeeCurrencyCode;
+                    Fee.VerticalTextAlignment = TextAlignment.Start;
+                }
+            }
+            else
+            {
+                FeeHint.IsVisible = false;
+                Fee.VerticalTextAlignment = TextAlignment.Center;
+            }
+        }
+
         private void OnUseDefaultFeeToggled(object sender, ToggledEventArgs args)
         {
             if (args.Value)
