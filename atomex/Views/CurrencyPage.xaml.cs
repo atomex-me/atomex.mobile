@@ -56,7 +56,7 @@ namespace atomex
                 await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
             }
         }
-        async void SwipeDown(object sender, EventArgs args)
+        async void Refresh(object sender, EventArgs args)
         {
             RefreshView.IsRefreshing = LoaderLabel.IsVisible = true;
             Color availableAmountColor = AvailableAmountLabel.TextColor;
