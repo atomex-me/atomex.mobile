@@ -94,7 +94,7 @@
                                            FontSize="12"/>
                                     <Label Grid.Row="1"
                                            Grid.Column="3"
-                                           Text="{Binding Cost, StringFormat='{0:f2} $'}"
+                                           Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
                                            FontFamily="{DynamicResource LightFont}"
                                            VerticalOptions="Start"
                                            HorizontalOptions="EndAndExpand"

@@ -52,11 +52,11 @@ namespace atomex.ViewModel
             set { _price = value; OnPropertyChanged(nameof(Price)); }
         }
 
-        private decimal _cost;
-        public decimal Cost
+        private decimal _amountInBase;
+        public decimal AmountInBase
         {
-            get => _cost;
-            set { _cost = value; OnPropertyChanged(nameof(Cost)); }
+            get => _amountInBase;
+            set { _amountInBase = value; OnPropertyChanged(nameof(AmountInBase)); }
         }
 
         private float _portfolioPercent;
@@ -124,13 +124,14 @@ namespace atomex.ViewModel
                 .ConfigureAwait(false);
 
             TotalAmount = balance.Confirmed;
-            OnPropertyChanged(nameof(TotalAmount));
 
             AvailableAmount = balance.Available;
-            OnPropertyChanged(nameof(AvailableAmount));
 
             UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
-            OnPropertyChanged(nameof(UnconfirmedAmount));
+
+            var quote = App.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+            Price = quote.Bid;
+            AmountInBase = AvailableAmount * quote.Bid;
         }
 
         private void UnconfirmedTransactionAdded(

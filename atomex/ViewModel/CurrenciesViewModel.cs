@@ -72,15 +72,15 @@ namespace atomex.ViewModel
             {
                 var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
                 c.Price = quote.Bid;
-                c.Cost = c.AvailableAmount * quote.Bid;
-                TotalCost += c.Cost;
+                c.AmountInBase = c.AvailableAmount * quote.Bid;
+                TotalCost += c.AmountInBase;
             }
 
             if (TotalCost != 0)
             {
                 foreach (var c in CurrencyViewModels)
                 {
-                    c.PortfolioPercent = (float)(c.Cost / TotalCost * 100);
+                    c.PortfolioPercent = (float)(c.AmountInBase / TotalCost * 100);
                 }
             }
 

@@ -46,7 +46,7 @@
                            HorizontalOptions="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Cost, StringFormat='{0:0.##}'}"/>
+                                <Span Text="{Binding AmountInBase, StringFormat='{0:0.##}'}"/>
                                 <Span Text=" $"/>
                             </FormattedString>
                         </Label.FormattedText>
