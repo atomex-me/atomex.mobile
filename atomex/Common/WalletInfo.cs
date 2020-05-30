@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Atomex.Core;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.Common
 {
@@ -25,8 +26,22 @@ namespace atomex.Common
         {
             var result = new List<WalletInfo>();
 
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var walletsFolder = System.IO.Path.Combine(documents, "..", "Library", DefaultWalletsDirectory);
+            string walletsFolder = null;
+            string pathToDocuments;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    pathToDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    walletsFolder = System.IO.Path.Combine(pathToDocuments, "..", "Library", DefaultWalletsDirectory);
+                    break;
+                case Device.Android:
+                    pathToDocuments = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                    walletsFolder = System.IO.Path.Combine(pathToDocuments, DefaultWalletsDirectory);
+                    break;
+                default:
+                    break;
+            }
+
             if (!Directory.Exists(walletsFolder))
             {
                 return result;

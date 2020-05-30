@@ -7,6 +7,7 @@ using atomex.ViewModel;
 using Atomex;
 using Atomex.Wallet;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex
 {
@@ -56,20 +57,29 @@ namespace atomex
                 return null;
             try
             {
-                var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var walletPath = Path.Combine(
-                        documents,
-                        "..",
-                        "Library",
-                        WalletInfo.DefaultWalletsDirectory,
-                        WalletName,
-                        WalletInfo.DefaultWalletFileName);
-                var account = Account.LoadFromFile(
-                    walletPath,
-                    Password,
-                    AtomexApp.CurrenciesProvider,
-                    AtomexApp.SymbolsProvider);
-                return account;
+                Console.WriteLine(Device.RuntimePlatform);
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    var walletPath = Path.Combine(
+                            documents,
+                            "..",
+                            "Library",
+                            WalletInfo.DefaultWalletsDirectory,
+                            WalletName,
+                            WalletInfo.DefaultWalletFileName);
+                    var account = Account.LoadFromFile(
+                        walletPath,
+                        Password,
+                        AtomexApp.CurrenciesProvider,
+                        AtomexApp.SymbolsProvider);
+                    return account;
+                }
+                if (Device.RuntimePlatform == Device.Android)
+                {
+                    return null;
+                }
+                return null;
             }
             catch (CryptographicException e)
             {

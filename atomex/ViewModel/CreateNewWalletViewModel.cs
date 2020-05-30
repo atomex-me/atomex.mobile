@@ -15,6 +15,7 @@ using Atomex.Cryptography;
 using Atomex.Wallet;
 using NBitcoin;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex
 {
@@ -192,8 +193,21 @@ namespace atomex
                 return AppResources.InvalidWalletName;
             }
 
-            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var walletsFolder = Path.Combine(documents, "..", "Library", WalletInfo.DefaultWalletsDirectory);
+            string walletsFolder = null;
+            string pathToDocuments;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    pathToDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    walletsFolder = Path.Combine(pathToDocuments, "..", "Library", WalletInfo.DefaultWalletsDirectory);
+                    break;
+                case Device.Android:
+                    pathToDocuments = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                    walletsFolder = Path.Combine(pathToDocuments, WalletInfo.DefaultWalletsDirectory);
+                    break;
+                default:
+                    break;
+            }
             if (!Directory.Exists(walletsFolder))
             {
                 Directory.CreateDirectory(walletsFolder);
@@ -202,7 +216,7 @@ namespace atomex
 
             try
             {
-                var _ = Path.GetFullPath(pathToWallet);
+                _ = Path.GetFullPath(pathToWallet);
             }
             catch (Exception)
             {

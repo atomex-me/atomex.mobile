@@ -63,4 +63,10 @@
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="configuration.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="**/*" />
+  </ItemGroup>
 </Project>

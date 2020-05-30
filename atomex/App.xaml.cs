@@ -30,10 +30,15 @@ namespace atomex
                 .AddEmbeddedJsonFile(coreAssembly, "symbols.json")
                 .Build();
 
+            //var configuration = new ConfigurationBuilder()
+            //    //.SetBasePath(Environment.CurrentDirectory)
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .AddJsonFile("configuration.json")
+            //    .Build();
+
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("configuration.json")
                 .Build();
-            // Android Error: System.ArgumentException: The path must be absolute.
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration);
