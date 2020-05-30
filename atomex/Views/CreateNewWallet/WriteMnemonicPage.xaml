@@ -34,7 +34,7 @@
                             HeightRequest="70"
                             Focused="OnPickerFocused"
                             Unfocused="OnPickerFocused"/>
-                    <Image Source="DownArrow-picker"
+                    <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"
                            WidthRequest="10"

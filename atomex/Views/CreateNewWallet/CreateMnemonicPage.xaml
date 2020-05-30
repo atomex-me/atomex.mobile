@@ -32,7 +32,7 @@
                             SelectedIndexChanged="MnemonicPhraseChanged"
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                             HeightRequest="70"/>
-                    <Image Source="DownArrow-picker"
+                    <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Height, Factor=0.5, Constant=-5}"
                            WidthRequest="10"
@@ -60,7 +60,7 @@
                             Unfocused="OnWordCountPickerFocused"
                             SelectedIndexChanged="MnemonicPhraseChanged"
                             HeightRequest="70"/>
-                    <Image Source="DownArrow-picker"
+                    <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Height, Factor=0.5, Constant=-5}"
                            WidthRequest="10"

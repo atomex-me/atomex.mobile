@@ -23,25 +23,25 @@ namespace atomex
 
             var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel))
             {
-                IconImageSource = "NavBar-portfolio",
+                IconImageSource = "NavBarPortfolio",
                 Title = AppResources.PortfolioTab
             };
 
             var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
             {
-                IconImageSource = "NavBar-wallets",
+                IconImageSource = "NavBarWallets",
                 Title = AppResources.WalletsTab
             };
 
             navigationConversionPage = new NavigationPage(new ConversionsListPage(_mainViewModel.ConversionViewModel))
             {
-                IconImageSource = "NavBar-conversion",
+                IconImageSource = "NavBarConversion",
                 Title = AppResources.ConversionTab
             };
 
             var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
             {
-                IconImageSource = "NavBar-settings",
+                IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
 

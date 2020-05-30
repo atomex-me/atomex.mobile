@@ -33,6 +33,7 @@ namespace atomex
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("configuration.json")
                 .Build();
+            // Android Error: System.ArgumentException: The path must be absolute.
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration);

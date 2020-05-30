@@ -137,7 +137,7 @@
                 </StackLayout>
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
-                       Source="DownArrow-picker"
+                       Source="DownArrowPicker"
                        Margin="0,34"
                        IsEnabled="False"/>
             </Grid>
@@ -230,7 +230,7 @@
                 </Label>
                 <StackLayout Grid.Column="2"
                              Grid.RowSpan="2">
-                     <Image Source="DownArrow-picker"
+                     <Image Source="DownArrowPicker"
                             Margin="12,34"
                             IsEnabled="False"/>
                 </StackLayout>

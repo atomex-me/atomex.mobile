@@ -77,7 +77,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Image Source="DownArrow-picker"
+                <Image Source="DownArrowPicker"
                        Grid.RowSpan="2"
                        Grid.Column="3"
                        Margin="0,30"
@@ -125,7 +125,7 @@
                        FontSize="18"
                        VerticalTextAlignment="Center"
                        IsEnabled="False"/>
-                <Image Source="DownArrow-picker"
+                <Image Source="DownArrowPicker"
                        Grid.Column="3"
                        Margin="0,30"
                        IsEnabled="False"/>

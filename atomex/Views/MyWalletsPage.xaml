@@ -76,13 +76,13 @@
                                                          Binding="{Binding Network}"
                                                          Value="MainNet">
                                                 <Setter Property="Source"
-                                                        Value="RightArrow-enter__white"/>
+                                                        Value="RightArrow__white"/>
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
                                                          Value="TestNet">
                                                 <Setter Property="Source"
-                                                        Value="RightArrow-enter__blue"/>
+                                                        Value="RightArrow__blue"/>
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>

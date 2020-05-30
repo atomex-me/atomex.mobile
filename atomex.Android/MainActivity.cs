@@ -2,7 +2,6 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using Xamarin.Forms;
 
 namespace atomex.Droid
 {
@@ -11,7 +10,6 @@ namespace atomex.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Forms.SetFlags("SwipeView_Experimental");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 

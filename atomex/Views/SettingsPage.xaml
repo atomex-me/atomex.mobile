@@ -3,8 +3,7 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:resources="clr-namespace:atomex.Resources"
                x:Class="atomex.SettingsPage"
-               Title="{x:Static resources:AppResources.SettingsPageTitle}"
-               Icon="NavBar-settings">
+               Title="{x:Static resources:AppResources.SettingsPageTitle}">
         <ContentPage.Content>
             <TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -52,7 +51,7 @@
                                         </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Image Source="RightArrow-enter__black"
+                                    <Image Source="RightArrow__black"
                                            Grid.Column="2"
                                            Margin="10,16"/>
                                 </Grid>

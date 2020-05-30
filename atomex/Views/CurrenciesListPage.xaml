@@ -4,7 +4,6 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.CurrenciesListPage"
              Title="{x:Static resources:AppResources.WalletsPageTitle}"
-             Icon="NavBar-wallets"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <StackLayout Margin="0,20"
