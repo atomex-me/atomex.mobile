@@ -361,7 +361,8 @@ namespace atomex
                         wallet: Wallet,
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
-                        symbolsProvider: AtomexApp.SymbolsProvider);
+                        symbolsProvider: AtomexApp.SymbolsProvider,
+                        Device.RuntimePlatform);
                     return account;
                 }
                 catch (CryptographicException e)

@@ -57,27 +57,39 @@ namespace atomex
                 return null;
             try
             {
-                Console.WriteLine(Device.RuntimePlatform);
                 if (Device.RuntimePlatform == Device.iOS)
                 {
                     var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                     var walletPath = Path.Combine(
-                            documents,
-                            "..",
-                            "Library",
-                            WalletInfo.DefaultWalletsDirectory,
-                            WalletName,
-                            WalletInfo.DefaultWalletFileName);
+                        documents,
+                        "..",
+                        "Library",
+                        WalletInfo.DefaultWalletsDirectory,
+                        WalletName,
+                        WalletInfo.DefaultWalletFileName);
                     var account = Account.LoadFromFile(
                         walletPath,
                         Password,
                         AtomexApp.CurrenciesProvider,
-                        AtomexApp.SymbolsProvider);
+                        AtomexApp.SymbolsProvider,
+                        Device.RuntimePlatform);
                     return account;
                 }
                 if (Device.RuntimePlatform == Device.Android)
                 {
-                    return null;
+                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                    var walletPath = Path.Combine(
+                        documents,
+                        WalletInfo.DefaultWalletsDirectory,
+                        WalletName,
+                        WalletInfo.DefaultWalletFileName);
+                    var account = Account.LoadFromFile(
+                        walletPath,
+                        Password,
+                        AtomexApp.CurrenciesProvider,
+                        AtomexApp.SymbolsProvider,
+                        Device.RuntimePlatform);
+                    return account;
                 }
                 return null;
             }

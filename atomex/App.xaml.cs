@@ -36,9 +36,17 @@ namespace atomex
             //    .AddJsonFile("configuration.json")
             //    .Build();
 
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("configuration.json")
-                .Build();
+            //UseContentRoot
+
+            // iOS impl
+            //var configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("configuration.json")
+            //    .Build();
+
+            //var configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("configuration.json")
+            //    .Build();
+
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration);

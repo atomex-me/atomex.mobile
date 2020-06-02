@@ -69,4 +69,9 @@
   <ItemGroup>
     <Content Include="**/*" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="configuration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
