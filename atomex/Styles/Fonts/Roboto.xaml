@@ -5,27 +5,34 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <OnPlatform x:TypeArguments="x:String" x:Key="BlackFont">
         <On Platform="iOS" Value="Roboto-Black" />
+        <On Platform="Android" Value="Roboto-Black.ttf#Roboto Black" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
         <On Platform="iOS" Value="Roboto-Bold" />
+        <On Platform="Android" Value="Roboto-Bold.ttf#Roboto Bold" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="LightFont">
         <On Platform="iOS" Value="Roboto-Light" />
+        <On Platform="Android" Value="Roboto-Light.ttf#Roboto Light" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="RegularFont">
-        <!--<On Platform="Android" Value="OpenSans-Regular.ttf#Open Sans" />-->
         <On Platform="iOS" Value="Roboto-Regular" />
+        <On Platform="Android" Value="Roboto-Regular.ttf#Roboto Regular" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="ItalicFont">
         <On Platform="iOS" Value="Roboto-Italic" />
+        <On Platform="Android" Value="Roboto-Italic.ttf#Roboto Italic" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="MediumFont">
         <On Platform="iOS" Value="Roboto-Medium" />
+        <On Platform="Android" Value="Roboto-Medium.ttf#Roboto Medium" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="ThinFont">
         <On Platform="iOS" Value="Roboto-Thin" />
+        <On Platform="Android" Value="Roboto-Thin.ttf#Roboto Thin" />
     </OnPlatform>
     <OnPlatform x:TypeArguments="x:String" x:Key="LogoFont">
         <On Platform="iOS" Value="Comfortaa-Regular" />
+        <On Platform="Android" Value="Comfortaa-Regular.ttf#Comfortaa Regular" />
     </OnPlatform>
 </ResourceDictionary>
