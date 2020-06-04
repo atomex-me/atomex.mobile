@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@color/splash_background"/>
+    </item>
+    <item android:left="60dp"
+          android:right="60dp">
+        <bitmap android:src="@drawable/logo"      
+                android:gravity="center"/>
+    </item>
+    <item android:left="30dp"
+          android:right="30dp">
+        <bitmap android:src="@drawable/logolabel"
+                android:tileMode="disabled"
+                android:layout_width="50dp"
+                android:gravity="bottom"/>
+    </item>
+</layer-list>
