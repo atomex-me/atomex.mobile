@@ -7315,7 +7315,7 @@ namespace atomex.Droid
 			public const int secondary_text_disabled_material_light = 2131034239;
 			
 			// aapt resource value: 0x7F050080
-			public const int splash_background = 2131034240;
+			public const int splashBackground = 2131034240;
 			
 			// aapt resource value: 0x7F050081
 			public const int switch_thumb_disabled_material_dark = 2131034241;

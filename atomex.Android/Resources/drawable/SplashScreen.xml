@@ -1,18 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
-        <color android:color="@color/splash_background"/>
+        <color android:color="@color/splashBackground"/>
     </item>
-    <item android:left="60dp"
-          android:right="60dp">
-        <bitmap android:src="@drawable/logo"      
-                android:gravity="center"/>
+    <item>
+        <bitmap android:gravity="center_vertical | center_horizontal"
+                android:src="@drawable/logo" />
     </item>
-    <item android:left="30dp"
-          android:right="30dp">
-        <bitmap android:src="@drawable/logolabel"
-                android:tileMode="disabled"
-                android:layout_width="50dp"
-                android:gravity="bottom"/>
+    <item android:bottom="20dp">
+        <bitmap android:gravity="bottom | center"
+                android:src="@drawable/logolabel" />
     </item>
 </layer-list>

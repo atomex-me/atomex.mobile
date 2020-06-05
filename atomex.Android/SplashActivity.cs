@@ -26,7 +26,7 @@ namespace atomex.Droid
         // Simulates background work that happens behind the splash screen
         async void SimulateStartup()
         {
-            await Task.Delay(3000); // Simulate a bit of startup work.
+            await Task.Delay(1000); // Simulate a bit of startup work.
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }
 
