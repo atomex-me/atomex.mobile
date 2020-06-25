@@ -104,7 +104,7 @@
         <value>Please select your wallet type</value>
     </data>
     <data name="WalletNameStepLabel" xml:space="preserve">
-        <value>Step 1: Wallet name</value>
+        <value>Step 2: Wallet name</value>
     </data>
     <data name="EnterNameLabel" xml:space="preserve">
         <value>Please enter a name for your wallet</value>

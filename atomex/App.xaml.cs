@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using atomex.Services;
 using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
@@ -17,6 +19,9 @@ namespace atomex
         public App()
         {
             InitializeComponent();
+
+            // use the dependency service to get a platform-specific implementation and initialize it
+            DependencyService.Get<INotificationManager>().Initialize();
 
             var coreAssembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -36,6 +41,7 @@ namespace atomex
             //    .AddJsonFile("configuration.json")
             //    .Build();
 
+
             //UseContentRoot
 
             // iOS impl
@@ -46,7 +52,6 @@ namespace atomex
             //var configuration = new ConfigurationBuilder()
             //    .AddJsonFile("configuration.json")
             //    .Build();
-
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration);

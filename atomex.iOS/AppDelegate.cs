@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using UserNotifications;
 
 namespace atomex.iOS
 {
@@ -20,9 +21,41 @@ namespace atomex.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
+
+            //UIApplication.SharedApplication.RegisterForRemoteNotifications();
+
+            //after iOS 10
+            //if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            //{
+            //    UNUserNotificationCenter center = UNUserNotificationCenter.Current;
+
+            //    center.RequestAuthorization(UNAuthorizationOptions.Alert | UNAuthorizationOptions.Sound | UNAuthorizationOptions.Badge, (bool arg1, NSError arg2) =>
+            //    {
+
+            //    });
+
+            //    center.Delegate = new iOSNotificationReceiver();
+            //}
+
+            //else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            //{
+
+            //    var settings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, new NSSet());
+
+            //    UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+
+            //}
+
+            UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
+            
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
         }
+
+        //public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        //{
+        //    base.ReceivedRemoteNotification(application, userInfo);
+        //}
     }
 }
