@@ -48,7 +48,7 @@
                                 Grid.Row="1"
                                 Text="{x:Static resources:AppResources.MaxButton}"
                                 FontSize="16"
-                                Padding="10"
+                                Padding="20"
                                 TextColor="{DynamicResource HintTextColor}"
                                 HorizontalOptions="Center"
                                 BackgroundColor="White"
