@@ -26,7 +26,7 @@ namespace atomex.iOS
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
-            //UIApplication.SharedApplication.RegisterForRemoteNotifications();
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
             //after iOS 10
             //if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
@@ -61,26 +61,24 @@ namespace atomex.iOS
         {
             //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
 
-            //Replace the above line whick worked up to iOS12 with the code below:
-            //byte[] bytes = deviceToken.ToArray<byte>();
-            //string[] hexArray = bytes.Select(b => b.ToString("x2")).ToArray();
-            //DeviceToken = string.Join(string.Empty, hexArray);
-
             byte[] result = new byte[deviceToken.Length];
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
+        }
 
-            base.RegisteredForRemoteNotifications(application, deviceToken);
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            new UIAlertViewDelegate();
         }
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            base.ReceivedLocalNotification(application, notification);
+            
         }
 
         public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
         {
-            base.ReceivedRemoteNotification(application, userInfo);
+            
         }
     }
 }

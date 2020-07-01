@@ -23,7 +23,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>atomex</string>
 	<key>CFBundleIdentifier</key>
-	<string>atomex.iOS</string>
+	<string>com.atomex.ios</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
