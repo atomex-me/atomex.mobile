@@ -3,6 +3,10 @@ using Xamarin.Forms;
 using atomex.ViewModel;
 using atomex.Views.CreateSwap;
 using atomex.Resources;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using Application = Xamarin.Forms.Application;
+using TabbedPage = Xamarin.Forms.TabbedPage;
 
 namespace atomex
 {
@@ -18,7 +22,7 @@ namespace atomex
 
         public MainPage(MainViewModel mainViewModel)
         {
-
+            On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             _mainViewModel = mainViewModel;
 
             var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel))
