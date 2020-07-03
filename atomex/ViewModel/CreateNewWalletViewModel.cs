@@ -339,8 +339,10 @@ namespace atomex
             Wallet = new HdWallet(
                 mnemonic: Mnemonic,
                 wordList: Language.Wordlist,
+                fileSystem: FileSystemFactory.Create(),
                 passPhrase: DerivedPassword,
-                network: Network)
+                network: Network
+                )
             {
                 PathToWallet = PathToWallet
             };
@@ -362,7 +364,7 @@ namespace atomex
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
                         symbolsProvider: AtomexApp.SymbolsProvider,
-                        Device.RuntimePlatform);
+                        fileSystem: FileSystemFactory.Create());
                     return account;
                 }
                 catch (CryptographicException e)

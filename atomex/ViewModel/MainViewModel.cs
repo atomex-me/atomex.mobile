@@ -5,6 +5,8 @@ using Atomex.Subsystems;
 using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
+using Atomex.Common.Configuration;
+using System.Linq;
 
 namespace atomex.ViewModel
 {
@@ -20,17 +22,20 @@ namespace atomex.ViewModel
 
         public MainViewModel(IAtomexApp app, IAccount account)
         {
+            var assembly = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .First(a => a.GetName().Name == "atomex");
+
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("configuration.json")
+                .AddEmbeddedJsonFile(assembly, "configuration.json")
                 .Build();
 
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
             AtomexApp.Start();
+            AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
             SubscribeToServices();
-
-            AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp);

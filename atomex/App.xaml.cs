@@ -62,7 +62,6 @@ namespace atomex
                 .UseQuotesProvider(new BitfinexQuotesProvider(
                     currencies: currenciesProvider.GetCurrencies(Network.MainNet),
                     baseCurrency: BitfinexQuotesProvider.Usd));
-            AtomexApp.Start();
 
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
             MainPage = new NavigationPage(new StartPage(startViewModel));

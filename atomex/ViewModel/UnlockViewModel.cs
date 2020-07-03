@@ -57,41 +57,20 @@ namespace atomex
                 return null;
             try
             {
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    var walletPath = Path.Combine(
-                        documents,
-                        "..",
-                        "Library",
-                        WalletInfo.DefaultWalletsDirectory,
-                        WalletName,
-                        WalletInfo.DefaultWalletFileName);
-                    var account = Account.LoadFromFile(
-                        walletPath,
-                        Password,
-                        AtomexApp.CurrenciesProvider,
-                        AtomexApp.SymbolsProvider,
-                        Device.RuntimePlatform);
-                    return account;
-                }
-                if (Device.RuntimePlatform == Device.Android)
-                {
-                    var documents = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                    var walletPath = Path.Combine(
-                        documents,
-                        WalletInfo.DefaultWalletsDirectory,
-                        WalletName,
-                        WalletInfo.DefaultWalletFileName);
-                    var account = Account.LoadFromFile(
-                        walletPath,
-                        Password,
-                        AtomexApp.CurrenciesProvider,
-                        AtomexApp.SymbolsProvider,
-                        Device.RuntimePlatform);
-                    return account;
-                }
-                return null;
+                var fileSystem = FileSystemFactory.Create();
+
+                var walletPath = Path.Combine(
+                    fileSystem.PathToDocuments,
+                    WalletInfo.DefaultWalletsDirectory,
+                    WalletName,
+                    WalletInfo.DefaultWalletFileName);
+
+                return Account.LoadFromFile(
+                    walletPath,
+                    Password,
+                    AtomexApp.CurrenciesProvider,
+                    AtomexApp.SymbolsProvider,
+                    fileSystem);
             }
             catch (CryptographicException e)
             {
