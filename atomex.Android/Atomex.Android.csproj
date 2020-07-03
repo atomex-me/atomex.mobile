@@ -265,10 +265,5 @@
     <AndroidAsset Include="Assets\Roboto-Regular.ttf" />
     <AndroidAsset Include="Assets\Roboto-Thin.ttf" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="configuration.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

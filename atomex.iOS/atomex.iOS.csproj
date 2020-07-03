@@ -352,13 +352,4 @@
     <BundleResource Include="Resources\Images\Refresh-arrow.pdf" />
     <BundleResource Include="Resources\Images\Copy.pdf" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="atomex.wallet">
-      <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>
