@@ -84,6 +84,8 @@
     <Compile Include="SplashActivity.cs" />
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
     <Compile Include="AndroidNotificationManager.cs" />
+    <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
+    <Compile Include="CustomElements\RightRoundedButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -240,6 +242,14 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\LogoLabel.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\LeftRoundedButton.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\RightRoundedButton.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

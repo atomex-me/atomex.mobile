@@ -2,7 +2,8 @@
 <resources>
     <color name="launcher_background">#FFFFFF</color>
     <color name="splashBackground">#223a66</color>
+    <color name="buttonBackground">#3a6cb1</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#3a6cb1</color>
 </resources>
