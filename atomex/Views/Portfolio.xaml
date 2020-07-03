@@ -4,7 +4,8 @@
              xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
-             Title="{x:Static resources:AppResources.PortfolioPageTitle}">
+             Title="{x:Static resources:AppResources.PortfolioPageTitle}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
         <ContentPage.Content>
             <StackLayout>
                 <RelativeLayout HeightRequest="220"
