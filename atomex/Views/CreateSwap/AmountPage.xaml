@@ -88,7 +88,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="10" />
+                    <RowDefinition Height="15" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" />
@@ -151,7 +151,8 @@
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start">
+                       VerticalTextAlignment="Start"
+                       Padding="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding AmountInBase, StringFormat='{0:f2}'}"/>

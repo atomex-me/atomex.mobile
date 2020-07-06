@@ -86,6 +86,7 @@
     <Compile Include="AndroidNotificationManager.cs" />
     <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\RightRoundedButtonRenderer.cs" />
+    <Compile Include="CustomElements\CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

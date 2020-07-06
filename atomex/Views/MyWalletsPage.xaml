@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.MyWalletsPage"
              Title="{x:Static resources:AppResources.MyWalletsTitle}"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"

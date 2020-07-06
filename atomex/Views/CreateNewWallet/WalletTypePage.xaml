@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -15,13 +16,13 @@
                HasShadow="False"
                x:Name="Frame">
             <RelativeLayout WidthRequest="220">
-                <Picker ItemsSource="{Binding Networks}"
-                        SelectedItem="{Binding Network}"
-                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                        HeightRequest="70"
-                        x:Name="Picker"
-                        Focused="OnPickerFocused"
-                        Unfocused="OnPickerFocused"/>
+                <custom:CustomPicker ItemsSource="{Binding Networks}"
+                                     SelectedItem="{Binding Network}"
+                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                     HeightRequest="70"
+                                     x:Name="Picker"
+                                     Focused="OnPickerFocused"
+                                     Unfocused="OnPickerFocused"/>
                 <Image Source="DownArrowPicker"
                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Width, Factor=0.9}"
                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Height, Factor=0.5, Constant=-5}"

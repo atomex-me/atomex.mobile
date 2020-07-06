@@ -38,8 +38,13 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{x:Static resources:AppResources.PeriodOfInactiveLabel}"
                                            FontSize="17"
-                                           Margin="20,0"
+                                           Margin="15,0"
                                            Style="{DynamicResource OptionLabelStyle}">
+                                        <Label.FontSize>
+                                            <OnPlatform x:TypeArguments="x:Double"
+                                                        iOS="17"
+                                                        Android="14"/>
+                                        </Label.FontSize>
                                     </Label>
                                     <Label Grid.Column="1"
                                            Text="{Binding PeriodOfInactivityInMin}"
@@ -64,6 +69,7 @@
                             <ViewCell.View>
                                 <Button Text="{x:Static resources:AppResources.SignOut}"
                                         TextColor="{DynamicResource HintTextColor}"
+                                        BackgroundColor="Transparent"
                                         FontSize="18"
                                         Clicked="OnSignOutButtonClicked"/>
                         </ViewCell.View>

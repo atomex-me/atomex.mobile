@@ -34,15 +34,15 @@
                        HasShadow="False"
                        Padding="0"
                        x:Name="BakerFrame">
-                    <Picker x:Name="PickerFrom"
-                            ItemsSource="{Binding FromBakersList}"
-                            ItemDisplayBinding="{Binding Name}"
-                            SelectedItem="{Binding BakerViewModel}"
-                            VerticalOptions="FillAndExpand"
-                            Focused="OnBakerPickerFocused"
-                            Unfocused="OnBakerPickerFocused"
-                            TextColor="#ffffff">
-                    </Picker>
+                    <controls:CustomPicker x:Name="PickerFrom"
+                                           ItemsSource="{Binding FromBakersList}"
+                                           ItemDisplayBinding="{Binding Name}"
+                                           SelectedItem="{Binding BakerViewModel}"
+                                           VerticalOptions="FillAndExpand"
+                                           Focused="OnBakerPickerFocused"
+                                           Unfocused="OnBakerPickerFocused"
+                                           TextColor="#ffffff">
+                    </controls:CustomPicker>
                 </Frame>
                 <Image Grid.RowSpan="2"
                        Source="{Binding BakerViewModel.Logo}"
@@ -195,13 +195,13 @@
                        x:Name="FromAddressFrame"
                        Padding="0"
                        BorderColor="LightGray">
-                    <Picker ItemsSource="{Binding FromAddressList}"
-                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                            SelectedItem="{Binding WalletAddressViewModel}"
-                            FontSize="14"
-                            Focused="OnFromAddressPickerFocused"
-                            Unfocused="OnFromAddressPickerFocused"
-                            TextColor="#ffffff"/>
+                    <controls:CustomPicker ItemsSource="{Binding FromAddressList}"
+                                           ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
+                                           SelectedItem="{Binding WalletAddressViewModel}"
+                                           FontSize="14"
+                                           Focused="OnFromAddressPickerFocused"
+                                           Unfocused="OnFromAddressPickerFocused"
+                                           TextColor="#ffffff"/>
                 </Frame>
                 <Label Grid.Row="0"
                        Grid.Column="1"

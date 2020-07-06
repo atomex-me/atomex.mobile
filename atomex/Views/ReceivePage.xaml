@@ -4,6 +4,7 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.ReceivePage"
              Title="{x:Static resources:AppResources.ReceivePageTitle}">
     <ScrollView>
@@ -38,13 +39,13 @@
                            BorderColor="LightGray"
                            x:Name="AddressFrame"
                            Padding="0">
-                        <Picker ItemsSource="{Binding FromAddressList}"
-                                ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                                SelectedItem="{Binding SelectedAddress}"
-                                x:Name="AddressPicker"
-                                Focused="OnPickerFocused"
-                                Unfocused="OnPickerFocused"
-                                TextColor="#ffffff"/>
+                        <custom:CustomPicker ItemsSource="{Binding FromAddressList}"
+                                             ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
+                                             SelectedItem="{Binding SelectedAddress}"
+                                             x:Name="AddressPicker"
+                                             Focused="OnPickerFocused"
+                                             Unfocused="OnPickerFocused"
+                                             TextColor="#ffffff"/>
                     </Frame>
                     <Label Grid.Column="1"
                            Text="{Binding SelectedAddress.Address}"

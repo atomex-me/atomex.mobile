@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -23,15 +24,15 @@
                    BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
                    HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
-                    <Picker ItemsSource="{Binding Languages}"
-                            ItemDisplayBinding="{Binding Name}"
-                            SelectedItem="{Binding Language}"
-                            x:Name="LanguagePicker"
-                            Focused="OnLanguagePickerFocused"
-                            Unfocused="OnLanguagePickerFocused"
-                            SelectedIndexChanged="MnemonicPhraseChanged"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                            HeightRequest="70"/>
+                    <custom:CustomPicker ItemsSource="{Binding Languages}"
+                                         ItemDisplayBinding="{Binding Name}"
+                                         SelectedItem="{Binding Language}"
+                                         x:Name="LanguagePicker"
+                                         Focused="OnLanguagePickerFocused"
+                                         Unfocused="OnLanguagePickerFocused"
+                                         SelectedIndexChanged="MnemonicPhraseChanged"
+                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                         HeightRequest="70"/>
                     <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Height, Factor=0.5, Constant=-5}"
@@ -51,15 +52,15 @@
                    BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
                    HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
-                    <Picker ItemsSource="{Binding WordCountToEntropyLength}"
-                            ItemDisplayBinding="{Binding WordCount}"
-                            SelectedItem="{Binding Entropy}"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                            x:Name="WordCountPicker"
-                            Focused="OnWordCountPickerFocused"
-                            Unfocused="OnWordCountPickerFocused"
-                            SelectedIndexChanged="MnemonicPhraseChanged"
-                            HeightRequest="70"/>
+                    <custom:CustomPicker ItemsSource="{Binding WordCountToEntropyLength}"
+                                         ItemDisplayBinding="{Binding WordCount}"
+                                         SelectedItem="{Binding Entropy}"
+                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                         x:Name="WordCountPicker"
+                                         Focused="OnWordCountPickerFocused"
+                                         Unfocused="OnWordCountPickerFocused"
+                                         SelectedIndexChanged="MnemonicPhraseChanged"
+                                         HeightRequest="70"/>
                     <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Height, Factor=0.5, Constant=-5}"
@@ -74,7 +75,7 @@
                    Padding="10"
                    BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
                    HorizontalOptions="FillAndExpand"
-                   VerticalOptions="Fill">
+                   VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center">
                     <Label Text="{x:Static resources:AppResources.MnemonicPhraseLabel}"
                            x:Name="MnemonicLabel"

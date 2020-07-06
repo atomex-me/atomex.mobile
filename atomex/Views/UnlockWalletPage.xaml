@@ -5,7 +5,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.UnlockWalletPage"
              Title="{x:Static resources:AppResources.UnlockTitle}"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <RelativeLayout>
             <ActivityIndicator x:Name="Loader"

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
@@ -38,15 +39,15 @@
                        HasShadow="False"
                        Padding="0"
                        x:Name="FromCurrencyFrame">
-                    <Picker x:Name="pickerFrom"
-                            ItemsSource="{Binding FromCurrencies}"
-                            ItemDisplayBinding="{Binding Currency.Description}"
-                            SelectedItem="{Binding FromCurrencyViewModel}"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            Focused="OnFromCurrencyPickerFocused"
-                            Unfocused="OnFromCurrencyPickerFocused"
-                            TextColor="#ffffff"/>
+                    <custom:CustomPicker x:Name="pickerFrom"
+                                         ItemsSource="{Binding FromCurrencies}"
+                                         ItemDisplayBinding="{Binding Currency.Description}"
+                                         SelectedItem="{Binding FromCurrencyViewModel}"
+                                         VerticalOptions="FillAndExpand"
+                                         HorizontalOptions="FillAndExpand"
+                                         Focused="OnFromCurrencyPickerFocused"
+                                         Unfocused="OnFromCurrencyPickerFocused"
+                                         TextColor="#ffffff"/>
                 </Frame>
                 <Image Grid.Column="1"
                        Grid.RowSpan="2"
@@ -106,14 +107,14 @@
                        HasShadow="False"
                        Padding="0"
                        x:Name="ToCurrencyFrame">
-                    <Picker x:Name="pickerTo"
-                            ItemsSource="{Binding ToCurrencies}"
-                            ItemDisplayBinding="{Binding Currency.Description}"
-                            SelectedItem="{Binding ToCurrencyViewModel}"
-                            Focused="OnToCurrencyPickerFocused"
-                            Unfocused="OnToCurrencyPickerFocused"
-                            HorizontalOptions="FillAndExpand"
-                            TextColor="#ffffff"/>
+                    <custom:CustomPicker x:Name="pickerTo"
+                                         ItemsSource="{Binding ToCurrencies}"
+                                         ItemDisplayBinding="{Binding Currency.Description}"
+                                         SelectedItem="{Binding ToCurrencyViewModel}"
+                                         Focused="OnToCurrencyPickerFocused"
+                                         Unfocused="OnToCurrencyPickerFocused"
+                                         HorizontalOptions="FillAndExpand"
+                                         TextColor="#ffffff"/>
                 </Frame>
                 <Image Grid.Column="1"
                        Source="{Binding ToCurrencyViewModel.CurrencyCode}"

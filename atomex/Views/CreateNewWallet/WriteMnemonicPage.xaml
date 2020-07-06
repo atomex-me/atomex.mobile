@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
@@ -26,14 +27,14 @@
                        BorderColor="LightGray"
                        HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
-                    <Picker ItemsSource="{Binding Languages}"
-                            ItemDisplayBinding="{Binding Name}"
-                            SelectedItem="{Binding Language}"
-                            x:Name="LanguagesPicker"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                            HeightRequest="70"
-                            Focused="OnPickerFocused"
-                            Unfocused="OnPickerFocused"/>
+                    <custom:CustomPicker ItemsSource="{Binding Languages}"
+                                         ItemDisplayBinding="{Binding Name}"
+                                         SelectedItem="{Binding Language}"
+                                         x:Name="LanguagesPicker"
+                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                         HeightRequest="70"
+                                         Focused="OnPickerFocused"
+                                         Unfocused="OnPickerFocused"/>
                     <Image Source="DownArrowPicker"
                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Width, Factor=0.9}"
                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagesPicker, Property=Height, Factor=0.5, Constant=-5}"

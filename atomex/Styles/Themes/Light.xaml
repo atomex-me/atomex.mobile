@@ -66,7 +66,11 @@
     <!-- Frames -->
     <Style x:Key="EntryFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="6"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0" Android="2"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="BorderColor" Value="{DynamicResource FrameBorderColor}"/>
@@ -108,12 +112,14 @@
     <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
         <Setter Property="FontSize" Value="24"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0,0,0,20"/>
     </Style>
     <Style x:Key="CreateNewWalletTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
         <Setter Property="FontSize" Value="18"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="Padding" Value="5"/>
     </Style>
     <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
@@ -146,7 +152,6 @@
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="Padding" Value="10"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
@@ -155,7 +160,6 @@
         <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="Padding" Value="10"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
@@ -197,6 +201,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonBorderColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}"/>
     </Style>
     <Color x:Key="MnemonicPhraseFrameBackgroundColor">#ffc7c7</Color>
     <Color x:Key="MnemonicPhraseFrameBorderColor">#8B0000</Color>
