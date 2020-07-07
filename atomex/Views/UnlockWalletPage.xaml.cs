@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
+using Atomex.Wallet;
 using Xamarin.Forms;
 
 namespace atomex
@@ -47,19 +49,43 @@ namespace atomex
 
         private async void OnUnlockButtonClicked(object sender, EventArgs args)
         {
-            Content.Opacity = 0.3f;
-            Loader.IsRunning = true;
+            try
+            {
+                Content.Opacity = 0.3f;
+                Loader.IsRunning = true;
 
-            var account = _unlockViewModel.Unlock();
-            if (account != null)
-            {
-                Application.Current.MainPage = new MainPage(new MainViewModel(_unlockViewModel.AtomexApp, account));
+                Account account = null;
+
+                await Task.Run(() =>
+                {
+                    account = _unlockViewModel.Unlock();
+                });
+
+                if (account != null)
+                {
+                    MainViewModel mainViewModel = null;
+
+                    await Task.Run(() =>
+                    {
+                        mainViewModel = new MainViewModel(_unlockViewModel.AtomexApp, account);
+                    });
+
+                    Application.Current.MainPage = new MainPage(mainViewModel);
+
+                    Content.Opacity = 1f;
+                    Loader.IsRunning = false;
+                }
+                else
+                {
+                    Content.Opacity = 1f;
+                    Loader.IsRunning = false;
+
+                    await DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Content.Opacity = 1f;
-                Loader.IsRunning = false;
-                await DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                //
             }
         }
     }

@@ -13,7 +13,8 @@
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">#f7f5fa</item>
         <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">#1976D2</item>
+        <item name="colorPrimaryDark">#2B5286</item>
+        <!-- <item name="colorPrimaryDark">#1976D2</item> -->
         <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
         <item name="colorAccent">#3a6cb1</item>

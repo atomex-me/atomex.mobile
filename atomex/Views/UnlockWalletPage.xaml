@@ -8,12 +8,6 @@
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <RelativeLayout>
-            <ActivityIndicator x:Name="Loader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                               Scale="3"
-                               Color="Black"
-                               IsRunning="False"/>
             <StackLayout x:Name="Content"
                          Padding="30"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -55,6 +49,12 @@
                         Style="{DynamicResource MainButtonStyle}"
                         Clicked="OnUnlockButtonClicked"/>
             </StackLayout>
+            <ActivityIndicator x:Name="Loader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
+                               Scale="3"
+                               Color="Black"
+                               IsRunning="False"/>
         </RelativeLayout>
     </ScrollView>
 </ContentPage>
