@@ -33,10 +33,12 @@
                                 <Label Grid.Column="1"
                                        Text="{Binding Currency.Description}"
                                        FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        VerticalOptions="End"/>
                                 <Label Grid.Column="2"
                                        Text="{Binding AvailableAmount}"
                                        FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        HorizontalOptions="End"
                                        VerticalOptions="End">
                                     <Label.FormattedText>

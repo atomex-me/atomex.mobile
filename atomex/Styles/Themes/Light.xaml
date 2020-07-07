@@ -132,6 +132,7 @@
     </Style>
     <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="5"/>
     </Style>

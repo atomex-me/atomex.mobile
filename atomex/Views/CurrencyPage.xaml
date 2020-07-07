@@ -12,32 +12,33 @@
                  x:Name="RefreshView">
         <StackLayout>
             <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
-                            Spacing="0">
+                         Spacing="0">
                 <Image WidthRequest="96"
-                        HeightRequest="96"
-                        Margin="20"
-                        Source="{Binding CurrencyCode}"/>
+                       HeightRequest="96"
+                       Margin="20"
+                       Source="{Binding CurrencyCode}"/>
                 <Label Text="{Binding AvailableAmount}"
-                        x:Name="AvailableAmountLabel"
-                        HorizontalOptions="Center">
+                       x:Name="AvailableAmountLabel"
+                       TextColor="{DynamicResource MainTextColor}"
+                       HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding AvailableAmount}"
-                                    FontSize="20"
-                                    FontFamily="{DynamicResource BoldFont}"/>
+                                  FontSize="20"
+                                  FontFamily="{DynamicResource BoldFont}"/>
                             <Span Text=" " /> 
                             <Span Text="{Binding CurrencyCode}"
-                                    FontSize="16"
-                                    FontFamily="{DynamicResource BoldFont}"/>
+                                  FontSize="16"
+                                  FontFamily="{DynamicResource BoldFont}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Label x:Name="AvailableAmountInBaseLabel"
-                        FontFamily="{DynamicResource RegularFont}"
-                        FontSize="14"
-                        TextColor="{DynamicResource AdditionalTextColor}"
-                        VerticalTextAlignment="Start"
-                        HorizontalOptions="Center">
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       TextColor="{DynamicResource AdditionalTextColor}"
+                       VerticalTextAlignment="Start"
+                       HorizontalOptions="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding AmountInBase, StringFormat='{0:0.##}'}"/>
@@ -46,10 +47,10 @@
                     </Label.FormattedText>
                 </Label>
                 <StackLayout Orientation="Horizontal"
-                                HorizontalOptions="Center"
-                                HeightRequest="40"
-                                Margin="10,20"
-                                Spacing="0">
+                             HorizontalOptions="Center"
+                             HeightRequest="40"
+                             Margin="10,20"
+                             Spacing="0">
                     <controls:LeftRoundedButton Text="{x:Static resources:AppResources.SendButton}"
                                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                                 Clicked="ShowSendPage"/>

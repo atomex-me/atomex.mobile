@@ -58,6 +58,7 @@
                        Text="{Binding FromCurrencyViewModel.Currency.Description}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="18"
+                       TextColor="{DynamicResource MainTextColor}"
                        VerticalTextAlignment="End"
                        IsEnabled="False">
                 </Label>
@@ -124,6 +125,7 @@
                 <Label Grid.Column="2"
                        Text="{Binding ToCurrencyViewModel.Currency.Description}"
                        FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource MainTextColor}"
                        FontSize="18"
                        VerticalTextAlignment="Center"
                        IsEnabled="False"/>
@@ -132,7 +134,8 @@
                        Margin="0,30"
                        IsEnabled="False"/>
             </Grid>
-            <Label Margin="20">
+            <Label Margin="20"
+                   TextColor="{DynamicResource MainTextColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"

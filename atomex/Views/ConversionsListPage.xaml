@@ -25,6 +25,7 @@
                 <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
+                       TextColor="{DynamicResource MainTextColor}"
                        VerticalOptions="StartAndExpand"
                        FontSize="22"
                        Margin="0,20"/>

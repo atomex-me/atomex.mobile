@@ -72,7 +72,8 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"/>
+                                  FontFamily="{DynamicResource RegularFont}"
+                                  TextColor="{DynamicResource MainTextColor}"/>
                             <Span Text=": "/>
                             <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
                                   FontFamily="{DynamicResource BoldFont}"
@@ -180,7 +181,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                              FontFamily="{DynamicResource RegularFont}"/>
+                              FontFamily="{DynamicResource RegularFont}"
+                              TextColor="{DynamicResource MainTextColor}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedPrice}"
                               FontFamily="{DynamicResource BoldFont}"/>
@@ -191,7 +193,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                              FontFamily="{DynamicResource RegularFont}"/>
+                              FontFamily="{DynamicResource RegularFont}"
+                              TextColor="{DynamicResource MainTextColor}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedPaymentFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
@@ -209,7 +212,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                              FontFamily="{DynamicResource RegularFont}"/>
+                              FontFamily="{DynamicResource RegularFont}"
+                              TextColor="{DynamicResource MainTextColor}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedRedeemFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
