@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
+using Atomex.Wallet;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -98,10 +100,26 @@ namespace atomex.Views.CreateNewWallet
                 Content.Opacity = 0.3f;
                 Loader.IsRunning = true;
 
-                var account = await _createNewWalletViewModel.ConnectToWallet();
+                Account account = null;
+
+                await Task.Run(async () =>
+                {
+                    account = await _createNewWalletViewModel.ConnectToWallet();
+                });
+
                 if (account != null)
                 {
-                    Application.Current.MainPage = new MainPage(new MainViewModel(_createNewWalletViewModel.AtomexApp, account));
+                    MainViewModel mainViewModel = null;
+
+                    await Task.Run(() =>
+                    {
+                        mainViewModel = new MainViewModel(_createNewWalletViewModel.AtomexApp, account);
+                    });
+
+                    Application.Current.MainPage = new MainPage(mainViewModel);
+
+                    Content.Opacity = 1f;
+                    Loader.IsRunning = false;
                 }
                 else
                 {
