@@ -36,6 +36,7 @@
                        HorizontalOptions="CenterAndExpand"/>
                 <Label Text="{x:Static resources:AppResources.NoDelegationsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource MainTextColor}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="StartAndExpand"
                        FontSize="22"

@@ -27,7 +27,7 @@ namespace atomex.Droid.CustomElements
                 Control.SetSingleLine(true);
                 Control.SetTypeface(null, TypefaceStyle.Normal);
                 Control.Gravity = GravityFlags.Left;
-                Control.SetPadding(30, 60, 30, 60);
+                Control.SetPadding(35, 60, 35, 60);
 
                 GradientDrawable gd = new GradientDrawable();
                 gd.SetStroke(2, Android.Graphics.Color.LightGray);

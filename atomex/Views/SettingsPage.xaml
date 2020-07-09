@@ -37,15 +37,7 @@
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{x:Static resources:AppResources.PeriodOfInactiveLabel}"
-                                           FontSize="17"
-                                           Margin="15,0"
-                                           Style="{DynamicResource OptionLabelStyle}">
-                                        <Label.FontSize>
-                                            <OnPlatform x:TypeArguments="x:Double"
-                                                        iOS="17"
-                                                        Android="14"/>
-                                        </Label.FontSize>
-                                    </Label>
+                                           Style="{DynamicResource OptionLabelStyle}"/>
                                     <Label Grid.Column="1"
                                            Text="{Binding PeriodOfInactivityInMin}"
                                            Style="{DynamicResource OptionValueLabelStyle}">

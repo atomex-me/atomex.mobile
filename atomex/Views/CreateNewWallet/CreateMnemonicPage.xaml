@@ -87,7 +87,16 @@
                            TextColor="{DynamicResource MnemonicPhraseTextColor}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Center"
-                           FontSize="14"/>
+                           FontSize="14">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Mnemonic}"
+                                         Value="">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                 </StackLayout>
             </Frame>
             <Button Text="{x:Static resources:AppResources.GenerateButton}"

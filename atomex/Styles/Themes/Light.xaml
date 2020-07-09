@@ -176,10 +176,13 @@
 
     <!-- Settings Pages -->
     <Style x:Key="OptionLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="Margin" Value="20,0"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Margin" Value="15,0"/>
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
     <Style x:Key="OptionValueLabelStyle" TargetType="Label">
@@ -192,7 +195,11 @@
 
      <!-- Currency Page -->
     <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="12" Android="11"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
         <Setter Property="WidthRequest" Value="80"/>
