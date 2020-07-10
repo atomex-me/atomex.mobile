@@ -44,7 +44,14 @@ namespace atomex
                              Color = SKColor.Parse("#dcdcdc")
                         }
                     };
-                    portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f };
+
+                    if (portfolioChart.Chart == null)
+                        portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, FontFamily = "Roboto-Thin" };
+                    else
+                    {
+                        var donutChart = portfolioChart.Chart as CustomDonutChart;
+                        donutChart.Entries = entry;
+                    }
                 }
                 else
                 {
@@ -60,7 +67,14 @@ namespace atomex
                             Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
                         };
                     }
-                    portfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 26, FontFamily = "Roboto-Thin" };
+
+                    if (portfolioChart.Chart == null)
+                        portfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 26, FontFamily = "Roboto-Thin" };
+                    else
+                    {
+                        var donutChart = portfolioChart.Chart as CustomDonutChart;
+                        donutChart.Entries = entries;
+                    }
                 }
             }
         }

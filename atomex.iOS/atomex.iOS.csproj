@@ -74,6 +74,7 @@
     <Compile Include="CustomElements\RightRoundedButton.cs" />
     <Compile Include="iOSNotificationReceiver.cs" />
     <Compile Include="iOSNotificationManager.cs" />
+    <Compile Include="Common\IosFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -255,6 +256,10 @@
       <Project>{6A6C43B1-1489-4B8D-AA37-941EF60E36F0}</Project>
       <Name>atomex</Name>
     </ProjectReference>
+    <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj">
+      <Project>{CA73F74E-F1CD-457B-A1D8-CDEFCB178F1F}</Project>
+      <Name>Atomex.Client.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets.xcassets\SendIcon.imageset\" />
@@ -315,6 +320,7 @@
     <Folder Include="Assets.xcassets\NavBarConversion.imageset\" />
     <Folder Include="Assets.xcassets\DownArrowPicker.imageset\" />
     <Folder Include="Assets.xcassets\StartPageBackground.imageset\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

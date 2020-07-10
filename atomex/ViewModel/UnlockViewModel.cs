@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using atomex.Common;
 using atomex.ViewModel;
 using Atomex;
+using Atomex.Common;
 using Atomex.Wallet;
 using Serilog;
 using Xamarin.Forms;
@@ -57,7 +58,7 @@ namespace atomex
                 return null;
             try
             {
-                var fileSystem = FileSystemFactory.Create();
+                var fileSystem = FileSystem.Current;
 
                 var walletPath = Path.Combine(
                     fileSystem.PathToDocuments,
@@ -69,8 +70,8 @@ namespace atomex
                     walletPath,
                     Password,
                     AtomexApp.CurrenciesProvider,
-                    AtomexApp.SymbolsProvider,
-                    fileSystem);
+                    AtomexApp.SymbolsProvider
+                    );
             }
             catch (CryptographicException e)
             {

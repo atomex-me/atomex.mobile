@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Atomex.Common;
 using Foundation;
 using UIKit;
 using UserNotifications;
+
+using atomex.Common.FileSystem;
 
 namespace atomex.iOS
 {
@@ -23,6 +26,9 @@ namespace atomex.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            FileSystem.UseFileSystem(new IosFileSystem());
+
+
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 

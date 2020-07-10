@@ -5,6 +5,8 @@ using Android.OS;
 using Android.Content;
 using Xamarin.Forms;
 using atomex.Services;
+using Atomex.Common;
+using atomex.Common.FileSystem;
 
 namespace atomex.Droid
 {
@@ -13,6 +15,9 @@ namespace atomex.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            FileSystem.UseFileSystem(new AndroidFileSystem());
+
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 

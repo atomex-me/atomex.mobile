@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using atomex.Helpers;
+using Atomex.Common;
 using Microcharts;
 using SkiaSharp;
 
@@ -20,6 +21,25 @@ namespace atomex.CustomElements
         public string FontFamily { get; set; }
         public SKColor LabelColor { get; set; } = SKColor.Parse("#000000");
 
+        private SKTypeface _typeFace;
+        public SKTypeface TypeFace
+        {
+            get
+            {
+                if (_typeFace == null)
+                {
+                    var folderPath = FileSystem.Current.AssetsDirectory;
+
+                    var filePath = Path.Combine(folderPath, FontFamily + ".ttf");
+
+                    var fontStream = FileSystem.Current.GetResourceStream(filePath);
+
+                    _typeFace = SKTypeface.FromStream(fontStream);
+                }
+
+                return _typeFace;
+            }
+        }
 
         #endregion
 
@@ -151,9 +171,6 @@ namespace atomex.CustomElements
             var hasLabel = !string.IsNullOrEmpty(label);
             var hasValueLabel = !string.IsNullOrEmpty(value);
 
-            var folderPath = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = Path.Combine(folderPath, FontFamily + ".ttf");
-
             if (hasLabel || hasValueLabel)
             {
                 var hasOffset = hasLabel && hasValueLabel;
@@ -171,7 +188,7 @@ namespace atomex.CustomElements
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
                         //Typeface = SKTypeface.FromFamilyName(FontFamily)
-                        Typeface = SKTypeface.FromFile(filePath)
+                        Typeface = TypeFace
                     })
                     {
                         var bounds = new SKRect();
@@ -196,7 +213,7 @@ namespace atomex.CustomElements
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
                         //Typeface = SKTypeface.FromFamilyName(FontFamily)
-                        Typeface = SKTypeface.FromFile(filePath)
+                        Typeface = TypeFace
                     })
                     {
                         var bounds = new SKRect();
@@ -209,6 +226,7 @@ namespace atomex.CustomElements
                     }
                 }
             }
+            
         }
 
         #endregion  
