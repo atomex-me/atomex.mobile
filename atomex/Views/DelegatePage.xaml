@@ -34,26 +34,29 @@
                        HasShadow="False"
                        Padding="0"
                        x:Name="BakerFrame">
-                    <controls:CustomPicker x:Name="PickerFrom"
+                    <controls:CustomPicker x:Name="BakerPicker"
                                            ItemsSource="{Binding FromBakersList}"
                                            ItemDisplayBinding="{Binding Name}"
                                            SelectedItem="{Binding BakerViewModel}"
                                            VerticalOptions="FillAndExpand"
                                            Focused="OnBakerPickerFocused"
                                            Unfocused="OnBakerPickerFocused"
-                                           TextColor="#ffffff">
-                    </controls:CustomPicker>
+                                           TextColor="Transparent"/>
                 </Frame>
                 <Image Grid.RowSpan="2"
                        Source="{Binding BakerViewModel.Logo}"
-                       Margin="10"
-                       IsEnabled="False">
+                       Margin="10">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
+                    </Image.GestureRecognizers>
                 </Image>
                 <StackLayout Grid.Column="1"
                              Grid.RowSpan="2"
-                             IsEnabled="False"
                              VerticalOptions="Center"
                              Spacing="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
+                    </StackLayout.GestureRecognizers>
                     <Label Text="{Binding BakerViewModel.Name}"
                            VerticalTextAlignment="End"
                            FontFamily="{DynamicResource BoldFont}"
@@ -81,10 +84,12 @@
                 </StackLayout>
                 <StackLayout Grid.Column="2"
                              Grid.RowSpan="2"
-                             IsEnabled="False"
                              VerticalOptions="Center"
                              Padding="10,0,0,0"
                              Spacing="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
+                    </StackLayout.GestureRecognizers>
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
                                      Binding="{Binding BakerViewModel.Name}"
@@ -138,8 +143,11 @@
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="DownArrowPicker"
-                       Margin="0,34"
-                       IsEnabled="False"/>
+                       Margin="0,34">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
@@ -195,13 +203,14 @@
                        x:Name="FromAddressFrame"
                        Padding="0"
                        BorderColor="LightGray">
-                    <controls:CustomPicker ItemsSource="{Binding FromAddressList}"
+                    <controls:CustomPicker x:Name="AddressPicker"
+                                           ItemsSource="{Binding FromAddressList}"
                                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
                                            SelectedItem="{Binding WalletAddressViewModel}"
                                            FontSize="14"
                                            Focused="OnFromAddressPickerFocused"
                                            Unfocused="OnFromAddressPickerFocused"
-                                           TextColor="#ffffff"/>
+                                           TextColor="Transparent"/>
                 </Frame>
                 <Label Grid.Row="0"
                        Grid.Column="1"
@@ -209,16 +218,21 @@
                        FontFamily="{DynamicResource RegularFont}"
                        LineBreakMode="MiddleTruncation"
                        Padding="20,0,10,0"
-                       VerticalTextAlignment="End"
-                       IsEnabled="False"/>
+                       VerticalTextAlignment="End">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Padding="20,0,15,0"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Center"
                        FontFamily="{DynamicResource ItalicFont}"
-                       TextColor="{DynamicResource HintTextColor}"
-                       IsEnabled="False">
+                       TextColor="{DynamicResource HintTextColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
+                    </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.Balance}"/>
@@ -231,8 +245,11 @@
                 <StackLayout Grid.Column="2"
                              Grid.RowSpan="2">
                      <Image Source="DownArrowPicker"
-                            Margin="12,34"
-                            IsEnabled="False"/>
+                            Margin="12,34">
+                         <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
+                         </Image.GestureRecognizers>
+                     </Image>
                 </StackLayout>
             </Grid>    
             <Grid VerticalOptions="Fill"

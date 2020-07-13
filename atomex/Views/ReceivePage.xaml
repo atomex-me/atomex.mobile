@@ -45,7 +45,7 @@
                                              x:Name="AddressPicker"
                                              Focused="OnPickerFocused"
                                              Unfocused="OnPickerFocused"
-                                             TextColor="#ffffff"/>
+                                             TextColor="Transparent"/>
                     </Frame>
                     <Label Grid.Column="1"
                            Text="{Binding SelectedAddress.Address}"
@@ -53,16 +53,21 @@
                            LineBreakMode="MiddleTruncation"
                            Padding="10,0,0,0"
                            HorizontalTextAlignment="End"
-                           VerticalTextAlignment="End"
-                           IsEnabled="False"/>
+                           VerticalTextAlignment="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Padding="10,0,0,0"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="Center"
                            FontFamily="{DynamicResource ItalicFont}"
-                           TextColor="{DynamicResource HintTextColor}"
-                           IsEnabled="False">
+                           TextColor="{DynamicResource HintTextColor}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
+                        </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{x:Static resources:AppResources.Balance}"/>
@@ -78,7 +83,11 @@
                            Grid.Column="2"
                            WidthRequest="10"
                            HeightRequest="10"
-                           Margin="0,30"/>
+                           Margin="0,30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
             </StackLayout>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337" BarcodeFormat="CODE_39">

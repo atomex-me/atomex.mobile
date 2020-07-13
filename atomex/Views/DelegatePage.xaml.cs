@@ -32,9 +32,19 @@ namespace atomex
             }
         }
 
+        private void OnBakerPickerClicked(object sender, EventArgs args)
+        {
+            BakerPicker.Focus();
+        }
+
         private void OnFromAddressPickerFocused(object sender, FocusEventArgs args)
         {
             FromAddressFrame.HasShadow = args.IsFocused;
+        }
+
+        private void OnFromAddressPickerClicked(object sender, EventArgs args)
+        {
+            AddressPicker.Focus();
         }
 
         private void OnToAddressEntryFocused(object sender, FocusEventArgs args)

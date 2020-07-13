@@ -28,6 +28,11 @@ namespace atomex
             AddressFrame.HasShadow = args.IsFocused;
         }
 
+        private void OnPickerClicked(object sender, EventArgs args)
+        {
+            AddressPicker.Focus();
+        }
+
         async void OnCopyButtonClicked(object sender, EventArgs args) {
             if (_receiveViewModel.SelectedAddress != null)
             {

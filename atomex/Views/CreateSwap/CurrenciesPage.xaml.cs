@@ -35,5 +35,16 @@ namespace atomex.Views.CreateSwap
         {
             ToCurrencyFrame.HasShadow = args.IsFocused;
         }
+
+        private void OnFromCurrencyPickerClicked(object sender, EventArgs args)
+        {
+            PickerFrom.Focus();
+        }
+
+
+        private void OnToCurrencyPickerClicked(object sender, EventArgs args)
+        {
+            PickerTo.Focus();
+        }
     }
 }
