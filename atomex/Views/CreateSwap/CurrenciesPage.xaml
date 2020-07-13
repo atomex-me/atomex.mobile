@@ -9,6 +9,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{x:Static resources:AppResources.SelectCurrenciesLabel}"
+                   TextColor="{DynamicResource MainTextColor}"
                    HorizontalTextAlignment="Center"
                    Padding="20,30,20,10"
                    FontSize="22"

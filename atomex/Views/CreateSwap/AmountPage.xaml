@@ -9,6 +9,7 @@
     <ContentPage.Content>
         <StackLayout Padding="20,0">
             <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
+                   TextColor="{DynamicResource MainTextColor}"
                    HorizontalTextAlignment="Center"
                    Padding="20,30,20,10"
                    FontSize="22"
@@ -45,7 +46,6 @@
                             </StackLayout>
                         </Frame>
                         <Button Grid.Column="1"
-                                Grid.Row="1"
                                 Text="{x:Static resources:AppResources.MaxButton}"
                                 FontSize="16"
                                 Padding="20"
@@ -55,25 +55,30 @@
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                      </StackLayout>
                 </Frame>
-                <Frame Grid.Row="2"
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       x:Name="InvalidAmountLabel"
+                       TextColor="Red"
+                       Padding="10"
+                       FontFamily="{DynamicResource BoldFont}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Start"
+                       IsVisible="False"/>
+                <!--<Frame Grid.Row="2"
                        Grid.ColumnSpan="2"
                        x:Name="InvalidAmountFrame"
                        HasShadow="False"
-                       IsVisible="False">
-                    <Label Text="{x:Static resources:AppResources.InvalidAmount}"
-                           x:Name="InvalidAmountLabel"
-                           TextColor="Red"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start"/>
-                </Frame>
+                       IsVisible="True">
+                    
+                </Frame>-->
             </Grid>
             <Label Margin="10,0"
-                   VerticalTextAlignment="Center">
+                   VerticalTextAlignment="Center"
+                   TextColor="{DynamicResource MainTextColor}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"
-                                  TextColor="{DynamicResource MainTextColor}"/>
+                                  FontFamily="{DynamicResource RegularFont}"/>
                             <Span Text=": "/>
                             <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
                                   FontFamily="{DynamicResource BoldFont}"
@@ -106,7 +111,8 @@
                 <Label Grid.Row="1"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center">
+                       VerticalTextAlignment="Center"
+                       TextColor="{DynamicResource MainTextColor}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
@@ -128,7 +134,8 @@
                        Grid.Column="2"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center">
+                       VerticalTextAlignment="Center"
+                       TextColor="{DynamicResource MainTextColor}">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsNoLiquidity}"
@@ -177,24 +184,24 @@
                     </Label.FormattedText>
                 </Label>
             </Grid>
-            <Label HorizontalTextAlignment="Center">
+            <Label HorizontalTextAlignment="Center"
+                   TextColor="{DynamicResource MainTextColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                              FontFamily="{DynamicResource RegularFont}"
-                              TextColor="{DynamicResource MainTextColor}"/>
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedPrice}"
                               FontFamily="{DynamicResource BoldFont}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label HorizontalTextAlignment="Center">
+            <Label HorizontalTextAlignment="Center"
+                   TextColor="{DynamicResource MainTextColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                              FontFamily="{DynamicResource RegularFont}"
-                              TextColor="{DynamicResource MainTextColor}"/>
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedPaymentFee}"
                               FontFamily="{DynamicResource BoldFont}"/>
@@ -208,12 +215,12 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label HorizontalTextAlignment="Center">
+            <Label HorizontalTextAlignment="Center"
+                   TextColor="{DynamicResource MainTextColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                              FontFamily="{DynamicResource RegularFont}"
-                              TextColor="{DynamicResource MainTextColor}"/>
+                              FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedRedeemFee}"
                               FontFamily="{DynamicResource BoldFont}"/>

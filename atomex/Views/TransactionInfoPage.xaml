@@ -188,7 +188,7 @@
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label FontSize="14"
-                                           Padding="10"
+                                           Padding="10,0"
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
@@ -199,15 +199,17 @@
                             </StackLayout>
                         </ViewCell>
                         <TextCell Text="{x:Static resources:AppResources.Description}"
+                                  TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding Description}"
                                   DetailColor="Gray" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
-                                <StackLayout Margin="20">
-                                    <Label Text="{x:Static resources:AppResources.TransactionId}"/>
+                                <StackLayout Margin="15">
+                                    <Label Text="{x:Static resources:AppResources.TransactionId}"
+                                           TextColor="{DynamicResource MainTextColor}"/>
                                     <Label Text="{Binding Id}"
                                            TextColor="Gray"
-                                           FontSize="12"
+                                           FontSize="14"
                                            LineBreakMode="MiddleTruncation"/>
                                 </StackLayout>
                                 <StackLayout>
@@ -225,10 +227,11 @@
                         </ViewCell>
                         <ViewCell>
                             <StackLayout VerticalOptions="CenterAndExpand"
-                                         Margin="20,0">
-                                <Label Text="{x:Static resources:AppResources.FeeLabel}"/>
+                                         Margin="15,0">
+                                <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                                       TextColor="{DynamicResource MainTextColor}"/>
                                 <Label TextColor="Gray"
-                                       FontSize="12">
+                                       FontSize="14">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding Fee} "/>
@@ -239,13 +242,15 @@
                                 </Label>
                             </StackLayout>
                         </ViewCell>
-                        <TextCell Text="{x:Static resources:AppResources.TransactionTime} "
+                        <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
+                                  TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                   DetailColor="Gray"/>
                         <ViewCell>
                             <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
                                     TextColor="{DynamicResource HintTextColor}"
                                     FontSize="18"
+                                    BackgroundColor="Transparent"
                                     Clicked="OnShowInExplorerClicked"/> 
                         </ViewCell>
                     </TableSection>

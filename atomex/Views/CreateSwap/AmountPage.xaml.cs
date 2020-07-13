@@ -24,7 +24,7 @@ namespace atomex.Views.CreateSwap
         }
         private void AmountEntryFocused(object sender, FocusEventArgs args)
         {
-            InvalidAmountFrame.IsVisible = false;
+            InvalidAmountLabel.IsVisible = false;
             AmountFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
@@ -72,7 +72,7 @@ namespace atomex.Views.CreateSwap
 
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            InvalidAmountFrame.IsVisible = false;
+            InvalidAmountLabel.IsVisible = false;
             Amount.Text = _conversionViewModel.MaxAmount.ToString();
             _conversionViewModel.Amount = _conversionViewModel.MaxAmount;
         }
@@ -96,13 +96,13 @@ namespace atomex.Views.CreateSwap
 
             if (amount <= 0)
             {
-                InvalidAmountFrame.IsVisible = true;
-                InvalidAmountLabel.Text = AppResources.AmountLessThanZeroError + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
+                InvalidAmountLabel.IsVisible = true;
+                InvalidAmountLabel.Text = AppResources.AmountLessThanZeroError + " " + _conversionViewModel.FromCurrencyViewModel.CurrencyCode;
                 return;
             }
             if (amount > _conversionViewModel.MaxAmount)
             {
-                InvalidAmountFrame.IsVisible = true;
+                InvalidAmountLabel.IsVisible = true;
                 InvalidAmountLabel.Text = AppResources.InsufficientFunds;
                 return;
             }

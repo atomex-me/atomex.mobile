@@ -148,6 +148,7 @@
                                 </Image>
                                 <Label Grid.Column="1"
                                        FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        VerticalOptions="EndAndExpand">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"

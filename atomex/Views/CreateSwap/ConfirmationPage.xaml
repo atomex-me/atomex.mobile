@@ -36,6 +36,7 @@
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                     <Label Grid.Row="1"
                            FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
@@ -52,6 +53,7 @@
                     <Label Grid.Row="1"
                            Grid.Column="2"
                            FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
