@@ -32,10 +32,10 @@ namespace atomex.ViewModel
 
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
-            AtomexApp.Start();
+            SubscribeToServices();
+
             AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
-            SubscribeToServices();
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp);
