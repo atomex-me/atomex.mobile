@@ -46,7 +46,7 @@ namespace atomex
                     };
 
                     if (portfolioChart.Chart == null)
-                        portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, FontFamily = "Roboto-Thin" };
+                        portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 26, FontFamily = "Roboto-Thin" };
                     else
                     {
                         var donutChart = portfolioChart.Chart as CustomDonutChart;

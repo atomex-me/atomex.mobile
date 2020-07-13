@@ -23,6 +23,6 @@ namespace atomex.Common.FileSystem
                 : Path.GetFullPath(BaseDirectory + path);
 
         public Stream GetResourceStream(string path) =>
-            new FileStream(path, FileMode.Open);
+            new FileStream(path, FileMode.Open, FileAccess.Read);
     }
 }
