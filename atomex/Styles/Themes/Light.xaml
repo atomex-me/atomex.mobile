@@ -224,4 +224,14 @@
     <Color x:Key="MnemonicPhraseFrameDefaultBackgroundColor">#ffffff</Color>
     <Color x:Key="MnemonicPhraseFrameDefaultBorderColor">#d3d3d3</Color>
     <Color x:Key="MnemonicPhraseTextColor">#8B0000</Color>
+
+
+    <!-- Labels -->
+    <Style x:Key="EstimatedPriceLabelStyle" TargetType="Label">
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

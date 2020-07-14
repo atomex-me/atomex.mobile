@@ -111,13 +111,13 @@
                    FontSize="24"/>
             <StackLayout Orientation="Horizontal" Padding="100,20">
                 <StackLayout HorizontalOptions="CenterAndExpand"
-                             WidthRequest="40">
+                             WidthRequest="60">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
                     </StackLayout.GestureRecognizers>
                     <Image WidthRequest="40"
                            HeightRequest="40"
-                           HorizontalOptions="End"
+                           HorizontalOptions="Center"
                            VerticalOptions="End"
                            Source="Copy"/>
                     <Label Text="{x:Static resources:AppResources.CopyButton}"
@@ -127,20 +127,20 @@
                            VerticalOptions="Start" />
                 </StackLayout>
                 <StackLayout HorizontalOptions="CenterAndExpand"
-                             WidthRequest="40">
+                             WidthRequest="60">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnShareButtonClicked"/>
                     </StackLayout.GestureRecognizers>
                     <Image Grid.Column="0"
                            WidthRequest="40"
                            HeightRequest="40"
-                           HorizontalOptions="Start"
+                           HorizontalOptions="Center"
                            VerticalOptions="End"
                            Source="Share"/>
                     <Label Text="{x:Static resources:AppResources.ShareButton}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{DynamicResource MainTextColor}"
-                           HorizontalOptions="Start"
+                           HorizontalOptions="Center"
                            VerticalOptions="Start" />
                 </StackLayout>
             </StackLayout>

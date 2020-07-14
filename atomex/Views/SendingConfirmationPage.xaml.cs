@@ -31,22 +31,22 @@ namespace atomex
             {
                 BlockActions(true);
 
-                //var error = await _sendViewModel.Send();
-                //if (error != null)
-                //{
-                //    BlockActions(false);
-                //    await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
-                //    return;
-                //}
-                //var res = await DisplayAlert(AppResources.Success, _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + " " + AppResources.sentTo + " " + _sendViewModel.To, null, AppResources.AcceptButton);
-                //if (!res)
-                //{
-                //    for (var i = 1; i < BACK_COUNT; i++)
-                //    {
-                //        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                //    }
-                //    await Navigation.PopAsync();
-                //}
+                var error = await _sendViewModel.Send();
+                if (error != null)
+                {
+                    BlockActions(false);
+                    await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
+                    return;
+                }
+                var res = await DisplayAlert(AppResources.Success, _sendViewModel.Amount + " " + _sendViewModel.CurrencyCode + " " + AppResources.sentTo + " " + _sendViewModel.To, null, AppResources.AcceptButton);
+                if (!res)
+                {
+                    for (var i = 1; i < BACK_COUNT; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
+                    await Navigation.PopAsync();
+                }
             }
             catch (Exception e)
             {
