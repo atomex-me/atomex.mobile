@@ -234,4 +234,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SwapStateLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="15,0,0,0"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

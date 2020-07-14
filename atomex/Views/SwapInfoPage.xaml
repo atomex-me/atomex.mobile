@@ -62,10 +62,7 @@
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{x:Static resources:AppResources.State}"
-                                       Margin="15,0,0,0"
-                                       TextColor="{DynamicResource MainTextColor}"
-                                       VerticalTextAlignment="Center"
-                                       FontSize="16"/>
+                                       Style="{DynamicResource SwapStateLabelStyle}"/>
                                 <Frame CornerRadius="8"
                                        Padding="0"
                                        Margin="20"

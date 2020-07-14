@@ -338,7 +338,7 @@
         <value>Estimated payment fee</value>
     </data>
     <data name="EstimatedRedeemFeeLabel" xml:space="preserve">
-        <value>Estimated redeeem fee</value>
+        <value>Estimated redeem fee</value>
     </data>
     
     <!-- Settings Page -->
