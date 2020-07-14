@@ -5,7 +5,7 @@
              x:Class="atomex.DelegationsListPage"
              Title="{x:Static resources:AppResources.DelegationListPageTitle}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
             <StackLayout IsVisible="{Binding LoadingDelegations}"
                          Padding="0,10">
                 <Label Text="{x:Static resources:AppResources.LoadingLabel}"

@@ -201,14 +201,14 @@
                         <TextCell Text="{x:Static resources:AppResources.Description}"
                                   TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding Description}"
-                                  DetailColor="Gray" />
+                                  DetailColor="{DynamicResource AdditionalTextColor}" />
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Margin="15">
                                     <Label Text="{x:Static resources:AppResources.TransactionId}"
                                            TextColor="{DynamicResource MainTextColor}"/>
                                     <Label Text="{Binding Id}"
-                                           TextColor="Gray"
+                                           TextColor="{DynamicResource AdditionalTextColor}"
                                            FontSize="14"
                                            LineBreakMode="MiddleTruncation"/>
                                 </StackLayout>
@@ -230,7 +230,7 @@
                                          Margin="15,0">
                                 <Label Text="{x:Static resources:AppResources.FeeLabel}"
                                        TextColor="{DynamicResource MainTextColor}"/>
-                                <Label TextColor="Gray"
+                                <Label TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="14">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -245,7 +245,7 @@
                         <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
                                   TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                                  DetailColor="Gray"/>
+                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
                         <ViewCell>
                             <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
                                     TextColor="{DynamicResource HintTextColor}"

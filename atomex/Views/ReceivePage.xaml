@@ -105,32 +105,29 @@
                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
             </zxing:ZXingBarcodeImageView>
             <Label Text="{Binding SelectedAddress.Address}"
-                   TextColor="Gray"
+                   TextColor="{DynamicResource AdditionalTextColor}"
                    FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Center"
                    FontSize="24"/>
-            <Grid RowSpacing="0"
-                  ColumnSpacing="50"
-                  Margin="0,20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*" />
-                    <ColumnDefinition Width="5*" />
-                </Grid.ColumnDefinitions>
-                <StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="100,20">
+                <StackLayout HorizontalOptions="CenterAndExpand"
+                             WidthRequest="40">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
                     </StackLayout.GestureRecognizers>
                     <Image WidthRequest="40"
                            HeightRequest="40"
                            HorizontalOptions="End"
-                           VerticalOptions="Center"
+                           VerticalOptions="End"
                            Source="Copy"/>
+                    <Label Text="{x:Static resources:AppResources.CopyButton}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{DynamicResource MainTextColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start" />
                 </StackLayout>
-                <StackLayout Grid.Column="1">
+                <StackLayout HorizontalOptions="CenterAndExpand"
+                             WidthRequest="40">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnShareButtonClicked"/>
                     </StackLayout.GestureRecognizers>
@@ -138,21 +135,16 @@
                            WidthRequest="40"
                            HeightRequest="40"
                            HorizontalOptions="Start"
-                           VerticalOptions="Center"
+                           VerticalOptions="End"
                            Source="Share"/>
+                    <Label Text="{x:Static resources:AppResources.ShareButton}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{DynamicResource MainTextColor}"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start" />
                 </StackLayout>
-                <Label Grid.Row="1"
-                       Text="{x:Static resources:AppResources.CopyButton}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalOptions="End"
-                       VerticalOptions="Center" />
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{x:Static resources:AppResources.ShareButton}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center" />
-            </Grid>
+            </StackLayout>
+
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>
                     <zxcm:EncodingOptions Width="300" Height="100" />

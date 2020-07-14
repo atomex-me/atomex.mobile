@@ -86,6 +86,7 @@
                                 </RelativeLayout>
                                 <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        Padding="2">
                                     <Label.FormattedText>
                                         <FormattedString>

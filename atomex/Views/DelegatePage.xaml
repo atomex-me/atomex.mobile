@@ -12,6 +12,7 @@
                      Margin="20">
             <Label Text="{x:Static resources:AppResources.DelegateToBakeryLabel}"
                    FontFamily="{DynamicResource RegularFont}"
+                   TextColor="{DynamicResource MainTextColor}"
                    FontSize="20"
                    HorizontalTextAlignment="Center"
                    Padding="20,10"/>
@@ -60,9 +61,11 @@
                     <Label Text="{Binding BakerViewModel.Name}"
                            VerticalTextAlignment="End"
                            FontFamily="{DynamicResource BoldFont}"
+                           TextColor="{DynamicResource MainTextColor}"
                            FontSize="16"/>
                     <Label VerticalTextAlignment="Start"
                            FontFamily="{DynamicResource LightFont}"
+                           TextColor="{DynamicResource MainTextColor}"
                            FontSize="14">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
@@ -324,9 +327,8 @@
                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                         Clicked="OnNextButtonClicked"/>
                 <ActivityIndicator x:Name="ValidatingLoader"
-	                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Height, Factor=0.5, Constant=-10}"
-                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Width, Factor=0.5}"
-                                   Scale="2"
+	                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Height, Factor=0.5, Constant=-25}"
+                                   RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Width, Factor=0.5, Constant=-25}"
                                    IsEnabled="False"
                                    Color="White"/>
             </RelativeLayout>

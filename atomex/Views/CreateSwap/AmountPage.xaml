@@ -15,7 +15,7 @@
                    FontSize="22"
                    FontFamily="{DynamicResource BoldFont}"/>
             <Grid ColumnSpacing="0"
-                  RowSpacing="2">
+                  RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70"/>
                     <RowDefinition Height="Auto"/>
@@ -64,13 +64,6 @@
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Start"
                        IsVisible="False"/>
-                <!--<Frame Grid.Row="2"
-                       Grid.ColumnSpan="2"
-                       x:Name="InvalidAmountFrame"
-                       HasShadow="False"
-                       IsVisible="True">
-                    
-                </Frame>-->
             </Grid>
             <Label Margin="10,0"
                    VerticalTextAlignment="Center"
@@ -90,7 +83,9 @@
                         </FormattedString>
                     </Label.FormattedText>
             </Label>
-            <Grid Margin="0,10">
+            <Grid Margin="0,10"
+                  ColumnSpacing="0"
+                  RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80" />
                     <RowDefinition Height="20" />
@@ -111,7 +106,7 @@
                 <Label Grid.Row="1"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"
+                       VerticalTextAlignment="End"
                        TextColor="{DynamicResource MainTextColor}">
                     <Label.FormattedText>
                         <FormattedString>
@@ -127,7 +122,7 @@
                        Grid.Column="2"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"
+                       VerticalTextAlignment="End"
                        TextColor="Red"
                        IsVisible="{Binding IsNoLiquidity}"/>
                 <Label Grid.Row="1"
@@ -148,19 +143,17 @@
                         <FormattedString>
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
-                                  FontSize="14"/>
+                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Label Grid.Row="2"
                        Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
-                       FontSize="14"
+                       FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start"
-                       Padding="0">
+                       VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding AmountInBase, StringFormat='{0:f2}'}"/>
@@ -171,7 +164,7 @@
                 <Label Grid.Row="2"
                        Grid.Column="2"
                        Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
-                       FontSize="14"
+                       FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource AdditionalTextColor}"
                        HorizontalTextAlignment="Center"
@@ -192,7 +185,8 @@
                               FontFamily="{DynamicResource RegularFont}"/>
                         <Span Text=": "/>
                         <Span Text="{Binding EstimatedPrice}"
-                              FontFamily="{DynamicResource BoldFont}"/>
+                              FontFamily="{DynamicResource BoldFont}"
+                              FontSize="14"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

@@ -8,9 +8,10 @@
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                               Scale="3"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                               RelativeLayout.WidthConstraint="50"
+                               RelativeLayout.HeightConstraint="50"
                                Color="Black"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">

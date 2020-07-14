@@ -55,11 +55,11 @@ namespace atomex.Views.CreateSwap
             ConvertButton.IsEnabled = !flag;
             if (flag)
             {
-                Content.Opacity = 0.5;
+                Content.Opacity = ConvertButton.Opacity = 0.5;
             }
             else
             {
-                Content.Opacity = 1;
+                Content.Opacity = ConvertButton.Opacity = 1;
             }
         }
     }

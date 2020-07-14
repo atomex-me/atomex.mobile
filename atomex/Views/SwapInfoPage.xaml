@@ -34,9 +34,11 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="-"/>
-                                                <Span Text="{Binding FromAmount, StringFormat='{0}'}"/>
+                                                <Span Text="{Binding FromAmount, StringFormat='{0}'}"
+                                                      FontSize="16"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding FromCurrencyCode}"/>
+                                                <Span Text="{Binding FromCurrencyCode}"
+                                                      FontSize="12"/>
                                              </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -46,9 +48,11 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="+"/>
-                                                <Span Text="{Binding ToAmount, StringFormat='{0}'}"/>
+                                                <Span Text="{Binding ToAmount, StringFormat='{0}'}"
+                                                      FontSize="16"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding ToCurrencyCode}"/>
+                                                <Span Text="{Binding ToCurrencyCode}"
+                                                      FontSize="12"/>
                                              </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -59,8 +63,9 @@
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{x:Static resources:AppResources.State}"
                                        Margin="15,0,0,0"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        VerticalTextAlignment="Center"
-                                       FontSize="18"/>
+                                       FontSize="16"/>
                                 <Frame CornerRadius="8"
                                        Padding="0"
                                        Margin="20"
@@ -97,7 +102,7 @@
                                                     Value="{DynamicResource UnsettledStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label Padding="10"
+                                    <Label Padding="10,0"
                                            FontSize="14"
                                            TextColor="White"
                                            VerticalTextAlignment="Center"
@@ -109,11 +114,13 @@
                             </StackLayout>
                         </ViewCell>
                         <TextCell Text="{x:Static resources:AppResources.Price}"
+                                  TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding Price}"
-                                  DetailColor="Gray"/>
+                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
                         <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
+                                  TextColor="{DynamicResource MainTextColor}"
                                   Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                                  DetailColor="Gray"/>
+                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
                     </TableSection>
                 </TableRoot>
             </TableView>       

@@ -8,9 +8,10 @@
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor = .5}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5}"
-                               Scale="3"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                               RelativeLayout.WidthConstraint="50"
+                               RelativeLayout.HeightConstraint="50"
                                Color="Black"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
@@ -20,15 +21,16 @@
                         <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
                             <TextCell Text="{x:Static resources:AppResources.FromLabel}"
                                       Detail="{Binding WalletAddressViewModel.WalletAddress.Address}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
+                                      DetailColor="{DynamicResource MainTextColor}"/>
                             <TextCell Text="{x:Static resources:AppResources.AmountLabel}"
                                       Detail="{Binding WalletAddressViewModel.WalletAddress.Balance}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
+                                      DetailColor="{DynamicResource MainTextColor}"/>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal"
                                              Padding="20,10">
                                     <Label Text="{x:Static resources:AppResources.ToLabel}"
                                            VerticalTextAlignment="Center"
+                                           TextColor="{DynamicResource HintTextColor}"
                                            WidthRequest="20"/>
                                     <Image Source="{Binding BakerViewModel.Logo}"
                                            Margin="10,10,0,10"/>
@@ -36,10 +38,11 @@
                                         <Label Text="{Binding BakerViewModel.Name}"
                                                VerticalTextAlignment="End"
                                                FontFamily="{DynamicResource BoldFont}"
+                                               TextColor="{DynamicResource MainTextColor}"
                                                FontSize="16"/>
                                         <Label Text="{Binding Address}"
                                                VerticalTextAlignment="Start"
-                                               TextColor="{DynamicResource HintTextColor}"
+                                               TextColor="{DynamicResource AdditionalTextColor}"
                                                FontSize="12"
                                                LineBreakMode="MiddleTruncation"/>
                                     </StackLayout>
@@ -47,7 +50,7 @@
                             </ViewCell>
                             <TextCell Text="{x:Static resources:AppResources.FeeLabel}"
                                       Detail="{Binding Fee}"
-                                      DetailColor="{DynamicResource HintTextColor}"/>
+                                      DetailColor="{DynamicResource MainTextColor}"/>
                             <ViewCell>
                                 <StackLayout Padding="20,10"
                                              VerticalOptions="CenterAndExpand">
