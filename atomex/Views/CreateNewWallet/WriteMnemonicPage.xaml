@@ -54,6 +54,7 @@
                         PlaceholderColor="{DynamicResource HintTextColor}"
                         Style="{DynamicResource EntryStyle}"
                         AutoSize="TextChanges"
+                        IsEnabled="True"
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused"/>
             </Frame>
