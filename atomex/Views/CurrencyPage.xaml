@@ -7,8 +7,9 @@
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <RefreshView BackgroundColor="{DynamicResource MainBackgroundColor}"
-                 RefreshColor="{DynamicResource HintTextColor}"
+                 IsRefreshing="False"
                  Refreshing="Refresh"
+                 RefreshColor="{DynamicResource HintTextColor}"
                  x:Name="RefreshView">
         <StackLayout>
             <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
@@ -46,6 +47,9 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
+                <Label x:Name="RefreshLabel"
+                       Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
+                       Style="{DynamicResource RefreshLabelStyle}"/>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="Center"
                              HeightRequest="40"
@@ -67,13 +71,6 @@
                                                     Clicked="ShowConversionPage"/>
                 </StackLayout>
             </StackLayout>
-            <Label x:Name="LoaderLabel"
-                   Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
-                   TextColor="{DynamicResource HintTextColor}"
-                   FontFamily="{DynamicResource ItalicFont}"
-                   HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center"
-                   IsVisible="False"/>
             <ListView ItemsSource="{Binding GroupedTransactions}"
                       IsGroupingEnabled="True"
                       ItemTapped="OnListViewItemTapped"
@@ -81,6 +78,9 @@
                       SeparatorVisibility="None"
                       VerticalOptions="FillAndExpand"
                       IsPullToRefreshEnabled="True"
+                      Refreshing="Refresh"
+                      x:Name="TxListView"
+                      RefreshControlColor="{DynamicResource HintTextColor}"
                       Footer="">
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>

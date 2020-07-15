@@ -44,11 +44,7 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
         <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
-        <Setter Property="BorderWidth">
-            <Setter.Value>
-                <OnPlatform x:TypeArguments="x:Double" iOS="1" Android="2"/>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="CornerRadius" Value="25"/>
         <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="FontSize" Value="14"/>
@@ -206,6 +202,18 @@
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Margin" Value="1,0"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+    </Style>
+    <Style x:Key="RefreshLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ItalicFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="IsVisible" Value="False"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0,10" Android="0,10,0,17"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Create Mnemonic Page -->

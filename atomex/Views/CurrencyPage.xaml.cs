@@ -56,16 +56,24 @@ namespace atomex
                 await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
             }
         }
+
         async void Refresh(object sender, EventArgs args)
         {
-            RefreshView.IsRefreshing = LoaderLabel.IsVisible = true;
-            Color availableAmountColor = AvailableAmountLabel.TextColor;
-            Color availableAmountInBaseColor = AvailableAmountInBaseLabel.TextColor;
-            AvailableAmountLabel.TextColor = AvailableAmountInBaseLabel.TextColor = Color.LightGray;
-            await _currencyViewModel.UpdateCurrencyAsync();
-            AvailableAmountLabel.TextColor = availableAmountColor;
-            AvailableAmountInBaseLabel.TextColor = availableAmountInBaseColor;
-            RefreshView.IsRefreshing = LoaderLabel.IsVisible = false;
+            RefreshLabel.IsVisible = true;
+            AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = false;
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                RefreshView.IsRefreshing = true;
+                await _currencyViewModel.UpdateCurrencyAsync();
+                RefreshView.IsRefreshing = false;
+            }
+            else if (Device.RuntimePlatform == Device.Android)
+            {
+                await _currencyViewModel.UpdateCurrencyAsync();
+                TxListView.IsRefreshing = false;
+            }
+            RefreshLabel.IsVisible = false;
+            AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
         }
     }
 }
