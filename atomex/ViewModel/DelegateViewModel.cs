@@ -22,6 +22,7 @@ namespace atomex.ViewModel
         public BakerData Baker { get; set; }
         public string Address { get; set; }
         public decimal Balance { get; set; }
+        public string TxExplorerUri { get; set; }
     }
 
     public class DelegateViewModel : BaseViewModel
@@ -459,7 +460,8 @@ namespace atomex.ViewModel
                     {
                         Baker = baker,
                         Address = wa.Address,
-                        Balance = wa.Balance
+                        Balance = wa.Balance,
+                        TxExplorerUri = _tezos.TxExplorerUri + wa.Address
                     });
                 }
 

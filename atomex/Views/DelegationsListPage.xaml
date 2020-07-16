@@ -43,6 +43,7 @@
                        Margin="0,20"/>
             </StackLayout>
             <ListView ItemsSource="{Binding Delegations}"
+                      ItemTapped="OnDelegationTapped"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
