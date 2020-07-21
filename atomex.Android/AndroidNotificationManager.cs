@@ -13,10 +13,12 @@ namespace atomex.Droid
 {
     public class AndroidNotificationManager : INotificationManager
     {
-        const string channelId = "default";
-        const string channelName = "Default";
-        const string channelDescription = "The default channel for notifications.";
         const int pendingIntentId = 0;
+
+
+        internal static readonly string CHANNEL_ID = "atomex_notifications_channel_id";
+        internal static readonly string CHANNEL_NAME = "atomex_notifications_channel_name";
+        internal static readonly int NOTIFICATION_ID = 100;
 
         public const string TitleKey = "title";
         public const string MessageKey = "message";
@@ -34,6 +36,7 @@ namespace atomex.Droid
 
         public int ScheduleNotification(string title, string message)
         {
+            //must be called in background
             if (!channelInitialized)
             {
                 CreateNotificationChannel();
@@ -47,12 +50,12 @@ namespace atomex.Droid
 
             PendingIntent pendingIntent = PendingIntent.GetActivity(Android.App.Application.Context, pendingIntentId, intent, PendingIntentFlags.OneShot);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(Android.App.Application.Context, channelId)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(Android.App.Application.Context, CHANNEL_ID)
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(title)
                 .SetContentText(message)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.AppIcon))
-                .SetSmallIcon(Resource.Drawable.AppIcon)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.ic_launcher))
+                .SetSmallIcon(Resource.Drawable.ic_launcher)
                 .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
 
             var notification = builder.Build();
@@ -77,11 +80,7 @@ namespace atomex.Droid
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                var channelNameJava = new Java.Lang.String(channelName);
-                var channel = new NotificationChannel(channelId, channelNameJava, NotificationImportance.Default)
-                {
-                    Description = channelDescription
-                };
+                var channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationImportance.Default);
                 manager.CreateNotificationChannel(channel);
             }
 

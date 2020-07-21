@@ -1,5 +1,4 @@
 ﻿using System;
-using atomex.Services;
 using atomex.Views.CreateNewWallet;
 using Xamarin.Forms;
 
@@ -10,7 +9,6 @@ namespace atomex
 
         private StartViewModel _startViewModel;
         private CreateNewWalletViewModel _createNewWalletViewModel;
-        private INotificationManager notificationManager; // Test
 
         public StartPage(StartViewModel startViewModel)
         {
@@ -19,8 +17,6 @@ namespace atomex
             _startViewModel = startViewModel;
             BindingContext = startViewModel;
             _createNewWalletViewModel = new CreateNewWalletViewModel(startViewModel.AtomexApp);
-
-            notificationManager = DependencyService.Get<INotificationManager>(); // Test
         }
         private async void ShowMyWalletsButtonClicked(object sender, EventArgs args)
         {
@@ -37,15 +33,6 @@ namespace atomex
             _createNewWalletViewModel.Clear();
             _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
             await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
-        }
-
-
-        // Test
-        private void OnScheduleClick(object sender, EventArgs e)
-        {
-            string title = $"Local Notification";
-            string message = $"You have now received notifications!";
-            notificationManager.ScheduleNotification(title, message);
         }
     }
 }

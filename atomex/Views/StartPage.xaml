@@ -42,8 +42,6 @@
             <Button Text="{x:Static resources:AppResources.RestoreWalletButton}"
                     Style="{DynamicResource AdditionalButtonStyle}"
                     Clicked="OnRestoreWalletButtonClicked"/>
-            <Button Clicked="OnScheduleClick"
-                    Text="Shedule push notification"/>
         </StackLayout>
     </RelativeLayout>
     
