@@ -101,8 +101,8 @@ namespace atomex
             var conversionViewModel = navigationConversionPage.RootPage.BindingContext as ConversionViewModel;
             if (conversionViewModel != null)
             {
-                navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
                 conversionViewModel.SetFromCurrency(currencyCode);
+                navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
             }
         }
     }

@@ -70,11 +70,15 @@ namespace atomex.ViewModel
             get => _fromCurrencyViewModel;
             set
             {
+                if (_fromCurrencyViewModel == value)
+                    return;
+
                 _fromCurrencyViewModel = value;
-                OnPropertyChanged(nameof(FromCurrencyViewModel));
 
                 if (_fromCurrencyViewModel == null)
                     return;
+
+                OnPropertyChanged(nameof(FromCurrencyViewModel));
 
                 var oldToCurrencyViewModel = ToCurrencyViewModel;
 
@@ -109,7 +113,14 @@ namespace atomex.ViewModel
             get => _toCurrencyViewModel;
             set
             {
+                if (_toCurrencyViewModel == value)
+                    return;
+
                 _toCurrencyViewModel = value;
+
+                if (_toCurrencyViewModel == null)
+                    return;
+
                 OnPropertyChanged(nameof(ToCurrencyViewModel));
 
                 TargetCurrencyCode = _toCurrencyViewModel?.CurrencyCode;
@@ -297,7 +308,10 @@ namespace atomex.ViewModel
         public ConversionViewModel(IAtomexApp app)
         {
             App = app;
-            FromCurrencies = ToCurrencies = _currencyViewModels = new List<CurrencyViewModel>();
+            _fromCurrencies = new List<CurrencyViewModel>();
+            _toCurrencies = new List<CurrencyViewModel>();
+            _currencyViewModels = new List<CurrencyViewModel>();
+
             FillCurrenciesAsync().FireAndForget();
             SubscribeToServices();
         }
@@ -346,6 +360,8 @@ namespace atomex.ViewModel
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
                 });
             }));
+
+            FromCurrencies = _currencyViewModels.ToList();
             FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
         }
 
