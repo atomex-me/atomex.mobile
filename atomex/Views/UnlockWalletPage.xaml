@@ -24,6 +24,9 @@
                                  HorizontalOptions="FillAndExpand">
                         <Frame HasShadow="False" 
                                BackgroundColor="AliceBlue">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                            </Frame.GestureRecognizers>
                             <Image WidthRequest="24"
                                    HeightRequest="24"
                                    Source="Lock"/>

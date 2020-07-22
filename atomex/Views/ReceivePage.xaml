@@ -6,7 +6,8 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.ReceivePage"
-             Title="{x:Static resources:AppResources.ReceivePageTitle}">
+             Title="{x:Static resources:AppResources.ReceivePageTitle}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ScrollView>
         <StackLayout HorizontalOptions="Center"
                      Padding="20">
@@ -41,7 +42,7 @@
                            Padding="0">
                         <custom:CustomPicker ItemsSource="{Binding FromAddressList}"
                                              ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                                             SelectedItem="{Binding SelectedAddress}"
+                                             SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
                                              x:Name="AddressPicker"
                                              Focused="OnPickerFocused"
                                              Unfocused="OnPickerFocused"

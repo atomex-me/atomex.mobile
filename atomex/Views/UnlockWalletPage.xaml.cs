@@ -28,6 +28,11 @@ namespace atomex
             PasswordFrame.HasShadow = args.IsFocused;
         }
 
+        private void PasswordEntryClicked(object sender, EventArgs args)
+        {
+            PasswordEntry.Focus();
+        }
+
         private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
