@@ -27,11 +27,11 @@ namespace atomex.Droid.CustomElements
                 Control.SetSingleLine(true);
                 Control.SetTypeface(null, TypefaceStyle.Normal);
                 Control.Gravity = GravityFlags.Left;
-                Control.SetPadding(35, 60, 35, 60);
+                Control.SetPadding(70,70,70,70);
 
                 GradientDrawable gd = new GradientDrawable();
                 gd.SetStroke(2, Android.Graphics.Color.LightGray);
-                gd.SetCornerRadius(6);
+                gd.SetCornerRadius(12);
                 Control.Background = gd;
             }
         }
