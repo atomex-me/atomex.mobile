@@ -102,6 +102,7 @@ namespace atomex
             if (conversionViewModel != null)
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
+                navigationConversionPage.Navigation.PopToRootAsync();
                 navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
             }
         }
