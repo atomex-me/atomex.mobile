@@ -442,6 +442,9 @@
     <data name="InsufficientFunds" xml:space="preserve">
         <value>Insufficient funds</value>
     </data>
+    <data name="LowFees" xml:space="preserve">
+        <value>Too low fees</value>
+    </data>
     <data name="PriceChanged" xml:space="preserve">
         <value>Price has changed</value>
     </data>

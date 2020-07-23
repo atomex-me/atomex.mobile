@@ -809,6 +809,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string LowFees {
+            get {
+                return ResourceManager.GetString("LowFees", resourceCulture);
+            }
+        }
+        
         internal static string PriceChanged {
             get {
                 return ResourceManager.GetString("PriceChanged", resourceCulture);

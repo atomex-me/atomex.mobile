@@ -67,9 +67,9 @@ namespace atomex.Views.CreateNewWallet
         {
             MnemonicLabel.IsVisible = true;
             LoseMnemonicPhraseText.IsVisible = false;
-            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameDefaultBackgroundColor", out var bgColor))
+            if (Application.Current.Resources.TryGetValue("DefaultFrameBackgroundColor", out var bgColor))
                 MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
-            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameDefaultBorderColor", out var borderColor))
+            if (Application.Current.Resources.TryGetValue("DefaultFrameBorderColor", out var borderColor))
                 MnemonicPhraseFrame.BorderColor = (Color)borderColor;
         }
 
@@ -77,9 +77,9 @@ namespace atomex.Views.CreateNewWallet
         {
             MnemonicLabel.IsVisible = false;
             LoseMnemonicPhraseText.IsVisible = true;
-            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameBackgroundColor", out var bgColor))
+            if (Application.Current.Resources.TryGetValue("ErrorFrameBackgroundColor", out var bgColor))
                 MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
-            if (Application.Current.Resources.TryGetValue("MnemonicPhraseFrameBorderColor", out var borderColor))
+            if (Application.Current.Resources.TryGetValue("ErrorFrameBorderColor", out var borderColor))
                 MnemonicPhraseFrame.BorderColor = (Color)borderColor;
         }
     }

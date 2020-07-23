@@ -25,6 +25,12 @@
     <Color x:Key="LogoTextColor">#223a66</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
 
+    <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
+    <Color x:Key="ErrorFrameBorderColor">#8B0000</Color>
+    <Color x:Key="ErrorTextColor">#8B0000</Color>
+    <Color x:Key="DefaultFrameBackgroundColor">#ffffff</Color>
+    <Color x:Key="DefaultFrameBorderColor">#d3d3d3</Color>
+
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
@@ -227,11 +233,6 @@
         <Setter Property="TextColor" Value="{DynamicResource MainButtonBorderColor}"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}"/>
     </Style>
-    <Color x:Key="MnemonicPhraseFrameBackgroundColor">#ffc7c7</Color>
-    <Color x:Key="MnemonicPhraseFrameBorderColor">#8B0000</Color>
-    <Color x:Key="MnemonicPhraseFrameDefaultBackgroundColor">#ffffff</Color>
-    <Color x:Key="MnemonicPhraseFrameDefaultBorderColor">#d3d3d3</Color>
-    <Color x:Key="MnemonicPhraseTextColor">#8B0000</Color>
 
 
     <!-- Labels -->

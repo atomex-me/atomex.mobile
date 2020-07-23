@@ -606,7 +606,7 @@ namespace atomex.ViewModel
             _amount = value;
 
             var (maxAmount, maxFee, reserve) = await App.Account
-                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment);
+                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
 
             var swaps = await App.Account
                 .GetSwapsAsync();
@@ -647,6 +647,9 @@ namespace atomex.ViewModel
                 {
                     _amount = 0; // previousAmount;
                     OnPropertyChanged(nameof(Amount));
+
+                    //if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
+                    //    Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
 
                     return;
                     // todo: insufficient funds warning

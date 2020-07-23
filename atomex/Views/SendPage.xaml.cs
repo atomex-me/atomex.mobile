@@ -137,14 +137,14 @@ namespace atomex
         {
             if (args.Value)
             {
-                if (!string.IsNullOrEmpty(Amount.Text))
-                    Fee.Text = _sendViewModel.FeeString;
+                _sendViewModel.UseDefaultFee = true;
+                //Fee.Text = _sendViewModel.FeeString;
             }
         }
 
         private async void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            await _sendViewModel.EstimateMaxAmountAndFee();
+            await _sendViewModel.OnMaxClick();
             Amount.Text = _sendViewModel.AmountString;
             Fee.Text = _sendViewModel.FeeString;
         }

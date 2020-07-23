@@ -279,6 +279,30 @@
                         HorizontalOptions="EndAndExpand"
                         x:Name="UseDefaultFeeSwitch"/>
             </StackLayout>
+            <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
+                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   IsVisible="{Binding InsufficientFunds}"
+                   HasShadow="False">
+                <Label Text="{x:Static resources:AppResources.InsufficientFunds}"
+                       FontAttributes="{DynamicResource BoldFont}"
+                       TextColor="{DynamicResource ErrorTextColor}"
+                       FontSize="20"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding InsufficientFunds}"/>
+            </Frame>
+            <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
+                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   IsVisible="{Binding LowFees}"
+                   HasShadow="False">
+                <Label Text="{x:Static resources:AppResources.LowFees}"
+                       FontAttributes="{DynamicResource BoldFont}"
+                       TextColor="{DynamicResource ErrorTextColor}"
+                       FontSize="20"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding LowFees}"/>
+            </Frame>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     x:Name="NextButton"
                     VerticalOptions="EndAndExpand"

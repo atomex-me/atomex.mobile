@@ -49,7 +49,7 @@
             <Frame HasShadow="False"
                    x:Name="WordCountFrame"
                    Padding="0"
-                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
+                   BorderColor="{DynamicResource DefaultFrameBorderColor}"
                    HorizontalOptions="FillAndExpand">
                 <RelativeLayout>
                     <custom:CustomPicker ItemsSource="{Binding WordCountToEntropyLength}"
@@ -73,7 +73,7 @@
             <Frame HasShadow="False"
                    x:Name="MnemonicPhraseFrame"
                    Padding="10"
-                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
+                   BorderColor="{DynamicResource DefaultFrameBorderColor}"
                    HorizontalOptions="FillAndExpand"
                    VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center">
@@ -84,7 +84,7 @@
                            HorizontalTextAlignment="Center">
                     </Label>
                     <Label Text="{Binding Mnemonic}"
-                           TextColor="{DynamicResource MnemonicPhraseTextColor}"
+                           TextColor="{DynamicResource ErrorTextColor}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Center"
                            FontSize="14">
