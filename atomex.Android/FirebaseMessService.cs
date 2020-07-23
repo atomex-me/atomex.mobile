@@ -6,6 +6,7 @@ using atomex.Services;
 using Firebase.Messaging;
 using Xamarin.Forms;
 using Android.Support.V4.App;
+using Android.Graphics;
 
 namespace atomex.Droid
 {
@@ -41,11 +42,12 @@ namespace atomex.Droid
 
             var notificationBuilder = new NotificationCompat.Builder(this, AndroidNotificationManager.CHANNEL_ID)
                                       //.SetSmallIcon(Resource.Drawable.ic_stat_ic_notification)
-                                      .SetSmallIcon(Resource.Drawable.ic_launcher)
+                                      .SetContentIntent(pendingIntent)
                                       .SetContentTitle("Atomex")
                                       .SetContentText(messageBody)
-                                      .SetAutoCancel(true)
-                                      .SetContentIntent(pendingIntent);
+                                      .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.ic_launcher))
+                                      .SetSmallIcon(Resource.Drawable.ic_launcher)
+                                      .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
 
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(AndroidNotificationManager.NOTIFICATION_ID, notificationBuilder.Build());

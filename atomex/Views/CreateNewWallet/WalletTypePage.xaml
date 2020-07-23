@@ -26,8 +26,8 @@
                 <Image Source="DownArrowPicker"
                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Width, Factor=0.9}"
                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Height, Factor=0.5, Constant=-5}"
-                       WidthRequest="10"
-                       HeightRequest="10"/>
+                       WidthRequest="12"
+                       HeightRequest="12"/>
             </RelativeLayout>
         </Frame>
         <Button Text="{x:Static resources:AppResources.NextButton}"
