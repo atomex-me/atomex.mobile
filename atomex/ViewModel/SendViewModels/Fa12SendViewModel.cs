@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
-using Atomex;
+using atomex.Resources;
 using Atomex.Blockchain.Abstract;
 using Atomex.MarketData.Abstract;
 
@@ -15,8 +16,24 @@ namespace atomex.ViewModel.SendViewModels
         {
         }
 
+        public override bool UseDefaultFee
+        {
+            get => _useDefaultFee;
+            set
+            {
+                Warning = string.Empty;
+
+                _useDefaultFee = value;
+                OnPropertyChanged(nameof(UseDefaultFee));
+
+                Amount = _amount; // recalculate amount
+            }
+        }
+
         public override async Task UpdateAmount(decimal amount)
         {
+            Warning = string.Empty;
+
             var availableAmount = CurrencyViewModel.AvailableAmount;
             _amount = amount;
 
@@ -29,11 +46,9 @@ namespace atomex.ViewModel.SendViewModels
                 if (_amount > maxAmount)
                 {
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //!! Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                    //!! Warning = Resources.CvInsufficientFunds;
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 }
 
                 var estimatedFeeAmount = _amount != 0
@@ -54,15 +69,12 @@ namespace atomex.ViewModel.SendViewModels
                 if (_amount > maxAmount)
                 {
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                    //Warning = Resources.CvInsufficientFunds;
-
-                    OnPropertyChanged(nameof(AmountString));
-
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 }
+                OnPropertyChanged(nameof(AmountString));
+
                 Fee = _fee;
             }
 
@@ -71,32 +83,48 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task UpdateFee(decimal fee)
         {
-            if (_amount == 0)
-            {
-                _fee = 0;
-                return;
-            }
+            Warning = string.Empty;
 
             _fee = Math.Min(fee, Currency.GetMaximumFee());
 
+            if (_amount == 0)
+            {
+                if (Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice()) > CurrencyViewModel.AvailableAmount)
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                return;
+            }
+
             if (!UseDefaultFee)
             {
+                var availableAmount = CurrencyViewModel.AvailableAmount;
+
+                var (maxAmount, maxAvailableFee, _) = await App.Account
+                    .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, decimal.MaxValue, 0, false);
+
+                var feeAmount = Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice());
+
                 var estimatedFeeAmount = _amount != 0
                     ? await App.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
                     : 0;
 
-                var feeAmount = _fee;
+                if (_amount > maxAmount)
+                {
+                    if (_amount <= availableAmount)
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
+                    else
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
 
-                if (feeAmount < estimatedFeeAmount.Value)
-                    _fee = estimatedFeeAmount.Value;
+                    return;
+                }
+                else if (estimatedFeeAmount == null || feeAmount < estimatedFeeAmount.Value)
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
 
-                if (_amount == 0)
-                    _fee = 0;
-
-                OnPropertyChanged(nameof(AmountString));
+                if (feeAmount > maxAvailableFee)
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
 
                 OnPropertyChanged(nameof(FeeString));
             }
+
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
         }
 

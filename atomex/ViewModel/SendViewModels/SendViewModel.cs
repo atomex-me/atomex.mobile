@@ -51,6 +51,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 _to = value;
                 OnPropertyChanged(nameof(To));
+                Warning = string.Empty;
             }
         }
 
@@ -115,27 +116,17 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (_useDefaultFee)
                 {
-                    _lowFees = false;
-                    OnPropertyChanged(nameof(LowFees));
-                    _insufficientFunds = false;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Empty;
                     Amount = _amount; // recalculate amount and fee using default fee
                 }
             }
         }
 
-        protected bool _insufficientFunds = false;
-        public virtual bool InsufficientFunds
+        protected string _warning = string.Empty;
+        public string Warning
         {
-            get => _insufficientFunds;
-            set { _insufficientFunds = value; OnPropertyChanged(nameof(InsufficientFunds)); }
-        }
-
-        protected bool _lowFees = false;
-        public virtual bool LowFees
-        {
-            get => _lowFees;
-            set { _lowFees = value; OnPropertyChanged(nameof(LowFees)); }
+            get => _warning;
+            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
         }
 
         protected decimal _amountInBase;
@@ -176,33 +167,26 @@ namespace atomex.ViewModel.SendViewModels
         public virtual string OnNextCommand()
         {
             if (string.IsNullOrEmpty(To))
-            {
                 return AppResources.EmptyAddressError;
-            }
 
             if (!Currency.IsValidAddress(To))
-            {
                 return AppResources.InvalidAddressError;
-            }
 
             if (Amount <= 0)
-            {
                 return AppResources.AmountLessThanZeroError;
-            }
 
             if (Fee <= 0)
-            {
                 return AppResources.CommissionLessThanZeroError;
-            }
 
             var isToken = Currency.FeeCurrencyName != Currency.Name;
 
             var feeAmount = !isToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
-            {
                 return AppResources.AvailableFundsError;
-            }
+
+            if (!string.IsNullOrEmpty(Warning))
+                return AppResources.FailedToSend;
 
             return null;
         }
@@ -250,6 +234,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public virtual async Task UpdateAmount(decimal amount)
         {
+            Warning = string.Empty;
+
             _amount = amount;
 
             if (UseDefaultFee)
@@ -259,8 +245,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (_amount > maxAmount)
                 {
-                    _insufficientFunds = true;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                     return;
                 }
 
@@ -286,8 +271,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (_amount > maxAmount || _amount + feeAmount > availableAmount)
                 {
-                    _insufficientFunds = true;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                     return;
                 }
 
@@ -301,14 +285,15 @@ namespace atomex.ViewModel.SendViewModels
 
         public virtual async Task UpdateFee(decimal fee)
         {
+            Warning = string.Empty;
+
             _fee = Math.Min(fee, Currency.GetMaximumFee());
 
             if (_amount == 0)
             {
                 if (Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice()) > CurrencyViewModel.AvailableAmount)
                 {
-                    _insufficientFunds = true;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 }
                 return;
             }
@@ -330,21 +315,17 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (_amount + feeAmount > availableAmount)
                 {
-                    _insufficientFunds = true;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                     return;
                 }
                 else if (estimatedFeeAmount == null || feeAmount < estimatedFeeAmount.Value)
                 {
-                    _lowFees = true;
-                    OnPropertyChanged(nameof(LowFees));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
                     return;
                 }
 
-                _insufficientFunds = false;
-                OnPropertyChanged(nameof(InsufficientFunds));
-                _lowFees = false;
-                OnPropertyChanged(nameof(LowFees));
+                Warning = string.Empty;
+                
                 OnPropertyChanged(nameof(FeeString));
             }
 
@@ -353,6 +334,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public virtual async Task OnMaxClick()
         {
+            Warning = string.Empty;
+
             if (CurrencyViewModel.AvailableAmount == 0)
                 return;
 
@@ -390,8 +373,7 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (estimatedFeeAmount == null || feeAmount < estimatedFeeAmount.Value)
                     {
-                        _lowFees = true;
-                        OnPropertyChanged(nameof(LowFees));
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
                         if (_fee == 0)
                         {
                             _amount = 0;
@@ -400,21 +382,16 @@ namespace atomex.ViewModel.SendViewModels
                         }
                     }
                 }
-
                 else
                 {
                     _amount = 0;
-                    _insufficientFunds = true;
-                    OnPropertyChanged(nameof(InsufficientFunds));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 }
 
                 OnPropertyChanged(nameof(AmountString));
 
                 OnPropertyChanged(nameof(FeeString));
             }
-
-            _insufficientFunds = false;
-            OnPropertyChanged(nameof(InsufficientFunds));
 
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
         }

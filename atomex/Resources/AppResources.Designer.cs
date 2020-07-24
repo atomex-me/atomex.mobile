@@ -809,9 +809,21 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string InsufficientChainFunds {
+            get {
+                return ResourceManager.GetString("InsufficientChainFunds", resourceCulture);
+            }
+        }
+        
         internal static string LowFees {
             get {
                 return ResourceManager.GetString("LowFees", resourceCulture);
+            }
+        }
+        
+        internal static string FailedToSend {
+            get {
+                return ResourceManager.GetString("FailedToSend", resourceCulture);
             }
         }
         

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
@@ -26,7 +28,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task UpdateAmount(decimal amount)
         {
-            var previousAmount = _amount;
+            Warning = string.Empty;
+
             _amount = amount;
 
             try
@@ -38,7 +41,7 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (_amount > maxAmount)
                     {
-                        //!! Warning = Resources.CvInsufficientFunds;
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                         return;
                     }
 
@@ -68,7 +71,7 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (_amount + feeAmount > availableAmount)
                     {
-                        //!!Warning = Resources.CvInsufficientFunds;
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                         return;
                     }
 
@@ -84,15 +87,20 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task UpdateFee(decimal fee)
         {
-            if (_amount == 0)
-            {
-                _fee = 0;
-                return;
-            }
+            Warning = string.Empty;
+
+            _fee = Math.Min(fee, Currency.GetMaximumFee());
 
             try
             {
-                _fee = Math.Min(fee, Currency.GetMaximumFee());
+                var availableAmount = CurrencyViewModel.AvailableAmount;
+
+                if (_amount == 0)
+                {
+                    if (Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice()) > availableAmount)
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                    return;
+                }
 
                 var estimatedTxSize = await EstimateTxSizeAsync();
 
@@ -101,16 +109,13 @@ namespace atomex.ViewModel.SendViewModels
                     var minimumFeeSatoshi = BtcBased.GetMinimumFee(estimatedTxSize);
                     var minimumFee = BtcBased.SatoshiToCoin(minimumFeeSatoshi);
 
-                    if (_fee < minimumFee)
-                        _fee = minimumFee;
-
-                    var availableAmount = CurrencyViewModel.AvailableAmount;
-
                     if (_amount + _fee > availableAmount)
-                        _amount = Math.Max(availableAmount - _fee, 0);
-
-                    if (_amount == 0)
-                        _fee = 0;
+                    {
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                        return;
+                    }
+                    if (_fee < minimumFee)
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
 
                     OnPropertyChanged(nameof(AmountString));
                     OnPropertyChanged(nameof(FeeString));

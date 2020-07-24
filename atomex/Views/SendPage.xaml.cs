@@ -178,7 +178,7 @@ namespace atomex
             var error = _sendViewModel.OnNextCommand();
             if (error != null)
             {
-                await DisplayAlert(AppResources.Warning, error, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, error, AppResources.AcceptButton);
             }
             else
             {

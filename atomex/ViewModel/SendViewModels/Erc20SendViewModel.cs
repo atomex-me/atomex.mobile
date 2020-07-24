@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
-using Atomex;
+using atomex.Resources;
 using Atomex.Blockchain.Abstract;
-using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 
@@ -52,20 +51,20 @@ namespace atomex.ViewModel.SendViewModels
 
         protected virtual async void UpdateFeePrice(decimal value)
         {
+            Warning = string.Empty;
+
             _feePrice = value;
 
             if (_amount == 0)
             {
                 if (Currency.GetFeeAmount(_fee, _feePrice) > CurrencyViewModel.AvailableAmount)
-                    Console.WriteLine("!!");
-                    //Warning = Resources.CvInsufficientFunds;
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 return;
             }
 
             if (value == 0)
             {
-                Console.WriteLine("!!");
-                //Warning = Resources.CvLowFees;
+                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
                 UpdateTotalFeeString();
                 OnPropertyChanged(nameof(TotalFeeString));
                 return;
@@ -81,11 +80,11 @@ namespace atomex.ViewModel.SendViewModels
                     var availableAmount = CurrencyViewModel.AvailableAmount;
 
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                        //Warning = Resources.CvInsufficientFunds;
+                    {
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                    }
                     return;
                 }
 
@@ -103,6 +102,8 @@ namespace atomex.ViewModel.SendViewModels
             get => _useDefaultFee;
             set
             {
+                Warning = string.Empty;
+
                 _useDefaultFee = value;
                 OnPropertyChanged(nameof(UseDefaultFee));
 
@@ -112,6 +113,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task UpdateAmount(decimal amount)
         {
+            Warning = string.Empty;
+
             var availableAmount = CurrencyViewModel.AvailableAmount;
             _amount = amount;
 
@@ -129,11 +132,11 @@ namespace atomex.ViewModel.SendViewModels
                 if (_amount > maxAmount)
                 {
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                    //Warning = Resources.CvInsufficientFunds;
+                    {
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                    }
                     return;
                 }
 
@@ -151,11 +154,9 @@ namespace atomex.ViewModel.SendViewModels
                 if (_amount > maxAmount)
                 {
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                    //Warning = Resources.CvInsufficientFunds;
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
 
                     return;
                 }
@@ -163,8 +164,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(AmountString));
 
                 if (_fee < Currency.GetDefaultFee() || _feePrice == 0)
-                    Console.WriteLine("!!");
-                    //Warning = Resources.CvLowFees;
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
             }
 
             OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
@@ -172,20 +172,20 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task UpdateFee(decimal fee)
         {
+            Warning = string.Empty;
+
             _fee = Math.Min(fee, Currency.GetMaximumFee());
 
             if (_amount == 0)
             {
                 if (Currency.GetFeeAmount(_fee, _feePrice) > CurrencyViewModel.AvailableAmount)
-                    Console.WriteLine("!!");
-                //Warning = Resources.CvInsufficientFunds;
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 return;
             }
 
             if (_fee < Currency.GetDefaultFee())
             {
-                Console.WriteLine("!!");
-                //Warning = Resources.CvLowFees;
+                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
                 if (fee == 0)
                 {
                     UpdateTotalFeeString();
@@ -204,11 +204,9 @@ namespace atomex.ViewModel.SendViewModels
                     var availableAmount = CurrencyViewModel.AvailableAmount;
 
                     if (_amount <= availableAmount)
-                        Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
                     else
-                        Console.WriteLine("!!");
-                        //Warning = Resources.CvInsufficientFunds;
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                     return;
                 }
 
@@ -223,6 +221,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public override async Task OnMaxClick()
         {
+            Warning = string.Empty;
+
             var availableAmount = CurrencyViewModel.AvailableAmount;
             if (availableAmount == 0)
                 return;
@@ -233,8 +233,7 @@ namespace atomex.ViewModel.SendViewModels
                 if (maxAmount > 0)
                     _amount = maxAmount;
                 else if (CurrencyViewModel.AvailableAmount > 0)
-                    Console.WriteLine("!!");
-                    //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
 
                 OnPropertyChanged(nameof(AmountString));
 
@@ -251,8 +250,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 if (_fee < Currency.GetDefaultFee() || _feePrice == 0)
                 {
-                    //Warning = Resources.CvLowFees;
-                    Console.WriteLine("!!");
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
                     if (_fee == 0 || _feePrice == 0)
                     {
                         _amount = 0;
@@ -266,8 +264,7 @@ namespace atomex.ViewModel.SendViewModels
                 _amount = maxAmount;
 
                 if (maxAmount < availableAmount)
-                    Console.WriteLine("!!");
-                //Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, Currency.FeeCurrencyName);
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
 
                 OnPropertyChanged(nameof(AmountString));
 

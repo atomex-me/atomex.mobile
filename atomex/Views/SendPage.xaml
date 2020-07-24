@@ -281,27 +281,21 @@
             </StackLayout>
             <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
                    BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
-                   IsVisible="{Binding InsufficientFunds}"
                    HasShadow="False">
-                <Label Text="{x:Static resources:AppResources.InsufficientFunds}"
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame"
+                                 Binding="{Binding Warning}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+                <Label Text="{Binding Warning}"
                        FontAttributes="{DynamicResource BoldFont}"
                        TextColor="{DynamicResource ErrorTextColor}"
                        FontSize="20"
                        VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="{Binding InsufficientFunds}"/>
-            </Frame>
-            <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
-                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
-                   IsVisible="{Binding LowFees}"
-                   HasShadow="False">
-                <Label Text="{x:Static resources:AppResources.LowFees}"
-                       FontAttributes="{DynamicResource BoldFont}"
-                       TextColor="{DynamicResource ErrorTextColor}"
-                       FontSize="20"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="{Binding LowFees}"/>
+                       HorizontalTextAlignment="Center"/>
             </Frame>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     x:Name="NextButton"

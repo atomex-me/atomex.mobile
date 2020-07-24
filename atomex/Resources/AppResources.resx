@@ -442,8 +442,14 @@
     <data name="InsufficientFunds" xml:space="preserve">
         <value>Insufficient funds</value>
     </data>
+    <data name="InsufficientChainFunds" xml:space="preserve">
+        <value>Insufficient {0} to cover token transfer fee</value>
+    </data>
     <data name="LowFees" xml:space="preserve">
         <value>Too low fees</value>
+    </data>
+    <data name="FailedToSend" xml:space="preserve">
+        <value>Failed to send</value>
     </data>
     <data name="PriceChanged" xml:space="preserve">
         <value>Price has changed</value>
