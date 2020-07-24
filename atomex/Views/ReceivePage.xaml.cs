@@ -16,11 +16,11 @@ namespace atomex
             InitializeComponent();
         }
 
-        public ReceivePage(CurrencyViewModel currencyViewModel)
+        public ReceivePage(ReceiveViewModel receiveViewModel)
         {
             InitializeComponent();
-            _receiveViewModel = new ReceiveViewModel(currencyViewModel);
-            BindingContext = _receiveViewModel;
+            _receiveViewModel = receiveViewModel;
+            BindingContext = receiveViewModel;
         }
 
         private void OnPickerFocused(object sender, FocusEventArgs args)

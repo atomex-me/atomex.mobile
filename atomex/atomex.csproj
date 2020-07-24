@@ -28,6 +28,7 @@
     <Folder Include="Styles\Themes\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
+    <Folder Include="ViewModel\ReceiveViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

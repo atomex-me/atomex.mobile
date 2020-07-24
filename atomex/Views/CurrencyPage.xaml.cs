@@ -4,6 +4,7 @@ using atomex.ViewModel;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.ViewModel.SendViewModels;
 using Atomex;
+using atomex.ViewModel.ReceiveViewModels;
 
 namespace atomex
 {
@@ -32,7 +33,7 @@ namespace atomex
 
         async void ShowReceivePage(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new ReceivePage(_currencyViewModel));
+            await Navigation.PushAsync(new ReceivePage(ReceiveViewModelCreator.CreateViewModel(_currencyViewModel)));
         }
         async void ShowSendPage(object sender, EventArgs args)
         {
@@ -45,9 +46,7 @@ namespace atomex
         void ShowConversionPage(object sender, EventArgs args)
         {
             if (_currencyViewModel != null)
-            {
                 _navigationService.ConvertCurrency(_currencyViewModel.CurrencyCode);
-            }
         }
         async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
         {

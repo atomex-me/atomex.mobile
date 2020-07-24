@@ -9,10 +9,10 @@ namespace atomex.ViewModel
     public class ReceiveViewModel : BaseViewModel
     {
 
-        private IAtomexApp App { get; }
+        protected IAtomexApp App { get; }
 
-        private CurrencyViewModel _currencyViewModel;
-        public CurrencyViewModel CurrencyViewModel
+        protected CurrencyViewModel _currencyViewModel;
+        public virtual CurrencyViewModel CurrencyViewModel
         {
             get => _currencyViewModel;
             set
@@ -40,10 +40,10 @@ namespace atomex.ViewModel
         }
 
         private List<WalletAddressViewModel> _fromAddressList;
-        public List<WalletAddressViewModel> FromAddressList
+        public virtual List<WalletAddressViewModel> FromAddressList
         {
             get => _fromAddressList;
-            private set
+            set
             {
                 _fromAddressList = value;
                 OnPropertyChanged(nameof(FromAddressList));
@@ -69,7 +69,7 @@ namespace atomex.ViewModel
             CurrencyViewModel = currencyViewModel;
         }
 
-        private WalletAddressViewModel GetDefaultAddress()
+        protected virtual WalletAddressViewModel GetDefaultAddress()
         {
             if (_currencyViewModel.Currency is Tezos || _currencyViewModel.Currency is Ethereum)
             {
