@@ -827,6 +827,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string FailedToConvert {
+            get {
+                return ResourceManager.GetString("FailedToConvert", resourceCulture);
+            }
+        }
+        
         internal static string PriceChanged {
             get {
                 return ResourceManager.GetString("PriceChanged", resourceCulture);

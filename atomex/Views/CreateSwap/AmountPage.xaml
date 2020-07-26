@@ -14,11 +14,9 @@
                    Padding="20,30,20,10"
                    FontSize="22"
                    FontFamily="{DynamicResource BoldFont}"/>
-            <Grid ColumnSpacing="0"
-                  RowSpacing="0">
+            <Grid ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="8*"/>
@@ -55,33 +53,24 @@
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                      </StackLayout>
                 </Frame>
-                <Label Grid.Row="1"
-                       Grid.ColumnSpan="2"
-                       x:Name="InvalidAmountLabel"
-                       TextColor="Red"
-                       Padding="10"
-                       FontFamily="{DynamicResource BoldFont}"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Start"
-                       IsVisible="False"/>
             </Grid>
             <Label Margin="10,0"
                    VerticalTextAlignment="Center"
                    TextColor="{DynamicResource MainTextColor}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"/>
-                            <Span Text=": "/>
-                            <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
-                                  FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="16"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                                  FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="14"/>
-                        </FormattedString>
-                    </Label.FormattedText>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
+                                FontFamily="{DynamicResource RegularFont}"/>
+                        <Span Text=": "/>
+                        <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
+                                FontFamily="{DynamicResource BoldFont}"
+                                FontSize="16"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                                FontFamily="{DynamicResource BoldFont}"
+                                FontSize="14"/>
+                    </FormattedString>
+                </Label.FormattedText>
             </Label>
             <Grid Margin="0,10"
                   ColumnSpacing="0"
@@ -207,7 +196,7 @@
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
                               FontSize="14"
-                              TextColor="Gray"/>
+                              TextColor="{DynamicResource AdditionalTextColor}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -226,10 +215,29 @@
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
                               FontSize="14"
-                              TextColor="Gray"/>
+                              TextColor="{DynamicResource AdditionalTextColor}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+            <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
+                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   HasShadow="False"
+                   Margin="0,10">
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame"
+                                 Binding="{Binding Warning}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+                <Label Text="{Binding Warning}"
+                       FontAttributes="{DynamicResource BoldFont}"
+                       TextColor="{DynamicResource ErrorTextColor}"
+                       FontSize="20"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"/>
+            </Frame>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="20"
                     VerticalOptions="EndAndExpand"

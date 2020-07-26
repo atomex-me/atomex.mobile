@@ -39,7 +39,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private IAtomexApp App { get; }
+        protected IAtomexApp App { get; }
         private IAtomexClient Terminal { get; set;  }
 
         private static TimeSpan SWAP_TIMEOUT = TimeSpan.FromSeconds(60);
@@ -64,8 +64,8 @@ namespace atomex.ViewModel
             private set { _toCurrencies = value; OnPropertyChanged(nameof(ToCurrencies)); }
         }
 
-        private CurrencyViewModel _fromCurrencyViewModel;
-        public CurrencyViewModel FromCurrencyViewModel
+        protected CurrencyViewModel _fromCurrencyViewModel;
+        public virtual CurrencyViewModel FromCurrencyViewModel
         {
             get => _fromCurrencyViewModel;
             set
@@ -104,6 +104,14 @@ namespace atomex.ViewModel
                 BaseCurrencyCode = _fromCurrencyViewModel?.BaseCurrencyCode;
 
                 Amount = 0;
+
+                AmountInBase = 0;
+
+                MaxAmount = 0;
+
+                TargetAmount = 0;
+
+                TargetAmountInBase = 0;
             }
         }
 
@@ -134,7 +142,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private decimal _amount;
+        protected decimal _amount;
         public decimal Amount
         {
             get => _amount;
@@ -175,7 +183,7 @@ namespace atomex.ViewModel
             set { _estimatedPrice = value; OnPropertyChanged(nameof(EstimatedPrice)); }
         }
 
-        private decimal _estimatedPaymentFee;
+        protected decimal _estimatedPaymentFee;
         public decimal EstimatedPaymentFee
         {
             get => _estimatedPaymentFee;
@@ -271,6 +279,12 @@ namespace atomex.ViewModel
         //    get => _hasRewardForRedeem;
         //    set { _hasRewardForRedeem = value; OnPropertyChanged(nameof(HasRewardForRedeem)); }
         //}
+        protected string _warning;
+        public string Warning
+        {
+            get => _warning;
+            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
+        }
 
         private bool _isNoLiquidity;
         public bool IsNoLiquidity
@@ -383,9 +397,11 @@ namespace atomex.ViewModel
                 OnPropertyChanged(nameof(Swaps));
                 OnPropertyChanged(nameof(GroupedSwaps));
             });
+
+            Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
         }
 
-        private void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
+        protected void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (!(sender is ICurrencyQuotesProvider provider))
                 return;
@@ -408,7 +424,7 @@ namespace atomex.ViewModel
             UpdateTargetAmountInBase(provider);
         }
 
-        private async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
+        protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
         {
             try
             {
@@ -600,8 +616,10 @@ namespace atomex.ViewModel
             }
         }
 
-        private async void UpdateAmount(decimal value)
+        protected virtual async void UpdateAmount(decimal value)
         {
+            Warning = string.Empty;
+
             var previousAmount = _amount;
             _amount = value;
 
@@ -647,13 +665,12 @@ namespace atomex.ViewModel
                 {
                     _amount = 0; // previousAmount;
                     OnPropertyChanged(nameof(Amount));
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
 
-                    //if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-                    //    Warning = string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
+                    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
+                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
 
                     return;
-                    // todo: insufficient funds warning
-                    // 
                 }
             }
 
@@ -661,6 +678,18 @@ namespace atomex.ViewModel
 
             if (_amount + (includeFeeToAmount ? _estimatedPaymentFee : 0) > availableAmount)
                 _amount = Math.Max(availableAmount - (includeFeeToAmount ? _estimatedPaymentFee : 0), 0);
+
+            if (_amount <= 0)
+            {
+                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.AmountLessThanZeroError);
+                return;
+            }
+
+            if (_amount > maxAmount)
+            {
+                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+                return;
+            }
 
             OnPropertyChanged(nameof(Amount));
 
@@ -673,13 +702,13 @@ namespace atomex.ViewModel
         private async void UpdateRedeemAndRewardFeesAsync()
         {
             var walletAddress = await App.Account
-               .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
+                     .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
 
             EstimatedRedeemFee = ToCurrencyViewModel.Currency.GetRedeemFee(walletAddress);
 
-            //RewardForRedeem = walletAddress.AvailableBalance() < EstimatedRedeemFee && !(ToCurrencyViewModel.Currency is BitcoinBasedCurrency)
-            //    ? ToCurrencyViewModel.Currency.GetRewardForRedeem()
-            //    : 0;
+            //RewardForRedeem = walletAddress.AvailableBalance() < EstimatedRedeemFee && !(ToCurrency is BitcoinBasedCurrency)
+            //       ? ToCurrency.GetRewardForRedeem()
+            //       : 0;
         }
     }
 }

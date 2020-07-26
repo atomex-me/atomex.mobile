@@ -451,6 +451,9 @@
     <data name="FailedToSend" xml:space="preserve">
         <value>Failed to send</value>
     </data>
+    <data name="FailedToConvert" xml:space="preserve">
+        <value>Failed to convert</value>
+    </data>
     <data name="PriceChanged" xml:space="preserve">
         <value>Price has changed</value>
     </data>
