@@ -32,13 +32,16 @@ namespace atomex.ViewModel.TransactionViewModels
 
             var result = 0m;
 
-            if (tx.Type.HasFlag(BlockchainTransactionType.Input) ||
-                tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
+            if (tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
                 tx.Type.HasFlag(BlockchainTransactionType.SwapRefund))
                 result += Erc20.TokenDigitsToTokens(tx.Amount);
-
-            else if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -Erc20.TokenDigitsToTokens(tx.Amount);
+            else
+            {
+                if (tx.Type.HasFlag(BlockchainTransactionType.Input))
+                    result += Erc20.TokenDigitsToTokens(tx.Amount);
+                if (tx.Type.HasFlag(BlockchainTransactionType.Output))
+                    result += -Erc20.TokenDigitsToTokens(tx.Amount);
+            }
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
 

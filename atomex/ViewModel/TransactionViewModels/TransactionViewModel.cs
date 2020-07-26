@@ -82,7 +82,7 @@ namespace atomex.ViewModel.TransactionViewModels
             {
                 Description = $"Token swap call";
             }
-            else if (Amount < 0) //tx.Type.HasFlag(BlockchainTransactionType.Output))
+            else if (Amount <= 0) //tx.Type.HasFlag(BlockchainTransactionType.Output))
             {
                 Description = $"Sent {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
             }

@@ -30,12 +30,16 @@ namespace atomex.ViewModel.TransactionViewModels
 
             var result = 0m;
 
-            if (tx.Type.HasFlag(BlockchainTransactionType.Input) ||
-                tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
+            if (tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
                 tx.Type.HasFlag(BlockchainTransactionType.SwapRefund))
                 result += tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
-            else if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
+            else
+            {
+                if (tx.Type.HasFlag(BlockchainTransactionType.Input))
+                    result += tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
+                if (tx.Type.HasFlag(BlockchainTransactionType.Output))
+                    result += -tx.Amount.FromTokenDigits(tx.Currency.DigitsMultiplier);
+            }
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
 
