@@ -107,8 +107,6 @@ namespace atomex.ViewModel
 
                 AmountInBase = 0;
 
-                MaxAmount = 0;
-
                 TargetAmount = 0;
 
                 TargetAmountInBase = 0;
@@ -147,13 +145,6 @@ namespace atomex.ViewModel
         {
             get => _amount;
             set { UpdateAmount(value); }
-        }
-
-        private decimal _maxAmount;
-        public decimal MaxAmount
-        {
-            get => _maxAmount;
-            set {  _maxAmount = value; OnPropertyChanged(nameof(MaxAmount)); }
         }
 
         private decimal _amountInBase;
@@ -397,8 +388,6 @@ namespace atomex.ViewModel
                 OnPropertyChanged(nameof(Swaps));
                 OnPropertyChanged(nameof(GroupedSwaps));
             });
-
-            Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
         }
 
         protected void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
@@ -616,6 +605,33 @@ namespace atomex.ViewModel
             }
         }
 
+        public virtual async Task OnMaxClick()
+        {
+            var (maxAmount, maxFee, _) = await App.Account
+                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
+
+            _amount = maxAmount;
+            OnPropertyChanged(nameof(Amount));
+
+            if (maxAmount <= 0)
+            {
+
+                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
+
+                if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
+            }
+            else
+            {
+                EstimatedPaymentFee = maxFee;
+
+                UpdateRedeemAndRewardFeesAsync();
+
+                OnQuotesUpdatedEventHandler(App.Terminal, null);
+                OnBaseQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            }
+        }
+
         protected virtual async void UpdateAmount(decimal value)
         {
             Warning = string.Empty;
@@ -639,7 +655,6 @@ namespace atomex.ViewModel
 
             maxAmount = Math.Max(maxAmount - usedAmount, 0);
 
-            _maxAmount = maxAmount;
 
             var includeFeeToAmount = FromCurrencyViewModel.Currency.FeeCurrencyName == FromCurrencyViewModel.Currency.Name;
 
@@ -679,11 +694,17 @@ namespace atomex.ViewModel
             if (_amount + (includeFeeToAmount ? _estimatedPaymentFee : 0) > availableAmount)
                 _amount = Math.Max(availableAmount - (includeFeeToAmount ? _estimatedPaymentFee : 0), 0);
 
-            if (_amount <= 0)
-            {
-                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.AmountLessThanZeroError);
-                return;
-            }
+            //if (_amount <= 0)
+            //{
+            //    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
+            //    {
+            //        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
+            //        return;
+            //    }
+
+            //    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.AmountLessThanZeroError);
+            //    return;
+            //}
 
             if (_amount > maxAmount)
             {

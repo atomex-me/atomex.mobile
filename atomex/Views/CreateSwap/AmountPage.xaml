@@ -50,7 +50,7 @@
                                 TextColor="{DynamicResource HintTextColor}"
                                 HorizontalOptions="Center"
                                 BackgroundColor="White"
-                                Clicked="OnSetMaxAmountButtonClicked"/>
+                                Clicked="OnMaxAmountButtonClicked"/>
                      </StackLayout>
                 </Frame>
             </Grid>
@@ -134,7 +134,8 @@
                         <FormattedString>
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"/>
+                            <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                                  FontSize="14"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -195,7 +196,7 @@
                               FontFamily="{DynamicResource BoldFont}"
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                              FontSize="14"
+                              FontSize="12"
                               TextColor="{DynamicResource AdditionalTextColor}"/>
                     </FormattedString>
                 </Label.FormattedText>
@@ -214,7 +215,7 @@
                               FontFamily="{DynamicResource BoldFont}"
                               FontSize="14"/>
                         <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                              FontSize="14"
+                              FontSize="12"
                               TextColor="{DynamicResource AdditionalTextColor}"/>
                     </FormattedString>
                 </Label.FormattedText>
@@ -234,12 +235,12 @@
                 <Label Text="{Binding Warning}"
                        FontAttributes="{DynamicResource BoldFont}"
                        TextColor="{DynamicResource ErrorTextColor}"
-                       FontSize="20"
+                       FontSize="16"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
             </Frame>
             <Button Text="{x:Static resources:AppResources.NextButton}"
-                    Margin="20"
+                    Margin="16"
                     VerticalOptions="EndAndExpand"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked" />

@@ -24,7 +24,7 @@
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"/>
                         <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
-                               TextColor="Gray"
+                               TextColor="{DynamicResource AdditionalTextColor}"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="14"
                                HorizontalTextAlignment="Center"
@@ -83,9 +83,11 @@
                                            VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}" />
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
+                                                      FontSize="14"/>
                                                 <Span Text=" " /> 
-                                                <Span Text="{Binding CurrencyCode}" />
+                                                <Span Text="{Binding CurrencyCode}"
+                                                      FontSize="12"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -94,7 +96,7 @@
                                            Text="{Binding Price, StringFormat='{0:f2} $'}"
                                            VerticalOptions="Start"
                                            FontFamily="{DynamicResource LightFont}"
-                                           TextColor="Gray"
+                                           TextColor="{DynamicResource AdditionalTextColor}"
                                            FontSize="12"/>
                                     <Label Grid.Row="1"
                                            Grid.Column="3"
@@ -102,7 +104,7 @@
                                            FontFamily="{DynamicResource LightFont}"
                                            VerticalOptions="Start"
                                            HorizontalOptions="EndAndExpand"
-                                           TextColor="Gray"
+                                           TextColor="{DynamicResource AdditionalTextColor}"
                                            FontSize="12"/>
                                 </Grid>
                             </ViewCell>

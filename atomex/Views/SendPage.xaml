@@ -293,7 +293,7 @@
                 <Label Text="{Binding Warning}"
                        FontAttributes="{DynamicResource BoldFont}"
                        TextColor="{DynamicResource ErrorTextColor}"
-                       FontSize="20"
+                       FontSize="16"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
             </Frame>

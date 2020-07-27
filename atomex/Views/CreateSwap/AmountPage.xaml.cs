@@ -69,11 +69,12 @@ namespace atomex.Views.CreateSwap
             }
         }
 
-        private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
+        private async void OnMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            Amount.Text = _conversionViewModel.MaxAmount.ToString();
-            _conversionViewModel.Amount = _conversionViewModel.MaxAmount;
+            await _conversionViewModel.OnMaxClick();
+            Amount.Text = _conversionViewModel.Amount.ToString();
         }
+
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
             if (String.IsNullOrWhiteSpace(Amount.Text))
@@ -84,7 +85,13 @@ namespace atomex.Views.CreateSwap
 
             if (_conversionViewModel.IsNoLiquidity)
             {
-                await DisplayAlert(AppResources.Warning, AppResources.NoLiquidityError, AppResources.AcceptButton);
+                await DisplayAlert(AppResources.Error, AppResources.NoLiquidityError, AppResources.AcceptButton);
+                return;
+            }
+
+            if (_conversionViewModel.Amount <= 0)
+            {
+                await DisplayAlert(AppResources.Error, AppResources.AmountLessThanZeroError, AppResources.AcceptButton);
                 return;
             }
 
