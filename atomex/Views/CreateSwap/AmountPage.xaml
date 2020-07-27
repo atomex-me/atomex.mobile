@@ -68,7 +68,7 @@
                         <Span Text=" "/>
                         <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
                                 FontFamily="{DynamicResource BoldFont}"
-                                FontSize="14"/>
+                                FontSize="12"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -104,7 +104,7 @@
                             <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                                  FontSize="14"/>
+                                  FontSize="12"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -135,7 +135,7 @@
                             <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
-                                  FontSize="14"/>
+                                  FontSize="12"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -194,7 +194,7 @@
                         <Span Text=" "/>
                         <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
                               FontFamily="{DynamicResource BoldFont}"
-                              FontSize="14"/>
+                              FontSize="12"/>
                         <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
                               FontSize="12"
                               TextColor="{DynamicResource AdditionalTextColor}"/>
@@ -213,7 +213,7 @@
                         <Span Text=" "/>
                         <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
                               FontFamily="{DynamicResource BoldFont}"
-                              FontSize="14"/>
+                              FontSize="12"/>
                         <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
                               FontSize="12"
                               TextColor="{DynamicResource AdditionalTextColor}"/>

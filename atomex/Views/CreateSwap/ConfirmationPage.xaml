@@ -48,7 +48,9 @@
                             <FormattedString>
                                 <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"/>
+                                <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource BoldFont}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -64,7 +66,9 @@
                             <FormattedString>
                                 <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"/>
+                                <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource BoldFont}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -131,13 +135,13 @@
                                                     <Span Text="{Binding EstimatedPaymentFee}"/>
                                                     <Span Text=" "/>
                                                     <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="14"/>
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
                                         <Label Text="{Binding EstimatedPaymentFeeInBase, StringFormat='({0:0.##} $)'}"
-                                               TextColor="Gray"
-                                               FontSize="14"
+                                               TextColor="{DynamicResource AdditionalTextColor}"
+                                               FontSize="12"
                                                VerticalTextAlignment="Center"/>
                                     </StackLayout>
                                 </StackLayout>
@@ -156,13 +160,13 @@
                                                     <Span Text="{Binding EstimatedRedeemFee}"/>
                                                     <Span Text=" "/>
                                                     <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="14"/>
+                                                          FontSize="12"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label> 
                                         <Label Text="{Binding EstimatedRedeemFeeInBase, StringFormat='({0:0.##} $)'}"
-                                               TextColor="Gray"
-                                               FontSize="14"
+                                               TextColor="{DynamicResource AdditionalTextColor}"
+                                               FontSize="12"
                                                VerticalTextAlignment="Center"/>
                                     </StackLayout>
                                 </StackLayout>

@@ -12,7 +12,8 @@
                       HasUnevenRows="True"
                       ItemTapped="OnListViewItemTapped"
                       SeparatorVisibility="None"
-                      VerticalOptions="FillAndExpand">
+                      VerticalOptions="FillAndExpand"
+                      CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -43,9 +44,10 @@
                                        VerticalOptions="End">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}" />
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}"/>
                                             <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyCode}" />
+                                            <Span Text="{Binding CurrencyCode}"
+                                                  FontSize="12"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
