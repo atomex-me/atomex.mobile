@@ -113,7 +113,10 @@ namespace atomex.Views.CreateNewWallet
 
                     await Task.Run(() =>
                     {
-                        mainViewModel = new MainViewModel(_createNewWalletViewModel.AtomexApp, account);
+                        mainViewModel = new MainViewModel(
+                            _createNewWalletViewModel.AtomexApp,
+                            account,
+                            _createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore ? true : false);
                     });
 
                     Application.Current.MainPage = new MainPage(mainViewModel);

@@ -32,11 +32,11 @@ namespace atomex.ViewModel
 
         public List<CurrencyViewModel> CurrencyViewModels { get; set; }
 
-        public CurrenciesViewModel(IAtomexApp app)
+        public CurrenciesViewModel(IAtomexApp app, bool restore)
         {
             App = app;
             CurrencyViewModels = new List<CurrencyViewModel>();
-            FillCurrenciesAsync().FireAndForget();
+            FillCurrenciesAsync(restore).FireAndForget();
             SubscribeToServices();
         }
 
@@ -46,7 +46,7 @@ namespace atomex.ViewModel
             QuotesUpdatedEventHandler(this, EventArgs.Empty);
         }
 
-        private async Task FillCurrenciesAsync()
+        private async Task FillCurrenciesAsync(bool restore)
         {
             await Task.WhenAll(Currencies.Select(async c =>
             {
@@ -60,8 +60,13 @@ namespace atomex.ViewModel
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
                 };
                 CurrencyViewModels.Add(currency);
-                currency.UpdateBalanceAsync().FireAndForget();
-                currency.LoadTransactionsAsync().FireAndForget();
+                if (restore)
+                    currency.UpdateCurrencyAsync().FireAndForget();
+                else
+                {
+                    currency.UpdateBalanceAsync().FireAndForget();
+                    currency.LoadTransactionsAsync().FireAndForget();
+                }
             }));
         }
 

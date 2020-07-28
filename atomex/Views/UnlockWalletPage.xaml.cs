@@ -72,7 +72,7 @@ namespace atomex
 
                     await Task.Run(() =>
                     {
-                        mainViewModel = new MainViewModel(_unlockViewModel.AtomexApp, account);
+                        mainViewModel = new MainViewModel(_unlockViewModel.AtomexApp, account, false);
                     });
 
                     Application.Current.MainPage = new MainPage(mainViewModel);

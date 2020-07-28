@@ -20,7 +20,7 @@ namespace atomex.ViewModel
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account)
+        public MainViewModel(IAtomexApp app, IAccount account, bool restore)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -37,7 +37,7 @@ namespace atomex.ViewModel
             AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
 
-            CurrenciesViewModel = new CurrenciesViewModel(AtomexApp);
+            CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
 
