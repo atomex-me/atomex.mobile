@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Atomex;
-using Atomex.Common;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 
@@ -59,7 +58,7 @@ namespace atomex.ViewModel
 
         private void Apply()
         {  
-            _account.UserSettings.SaveToFile(_pathToUserSettings, "12345678".ToSecureString());
+            _account.UserSettings.SaveToFile(_pathToUserSettings);
         }
     }
 }
