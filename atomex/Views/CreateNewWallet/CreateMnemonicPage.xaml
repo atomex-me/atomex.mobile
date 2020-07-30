@@ -6,115 +6,118 @@
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <StackLayout HorizontalOptions="CenterAndExpand"
-                 VerticalOptions="CenterAndExpand"
-                 Margin="20,0">
-        <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
-               Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-        <Label Text="{x:Static resources:AppResources.MnemonicDescriptionText}"
-               Style="{DynamicResource CreateNewWalletTextStyle}"/>
-        <StackLayout Orientation="Horizontal">
-            <Frame Style="{DynamicResource FrameCaptionStyle}">
-                <Label Text="{x:Static resources:AppResources.LanguageLabel}"
-                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
-            </Frame>
-            <Frame HasShadow="False"
-                   x:Name="LanguageFrame"
-                   Padding="0"
-                   BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
-                   HorizontalOptions="FillAndExpand">
-                <RelativeLayout>
-                    <custom:CustomPicker ItemsSource="{Binding Languages}"
-                                         ItemDisplayBinding="{Binding Name}"
-                                         SelectedItem="{Binding Language}"
-                                         x:Name="LanguagePicker"
-                                         Focused="OnLanguagePickerFocused"
-                                         Unfocused="OnLanguagePickerFocused"
-                                         SelectedIndexChanged="MnemonicPhraseChanged"
-                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                         HeightRequest="70"/>
-                    <Image Source="DownArrowPicker"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Width, Factor=0.9}"
-                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Height, Factor=0.5, Constant=-5}"
-                           WidthRequest="10"
-                           HeightRequest="10"/>
-                </RelativeLayout>
-            </Frame>
+    <ScrollView>
+        <StackLayout HorizontalOptions="CenterAndExpand"
+                     VerticalOptions="CenterAndExpand"
+                     Margin="20,0">
+            <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
+                   Style="{DynamicResource CreateNewWalletTitleStyle}"/>
+            <Label Text="{x:Static resources:AppResources.MnemonicDescriptionText}"
+                   Style="{DynamicResource CreateNewWalletTextStyle}"/>
+            <StackLayout Orientation="Horizontal">
+                <Frame Style="{DynamicResource FrameCaptionStyle}">
+                    <Label Text="{x:Static resources:AppResources.LanguageLabel}"
+                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
+                <Frame HasShadow="False"
+                       x:Name="LanguageFrame"
+                       Padding="0"
+                       BorderColor="{DynamicResource MnemonicPhraseFrameDefaultBorderColor}"
+                       HorizontalOptions="FillAndExpand">
+                    <RelativeLayout>
+                        <custom:CustomPicker ItemsSource="{Binding Languages}"
+                                             ItemDisplayBinding="{Binding Name}"
+                                             SelectedItem="{Binding Language}"
+                                             x:Name="LanguagePicker"
+                                             Focused="OnLanguagePickerFocused"
+                                             Unfocused="OnLanguagePickerFocused"
+                                             SelectedIndexChanged="MnemonicPhraseChanged"
+                                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                             HeightRequest="70"/>
+                        <Image Source="DownArrowPicker"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Width, Factor=0.9, Constant=-10}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=LanguagePicker, Property=Height, Factor=0.5, Constant=-5}"
+                               WidthRequest="10"
+                               HeightRequest="10"/>
+                    </RelativeLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Frame Style="{DynamicResource FrameCaptionStyle}">
+                    <Label Text="{x:Static resources:AppResources.WordCountLabel}"
+                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
+                </Frame>
+                <Frame HasShadow="False"
+                       x:Name="WordCountFrame"
+                       Padding="0"
+                       BorderColor="{DynamicResource DefaultFrameBorderColor}"
+                       HorizontalOptions="FillAndExpand">
+                    <RelativeLayout>
+                        <custom:CustomPicker ItemsSource="{Binding WordCountToEntropyLength}"
+                                             ItemDisplayBinding="{Binding WordCount}"
+                                             SelectedItem="{Binding Entropy}"
+                                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                             x:Name="WordCountPicker"
+                                             Focused="OnWordCountPickerFocused"
+                                             Unfocused="OnWordCountPickerFocused"
+                                             SelectedIndexChanged="MnemonicPhraseChanged"
+                                             HeightRequest="70"/>
+                        <Image Source="DownArrowPicker"
+                               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9, Constant=-10}"
+                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Height, Factor=0.5, Constant=-5}"
+                               WidthRequest="10"
+                               HeightRequest="10"/>
+                    </RelativeLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Frame HasShadow="False"
+                       x:Name="MnemonicPhraseFrame"
+                       Padding="10"
+                       BorderColor="{DynamicResource DefaultFrameBorderColor}"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                    <StackLayout VerticalOptions="Center">
+                        <Label Text="{x:Static resources:AppResources.MnemonicPhraseLabel}"
+                               x:Name="MnemonicLabel"
+                               TextColor="{DynamicResource AdditionalTextColor}"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               FontSize="14">
+                        </Label>
+                        <Label Text="{Binding Mnemonic}"
+                               TextColor="{DynamicResource ErrorTextColor}"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               FontSize="14">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Mnemonic}"
+                                             Value="">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Button Text="{x:Static resources:AppResources.GenerateButton}"
+                        Style="{DynamicResource GenerateButtonStyle}"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Clicked="OnGenerateButtonClicked"/>
+            </StackLayout>
+            <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
+                   x:Name="LoseMnemonicPhraseText"
+                   FontFamily="{DynamicResource RegularFont}"
+                   TextColor="{DynamicResource MnemonicPhraseTextColor}"
+                   FontSize="14"
+                   Padding="0,10"
+                   IsVisible="False"/>
+            <Button Text="{x:Static resources:AppResources.NextButton}"
+                    Margin="0,20"
+                    Style="{DynamicResource MainButtonStyle}"
+                    Clicked="OnNextButtonClicked"/>
         </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Frame Style="{DynamicResource FrameCaptionStyle}">
-                <Label Text="{x:Static resources:AppResources.WordCountLabel}"
-                       Style="{DynamicResource LabelFrameCaptionStyle}"/>
-            </Frame>
-            <Frame HasShadow="False"
-                   x:Name="WordCountFrame"
-                   Padding="0"
-                   BorderColor="{DynamicResource DefaultFrameBorderColor}"
-                   HorizontalOptions="FillAndExpand">
-                <RelativeLayout>
-                    <custom:CustomPicker ItemsSource="{Binding WordCountToEntropyLength}"
-                                         ItemDisplayBinding="{Binding WordCount}"
-                                         SelectedItem="{Binding Entropy}"
-                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                         x:Name="WordCountPicker"
-                                         Focused="OnWordCountPickerFocused"
-                                         Unfocused="OnWordCountPickerFocused"
-                                         SelectedIndexChanged="MnemonicPhraseChanged"
-                                         HeightRequest="70"/>
-                    <Image Source="DownArrowPicker"
-                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Width, Factor=0.9}"
-                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=WordCountPicker, Property=Height, Factor=0.5, Constant=-5}"
-                           WidthRequest="10"
-                           HeightRequest="10"/>
-                </RelativeLayout>
-            </Frame>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Frame HasShadow="False"
-                   x:Name="MnemonicPhraseFrame"
-                   Padding="10"
-                   BorderColor="{DynamicResource DefaultFrameBorderColor}"
-                   HorizontalOptions="FillAndExpand"
-                   VerticalOptions="FillAndExpand">
-                <StackLayout VerticalOptions="Center">
-                    <Label Text="{x:Static resources:AppResources.MnemonicPhraseLabel}"
-                           x:Name="MnemonicLabel"
-                           TextColor="{DynamicResource AdditionalTextColor}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Center">
-                    </Label>
-                    <Label Text="{Binding Mnemonic}"
-                           TextColor="{DynamicResource ErrorTextColor}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Center"
-                           FontSize="14">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Mnemonic}"
-                                         Value="">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </StackLayout>
-            </Frame>
-            <Button Text="{x:Static resources:AppResources.GenerateButton}"
-                    Style="{DynamicResource GenerateButtonStyle}"
-                    HorizontalOptions="End"
-                    VerticalOptions="Start"
-                    Clicked="OnGenerateButtonClicked"/>
-        </StackLayout>
-        <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
-               x:Name="LoseMnemonicPhraseText"
-               FontFamily="{DynamicResource RegularFont}"
-               TextColor="{DynamicResource MnemonicPhraseTextColor}"
-               FontSize="14"
-               Padding="0,10"
-               IsVisible="False"/>
-        <Button Text="{x:Static resources:AppResources.NextButton}"
-                Margin="0,20"
-                Style="{DynamicResource MainButtonStyle}"
-                Clicked="OnNextButtonClicked"/>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>

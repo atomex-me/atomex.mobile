@@ -20,7 +20,7 @@
                         <Label FontFamily="{DynamicResource BoldFont}"
                                FontSize="22"
                                TextColor="{DynamicResource MainTextColor}"
-                               Text="{Binding TotalCost, StringFormat='{0:f1} $'}"
+                               Text="{Binding TotalCost, StringFormat='{0:0.#} $'}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"/>
                         <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
@@ -64,14 +64,13 @@
                                     <Label Grid.RowSpan="2"
                                            Grid.Column="2"
                                            FontFamily="{DynamicResource RegularFont}"
-                                           Text="{Binding PortfolioPercent, StringFormat='{0:f1}'}"
                                            TextColor="{DynamicResource MainTextColor}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"
                                            FontSize="14">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding PortfolioPercent, StringFormat='{0:f1}'}" />
+                                                <Span Text="{Binding PortfolioPercent, StringFormat='{0:0.#}'}" />
                                                 <Span Text=" %" /> 
                                             </FormattedString>
                                         </Label.FormattedText>

@@ -2,11 +2,13 @@
 using System.IO;
 using System.Linq;
 using atomex.Services;
+using atomex.Styles;
 using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
 using Atomex.MarketData.Bitfinex;
 using Microsoft.Extensions.Configuration;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -16,9 +18,13 @@ namespace atomex
 
         private IAtomexApp AtomexApp;
 
+        const int smallWightResolution = 768;
+        const int smallHeightResolution = 1280;
+
         public App()
         {
             InitializeComponent();
+            LoadStyles();
 
             // use the dependency service to get a platform-specific implementation and initialize it
             DependencyService.Get<INotificationManager>().Initialize();
@@ -88,6 +94,27 @@ namespace atomex
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        private void LoadStyles()
+        {
+            if (IsASmallDevice())
+                ResDictionary.MergedDictionaries.Add(SmallDevicesStyle.SharedInstance);
+            else
+                ResDictionary.MergedDictionaries.Add(GeneralDevicesStyle.SharedInstance);
+        }
+
+        public static bool IsASmallDevice()
+        {
+            // Get Metrics
+            var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
+
+            // Width (in pixels)
+            var width = mainDisplayInfo.Width;
+
+            // Height (in pixels)
+            var height = mainDisplayInfo.Height;
+            return (width <= smallWightResolution && height <= smallHeightResolution);
         }
     }
 }

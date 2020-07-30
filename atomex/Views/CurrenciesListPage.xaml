@@ -12,8 +12,7 @@
                       HasUnevenRows="True"
                       ItemTapped="OnListViewItemTapped"
                       SeparatorVisibility="None"
-                      VerticalOptions="FillAndExpand"
-                      CachingStrategy="RecycleElement">
+                      VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -54,7 +53,7 @@
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
                                        Text="{Binding Price, StringFormat='{0:f2} $'}"
-                                       TextColor="Gray"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
                                        FontFamily="{DynamicResource LightFont}"
                                        FontSize="12"
                                        VerticalOptions="Start" />
@@ -62,7 +61,7 @@
                                        Grid.Column="2"
                                        Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
                                        FontFamily="{DynamicResource LightFont}"
-                                       TextColor="Gray"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="12"
                                        VerticalOptions="Start"
                                        HorizontalOptions="EndAndExpand" />

@@ -8,11 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"
-                   TextColor="{DynamicResource MainTextColor}"
-                   FontFamily="{DynamicResource MediumFont}"
-                   Padding="20,30,20,10"
-                   FontSize="20"
-                   HorizontalTextAlignment="Center"/>
+                   Style="{DynamicResource SelectWalletTextStyle}"/>
             <ListView ItemsSource="{Binding Wallets}"
                       ItemTapped="OnWalletTapped"
                       HasUnevenRows="True"

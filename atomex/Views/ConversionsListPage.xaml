@@ -90,9 +90,6 @@
                                        Padding="2">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{x:Static resources:AppResources.Convert}"
-                                                  FontFamily="{DynamicResource RegularFont}"
-                                                  FontSize="12"/>
                                             <Span Text="{Binding FromAmount, StringFormat=' {0:0.###}'}"
                                                   FontFamily="{DynamicResource BoldFont}"
                                                   FontSize="14"/>

@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Styles.SmallDevicesStyle">
+       <!-- Buttons -->
+    <Style x:Key="MainButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="HeightRequest" Value="44"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+    </Style>
+    <Style x:Key="AdditionalButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="HeightRequest" Value="44"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+    </Style>
+
+    <!-- Entries -->
+    <Style x:Key="EntryStyle" TargetType="Entry">
+        <Setter Property="IsSpellCheckEnabled" Value="False"/>
+        <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+    </Style>
+        <Style x:Key="EntryHintStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalTextAlignment" Value="End"/>
+        <Setter Property="Padding" Value="20,10,0,0"/>
+        <Setter Property="IsVisible" Value="False"/>
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+    </Style>
+
+    <!-- Frames -->
+    <Style x:Key="EntryFrameStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0" Android="2"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="BorderColor" Value="{DynamicResource FrameBorderColor}"/>
+    </Style>
+
+    <Style x:Key="FrameCaptionStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="WidthRequest" Value="90"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource FrameCaptionBackgroundColor}"/>
+    </Style>
+
+    <Style x:Key="LabelFrameCaptionStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{DynamicResource LabelFrameCaptionColor}"/>
+    </Style>
+
+    <!-- Create New Wallet Pages -->
+    <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,10"/>
+    </Style>
+    <Style x:Key="CreateNewWalletTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="Padding" Value="2"/>
+    </Style>
+    <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="2"/>
+    </Style>
+    <Style x:Key="MnemonicPhraseEditorStyle" TargetType="Editor">
+        <Setter Property="IsSpellCheckEnabled" Value="False"/>
+        <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="BackgroundColor" Value="AliceBlue"/>
+        <Setter Property="PlaceholderColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="AutoSize" Value="TextChanges"/>
+        <Setter Property="IsEnabled" Value="True"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+
+    <!-- My Wallets Page -->
+    <Style x:Key="SelectWalletTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Padding" Value="20,20,20,10"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="13"/>
+        <Setter Property="Margin" Value="20,5"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="HeightRequest" Value="26"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
+    </Style>
+    <Style x:Key="MainNetWalletFrameStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="13"/>
+        <Setter Property="Margin" Value="20,5"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="HeightRequest" Value="26"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
+    </Style>
+    <Style x:Key="MainNetWalletlButtonTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="TestNetWalletlButtonTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Settings Pages -->
+    <Style x:Key="OptionLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="Margin" Value="15,0"/>
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="OptionValueLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="End"/>                                   
+        <Setter Property="HorizontalTextAlignment" Value="End"/>
+    </Style>
+
+     <!-- Currency Page -->
+    <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="11" Android="10"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="WidthRequest" Value="72"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+    </Style>
+    <Style x:Key="RefreshLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ItalicFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="IsVisible" Value="False"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0,10" Android="0,10,0,17"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Transaction info Page -->
+    <Style x:Key="TxAmountLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style x:Key="TxAmountCodeLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- Create Mnemonic Page -->
+    <Style x:Key="GenerateButtonStyle" TargetType="Button">
+        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="HeightRequest" Value="80"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonBorderColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}"/>
+    </Style>
+
+
+    <!-- Labels -->
+    <Style x:Key="EstimatedPriceLabelStyle" TargetType="Label">
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SwapStateLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="15,0,0,0"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Delegate Page -->
+    <Style x:Key="DelegationLoaderStyle" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{DynamicResource MainBackgroundColor}"/>
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Margin">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness"
+                            iOS="-10"
+                            Android="-25"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Start Page -->
+    <Style x:Key="StartPageButtonsStyle" TargetType="StackLayout">
+        <Setter Property="Margin" Value="10,-10,10,0"/>
+    </Style>
+</ResourceDictionary>

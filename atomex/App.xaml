@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="atomex.App">
     <Application.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary x:Name="ResDictionary">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Themes/Light.xaml"/>
                 <ResourceDictionary Source="Styles/Fonts/Roboto.xaml"/>

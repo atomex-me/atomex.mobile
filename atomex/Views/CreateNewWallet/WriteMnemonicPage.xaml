@@ -50,11 +50,7 @@
                 <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
-                        BackgroundColor="AliceBlue"
-                        PlaceholderColor="{DynamicResource HintTextColor}"
-                        Style="{DynamicResource EntryStyle}"
-                        AutoSize="TextChanges"
-                        IsEnabled="True"
+                        Style="{DynamicResource MnemonicPhraseEditorStyle}"
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused"/>
             </Frame>

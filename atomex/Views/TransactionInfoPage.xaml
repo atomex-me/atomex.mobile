@@ -62,12 +62,10 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
                                             </Setter>
@@ -81,12 +79,10 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
                                             </Setter>
@@ -100,12 +96,10 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
                                             </Setter>
@@ -119,12 +113,10 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
                                             </Setter>
@@ -138,12 +130,10 @@
                                                 <Setter.Value>
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              FontSize="16"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
-                                                              FontSize="12"
-                                                              FontFamily="{DynamicResource RegularFont}"/>
+                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                                     </FormattedString>
                                                 </Setter.Value>
                                             </Setter>

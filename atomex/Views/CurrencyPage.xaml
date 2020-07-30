@@ -108,8 +108,8 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1.5*" />
-                                    <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="3.5*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="4.5*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.RowSpan="2"
                                        Margin="4">
@@ -290,7 +290,7 @@
                                        Grid.Column="1"
                                        VerticalOptions="StartAndExpand"
                                        FontFamily="{DynamicResource LightFont}"
-                                       TextColor="Gray"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="12"
                                        LineBreakMode="MiddleTruncation">
                                     <Label.Triggers>             

@@ -17,7 +17,8 @@
         </StackLayout>
         <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
                      RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}">
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
+                     Style="{DynamicResource StartPageButtonsStyle}">
             <Button Text="{x:Static resources:AppResources.MyWalletsButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     IsEnabled="{Binding HasWallets}"

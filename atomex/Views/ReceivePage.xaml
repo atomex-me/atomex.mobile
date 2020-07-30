@@ -110,7 +110,7 @@
                    FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Center"
                    FontSize="24"/>
-            <StackLayout Orientation="Horizontal" Padding="100,20">
+            <StackLayout Orientation="Horizontal" Padding="80,20">
                 <StackLayout HorizontalOptions="CenterAndExpand"
                              WidthRequest="60">
                     <StackLayout.GestureRecognizers>
@@ -124,6 +124,7 @@
                     <Label Text="{x:Static resources:AppResources.CopyButton}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{DynamicResource MainTextColor}"
+                           FontSize="14"
                            HorizontalOptions="Center"
                            VerticalOptions="Start" />
                 </StackLayout>
@@ -141,6 +142,7 @@
                     <Label Text="{x:Static resources:AppResources.ShareButton}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{DynamicResource MainTextColor}"
+                           FontSize="14"
                            HorizontalOptions="Center"
                            VerticalOptions="Start" />
                 </StackLayout>
