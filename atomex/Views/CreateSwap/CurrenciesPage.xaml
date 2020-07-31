@@ -9,11 +9,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{x:Static resources:AppResources.SelectCurrenciesLabel}"
-                   TextColor="{DynamicResource MainTextColor}"
-                   HorizontalTextAlignment="Center"
-                   Padding="20,30,20,10"
-                   FontSize="22"
-                   FontFamily="{DynamicResource BoldFont}"/>
+                   Style="{DynamicResource CreateSwapTitleStyle}"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="0"
@@ -70,11 +66,7 @@
                 </Label>
                 <Label Grid.Row="1"
                        Grid.Column="2"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       FontFamily="{DynamicResource ItalicFont}"
-                       TextColor="{DynamicResource HintTextColor}"
-                       FontSize="14">
+                       Style="{DynamicResource PickerBalanceLabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
                     </Label.GestureRecognizers>
@@ -154,16 +146,15 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-            <Label Margin="20"
+            <Label Margin="20,10"
                    TextColor="{DynamicResource MainTextColor}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                              FontFamily="{DynamicResource RegularFont}"/>
+                              Style="{DynamicResource EstimatedLabelStyle}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding EstimatedPrice}"
-                              FontSize="18"
-                              FontFamily="{DynamicResource BoldFont}"/>
+                              Style="{DynamicResource EstimatedValueStyle}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

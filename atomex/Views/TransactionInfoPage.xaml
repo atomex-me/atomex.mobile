@@ -14,8 +14,9 @@
                     <TableSection Title="{x:Static resources:AppResources.TransactionInfo}"
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" Margin="20,0">
-                                <Image Margin="0,10">
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="20,0">
+                                <Image Style="{DynamicResource TxImageStyle}">
                                     <Image.Triggers>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
@@ -177,13 +178,8 @@
                                                     Value="{DynamicResource UnknownStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label FontSize="14"
-                                           Padding="10,0"
-                                           TextColor="White"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent"
-                                           FontFamily="{DynamicResource BoldFont}"
+                                    <Label Padding="10,0"
+                                           Style="{DynamicResource TxStateLabelStyle}"
                                            Text="{Binding State}" />
                                 </Frame>
                             </StackLayout>

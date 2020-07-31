@@ -323,7 +323,7 @@
         <value>Select currencies</value>
     </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
-        <value>Estimated price</value>
+        <value>Est. price</value>
     </data>
     <data name="EnterAmountLabel" xml:space="preserve">
         <value>Enter amount</value>
@@ -335,10 +335,10 @@
         <value>No liquidity</value>
     </data>
     <data name="EstimatedPaymentFeeLabel" xml:space="preserve">
-        <value>Estimated payment fee</value>
+        <value>Est. payment fee</value>
     </data>
     <data name="EstimatedRedeemFeeLabel" xml:space="preserve">
-        <value>Estimated redeem fee</value>
+        <value>Est. redeem fee</value>
     </data>
     
     <!-- Settings Page -->

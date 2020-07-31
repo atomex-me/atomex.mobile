@@ -100,12 +100,7 @@
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label Padding="10,0"
-                                           FontSize="14"
-                                           TextColor="White"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent"
-                                           FontFamily="{DynamicResource BoldFont}"
+                                           Style="{DynamicResource TxStateLabelStyle}"
                                            Text="{Binding CompactState}" />
                                 </Frame>
                             </StackLayout>

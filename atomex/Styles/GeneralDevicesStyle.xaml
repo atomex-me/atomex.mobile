@@ -199,6 +199,10 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="12"/>
     </Style>
+    <Style x:Key="TxImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0,20"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
 
     <!-- Create Mnemonic Page -->
     <Style x:Key="GenerateButtonStyle" TargetType="Button">
@@ -214,13 +218,13 @@
 
 
     <!-- Labels -->
-    <Style x:Key="EstimatedPriceLabelStyle" TargetType="Label">
+    <!--<Style x:Key="EstimatedPriceLabelStyle" TargetType="Label">
         <Setter Property="FontSize">
             <Setter.Value>
                 <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
         <Setter Property="Margin" Value="15,0,0,0"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
@@ -230,6 +234,21 @@
                 <OnPlatform x:TypeArguments="x:Double" iOS="17" Android="14"/>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style x:Key="TxStateLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style x:Key="PickerBalanceLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="VerticalTextAlignment" Value="Start"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="FontFamily" Value="{DynamicResource ItalicFont}"/>
+        <Setter Property="FontSize" Value="14"/>
     </Style>
 
     <!-- Delegate Page -->
@@ -248,5 +267,49 @@
     <!-- Start Page -->
     <Style x:Key="StartPageButtonsStyle" TargetType="StackLayout">
         <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <!-- Create swap Page -->
+    <Style x:Key="CreateSwapTitleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Padding" Value="20,30,20,10"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="EstimatedLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="EstimatedValueStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+    </Style>
+    <Style x:Key="CurrencyCodeLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+    </Style>
+    <Style x:Key="InBaseLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Regular}"/>
+    </Style>
+     <Style x:Key="MarketVolumeLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="MarketVolumeValueStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+    </Style>
+        <Style x:Key="ConfirmTxTableStyle" TargetType="TableView">
+        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalBackgroundColor}"/>
+        <Setter Property="RowHeight" Value="70"/>
+        <Setter Property="HeightRequest" Value="280"/>
     </Style>
 </ResourceDictionary>

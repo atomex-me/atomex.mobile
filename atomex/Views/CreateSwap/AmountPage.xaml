@@ -10,11 +10,7 @@
         <ScrollView>
             <StackLayout Padding="20,0">
                 <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
-                       TextColor="{DynamicResource MainTextColor}"
-                       HorizontalTextAlignment="Center"
-                       Padding="20,30,20,10"
-                       FontSize="22"
-                       FontFamily="{DynamicResource BoldFont}"/>
+                       Style="{DynamicResource CreateSwapTitleStyle}"/>
                 <Grid ColumnSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70"/>
@@ -61,15 +57,14 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
-                                    FontFamily="{DynamicResource RegularFont}"/>
-                            <Span Text=": "/>
+                                  Style="{DynamicResource MarketVolumeLabelStyle}"/>
+                            <Span Text=": "
+                                  Style="{DynamicResource MarketVolumeLabelStyle}"/>
                             <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.####}'}"
-                                    FontFamily="{DynamicResource BoldFont}"
-                                    FontSize="16"/>
+                                  Style="{DynamicResource MarketVolumeValueStyle}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                                    FontFamily="{DynamicResource BoldFont}"
-                                    FontSize="12"/>
+                                  Style="{DynamicResource CurrencyCodeLabelStyle}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -142,9 +137,7 @@
                     </Label>
                     <Label Grid.Row="2"
                            Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
-                           FontSize="12"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource AdditionalTextColor}"
+                           Style="{DynamicResource InBaseLabelStyle}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Start">
                         <Label.FormattedText>
@@ -157,9 +150,7 @@
                     <Label Grid.Row="2"
                            Grid.Column="2"
                            Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
-                           FontSize="12"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource AdditionalTextColor}"
+                           Style="{DynamicResource InBaseLabelStyle}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Start">
                         <Label.FormattedText>
@@ -170,54 +161,50 @@
                         </Label.FormattedText>
                     </Label>
                 </Grid>
-                <Label HorizontalTextAlignment="Center"
-                       TextColor="{DynamicResource MainTextColor}">
+                <Label HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"/>
-                            <Span Text=": "/>
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
+                            <Span Text=": "
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text="{Binding EstimatedPrice}"
-                                  FontFamily="{DynamicResource BoldFont}"
-                                  Style="{DynamicResource EstimatedPriceLabelStyle}"/>
+                                  Style="{DynamicResource EstimatedValueStyle}"/>
+                                  <!--Style="{DynamicResource EstimatedPriceLabelStyle}"/>-->
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label HorizontalTextAlignment="Center"
-                       TextColor="{DynamicResource MainTextColor}">
+                <Label HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"/>
-                            <Span Text=": "/>
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
+                            <Span Text=": "
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text="{Binding EstimatedPaymentFee}"
-                                  FontFamily="{DynamicResource BoldFont}"/>
+                                  Style="{DynamicResource EstimatedValueStyle}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
-                                  FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="12"/>
+                                  Style="{DynamicResource CurrencyCodeLabelStyle}"/>
                             <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                  FontSize="12"
-                                  TextColor="{DynamicResource AdditionalTextColor}"/>
+                                  Style="{DynamicResource InBaseLabelStyle}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label HorizontalTextAlignment="Center"
-                       TextColor="{DynamicResource MainTextColor}">
+                <Label HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                                  FontFamily="{DynamicResource RegularFont}"/>
-                            <Span Text=": "/>
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
+                            <Span Text=": "
+                                  Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text="{Binding EstimatedRedeemFee}"
-                                  FontFamily="{DynamicResource BoldFont}"/>
+                                  Style="{DynamicResource EstimatedValueStyle}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
-                                  FontFamily="{DynamicResource BoldFont}"
-                                  FontSize="12"/>
+                                  Style="{DynamicResource CurrencyCodeLabelStyle}"/>
                             <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                  FontSize="12"
-                                  TextColor="{DynamicResource AdditionalTextColor}"/>
+                                  Style="{DynamicResource InBaseLabelStyle}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

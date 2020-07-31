@@ -104,8 +104,8 @@
                     </Label>
                 </Grid>
                 <TableView Intent="Form"
-                           RowHeight="70"
-                           BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+                           Style="{DynamicResource ConfirmTxTableStyle}"
+                           HasUnevenRows="False">
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}"
                                       TextColor="{DynamicResource HintTextColor}">
@@ -113,19 +113,18 @@
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
                                     <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                                           FontFamily="{DynamicResource RegularFont}"/>
+                                           Style="{DynamicResource EstimatedLabelStyle}"/>
                                     <Label Text="{Binding EstimatedPrice}"
                                            VerticalOptions="CenterAndExpand"
                                            TextColor="{DynamicResource HintTextColor}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           Style="{DynamicResource EstimatedPriceLabelStyle}"/>
+                                           FontFamily="{DynamicResource RegularFont}"/>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
                                     <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                                           FontFamily="{DynamicResource RegularFont}"/>
+                                           Style="{DynamicResource EstimatedLabelStyle}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
                                                TextColor="{DynamicResource HintTextColor}"
@@ -150,7 +149,7 @@
                                 <StackLayout Margin="20,0"
                                              VerticalOptions="Center">
                                     <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                                           FontFamily="{DynamicResource RegularFont}"/>
+                                           Style="{DynamicResource EstimatedLabelStyle}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
                                                TextColor="{DynamicResource HintTextColor}"
@@ -174,14 +173,12 @@
                         </TableSection>
                     </TableRoot>
                 </TableView>
+                <Button Text="{x:Static resources:AppResources.ConvertButton}"
+                        x:Name="ConvertButton"
+                        Margin="10"
+                        Style="{DynamicResource MainButtonStyle}"
+                        Clicked="OnConvertButtonClicked"/>
             </StackLayout>
-            <Button Text="{x:Static resources:AppResources.ConvertButton}"
-                    x:Name="ConvertButton"
-                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0.8,Constant=0}"
-                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                    Margin="20"
-                    Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnConvertButtonClicked"/>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

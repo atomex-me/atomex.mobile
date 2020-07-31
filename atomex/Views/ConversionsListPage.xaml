@@ -87,7 +87,7 @@
                                 <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
                                        TextColor="{DynamicResource MainTextColor}"
-                                       Padding="2">
+                                       Padding="5">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding FromAmount, StringFormat=' {0:0.###}'}"
@@ -145,13 +145,8 @@
                                                     Value="{DynamicResource UnsettledStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
-                                    <Label TextColor="White"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"
-                                           BackgroundColor="Transparent"
-                                           FontFamily="{DynamicResource BoldFont}"
-                                           Text="{Binding State}"
-                                           FontSize="14"/>
+                                    <Label Style="{DynamicResource TxStateLabelStyle}"
+                                           Text="{Binding State}"/>
                                 </Frame>  
                             </Grid>
                         </ViewCell>

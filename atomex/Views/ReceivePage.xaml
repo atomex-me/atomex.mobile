@@ -62,10 +62,9 @@
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Padding="10,0,0,0"
+                           Style="{DynamicResource PickerBalanceLabelStyle}"
                            HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Center"
-                           FontFamily="{DynamicResource ItalicFont}"
-                           TextColor="{DynamicResource HintTextColor}">
+                           VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnPickerClicked"/>
                         </Label.GestureRecognizers>

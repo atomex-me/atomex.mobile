@@ -228,11 +228,10 @@
                 </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
+                       Style="{DynamicResource PickerBalanceLabelStyle}"
                        Padding="20,0,15,0"
                        HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center"
-                       FontFamily="{DynamicResource ItalicFont}"
-                       TextColor="{DynamicResource HintTextColor}">
+                       VerticalTextAlignment="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Label.GestureRecognizers>
