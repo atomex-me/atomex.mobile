@@ -32,10 +32,10 @@
                     </StackLayout>
                 </RelativeLayout>
                 <ListView ItemsSource="{Binding CurrencyViewModels}"
+                          ItemTapped="OnListViewItemTapped"
                           HasUnevenRows="True"
                           SeparatorVisibility="None"
-                          BackgroundColor="{DynamicResource MainBackgroundColor}"
-                          SelectionMode="None">
+                          BackgroundColor="{DynamicResource MainBackgroundColor}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

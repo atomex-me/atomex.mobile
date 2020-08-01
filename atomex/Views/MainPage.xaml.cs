@@ -18,6 +18,8 @@ namespace atomex
 
         private readonly NavigationPage navigationConversionPage;
 
+        private readonly NavigationPage navigationWalletsListPage;
+
         public MainViewModel _mainViewModel { get; }
 
         public MainPage(MainViewModel mainViewModel)
@@ -25,13 +27,13 @@ namespace atomex
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             _mainViewModel = mainViewModel;
 
-            var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel))
+            var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel, this))
             {
                 IconImageSource = "NavBarPortfolio",
                 Title = AppResources.PortfolioTab
             };
 
-            var navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
+            navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
             {
                 IconImageSource = "NavBarWallets",
                 Title = AppResources.WalletsTab
@@ -105,6 +107,13 @@ namespace atomex
                 navigationConversionPage.Navigation.PopToRootAsync();
                 navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
             }
+        }
+
+        public void ShowCurrency(CurrencyViewModel currencyViewModel)
+        {
+            this.CurrentPage = navigationWalletsListPage;
+            navigationWalletsListPage.Navigation.PopToRootAsync();
+            navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
         }
     }
 }

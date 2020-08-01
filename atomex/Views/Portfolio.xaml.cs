@@ -11,15 +11,18 @@ namespace atomex
     {
         private CurrenciesViewModel _currenciesViewModel;
 
+        private INavigationService _navigationService { get; }
+
         public Portfolio()
         {
             InitializeComponent();
         }
 
-        public Portfolio(CurrenciesViewModel currenciesViewModel)
+        public Portfolio(CurrenciesViewModel currenciesViewModel, INavigationService navigationService)
         {
             InitializeComponent();
             _currenciesViewModel = currenciesViewModel;
+            _navigationService = navigationService;
 
             _currenciesViewModel.QuotesUpdated += (s, a) =>
             {
@@ -81,6 +84,14 @@ namespace atomex
                 }
             }
             catch (Exception e) { }
+        }
+
+        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                _navigationService.ShowCurrency(e.Item as CurrencyViewModel);
+            }
         }
     }
 }
