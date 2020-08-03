@@ -4,6 +4,7 @@ using SkiaSharp;
 using atomex.ViewModel;
 using atomex.CustomElements;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace atomex
 {
@@ -12,6 +13,20 @@ namespace atomex
         private CurrenciesViewModel _currenciesViewModel;
 
         private INavigationService _navigationService { get; }
+
+        private readonly List<string> chartColors = new List<string>
+        {
+            "#a43604",
+            "#eb8b35",
+            "#cdbba3",
+            "#dedfe4",
+            "#161f21",
+            "#492b22",
+            "#af7e68",
+            "#bcc1b7",
+            "#acaead",
+            "#f3f1ec",
+        };
 
         public Portfolio()
         {
@@ -26,7 +41,7 @@ namespace atomex
 
             _currenciesViewModel.QuotesUpdated += (s, a) =>
             {
-                Device.BeginInvokeOnMainThread(UpdateChart);   
+                Device.BeginInvokeOnMainThread(UpdateChart);
             };
 
             BindingContext = currenciesViewModel;
@@ -44,19 +59,9 @@ namespace atomex
                     {
                         var entry = new Microcharts.Entry[]
                         {
-                        new Microcharts.Entry(100)
-                        {
-                             Color = SKColor.Parse("#dcdcdc")
-                        }
+                            new Microcharts.Entry(100) { Color = SKColor.Parse("#dcdcdc") }
                         };
-
-                        if (portfolioChart.Chart == null)
-                            portfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
-                        else
-                        {
-                            var donutChart = portfolioChart.Chart as CustomDonutChart;
-                            donutChart.Entries = entry;
-                        }
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
                     }
                     else
                     {
@@ -64,22 +69,14 @@ namespace atomex
                         var entries = new Microcharts.Entry[nonzeroWallets.Count];
                         for (int i = 0; i < nonzeroWallets.Count; i++)
                         {
-                            Random rnd = new Random();
                             entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                             {
                                 Label = nonzeroWallets[i].CurrencyCode,
                                 ValueLabel = string.Format("{0:0.#} %", nonzeroWallets[i].PortfolioPercent),
-                                Color = SKColor.FromHsv(rnd.Next(256), rnd.Next(256), rnd.Next(256))
+                                Color = SKColor.Parse(chartColors[i])
                             };
                         }
-
-                        if (portfolioChart.Chart == null)
-                            portfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
-                        else
-                        {
-                            var donutChart = portfolioChart.Chart as CustomDonutChart;
-                            donutChart.Entries = entries;
-                        }
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
                     }
                 }
             }

@@ -20,6 +20,8 @@ namespace atomex.ViewModel
 
         public Currency Currency { get; set; }
 
+        public event EventHandler CurrencyUpdated;
+
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
@@ -176,6 +178,8 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
+
+                CurrencyUpdated.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {

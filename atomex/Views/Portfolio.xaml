@@ -10,11 +10,11 @@
             <StackLayout>
                 <RelativeLayout HeightRequest="220"
                                 Margin="0,10">
-                    <chart:ChartView x:Name="portfolioChart"
+                    <chart:ChartView x:Name="PortfolioChart"
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
-                    <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Height, Factor=1}"
-                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=portfolioChart, Property=Width, Factor=1}"
+                    <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Height, Factor=1}"
+                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Width, Factor=1}"
                                  VerticalOptions="Center"
                                  Spacing="0">
                         <Label FontFamily="{DynamicResource BoldFont}"

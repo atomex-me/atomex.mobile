@@ -42,8 +42,8 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            App.QuotesProvider.QuotesUpdated += QuotesUpdatedEventHandler;
-            QuotesUpdatedEventHandler(this, EventArgs.Empty);
+            App.QuotesProvider.QuotesUpdated += CurrencyUpdatedEventHandler;
+            CurrencyUpdatedEventHandler(this, EventArgs.Empty);
         }
 
         private async Task FillCurrenciesAsync(bool restore)
@@ -60,6 +60,8 @@ namespace atomex.ViewModel
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
                 };
                 CurrencyViewModels.Add(currency);
+                currency.CurrencyUpdated += CurrencyUpdatedEventHandler;
+
                 if (restore)
                     currency.UpdateCurrencyAsync().FireAndForget();
                 else
@@ -70,7 +72,7 @@ namespace atomex.ViewModel
             }));
         }
 
-        private void QuotesUpdatedEventHandler(object sender, EventArgs e)
+        private void CurrencyUpdatedEventHandler(object sender, EventArgs e)
         {
             TotalCost = 0;
             foreach (var c in CurrencyViewModels)
