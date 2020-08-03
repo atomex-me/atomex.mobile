@@ -192,10 +192,11 @@
                 <StackLayout x:Name="GasLayout"
                              IsVisible="False">
                     <StackLayout Orientation="Horizontal"
+                                 HeightRequest="70"
                                  Spacing="0">
                         <Frame Style="{DynamicResource FrameCaptionStyle}"
                                WidthRequest="60"
-                               Padding="20">
+                               Padding="10">
                             <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
                                    Style="{DynamicResource LabelFrameCaptionStyle}"/>
                         </Frame>
@@ -205,7 +206,7 @@
                                HorizontalOptions="FillAndExpand">
                             <controls:CustomEntry Style="{DynamicResource EntryStyle}"
                                                   Keyboard="Numeric"
-                                                  Text="{Binding FeePriceString, StringFormat='{0} GWEI'}">
+                                                  Text="{Binding FeePrice, StringFormat='{0:0.######} GWEI'}">
                                 <controls:CustomEntry.Triggers>
                                     <DataTrigger TargetType="controls:CustomEntry"
                                                  Binding="{Binding UseDefaultFee}"
@@ -232,10 +233,11 @@
                         </Frame>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal"
-                                 Spacing="0">
+                                 Spacing="0"
+                                 HeightRequest="70">
                         <Frame Style="{DynamicResource FrameCaptionStyle}"
                                WidthRequest="60"
-                               Padding="20">
+                               Padding="10">
                             <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
                                    Style="{DynamicResource LabelFrameCaptionStyle}"/>
                         </Frame>
@@ -288,7 +290,6 @@
                 <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
                        BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
                        HasShadow="False"
-                       Padding="10"
                        Margin="10">
                     <Frame.Triggers>
                         <DataTrigger TargetType="Frame"

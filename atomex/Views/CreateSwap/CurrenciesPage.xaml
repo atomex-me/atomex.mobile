@@ -152,7 +152,8 @@
                     <FormattedString>
                         <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
                               Style="{DynamicResource EstimatedLabelStyle}"/>
-                        <Span Text=" "/>
+                        <Span Text=": "
+                              Style="{DynamicResource EstimatedLabelStyle}"/>
                         <Span Text="{Binding EstimatedPrice}"
                               Style="{DynamicResource EstimatedValueStyle}"/>
                     </FormattedString>
