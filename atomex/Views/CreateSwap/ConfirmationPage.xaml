@@ -38,7 +38,6 @@
                     <Image Grid.Column="2"
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"/>
                     <Label Grid.Row="1"
-                           FontSize="14"
                            TextColor="{DynamicResource MainTextColor}"
                            FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
@@ -56,7 +55,6 @@
                     </Label>
                     <Label Grid.Row="1"
                            Grid.Column="2"
-                           FontSize="14"
                            TextColor="{DynamicResource MainTextColor}"
                            FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"

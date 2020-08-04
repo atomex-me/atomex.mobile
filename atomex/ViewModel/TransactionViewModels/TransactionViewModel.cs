@@ -41,6 +41,10 @@ namespace atomex.ViewModel.TransactionViewModels
             set { _isExpanded = value; OnPropertyChanged(nameof(IsExpanded)); }
         }
 
+        public TransactionViewModel()
+        {
+        }
+
         public TransactionViewModel(IBlockchainTransaction tx, decimal amount, decimal fee)
         {
             Transaction = tx ?? throw new ArgumentNullException(nameof(tx));

@@ -228,6 +228,14 @@
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Down-arrow-2-2.pdf" />
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPage-bg.png" />
+    <ImageAsset Include="Assets.xcassets\NYX.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\FA2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\NYX.imageset\XTZ.pdf" />
+    <ImageAsset Include="Assets.xcassets\NYX.imageset\XTZ-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\NYX.imageset\XTZ-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -321,6 +329,8 @@
     <Folder Include="Assets.xcassets\DownArrowPicker.imageset\" />
     <Folder Include="Assets.xcassets\StartPageBackground.imageset\" />
     <Folder Include="Common\" />
+    <Folder Include="Assets.xcassets\NYX.imageset\" />
+    <Folder Include="Assets.xcassets\FA2.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

@@ -13,6 +13,9 @@ namespace atomex.ViewModel.TransactionViewModels
         public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
         public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
 
+        public TezosFA12TransactionViewModel()
+        {
+        }
 
         public TezosFA12TransactionViewModel(TezosTransaction tx)
             : base(tx, GetAmount(tx), 0)
@@ -26,8 +29,6 @@ namespace atomex.ViewModel.TransactionViewModels
 
         private static decimal GetAmount(TezosTransaction tx)
         {
-            var Erc20 = tx.Currency as Atomex.EthereumTokens.ERC20;
-
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
