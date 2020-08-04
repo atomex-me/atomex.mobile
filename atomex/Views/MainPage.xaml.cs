@@ -99,21 +99,21 @@ namespace atomex
 
         public void ConvertCurrency(string currencyCode)
         {
-            this.CurrentPage = navigationConversionPage;
             var conversionViewModel = navigationConversionPage.RootPage.BindingContext as ConversionViewModel;
             if (conversionViewModel != null)
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
-                navigationConversionPage.Navigation.PopToRootAsync();
+                navigationConversionPage.Navigation.PopToRootAsync(false);
                 navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
+                this.CurrentPage = navigationConversionPage;
             }
         }
 
         public void ShowCurrency(CurrencyViewModel currencyViewModel)
         {
-            this.CurrentPage = navigationWalletsListPage;
-            navigationWalletsListPage.Navigation.PopToRootAsync();
+            navigationWalletsListPage.Navigation.PopToRootAsync(false);
             navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
+            this.CurrentPage = navigationWalletsListPage;
         }
     }
 }
