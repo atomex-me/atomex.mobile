@@ -21,8 +21,8 @@
                   ColumnSpacing="0"
                   RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -146,7 +146,7 @@
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="DownArrowPicker"
-                       Margin="0,34">
+                       Margin="0,30">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </Image.GestureRecognizers>
@@ -157,14 +157,14 @@
                   RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="7*" />
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
-                       Padding="20">
+                       Padding="10">
                     <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
@@ -185,8 +185,8 @@
                   RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -195,7 +195,7 @@
                 </Grid.ColumnDefinitions>
                 <Frame Style="{DynamicResource FrameCaptionStyle}"
                        Grid.RowSpan="2"
-                       Padding="20">
+                       Padding="10">
                     <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
                            Style="{DynamicResource LabelFrameCaptionStyle}"/>
                 </Frame>
@@ -244,22 +244,21 @@
                     </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Column="2"
-                             Grid.RowSpan="2">
-                     <Image Source="DownArrowPicker"
-                            Margin="12,34">
-                         <Image.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
-                         </Image.GestureRecognizers>
-                     </Image>
-                </StackLayout>
+                <Image Source="DownArrowPicker"
+                    Grid.Column="2"
+                    Grid.RowSpan="2"
+                    Margin="0,30">
+                    <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>    
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
                   RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -301,7 +300,7 @@
                             </controls:CustomEntry.Triggers>
                         </controls:CustomEntry>
                         <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
-                               TextColor="Gray"
+                               TextColor="{DynamicResource AdditionalTextColor}"
                                VerticalTextAlignment="Center"
                                Padding="20,0"/>
                     </StackLayout>
