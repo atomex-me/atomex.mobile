@@ -23,6 +23,8 @@ namespace atomex.ViewModel
         public string Address { get; set; }
         public decimal Balance { get; set; }
         public string TxExplorerUri { get; set; }
+        public DateTime DelegationTime { get; set; }
+        public string Status { get; set; }
     }
 
     public class DelegateViewModel : BaseViewModel
@@ -232,40 +234,6 @@ namespace atomex.ViewModel
             return null;
         }
 
-
-        //public DelegateViewModel(IAtomexApp app)
-        //{
-        //    FromBakersList = new List<BakerViewModel>()
-        //    {
-        //        new BakerViewModel()
-        //        {
-        //            Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
-        //            Name = "TezosHODL",
-        //            Address = "tz1sdfldjsflksjdlkf123sfa",
-        //            Fee = 5,
-        //            MinDelegation = 10,
-        //            StakingAvailable = 10000.000000m
-        //        },
-        //        new BakerViewModel()
-        //        {
-        //            Logo = "XTZ",
-        //            Name = "Tezgate",
-        //            Address = "tz1VxS7ff4YnZRs8b4mMP4WaMVpoQjuo1rjf",
-        //            Fee = 9.90m,
-        //            MinDelegation = 100,
-        //            StakingAvailable = 1356622.776437m
-        //        }
-        //    };
-        //    App = app ?? throw new ArgumentNullException(nameof(app));
-        //    _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
-        //    FeeCurrencyCode = _tezos.FeeCode;
-        //    BaseCurrencyCode = "USD";
-        //    BaseCurrencyFormat = "$0.00";
-        //    UseDefaultFee = true;
-        //    LoadDelegationInfoAsync().FireAndForget();
-        //    PrepareWallet().WaitForResult();
-        //}
-
         public DelegateViewModel(IAtomexApp app)
         {
             App = app ?? throw new ArgumentNullException(nameof(app));
@@ -436,32 +404,43 @@ namespace atomex.ViewModel
                     .GetUnspentAddressesAsync(_tezos.Name)
                     .ConfigureAwait(false);
 
-                var rpc = new Rpc(_tezos.RpcNodeUri);
-
                 var delegations = new List<Delegation>();
+
+                var tzktApi = new TzktApi(_tezos);
+
+                var head = await tzktApi.GetHeadLevelAsync();
+
+                var headLevel = head.Value;
+
+                decimal currentCycle = App.Account.Network == Network.MainNet ?
+                    Math.Floor((headLevel - 1) / 4096) :
+                    Math.Floor((headLevel - 1) / 2048);
 
                 foreach (var wa in addresses)
                 {
-                    var accountData = await rpc
-                        .GetAccount(wa.Address)
-                        .ConfigureAwait(false);
+                    var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
 
-                    var @delegate = accountData["delegate"]?.ToString();
-
-                    if (string.IsNullOrEmpty(@delegate))
+                    if (account == null || account.HasError)
                         continue;
 
-
                     var baker = await BbApi
-                        .GetBaker(@delegate, App.Account.Network)
+                        .GetBaker(account.Value.DelegateAddress, App.Account.Network)
                         .ConfigureAwait(false);
+
+                    decimal txCycle = App.Account.Network == Network.MainNet ?
+                        Math.Floor((account.Value.DelegationLevel - 1) / 4096) :
+                        Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
                     delegations.Add(new Delegation
                     {
                         Baker = baker,
                         Address = wa.Address,
                         Balance = wa.Balance,
-                        TxExplorerUri = _tezos.TxExplorerUri + wa.Address
+                        TxExplorerUri = _tezos.TxExplorerUri + wa.Address,
+                        DelegationTime = account.Value.DelegationTime,
+                        Status = currentCycle - txCycle < 2 ? "Pending" :
+                            currentCycle - txCycle < 7 ? "Confirmed" :
+                            "Active"
                     });
                 }
 

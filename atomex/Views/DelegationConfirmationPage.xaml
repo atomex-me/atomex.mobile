@@ -16,7 +16,7 @@
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
                 <TableView Intent="Form"
-                           RowHeight="80">
+                           RowHeight="70">
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
                             <TextCell Text="{x:Static resources:AppResources.FromLabel}"
@@ -31,7 +31,7 @@
                                     <Label Text="{x:Static resources:AppResources.ToLabel}"
                                            VerticalTextAlignment="Center"
                                            TextColor="{DynamicResource HintTextColor}"
-                                           WidthRequest="20"/>
+                                           WidthRequest="30"/>
                                     <Image Source="{Binding BakerViewModel.Logo}"
                                            Margin="10,10,0,10"/>
                                     <StackLayout VerticalOptions="Center">
