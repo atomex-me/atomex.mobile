@@ -50,6 +50,9 @@
     <data name="AmountLabel" xml:space="preserve">
         <value>Amount</value>
     </data>
+    <data name="MinimumAmountLabel" xml:space="preserve">
+        <value>Minimum Amount</value>
+    </data>
     <data name="ToLabel" xml:space="preserve">
         <value>To</value>
     </data>
@@ -285,6 +288,26 @@
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Copy Uri and Exit</value>
+    </data>
+    
+    <!-- Delegation Info Page -->
+    <data name="DelegationInfoPageTitle" xml:space="preserve">
+        <value>Delegation status</value>
+    </data>
+    <data name="CheckRewardsButton" xml:space="preserve">
+        <value>Check rewards</value>
+    </data>
+    <data name="DelegateLabel" xml:space="preserve">
+        <value>Delegate</value>
+    </data>
+    <data name="Roi" xml:space="preserve">
+        <value>ROI</value>
+    </data>
+    <data name="DelegationStatus" xml:space="preserve">
+        <value>Delegation Status</value>
+    </data>
+    <data name="DelegationTime" xml:space="preserve">
+        <value>Delegation Time</value>
     </data>
     
     <!-- Conversion list Page -->

@@ -1,7 +1,7 @@
 ﻿using System;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -34,10 +34,10 @@ namespace atomex
                 await DisplayAlert(AppResources.Error, AppResources.NoTezosError, AppResources.AcceptButton);
             }
         }
-        private void OnDelegationTapped(object sender, ItemTappedEventArgs args)
+        private async void OnDelegationTapped(object sender, ItemTappedEventArgs args)
         {
             var delegation = args.Item as Delegation;
-            Launcher.OpenAsync(new Uri(delegation.TxExplorerUri));
+            await Navigation.PushAsync(new DelegationInfoPage(delegation));
         }
     }
 }

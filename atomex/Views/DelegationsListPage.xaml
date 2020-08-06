@@ -73,7 +73,16 @@
                                 <Image Source="{Binding Baker.Logo}"
                                        HeightRequest="32"
                                        WidthRequest="32"
-                                       Margin="6"/>
+                                       Margin="6">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Baker.Logo, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="Source"
+                                                    Value="CustomBakerLogo"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
                                 <Label Grid.Column="1"
                                        Text="{Binding Address}"
                                        VerticalTextAlignment="Center"

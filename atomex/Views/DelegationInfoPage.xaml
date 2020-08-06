@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:atomex.Resources"
+             x:Class="atomex.DelegationInfoPage"
+             Title="{x:Static resources:AppResources.DelegationInfoPageTitle}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid Margin="2"
+                  ColumnSpacing="2"
+                  BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions> 
+            <Image Source="{Binding Baker.Logo}"
+                   HeightRequest="32"
+                   WidthRequest="32"
+                   Margin="6">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                 Binding="{Binding Baker.Logo, TargetNullValue=''}"
+                                 Value="">
+                        <Setter Property="Source"
+                                Value="CustomBakerLogo"/>
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <Label Grid.Column="1"
+                   Text="{Binding Address}"
+                   VerticalTextAlignment="Center"
+                   FontFamily="{DynamicResource RegularFont}"
+                   LineBreakMode="MiddleTruncation"
+                   Padding="5"
+                   FontSize="14">
+            </Label>
+            <Label Grid.Column="2"
+                   VerticalTextAlignment="Center"
+                   FontFamily="{DynamicResource RegularFont}"
+                   TextColor="{DynamicResource HintTextColor}"
+                   Padding="5"
+                   HorizontalTextAlignment="Center"
+                   FontSize="14">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Balance, StringFormat='{0:0.##}'}"/>
+                        <Span Text=" XTZ"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            </Grid>
+            <TableView Intent="Form"
+                       RowHeight="50"
+                       BackgroundColor="{DynamicResource MainBackgroundColor}">
+                <TableRoot>
+                    <TableSection>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.DelegateLabel}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Baker.Name}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker.Logo, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="Text"
+                                                    Value="Custom Baker"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.MinimumAmountLabel}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Baker.MinDelegation}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Baker.MinDelegation, StringFormat='{0:0.##}'}"/>
+                                            <Span Text=" XTZ"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.Roi}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.DelegationStatus}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Status}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"
+                                       TextColor="Green"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.DelegationTime}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding DelegationTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <Button Text="{x:Static resources:AppResources.CheckRewardsButton}"
+                                    TextColor="{DynamicResource HintTextColor}"
+                                    FontSize="16"
+                                    BackgroundColor="Transparent"
+                                    Clicked="OnCheckRewardsButtonClicked">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding BbUri, TargetNullValue=''}"
+                                                 Value="">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                        <Setter Property="IsEnabled"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>       
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -264,6 +264,23 @@
         </Setter>
     </Style>
 
+    <!-- Delegation info Page -->
+    <Style x:Key="DelegationPropertyLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+    <Style x:Key="DelegationPropertyValueStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalTextAlignment" Value="End"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
     <!-- Start Page -->
     <Style x:Key="StartPageButtonsStyle" TargetType="StackLayout">
         <Setter Property="Margin" Value="0"/>

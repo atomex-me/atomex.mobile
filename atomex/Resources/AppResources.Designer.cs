@@ -119,6 +119,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MinimumAmountLabel {
+            get {
+                return ResourceManager.GetString("MinimumAmountLabel", resourceCulture);
+            }
+        }
+        
         internal static string ToLabel {
             get {
                 return ResourceManager.GetString("ToLabel", resourceCulture);
@@ -530,6 +536,42 @@ namespace atomex.Resources {
         internal static string CopyAndExitButton {
             get {
                 return ResourceManager.GetString("CopyAndExitButton", resourceCulture);
+            }
+        }
+        
+        internal static string DelegationInfoPageTitle {
+            get {
+                return ResourceManager.GetString("DelegationInfoPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string CheckRewardsButton {
+            get {
+                return ResourceManager.GetString("CheckRewardsButton", resourceCulture);
+            }
+        }
+        
+        internal static string DelegateLabel {
+            get {
+                return ResourceManager.GetString("DelegateLabel", resourceCulture);
+            }
+        }
+        
+        internal static string Roi {
+            get {
+                return ResourceManager.GetString("Roi", resourceCulture);
+            }
+        }
+        
+        internal static string DelegationStatus {
+            get {
+                return ResourceManager.GetString("DelegationStatus", resourceCulture);
+            }
+        }
+        
+        internal static string DelegationTime {
+            get {
+                return ResourceManager.GetString("DelegationTime", resourceCulture);
             }
         }
         

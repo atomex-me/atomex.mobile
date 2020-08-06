@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Models;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -17,16 +18,6 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
-    public class Delegation
-    {
-        public BakerData Baker { get; set; }
-        public string Address { get; set; }
-        public decimal Balance { get; set; }
-        public string TxExplorerUri { get; set; }
-        public DateTime DelegationTime { get; set; }
-        public string Status { get; set; }
-    }
-
     public class DelegateViewModel : BaseViewModel
     {
         private IAtomexApp App { get; }
@@ -436,13 +427,31 @@ namespace atomex.ViewModel
                         Baker = baker,
                         Address = wa.Address,
                         Balance = wa.Balance,
-                        TxExplorerUri = _tezos.TxExplorerUri + wa.Address,
+                        BbUri = _tezos.BbUri,
                         DelegationTime = account.Value.DelegationTime,
                         Status = currentCycle - txCycle < 2 ? "Pending" :
                             currentCycle - txCycle < 7 ? "Confirmed" :
                             "Active"
                     });
                 }
+
+                //BakerData test = new BakerData()
+                //{
+                //    Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
+                //    Name = "TezosHODL",
+                //    Address = "tz1sdfldjsflksjdlkf123sfa",
+                //    Fee = 5,
+                //    MinDelegation = 10,
+                //    StakingAvailable = 10000.000000m
+                //};
+                //delegations.Add(new Delegation
+                //{
+                //    Baker = test,
+                //    Address = "KT1Db2f2vWPQKFk6jbh4dCZJ1CkWWBvM6YMX",
+                //    Balance = 67.7m,
+                //    BbUri = "https://baking-bad.org/",
+                //    Status = "Active"
+                //});
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
