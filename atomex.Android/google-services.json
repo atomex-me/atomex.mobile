@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "397664884000",
-    "firebase_url": "https://atomex-4ceae.firebaseio.com",
-    "project_id": "atomex-4ceae",
-    "storage_bucket": "atomex-4ceae.appspot.com"
+    "project_number": "960655167950",
+    "firebase_url": "https://atomex-push-notifications.firebaseio.com",
+    "project_id": "atomex-push-notifications",
+    "storage_bucket": "atomex-push-notifications.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:397664884000:android:45340064ac6b98f01ef345",
+        "mobilesdk_app_id": "1:960655167950:android:2dceb717e14420d10e1b9f",
         "android_client_info": {
           "package_name": "com.atomex.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "397664884000-e54umdtkui4sk8372i0shudb8ba1c30q.apps.googleusercontent.com",
+          "client_id": "960655167950-tb0m77ugcbvdpojh3v3734k5rp4vcseo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBO9W99Vqk1gHuAxwWlo6KCDQP0K18gLKY"
+          "current_key": "AIzaSyAMozMZ7Sk5c4jnW9YWt6aSRN1gA0OzEYA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "397664884000-e54umdtkui4sk8372i0shudb8ba1c30q.apps.googleusercontent.com",
+              "client_id": "960655167950-tb0m77ugcbvdpojh3v3734k5rp4vcseo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

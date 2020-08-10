@@ -1,5 +1,4 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Firebase.Iid;
 
 namespace atomex.Droid

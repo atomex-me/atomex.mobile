@@ -11,7 +11,7 @@ using Android.Util;
 
 namespace atomex.Droid
 {
-    [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop, ScreenOrientation = ScreenOrientation.Locked)]
+    [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Locked)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
@@ -47,8 +47,15 @@ namespace atomex.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        // clicked on push message
         protected override void OnNewIntent(Intent intent)
         {
+            //if (intent.HasExtra("SomeSpecialKey"))
+            //{
+            //    System.Diagnostics.Debug.WriteLine("\nIn MainActivity.OnNewIntent() - Intent Extras: " + intent.GetStringExtra("SomeSpecialKey") + "\n");
+            //    CreateNotificationFromIntent(intent);
+            //}
             CreateNotificationFromIntent(intent);
         }
         void CreateNotificationFromIntent(Intent intent)

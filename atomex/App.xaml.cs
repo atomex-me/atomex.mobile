@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using atomex.Services;
 using atomex.Styles;
@@ -40,24 +39,6 @@ namespace atomex
             var symbolsConfiguration = new ConfigurationBuilder()
                 .AddEmbeddedJsonFile(coreAssembly, "symbols.json")
                 .Build();
-
-            //var configuration = new ConfigurationBuilder()
-            //    //.SetBasePath(Environment.CurrentDirectory)
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .AddJsonFile("configuration.json")
-            //    .Build();
-
-
-            //UseContentRoot
-
-            // iOS impl
-            //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("configuration.json")
-            //    .Build();
-
-            //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("configuration.json")
-            //    .Build();
 
             var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
             var symbolsProvider = new SymbolsProvider(symbolsConfiguration);

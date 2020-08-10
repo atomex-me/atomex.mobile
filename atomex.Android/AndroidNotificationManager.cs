@@ -36,7 +36,6 @@ namespace atomex.Droid
 
         public int ScheduleNotification(string title, string message)
         {
-            //must be called in background
             if (!channelInitialized)
             {
                 CreateNotificationChannel();
