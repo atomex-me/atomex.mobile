@@ -15,15 +15,15 @@ namespace atomex.ViewModel.ReceiveViewModels
                 case BitcoinBasedCurrency _:
                     return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
                 case ERC20 _:
-                    return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
+                    return (ReceiveViewModel)new EthereumReceiveViewModel(currencyViewModel);
                 case Ethereum _:
                     return (ReceiveViewModel)new EthereumReceiveViewModel(currencyViewModel);
                 case NYX _:
                     return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
                 case FA2 _:
-                    return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
+                    return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
                 case FA12 _:
-                    return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
+                    return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
                 case Tezos _:
                     return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
             }

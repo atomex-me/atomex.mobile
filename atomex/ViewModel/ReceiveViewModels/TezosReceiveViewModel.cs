@@ -56,6 +56,8 @@ namespace atomex.ViewModel.ReceiveViewModels
         protected override WalletAddressViewModel GetDefaultAddress()
         {
             var activeAddressViewModel = FromAddressList
+                .OrderByDescending(vm => vm.WalletAddress.AvailableBalance())
+                .ToList()
                 .FirstOrDefault(vm => vm.WalletAddress.HasActivity);
 
             if (activeAddressViewModel != null)

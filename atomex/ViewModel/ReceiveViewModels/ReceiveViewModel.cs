@@ -71,15 +71,6 @@ namespace atomex.ViewModel
 
         protected virtual WalletAddressViewModel GetDefaultAddress()
         {
-            if (_currencyViewModel.Currency is Tezos || _currencyViewModel.Currency is Ethereum)
-            {
-                var activeAddressViewModel = FromAddressList
-                    .FirstOrDefault(vm => vm.WalletAddress.HasActivity && vm.WalletAddress.AvailableBalance() > 0);
-
-                if (activeAddressViewModel != null)
-                    return activeAddressViewModel;
-            }
-
             return FromAddressList.First(vm => vm.IsFreeAddress);
         }
     }
