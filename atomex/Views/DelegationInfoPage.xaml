@@ -7,98 +7,37 @@
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
-            <Grid Margin="2"
-                  ColumnSpacing="2"
-                  BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="5*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions> 
-            <Image Source="{Binding Baker.Logo}"
-                   HeightRequest="32"
-                   WidthRequest="32"
-                   Margin="6">
-                <Image.Triggers>
-                    <DataTrigger TargetType="Image"
-                                 Binding="{Binding Baker.Logo, TargetNullValue=''}"
-                                 Value="">
-                        <Setter Property="Source"
-                                Value="CustomBakerLogo"/>
-                    </DataTrigger>
-                </Image.Triggers>
-            </Image>
-            <Label Grid.Column="1"
-                   Text="{Binding Address}"
-                   VerticalTextAlignment="Center"
-                   FontFamily="{DynamicResource RegularFont}"
-                   LineBreakMode="MiddleTruncation"
-                   Padding="5"
-                   FontSize="14">
-            </Label>
-            <Label Grid.Column="2"
-                   VerticalTextAlignment="Center"
-                   FontFamily="{DynamicResource RegularFont}"
-                   TextColor="{DynamicResource HintTextColor}"
-                   Padding="5"
-                   HorizontalTextAlignment="Center"
-                   FontSize="14">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding Balance, StringFormat='{0:0.##}'}"/>
-                        <Span Text=" XTZ"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            </Grid>
             <TableView Intent="Form"
                        RowHeight="50"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
-                    <TableSection>
+                    <TableSection Title="{x:Static resources:AppResources.AccountSection}">
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.DelegateLabel}"
-                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
-                                <Label Text="{Binding Baker.Name}"
-                                       Style="{DynamicResource DelegationPropertyValueStyle}">
-                                    <Label.Triggers>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Baker.Logo, TargetNullValue=''}"
-                                                     Value="">
-                                            <Setter Property="Text"
-                                                    Value="Custom Baker"/>
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
+                                <Label Text="{x:Static resources:AppResources.AddressLabel}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"
+                                       WidthRequest="150"/>
+                                <Label Text="{Binding Address}"
+                                       LineBreakMode="MiddleTruncation"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.MinimumAmountLabel}"
+                                <Label Text="{x:Static resources:AppResources.AmountLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
-                                <Label Text="{Binding Baker.MinDelegation}"
-                                       Style="{DynamicResource DelegationPropertyValueStyle}">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding Baker.MinDelegation, StringFormat='{0:0.##}'}"/>
-                                            <Span Text=" XTZ"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                <Label Text="{Binding Balance, StringFormat='{0:0.##} XTZ'}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.Roi}"
+                                <Label Text="{x:Static resources:AppResources.DelegationTime}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
-                                <Label Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
+                                <Label Text="{Binding DelegationTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
                             </StackLayout>
                         </ViewCell>
@@ -112,17 +51,72 @@
                                        TextColor="Green"/>
                             </StackLayout>
                         </ViewCell>
+                    </TableSection>
+                    <TableSection Title="{x:Static resources:AppResources.BakerSection}">
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.DelegationTime}"
+                                <Label Text="{x:Static resources:AppResources.DelegateLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
-                                <Label Text="{Binding DelegationTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                                <Image Source="{Binding Baker.Logo}"
+                                       HeightRequest="32"
+                                       WidthRequest="32"
+                                       HorizontalOptions="EndAndExpand">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Baker.Logo, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="Source"
+                                                    Value="CustomBakerLogo"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label Text="{Binding Baker.Name}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"
+                                       HorizontalOptions="End">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker.Name, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="Text"
+                                                    Value="Custom Baker"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.MinimumAmountLabel}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Baker.MinDelegation, StringFormat='{0:0.##} XTZ'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
+                            <StackLayout Margin="20,0"
+                                         Orientation="Horizontal">
+                                <Label Text="{x:Static resources:AppResources.Roi}"
+                                       Style="{DynamicResource DelegationPropertyLabelStyle}"/>
+                                <Label Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
+                                       Style="{DynamicResource DelegationPropertyValueStyle}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <Button Text="{x:Static resources:AppResources.ChangeBakerButton}"
+                                    FontFamily="{DynamicResource RegularFont}"
+                                    TextColor="{DynamicResource HintTextColor}"
+                                    FontSize="16"
+                                    BackgroundColor="Transparent"
+                                    Clicked="OnChangeBakerButtonClicked">
+                            </Button>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection Title="{x:Static resources:AppResources.MoreSection}">
+                        <ViewCell>
                             <Button Text="{x:Static resources:AppResources.CheckRewardsButton}"
+                                    FontFamily="{DynamicResource RegularFont}"
                                     TextColor="{DynamicResource HintTextColor}"
                                     FontSize="16"
                                     BackgroundColor="Transparent"

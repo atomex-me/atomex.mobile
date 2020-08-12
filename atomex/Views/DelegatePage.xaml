@@ -301,6 +301,7 @@
                         </controls:CustomEntry>
                         <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                TextColor="{DynamicResource AdditionalTextColor}"
+                               FontSize="12"
                                VerticalTextAlignment="Center"
                                Padding="20,0"/>
                     </StackLayout>

@@ -37,7 +37,10 @@ namespace atomex
         private async void OnDelegationTapped(object sender, ItemTappedEventArgs args)
         {
             var delegation = args.Item as Delegation;
-            await Navigation.PushAsync(new DelegationInfoPage(delegation));
+            if (delegation.Baker == null)
+                await Navigation.PushAsync(new DelegatePage(_delegateViewModel, delegation.Address));
+            else
+                await Navigation.PushAsync(new DelegationInfoPage(_delegateViewModel, delegation));
         }
     }
 }

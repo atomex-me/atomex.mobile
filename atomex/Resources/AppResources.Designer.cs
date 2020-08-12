@@ -479,6 +479,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string NotDelegated {
+            get {
+                return ResourceManager.GetString("NotDelegated", resourceCulture);
+            }
+        }
+        
         internal static string DelegatePageTitle {
             get {
                 return ResourceManager.GetString("DelegatePageTitle", resourceCulture);
@@ -551,6 +557,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ChangeBakerButton {
+            get {
+                return ResourceManager.GetString("ChangeBakerButton", resourceCulture);
+            }
+        }
+        
         internal static string DelegateLabel {
             get {
                 return ResourceManager.GetString("DelegateLabel", resourceCulture);
@@ -572,6 +584,24 @@ namespace atomex.Resources {
         internal static string DelegationTime {
             get {
                 return ResourceManager.GetString("DelegationTime", resourceCulture);
+            }
+        }
+        
+        internal static string AccountSection {
+            get {
+                return ResourceManager.GetString("AccountSection", resourceCulture);
+            }
+        }
+        
+        internal static string BakerSection {
+            get {
+                return ResourceManager.GetString("BakerSection", resourceCulture);
+            }
+        }
+        
+        internal static string MoreSection {
+            get {
+                return ResourceManager.GetString("MoreSection", resourceCulture);
             }
         }
         

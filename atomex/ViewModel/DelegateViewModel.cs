@@ -198,6 +198,19 @@ namespace atomex.ViewModel
             }
         }
 
+        public void SetWalletAddress(string address)
+        {
+            if (address != null)
+            {
+                var walletAddressViewModel = FromAddressList.FirstOrDefault(vm => vm.Address == address);
+
+                if (walletAddressViewModel == null)
+                    WalletAddressViewModel = FromAddressList.First();
+                else
+                    WalletAddressViewModel = walletAddressViewModel;
+            }
+        }
+
         public async Task<string> Validate()
         {
             if (string.IsNullOrEmpty(Address))
@@ -412,7 +425,14 @@ namespace atomex.ViewModel
                     var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
 
                     if (account == null || account.HasError)
+                    {
+                        delegations.Add(new Delegation
+                        {
+                            Address = wa.Address,
+                            Balance = wa.Balance
+                        });
                         continue;
+                    }
 
                     var baker = await BbApi
                         .GetBaker(account.Value.DelegateAddress, App.Account.Network)

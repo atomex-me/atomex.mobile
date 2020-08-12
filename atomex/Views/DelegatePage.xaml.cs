@@ -23,6 +23,15 @@ namespace atomex
             Fee.Text = delegateViewModel.Fee.ToString();
         }
 
+        public DelegatePage(DelegateViewModel delegateViewModel, string address)
+        {
+            InitializeComponent();
+            _delegateViewModel = delegateViewModel;
+            BindingContext = delegateViewModel;
+            delegateViewModel.SetWalletAddress(address);
+            Fee.Text = delegateViewModel.Fee.ToString();
+        }
+
         private void OnBakerPickerFocused(object sender, FocusEventArgs args)
         {
             BakerFrame.HasShadow = args.IsFocused;

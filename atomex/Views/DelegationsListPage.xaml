@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationsListPage"
-             Title="{x:Static resources:AppResources.DelegationListPageTitle}">
+             Title="{x:Static resources:AppResources.DelegationListPageTitle}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
+        <StackLayout>
             <StackLayout IsVisible="{Binding LoadingDelegations}"
                          Padding="0,10">
                 <Label Text="{x:Static resources:AppResources.LoadingLabel}"
@@ -44,9 +45,7 @@
             </StackLayout>
             <ListView ItemsSource="{Binding Delegations}"
                       ItemTapped="OnDelegationTapped"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
                       HasUnevenRows="True"
-                      SeparatorVisibility="None"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
@@ -60,21 +59,57 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid Margin="2"
-                                  ColumnSpacing="2"
-                                  BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+                                  ColumnSpacing="0"
+                                  RowSpacing="2"
+                                  BackgroundColor="{DynamicResource MainBackgroundColor}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="70" />
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="35" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="5*" />
-                                    <ColumnDefinition Width="3*" />
-                                </Grid.ColumnDefinitions> 
-                                <Image Source="{Binding Baker.Logo}"
-                                       HeightRequest="32"
-                                       WidthRequest="32"
-                                       Margin="6">
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Balance, StringFormat='{0:0.##} xtz'}"
+                                       VerticalTextAlignment="End"
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       FontFamily="{DynamicResource BoldFont}"
+                                       FontSize="16"
+                                       Padding="10,0,0,0"/>
+                                <Label Grid.Row="1"
+                                       Text="{Binding Address}"
+                                       Padding="10,0,0,0"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       FontSize="14"
+                                       LineBreakMode="MiddleTruncation"
+                                       VerticalTextAlignment="Start"/>
+                                <Image Source="ConvertArrow"
+                                       Grid.Column="1"
+                                       Grid.RowSpan="2"
+                                       WidthRequest="20"
+                                       VerticalOptions="Center">
                                     <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Baker, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="IsVisible"
+                                                    Value="False"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Image Source="{Binding Baker.Logo}"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="2">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Baker, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="IsVisible"
+                                                    Value="False"/>
+                                        </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Baker.Logo, TargetNullValue=''}"
                                                      Value="">
@@ -83,37 +118,71 @@
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
-                                <Label Grid.Column="1"
-                                       Text="{Binding Address}"
-                                       VerticalTextAlignment="Center"
+                                <Label Grid.Column="3"
+                                       Text="{Binding Baker.Name}"
                                        FontFamily="{DynamicResource RegularFont}"
-                                       LineBreakMode="MiddleTruncation"
-                                       Padding="5"
-                                       FontSize="14">
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       FontSize="14"
+                                       Padding="5,0"
+                                       MaxLines="1"
+                                       VerticalTextAlignment="End">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="IsVisible"
+                                                    Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker.Name, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="Text"
+                                                    Value="Custom Baker"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
                                 </Label>
-                                <Label Grid.Column="2"
-                                       VerticalTextAlignment="Center"
+                                <Label Grid.Row="1"
+                                       Grid.Column="3"
+                                       Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
+                                       TextColor="{DynamicResource MainTextColor}"
                                        FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{DynamicResource HintTextColor}"
-                                       Padding="5"
+                                       FontSize="14"
+                                       Padding="5,0"
+                                       VerticalTextAlignment="Start">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="IsVisible"
+                                                    Value="False"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.RowSpan="2"
+                                       Grid.Column="2"
+                                       Grid.ColumnSpan="2"
+                                       Text="{x:Static resources:AppResources.NotDelegated}"
+                                       VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"
-                                       FontSize="14">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding Balance, StringFormat='{0:0.##}'}"/>
-                                            <Span Text=" XTZ"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontSize="16"
+                                       Padding="10,0"
+                                       IsVisible="False">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Baker, TargetNullValue=''}"
+                                                     Value="">
+                                            <Setter Property="IsVisible"
+                                                    Value="True"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
                                 </Label>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="{x:Static resources:AppResources.NewDelegationButton}"
-                    Style="{DynamicResource MainButtonStyle}"
-                    Margin="20"
-                    Clicked="OnNewDelegationButtonClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

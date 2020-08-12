@@ -51,7 +51,7 @@
         <value>Amount</value>
     </data>
     <data name="MinimumAmountLabel" xml:space="preserve">
-        <value>Minimum Amount</value>
+        <value>Min. amount</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
         <value>To</value>
@@ -185,7 +185,7 @@
         <value>CONVERT</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>DELEGATE</value>
+        <value>STAKING</value>
     </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Balance updating...</value>
@@ -249,8 +249,11 @@
     <data name="NewDelegationButton" xml:space="preserve">
         <value>NEW DELEGATION</value>
     </data>
-     <data name="NoDelegationsLabel" xml:space="preserve">
+    <data name="NoDelegationsLabel" xml:space="preserve">
         <value>No delegations yet</value>
+    </data>
+    <data name="NotDelegated" xml:space="preserve">
+        <value>NOT DELEGATED</value>
     </data>
     
     <!-- Delegate Page -->
@@ -292,10 +295,13 @@
     
     <!-- Delegation Info Page -->
     <data name="DelegationInfoPageTitle" xml:space="preserve">
-        <value>Delegation status</value>
+        <value>Delegation info</value>
     </data>
     <data name="CheckRewardsButton" xml:space="preserve">
         <value>Check rewards</value>
+    </data>
+    <data name="ChangeBakerButton" xml:space="preserve">
+        <value>Change baker</value>
     </data>
     <data name="DelegateLabel" xml:space="preserve">
         <value>Delegate</value>
@@ -308,6 +314,15 @@
     </data>
     <data name="DelegationTime" xml:space="preserve">
         <value>Delegation Time</value>
+    </data>
+    <data name="AccountSection" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="BakerSection" xml:space="preserve">
+        <value>Current baker</value>
+    </data>
+    <data name="MoreSection" xml:space="preserve">
+        <value>More</value>
     </data>
     
     <!-- Conversion list Page -->
