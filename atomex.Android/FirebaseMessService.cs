@@ -20,6 +20,9 @@ namespace atomex.Droid
         {
             base.OnMessageReceived(message);
             var body = message.GetNotification().Body;
+            //var icon = message.GetNotification().Icon;
+            //var title = message.GetNotification().Title;
+            //var sound = message.GetNotification().Sound;
             SendNotification(body, message.Data);
         }
 
@@ -29,6 +32,7 @@ namespace atomex.Droid
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
             //intent.PutExtra("SomeSpecialKey", "some special value");
+            //intent.PutExtra("TestKey", "Value");
             foreach (var key in data.Keys)
             {
                 intent.PutExtra(key, data[key]);

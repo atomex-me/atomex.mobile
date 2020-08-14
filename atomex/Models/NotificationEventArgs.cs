@@ -4,7 +4,9 @@ namespace atomex.Models
 {
     public class NotificationEventArgs : EventArgs
     {
-        public string Title { get; set; }
-        public string Message { get; set; }
+        public long SwapId { get; set; }
+        public string Currency { get; set; }
+        public string TxId { get; set; }
+        public string PushType { get; set; }
     }
 }

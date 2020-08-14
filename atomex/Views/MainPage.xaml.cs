@@ -7,6 +7,8 @@ using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Application = Xamarin.Forms.Application;
 using TabbedPage = Xamarin.Forms.TabbedPage;
+using atomex.Services;
+using atomex.Models;
 
 namespace atomex
 {
@@ -15,6 +17,8 @@ namespace atomex
     [DesignTimeVisible(false)]
     public partial class MainPage : TabbedPage, INavigationService
     {
+
+        private readonly INotificationManager notificationManager;
 
         private readonly NavigationPage navigationConversionPage;
 
@@ -83,6 +87,12 @@ namespace atomex
             {
                 SignOut();
             };
+
+            notificationManager = DependencyService.Get<INotificationManager>();
+            notificationManager.NotificationReceived += (sender, eventArgs) =>
+            {
+                ShowNotification((NotificationEventArgs)eventArgs);
+            };
         }
 
         private void SignOut()
@@ -114,6 +124,18 @@ namespace atomex
             navigationWalletsListPage.Navigation.PopToRootAsync(false);
             navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
             this.CurrentPage = navigationWalletsListPage;
+        }
+
+        private void ShowNotification(NotificationEventArgs args)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                string text = $"Swap completed.\n" +
+                    $"Swap ID: {args.SwapId}\n" +
+                    $"Currency: {args.Currency}\n" +
+                    $"Transaction ID: {args.TxId}\n";
+                await DisplayAlert("New swap status", text, AppResources.AcceptButton);
+            });
         }
     }
 }

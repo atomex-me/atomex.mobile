@@ -20,8 +20,10 @@ namespace atomex.Droid
         internal static readonly string CHANNEL_NAME = "atomex_notifications_channel_name";
         internal static readonly int NOTIFICATION_ID = 100;
 
-        public const string TitleKey = "title";
-        public const string MessageKey = "message";
+        public const string CurrencyKey = "currency";
+        public const string SwapIdKey = "swapId";
+        public const string TxIdKey = "txId";
+        public const string PushTypeKey = "pushType";
 
         bool channelInitialized = false;
         int messageId = -1;
@@ -44,8 +46,8 @@ namespace atomex.Droid
             messageId++;
 
             Intent intent = new Intent(Android.App.Application.Context, typeof(MainActivity));
-            intent.PutExtra(TitleKey, title);
-            intent.PutExtra(MessageKey, message);
+            //intent.PutExtra(TitleKey, title);
+            //intent.PutExtra(MessageKey, message);
 
             PendingIntent pendingIntent = PendingIntent.GetActivity(Android.App.Application.Context, pendingIntentId, intent, PendingIntentFlags.OneShot);
 
@@ -63,12 +65,14 @@ namespace atomex.Droid
             return messageId;
         }
 
-        public void ReceiveNotification(string title, string message)
+        public void ReceiveNotification(long swapId, string currency, string txId, string pushType)
         {
             var args = new NotificationEventArgs()
             {
-                Title = title,
-                Message = message,
+                SwapId = swapId,
+                Currency = currency,
+                TxId = txId,
+                PushType = pushType
             };
             NotificationReceived?.Invoke(null, args);
         }

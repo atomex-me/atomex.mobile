@@ -9,7 +9,7 @@ namespace atomex.Services
 
         int ScheduleNotification(string title, string message);
 
-        void ReceiveNotification(string title, string message);
+        void ReceiveNotification(long swapId, string currency, string txId, string pushType);
 
         void RemoveNotifications();
     }

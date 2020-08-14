@@ -39,8 +39,7 @@ namespace atomex.iOS
                 Title = title,
                 Subtitle = "",
                 Body = message,
-                Sound = UNNotificationSound.Default,
-                Badge = 1
+                Sound = UNNotificationSound.Default
             };
 
             // Local notifications can be time or location based
@@ -61,12 +60,14 @@ namespace atomex.iOS
             return messageId;
         }
 
-        public void ReceiveNotification(string title, string message)
+        public void ReceiveNotification(long swapId, string currency, string txId, string pushType)
         {
             var args = new NotificationEventArgs()
             {
-                Title = title,
-                Message = message
+                SwapId = swapId,
+                Currency = currency,
+                TxId = txId,
+                PushType = pushType
             };
             NotificationReceived?.Invoke(null, args);
         }

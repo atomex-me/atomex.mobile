@@ -57,14 +57,28 @@ namespace atomex.Droid
             //    CreateNotificationFromIntent(intent);
             //}
             CreateNotificationFromIntent(intent);
+            OnNotificationClicked(intent);
         }
+
         void CreateNotificationFromIntent(Intent intent)
         {
+            // intent.Extras == null in Background !!!
             if (intent?.Extras != null)
             {
-                string title = intent.Extras.GetString(AndroidNotificationManager.TitleKey);
-                string message = intent.Extras.GetString(AndroidNotificationManager.MessageKey);
-                DependencyService.Get<INotificationManager>().ReceiveNotification(title, message);
+                long swapId = intent.Extras.GetLong(AndroidNotificationManager.SwapIdKey);
+                string currency = intent.Extras.GetString(AndroidNotificationManager.CurrencyKey);
+                string txId = intent.Extras.GetString(AndroidNotificationManager.TxIdKey);
+                string pushType = intent.Extras.GetString(AndroidNotificationManager.PushTypeKey);
+
+                DependencyService.Get<INotificationManager>().ReceiveNotification(swapId, currency, txId, pushType);
+            }
+        }
+
+        void OnNotificationClicked(Intent intent)
+        {
+            if (intent.Action == "Swap" && intent.HasExtra("swapId"))
+            {
+                /// Do something now that you know the user clicked on the notification...
             }
         }
     }
