@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace atomex.Services
 {
     public interface INotificationManager
@@ -7,9 +8,9 @@ namespace atomex.Services
 
         void Initialize();
 
-        int ScheduleNotification(string title, string message);
+        int ScheduleNotification(string message);
 
-        void ReceiveNotification(long swapId, string currency, string txId, string pushType);
+        void ReceiveNotification(string title, string message);
 
         void RemoveNotifications();
     }

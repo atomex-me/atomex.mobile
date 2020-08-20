@@ -3,11 +3,12 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Android.Content;
-using Xamarin.Forms;
-using atomex.Services;
 using Atomex.Common;
 using atomex.Common.FileSystem;
 using Android.Util;
+using Xamarin.Forms;
+using atomex.Services;
+using atomex.Models;
 
 namespace atomex.Droid
 {
@@ -53,7 +54,6 @@ namespace atomex.Droid
         {
             //if (intent.HasExtra("SomeSpecialKey"))
             //{
-            //    System.Diagnostics.Debug.WriteLine("\nIn MainActivity.OnNewIntent() - Intent Extras: " + intent.GetStringExtra("SomeSpecialKey") + "\n");
             //    CreateNotificationFromIntent(intent);
             //}
             CreateNotificationFromIntent(intent);
@@ -65,12 +65,16 @@ namespace atomex.Droid
             // intent.Extras == null in Background !!!
             if (intent?.Extras != null)
             {
-                long swapId = intent.Extras.GetLong(AndroidNotificationManager.SwapIdKey);
-                string currency = intent.Extras.GetString(AndroidNotificationManager.CurrencyKey);
-                string txId = intent.Extras.GetString(AndroidNotificationManager.TxIdKey);
-                string pushType = intent.Extras.GetString(AndroidNotificationManager.PushTypeKey);
-
-                DependencyService.Get<INotificationManager>().ReceiveNotification(swapId, currency, txId, pushType);
+                //if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
+                //{
+                //    if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
+                //        intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
+                //    {
+                //        DependencyService.Get<INotificationManager>().ReceiveNotification(
+                //            "Atomex",
+                //            string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey)));
+                //    }
+                //}
             }
         }
 

@@ -42,6 +42,22 @@ namespace atomex
             _createNewWalletViewModel.Clear();
             _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
             await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
+
+            // Test
+            string message = "{" +
+                               "\"aps\":{" +
+                                    "\"alert\":{" +
+                                        "\"body\":\"great match!\"," +
+                                        "\"title\":\"Portugal vs. Denmark\"," +
+                                    "}," +
+                                    "\"content-available\":1" +
+                               "}," +
+                               "\"currency\":\"BTC\"," +
+                               "\"swapId\":124," +
+                               "\"txId\":\"dfghj%378gjhg26g36\"," +
+                               "\"type\":\"completed\"" +
+                           "}";
+            notificationManager.ScheduleNotification(message);
         }
 
         private void ShowNotification(NotificationEventArgs args)

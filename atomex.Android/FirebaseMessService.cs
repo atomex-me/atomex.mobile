@@ -15,7 +15,6 @@ namespace atomex.Droid
         {
         }
 
-        //called in foreground
         public override void OnMessageReceived(RemoteMessage message)
         {
             base.OnMessageReceived(message);
@@ -26,16 +25,26 @@ namespace atomex.Droid
             SendNotification(body, message.Data);
         }
 
-
         void SendNotification(string messageBody, IDictionary<string, string> data)
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
             //intent.PutExtra("SomeSpecialKey", "some special value");
-            //intent.PutExtra("TestKey", "Value");
             foreach (var key in data.Keys)
             {
                 intent.PutExtra(key, data[key]);
+            }
+
+            if (intent.Extras != null)
+            {
+                if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
+                {
+                    if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
+                        intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
+                    {
+                        messageBody = string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey));
+                    }
+                }
             }
 
             var pendingIntent = PendingIntent.GetActivity(this,

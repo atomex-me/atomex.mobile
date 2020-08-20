@@ -20,10 +20,11 @@ namespace atomex.Droid
         internal static readonly string CHANNEL_NAME = "atomex_notifications_channel_name";
         internal static readonly int NOTIFICATION_ID = 100;
 
+        public const string AlertKey = "alert";
         public const string CurrencyKey = "currency";
         public const string SwapIdKey = "swapId";
         public const string TxIdKey = "txId";
-        public const string PushTypeKey = "pushType";
+        public const string PushTypeKey = "type";
 
         bool channelInitialized = false;
         int messageId = -1;
@@ -36,7 +37,7 @@ namespace atomex.Droid
             CreateNotificationChannel();
         }
 
-        public int ScheduleNotification(string title, string message)
+        public int ScheduleNotification(string message)
         {
             if (!channelInitialized)
             {
@@ -53,7 +54,7 @@ namespace atomex.Droid
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(Android.App.Application.Context, CHANNEL_ID)
                 .SetContentIntent(pendingIntent)
-                .SetContentTitle(title)
+                .SetContentTitle("Atomex")
                 .SetContentText(message)
                 .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.ic_launcher))
                 .SetSmallIcon(Resource.Drawable.ic_stat_send)
@@ -65,16 +66,16 @@ namespace atomex.Droid
             return messageId;
         }
 
-        public void ReceiveNotification(long swapId, string currency, string txId, string pushType)
+        public void ReceiveNotification(string title, string message)
         {
-            var args = new NotificationEventArgs()
-            {
-                SwapId = swapId,
-                Currency = currency,
-                TxId = txId,
-                PushType = pushType
-            };
-            NotificationReceived?.Invoke(null, args);
+            //var args = new NotificationEventArgs()
+            //{
+            //    SwapId = swapId,
+            //    Currency = currency,
+            //    TxId = txId,
+            //    PushType = pushType
+            //};
+            //NotificationReceived?.Invoke(null, args);
         }
 
         void CreateNotificationChannel()

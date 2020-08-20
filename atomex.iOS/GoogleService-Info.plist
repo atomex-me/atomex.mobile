@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>960655167950-54erfj08ql7v3q54glh4oh3q80nvafgo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.960655167950-54erfj08ql7v3q54glh4oh3q80nvafgo</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDVkfHu90jQJBeyOUFZmx5Pego8SgrwL-0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>960655167950</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.atomex.ios</string>
+	<key>PROJECT_ID</key>
+	<string>atomex-push-notifications</string>
+	<key>STORAGE_BUCKET</key>
+	<string>atomex-push-notifications.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:960655167950:ios:242c9e3ae7f9efb20e1b9f</string>
+	<key>DATABASE_URL</key>
+	<string>https://atomex-push-notifications.firebaseio.com</string>
+</dict>
+</plist>

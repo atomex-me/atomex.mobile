@@ -1,6 +1,7 @@
 ﻿using System;
 using atomex.Models;
 using atomex.Services;
+using Newtonsoft.Json.Linq;
 using UserNotifications;
 using Xamarin.Forms;
 
@@ -24,7 +25,8 @@ namespace atomex.iOS
             });
         }
 
-        public int ScheduleNotification(string title, string message)
+        // emulate firebase message
+        public int ScheduleNotification(string message)
         {
             // EARLY OUT: app doesn't have permissions
             if (!hasNotificationsPermission)
@@ -36,7 +38,7 @@ namespace atomex.iOS
 
             var content = new UNMutableNotificationContent()
             {
-                Title = title,
+                Title = "Atomex",
                 Subtitle = "",
                 Body = message,
                 Sound = UNNotificationSound.Default
@@ -45,7 +47,7 @@ namespace atomex.iOS
             // Local notifications can be time or location based
             // Create a time-based trigger, interval is in seconds and must be greater than 0
 
-            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(10, false);
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(5, false);
 
             //var request = UNNotificationRequest.FromIdentifier("swap", content, trigger);
             var request = UNNotificationRequest.FromIdentifier(messageId.ToString(), content, trigger);
@@ -60,14 +62,16 @@ namespace atomex.iOS
             return messageId;
         }
 
-        public void ReceiveNotification(long swapId, string currency, string txId, string pushType)
+        public void ReceiveNotification(string title, string message)
         {
+            JObject o = JObject.Parse(message);
+
             var args = new NotificationEventArgs()
             {
-                SwapId = swapId,
-                Currency = currency,
-                TxId = txId,
-                PushType = pushType
+                SwapId = long.Parse(o["swapId"].ToString()),
+                Currency = o["currency"].ToString(),
+                TxId = o["txId"].ToString(),
+                PushType = o["type"].ToString()
             };
             NotificationReceived?.Invoke(null, args);
         }

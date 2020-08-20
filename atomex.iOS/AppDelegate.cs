@@ -32,31 +32,35 @@ namespace atomex.iOS
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
+            Firebase.Core.App.Configure();
+
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
-            //after iOS 10
-            //if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
-            //{
-            //    UNUserNotificationCenter center = UNUserNotificationCenter.Current;
 
-            //    center.RequestAuthorization(UNAuthorizationOptions.Alert | UNAuthorizationOptions.Sound | UNAuthorizationOptions.Badge, (bool arg1, NSError arg2) =>
-            //    {
+            // Register your app for remote notifications.
+            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            {
 
-            //    });
+                // For iOS 10 display notification (sent via APNS)
+                //UNUserNotificationCenter.Current.Delegate = this;
+                UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
 
-            //    center.Delegate = new iOSNotificationReceiver();
-            //}
+                var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
+                    Console.WriteLine(granted);
+                });
+            }
+            else
+            {
+                // iOS 9 or before
+                var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+                var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+            }
 
-            //else if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            //{
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
-            //    var settings = UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, new NSSet());
-
-            //    UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
-
-            //}
-
-            UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
+            //UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
             
             LoadApplication(new App());
 
@@ -65,6 +69,7 @@ namespace atomex.iOS
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
+
             //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
 
             byte[] result = new byte[deviceToken.Length];
