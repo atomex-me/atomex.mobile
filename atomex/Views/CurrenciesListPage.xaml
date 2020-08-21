@@ -6,8 +6,6 @@
              Title="{x:Static resources:AppResources.WalletsPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout Margin="0,20"
-                     VerticalOptions="FillAndExpand">
             <ListView ItemsSource="{Binding CurrencyViewModels}"
                       HasUnevenRows="True"
                       ItemTapped="OnListViewItemTapped"
@@ -71,6 +69,5 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>            
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
