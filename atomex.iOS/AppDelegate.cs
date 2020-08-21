@@ -6,6 +6,8 @@ using UIKit;
 using UserNotifications;
 
 using atomex.Common.FileSystem;
+using Xamarin.Forms;
+using atomex.Services;
 
 namespace atomex.iOS
 {
@@ -13,7 +15,7 @@ namespace atomex.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate
     {
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -28,22 +30,17 @@ namespace atomex.iOS
         {
             FileSystem.UseFileSystem(new IosFileSystem());
 
-
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
             Firebase.Core.App.Configure();
-
-            UIApplication.SharedApplication.RegisterForRemoteNotifications();
-
 
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {
 
                 // For iOS 10 display notification (sent via APNS)
-                //UNUserNotificationCenter.Current.Delegate = this;
-                UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
+                UNUserNotificationCenter.Current.Delegate = this;
 
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
@@ -59,8 +56,6 @@ namespace atomex.iOS
             }
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
-
-            //UNUserNotificationCenter.Current.Delegate = new iOSNotificationReceiver();
             
             LoadApplication(new App());
 
@@ -71,11 +66,45 @@ namespace atomex.iOS
         {
 
             //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
-
             byte[] result = new byte[deviceToken.Length];
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
         }
+
+        public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+        {
+            DependencyService.Get<INotificationManager>().ReceiveNotification(notification.Request.Content.Title, notification.Request.Content.Body);
+
+            // alerts are always shown for demonstration but this can be set to "None"
+            // to avoid showing alerts if the app is in the foreground
+            var settings = UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Alert;
+            completionHandler(settings);
+        }
+
+        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+        {
+            switch (response.ActionIdentifier)
+            {
+                case "swap":
+                    // Do something
+                    break;
+                default:
+                    // Take action based on identifier
+                    if (response.IsDefaultAction)
+                    {
+                        // Handle default action...
+                        DependencyService.Get<INotificationManager>().RemoveNotifications();
+                    }
+                    else if (response.IsDismissAction)
+                    {
+                        // Handle dismiss action
+                    }
+                    break;
+            }
+            completionHandler();
+        }
+
+        
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
         {
@@ -84,10 +113,15 @@ namespace atomex.iOS
 
         public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            
+
         }
 
         public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        {
+
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
         {
             
         }

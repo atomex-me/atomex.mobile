@@ -72,7 +72,6 @@
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
     <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\RightRoundedButton.cs" />
-    <Compile Include="iOSNotificationReceiver.cs" />
     <Compile Include="iOSNotificationManager.cs" />
     <Compile Include="Common\IosFileSystem.cs" />
   </ItemGroup>
