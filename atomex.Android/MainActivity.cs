@@ -9,6 +9,7 @@ using Android.Util;
 using Xamarin.Forms;
 using atomex.Services;
 using atomex.Models;
+using Plugin.Fingerprint;
 
 namespace atomex.Droid
 {
@@ -20,6 +21,8 @@ namespace atomex.Droid
             base.OnCreate(bundle);
 
             FileSystem.UseFileSystem(new AndroidFileSystem());
+
+            CrossFingerprint.SetCurrentActivityResolver(() => this);
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
