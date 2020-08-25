@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Wallet;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -21,6 +24,8 @@ namespace atomex
             InitializeComponent();
             _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
+
+            BiometricAuth(this, EventArgs.Empty);
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
@@ -91,6 +96,33 @@ namespace atomex
             catch (Exception e)
             {
                 //
+            }
+        }
+
+        private async void BiometricAuth(object sender, EventArgs e)
+        {
+            bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync(false);
+            if (isFingerprintAvailable)
+            {
+                AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
+                        "Authentication",
+                        AppResources.UseFingerprint + $"'{_unlockViewModel.WalletName}'");
+
+                var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);
+                if (authResult.Authenticated)
+                {
+                    //Success  
+                    try
+                    {
+                        string pswd = await SecureStorage.GetAsync(_unlockViewModel.WalletName);
+                        _unlockViewModel.SetPassword(pswd);
+                        OnUnlockButtonClicked(this, EventArgs.Empty);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Possible that device doesn't support secure storage on device.
+                    }
+                }
             }
         }
     }

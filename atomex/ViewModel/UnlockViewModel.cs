@@ -8,7 +8,6 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Wallet;
 using Serilog;
-using Xamarin.Forms;
 
 namespace atomex
 {

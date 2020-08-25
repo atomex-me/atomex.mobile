@@ -95,6 +95,9 @@
     <data name="UnlockButton" xml:space="preserve">
         <value>UNLOCK</value>
     </data>
+    <data name="UseFingerprint" xml:space="preserve">
+        <value>Use your fingerprint to sign in </value>
+    </data>
     
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">

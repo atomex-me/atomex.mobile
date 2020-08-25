@@ -197,6 +197,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UseFingerprint {
+            get {
+                return ResourceManager.GetString("UseFingerprint", resourceCulture);
+            }
+        }
+        
         internal static string CreateNewWalletPageTitle {
             get {
                 return ResourceManager.GetString("CreateNewWalletPageTitle", resourceCulture);

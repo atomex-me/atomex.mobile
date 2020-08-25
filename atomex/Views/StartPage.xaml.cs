@@ -4,6 +4,7 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.Views.CreateNewWallet;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace atomex
 {
@@ -17,7 +18,7 @@ namespace atomex
         public StartPage(StartViewModel startViewModel)
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);            
             notificationManager = DependencyService.Get<INotificationManager>();
             notificationManager.NotificationReceived += (sender, eventArgs) =>
             {

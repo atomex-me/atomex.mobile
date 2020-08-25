@@ -34,6 +34,8 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can i have camera?</string>
+	<key>NSFaceIDUsageDescription</key>  
+	<string>Authenticate with Face ID</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
