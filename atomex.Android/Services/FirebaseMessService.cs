@@ -5,7 +5,7 @@ using Firebase.Messaging;
 using Android.Support.V4.App;
 using Android.Graphics;
 
-namespace atomex.Droid
+namespace atomex.Droid.Services
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]

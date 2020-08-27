@@ -8,8 +8,8 @@ using atomex.Models;
 using Android.OS;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(atomex.Droid.AndroidNotificationManager))]
-namespace atomex.Droid
+[assembly: Dependency(typeof(atomex.Droid.Services.AndroidNotificationManager))]
+namespace atomex.Droid.Services
 {
     public class AndroidNotificationManager : INotificationManager
     {

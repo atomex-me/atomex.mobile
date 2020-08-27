@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Essentials;
 using atomex.ViewModel;
 using atomex.Resources;
+using atomex.Services;
 
 namespace atomex
 {
@@ -10,6 +11,8 @@ namespace atomex
     {
 
         private ReceiveViewModel _receiveViewModel;
+
+        private IToastService _toastService;
 
         public ReceivePage()
         {
@@ -21,6 +24,7 @@ namespace atomex
             InitializeComponent();
             _receiveViewModel = receiveViewModel;
             BindingContext = receiveViewModel;
+            _toastService = DependencyService.Get<IToastService>();
         }
 
         private void OnPickerFocused(object sender, FocusEventArgs args)
@@ -37,7 +41,7 @@ namespace atomex
             if (_receiveViewModel.SelectedAddress != null)
             {
                 await Clipboard.SetTextAsync(_receiveViewModel.SelectedAddress.Address);
-                await DisplayAlert(AppResources.AddressCopied, _receiveViewModel.SelectedAddress.Address, AppResources.AcceptButton);
+                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Bottom);
             }
             else
             {

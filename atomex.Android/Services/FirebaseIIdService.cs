@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Firebase.Iid;
 
-namespace atomex.Droid
+namespace atomex.Droid.Services
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]

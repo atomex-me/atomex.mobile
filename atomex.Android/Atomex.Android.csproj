@@ -110,13 +110,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
-    <Compile Include="AndroidNotificationManager.cs" />
     <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\RightRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="Common\AndroidFileSystem.cs" />
-    <Compile Include="FirebaseIIdService.cs" />
-    <Compile Include="FirebaseMessService.cs" />
+    <Compile Include="Services\AndroidNotificationManager.cs" />
+    <Compile Include="Services\FirebaseIIdService.cs" />
+    <Compile Include="Services\FirebaseMessService.cs" />
+    <Compile Include="Services\ToastService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -353,6 +354,7 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="CustomElements\" />
     <Folder Include="Common\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex\atomex.csproj">

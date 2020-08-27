@@ -4,7 +4,6 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.Views.CreateNewWallet;
 using Xamarin.Forms;
-using Xamarin.Essentials;
 
 namespace atomex
 {

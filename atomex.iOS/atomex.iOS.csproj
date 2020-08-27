@@ -72,8 +72,9 @@
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
     <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\RightRoundedButton.cs" />
-    <Compile Include="iOSNotificationManager.cs" />
     <Compile Include="Common\IosFileSystem.cs" />
+    <Compile Include="Services\iOSNotificationManager.cs" />
+    <Compile Include="Services\ToastService.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -333,6 +334,7 @@
     <Folder Include="Common\" />
     <Folder Include="Assets.xcassets\NYX.imageset\" />
     <Folder Include="Assets.xcassets\FA2.imageset\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
