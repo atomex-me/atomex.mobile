@@ -42,7 +42,6 @@ namespace atomex
             if (res)
             {
                 _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);
-                //todo: check nav stack + threads after logout
             }
         }
     }

@@ -21,8 +21,7 @@ namespace atomex
                 sendViewModel.Currency.Name =="USDT")
             {
                 GasLayout.IsVisible = true;
-                UseDefaultFeeSwitch.Opacity = 0.5;
-                FeeLayout.IsVisible = UseDefaultFeeSwitch.IsEnabled = false;
+                FeeLayout.IsVisible = false;
                 return;
             }
             if (sendViewModel.Currency.Name == "BTC" ||
@@ -115,6 +114,11 @@ namespace atomex
             }
         }
 
+        private void GasPriceEntryFocused(object sender, FocusEventArgs args)
+        {
+            GasPriceFrame.HasShadow = args.IsFocused;
+        }
+
         private void OnFeeTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
@@ -138,7 +142,9 @@ namespace atomex
             if (args.Value)
             {
                 _sendViewModel.UseDefaultFee = true;
-                //Fee.Text = _sendViewModel.FeeString;
+                Fee.Text = _sendViewModel.FeeString;
+                if (GasLayout.IsVisible)
+                    GasPrice.Text = _sendViewModel.FeePrice.ToString();
             }
         }
 
