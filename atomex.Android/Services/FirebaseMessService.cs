@@ -58,7 +58,7 @@ namespace atomex.Droid.Services
                 .SetContentTitle("Atomex")
                 .SetContentText(messageBody)
                 .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.ic_launcher))
-                .SetSmallIcon(Resource.Drawable.ic_stat_send)
+                .SetSmallIcon(Resource.Drawable.ic_notification)
                 .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
 
             var notificationManager = NotificationManagerCompat.From(this);

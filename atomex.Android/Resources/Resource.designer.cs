@@ -12942,7 +12942,7 @@ namespace atomex.Droid
 			public const int ic_mtrl_chip_close_circle = 2131230975;
 			
 			// aapt resource value: 0x7F080100
-			public const int ic_stat_send = 2131230976;
+			public const int ic_notification = 2131230976;
 			
 			// aapt resource value: 0x7F080101
 			public const int ic_successstatus = 2131230977;
@@ -14297,7 +14297,7 @@ namespace atomex.Droid
 			public const int ic_launcher = 2131558400;
 			
 			// aapt resource value: 0x7F0D0001
-			public const int ic_stat_send = 2131558401;
+			public const int ic_notification = 2131558401;
 			
 			// aapt resource value: 0x7F0D0004
 			public const int launcher_foreground = 2131558404;
