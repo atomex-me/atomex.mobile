@@ -3,12 +3,16 @@ using atomex.Resources;
 using atomex.ViewModel.TransactionViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using atomex.Services;
 
 namespace atomex
 {
     public partial class TransactionInfoPage : ContentPage
     {
         private TransactionViewModel _transactionViewModel;
+
+        private IToastService _toastService;
+
         public TransactionInfoPage(TransactionViewModel transactionViewModel)
         {
             InitializeComponent();
@@ -17,6 +21,7 @@ namespace atomex
                 _transactionViewModel = transactionViewModel;
                 BindingContext = transactionViewModel;
             }
+            _toastService = DependencyService.Get<IToastService>();
         }
 
         private async void OnCopyButtonClicked(object sender, EventArgs args)
@@ -24,7 +29,7 @@ namespace atomex
             if (_transactionViewModel != null)
             {
                 await Clipboard.SetTextAsync(_transactionViewModel.Id);
-                await DisplayAlert(AppResources.TransactionIdCopied, _transactionViewModel.Id, AppResources.AcceptButton);
+                _toastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Bottom);
             }
             else
             {

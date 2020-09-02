@@ -5,243 +5,382 @@
              x:Class="atomex.TransactionInfoPage"
              Title="{x:Static resources:AppResources.TransactionInfoPageTitle}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <ContentPage.Content>
+    <ScrollView>
         <StackLayout>
-            <TableView Intent="Form"
-                       RowHeight="70"
-                       BackgroundColor="{DynamicResource MainBackgroundColor}">
-                <TableRoot>
-                    <TableSection Title="{x:Static resources:AppResources.TransactionInfo}"
-                                  TextColor="{DynamicResource HintTextColor}">
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal"
-                                         Margin="20,0">
-                                <Image Style="{DynamicResource TxImageStyle}">
-                                    <Image.Triggers>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Type}"
-                                                     Value="Input">
-                                            <Setter Property="Source"
-                                                    Value="Receive"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Type}"
-                                                     Value="Output">
-                                            <Setter Property="Source"
-                                                    Value="Send"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapPayment">
-                                            <Setter Property="Source"
-                                                    Value="SwapPayment"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapRedeem">
-                                            <Setter Property="Source"
-                                                    Value="SwapRedeem"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapRefund">
-                                            <Setter Property="Source"
-                                                    Value="SwapRefund"/>
-                                        </DataTrigger>
-                                    </Image.Triggers>
-                                </Image>
-                                <Label Text="{Binding Amount}"
-                                       VerticalTextAlignment="Center"
-                                       Padding="10,0">
-                                    <Label.Triggers>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="Input">
-                                            <Setter Property="TextColor"
-                                                    Value="Green"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="Output">
-                                            <Setter Property="TextColor"
-                                                    Value="Red"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapPayment">
-                                            <Setter Property="TextColor"
-                                                    Value="Red"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
-                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapRedeem">
-                                            <Setter Property="TextColor"
-                                                    Value="Green"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Type}"
-                                                     Value="SwapRefund">
-                                            <Setter Property="TextColor"
-                                                    Value="Green"/>
-                                            <Setter Property="FormattedText">
-                                                <Setter.Value>
-                                                    <FormattedString>
-                                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
-                                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                                        <Span Text=" "/>
-                                                        <Span Text="{Binding Currency.Name}"
-                                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                                    </FormattedString>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
-                                <Frame CornerRadius="8"
-                                       Padding="2"
-                                       Margin="0,20"
-                                       HasShadow="False"
-                                       HorizontalOptions="EndAndExpand">
-                                    <Frame.Triggers>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding State}"
-                                                     Value="Confirmed">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource ConfirmedStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding State}"
-                                                     Value="Pending">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource PendingStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding State}"
-                                                     Value="Failed">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource FailedStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding State}"
-                                                     Value="Unconfirmed">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource UnconfirmedStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding State}"
-                                                     Value="Unknown">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource UnknownStateColor}"/>
-                                        </DataTrigger>
-                                    </Frame.Triggers>
-                                    <Label Padding="10,0"
-                                           Style="{DynamicResource TxStateLabelStyle}"
-                                           Text="{Binding State}" />
-                                </Frame>
-                            </StackLayout>
-                        </ViewCell>
-                        <TextCell Text="{x:Static resources:AppResources.Description}"
-                                  TextColor="{DynamicResource MainTextColor}"
-                                  Detail="{Binding Description}"
-                                  DetailColor="{DynamicResource AdditionalTextColor}" />
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <StackLayout Margin="15">
-                                    <Label Text="{x:Static resources:AppResources.TransactionId}"
-                                           TextColor="{DynamicResource MainTextColor}"/>
-                                    <Label Text="{Binding Id}"
-                                           TextColor="{DynamicResource AdditionalTextColor}"
-                                           FontSize="14"
-                                           LineBreakMode="MiddleTruncation"/>
-                                </StackLayout>
-                                <StackLayout>
-                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
-                                     </StackLayout.GestureRecognizers>
-                                     <Image WidthRequest="24"
-                                            HeightRequest="24"
-                                            Margin="20,0"
-                                            HorizontalOptions="EndAndExpand"
-                                            VerticalOptions="CenterAndExpand"
-                                            Source="Copy"/>
-                                </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout VerticalOptions="CenterAndExpand"
-                                         Margin="15,0">
-                                <Label Text="{x:Static resources:AppResources.FeeLabel}"
-                                       TextColor="{DynamicResource MainTextColor}"/>
-                                <Label TextColor="{DynamicResource AdditionalTextColor}"
-                                       FontSize="14">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding Fee} "/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding Currency.FeeCode}"></Span>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </StackLayout>
-                        </ViewCell>
-                        <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
-                                  TextColor="{DynamicResource MainTextColor}"
-                                  Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
-                        <ViewCell>
-                            <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
-                                    TextColor="{DynamicResource HintTextColor}"
-                                    FontSize="18"
-                                    BackgroundColor="Transparent"
-                                    Clicked="OnShowInExplorerClicked"/> 
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </TableView>       
+            <StackLayout Orientation="Horizontal"
+                         HeightRequest="70"
+                         Margin="20,5,20,0">
+                <Image Style="{DynamicResource TxImageStyle}">
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding Type}"
+                                     Value="Input">
+                            <Setter Property="Source"
+                                    Value="Receive"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding Type}"
+                                     Value="Output">
+                            <Setter Property="Source"
+                                    Value="Send"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding Type}"
+                                     Value="SwapPayment">
+                            <Setter Property="Source"
+                                    Value="SwapPayment"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding Type}"
+                                     Value="SwapRedeem">
+                            <Setter Property="Source"
+                                    Value="SwapRedeem"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding Type}"
+                                     Value="SwapRefund">
+                            <Setter Property="Source"
+                                    Value="SwapRefund"/>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Label Text="{Binding Amount}"
+                        VerticalTextAlignment="Center"
+                        Padding="10,0">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Type}"
+                                     Value="Input">
+                            <Setter Property="TextColor"
+                                    Value="Green"/>
+                            <Setter Property="FormattedText">
+                                <Setter.Value>
+                                    <FormattedString>
+                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                              Style="{DynamicResource TxAmountLabelStyle}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding Currency.Name}"
+                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                    </FormattedString>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Type}"
+                                     Value="Output">
+                            <Setter Property="TextColor"
+                                    Value="Red"/>
+                            <Setter Property="FormattedText">
+                                <Setter.Value>
+                                    <FormattedString>
+                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
+                                              Style="{DynamicResource TxAmountLabelStyle}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding Currency.Name}"
+                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                    </FormattedString>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Type}"
+                                     Value="SwapPayment">
+                            <Setter Property="TextColor"
+                                    Value="Red"/>
+                            <Setter Property="FormattedText">
+                                <Setter.Value>
+                                    <FormattedString>
+                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
+                                              Style="{DynamicResource TxAmountLabelStyle}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding Currency.Name}"
+                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                    </FormattedString>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Type}"
+                                     Value="SwapRedeem">
+                            <Setter Property="TextColor"
+                                    Value="Green"/>
+                            <Setter Property="FormattedText">
+                                <Setter.Value>
+                                    <FormattedString>
+                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                              Style="{DynamicResource TxAmountLabelStyle}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding Currency.Name}"
+                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                    </FormattedString>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Type}"
+                                     Value="SwapRefund">
+                            <Setter Property="TextColor"
+                                    Value="Green"/>
+                            <Setter Property="FormattedText">
+                                <Setter.Value>
+                                    <FormattedString>
+                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                              Style="{DynamicResource TxAmountLabelStyle}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding Currency.Name}"
+                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                    </FormattedString>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Frame CornerRadius="8"
+                        Padding="2"
+                        Margin="0,20"
+                        HasShadow="False"
+                        HorizontalOptions="EndAndExpand">
+                    <Frame.Triggers>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding State}"
+                                     Value="Confirmed">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource ConfirmedStateColor}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding State}"
+                                     Value="Pending">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource PendingStateColor}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding State}"
+                                     Value="Failed">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource FailedStateColor}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding State}"
+                                     Value="Unconfirmed">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource UnconfirmedStateColor}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding State}"
+                                     Value="Unknown">
+                            <Setter Property="BackgroundColor"
+                                    Value="{DynamicResource UnknownStateColor}"/>
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <Label Padding="10,0"
+                           Style="{DynamicResource TxStateLabelStyle}"
+                           Text="{Binding State}" />
+                </Frame>
+            </StackLayout>
+            <BoxView Color="LightGray"
+                     HeightRequest="1"/>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <Label Text="{x:Static resources:AppResources.Description}"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding Description}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"
+                         VerticalOptions="EndAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout>
+                        <Label Text="{x:Static resources:AppResources.TransactionId}"
+                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                        <Label Text="{Binding Id}"
+                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               LineBreakMode="MiddleTruncation"/>
+                    </StackLayout>
+                    <StackLayout>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
+                        </StackLayout.GestureRecognizers>
+                        <Image WidthRequest="24"
+                               HeightRequest="24"
+                               Margin="20,0,0,0"
+                               HorizontalOptions="EndAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Source="Copy"/>
+                    </StackLayout>
+                </StackLayout>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"
+                         VerticalOptions="EndAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <Label Text="{x:Static resources:AppResources.TransactionTime}"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding From, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="From"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding From}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"
+                       LineBreakMode="MiddleTruncation"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding To, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="To"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding To}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"
+                       LineBreakMode="MiddleTruncation"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding GasPrice, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Gas Price"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding GasPrice}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding GasLimit, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Gas Limit"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding GasLimit}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding GasUsed, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Gas Used"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding GasUsed}"
+                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding Fee, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Fee"
+                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding Fee}"
+                       Style="{DynamicResource TxInfoRowTextStyle}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Fee} "/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding Currency.FeeCode}"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsInternal, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label Text="Is Internal"
+                      Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                <Label Text="{Binding IsInternal}"
+                       Style="{DynamicResource TxInfoRowTextStyle}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding IsInternal}"
+                                     Value="True">
+                            <Setter Property="Text"
+                                    Value="Yes"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding IsInternal}"
+                                     Value="False">
+                            <Setter Property="Text"
+                                    Value="No"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <BoxView Color="LightGray"
+                         HeightRequest="1"/>
+            </StackLayout>
+
+            <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
+                    Style="{DynamicResource TxExplorerUriButtonStyle}"
+                    Clicked="OnShowInExplorerClicked"/>
+            <BoxView Color="LightGray"
+                     HeightRequest="1"/>
         </StackLayout>
-    </ContentPage.Content>
+    </ScrollView>
 </ContentPage>

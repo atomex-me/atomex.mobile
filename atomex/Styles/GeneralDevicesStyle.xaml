@@ -163,7 +163,27 @@
         <Setter Property="HorizontalTextAlignment" Value="End"/>
     </Style>
 
-     <!-- Currency Page -->
+    <!-- Portfolio Page -->
+    <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
+        <Setter Property="HeightRequest" Value="220"/>
+        <Setter Property="Margin" Value="0,10"/>
+    </Style>
+    <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MainWalletLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Currency Page -->
     <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
         <Setter Property="FontSize">
             <Setter.Value>
@@ -200,8 +220,32 @@
         <Setter Property="FontSize" Value="12"/>
     </Style>
     <Style x:Key="TxImageStyle" TargetType="Image">
-        <Setter Property="Margin" Value="0,20"/>
+        <Setter Property="Margin" Value="0,10"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+    <Style x:Key="TxInfoRowStyle" TargetType="StackLayout">
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="HeightRequest" Value="70"/>
+    </Style>
+    <Style x:Key="TxInfoRowTitleStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HeightRequest" Value="30"/>
+        <Setter Property="VerticalTextAlignment" Value="End"/>
+    </Style>
+    <Style x:Key="TxInfoRowTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HeightRequest" Value="30"/>
+    </Style>
+    <Style x:Key="TxExplorerUriButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="HeightRequest" Value="70"/>
     </Style>
 
     <!-- Create Mnemonic Page -->
