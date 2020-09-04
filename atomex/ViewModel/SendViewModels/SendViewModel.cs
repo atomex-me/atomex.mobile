@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
+using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Serilog;
@@ -103,7 +104,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        public virtual decimal FeePrice => Currency.GetDefaultFeePrice();
+        public decimal FeePrice;
 
         protected bool _useDefaultFee;
         public virtual bool UseDefaultFee
@@ -201,9 +202,7 @@ namespace atomex.ViewModel.SendViewModels
                     .SendAsync(Currency.Name, To, Amount, Fee, FeePrice, UseDefaultFee);
 
                 if (error != null)
-                {
                     return error.Description;
-                }
 
                 return null;
             }
@@ -224,8 +223,16 @@ namespace atomex.ViewModel.SendViewModels
 
             UseDefaultFee = true; // use default fee by default
 
+            UpdateFeePrice().FireAndForget();
+
             SubscribeToServices();
         }
+
+        private async Task UpdateFeePrice()
+        {
+            FeePrice = await Currency.GetDefaultFeePriceAsync();
+        }
+
         private void SubscribeToServices()
         {
             if (App.HasQuotesProvider)
@@ -237,6 +244,8 @@ namespace atomex.ViewModel.SendViewModels
             Warning = string.Empty;
 
             _amount = amount;
+
+            var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
 
             if (UseDefaultFee)
             {
@@ -255,7 +264,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnPropertyChanged(nameof(AmountString));
 
-                _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), Currency.GetDefaultFeePrice());
+                _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), defaultFeePrice);
                 OnPropertyChanged(nameof(FeeString));
             }
             else
@@ -267,7 +276,7 @@ namespace atomex.ViewModel.SendViewModels
                     ? CurrencyViewModel.AvailableAmount
                     : maxAmount + maxFeeAmount;
 
-                var feeAmount = Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice());
+                var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
 
                 if (_amount > maxAmount || _amount + feeAmount > availableAmount)
                 {
@@ -289,12 +298,13 @@ namespace atomex.ViewModel.SendViewModels
 
             _fee = Math.Min(fee, Currency.GetMaximumFee());
 
+            var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
             if (_amount == 0)
             {
-                if (Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice()) > CurrencyViewModel.AvailableAmount)
-                {
+                if (Currency.GetFeeAmount(_fee, defaultFeePrice) > CurrencyViewModel.AvailableAmount)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-                }
+                
                 return;
             }
 
@@ -311,7 +321,7 @@ namespace atomex.ViewModel.SendViewModels
                     ? CurrencyViewModel.AvailableAmount
                     : maxAmount + maxFeeAmount;
 
-                var feeAmount = Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice());
+                var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
 
                 if (_amount + feeAmount > availableAmount)
                 {
@@ -339,6 +349,8 @@ namespace atomex.ViewModel.SendViewModels
             if (CurrencyViewModel.AvailableAmount == 0)
                 return;
 
+            var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
             if (UseDefaultFee)
             {
                 var (maxAmount, maxFeeAmount, _) = await App.Account
@@ -349,7 +361,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnPropertyChanged(nameof(AmountString));
 
-                _fee = Currency.GetFeeFromFeeAmount(maxFeeAmount, Currency.GetDefaultFeePrice());
+                _fee = Currency.GetFeeFromFeeAmount(maxFeeAmount, defaultFeePrice);
                 OnPropertyChanged(nameof(FeeString));
             }
             else
@@ -361,7 +373,7 @@ namespace atomex.ViewModel.SendViewModels
                     ? CurrencyViewModel.AvailableAmount
                     : maxAmount + maxFeeAmount;
 
-                var feeAmount = Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice());
+                var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
 
                 if (availableAmount - feeAmount > 0)
                 {

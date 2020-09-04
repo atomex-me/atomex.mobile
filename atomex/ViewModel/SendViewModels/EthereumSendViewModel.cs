@@ -135,7 +135,7 @@ namespace atomex.ViewModel.SendViewModels
                 _fee = Currency.GetDefaultFee();
                 OnPropertyChanged(nameof(GasString));
 
-                _feePrice = Currency.GetDefaultFeePrice();
+                _feePrice = await Currency.GetDefaultFeePriceAsync();
                 OnPropertyChanged(nameof(FeePriceString));
 
                 if (_amount > maxAmount)
@@ -294,7 +294,7 @@ namespace atomex.ViewModel.SendViewModels
                 _fee = Currency.GetDefaultFee();
                 OnPropertyChanged(nameof(GasString));
 
-                _feePrice = Currency.GetDefaultFeePrice();
+                _feePrice = await Currency.GetDefaultFeePriceAsync();
                 OnPropertyChanged(nameof(FeePriceString));
 
                 UpdateTotalFeeString(maxFeeAmount);

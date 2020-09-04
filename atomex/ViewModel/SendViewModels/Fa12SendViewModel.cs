@@ -57,7 +57,9 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnPropertyChanged(nameof(AmountString));
 
-                _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), Currency.GetDefaultFeePrice());
+                var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
+                _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), defaultFeePrice);
                 OnPropertyChanged(nameof(FeeString));
 
             }
@@ -89,7 +91,9 @@ namespace atomex.ViewModel.SendViewModels
 
             if (_amount == 0)
             {
-                if (Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice()) > CurrencyViewModel.AvailableAmount)
+                var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
+                if (Currency.GetFeeAmount(_fee, defaultFeePrice) > CurrencyViewModel.AvailableAmount)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
                 return;
             }
@@ -101,7 +105,9 @@ namespace atomex.ViewModel.SendViewModels
                 var (maxAmount, maxAvailableFee, _) = await App.Account
                     .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, decimal.MaxValue, 0, false);
 
-                var feeAmount = Currency.GetFeeAmount(_fee, Currency.GetDefaultFeePrice());
+                var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
+                var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
 
                 var estimatedFeeAmount = _amount != 0
                     ? await App.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
@@ -121,6 +127,67 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (feeAmount > maxAvailableFee)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
+
+                OnPropertyChanged(nameof(FeeString));
+            }
+
+            OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+        }
+
+        public override async Task OnMaxClick()
+        {
+            Warning = string.Empty;
+
+            var availableAmount = CurrencyViewModel.AvailableAmount;
+
+            if (availableAmount == 0)
+                return;
+
+            var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
+
+            if (UseDefaultFee)
+            {
+
+                var (maxAmount, maxFeeAmount, _) = await App.Account
+                        .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, 0, 0, true);
+
+                if (maxAmount > 0)
+                    _amount = maxAmount;
+                else
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
+
+                OnPropertyChanged(nameof(AmountString));
+
+                _fee = Currency.GetFeeFromFeeAmount(maxFeeAmount, defaultFeePrice);
+                OnPropertyChanged(nameof(FeeString));
+            }
+            else
+            {
+                var (maxAmount, maxFee, _) = await App.Account
+                       .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, 0, 0, false);
+
+                var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
+
+                if (_fee < maxFee)
+                {
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
+                    if (_fee == 0)
+                    {
+                        _amount = 0;
+                        OnPropertyChanged(nameof(AmountString));
+                        return;
+                    }
+                }
+
+                _amount = maxAmount;
+
+                var (_, maxAvailableFee, _) = await App.Account
+                    .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, decimal.MaxValue, 0, false);
+
+                if (maxAmount < availableAmount || feeAmount > maxAvailableFee)
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
+
+                OnPropertyChanged(nameof(AmountString));
 
                 OnPropertyChanged(nameof(FeeString));
             }
