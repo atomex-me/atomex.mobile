@@ -240,6 +240,7 @@
                                                       Text="{Binding FeePrice, StringFormat='{0:0.######}', Mode=TwoWay}"
                                                       HorizontalOptions="FillAndExpand"
                                                       HorizontalTextAlignment="End"
+                                                      VerticalTextAlignment="Center"
                                                       Focused="GasPriceEntryFocused"
                                                       Unfocused="GasPriceEntryFocused">
                                     <controls:CustomEntry.Triggers>
@@ -304,6 +305,7 @@
                                                       Text="{Binding GasString}"
                                                       HorizontalOptions="FillAndExpand"
                                                       HorizontalTextAlignment="End"
+                                                      VerticalTextAlignment="Center"
                                                       IsReadOnly="True"
                                                       TextColor="{DynamicResource AdditionalTextColor}"/>
                                 <Label Text="GAS"

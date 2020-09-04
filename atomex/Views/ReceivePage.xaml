@@ -95,8 +95,7 @@
                     <zxcm:EncodingOptions Width="300" Height="100" />
                 </zxing:ZXingBarcodeImageView.BarcodeOptions>
             </zxing:ZXingBarcodeImageView>-->
-            <zxing:ZXingBarcodeImageView WidthRequest="300"
-                                         HeightRequest="300"
+            <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"
                                          BarcodeValue="{Binding SelectedAddress.Address}"
                                          BarcodeFormat="QR_CODE">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>

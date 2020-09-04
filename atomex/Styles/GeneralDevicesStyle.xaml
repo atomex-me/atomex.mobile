@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              x:Class="atomex.Styles.GeneralDevicesStyle">
        <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -306,6 +307,12 @@
                             Android="-25"/>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- Receive Page -->
+    <Style x:Key="QrCodeStyle" TargetType="zxing:ZXingBarcodeImageView">
+        <Setter Property="HeightRequest" Value="300"/>
+        <Setter Property="WidthRequest" Value="300"/>
     </Style>
 
     <!-- Delegation info Page -->

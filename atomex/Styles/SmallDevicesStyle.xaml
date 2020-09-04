@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              x:Class="atomex.Styles.SmallDevicesStyle">
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -294,6 +295,12 @@
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="FontFamily" Value="{DynamicResource ItalicFont}"/>
         <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- Receive Page -->
+    <Style x:Key="QrCodeStyle" TargetType="zxing:ZXingBarcodeImageView">
+        <Setter Property="HeightRequest" Value="200"/>
+        <Setter Property="WidthRequest" Value="200"/>
     </Style>
 
     <!-- Delegate Page -->
