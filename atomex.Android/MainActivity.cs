@@ -6,9 +6,6 @@ using Android.Content;
 using Atomex.Common;
 using atomex.Common.FileSystem;
 using Android.Util;
-using Xamarin.Forms;
-using atomex.Services;
-using atomex.Models;
 using Plugin.Fingerprint;
 
 namespace atomex.Droid

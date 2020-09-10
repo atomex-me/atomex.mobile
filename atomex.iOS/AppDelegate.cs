@@ -8,6 +8,10 @@ using UserNotifications;
 using atomex.Common.FileSystem;
 using Xamarin.Forms;
 using atomex.Services;
+using Serilog.Debugging;
+using Serilog;
+using Serilog.Events;
+using Sentry;
 
 namespace atomex.iOS
 {
@@ -56,7 +60,7 @@ namespace atomex.iOS
             }
 
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
-            
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
@@ -69,6 +73,27 @@ namespace atomex.iOS
             byte[] result = new byte[deviceToken.Length];
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
+
+            StartSentry();
+        }
+
+        private void StartSentry()
+        {
+            SelfLog.Enable(m => Log.Error(m));
+
+            Log.Logger = new LoggerConfiguration()
+              .Enrich.FromLogContext()
+              .MinimumLevel.Debug()
+              .WriteTo.Sentry(o =>
+              {
+                  o.Dsn = new Dsn("https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6");
+                  o.MinimumEventLevel = LogEventLevel.Error;
+                  o.MinimumBreadcrumbLevel = LogEventLevel.Error;
+                  o.AttachStacktrace = true;
+                  o.SendDefaultPii = true;
+                  o.Environment = "iOS: " + DeviceToken;
+              })
+              .CreateLogger();
         }
 
         public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
