@@ -9,13 +9,10 @@ namespace atomex.Droid.Services
     {
         const string TAG = "FirebaseIIdService";
 
-        private string DeviceToken;
-
         public override void OnTokenRefresh()
         {
-            DeviceToken = FirebaseInstanceId.Instance.Token;
-
-            SendRegistrationTokenToServer(DeviceToken);
+            var refreshedToken = FirebaseInstanceId.Instance.Token;
+            SendRegistrationTokenToServer(refreshedToken);
         }
 
         public void SendRegistrationTokenToServer(string token)

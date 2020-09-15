@@ -7,6 +7,12 @@ using Atomex.Common;
 using atomex.Common.FileSystem;
 using Android.Util;
 using Plugin.Fingerprint;
+using Firebase.Iid;
+using Serilog.Debugging;
+using Serilog;
+using Serilog.Events;
+using Sentry;
+using Log = Serilog.Log;
 
 namespace atomex.Droid
 {
@@ -39,7 +45,16 @@ namespace atomex.Droid
 
             Xamarin.Essentials.Platform.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            StartSentry();
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidUnhandledExceptionRaiser;
+
             LoadApplication(new App());
+        }
+
+        private void AndroidUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
+        {
+            SentrySdk.CaptureException(e.Exception);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -85,6 +100,25 @@ namespace atomex.Droid
             {
                 /// Do something now that you know the user clicked on the notification...
             }
+        }
+
+        private void StartSentry()
+        {
+            SelfLog.Enable(m => Log.Error(m));
+
+            Log.Logger = new LoggerConfiguration()
+              .Enrich.FromLogContext()
+              .MinimumLevel.Debug()
+              .WriteTo.Sentry(o =>
+              {
+                  o.Dsn = new Dsn("https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6");
+                  o.MinimumEventLevel = LogEventLevel.Error;
+                  o.MinimumBreadcrumbLevel = LogEventLevel.Error;
+                  o.AttachStacktrace = true;
+                  o.SendDefaultPii = true;
+                  o.Environment = "Android: " + FirebaseInstanceId.Instance.Token;
+              })
+              .CreateLogger();
         }
     }
 }
