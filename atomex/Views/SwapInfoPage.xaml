@@ -33,8 +33,7 @@
                                            TextColor="Red">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="-"/>
-                                                <Span Text="{Binding FromAmount, StringFormat='{0}'}"
+                                                <Span Text="{Binding FromAmount, StringFormat='-{0:0.#########}'}"
                                                       FontSize="16"/>
                                                 <Span Text=" "/>
                                                 <Span Text="{Binding FromCurrencyCode}"
@@ -47,8 +46,7 @@
                                            TextColor="Green">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="+"/>
-                                                <Span Text="{Binding ToAmount, StringFormat='{0}'}"
+                                                <Span Text="{Binding ToAmount, StringFormat='+{0:0.#########}'}"
                                                       FontSize="16"/>
                                                 <Span Text=" "/>
                                                 <Span Text="{Binding ToCurrencyCode}"

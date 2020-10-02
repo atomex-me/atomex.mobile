@@ -236,6 +236,14 @@
     <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ.pdf" />
     <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ-1.pdf" />
     <ImageAsset Include="Assets.xcassets\FA2.imageset\XTZ-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC.pdf" />
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.png" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-1.png" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -246,7 +254,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="ZXing.Net.Mobile.Forms">
       <Version>2.4.1</Version>
@@ -335,6 +343,8 @@
     <Folder Include="Assets.xcassets\NYX.imageset\" />
     <Folder Include="Assets.xcassets\FA2.imageset\" />
     <Folder Include="Services\" />
+    <Folder Include="Assets.xcassets\TBTC.imageset\" />
+    <Folder Include="Assets.xcassets\WBTC.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

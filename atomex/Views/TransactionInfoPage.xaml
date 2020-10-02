@@ -56,7 +56,7 @@
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding Currency.Name}"
@@ -73,7 +73,7 @@
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
+                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding Currency.Name}"
@@ -90,7 +90,7 @@
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0}'}"
+                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding Currency.Name}"
@@ -107,7 +107,7 @@
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding Currency.Name}"
@@ -124,7 +124,7 @@
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0}'}"
+                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding Currency.Name}"

@@ -18,6 +18,10 @@ namespace atomex.ViewModel.TransactionViewModels
                     return new BitcoinBasedTransactionViewModel((IBitcoinBasedTransaction)tx);
                 case Tether _:
                     return new EthereumERC20TransactionViewModel((EthereumTransaction)tx);
+                case TBTC _:
+                    return new EthereumERC20TransactionViewModel((EthereumTransaction)tx);
+                case WBTC _:
+                    return new EthereumERC20TransactionViewModel((EthereumTransaction)tx);
                 case Ethereum _:
                     return new EthereumTransactionViewModel((EthereumTransaction)tx);
                 case NYX _:
