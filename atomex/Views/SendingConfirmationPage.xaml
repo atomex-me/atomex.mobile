@@ -6,7 +6,7 @@
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <RelativeLayout>
+        <RelativeLayout MinimumHeightRequest="440">
             <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
@@ -20,75 +20,69 @@
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}">
                             <ViewCell>
-                                <StackLayout Padding="20,10"
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
                                              VerticalOptions="CenterAndExpand">
                                     <Label Text="{x:Static resources:AppResources.ToLabel}"
-                                           FontSize="16"
-                                           FontFamily="{DynamicResource RegularFont}"/>
-                                    <Label TextColor="{DynamicResource HintTextColor}"
-                                           Text="{Binding To}"/>
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Text="{Binding To}"
+                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10"
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
                                              VerticalOptions="CenterAndExpand">
                                     <Label Text="{x:Static resources:AppResources.AmountLabel}"
-                                           FontSize="16"
-                                           FontFamily="{DynamicResource RegularFont}"/>
-                                    <Label TextColor="{DynamicResource HintTextColor}">
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Amount}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
-                                                      FontSize="14"/>
+                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="Gray"
-                                                      FontSize="14"/>
+                                                      TextColor="{DynamicResource HintTextColor}"
+                                                      FontSize="12"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10"
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
                                              VerticalOptions="CenterAndExpand">
                                     <Label Text="{x:Static resources:AppResources.FeeLabel}"
-                                           FontSize="16"
-                                           FontFamily="{DynamicResource RegularFont}"/>
-                                    <Label TextColor="{DynamicResource HintTextColor}"
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}"
                                            x:Name="FeeValue">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Fee}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
-                                                      FontSize="14"/>
+                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
                                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="Gray"
-                                                      FontSize="14"/>
+                                                      TextColor="{DynamicResource HintTextColor}"
+                                                      FontSize="12"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label TextColor="{DynamicResource HintTextColor}"
+                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}"
                                            x:Name="EthereumFeeValue"
                                            IsVisible="False">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding TotalFeeString}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
-                                                      FontSize="14"/>
+                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
                                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="Gray"
-                                                      FontSize="14"/>
+                                                      TextColor="{DynamicResource HintTextColor}"
+                                                      FontSize="12"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
-                                <StackLayout Padding="20,10"
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
                                              VerticalOptions="CenterAndExpand">
                                     <Button Text="{x:Static resources:AppResources.SendButton}"
                                             x:Name="SendButton"

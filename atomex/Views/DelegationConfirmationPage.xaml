@@ -6,7 +6,7 @@
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <RelativeLayout>
+        <RelativeLayout MinimumHeightRequest="440">
             <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
@@ -19,40 +19,55 @@
                            RowHeight="70">
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
-                            <TextCell Text="{x:Static resources:AppResources.FromLabel}"
-                                      Detail="{Binding WalletAddressViewModel.WalletAddress.Address}"
-                                      DetailColor="{DynamicResource MainTextColor}"/>
-                            <TextCell Text="{x:Static resources:AppResources.AmountLabel}"
-                                      Detail="{Binding WalletAddressViewModel.WalletAddress.Balance}"
-                                      DetailColor="{DynamicResource MainTextColor}"/>
+                            <ViewCell>
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
+                                    <Label Text="{x:Static resources:AppResources.FromLabel}"
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
+                                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0} XTZ'}"
+                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
+                                </StackLayout>
+                            </ViewCell>
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal"
-                                             Padding="20,10">
+                                             Style="{DynamicResource ConfirmationPropertyStyle}">
                                     <Label Text="{x:Static resources:AppResources.ToLabel}"
                                            VerticalTextAlignment="Center"
-                                           TextColor="{DynamicResource HintTextColor}"
-                                           WidthRequest="30"/>
+                                           WidthRequest="30"
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
                                     <Image Source="{Binding BakerViewModel.Logo}"
                                            Margin="10,10,0,10"/>
                                     <StackLayout VerticalOptions="Center">
                                         <Label Text="{Binding BakerViewModel.Name}"
                                                VerticalTextAlignment="End"
-                                               FontFamily="{DynamicResource BoldFont}"
+                                               FontFamily="{DynamicResource RegularFont}"
                                                TextColor="{DynamicResource MainTextColor}"
                                                FontSize="16"/>
                                         <Label Text="{Binding Address}"
                                                VerticalTextAlignment="Start"
                                                TextColor="{DynamicResource AdditionalTextColor}"
-                                               FontSize="12"
+                                               FontSize="14"
                                                LineBreakMode="MiddleTruncation"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>
-                            <TextCell Text="{x:Static resources:AppResources.FeeLabel}"
-                                      Detail="{Binding Fee}"
-                                      DetailColor="{DynamicResource MainTextColor}"/>
                             <ViewCell>
-                                <StackLayout Padding="20,10"
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
+                                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
+                                    <Label Text="{Binding Fee, StringFormat='{0} XTZ'}"
+                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
+                                </StackLayout>
+                            </ViewCell>
+                            <ViewCell>
+                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
                                              VerticalOptions="CenterAndExpand">
                                     <Button Text="{x:Static resources:AppResources.DelegateButton}"
                                             x:Name="DelegateButton"

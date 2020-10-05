@@ -16,8 +16,7 @@ namespace atomex
         {
             InitializeComponent();
             _sendViewModel = sendViewModel;
-            if (sendViewModel.Currency.Name == "ETH" ||
-                sendViewModel.Currency.Name == "USDT")
+            if (sendViewModel.Currency.FeeCode == "ETH")
             {
                 EthereumFeeValue.IsVisible = true;
                 FeeValue.IsVisible = false;

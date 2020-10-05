@@ -17,15 +17,14 @@ namespace atomex
             InitializeComponent();
             _sendViewModel = sendViewModel;
             BindingContext = sendViewModel;
-            if (sendViewModel.Currency.Name == "ETH" ||
-                sendViewModel.Currency.Name =="USDT")
+            if (sendViewModel.Currency.FeeCode == "ETH")
             {
                 GasLayout.IsVisible = true;
                 FeeLayout.IsVisible = false;
                 return;
             }
-            if (sendViewModel.Currency.Name == "BTC" ||
-                sendViewModel.Currency.Name == "LTC")
+            if (sendViewModel.Currency.FeeCode == "BTC" ||
+                sendViewModel.Currency.FeeCode == "LTC")
             {
                 FeeRateLayout.IsVisible = true;
                 return;
