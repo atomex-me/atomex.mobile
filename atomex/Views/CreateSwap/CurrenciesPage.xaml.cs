@@ -41,10 +41,17 @@ namespace atomex.Views.CreateSwap
             PickerFrom.Focus();
         }
 
-
         private void OnToCurrencyPickerClicked(object sender, EventArgs args)
         {
             PickerTo.Focus();
+        }
+
+        private void OnSwapCurrenciesClicked(object sender, EventArgs args)
+        {
+            CurrencyViewModel fromVM = _conversionViewModel.FromCurrencyViewModel;
+            CurrencyViewModel toVM = _conversionViewModel.ToCurrencyViewModel;
+            _conversionViewModel.FromCurrencyViewModel = toVM;
+            _conversionViewModel.ToCurrencyViewModel = fromVM;
         }
     }
 }

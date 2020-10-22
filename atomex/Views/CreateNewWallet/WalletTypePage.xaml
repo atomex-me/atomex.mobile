@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="{x:Static resources:AppResources.WalletTypeStepLabel}"
@@ -14,20 +14,21 @@
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <Frame Padding="0"
                HasShadow="False"
+               CornerRadius="10"
                x:Name="Frame">
             <RelativeLayout WidthRequest="220">
                 <custom:CustomPicker ItemsSource="{Binding Networks}"
                                      SelectedItem="{Binding Network}"
-                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                     HeightRequest="70"
                                      x:Name="Picker"
                                      Focused="OnPickerFocused"
-                                     Unfocused="OnPickerFocused"/>
+                                     Unfocused="OnPickerFocused"
+                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                     Style="{DynamicResource PickerStyle}"/>
                 <Image Source="DownArrowPicker"
                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Width, Factor=0.9}"
                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Height, Factor=0.5, Constant=-5}"
-                       WidthRequest="12"
-                       HeightRequest="12"/>
+                       WidthRequest="10"
+                       HeightRequest="10"/>
             </RelativeLayout>
         </Frame>
         <Button Text="{x:Static resources:AppResources.NextButton}"

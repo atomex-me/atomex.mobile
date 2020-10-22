@@ -27,8 +27,8 @@
                        HorizontalTextAlignment="Center"
                        TextColor="{DynamicResource MainTextColor}"
                        VerticalOptions="StartAndExpand"
-                       FontSize="22"
-                       Margin="0,20"/>
+                       FontSize="18"
+                       Margin="20"/>
             </StackLayout>
         
             <ListView ItemsSource="{Binding GroupedSwaps}"

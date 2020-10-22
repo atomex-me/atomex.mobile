@@ -34,6 +34,8 @@ namespace atomex.iOS
         {
             FileSystem.UseFileSystem(new IosFileSystem());
 
+            Xamarin.Forms.Forms.SetFlags("Shapes_Experimental");
+
             global::Xamarin.Forms.Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 

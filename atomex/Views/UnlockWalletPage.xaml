@@ -5,35 +5,38 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.UnlockWalletPage"
              Title="{x:Static resources:AppResources.UnlockTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <RelativeLayout>
             <StackLayout x:Name="Content"
                          Padding="30"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-                <Image WidthRequest="180"
-                       HeightRequest="180"
-                       Source="Entry"/>
+                <Image WidthRequest="170"
+                       HeightRequest="156"
+                       Margin="10"
+                       Source="AtomexLogo"/>
                 <Label Text="{x:Static resources:AppResources.UnlockLabel}"
                        Style="{DynamicResource UnlockWalletTextStyle}"
                        x:Name="Label"/>
                 <Frame x:Name="PasswordFrame"
-                       Style="{DynamicResource EntryFrameStyle}">
+                                      CornerRadius="10"
+                                      Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
-                        <Frame HasShadow="False" 
-                               BackgroundColor="AliceBlue">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
-                            </Frame.GestureRecognizers>
+                        <StackLayout VerticalOptions="CenterAndExpand"
+                                     HorizontalOptions="Start"
+                                     Padding="20,0,0,0">
                             <Image WidthRequest="24"
                                    HeightRequest="24"
-                                   Source="Lock"/>
-                        </Frame>
-                        <StackLayout HeightRequest="70"
-                                     HorizontalOptions="FillAndExpand"
-                                     BackgroundColor="White">
+                                   HorizontalOptions="CenterAndExpand"
+                                   Source="Lock">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="60">
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"/>
                             <controls:CustomEntry x:Name="PasswordEntry"

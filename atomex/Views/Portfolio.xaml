@@ -5,102 +5,104 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
-        <ContentPage.Content>
-            <StackLayout>
-                <RelativeLayout Style="{DynamicResource PortfolioChartStyle}">
-                    <chart:ChartView x:Name="PortfolioChart"
-                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
-                    <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Height, Factor=1}"
-                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Width, Factor=1}"
-                                 VerticalOptions="Center"
-                                 Spacing="0">
-                        <Label Style="{DynamicResource TotalAmountLabelStyle}"
-                               Text="{Binding TotalCost, StringFormat='{0:0.#} $'}"/>
-                        <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
-                               Style="{DynamicResource MainWalletLabelStyle}"/>
-                    </StackLayout>
-                </RelativeLayout>
-                <ListView ItemsSource="{Binding CurrencyViewModels}"
-                          ItemTapped="OnListViewItemTapped"
-                          HasUnevenRows="True"
-                          SeparatorVisibility="None"
-                          BackgroundColor="{DynamicResource MainBackgroundColor}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="3.5*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="3.5*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           HeightRequest="38"
-                                           WidthRequest="38"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Center"
-                                           Source="{Binding CurrencyCode}"/>
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Currency.Description}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{DynamicResource MainTextColor}"
-                                           VerticalTextAlignment="End"/>
-                                    <Label Grid.RowSpan="2"
-                                           Grid.Column="2"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{DynamicResource MainTextColor}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"
-                                           FontSize="14">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding PortfolioPercent, StringFormat='{0:0.#}'}" />
-                                                <Span Text=" %" /> 
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Column="3"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{DynamicResource MainTextColor}"
-                                           HorizontalOptions="End"
-                                           VerticalTextAlignment="End">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
-                                                      FontSize="14"/>
-                                                <Span Text=" " /> 
-                                                <Span Text="{Binding CurrencyCode}"
-                                                      FontSize="12"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Text="{Binding Price, StringFormat='{0:f2} $'}"
-                                           VerticalOptions="Start"
-                                           FontFamily="{DynamicResource LightFont}"
-                                           TextColor="{DynamicResource AdditionalTextColor}"
-                                           FontSize="12"/>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="3"
-                                           Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
-                                           FontFamily="{DynamicResource LightFont}"
-                                           VerticalOptions="Start"
-                                           HorizontalOptions="EndAndExpand"
-                                           TextColor="{DynamicResource AdditionalTextColor}"
-                                           FontSize="12"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>            
-            </StackLayout>
-        </ContentPage.Content>
-    </ContentPage>
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <RelativeLayout Style="{DynamicResource PortfolioChartStyle}">
+                <chart:ChartView x:Name="PortfolioChart"
+                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
+                <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Height, Factor=1}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Width, Factor=1}"
+                                VerticalOptions="Center"
+                                Spacing="0">
+                    <Label Style="{DynamicResource TotalAmountLabelStyle}"
+                            Text="{Binding TotalCost, StringFormat='{0:0.#} $'}"/>
+                    <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
+                            Style="{DynamicResource MainWalletLabelStyle}"/>
+                </StackLayout>
+            </RelativeLayout>
+            <Line X1="0"
+                  Y1="0"
+                  X2="600"
+                  Y2="0"
+                  Stroke="LightGray"
+                  StrokeThickness="1"/>
+            <ListView ItemsSource="{Binding CurrencyViewModels}"
+                      ItemTapped="OnListViewItemTapped"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      BackgroundColor="{DynamicResource MainBackgroundColor}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10,0"
+                                  RowSpacing="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       HeightRequest="30"
+                                       WidthRequest="30"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       Source="{Binding CurrencyCode}"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Currency.Description}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       FontSize="14"
+                                       VerticalTextAlignment="End"/>
+                                <Label Grid.RowSpan="2"
+                                       Grid.Column="2"
+                                       Text="{Binding PortfolioPercent, StringFormat='{0:0.#} %'}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       FontSize="12"/>
+                                <Label Grid.Column="3"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{DynamicResource MainTextColor}"
+                                       HorizontalOptions="End"
+                                       VerticalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
+                                                  FontSize="14"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}"
+                                                  FontSize="12"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{Binding Price, StringFormat='{0:f2} $'}"
+                                       VerticalOptions="Start"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontSize="10"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="3"
+                                       Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       VerticalOptions="Start"
+                                       HorizontalOptions="EndAndExpand"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontSize="10"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

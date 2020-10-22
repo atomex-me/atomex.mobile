@@ -33,7 +33,7 @@ namespace atomex
 
         private async void AmountEntryFocused(object sender, FocusEventArgs args)
         {
-            AmountFrame.HasShadow = args.IsFocused;
+            //AmountFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
                 decimal amount;
@@ -53,7 +53,7 @@ namespace atomex
 
         private async void FeeEntryFocused(object sender, FocusEventArgs args)
         {
-            FeeFrame.HasShadow = args.IsFocused;
+            //FeeFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
                 decimal fee;
@@ -74,7 +74,7 @@ namespace atomex
 
         private void AddressEntryFocused(object sender, FocusEventArgs args)
         {
-            AddressFrame.HasShadow = args.IsFocused;
+            //AddressFrame.HasShadow = args.IsFocused;
         }
 
         private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -115,7 +115,7 @@ namespace atomex
 
         private void GasPriceEntryFocused(object sender, FocusEventArgs args)
         {
-            GasPriceFrame.HasShadow = args.IsFocused;
+            //GasPriceFrame.HasShadow = args.IsFocused;
         }
 
         private void OnFeeTextChanged(object sender, TextChangedEventArgs args)

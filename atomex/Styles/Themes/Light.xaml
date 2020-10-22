@@ -4,9 +4,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
      <!-- Base Colors -->
     <Color x:Key="MainBackgroundColor">#ffffff</Color>
-    <Color x:Key="AdditionalBackgroundColor">#f7f5fa</Color>
+    <!--<Color x:Key="AdditionalBackgroundColor">#f7f5fa</Color>-->
+    <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
     <Color x:Key="NavigationBarBackgroundColor">#2B5286</Color>
-    <Color x:Key="TabBarBackgroundColor">#f7f5fa</Color>
+    <Color x:Key="TabBarBackgroundColor">#f3f2f7</Color>
     <Color x:Key="SelectedTabColor">#3a6cb1</Color>
     <Color x:Key="UnselectedTabColor">Gray</Color>
 
@@ -17,22 +18,19 @@
     <Color x:Key="AdditionalButtonBorderColor">#223a66</Color>
     <Color x:Key="AdditionalButtonTextColor">#223a66</Color>
 
-    <Color x:Key="FrameBorderColor">LightGray</Color>
+    <Color x:Key="FrameBorderColor">#D3D3D3</Color>
 
     <Color x:Key="NavigationBarTextColor">#ffffff</Color>
     <Color x:Key="MainTextColor">#000000</Color>
     <Color x:Key="AdditionalTextColor">#918f92</Color>
     <Color x:Key="LogoTextColor">#223a66</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
+    <Color x:Key="ErrorTextColor">#8B0000</Color>
 
     <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
-    <Color x:Key="ErrorFrameBorderColor">#8B0000</Color>
-    <Color x:Key="ErrorTextColor">#8B0000</Color>
     <Color x:Key="DefaultFrameBackgroundColor">#ffffff</Color>
-    <Color x:Key="DefaultFrameBorderColor">#d3d3d3</Color>
 
-    <Color x:Key="LabelFrameCaptionColor">#ffffff</Color>
-    <Color x:Key="FrameCaptionBackgroundColor">#3a6cb1</Color>
+    <Color x:Key="ListViewSeparatorColor">#e0e0e0</Color>
 
 
     <!-- Swap states colors  -->

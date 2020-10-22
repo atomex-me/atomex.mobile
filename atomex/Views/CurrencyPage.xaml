@@ -6,14 +6,22 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{Binding Currency.Description}"
              BackgroundColor="{DynamicResource MainBackgroundColor}">
-    <RefreshView BackgroundColor="{DynamicResource MainBackgroundColor}"
-                 IsRefreshing="False"
+    <RefreshView IsRefreshing="False"
                  Refreshing="Refresh"
                  RefreshColor="{DynamicResource HintTextColor}"
+                 BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                  x:Name="RefreshView">
-        <StackLayout>
-            <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}"
-                         Spacing="0">
+        <StackLayout Spacing="0">
+            <StackLayout.Triggers>
+                <DataTrigger TargetType="StackLayout"
+                             Binding="{Binding GroupedTransactions.Count}"
+                             Value="0">
+                    <Setter Property="BackgroundColor"
+                            Value="{DynamicResource AdditionalBackgroundColor}"/>
+                </DataTrigger>
+            </StackLayout.Triggers>
+            <StackLayout Spacing="0"
+                         BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
                 <Image WidthRequest="96"
                        HeightRequest="96"
                        Margin="20"
@@ -81,30 +89,49 @@
                       Refreshing="Refresh"
                       x:Name="TxListView"
                       RefreshControlColor="{DynamicResource HintTextColor}"
+                      BackgroundColor="{DynamicResource MainBackgroudColor}"
                       Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding GroupedTransactions.Count}"
+                                 Value="0">
+                        <Setter Property="BackgroundColor"
+                                Value="{DynamicResource AdditionalBackgroundColor}"/>
+                    </DataTrigger>
+                </ListView.Triggers>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="20">
-                            <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                   BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                   Padding="10,0"
-                                   FontSize="12"
-                                   VerticalTextAlignment="Center"
-                                   VerticalOptions="CenterAndExpand"/>
+                            <StackLayout Spacing="0"
+                                         BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+                                <Line X1="0"
+                                      Y1="0"
+                                      X2="600"
+                                      Y2="0"
+                                      Stroke="LightGray"
+                                      StrokeThickness="1"/>
+                                <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontFamily="{DynamicResource BoldFont}"
+                                       Padding="10,0"
+                                       FontSize="12"
+                                       VerticalTextAlignment="Center"
+                                       VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
                          </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="60">
+                        <ViewCell Height="61">
                             <Grid RowSpacing="0"
                                   ColumnSpacing="0"
                                   VerticalOptions="Center"
-                                  Margin="10">
+                                  BackgroundColor="{DynamicResource MainBackgroudColor}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20" />
-                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1.5*" />
@@ -112,7 +139,7 @@
                                     <ColumnDefinition Width="4.5*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.RowSpan="2"
-                                       Margin="4">
+                                       Margin="10,15">
                                     <Image.Triggers>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Type}"
@@ -149,7 +176,8 @@
                                 <Label Grid.Column="1"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{DynamicResource MainTextColor}"
-                                       VerticalOptions="EndAndExpand">
+                                       FontSize="14"
+                                       VerticalTextAlignment="End">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
@@ -185,9 +213,9 @@
                                 </Label>
                                 <Label Grid.Column="2"
                                        Grid.RowSpan="2"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="Center"
-                                       VerticalTextAlignment="Center">
+                                       HorizontalTextAlignment="End"
+                                       VerticalTextAlignment="Center"
+                                       Padding="10,0">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
@@ -199,7 +227,7 @@
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
                                                               FontFamily="{DynamicResource RegularFont}"
-                                                              FontSize="16"/>
+                                                              FontSize="14"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
                                                               FontFamily="{DynamicResource RegularFont}"
@@ -218,7 +246,7 @@
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
                                                               FontFamily="{DynamicResource RegularFont}"
-                                                              FontSize="16"/>
+                                                              FontSize="14"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
                                                               FontFamily="{DynamicResource RegularFont}"
@@ -237,7 +265,7 @@
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
                                                               FontFamily="{DynamicResource RegularFont}"
-                                                              FontSize="16"/>
+                                                              FontSize="14"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
                                                               FontFamily="{DynamicResource RegularFont}"
@@ -256,7 +284,7 @@
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
                                                               FontFamily="{DynamicResource RegularFont}"
-                                                              FontSize="16"/>
+                                                              FontSize="14"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
                                                               FontFamily="{DynamicResource RegularFont}"
@@ -275,7 +303,7 @@
                                                     <FormattedString>
                                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
                                                               FontFamily="{DynamicResource RegularFont}"
-                                                              FontSize="16"/>
+                                                              FontSize="14"/>
                                                         <Span Text=" "/>
                                                         <Span Text="{Binding Currency.Name}"
                                                               FontFamily="{DynamicResource RegularFont}"
@@ -288,7 +316,7 @@
                                 </Label>
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
-                                       VerticalOptions="StartAndExpand"
+                                       VerticalTextAlignment="Start"
                                        FontFamily="{DynamicResource LightFont}"
                                        TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="12"
@@ -356,6 +384,15 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
+                                <Line X1="0"
+                                      Y1="0"
+                                      X2="600"
+                                      Y2="0"
+                                      Stroke="#e0e0e0"
+                                      StrokeThickness="1"
+                                      Grid.Row="2"
+                                      Grid.Column="1"
+                                      Grid.ColumnSpan="2"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

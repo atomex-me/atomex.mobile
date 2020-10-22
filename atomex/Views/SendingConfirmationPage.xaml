@@ -16,7 +16,7 @@
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand">
                 <TableView Intent="Form"
-                           RowHeight="80">
+                           RowHeight="70">
                     <TableRoot>
                         <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}">
                             <ViewCell>

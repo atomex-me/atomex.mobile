@@ -24,6 +24,11 @@ namespace atomex.Views.CreateNewWallet
             Error.IsVisible = false;
         }
 
+        private void OnPickerClicked(object sender, EventArgs args)
+        {
+            LanguagesPicker.Focus();
+        }
+
         private void OnEditorFocused(object sender, FocusEventArgs args)
         {
             EditorFrame.HasShadow = args.IsFocused;

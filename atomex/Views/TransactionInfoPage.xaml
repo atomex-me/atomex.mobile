@@ -8,7 +8,7 @@
     <ScrollView>
         <StackLayout>
             <StackLayout Orientation="Horizontal"
-                         HeightRequest="70"
+                         HeightRequest="60"
                          Margin="20,5,20,0">
                 <Image Style="{DynamicResource TxImageStyle}">
                     <Image.Triggers>
@@ -136,10 +136,10 @@
                     </Label.Triggers>
                 </Label>
                 <Frame CornerRadius="8"
-                        Padding="2"
-                        Margin="0,20"
-                        HasShadow="False"
-                        HorizontalOptions="EndAndExpand">
+                       Padding="2"
+                       Margin="0,15"
+                       HasShadow="False"
+                       HorizontalOptions="EndAndExpand">
                     <Frame.Triggers>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding State}"
@@ -177,19 +177,24 @@
                            Text="{Binding State}" />
                 </Frame>
             </StackLayout>
-            <BoxView Color="LightGray"
-                     HeightRequest="1"/>
-
+            <Line X1="0"
+                  Y1="0"
+                  X2="600"
+                  Y2="0"
+                  Stroke="#e0e0e0"
+                  StrokeThickness="1"/>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <Label Text="{x:Static resources:AppResources.Description}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding Description}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"
-                         VerticalOptions="EndAndExpand"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <StackLayout Orientation="Horizontal">
                     <StackLayout>
@@ -211,20 +216,25 @@
                                Source="Copy"/>
                     </StackLayout>
                 </StackLayout>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"
-                         VerticalOptions="EndAndExpand"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <Label Text="{x:Static resources:AppResources.TransactionTime}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -240,10 +250,13 @@
                 <Label Text="{Binding From}"
                        Style="{DynamicResource TxInfoRowTextStyle}"
                        LineBreakMode="MiddleTruncation"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -259,10 +272,13 @@
                 <Label Text="{Binding To}"
                        Style="{DynamicResource TxInfoRowTextStyle}"
                        LineBreakMode="MiddleTruncation"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -277,10 +293,13 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasPrice}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -295,10 +314,13 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasLimit}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -313,10 +335,13 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasUsed}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -339,10 +364,13 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
@@ -372,15 +400,22 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-                <BoxView Color="LightGray"
-                         HeightRequest="1"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
             </StackLayout>
-
             <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
-                    Style="{DynamicResource TxExplorerUriButtonStyle}"
+                    Style="{DynamicResource TransparentButtonStyle}"
                     Clicked="OnShowInExplorerClicked"/>
-            <BoxView Color="LightGray"
-                     HeightRequest="1"/>
+            <Line X1="0"
+                  Y1="0"
+                  X2="600"
+                  Y2="0"
+                  Stroke="#e0e0e0"
+                  StrokeThickness="1"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

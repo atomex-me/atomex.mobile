@@ -34,7 +34,7 @@ namespace atomex
 
         private void OnBakerPickerFocused(object sender, FocusEventArgs args)
         {
-            BakerFrame.HasShadow = args.IsFocused;
+            //BakerFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
                 ToAddressEntry.Text = _delegateViewModel.Address;
@@ -48,7 +48,7 @@ namespace atomex
 
         private void OnFromAddressPickerFocused(object sender, FocusEventArgs args)
         {
-            FromAddressFrame.HasShadow = args.IsFocused;
+            //FromAddressFrame.HasShadow = args.IsFocused;
         }
 
         private void OnFromAddressPickerClicked(object sender, EventArgs args)
@@ -58,7 +58,7 @@ namespace atomex
 
         private void OnToAddressEntryFocused(object sender, FocusEventArgs args)
         {
-            ToAddressFrame.HasShadow = args.IsFocused;
+            //ToAddressFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
                 _delegateViewModel.Address = ToAddressEntry.Text;
@@ -67,7 +67,7 @@ namespace atomex
 
         private void OnFeeEntryFocused(object sender, FocusEventArgs args)
         {
-            FeeFrame.HasShadow = args.IsFocused;
+            //FeeFrame.HasShadow = args.IsFocused;
 
             Device.StartTimer(TimeSpan.FromSeconds(0.1), () =>
             {

@@ -256,7 +256,7 @@ namespace atomex
                 if (e.Message.Contains("Word count should be"))
                     return AppResources.MnemonicWordCountError;
                 else if (e.Message.Contains("is not in the wordlist"))
-                    return AppResources.Word + " " + e.Message.Split(' ')[1] + AppResources.isNotInWordlist;
+                    return AppResources.Word + " " + e.Message.Split(' ')[1] + " " + AppResources.isNotInWordlist;
                 else
                     return AppResources.InvalidMnemonic;
             }

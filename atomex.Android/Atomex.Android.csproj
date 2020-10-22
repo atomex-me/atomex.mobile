@@ -112,12 +112,13 @@
     <Compile Include="CustomElements\CustomEntryRenderer.cs" />
     <Compile Include="CustomElements\LeftRoundedButtonRenderer.cs" />
     <Compile Include="CustomElements\RightRoundedButtonRenderer.cs" />
-    <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="Common\AndroidFileSystem.cs" />
     <Compile Include="Services\AndroidNotificationManager.cs" />
     <Compile Include="Services\FirebaseIIdService.cs" />
     <Compile Include="Services\FirebaseMessService.cs" />
     <Compile Include="Services\ToastService.cs" />
+    <Compile Include="CustomElements\CustomFrameRenderer.cs" />
+    <Compile Include="CustomElements\CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -354,6 +355,14 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\WBTC.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\SwapArrows.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\AtomexLogo.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

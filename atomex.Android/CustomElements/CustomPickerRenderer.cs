@@ -26,12 +26,12 @@ namespace atomex.Droid.CustomElements
                 Control.SetHintTextColor(Android.Graphics.Color.White);
                 Control.SetSingleLine(true);
                 Control.SetTypeface(null, TypefaceStyle.Normal);
-                Control.Gravity = GravityFlags.Left;
-                Control.SetPadding(70,70,70,70);
+                Control.Gravity = GravityFlags.CenterVertical;
+                Control.SetPadding(60, 30, 60, 30);
 
                 GradientDrawable gd = new GradientDrawable();
-                gd.SetStroke(2, Android.Graphics.Color.LightGray);
-                gd.SetCornerRadius(12);
+                //gd.SetStroke(2, Android.Graphics.Color.LightGray);
+                gd.SetCornerRadius(10);
                 Control.Background = gd;
             }
         }

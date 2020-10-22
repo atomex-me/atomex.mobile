@@ -61,7 +61,7 @@ namespace atomex
                         {
                             new Microcharts.Entry(100) { Color = SKColor.Parse("#dcdcdc") }
                         };
-                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = SKColor.Parse("#f3f2f7"), FontFamily = "Roboto-Thin" };
                     }
                     else
                     {
@@ -76,7 +76,8 @@ namespace atomex
                                 Color = SKColor.Parse(chartColors[i])
                             };
                         }
-                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, FontFamily = "Roboto-Thin" };
+                        
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = SKColor.Parse("#f3f2f7"), FontFamily = "Roboto-Thin" };
                     }
                 }
             }

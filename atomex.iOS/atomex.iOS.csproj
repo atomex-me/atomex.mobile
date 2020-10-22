@@ -75,6 +75,8 @@
     <Compile Include="Common\IosFileSystem.cs" />
     <Compile Include="Services\iOSNotificationManager.cs" />
     <Compile Include="Services\ToastService.cs" />
+    <Compile Include="CustomElements\CustomFrameRenderer.cs" />
+    <Compile Include="CustomElements\CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -244,6 +246,13 @@
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.png" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-1.png" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-2.png" />
+    <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png" />
+    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -345,6 +354,8 @@
     <Folder Include="Services\" />
     <Folder Include="Assets.xcassets\TBTC.imageset\" />
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
+    <Folder Include="Assets.xcassets\SwapArrows.imageset\" />
+    <Folder Include="Assets.xcassets\AtomexLogo.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

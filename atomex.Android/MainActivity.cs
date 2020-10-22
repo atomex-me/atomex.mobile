@@ -43,6 +43,8 @@ namespace atomex.Droid
             }
             CreateNotificationFromIntent(Intent);
 
+            Xamarin.Forms.Forms.SetFlags("Shapes_Experimental");
+
             Xamarin.Essentials.Platform.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 

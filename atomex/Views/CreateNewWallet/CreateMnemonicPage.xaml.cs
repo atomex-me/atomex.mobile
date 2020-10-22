@@ -35,9 +35,19 @@ namespace atomex.Views.CreateNewWallet
             LanguageFrame.HasShadow = args.IsFocused;
         }
 
+        private void OnLanguagePickerClicked(object sender, EventArgs args)
+        {
+            LanguagePicker.Focus();
+        }
+
         private void OnWordCountPickerFocused(object sender, FocusEventArgs args)
         {
             WordCountFrame.HasShadow = args.IsFocused;
+        }
+
+        private void OnWordCountPickerClicked(object sender, EventArgs args)
+        {
+            WordCountPicker.Focus();
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
@@ -69,8 +79,6 @@ namespace atomex.Views.CreateNewWallet
             LoseMnemonicPhraseText.IsVisible = false;
             if (Application.Current.Resources.TryGetValue("DefaultFrameBackgroundColor", out var bgColor))
                 MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
-            if (Application.Current.Resources.TryGetValue("DefaultFrameBorderColor", out var borderColor))
-                MnemonicPhraseFrame.BorderColor = (Color)borderColor;
         }
 
         private void HighlightMnemonicPhrase()
@@ -79,8 +87,6 @@ namespace atomex.Views.CreateNewWallet
             LoseMnemonicPhraseText.IsVisible = true;
             if (Application.Current.Resources.TryGetValue("ErrorFrameBackgroundColor", out var bgColor))
                 MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
-            if (Application.Current.Resources.TryGetValue("ErrorFrameBorderColor", out var borderColor))
-                MnemonicPhraseFrame.BorderColor = (Color)borderColor;
         }
     }
 }

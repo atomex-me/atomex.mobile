@@ -79,7 +79,7 @@
     
     <!-- My Wallets Page -->
     <data name="SelectWalletLabel" xml:space="preserve">
-        <value>PLEASE SELECT YOUR WALLET</value>
+        <value>Please select your wallet</value>
     </data>
     <data name="MyWalletsTitle" xml:space="preserve">
         <value>My wallets</value>
@@ -211,7 +211,7 @@
         <value>Transaction ID</value>
     </data>
     <data name="ShowInExplorerButton" xml:space="preserve">
-        <value>Show in explorer</value>
+        <value>SHOW IN EXPLORER</value>
     </data>
     
     <!-- Send Page -->
@@ -219,7 +219,7 @@
         <value>Send</value>
     </data>
     <data name="PasteButton" xml:space="preserve">
-        <value>Paste</value>
+        <value>PASTE</value>
     </data>
     <data name="GasPriceLabel" xml:space="preserve">
         <value>Gas price</value>
@@ -239,10 +239,10 @@
         <value>Address</value>
     </data>
     <data name="CopyButton" xml:space="preserve">
-        <value>Copy</value>
+        <value>COPY</value>
     </data>
     <data name="ShareButton" xml:space="preserve">
-        <value>Share</value>
+        <value>SHARE</value>
     </data>
     
     <!-- Delegation list Page -->
@@ -304,7 +304,7 @@
         <value>Check rewards</value>
     </data>
     <data name="ChangeBakerButton" xml:space="preserve">
-        <value>Change baker</value>
+        <value>CHANGE BAKER</value>
     </data>
     <data name="DelegateLabel" xml:space="preserve">
         <value>Delegate</value>
@@ -436,7 +436,7 @@
         <value>Success</value>
     </data>
     <data name="SignOut" xml:space="preserve">
-        <value>Sign out</value>
+        <value>SIGN OUT</value>
     </data>
     <data name="AreYouSure" xml:space="preserve">
         <value>Are you sure?</value>

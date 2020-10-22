@@ -8,45 +8,38 @@
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="20,0">
+            <StackLayout Padding="20,0"
+                         Spacing="0">
                 <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
                        Style="{DynamicResource CreateSwapTitleStyle}"/>
                 <Grid ColumnSpacing="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="8*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.ColumnSpan="2"
+                           CornerRadius="10"
                            x:Name="AmountFrame"
                            Style="{DynamicResource EntryFrameStyle}">
-                        <StackLayout Orientation="Horizontal"
-                                     Grid.ColumnSpan="2">
-                            <Frame Padding="0"
-                                   HasShadow="False"
-                                   HorizontalOptions="FillAndExpand"
-                                   Grid.Row="1">
-                                <StackLayout>
-                                    <Label x:Name="AmountHint"
-                                           Style="{DynamicResource EntryHintStyle}"/>
-                                    <custom:CustomEntry Keyboard="Numeric"
-                                                        x:Name="Amount"
-                                                        Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
-                                                        Style="{DynamicResource EntryStyle}"
-                                                        Focused="AmountEntryFocused"
-                                                        Unfocused="AmountEntryFocused"
-                                                        TextChanged="OnAmountTextChanged"/>
-                                </StackLayout>
-                            </Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Grid.Column="0"
+                                         HorizontalOptions="FillAndExpand">
+                                <Label x:Name="AmountHint"
+                                       Style="{DynamicResource EntryHintStyle}"/>
+                                <custom:CustomEntry Keyboard="Numeric"
+                                                    x:Name="Amount"
+                                                    Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
+                                                    Style="{DynamicResource EntryStyle}"
+                                                    Focused="AmountEntryFocused"
+                                                    Unfocused="AmountEntryFocused"
+                                                    TextChanged="OnAmountTextChanged"/>
+                            </StackLayout>
                             <Button Grid.Column="1"
                                     Text="{x:Static resources:AppResources.MaxButton}"
-                                    FontSize="16"
-                                    Padding="20"
-                                    TextColor="{DynamicResource HintTextColor}"
-                                    HorizontalOptions="Center"
-                                    BackgroundColor="White"
+                                    Style="{DynamicResource TransparentButtonStyle}"
                                     Clicked="OnMaxAmountButtonClicked"/>
                          </StackLayout>
                     </Frame>
@@ -70,7 +63,7 @@
                 </Label>
                 <Grid Margin="0,10"
                       ColumnSpacing="0"
-                      RowSpacing="2">
+                      RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80" />
                         <RowDefinition Height="20" />
@@ -91,13 +84,14 @@
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"
                            Margin="0,10"/>
                     <Label Grid.Row="1"
-                           FontFamily="{DynamicResource RegularFont}"
+                           FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="End"
                            TextColor="{DynamicResource MainTextColor}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"
+                                      FontSize="14"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
                                       FontSize="12"/>
@@ -108,13 +102,13 @@
                            Grid.Row="1"
                            Grid.Column="2"
                            FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{DynamicResource ErrorTextColor}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="End"
-                           TextColor="Red"
                            IsVisible="{Binding IsNoLiquidity}"/>
                     <Label Grid.Row="1"
                            Grid.Column="2"
-                           FontFamily="{DynamicResource RegularFont}"
+                           FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            TextColor="{DynamicResource MainTextColor}">
@@ -128,7 +122,8 @@
                         </Label.Triggers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
+                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"
+                                      FontSize="14"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
                                       FontSize="12"/>
@@ -136,30 +131,16 @@
                         </Label.FormattedText>
                     </Label>
                     <Label Grid.Row="2"
-                           Text="{Binding AmountInBase, StringFormat='{0:f2}'}"
+                           Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
                            Style="{DynamicResource InBaseLabelStyle}"
                            HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Start">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding AmountInBase, StringFormat='{0:f2}'}"/>
-                                <Span Text=" $"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                           VerticalTextAlignment="Start"/>
                     <Label Grid.Row="2"
                            Grid.Column="2"
-                           Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"
+                           Text="{Binding TargetAmountInBase, StringFormat='{0:f2} $'}"
                            Style="{DynamicResource InBaseLabelStyle}"
                            HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Start">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding TargetAmountInBase, StringFormat='{0:f2}'}"/>
-                                <Span Text=" $"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                           VerticalTextAlignment="Start"/>
                 </Grid>
                 <Label HorizontalTextAlignment="Center">
                     <Label.FormattedText>
@@ -170,7 +151,6 @@
                                   Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text="{Binding EstimatedPrice}"
                                   Style="{DynamicResource EstimatedValueStyle}"/>
-                                  <!--Style="{DynamicResource EstimatedPriceLabelStyle}"/>-->
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -208,10 +188,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Frame BorderColor="{DynamicResource ErrorFrameBorderColor}"
-                       BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
-                       HasShadow="False"
-                       Margin="0,10">
+                <Frame Style="{DynamicResource ErrorFrameStyle}">
                     <Frame.Triggers>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding Warning}"
@@ -221,10 +198,7 @@
                         </DataTrigger>
                     </Frame.Triggers>
                     <Label Text="{Binding Warning}"
-                           FontAttributes="{DynamicResource BoldFont}"
-                           TextColor="{DynamicResource ErrorTextColor}"
-                           FontSize="16"
-                           VerticalTextAlignment="Center"
+                           Style="{DynamicResource ErrorTextStyle}"
                            HorizontalTextAlignment="Center"/>
                 </Frame>
                 <Button Text="{x:Static resources:AppResources.NextButton}"

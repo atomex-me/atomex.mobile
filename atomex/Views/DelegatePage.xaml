@@ -5,15 +5,16 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegatePage"
              Title="{x:Static resources:AppResources.DelegatePageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ScrollView x:Name="ScrollView">
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
-                     Margin="20">
+                     Margin="20"
+                     Spacing="0">
             <Label Text="{x:Static resources:AppResources.DelegateToBakeryLabel}"
-                   FontFamily="{DynamicResource RegularFont}"
+                   FontFamily="{DynamicResource BoldFont}"
                    TextColor="{DynamicResource MainTextColor}"
-                   FontSize="20"
+                   FontSize="18"
                    HorizontalTextAlignment="Center"
                    Padding="20,10"/>
             <Grid VerticalOptions="Fill"
@@ -21,8 +22,9 @@
                   ColumnSpacing="0"
                   RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -30,11 +32,11 @@
                     <ColumnDefinition Width="2.5*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Frame Grid.ColumnSpan="4"
-                       Grid.RowSpan="2"
-                       HasShadow="False"
-                       Padding="0"
-                       x:Name="BakerFrame">
+                <controls:CustomFrame Grid.ColumnSpan="4"
+                                      Grid.RowSpan="2"
+                                      x:Name="BakerFrame"
+                                      CornerRadius="20,20,0,0"
+                                      Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomPicker x:Name="BakerPicker"
                                            ItemsSource="{Binding FromBakersList}"
                                            ItemDisplayBinding="{Binding Name}"
@@ -43,7 +45,7 @@
                                            Focused="OnBakerPickerFocused"
                                            Unfocused="OnBakerPickerFocused"
                                            TextColor="Transparent"/>
-                </Frame>
+                </controls:CustomFrame>
                 <Image Grid.RowSpan="2"
                        Source="{Binding BakerViewModel.Logo}"
                        Margin="10">
@@ -62,11 +64,11 @@
                            VerticalTextAlignment="End"
                            FontFamily="{DynamicResource BoldFont}"
                            TextColor="{DynamicResource MainTextColor}"
-                           FontSize="16"/>
+                           FontSize="14"/>
                     <Label VerticalTextAlignment="Start"
                            FontFamily="{DynamicResource LightFont}"
                            TextColor="{DynamicResource MainTextColor}"
-                           FontSize="14">
+                           FontSize="12">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                      Binding="{Binding BakerViewModel.Name}"
@@ -105,7 +107,8 @@
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="End"
                            FontFamily="{DynamicResource LightFont}"
-                           FontSize="14">
+                           Padding="10,0"
+                           FontSize="10">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding BakerViewModel.IsFull}"
@@ -118,8 +121,9 @@
                     <Label Text="{Binding BakerViewModel.StakingAvailable, StringFormat='{0:0}'}"
                            VerticalTextAlignment="Start"
                            HorizontalTextAlignment="End"
+                           Padding="10,0"
                            FontFamily="{DynamicResource LightFont}"
-                           FontSize="14">
+                           FontSize="12">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding BakerViewModel.IsFull}"
@@ -129,9 +133,11 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
-                    <Label TextColor="Red"
+                    <Label TextColor="{DynamicResource ErrorTextColor}"
                            Text="Baker is full"
                            FontFamily="{DynamicResource LightFont}"
+                           Padding="10,0"
+                           FontSize="12"
                            IsVisible="False">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
@@ -146,29 +152,36 @@
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="DownArrowPicker"
-                       Margin="0,30">
+                       Margin="0,25,20,25">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </Image.GestureRecognizers>
                 </Image>
-            </Grid>
+                <Line X1="20"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Grid.Row="2"
+                      Grid.ColumnSpan="4"
+                      Stroke="LightGray"
+                      StrokeThickness="1"/>
+            </Grid>       
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
                   RowSpacing="0"
-                  ColumnSpacing="0">
+                  ColumnSpacing="0"
+                  BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <Frame Style="{DynamicResource FrameCaptionStyle}"
-                       Padding="10">
-                    <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
-                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
-                </Frame>
-                <Frame Grid.Column="1"
+                <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
+                       Style="{DynamicResource EntryHintStyle}"
+                       Padding="20,5,20,0"
+                       IsVisible="True"/>
+                <Frame Grid.Row="1"
+                       Grid.RowSpan="3"
                        Style="{DynamicResource EntryFrameStyle}"
                        x:Name="ToAddressFrame">
                     <controls:CustomEntry x:Name="ToAddressEntry"
@@ -179,46 +192,49 @@
                                           Unfocused="OnToAddressEntryFocused"
                                           Style="{DynamicResource EntryStyle}"/>
                 </Frame>
+                <Line X1="20"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Grid.Row="2"
+                      Stroke="LightGray"
+                      StrokeThickness="1"/>
             </Grid>
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
                   RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="9*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Frame Style="{DynamicResource FrameCaptionStyle}"
-                       Grid.RowSpan="2"
-                       Padding="10">
-                    <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
-                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
-                </Frame>
-                <Frame Grid.RowSpan="2"
-                       Grid.Column="1"
+                <Frame Grid.RowSpan="4"
                        Grid.ColumnSpan="2"
-                       HasShadow="False"
                        x:Name="FromAddressFrame"
-                       Padding="0"
-                       BorderColor="LightGray">
+                       Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomPicker x:Name="AddressPicker"
                                            ItemsSource="{Binding FromAddressList}"
                                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
                                            SelectedItem="{Binding WalletAddressViewModel}"
-                                           FontSize="14"
                                            Focused="OnFromAddressPickerFocused"
                                            Unfocused="OnFromAddressPickerFocused"
-                                           TextColor="Transparent"/>
+                                           TextColor="Transparent"
+                                           Style="{DynamicResource EntryStyle}"/>
                 </Frame>
-                <Label Grid.Row="0"
-                       Grid.Column="1"
+                <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
+                       Style="{DynamicResource EntryHintStyle}"
+                       Padding="20,5,20,0"
+                       IsVisible="True"/>
+                <Label Grid.Row="1"
                        Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                        FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource MainTextColor}"
                        LineBreakMode="MiddleTruncation"
                        Padding="20,0,10,0"
                        VerticalTextAlignment="End">
@@ -226,54 +242,70 @@
                         <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Style="{DynamicResource PickerBalanceLabelStyle}"
-                       Padding="20,0,15,0"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center">
+                <Label Grid.Row="2"
+                       Style="{DynamicResource PickerBalanceLabelStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.Balance}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"/>
-                            <Span Text=" xtz"/>
+                            <Span Text=": "/>
+                            <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"
+                                  FontFamily="{DynamicResource BoldFont}"
+                                  FontSize="12"/>
+                            <Span Text=" XTZ"
+                                  FontFamily="{DynamicResource BoldFont}"
+                                  FontSize="10"/>
                     </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Image Source="DownArrowPicker"
-                    Grid.Column="2"
-                    Grid.RowSpan="2"
-                    Margin="0,30">
+                       Grid.Column="1"
+                       Grid.RowSpan="3"
+                       Margin="0,25,20,25">
                     <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Image.GestureRecognizers>
                 </Image>
-            </Grid>    
-            <Grid VerticalOptions="Fill"
-                  HorizontalOptions="Fill"
-                  RowSpacing="0"
-                  ColumnSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <Frame Style="{DynamicResource FrameCaptionStyle}">
+                <Line X1="20"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      Stroke="LightGray"
+                      StrokeThickness="1"/>
+            </Grid>
+            <controls:CustomFrame CornerRadius="0,0,20,20"
+                                  x:Name="FeeFrame"
+                                  HeightRequest="60"
+                                  Style="{DynamicResource EntryFrameStyle}">
+                <controls:CustomFrame.Triggers>
+                    <DataTrigger TargetType="controls:CustomFrame"
+                                 Binding="{Binding UseDefaultFee}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="0.7"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="controls:CustomFrame"
+                                 Binding="{Binding UseDefaultFee}"
+                                 Value="False">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                </controls:CustomFrame.Triggers>
+                <StackLayout>
                     <Label Text="{x:Static resources:AppResources.FeeLabel}"
-                           Style="{DynamicResource LabelFrameCaptionStyle}"/>
-                </Frame>
-                <Frame Grid.Column="1"
-                       HasShadow="False"
-                       Padding="0"
-                       x:Name="FeeFrame"
-                       BorderColor="LightGray"
-                       HorizontalOptions="FillAndExpand">
+                           Style="{DynamicResource EntryHintStyle}"
+                           IsVisible="True">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{x:Static resources:AppResources.FeeLabel}"/>
+                                <Span Text=", XTZ"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <StackLayout Orientation="Horizontal">
                         <controls:CustomEntry Style="{DynamicResource EntryStyle}"
                                               x:Name="Fee"
@@ -282,12 +314,14 @@
                                               Unfocused="OnFeeEntryFocused">
                             <controls:CustomEntry.Triggers>
                                 <DataTrigger TargetType="controls:CustomEntry"
-                                             Binding="{Binding UseDefaultFee}"
-                                             Value="True">
+                                              Binding="{Binding UseDefaultFee}"
+                                              Value="True">
                                     <Setter Property="IsReadOnly"
                                             Value="True"/>
                                     <Setter Property="TextColor"
-                                            Value="Gray"/>
+                                            Value="{DynamicResource AdditionalTextColor}"/>
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="controls:CustomEntry"
                                              Binding="{Binding UseDefaultFee}"
@@ -296,22 +330,26 @@
                                             Value="False"/>
                                     <Setter Property="TextColor"
                                             Value="Black"/>
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
                                 </DataTrigger>
                             </controls:CustomEntry.Triggers>
                         </controls:CustomEntry>
                         <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                TextColor="{DynamicResource AdditionalTextColor}"
+                               FontFamily="{DynamicResource LightFont}"
                                FontSize="12"
                                VerticalTextAlignment="Center"
                                Padding="20,0"/>
                     </StackLayout>
-                </Frame>
-            </Grid>
+                </StackLayout>
+            </controls:CustomFrame>
             <StackLayout Orientation="Horizontal"
                          Padding="20">
                 <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
-                       FontAttributes="{DynamicResource RegularFont}"
-                       FontSize="18"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource MainTextColor}"
+                       FontSize="14"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"

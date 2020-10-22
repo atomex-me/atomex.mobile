@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Form"
-                       RowHeight="50"
+                       RowHeight="40"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
                     <TableSection Title="{x:Static resources:AppResources.AccountSection}">
@@ -105,10 +105,7 @@
                         </ViewCell>
                         <ViewCell>
                             <Button Text="{x:Static resources:AppResources.ChangeBakerButton}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    TextColor="{DynamicResource HintTextColor}"
-                                    FontSize="16"
-                                    BackgroundColor="Transparent"
+                                    Style="{DynamicResource TransparentButtonStyle}"
                                     Clicked="OnChangeBakerButtonClicked">
                             </Button>
                         </ViewCell>
@@ -135,7 +132,7 @@
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
-            </TableView>       
+            </TableView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -60,9 +60,7 @@
                         <ViewCell>
                             <ViewCell.View>
                                 <Button Text="{x:Static resources:AppResources.SignOut}"
-                                        TextColor="{DynamicResource HintTextColor}"
-                                        BackgroundColor="Transparent"
-                                        FontSize="18"
+                                        Style="{DynamicResource TransparentButtonStyle}"
                                         Clicked="OnSignOutButtonClicked"/>
                         </ViewCell.View>
                         </ViewCell>
@@ -70,4 +68,4 @@
                 </TableRoot>
             </TableView>
         </ContentPage.Content>
-    </ContentPage>
+  </ContentPage>
