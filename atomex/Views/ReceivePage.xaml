@@ -91,7 +91,7 @@
                            Grid.Column="2"
                            WidthRequest="10"
                            HeightRequest="10"
-                           Margin="0,25,20,25">
+                           Margin="0,25,15,25">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnPickerClicked"/>
                         </Image.GestureRecognizers>

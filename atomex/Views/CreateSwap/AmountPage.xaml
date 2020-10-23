@@ -103,6 +103,7 @@
                            Grid.Column="2"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{DynamicResource ErrorTextColor}"
+                           FontSize="14"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="End"
                            IsVisible="{Binding IsNoLiquidity}"/>

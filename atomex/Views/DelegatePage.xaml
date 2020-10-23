@@ -235,6 +235,7 @@
                        Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{DynamicResource MainTextColor}"
+                       FontSize="14"
                        LineBreakMode="MiddleTruncation"
                        Padding="20,0,10,0"
                        VerticalTextAlignment="End">

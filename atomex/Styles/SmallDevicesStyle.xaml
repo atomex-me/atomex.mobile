@@ -160,43 +160,45 @@
     <!-- My Wallets Page -->
     <Style x:Key="SelectWalletTextStyle" TargetType="Label">
         <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Padding" Value="20,20,20,10"/>
-        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="Padding" Value="20,20,20,5"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
     <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
-        <Setter Property="CornerRadius" Value="13"/>
-        <Setter Property="Margin" Value="20,5"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="20,15"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="HeightRequest" Value="26"/>
+        <Setter Property="HeightRequest" Value="30"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
     </Style>
     <Style x:Key="MainNetWalletFrameStyle" TargetType="Frame">
-        <Setter Property="CornerRadius" Value="13"/>
-        <Setter Property="Margin" Value="20,5"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="20,15"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="HeightRequest" Value="26"/>
+        <Setter Property="HeightRequest" Value="30"/>
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
     </Style>
     <Style x:Key="MainNetWalletlButtonTextStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5,0"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="TestNetWalletlButtonTextStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5,0"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
 
@@ -222,7 +224,7 @@
     <!-- Portfolio Page -->
     <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
         <Setter Property="HeightRequest" Value="200"/>
-        <Setter Property="Margin" Value="20,5"/>
+        <Setter Property="Margin" Value="10,0"/>
     </Style>
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
@@ -314,8 +316,8 @@
 
     <!-- Receive Page -->
     <Style x:Key="QrCodeStyle" TargetType="zxing:ZXingBarcodeImageView">
-        <Setter Property="HeightRequest" Value="200"/>
-        <Setter Property="WidthRequest" Value="200"/>
+        <Setter Property="HeightRequest" Value="240"/>
+        <Setter Property="WidthRequest" Value="240"/>
     </Style>
     <Style x:Key="PickerHintStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
