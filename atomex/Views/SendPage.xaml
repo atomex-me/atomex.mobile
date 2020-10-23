@@ -52,9 +52,10 @@
                       Y2="0"
                       Stroke="LightGray"
                       StrokeThickness="1"/>
-                <Frame x:Name="AmountFrame"
-                        HeightRequest="60"
-                        Style="{DynamicResource EntryFrameStyle}">
+                <controls:CustomFrame x:Name="AmountFrame"
+                                      CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  VerticalOptions="FillAndExpand">
                         <StackLayout HorizontalOptions="FillAndExpand">
@@ -81,7 +82,7 @@
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                     </StackLayout>
-                </Frame>
+                </controls:CustomFrame>
                 <Line X1="20"
                       Y1="0"
                       X2="600"
@@ -133,9 +134,7 @@
                     </StackLayout.Triggers>
                     <controls:CustomFrame HasShadow="False"
                                           x:Name="FeeFrame"
-                                          Padding="0"
                                           CornerRadius="0,0,20,20"
-                                          HorizontalOptions="FillAndExpand"
                                           Style="{DynamicResource EntryFrameStyle}">
                         <StackLayout Orientation="Horizontal"
                                      VerticalOptions="FillAndExpand">
@@ -200,10 +199,9 @@
                                             Value="1"/>
                                 </DataTrigger>
                             </StackLayout.Triggers>
-                            <Frame HasShadow="False"
-                                   Padding="0"
-                                   HorizontalOptions="FillAndExpand"
-                                   x:Name="GasPriceFrame">
+                            <controls:CustomFrame CornerRadius="0"
+                                                  Style="{DynamicResource EntryFrameStyle}"
+                                                  x:Name="GasPriceFrame">
                                 <StackLayout Spacing="0">
                                     <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
@@ -244,30 +242,10 @@
                                                         Value="Black"/>
                                             </DataTrigger>
                                         </controls:CustomEntry.Triggers>
-                                    </controls:CustomEntry>
-                                    <Label Text="GWEI"
-                                           HorizontalOptions="Fill"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="Center"
-                                           Padding="20,0">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding UseDefaultFee}"
-                                                         Value="True">
-                                                <Setter Property="TextColor"
-                                                        Value="{DynamicResource AdditionalTextColor}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding UseDefaultFee}"
-                                                         Value="False">
-                                                <Setter Property="TextColor"
-                                                        Value="Black"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
+                                        </controls:CustomEntry>
                                     </StackLayout>
                                 </StackLayout>
-                            </Frame>
+                            </controls:CustomFrame>
                         </StackLayout>
                         <Line X1="20"
                               Y1="0"
@@ -279,9 +257,8 @@
                                      Spacing="0"
                                      HeightRequest="60"
                                      Opacity="0.7">
-                            <Frame HasShadow="False"
-                                   Padding="0"
-                                   HorizontalOptions="FillAndExpand">
+                            <controls:CustomFrame CornerRadius="0" 
+                                                  Style="{DynamicResource EntryFrameStyle}">
                                 <StackLayout Spacing="0">
                                     <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
@@ -302,14 +279,9 @@
                                                               VerticalTextAlignment="Center"
                                                               IsReadOnly="True"
                                                               TextColor="{DynamicResource AdditionalTextColor}"/>
-                                        <Label Text="GAS"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="Center"
-                                               TextColor="{DynamicResource AdditionalTextColor}"
-                                               Padding="20,0"/>
                                     </StackLayout>
                                 </StackLayout>
-                            </Frame>
+                            </controls:CustomFrame>
                         </StackLayout>
                         <Line X1="20"
                               Y1="0"
@@ -321,10 +293,8 @@
                                      HeightRequest="60"
                                      Spacing="0"
                                      Opacity="0.7">
-                            <controls:CustomFrame HasShadow="False"
-                                                  CornerRadius="0,0,20,20"
-                                                  Padding="0"
-                                                  HorizontalOptions="FillAndExpand">
+                            <controls:CustomFrame Style="{DynamicResource EntryFrameStyle}"
+                                                  CornerRadius="0,0,20,20">
                                 <StackLayout Spacing="0">
                                     <Label Text="{x:Static resources:AppResources.FeeLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
@@ -346,25 +316,14 @@
                                                               VerticalTextAlignment="Center"
                                                               IsReadOnly="True"
                                                               TextColor="{DynamicResource AdditionalTextColor}"/>
-                                        <StackLayout Orientation="Horizontal"
-                                                     VerticalOptions="Center"
-                                                     HorizontalOptions="End"
-                                                     Spacing="0"
-                                                     Padding="20,0">
-                                            <Label Text="ETH"
-                                                   VerticalTextAlignment="Center"
-                                                   HorizontalTextAlignment="Start"
-                                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                                   FontFamily="{DynamicResource RegularFont}"
-                                                   FontSize="14"/>
-                                            <Label Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                                   FontFamily="{DynamicResource RegularFont}"
-                                                   FontSize="14"
-                                                   VerticalTextAlignment="Center"
-                                                   HorizontalTextAlignment="Start"
-                                                   IsEnabled="False"/>
-                                        </StackLayout>
+                                        <Label Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                               TextColor="{DynamicResource AdditionalTextColor}"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="14"
+                                               VerticalTextAlignment="Start"
+                                               HorizontalTextAlignment="Start"
+                                               Padding="20,0"
+                                               IsEnabled="False"/>
                                     </StackLayout>
                                 </StackLayout>
                             </controls:CustomFrame>

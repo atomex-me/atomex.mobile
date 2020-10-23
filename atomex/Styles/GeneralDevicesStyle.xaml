@@ -225,8 +225,8 @@
 
     <!-- Portfolio Page -->
     <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
-        <Setter Property="HeightRequest" Value="220"/>
-        <Setter Property="Margin" Value="20,0"/>
+        <Setter Property="HeightRequest" Value="240"/>
+        <Setter Property="Margin" Value="10"/>
     </Style>
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
