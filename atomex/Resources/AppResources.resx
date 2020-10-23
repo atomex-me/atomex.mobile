@@ -301,7 +301,7 @@
         <value>Delegation info</value>
     </data>
     <data name="CheckRewardsButton" xml:space="preserve">
-        <value>Check rewards</value>
+        <value>CHECK REWARDS</value>
     </data>
     <data name="ChangeBakerButton" xml:space="preserve">
         <value>CHANGE BAKER</value>

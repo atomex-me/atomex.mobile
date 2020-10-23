@@ -113,10 +113,7 @@
                     <TableSection Title="{x:Static resources:AppResources.MoreSection}">
                         <ViewCell>
                             <Button Text="{x:Static resources:AppResources.CheckRewardsButton}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    TextColor="{DynamicResource HintTextColor}"
-                                    FontSize="16"
-                                    BackgroundColor="Transparent"
+                                    Style="{DynamicResource TransparentButtonStyle}"
                                     Clicked="OnCheckRewardsButtonClicked">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
