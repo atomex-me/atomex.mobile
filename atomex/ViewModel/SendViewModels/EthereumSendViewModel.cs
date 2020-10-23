@@ -57,8 +57,8 @@ namespace atomex.ViewModel.SendViewModels
         }
 
 
-        protected decimal _feePrice;
-        public virtual decimal FeePrice
+        //protected decimal _feePrice;
+        public override decimal FeePrice
         {
             get => _feePrice;
             set { UpdateFeePrice(value); }
@@ -199,8 +199,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
+                
                 OnPropertyChanged(nameof(FeePriceString));
-
                 UpdateTotalFeeString();
                 OnPropertyChanged(nameof(TotalFeeString));
             }
@@ -320,7 +320,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmount == 0 && availableAmount > 0)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-                
+
                 OnPropertyChanged(nameof(AmountString));
                 UpdateTotalFeeString(maxFeeAmount);
                 OnPropertyChanged(nameof(TotalFeeString));

@@ -45,11 +45,11 @@
                            Margin="0,10,0,2">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"/>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"
+                                      FontSize="14"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                                      FontSize="12"
-                                      FontFamily="{DynamicResource BoldFont}"/>
+                                      FontSize="12"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -62,11 +62,11 @@
                            Margin="0,10,0,2">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"/>
+                                <Span Text="{Binding TargetAmount, StringFormat='{0:0.########}'}"
+                                      FontSize="14"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding ToCurrencyViewModel.CurrencyCode}"
-                                      FontSize="12"
-                                      FontFamily="{DynamicResource BoldFont}"/>
+                                      FontSize="12"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

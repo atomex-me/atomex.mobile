@@ -104,7 +104,12 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        public decimal FeePrice;
+        protected decimal _feePrice;
+        public virtual decimal FeePrice
+        {
+            get => _feePrice;
+            set { _feePrice = value; OnPropertyChanged(nameof(FeePrice)); }
+        }
 
         protected bool _useDefaultFee;
         public virtual bool UseDefaultFee
