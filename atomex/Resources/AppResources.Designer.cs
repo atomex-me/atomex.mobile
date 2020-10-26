@@ -491,6 +491,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string BakerListPageTitle {
+            get {
+                return ResourceManager.GetString("BakerListPageTitle", resourceCulture);
+            }
+        }
+        
         internal static string DelegatePageTitle {
             get {
                 return ResourceManager.GetString("DelegatePageTitle", resourceCulture);

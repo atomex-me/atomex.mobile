@@ -172,9 +172,6 @@
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-2.pdf" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan.pdf" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-2.pdf" />
@@ -253,6 +250,9 @@
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo-1.png" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-3.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

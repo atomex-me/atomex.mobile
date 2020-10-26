@@ -6,9 +6,9 @@
              Title="{x:Static resources:AppResources.DelegationListPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand">
-            <StackLayout IsVisible="{Binding LoadingDelegations}"
-                         Padding="0,20">
+        <StackLayout VerticalOptions="FillAndExpand"
+                     Padding="20">
+            <StackLayout IsVisible="{Binding LoadingDelegations}">
                 <ActivityIndicator Color="{DynamicResource HintTextColor}"                                
                                    IsRunning="True"/>
                 <Label Text="{x:Static resources:AppResources.LoadingLabel}"
@@ -43,29 +43,12 @@
                        FontSize="18"
                        Margin="20"/>
             </StackLayout>
-            <Label FontFamily="{DynamicResource RegularFont}"
-                   Text="My addresses"
-                   TextColor="{DynamicResource MainTextColor}"
-                   HorizontalTextAlignment="Center"
-                   VerticalOptions="Start"
-                   FontSize="18"
-                   Padding="20,20,20,0"
-                   IsVisible="False">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding CanDelegate}"
-                                 Value="True">
-                        <Setter Property="IsVisible"
-                                Value="True"/>
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
             <ListView ItemsSource="{Binding Delegations}"
                       ItemTapped="OnDelegationTapped"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
                       BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                      Margin="10,2"
+                      Margin="0,2"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"

@@ -28,27 +28,31 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="4.5*" />
-                    <ColumnDefinition Width="2.5*" />
+                    <ColumnDefinition Width="7*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <controls:CustomFrame Grid.ColumnSpan="4"
-                                      Grid.RowSpan="2"
+                                      Grid.RowSpan="3"
                                       x:Name="BakerFrame"
                                       CornerRadius="20,20,0,0"
                                       Style="{DynamicResource EntryFrameStyle}">
-                    <controls:CustomPicker x:Name="BakerPicker"
+                    <!--<controls:CustomPicker x:Name="BakerPicker"
                                            ItemsSource="{Binding FromBakersList}"
                                            ItemDisplayBinding="{Binding Name}"
                                            SelectedItem="{Binding BakerViewModel}"
                                            VerticalOptions="FillAndExpand"
                                            Focused="OnBakerPickerFocused"
                                            Unfocused="OnBakerPickerFocused"
-                                           TextColor="Transparent"/>
+                                           TextColor="Transparent"/>-->
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
+                    </controls:CustomFrame.GestureRecognizers>
                 </controls:CustomFrame>
                 <Image Grid.RowSpan="2"
                        Source="{Binding BakerViewModel.Logo}"
-                       Margin="10">
+                       Margin="20,10,0,10"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </Image.GestureRecognizers>
@@ -56,6 +60,8 @@
                 <StackLayout Grid.Column="1"
                              Grid.RowSpan="2"
                              VerticalOptions="Center"
+                             HorizontalOptions="Start"
+                             Padding="10,0"
                              Spacing="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
@@ -79,7 +85,8 @@
                         </Label.Triggers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"/>
+                                <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"
+                                      TextColor="Green"/>
                                 <Span Text=" (min "/>
                                 <Span Text="{Binding BakerViewModel.MinDelegation}"/>
                                 <Span Text=" XTZ)"/>
@@ -87,7 +94,7 @@
                         </Label.FormattedText>
                     </Label>
                 </StackLayout>
-                <StackLayout Grid.Column="2"
+                <!--<StackLayout Grid.Column="2"
                              Grid.RowSpan="2"
                              VerticalOptions="Center"
                              Padding="10,0,0,0"
@@ -135,7 +142,9 @@
                     </Label>
                     <Label TextColor="{DynamicResource ErrorTextColor}"
                            Text="Baker is full"
-                           FontFamily="{DynamicResource LightFont}"
+                           FontFamily="{DynamicResource BoldFont}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="End"
                            Padding="10,0"
                            FontSize="12"
                            IsVisible="False">
@@ -148,10 +157,10 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
-                </StackLayout>
+                </StackLayout>-->
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
-                       Source="DownArrowPicker"
+                       Source="RightArrow__black"
                        Margin="0,25,20,25">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
@@ -214,10 +223,11 @@
                     <ColumnDefinition Width="9*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Frame Grid.RowSpan="4"
-                       Grid.ColumnSpan="2"
-                       x:Name="FromAddressFrame"
-                       Style="{DynamicResource EntryFrameStyle}">
+                <controls:CustomFrame Grid.RowSpan="4"
+                                      Grid.ColumnSpan="2"
+                                      CornerRadius="0"
+                                      x:Name="FromAddressFrame"
+                                      Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomPicker x:Name="AddressPicker"
                                            ItemsSource="{Binding FromAddressList}"
                                            ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
@@ -226,7 +236,7 @@
                                            Unfocused="OnFromAddressPickerFocused"
                                            TextColor="Transparent"
                                            Style="{DynamicResource EntryStyle}"/>
-                </Frame>
+                </controls:CustomFrame>
                 <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
                        Padding="20,5,20,0"
@@ -340,7 +350,7 @@
                                TextColor="{DynamicResource AdditionalTextColor}"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="12"
-                               VerticalTextAlignment="Center"
+                               VerticalTextAlignment="Start"
                                Padding="20,0"/>
                     </StackLayout>
                 </StackLayout>

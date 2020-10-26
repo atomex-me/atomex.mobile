@@ -21,6 +21,8 @@ namespace atomex
             _delegateViewModel = delegateViewModel;
             BindingContext = delegateViewModel;
             Fee.Text = delegateViewModel.Fee.ToString();
+            if (delegateViewModel.BakerViewModel != null)
+                ToAddressEntry.Text = delegateViewModel.Address;
         }
 
         public DelegatePage(DelegateViewModel delegateViewModel, string address)
@@ -30,20 +32,18 @@ namespace atomex
             BindingContext = delegateViewModel;
             delegateViewModel.SetWalletAddress(address);
             Fee.Text = delegateViewModel.Fee.ToString();
+            if (delegateViewModel.BakerViewModel != null)
+                ToAddressEntry.Text = delegateViewModel.Address;
         }
 
-        private void OnBakerPickerFocused(object sender, FocusEventArgs args)
+        private async void OnBakerPickerClicked(object sender, EventArgs args)
         {
-            //BakerFrame.HasShadow = args.IsFocused;
-            if (!args.IsFocused)
+            var bakersListPage = new BakerListPage(_delegateViewModel, selected =>
             {
-                ToAddressEntry.Text = _delegateViewModel.Address;
-            }
-        }
-
-        private void OnBakerPickerClicked(object sender, EventArgs args)
-        {
-            BakerPicker.Focus();
+                _delegateViewModel.BakerViewModel = selected;
+                ToAddressEntry.Text = selected.Address;
+            });
+            await Navigation.PushAsync(bakersListPage);
         }
 
         private void OnFromAddressPickerFocused(object sender, FocusEventArgs args)
