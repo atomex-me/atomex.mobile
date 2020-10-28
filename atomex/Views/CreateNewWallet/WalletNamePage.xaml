@@ -19,16 +19,23 @@
                    Style="{DynamicResource EntryFrameStyle}"
                    CornerRadius="10">
                 <StackLayout HeightRequest="60">
-                    <Label x:Name="NameHint"
-                           Style="{DynamicResource EntryHintStyle}"/>
-                    <controls:CustomEntry x:Name="Entry"
-                                          Placeholder="{x:Static resources:AppResources.WalletNameEntryPlaceholder}"
-                                          Keyboard="Text"
-                                          Focused="EntryFocused"
-                                          Unfocused="EntryFocused"
-                                          Style="{DynamicResource EntryStyle}"
-                                          TextChanged="OnTextChanged"
-                                          Text="{Binding WalletName}"/>
+                    <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                        <Label x:Name="NameHint"
+                               Style="{DynamicResource EntryHintStyle}"
+                               VerticalTextAlignment="Center"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                        <controls:CustomEntry x:Name="Entry"
+                                              Placeholder="{x:Static resources:AppResources.WalletNameEntryPlaceholder}"
+                                              Keyboard="Text"
+                                              Focused="EntryFocused"
+                                              Unfocused="EntryFocused"
+                                              Style="{DynamicResource EntryStyle}"
+                                              TextChanged="OnTextChanged"
+                                              Text="{Binding WalletName}"
+                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                    </RelativeLayout>
                 </StackLayout>
             </Frame>
             <Label x:Name="Error"

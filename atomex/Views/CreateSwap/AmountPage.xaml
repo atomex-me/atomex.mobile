@@ -27,15 +27,22 @@
                         <StackLayout Orientation="Horizontal">
                             <StackLayout Grid.Column="0"
                                          HorizontalOptions="FillAndExpand">
-                                <Label x:Name="AmountHint"
-                                       Style="{DynamicResource EntryHintStyle}"/>
-                                <custom:CustomEntry Keyboard="Numeric"
-                                                    x:Name="Amount"
-                                                    Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
-                                                    Style="{DynamicResource EntryStyle}"
-                                                    Focused="AmountEntryFocused"
-                                                    Unfocused="AmountEntryFocused"
-                                                    TextChanged="OnAmountTextChanged"/>
+                                <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                    <custom:CustomEntry Keyboard="Numeric"
+                                                        x:Name="Amount"
+                                                        Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
+                                                        Style="{DynamicResource EntryStyle}"
+                                                        Focused="AmountEntryFocused"
+                                                        Unfocused="AmountEntryFocused"
+                                                        TextChanged="OnAmountTextChanged"
+                                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                    <Label x:Name="AmountHint"
+                                           Style="{DynamicResource EntryHintStyle}"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"
+                                           VerticalTextAlignment="Center"/>
+                                </RelativeLayout>
                             </StackLayout>
                             <Button Grid.Column="1"
                                     Text="{x:Static resources:AppResources.MaxButton}"

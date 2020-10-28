@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
@@ -41,7 +42,7 @@ namespace atomex.Views.CreateSwap
             }
         }
 
-        private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
             //try
             //{
@@ -59,13 +60,33 @@ namespace atomex.Views.CreateSwap
                 {
                     AmountHint.IsVisible = true;
                     AmountHint.Text = Amount.Placeholder;
-                    Amount.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        AmountHint.FadeTo(1, 1000, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
+                await Task.Run(() =>
+                {
+                    AmountHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 AmountHint.IsVisible = false;
-                Amount.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 

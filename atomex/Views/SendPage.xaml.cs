@@ -4,6 +4,7 @@ using Xamarin.Essentials;
 using atomex.ViewModel.SendViewModels;
 using atomex.Resources;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace atomex
 {
@@ -77,7 +78,16 @@ namespace atomex
             //AddressFrame.HasShadow = args.IsFocused;
         }
 
-        private void OnAmountTextChanged(object sender, TextChangedEventArgs args)
+        private void OnAddressEntryTapped(object sender, EventArgs args)
+        {
+            Address.Focus();
+        }
+        private void OnAmountEntryTapped(object sender, EventArgs args)
+        {
+            Amount.Focus();
+        }
+
+        private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -85,17 +95,37 @@ namespace atomex
                 {
                     AmountHint.IsVisible = true;
                     AmountHint.Text = Amount.Placeholder + ", " + _sendViewModel.CurrencyCode;
-                    Amount.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        AmountHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
+                await Task.Run(() =>
+                {
+                    AmountHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 AmountHint.IsVisible = false;
-                Amount.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 
-        private void OnAddressTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnAddressTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -103,13 +133,33 @@ namespace atomex
                 {
                     AddressHint.IsVisible = true;
                     AddressHint.Text = Address.Placeholder;
-                    Address.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        AddressHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        Address.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        AddressHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
+                await Task.Run(() =>
+                {
+                    AddressHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    Address.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await AddressHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 AddressHint.IsVisible = false;
-                Address.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 
@@ -118,7 +168,7 @@ namespace atomex
             //GasPriceFrame.HasShadow = args.IsFocused;
         }
 
-        private void OnFeeTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnFeeTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -126,13 +176,33 @@ namespace atomex
                 {
                     FeeHint.IsVisible = true;
                     FeeHint.Text = Fee.Placeholder + ", " + _sendViewModel.CurrencyViewModel.FeeCurrencyCode;
-                    Fee.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        FeeHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        Fee.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        FeeHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
+                await Task.Run(() =>
+                {
+                    FeeHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    Fee.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await FeeHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 FeeHint.IsVisible = false;
-                Fee.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 

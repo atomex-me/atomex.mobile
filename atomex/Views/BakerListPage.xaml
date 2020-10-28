@@ -6,9 +6,10 @@
              Title="{x:Static resources:AppResources.BakerListPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand"
-                     Margin="20,20,20,0"
-                     Spacing="0">
+        <StackLayout Margin="20,20,20,0"
+                     Spacing="0"
+                     VerticalOptions="EndAndExpand"
+                     BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
             <Label Text="Select a baker"
                    FontFamily="{DynamicResource BoldFont}"
                    TextColor="{DynamicResource MainTextColor}"
@@ -19,7 +20,8 @@
                       ItemTapped="OnBakerTapped"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
+                      VerticalOptions="Start"
+                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -27,7 +29,8 @@
                             <Grid Margin="0"
                                   Padding="10,0"
                                   ColumnSpacing="0"
-                                  RowSpacing="0">
+                                  RowSpacing="0"
+                                  BackgroundColor="{DynamicResource MainBackgroundColor}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />

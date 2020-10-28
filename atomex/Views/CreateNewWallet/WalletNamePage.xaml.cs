@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -34,7 +35,7 @@ namespace atomex.Views.CreateNewWallet
             });
         }
 
-        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -42,13 +43,33 @@ namespace atomex.Views.CreateNewWallet
                 {
                     NameHint.IsVisible = true;
                     NameHint.Text = Entry.Placeholder;
-                    Entry.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        NameHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        Entry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        NameHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
+                await Task.Run(() =>
+                {
+                    NameHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    Entry.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await NameHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 NameHint.IsVisible = false;
-                Entry.VerticalTextAlignment = TextAlignment.Center;
             }
         }
 

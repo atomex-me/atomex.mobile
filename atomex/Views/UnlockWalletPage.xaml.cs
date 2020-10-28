@@ -38,20 +38,40 @@ namespace atomex
             PasswordEntry.Focus();
         }
 
-        private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
                 if (!PasswordHint.IsVisible)
                 {
-                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
+                   
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
-                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
+                await Task.Run(() =>
+                {
+                    PasswordHint.FadeTo(0, 1000, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 PasswordHint.IsVisible = false;
             }
             _unlockViewModel.SetPassword(args.NewTextValue);

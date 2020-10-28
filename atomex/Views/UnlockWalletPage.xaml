@@ -36,9 +36,8 @@
                                 </Image.GestureRecognizers>
                             </Image>
                         </StackLayout>
-                        <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="60">
-                            <Label x:Name="PasswordHint"
-                                   Style="{DynamicResource EntryHintStyle}"/>
+                        <RelativeLayout HorizontalOptions="FillAndExpand"
+                                        HeightRequest="60">
                             <controls:CustomEntry x:Name="PasswordEntry"
                                                   Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
                                                   Keyboard="Text"
@@ -46,8 +45,15 @@
                                                   Unfocused="PasswordEntryFocused"
                                                   IsPassword="True"
                                                   Style="{DynamicResource EntryStyle}"
+                                                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                                                   TextChanged="OnPasswordTextChanged"/>
-                        </StackLayout>
+                            <Label x:Name="PasswordHint"
+                                   Style="{DynamicResource EntryHintStyle}"
+                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                                   VerticalTextAlignment="Center"/>
+                        </RelativeLayout>
                     </StackLayout>
                 </Frame>
                 <Button Text="{x:Static resources:AppResources.UnlockButton}"

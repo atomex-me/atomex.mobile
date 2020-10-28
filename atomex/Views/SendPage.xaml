@@ -15,31 +15,45 @@
                                       x:Name="AddressFrame"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAddressEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
-                                 VerticalOptions="FillAndExpand">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label x:Name="AddressHint"
-                                   Style="{DynamicResource EntryHintStyle}"/>
-                            <controls:CustomEntry x:Name="Address"  
-                                                  Text="{Binding To}"
-                                                  Placeholder="{x:Static resources:AppResources.AddressEntryPlaceholder}"
-                                                  Keyboard="Text"
-                                                  Focused="AddressEntryFocused"
-                                                  Unfocused="AddressEntryFocused"
-                                                  TextChanged="OnAddressTextChanged"
-                                                  Style="{DynamicResource EntryStyle}"/>
+                                 VerticalOptions="FillAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 Spacing="0">
+                        <StackLayout HorizontalOptions="FillAndExpand"
+                                     HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <controls:CustomEntry x:Name="Address"  
+                                                      Text="{Binding To}"
+                                                      Placeholder="{x:Static resources:AppResources.AddressEntryPlaceholder}"
+                                                      Keyboard="Text"
+                                                      Focused="AddressEntryFocused"
+                                                      Unfocused="AddressEntryFocused"
+                                                      TextChanged="OnAddressTextChanged"
+                                                      Style="{DynamicResource EntryStyle}"                                                     
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="AddressHint"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            </RelativeLayout>
                         </StackLayout>
                         <Button Text="{x:Static resources:AppResources.PasteButton}"
                                 Clicked="OnPasteButtonClicked"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 HorizontalOptions="End"/>
-                        <StackLayout>
+                        <StackLayout Spacing="0"
+                                     HorizontalOptions="End">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnScanButtonClicked"/>
                             </StackLayout.GestureRecognizers>
                             <Image Source="Scan"
                                     HeightRequest="30"
-                                    WidthRequest="30"
+                                    WidthRequest="30"                            
                                     VerticalOptions="CenterAndExpand"
                                     HorizontalOptions="End"
                                     Margin="0,5,20,5"/>
@@ -56,18 +70,28 @@
                                       CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAmountEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
                                  VerticalOptions="FillAndExpand">
                         <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label x:Name="AmountHint"
-                                   Style="{DynamicResource EntryHintStyle}"                                        />
-                            <controls:CustomEntry x:Name="Amount"
-                                                  Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
-                                                  Keyboard="Numeric"
-                                                  Focused="AmountEntryFocused"
-                                                  Unfocused="AmountEntryFocused"
-                                                  TextChanged="OnAmountTextChanged"
-                                                  Style="{DynamicResource EntryStyle}"/>
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <Label x:Name="AmountHint"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <controls:CustomEntry x:Name="Amount"
+                                                      Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
+                                                      Keyboard="Numeric"
+                                                      Focused="AmountEntryFocused"
+                                                      Unfocused="AmountEntryFocused"
+                                                      TextChanged="OnAmountTextChanged"
+                                                      Style="{DynamicResource EntryStyle}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            </RelativeLayout>
                         </StackLayout>
                         <Label VerticalTextAlignment="Center"
                                 Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
@@ -139,34 +163,41 @@
                         <StackLayout Orientation="Horizontal"
                                      VerticalOptions="FillAndExpand">
                             <StackLayout HorizontalOptions="FillAndExpand">
-                                <Label x:Name="FeeHint"
-                                       Style="{DynamicResource EntryHintStyle}"/>
-                                <controls:CustomEntry Style="{DynamicResource EntryStyle}"
-                                                      x:Name="Fee"
-                                                      Keyboard="Numeric"
-                                                      Placeholder="{x:Static resources:AppResources.FeeLabel}"
-                                                      Focused="FeeEntryFocused"
-                                                      Unfocused="FeeEntryFocused"
-                                                      TextChanged="OnFeeTextChanged">
-                                    <controls:CustomEntry.Triggers>
-                                        <DataTrigger TargetType="controls:CustomEntry"
-                                                     Binding="{Binding UseDefaultFee}"
-                                                     Value="True">
-                                            <Setter Property="IsReadOnly"
-                                                    Value="True"/>
-                                            <Setter Property="TextColor"
-                                                    Value="{DynamicResource AdditionalTextColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="controls:CustomEntry"
-                                                     Binding="{Binding UseDefaultFee}"
-                                                     Value="False">
-                                            <Setter Property="IsReadOnly"
-                                                    Value="False"/>
-                                            <Setter Property="TextColor"
-                                                    Value="Black"/>
-                                        </DataTrigger>
-                                    </controls:CustomEntry.Triggers>
-                                </controls:CustomEntry>
+                                <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                    <Label x:Name="FeeHint"
+                                           Style="{DynamicResource EntryHintStyle}"
+                                           VerticalTextAlignment="Center"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                                          x:Name="Fee"
+                                                          Keyboard="Numeric"
+                                                          Placeholder="{x:Static resources:AppResources.FeeLabel}"
+                                                          Focused="FeeEntryFocused"
+                                                          Unfocused="FeeEntryFocused"
+                                                          TextChanged="OnFeeTextChanged"
+                                                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                        <controls:CustomEntry.Triggers>
+                                            <DataTrigger TargetType="controls:CustomEntry"
+                                                         Binding="{Binding UseDefaultFee}"
+                                                         Value="True">
+                                                <Setter Property="IsReadOnly"
+                                                        Value="True"/>
+                                                <Setter Property="TextColor"
+                                                        Value="{DynamicResource AdditionalTextColor}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="controls:CustomEntry"
+                                                         Binding="{Binding UseDefaultFee}"
+                                                         Value="False">
+                                                <Setter Property="IsReadOnly"
+                                                        Value="False"/>
+                                                <Setter Property="TextColor"
+                                                        Value="Black"/>
+                                            </DataTrigger>
+                                        </controls:CustomEntry.Triggers>
+                                    </controls:CustomEntry>
+                                </RelativeLayout>
                             </StackLayout>
                             <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                    TextColor="{DynamicResource AdditionalTextColor}"

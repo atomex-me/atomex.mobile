@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -33,7 +34,7 @@ namespace atomex.Views.CreateNewWallet
             });
         }
 
-        private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -41,12 +42,32 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
-                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
-                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
+                await Task.Run(() =>
+                {
+                    PasswordHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, PasswordEntry.Text);

@@ -40,7 +40,7 @@ namespace atomex.Views.CreateNewWallet
             });
         }
 
-        private void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -48,12 +48,32 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
-                    PasswordEntry.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
-                PasswordEntry.VerticalTextAlignment = TextAlignment.Center;
+                await Task.Run(() =>
+                {
+                    PasswordHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut);
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePassword, args.NewTextValue);
@@ -74,7 +94,7 @@ namespace atomex.Views.CreateNewWallet
             });
         }
 
-        private void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
+        private async void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
@@ -82,12 +102,33 @@ namespace atomex.Views.CreateNewWallet
                 {
                     PasswordConfirmationHint.IsVisible = true;
                     PasswordConfirmationHint.Text = PasswordConfirmationEntry.Placeholder;
-                    PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Start;
+
+                    await Task.Run(() =>
+                    {
+                        PasswordConfirmationHint.FadeTo(1, 500, Easing.Linear);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordConfirmationEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    });
+                    await Task.Run(() =>
+                    {
+                        PasswordConfirmationHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    });
                 }
             }
             else
             {
-                PasswordConfirmationEntry.VerticalTextAlignment = TextAlignment.Center;
+                await Task.Run(() =>
+                {
+                    PasswordConfirmationHint.FadeTo(0, 500, Easing.Linear);
+                });
+                await Task.Run(() =>
+                {
+                    PasswordConfirmationEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
+                });
+                await PasswordConfirmationHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+
                 PasswordConfirmationHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePasswordConfirmation, args.NewTextValue);
