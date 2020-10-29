@@ -28,6 +28,9 @@ namespace atomex
             if (e.Item != null)
             {
                 await Navigation.PushAsync(new CurrencyPage(e.Item as CurrencyViewModel, AtomexApp, _navigationService));
+                var listView = sender as ListView;
+                if (listView != null)
+                    listView.SelectedItem = null;
             }
         }
     }

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
@@ -35,7 +36,7 @@
                       BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
                             <Grid Padding="10,0"
                                   RowSpacing="3">
                                 <Grid.RowDefinitions>
@@ -99,7 +100,7 @@
                                        TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="10"/>
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>            

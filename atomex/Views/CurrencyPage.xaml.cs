@@ -53,6 +53,9 @@ namespace atomex
             if (e.Item != null)
             {
                 await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
+                var listView = sender as ListView;
+                if (listView != null)
+                    listView.SelectedItem = null;
             }
         }
 

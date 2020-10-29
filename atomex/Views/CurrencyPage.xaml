@@ -123,7 +123,8 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="61">
+                        <controls:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}"
+                                                 Height="61">
                             <Grid RowSpacing="0"
                                   ColumnSpacing="0"
                                   VerticalOptions="Center"
@@ -394,7 +395,7 @@
                                       Grid.Column="1"
                                       Grid.ColumnSpan="2"/>
                             </Grid>
-                        </ViewCell>
+                        </controls:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -89,6 +89,9 @@ namespace atomex
             if (e.Item != null)
             {
                 _navigationService.ShowCurrency(e.Item as CurrencyViewModel);
+                var listView = sender as ListView;
+                if (listView != null)
+                    listView.SelectedItem = null;
             }
         }
     }

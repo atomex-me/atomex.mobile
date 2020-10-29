@@ -25,6 +25,9 @@ namespace atomex
             if (args.Item != null)
             {
                 await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(_myWalletsViewModel.AtomexApp, args.Item as WalletInfo)));
+                var listView = sender as ListView;
+                if (listView != null)
+                    listView.SelectedItem = null;
             }
         }
     }

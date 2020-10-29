@@ -116,7 +116,7 @@
                 <StackLayout x:Name="FeeRateLayout"
                              HeightRequest="60"
                              Padding="0"
-                             Spacing="0"
+                             Spacing="8"
                              BackgroundColor="White"
                              HorizontalOptions="FillAndExpand"
                              Opacity="0.7"
