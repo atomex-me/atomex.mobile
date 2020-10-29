@@ -95,8 +95,8 @@
                         </StackLayout>
                         <Label VerticalTextAlignment="Center"
                                 Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
-                                FontFamily="{DynamicResource RegularFont}"
-                                FontSize="14"
+                                FontFamily="{DynamicResource LightFont}"
+                                FontSize="12"
                                 TextColor="{DynamicResource AdditionalTextColor}">
                         </Label>
                         <Button Text="{x:Static resources:AppResources.MaxButton}"
@@ -201,8 +201,8 @@
                             </StackLayout>
                             <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                    TextColor="{DynamicResource AdditionalTextColor}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="14"
+                                   FontFamily="{DynamicResource LightFont}"
+                                   FontSize="12"
                                    VerticalTextAlignment="Center"
                                    Padding="0,0,20,0"
                                    IsEnabled="False"/>
@@ -349,8 +349,8 @@
                                                               TextColor="{DynamicResource AdditionalTextColor}"/>
                                         <Label Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                                TextColor="{DynamicResource AdditionalTextColor}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="14"
+                                               FontFamily="{DynamicResource LightFont}"
+                                               FontSize="12"
                                                VerticalTextAlignment="Start"
                                                HorizontalTextAlignment="Start"
                                                Padding="20,0"
