@@ -94,74 +94,10 @@
                         </Label.FormattedText>
                     </Label>
                 </StackLayout>
-                <!--<StackLayout Grid.Column="2"
-                             Grid.RowSpan="2"
-                             VerticalOptions="Center"
-                             Padding="10,0,0,0"
-                             Spacing="0">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
-                    </StackLayout.GestureRecognizers>
-                    <StackLayout.Triggers>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding BakerViewModel.Name}"
-                                     Value="Custom Baker">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </StackLayout.Triggers>
-                    <Label Text="{x:Static resources:AppResources.Available}"
-                           VerticalTextAlignment="End"
-                           HorizontalTextAlignment="End"
-                           FontFamily="{DynamicResource LightFont}"
-                           Padding="10,0"
-                           FontSize="10">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding BakerViewModel.IsFull}"
-                                         Value="True">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Label Text="{Binding BakerViewModel.StakingAvailable, StringFormat='{0:0}'}"
-                           VerticalTextAlignment="Start"
-                           HorizontalTextAlignment="End"
-                           Padding="10,0"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="12">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding BakerViewModel.IsFull}"
-                                         Value="True">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Label TextColor="{DynamicResource ErrorTextColor}"
-                           Text="Baker is full"
-                           FontFamily="{DynamicResource BoldFont}"
-                           VerticalTextAlignment="Start"
-                           HorizontalTextAlignment="End"
-                           Padding="10,0"
-                           FontSize="12"
-                           IsVisible="False">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding BakerViewModel.IsFull}"
-                                         Value="True">
-                                <Setter Property="IsVisible"
-                                        Value="True"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </StackLayout>-->
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
                        Source="RightArrow__black"
-                       Margin="0,25,20,25">
+                       Margin="0,25,15,25">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </Image.GestureRecognizers>
@@ -274,7 +210,7 @@
                 <Image Source="DownArrowPicker"
                        Grid.Column="1"
                        Grid.RowSpan="3"
-                       Margin="0,25,20,25">
+                       Margin="0,25,15,25">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Image.GestureRecognizers>

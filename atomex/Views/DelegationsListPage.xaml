@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.DelegationsListPage"
              Title="{x:Static resources:AppResources.DelegationListPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
@@ -60,7 +61,7 @@
                 </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
                             <Grid Margin="2"
                                   ColumnSpacing="0"
                                   RowSpacing="2">
@@ -171,9 +172,9 @@
                                        Text="{x:Static resources:AppResources.NotDelegated}"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"
-                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontFamily="{DynamicResource BoldFont}"
                                        TextColor="{DynamicResource HintTextColor}"
-                                       FontSize="14"
+                                       FontSize="12"
                                        Padding="10,0"
                                        IsVisible="False">
                                     <Label.Triggers>
@@ -186,7 +187,7 @@
                                     </Label.Triggers>
                                 </Label>
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

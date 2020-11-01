@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout Margin="20,20,20,0"
                      Spacing="0"
-                     VerticalOptions="EndAndExpand"
+                     VerticalOptions="StartAndExpand"
                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
             <Label Text="Select a baker"
                    FontFamily="{DynamicResource BoldFont}"
@@ -20,7 +20,7 @@
                       ItemTapped="OnBakerTapped"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
-                      VerticalOptions="Start"
+                      VerticalOptions="StartAndExpand"
                       BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                       Footer="">
                 <ListView.ItemTemplate>

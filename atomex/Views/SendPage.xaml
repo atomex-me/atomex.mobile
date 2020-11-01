@@ -91,18 +91,20 @@
                                                       Style="{DynamicResource EntryStyle}"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       FontSize="12"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </Label>
                             </RelativeLayout>
                         </StackLayout>
-                        <Label VerticalTextAlignment="Center"
-                                Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
-                                FontFamily="{DynamicResource LightFont}"
-                                FontSize="12"
-                                TextColor="{DynamicResource AdditionalTextColor}">
-                        </Label>
                         <Button Text="{x:Static resources:AppResources.MaxButton}"
                                 HorizontalOptions="End"
                                 VerticalOptions="Center"
-                                WidthRequest="80"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                     </StackLayout>
@@ -197,15 +199,18 @@
                                             </DataTrigger>
                                         </controls:CustomEntry.Triggers>
                                     </controls:CustomEntry>
+                                    <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
+                                           TextColor="{DynamicResource AdditionalTextColor}"
+                                           FontFamily="{DynamicResource LightFont}"
+                                           FontSize="12"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="End"
+                                           Padding="0,0,20,0"
+                                           IsEnabled="False"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 </RelativeLayout>
                             </StackLayout>
-                            <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                   FontFamily="{DynamicResource LightFont}"
-                                   FontSize="12"
-                                   VerticalTextAlignment="Center"
-                                   Padding="0,0,20,0"
-                                   IsEnabled="False"/>
                         </StackLayout>
                     </controls:CustomFrame>
                 </StackLayout>

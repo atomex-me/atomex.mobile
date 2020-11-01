@@ -41,6 +41,10 @@ namespace atomex
                 await Navigation.PushAsync(new DelegatePage(_delegateViewModel, delegation.Address));
             else
                 await Navigation.PushAsync(new DelegationInfoPage(_delegateViewModel, delegation));
+
+            var listView = sender as ListView;
+            if (listView != null)
+                listView.SelectedItem = null;
         }
     }
 }
