@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using atomex.ViewModel;
 using Xamarin.Forms;
+using System.Linq;
+using Serilog;
 
 namespace atomex
 {
     public partial class BakerListPage : ContentPage
     {
+        private DelegateViewModel _delegateViewModel;
+
         public Action<BakerViewModel> OnBakerSelected;
 
         public BakerListPage()
@@ -18,6 +21,7 @@ namespace atomex
         {
             InitializeComponent();
             BindingContext = delegateViewModel;
+            _delegateViewModel = delegateViewModel;
             OnBakerSelected = onBakerSelected;
         }
 
@@ -34,6 +38,21 @@ namespace atomex
             OnBakerSelected.Invoke(baker);
 
             await Navigation.PopAsync();
+        }
+
+        private void OnSearchBakerTextChanged(object sender, TextChangedEventArgs args)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(args.NewTextValue))
+                    BakersListView.ItemsSource = _delegateViewModel.FromBakersList;
+                else
+                    BakersListView.ItemsSource = _delegateViewModel.FromBakersList.Where(x => x.Name.ToLower().Contains(args.NewTextValue.ToLower()));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
         }
     }
 }

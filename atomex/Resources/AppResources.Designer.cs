@@ -497,6 +497,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SearchBarPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchBarPlaceholder", resourceCulture);
+            }
+        }
+        
         internal static string DelegatePageTitle {
             get {
                 return ResourceManager.GetString("DelegatePageTitle", resourceCulture);

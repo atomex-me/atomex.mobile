@@ -4,24 +4,26 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.BakerListPage"
              Title="{x:Static resources:AppResources.BakerListPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout Margin="20,20,20,0"
-                     Spacing="0"
-                     VerticalOptions="StartAndExpand"
-                     BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-            <Label Text="Select a baker"
-                   FontFamily="{DynamicResource BoldFont}"
-                   TextColor="{DynamicResource MainTextColor}"
-                   FontSize="18"
-                   HorizontalTextAlignment="Center"
-                   Padding="20,10"/>
+        <StackLayout Spacing="0"
+                     VerticalOptions="FillAndExpand">
+            <SearchBar Placeholder="{x:Static resources:AppResources.SearchBarPlaceholder}"
+                       CancelButtonColor="{DynamicResource HintTextColor}"
+                       PlaceholderColor="{DynamicResource HintTextColor}"
+                       TextColor="{DynamicResource MainTextColor}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="12"
+                       TextTransform="Lowercase"
+                       HorizontalTextAlignment="Start"
+                       HeightRequest="70"
+                       TextChanged="OnSearchBakerTextChanged"/>
             <ListView ItemsSource="{Binding FromBakersList}"
                       ItemTapped="OnBakerTapped"
+                      x:Name="BakersListView"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
                       VerticalOptions="StartAndExpand"
-                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -143,22 +145,6 @@
                                     </Label.Triggers>
                                 </Label>
                             </StackLayout>
-                            <!--<Image Grid.Column="3"
-                                   Grid.RowSpan="3"
-                                   Source="Tick"
-                                   Margin="0,25"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   IsVisible="False">
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding BakerViewModel.Name}"
-                                                 Value="{Binding Name}">
-                                        <Setter Property="IsVisible"
-                                                Value="True"/>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>-->
                             <Line X1="0"
                                   Y1="0"
                                   X2="600"

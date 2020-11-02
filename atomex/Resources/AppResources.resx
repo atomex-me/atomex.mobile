@@ -263,6 +263,9 @@
     <data name="BakerListPageTitle" xml:space="preserve">
         <value>Baker list</value>
     </data>
+    <data name="SearchBarPlaceholder" xml:space="preserve">
+        <value>Search baker...</value>
+    </data>
     
     <!-- Delegate Page -->
     <data name="DelegatePageTitle" xml:space="preserve">
