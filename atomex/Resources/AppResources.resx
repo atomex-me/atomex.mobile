@@ -134,7 +134,7 @@
         <value>Mnemonic phrase</value>
     </data>
     <data name="GenerateButton" xml:space="preserve">
-        <value>Generate</value>
+        <value>GENERATE</value>
     </data>
     <data name="LoseMnemonicPhraseText" xml:space="preserve">
         <value>     If you lose your mnemonic phrase, your wallet cannot be recovered</value>

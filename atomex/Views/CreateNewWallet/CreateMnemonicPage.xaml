@@ -100,30 +100,27 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-            <StackLayout Orientation="Horizontal"
-                         Spacing="0">
-                <custom:CustomFrame Style="{DynamicResource EntryFrameStyle}"
-                                    CornerRadius="10"
-                                    x:Name="MnemonicPhraseFrame"
-                                    HorizontalOptions="CenterAndExpand"
-                                    BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
-                                    Padding="5"
-                                    Opacity="0">
-                    <Label Text="{Binding Mnemonic}"
-                           Style="{DynamicResource ErrorTextStyle}"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="WordWrap">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Mnemonic}"
-                                         Value="">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </custom:CustomFrame>
-            </StackLayout>
+            <Frame Style="{DynamicResource EntryFrameStyle}"
+                   CornerRadius="10"
+                   x:Name="MnemonicPhraseFrame"
+                   HorizontalOptions="CenterAndExpand"
+                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   Padding="5"
+                   Opacity="0">
+                <Label Text="{Binding Mnemonic}"
+                        Style="{DynamicResource ErrorTextStyle}"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="WordWrap">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                        Binding="{Binding Mnemonic}"
+                                        Value="">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Frame>
             <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
                    x:Name="LoseMnemonicPhraseText"
                    Style="{DynamicResource ErrorTextStyle}"
