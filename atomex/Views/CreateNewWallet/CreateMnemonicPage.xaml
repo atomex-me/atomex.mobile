@@ -100,49 +100,47 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-            <StackLayout Orientation="Horizontal">
-                <Frame HasShadow="False"
-                       x:Name="MnemonicPhraseFrame"
-                       Padding="5"
-                       CornerRadius="10"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand">
-                    <StackLayout VerticalOptions="Center">
-                        <Label Text="{x:Static resources:AppResources.MnemonicPhraseLabel}"
-                               x:Name="MnemonicLabel"
-                               TextColor="{DynamicResource AdditionalTextColor}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Center"
-                               FontSize="12">
-                        </Label>
-                        <Label Text="{Binding Mnemonic}"
-                               Style="{DynamicResource ErrorTextStyle}"
-                               HorizontalTextAlignment="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Mnemonic}"
-                                             Value="">
-                                    <Setter Property="IsVisible"
-                                            Value="False"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                    </StackLayout>
-                </Frame>
-                <Button Text="{x:Static resources:AppResources.GenerateButton}"
-                        Style="{DynamicResource GenerateButtonStyle}"
-                        HorizontalOptions="End"
-                        VerticalOptions="Start"
-                        Clicked="OnGenerateButtonClicked"/>
+            <StackLayout Orientation="Horizontal"
+                         Spacing="0">
+                <custom:CustomFrame Style="{DynamicResource EntryFrameStyle}"
+                                    CornerRadius="10"
+                                    x:Name="MnemonicPhraseFrame"
+                                    HorizontalOptions="CenterAndExpand"
+                                    BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                                    Padding="5"
+                                    Opacity="0">
+                    <Label Text="{Binding Mnemonic}"
+                           Style="{DynamicResource ErrorTextStyle}"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Mnemonic}"
+                                         Value="">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </custom:CustomFrame>
             </StackLayout>
             <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
                    x:Name="LoseMnemonicPhraseText"
                    Style="{DynamicResource ErrorTextStyle}"
-                   IsVisible="False"/>
+                   Opacity="0"/>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnNextButtonClicked"/>
+                    Clicked="OnNextButtonClicked">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding Mnemonic}"
+                                 Value="">
+                        <Setter Property="Text"
+                                Value="{x:Static resources:AppResources.GenerateButton}"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>

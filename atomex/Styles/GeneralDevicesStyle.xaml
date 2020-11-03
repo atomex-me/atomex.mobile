@@ -302,19 +302,6 @@
         <Setter Property="HeightRequest" Value="16"/>
     </Style>
 
-    <!-- Create Mnemonic Page -->
-    <Style x:Key="GenerateButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
-        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
-        <Setter Property="BorderWidth" Value="1"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="HeightRequest" Value="80"/>
-        <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
-        <Setter Property="FontSize" Value="14"/>
-    </Style>
-
     <!-- Delegate Page -->
     <Style x:Key="DelegationLoaderStyle" TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{DynamicResource MainBackgroundColor}"/>

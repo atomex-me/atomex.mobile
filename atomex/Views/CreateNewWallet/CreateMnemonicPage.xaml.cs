@@ -1,6 +1,7 @@
 ﻿using System;
 using atomex.Resources;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace atomex.Views.CreateNewWallet
 {
@@ -20,14 +21,9 @@ namespace atomex.Views.CreateNewWallet
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
             if (!string.IsNullOrEmpty(createNewWalletViewModel.Mnemonic))
-            {
-                HighlightMnemonicPhrase();
-            }
+                LoseMnemonicPhraseText.IsVisible = true;
             else
-            {
-                MnemonicLabel.IsVisible = true;
                 LoseMnemonicPhraseText.IsVisible = false;
-            }
         }
 
         private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
@@ -54,39 +50,39 @@ namespace atomex.Views.CreateNewWallet
         {
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
-                await DisplayAlert(AppResources.Warning, AppResources.GenerateMnemonic, AppResources.AcceptButton);
+                _createNewWalletViewModel.GenerateMnemonic();
+                LoseMnemonicPhraseText.IsVisible = true;
+                MnemonicPhraseFrame.IsVisible = true;
+                await Task.WhenAll(
+                    MnemonicPhraseFrame.FadeTo(1, 500, Easing.Linear),
+                    LoseMnemonicPhraseText.FadeTo(1, 500, Easing.Linear)
+                );
             }
             else
             {
-                await Navigation.PushAsync(new CreateDerivedKeyPasswordPage(_createNewWalletViewModel));
+                if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
+                {
+                    await DisplayAlert(AppResources.Warning, AppResources.GenerateMnemonic, AppResources.AcceptButton);
+                }
+                else
+                {
+                    await Navigation.PushAsync(new CreateDerivedKeyPasswordPage(_createNewWalletViewModel));
+                }
             }
         }
 
-        private void OnGenerateButtonClicked(object sender, EventArgs args)
+        private async void MnemonicPhraseChanged(object sender, EventArgs args)
         {
-            HighlightMnemonicPhrase();
-            _createNewWalletViewModel.GenerateMnemonic();
-        }
-
-        private void MnemonicPhraseChanged(object sender, EventArgs args)
-        {
-            DeleteMnemonicPhrase();
-        }
-
-        private void DeleteMnemonicPhrase()
-        {
-            MnemonicLabel.IsVisible = true;
+            if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
+            {
+                MnemonicPhraseFrame.IsVisible = false;
+                MnemonicPhraseFrame.Opacity = 0;
+            }
+            await Task.WhenAll(            
+                LoseMnemonicPhraseText.FadeTo(0, 500, Easing.Linear)
+            );
+            MnemonicPhraseFrame.IsVisible = false;
             LoseMnemonicPhraseText.IsVisible = false;
-            if (Application.Current.Resources.TryGetValue("DefaultFrameBackgroundColor", out var bgColor))
-                MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
-        }
-
-        private void HighlightMnemonicPhrase()
-        {
-            MnemonicLabel.IsVisible = false;
-            LoseMnemonicPhraseText.IsVisible = true;
-            if (Application.Current.Resources.TryGetValue("ErrorFrameBackgroundColor", out var bgColor))
-                MnemonicPhraseFrame.BackgroundColor = (Color)bgColor;
         }
     }
 }
