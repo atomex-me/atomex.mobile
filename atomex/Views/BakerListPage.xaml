@@ -12,18 +12,26 @@
                        CancelButtonColor="{DynamicResource HintTextColor}"
                        PlaceholderColor="{DynamicResource HintTextColor}"
                        TextColor="{DynamicResource MainTextColor}"
+                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="12"
                        TextTransform="Lowercase"
                        HorizontalTextAlignment="Start"
                        HeightRequest="70"
                        TextChanged="OnSearchBakerTextChanged"/>
+            <Line X1="0"
+                  Y1="0"
+                  X2="600"
+                  Y2="0"
+                  Stroke="#e0e0e0"
+                  StrokeThickness="1"
+                  HorizontalOptions="FillAndExpand"/>
             <ListView ItemsSource="{Binding FromBakersList}"
                       ItemTapped="OnBakerTapped"
                       x:Name="BakersListView"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
-                      VerticalOptions="StartAndExpand"
+                      VerticalOptions="FillAndExpand"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>

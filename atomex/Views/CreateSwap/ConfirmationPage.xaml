@@ -115,7 +115,8 @@
                                     <Label Text="{Binding EstimatedPrice}"
                                            VerticalOptions="CenterAndExpand"
                                            TextColor="{DynamicResource HintTextColor}"
-                                           FontFamily="{DynamicResource RegularFont}"/>
+                                           FontFamily="{DynamicResource BoldFont}"
+                                           FontSize="14"/>
                                 </StackLayout>
                             </ViewCell>
                             <ViewCell>
@@ -125,20 +126,23 @@
                                            Style="{DynamicResource EstimatedLabelStyle}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
-                                               TextColor="{DynamicResource HintTextColor}"
-                                               FontFamily="{DynamicResource RegularFont}">
+                                               TextColor="{DynamicResource HintTextColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="{Binding EstimatedPaymentFee}"/>
+                                                    <Span Text="{Binding EstimatedPaymentFee}"
+                                                          FontSize="14"
+                                                          FontFamily="{DynamicResource BoldFont}"/>
                                                     <Span Text=" "/>
                                                     <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="12"/>
+                                                          FontSize="12"
+                                                          FontFamily="{DynamicResource BoldFont}"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
                                         <Label Text="{Binding EstimatedPaymentFeeInBase, StringFormat='({0:0.##} $)'}"
                                                TextColor="{DynamicResource AdditionalTextColor}"
                                                FontSize="12"
+                                               FontFamily="{DynamicResource RegularFont}"
                                                VerticalTextAlignment="Center"/>
                                     </StackLayout>
                                 </StackLayout>
@@ -150,19 +154,22 @@
                                            Style="{DynamicResource EstimatedLabelStyle}"/>
                                     <StackLayout Orientation="Horizontal">
                                         <Label VerticalOptions="CenterAndExpand"
-                                               TextColor="{DynamicResource HintTextColor}"
-                                               FontFamily="{DynamicResource RegularFont}">
+                                               TextColor="{DynamicResource HintTextColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="{Binding EstimatedRedeemFee}"/>
+                                                    <Span Text="{Binding EstimatedRedeemFee}"
+                                                          FontSize="14"
+                                                          FontFamily="{DynamicResource BoldFont}"/>
                                                     <Span Text=" "/>
                                                     <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="12"/>
+                                                          FontSize="12"
+                                                          FontFamily="{DynamicResource BoldFont}"/>
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label> 
                                         <Label Text="{Binding EstimatedRedeemFeeInBase, StringFormat='({0:0.##} $)'}"
                                                TextColor="{DynamicResource AdditionalTextColor}"
+                                               FontFamily="{DynamicResource RegularFont}"
                                                FontSize="12"
                                                VerticalTextAlignment="Center"/>
                                     </StackLayout>
@@ -173,7 +180,7 @@
                 </TableView>
                 <Button Text="{x:Static resources:AppResources.ConvertButton}"
                         x:Name="ConvertButton"
-                        Margin="10"
+                        Margin="20,5,20,20"
                         Style="{DynamicResource MainButtonStyle}"
                         Clicked="OnConvertButtonClicked"/>
             </StackLayout>
