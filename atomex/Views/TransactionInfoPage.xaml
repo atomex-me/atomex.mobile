@@ -145,31 +145,31 @@
                                      Binding="{Binding State}"
                                      Value="Confirmed">
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource ConfirmedStateColor}"/>
+                                    Value="{DynamicResource TxConfirmedStateColor}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding State}"
                                      Value="Pending">
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource PendingStateColor}"/>
+                                    Value="{DynamicResource TxPendingStateColor}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding State}"
                                      Value="Failed">
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource FailedStateColor}"/>
+                                    Value="{DynamicResource TxFailedStateColor}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding State}"
                                      Value="Unconfirmed">
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource UnconfirmedStateColor}"/>
+                                    Value="{DynamicResource TxUnconfirmedStateColor}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding State}"
                                      Value="Unknown">
                             <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource UnknownStateColor}"/>
+                                    Value="{DynamicResource TxUnknownStateColor}"/>
                         </DataTrigger>
                     </Frame.Triggers>
                     <Label Padding="10,0"

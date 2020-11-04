@@ -70,31 +70,31 @@
                                                      Binding="{Binding CompactState}"
                                                      Value="Completed">
                                             <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource ComletedStateColor}"/>
+                                                    Value="{DynamicResource SwapCompletedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="InProgress">
                                             <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource InProgressStateColor}"/>
+                                                    Value="{DynamicResource SwapInProgressStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Canceled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource CanceledStateColor}"/>
+                                                    Value="{DynamicResource SwapCanceledStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Refunded">
                                             <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource RefundedStateColor}"/>
+                                                    Value="{DynamicResource SwapRefundedStateColor}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding CompactState}"
                                                      Value="Unsettled">
                                             <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource UnsettledStateColor}"/>
+                                                    Value="{DynamicResource SwapUnsettledStateColor}"/>
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <Label Padding="10,0"

@@ -70,10 +70,10 @@
                                     <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="3.5*" />
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="3.5*" />
+                                    <ColumnDefinition Width="4*" />
                                 </Grid.ColumnDefinitions>
                                 <Frame Grid.RowSpan="2"
                                        Grid.ColumnSpan="4"

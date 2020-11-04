@@ -32,17 +32,22 @@
 
 
     <!-- Swap states colors  -->
-    <Color x:Key="ComletedStateColor">#3a6cb1</Color>
-    <Color x:Key="CanceledStateColor">#303740</Color>
-    <Color x:Key="InProgressStateColor">#14a4be</Color>
-    <Color x:Key="RefundedStateColor">#ffc300</Color>
-    <Color x:Key="UnsettledStateColor">#cd3e4a</Color>
+    <Color x:Key="SwapCompletedStateColor">#3a6cb1</Color>
+    <Color x:Key="SwapCanceledStateColor">#303740</Color>
+    <Color x:Key="SwapInProgressStateColor">#14a4be</Color>
+    <Color x:Key="SwapRefundedStateColor">#ffc300</Color>
+    <Color x:Key="SwapUnsettledStateColor">#cd3e4a</Color>
 
-    <!-- Transaction states colors  -->
-    <Color x:Key="ConfirmedStateColor">#3a6cb1</Color>
-    <Color x:Key="PendingStateColor">#14a4be</Color>
-    <Color x:Key="FailedStateColor">#cd3e4a</Color>
-    <Color x:Key="UnconfirmedStateColor">#ffc300</Color>
-    <Color x:Key="UnknownStateColor">#303740</Color>
+    <!-- Frame transactions states colors  -->
+    <Color x:Key="TxConfirmedStateColor">#3a6cb1</Color>
+    <Color x:Key="TxPendingStateColor">#14a4be</Color>
+    <Color x:Key="TxFailedStateColor">#cd3e4a</Color>
+    <Color x:Key="TxUnconfirmedStateColor">#ffc300</Color>
+    <Color x:Key="TxUnknownStateColor">#303740</Color>
+
+    <!-- ListView transactions states colors  -->
+    <Color x:Key="TxListViewFailedStateColor">#44ffcccc</Color>
+    <Color x:Key="TxListViewPendingStateColor">#44ffffcc</Color>
+    <Color x:Key="TxListViewConfirmedStateColor">#ffffff</Color>
 
 </ResourceDictionary>

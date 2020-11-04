@@ -139,6 +139,38 @@
                                     <ColumnDefinition Width="4*" />
                                     <ColumnDefinition Width="4.5*" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.Triggers>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding State}"
+                                                 Value="Confirmed">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{DynamicResource TxListViewConfirmedStateColor}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding State}"
+                                                 Value="Pending">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{DynamicResource TxListViewPendingStateColor}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding State}"
+                                                 Value="Failed">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{DynamicResource TxListViewFailedStateColor}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding State}"
+                                                 Value="Unconfirmed">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{DynamicResource TxListViewPendingStateColor}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding State}"
+                                                 Value="Unknown">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{DynamicResource TxListViewPendingStateColor}"/>
+                                    </DataTrigger>
+                                </Grid.Triggers>
                                 <Image Grid.RowSpan="2"
                                        Margin="10,15">
                                     <Image.Triggers>
