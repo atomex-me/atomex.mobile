@@ -64,10 +64,10 @@
                         <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
                             <Grid Margin="2"
                                   ColumnSpacing="0"
-                                  RowSpacing="2">
+                                  RowSpacing="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35" />
-                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="4*" />
@@ -128,7 +128,7 @@
                                 </Image>
                                 <Label Grid.Column="3"
                                        Text="{Binding Baker.Name}"
-                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontFamily="{DynamicResource BoldFont}"
                                        TextColor="{DynamicResource MainTextColor}"
                                        FontSize="14"
                                        Padding="5,0"
@@ -152,11 +152,12 @@
                                 <Label Grid.Row="1"
                                        Grid.Column="3"
                                        Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
-                                       TextColor="{DynamicResource MainTextColor}"
+                                       TextColor="Green"
                                        FontFamily="{DynamicResource RegularFont}"
                                        FontSize="12"
                                        Padding="5,0"
-                                       VerticalTextAlignment="Start">
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Baker, TargetNullValue=''}"

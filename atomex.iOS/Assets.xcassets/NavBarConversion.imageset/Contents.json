@@ -1,10 +1,10 @@
 {
   "images": [
     {
+      "filename": "NavBarConversion.pdf",
       "idiom": "universal"
     },
     {
-      "filename": "Arrows.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -17,6 +17,7 @@
       "idiom": "universal"
     },
     {
+      "filename": "NavBarConversion-1.pdf",
       "idiom": "iphone"
     },
     {
@@ -37,6 +38,7 @@
       "idiom": "iphone"
     },
     {
+      "filename": "NavBarConversion-3.pdf",
       "idiom": "ipad"
     },
     {

@@ -211,17 +211,11 @@
     <ImageAsset Include="Assets.xcassets\RightArrow__black.imageset\Right-arrow-2__black-1.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__black.imageset\Right-arrow-2__black-2.pdf" />
     <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\Wallet.png" />
     <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\wallets.png" />
     <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\settings.png" />
-    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\Settings-2.png" />
     <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\Pie-chart-1.png" />
     <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\portfolio.png" />
-    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\Arrows.png" />
-    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\exchange-2.png" />
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Down-arrow-2.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Down-arrow-2-1.pdf" />
@@ -254,6 +248,20 @@
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-2.pdf" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\exchange-2.png" />
+    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\NavBarPortfolio.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\NavBarPortfolio-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\NavBarPortfolio-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\NavBarSettings.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\NavBarSettings-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\NavBarSettings-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -346,7 +354,6 @@
     <Folder Include="Assets.xcassets\NavBarWallets.imageset\" />
     <Folder Include="Assets.xcassets\NavBarSettings.imageset\" />
     <Folder Include="Assets.xcassets\NavBarPortfolio.imageset\" />
-    <Folder Include="Assets.xcassets\NavBarConversion.imageset\" />
     <Folder Include="Assets.xcassets\DownArrowPicker.imageset\" />
     <Folder Include="Assets.xcassets\StartPageBackground.imageset\" />
     <Folder Include="Common\" />
@@ -357,6 +364,7 @@
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
     <Folder Include="Assets.xcassets\SwapArrows.imageset\" />
     <Folder Include="Assets.xcassets\AtomexLogo.imageset\" />
+    <Folder Include="Assets.xcassets\NavBarConversion.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

@@ -1,10 +1,10 @@
 {
   "images": [
     {
+      "filename": "NavBarSettings.pdf",
       "idiom": "universal"
     },
     {
-      "filename": "Settings-2.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -17,6 +17,7 @@
       "idiom": "universal"
     },
     {
+      "filename": "NavBarSettings-1.pdf",
       "idiom": "iphone"
     },
     {
@@ -37,6 +38,7 @@
       "idiom": "iphone"
     },
     {
+      "filename": "NavBarSettings-2.pdf",
       "idiom": "ipad"
     },
     {

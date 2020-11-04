@@ -1,10 +1,10 @@
 {
   "images": [
     {
+      "filename": "NavBarPortfolio.pdf",
       "idiom": "universal"
     },
     {
-      "filename": "Pie-chart-1.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -17,6 +17,7 @@
       "idiom": "universal"
     },
     {
+      "filename": "NavBarPortfolio-1.pdf",
       "idiom": "iphone"
     },
     {
@@ -37,6 +38,7 @@
       "idiom": "iphone"
     },
     {
+      "filename": "NavBarPortfolio-2.pdf",
       "idiom": "ipad"
     },
     {
