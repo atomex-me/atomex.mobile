@@ -29,6 +29,9 @@ namespace atomex
             if (e.Item != null)
             {
                 await Navigation.PushAsync(new SwapInfoPage(e.Item as SwapViewModel));
+                var listView = sender as ListView;
+                if (listView != null)
+                    listView.SelectedItem = null;
             }
         }
         private async void OnCreateSwapButtonClicked(object sender, EventArgs args)

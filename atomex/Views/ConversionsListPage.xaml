@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.ConversionsListPage"
              Title="{x:Static resources:AppResources.SwapListPageTitle}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          IsVisible="False">
@@ -36,6 +37,7 @@
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
+                      BackgroundColor="{DynamicResource MainBackgroundColor}"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
@@ -61,7 +63,7 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
                             <Grid Padding="8"
                                   RowSpacing="0"
                                   ColumnSpacing="0">
@@ -149,7 +151,7 @@
                                            Text="{Binding State}"/>
                                 </Frame>  
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
