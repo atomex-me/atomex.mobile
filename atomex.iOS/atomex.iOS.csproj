@@ -344,7 +344,6 @@
     <Folder Include="Assets.xcassets\.imageset\" />
     <Folder Include="Assets.xcassets\LaunchScreen.imageset\" />
     <Folder Include="Assets.xcassets\LogoLabel.imageset\" />
-    <Folder Include="Resources\Images\" />
     <Folder Include="Assets.xcassets\BTC.imageset\" />
     <Folder Include="Assets.xcassets\ETH.imageset\" />
     <Folder Include="Assets.xcassets\LTC.imageset\" />
@@ -401,31 +400,6 @@
     <BundleResource Include="Resources\Roboto-Medium.ttf" />
     <BundleResource Include="Resources\Roboto-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
-    <BundleResource Include="Resources\Images\BTC.pdf" />
-    <BundleResource Include="Resources\Images\Down-arrow-2.pdf" />
-    <BundleResource Include="Resources\Images\Down-arrow.pdf" />
-    <BundleResource Include="Resources\Images\Entry.pdf" />
-    <BundleResource Include="Resources\Images\ETH.pdf" />
-    <BundleResource Include="Resources\Images\FA12.pdf" />
-    <BundleResource Include="Resources\Images\LTC.pdf" />
-    <BundleResource Include="Resources\Images\Password.pdf" />
-    <BundleResource Include="Resources\Images\Right-arrow-2__black.pdf" />
-    <BundleResource Include="Resources\Images\Right-arrow-2__blue.pdf" />
-    <BundleResource Include="Resources\Images\Right-arrow-2__white.pdf" />
-    <BundleResource Include="Resources\Images\Right-arrow-3.pdf" />
-    <BundleResource Include="Resources\Images\Right-arrow.pdf" />
-    <BundleResource Include="Resources\Images\Scan.pdf" />
-    <BundleResource Include="Resources\Images\Share.pdf" />
-    <BundleResource Include="Resources\Images\Spin-arrow.pdf" />
-    <BundleResource Include="Resources\Images\Tick.pdf" />
-    <BundleResource Include="Resources\Images\TZBTC.pdf" />
-    <BundleResource Include="Resources\Images\Up-arrow.pdf" />
-    <BundleResource Include="Resources\Images\USDT.pdf" />
-    <BundleResource Include="Resources\Images\Wallet__blue.pdf" />
-    <BundleResource Include="Resources\Images\Wallet__white.pdf" />
-    <BundleResource Include="Resources\Images\XTZ.pdf" />
-    <BundleResource Include="Resources\Images\Refresh-arrow.pdf" />
-    <BundleResource Include="Resources\Images\Copy.pdf" />
     <BundleResource Include="GoogleService-Info.plist" />
   </ItemGroup>
 </Project>
