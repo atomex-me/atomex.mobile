@@ -278,6 +278,10 @@
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\question.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\question-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\question-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
+    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -385,6 +389,7 @@
     <Folder Include="Assets.xcassets\ic_twitter.imageset\" />
     <Folder Include="Assets.xcassets\ic_youtube.imageset\" />
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
+    <Folder Include="Assets.xcassets\RightArrow__gray.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

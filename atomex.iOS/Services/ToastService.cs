@@ -114,7 +114,7 @@ namespace atomex.iOS.Services
             }
             finally
             {
-                cancelationToken.Dispose();
+                cancelationToken?.Dispose();
                 cancelationToken = null;
             }
         }

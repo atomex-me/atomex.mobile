@@ -55,7 +55,7 @@
                             <TapGestureRecognizer Tapped="OnTelegramTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__black"
+                    <Image Source="RightArrow__gray"
                            Grid.Column="2"
                            Margin="20,15"
                            HorizontalOptions="End"/>
@@ -93,7 +93,7 @@
                             <TapGestureRecognizer Tapped="OnTwitterTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__black"
+                    <Image Source="RightArrow__gray"
                            Grid.Row="2"
                            Grid.Column="2"
                            Margin="20,15"
@@ -132,7 +132,7 @@
                             <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__black"
+                    <Image Source="RightArrow__gray"
                            Grid.Row="4"
                            Grid.Column="2"
                            Margin="20,15"
@@ -171,7 +171,7 @@
                             <TapGestureRecognizer Tapped="OnSupportTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__black"
+                    <Image Source="RightArrow__gray"
                            Grid.Row="6"
                            Grid.Column="2"
                            Margin="20,15"

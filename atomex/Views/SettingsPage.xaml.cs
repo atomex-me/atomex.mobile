@@ -58,7 +58,7 @@ namespace atomex
 
         private void OnSupportTapped(object sender, EventArgs args)
         {
-            Launcher.OpenAsync(new Uri("https://t.me/atomex_official"));
+            Launcher.OpenAsync(new Uri("mailto:support@atomex.me"));
         }
 
         private void OnTelegramTapped(object sender, EventArgs args)

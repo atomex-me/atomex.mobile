@@ -179,7 +179,7 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
 
-                CurrencyUpdated.Invoke(this, EventArgs.Empty);
+                CurrencyUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
