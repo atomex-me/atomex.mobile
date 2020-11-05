@@ -12,6 +12,7 @@
         <Setter Property="CornerRadius" Value="25"/>
         <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
     <Style x:Key="AdditionalButtonStyle" TargetType="Button">
@@ -22,12 +23,14 @@
         <Setter Property="CornerRadius" Value="25"/>
         <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
     <Style x:Key="TransparentButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
@@ -250,6 +253,7 @@
                 <OnPlatform x:TypeArguments="x:Double" iOS="12" Android="11"/>
             </Setter.Value>
         </Setter>
+        <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
         <Setter Property="WidthRequest" Value="80"/>

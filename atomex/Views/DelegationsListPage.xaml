@@ -171,6 +171,7 @@
                                        Grid.Column="2"
                                        Grid.ColumnSpan="2"
                                        Text="{x:Static resources:AppResources.NotDelegated}"
+                                       TextTransform="Uppercase"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"
                                        FontFamily="{DynamicResource BoldFont}"

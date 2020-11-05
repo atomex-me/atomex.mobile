@@ -21,7 +21,7 @@
         <value>Cancel</value>
     </data>
     <data name="NextButton" xml:space="preserve">
-        <value>NEXT</value>
+        <value>Next</value>
     </data>
     <data name="PasswordEntryPlaceholder" xml:space="preserve">
         <value>Password</value>
@@ -63,18 +63,18 @@
         <value>Price</value>
     </data>
     <data name="MaxButton" xml:space="preserve">
-        <value>MAX</value>
+        <value>Max</value>
     </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
-        <value>MY WALLETS</value>
+        <value>My wallets</value>
     </data>
     <data name="CreateNewWalletButton" xml:space="preserve">
-        <value>CREATE NEW WALLET</value>
+        <value>Create new wallet</value>
     </data>
     <data name="RestoreWalletButton" xml:space="preserve">
-        <value>RESTORE WALLET</value>
+        <value>Restore wallet</value>
     </data>
     
     <!-- My Wallets Page -->
@@ -93,7 +93,7 @@
         <value>Please enter your password</value>
     </data>
     <data name="UnlockButton" xml:space="preserve">
-        <value>UNLOCK</value>
+        <value>Unlock</value>
     </data>
     <data name="UseFingerprint" xml:space="preserve">
         <value>Use your fingerprint to sign in </value>
@@ -134,7 +134,7 @@
         <value>Mnemonic phrase</value>
     </data>
     <data name="GenerateButton" xml:space="preserve">
-        <value>GENERATE</value>
+        <value>Generate</value>
     </data>
     <data name="LoseMnemonicPhraseText" xml:space="preserve">
         <value>     If you lose your mnemonic phrase, your wallet cannot be recovered</value>
@@ -161,7 +161,7 @@
         <value>   This password is used to protect the stored secret keys and will be needed every time you start your wallet application.</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
-        <value>CREATE</value>
+        <value>Create</value>
     </data>
     
     <!-- Portfolio Page -->
@@ -179,16 +179,16 @@
     
     <!-- Currency Page -->
     <data name="SendButton" xml:space="preserve">
-        <value>SEND</value>
+        <value>Send</value>
     </data>
     <data name="ReceiveButton" xml:space="preserve">
-        <value>RECEIVE</value>
+        <value>Receive</value>
     </data>
     <data name="ConvertButton" xml:space="preserve">
-        <value>CONVERT</value>
+        <value>Convert</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>STAKING</value>
+        <value>Staking</value>
     </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Balance updating...</value>
@@ -211,7 +211,7 @@
         <value>Transaction ID</value>
     </data>
     <data name="ShowInExplorerButton" xml:space="preserve">
-        <value>SHOW IN EXPLORER</value>
+        <value>Show in explorer</value>
     </data>
     
     <!-- Send Page -->
@@ -219,7 +219,7 @@
         <value>Send</value>
     </data>
     <data name="PasteButton" xml:space="preserve">
-        <value>PASTE</value>
+        <value>Paste</value>
     </data>
     <data name="GasPriceLabel" xml:space="preserve">
         <value>Gas price</value>
@@ -239,24 +239,21 @@
         <value>Address</value>
     </data>
     <data name="CopyButton" xml:space="preserve">
-        <value>COPY</value>
+        <value>Copy</value>
     </data>
     <data name="ShareButton" xml:space="preserve">
-        <value>SHARE</value>
+        <value>Share</value>
     </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">
         <value>Delegation list</value>
     </data>
-    <data name="NewDelegationButton" xml:space="preserve">
-        <value>NEW DELEGATION</value>
-    </data>
     <data name="NoDelegationsLabel" xml:space="preserve">
         <value>No delegations yet</value>
     </data>
     <data name="NotDelegated" xml:space="preserve">
-        <value>NOT DELEGATED</value>
+        <value>Not delegated</value>
     </data>
     
     <!-- Baker list Page -->
@@ -309,10 +306,10 @@
         <value>Delegation info</value>
     </data>
     <data name="CheckRewardsButton" xml:space="preserve">
-        <value>CHECK REWARDS</value>
+        <value>Check rewards</value>
     </data>
     <data name="ChangeBakerButton" xml:space="preserve">
-        <value>CHANGE BAKER</value>
+        <value>Change baker</value>
     </data>
     <data name="DelegateLabel" xml:space="preserve">
         <value>Delegate</value>
@@ -347,7 +344,7 @@
         <value>Convert</value>
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
-        <value>CREATE NEW SWAP</value>
+        <value>Create new swap</value>
     </data>
     
     <!-- Swap Page -->
@@ -415,8 +412,23 @@
     <data name="PeriodOfInactiveLabel" xml:space="preserve">
         <value>Period of inactive</value>
     </data>
-    <data name="AccountLabel" xml:space="preserve">
+    <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
+    </data>
+    <data name="CommunitySection" xml:space="preserve">
+        <value>Community</value>
+    </data>
+    <data name="Youtube" xml:space="preserve">
+        <value>YouTube</value>
+    </data>
+    <data name="Telegram" xml:space="preserve">
+        <value>Telegram</value>
+    </data>
+    <data name="Twitter" xml:space="preserve">
+        <value>Twitter</value>
+    </data>
+    <data name="Support" xml:space="preserve">
+        <value>Support</value>
     </data>
     
     <!-- Tab bar -->
@@ -444,7 +456,7 @@
         <value>Success</value>
     </data>
     <data name="SignOut" xml:space="preserve">
-        <value>SIGN OUT</value>
+        <value>Sign out</value>
     </data>
     <data name="AreYouSure" xml:space="preserve">
         <value>Are you sure?</value>

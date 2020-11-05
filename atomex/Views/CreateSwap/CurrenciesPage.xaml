@@ -49,7 +49,7 @@
                     <Image Grid.Row="1"
                            Grid.RowSpan="2"
                            Source="{Binding FromCurrencyViewModel.CurrencyCode}"
-                           HorizontalOptions="Start"
+                           HorizontalOptions="Center"
                            Margin="20,5,10,10">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
@@ -134,7 +134,7 @@
                     <Image Grid.Row="1"
                            Grid.RowSpan="2"
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"
-                           HorizontalOptions="Start"
+                           HorizontalOptions="Center"
                            Margin="20,5,10,10">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>

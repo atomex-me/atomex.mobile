@@ -262,6 +262,22 @@
     <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets-3.pdf" />
     <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets.pdf" />
     <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\question.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\question-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\question-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -365,6 +381,10 @@
     <Folder Include="Assets.xcassets\SwapArrows.imageset\" />
     <Folder Include="Assets.xcassets\AtomexLogo.imageset\" />
     <Folder Include="Assets.xcassets\NavBarConversion.imageset\" />
+    <Folder Include="Assets.xcassets\ic_question.imageset\" />
+    <Folder Include="Assets.xcassets\ic_twitter.imageset\" />
+    <Folder Include="Assets.xcassets\ic_youtube.imageset\" />
+    <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

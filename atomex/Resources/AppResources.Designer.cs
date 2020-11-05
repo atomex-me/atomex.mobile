@@ -473,12 +473,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string NewDelegationButton {
-            get {
-                return ResourceManager.GetString("NewDelegationButton", resourceCulture);
-            }
-        }
-        
         internal static string NoDelegationsLabel {
             get {
                 return ResourceManager.GetString("NoDelegationsLabel", resourceCulture);
@@ -755,9 +749,33 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string AccountLabel {
+        internal static string CommunitySection {
             get {
-                return ResourceManager.GetString("AccountLabel", resourceCulture);
+                return ResourceManager.GetString("CommunitySection", resourceCulture);
+            }
+        }
+        
+        internal static string Youtube {
+            get {
+                return ResourceManager.GetString("Youtube", resourceCulture);
+            }
+        }
+        
+        internal static string Telegram {
+            get {
+                return ResourceManager.GetString("Telegram", resourceCulture);
+            }
+        }
+        
+        internal static string Twitter {
+            get {
+                return ResourceManager.GetString("Twitter", resourceCulture);
+            }
+        }
+        
+        internal static string Support {
+            get {
+                return ResourceManager.GetString("Support", resourceCulture);
             }
         }
         

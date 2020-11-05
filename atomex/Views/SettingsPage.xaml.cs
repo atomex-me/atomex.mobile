@@ -2,6 +2,7 @@
 using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.SettingsOptions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -43,6 +44,26 @@ namespace atomex
             {
                 _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        private void OnYoutubeTapped(object sender, EventArgs args)
+        {
+            Launcher.OpenAsync(new Uri("https://www.youtube.com/c/BakingBad"));
+        }
+
+        private void OnTwitterTapped(object sender, EventArgs args)
+        {
+            Launcher.OpenAsync(new Uri("https://twitter.com/atomex_official"));
+        }
+
+        private void OnSupportTapped(object sender, EventArgs args)
+        {
+            Launcher.OpenAsync(new Uri("https://t.me/atomex_official"));
+        }
+
+        private void OnTelegramTapped(object sender, EventArgs args)
+        {
+            Launcher.OpenAsync(new Uri("https://t.me/atomex_official"));
         }
     }
 }

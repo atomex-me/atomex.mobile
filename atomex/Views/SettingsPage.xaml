@@ -1,11 +1,198 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-  <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:resources="clr-namespace:atomex.Resources"
-               x:Class="atomex.SettingsPage"
-               Title="{x:Static resources:AppResources.SettingsPageTitle}">
-        <ContentPage.Content>
-            <TableView Intent="Settings"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
+             x:Class="atomex.SettingsPage"
+             Title="{x:Static resources:AppResources.SettingsPageTitle}"
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Padding="20"
+                         Spacing="0">
+                <Label Text="{x:Static resources:AppResources.CommunitySection}"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       TextColor="{DynamicResource AdditionalTextColor}"
+                       VerticalTextAlignment="Center"
+                       TextTransform="Uppercase"
+                       Padding="20,5"/>
+                <Grid ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="6.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <custom:CustomFrame CornerRadius="10,10,0,0"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3"
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                        </Frame.GestureRecognizers>
+                    </custom:CustomFrame>
+                    <Image Source="ic_telegram"
+                           Margin="6"/>
+                    <Label Text="{x:Static resources:AppResources.Telegram}"
+                           Grid.Column="1"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="RightArrow__black"
+                           Grid.Column="2"
+                           Margin="20,15"
+                           HorizontalOptions="End"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          Stroke="LightGray"
+                          StrokeThickness="1"/>
+
+                    <custom:CustomFrame CornerRadius="0"
+                                        Grid.Row="2"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3"
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                        </Frame.GestureRecognizers>
+                    </custom:CustomFrame>
+                    <Image Grid.Row="2"
+                           Source="ic_twitter"
+                           Margin="6"/>
+                    <Label Text="{x:Static resources:AppResources.Twitter}"
+                           Grid.Row="2"
+                           Grid.Column="1"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="RightArrow__black"
+                           Grid.Row="2"
+                           Grid.Column="2"
+                           Margin="20,15"
+                           HorizontalOptions="End"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Grid.Row="3"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          Stroke="LightGray"
+                          StrokeThickness="1"/>
+
+                    <custom:CustomFrame CornerRadius="0"
+                                        Grid.Row="4"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3"
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                        </Frame.GestureRecognizers>
+                    </custom:CustomFrame>
+                    <Image Grid.Row="4"
+                           Source="ic_youtube"
+                           Margin="6"/>
+                    <Label Text="{x:Static resources:AppResources.Youtube}"
+                           Grid.Row="4"
+                           Grid.Column="1"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="RightArrow__black"
+                           Grid.Row="4"
+                           Grid.Column="2"
+                           Margin="20,15"
+                           HorizontalOptions="End"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Grid.Row="5"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          Stroke="LightGray"
+                          StrokeThickness="1"/>
+
+                    <custom:CustomFrame CornerRadius="0,0,10,10"
+                                        Grid.Row="6"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3"
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                        </Frame.GestureRecognizers>
+                    </custom:CustomFrame>
+                    <Image Grid.Row="6"
+                           Source="ic_question"
+                           Margin="6"/>
+                    <Label Text="{x:Static resources:AppResources.Support}"
+                           Grid.Row="6"
+                           Grid.Column="1"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="RightArrow__black"
+                           Grid.Row="6"
+                           Grid.Column="2"
+                           Margin="20,15"
+                           HorizontalOptions="End"/>
+                </Grid>
+
+                <Label Text="{x:Static resources:AppResources.AccountSection}"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       TextColor="{DynamicResource AdditionalTextColor}"
+                       VerticalTextAlignment="Center"
+                       TextTransform="Uppercase"
+                       Padding="20,25,20,5"/>
+                <custom:CustomFrame CornerRadius="10"
+                                    HeightRequest="40"
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <Button Text="{x:Static resources:AppResources.SignOut}"
+                                        Style="{DynamicResource TransparentButtonStyle}"
+                                        Clicked="OnSignOutButtonClicked"/>
+                </custom:CustomFrame>
+            <!--<TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
                     <TableSection Title="{x:Static resources:AppResources.SecurityLabel}"
@@ -66,6 +253,8 @@
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
-            </TableView>
-        </ContentPage.Content>
-  </ContentPage>
+            </TableView>-->
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

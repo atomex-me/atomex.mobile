@@ -1,6 +1,4 @@
-﻿using System;
-using atomex.Models;
-using atomex.Resources;
+﻿using atomex.Models;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -23,17 +21,6 @@ namespace atomex
             BindingContext = delegateViewModel;
         }
 
-        private async void OnNewDelegationButtonClicked(object sender, EventArgs args)
-        {
-            if (_delegateViewModel.CanDelegate)
-            {
-                await Navigation.PushAsync(new DelegatePage(_delegateViewModel));
-            }
-            else
-            {
-                await DisplayAlert(AppResources.Error, AppResources.NoTezosError, AppResources.AcceptButton);
-            }
-        }
         private async void OnDelegationTapped(object sender, ItemTappedEventArgs args)
         {
             var delegation = args.Item as Delegation;
