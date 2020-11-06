@@ -77,7 +77,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
     </Style>
 
     <!-- Entries -->

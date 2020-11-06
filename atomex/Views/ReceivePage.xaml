@@ -101,7 +101,8 @@
             <Frame Padding="0"
                    CornerRadius="10"
                    HasShadow="False">
-                <StackLayout Spacing="0">
+                <StackLayout Spacing="0"
+                             VerticalOptions="FillAndExpand">
                     <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"
                                                  BarcodeValue="{Binding SelectedAddress.Address}"
                                                  BarcodeFormat="QR_CODE">
@@ -113,16 +114,16 @@
                     <Label Text="{Binding SelectedAddress.Address}"
                            TextColor="{DynamicResource AdditionalTextColor}"
                            FontFamily="{DynamicResource RegularFont}"
+                           LineBreakMode="CharacterWrap"
                            HorizontalTextAlignment="Center"
                            FontSize="16"
-                           Padding="20,0,20,20"/>
+                           Margin="20,0,20,20"/>
                 </StackLayout>
             </Frame>
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
-                         VerticalOptions="EndAndExpand"
                          HeightRequest="40"
-                         Margin="10"
+                         Margin="20"
                          Spacing="0">
                 <custom:LeftRoundedButton Text="{x:Static resources:AppResources.CopyButton}"
                                           Style="{DynamicResource CurrencyActionButtonStyle}"
