@@ -32,6 +32,7 @@
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
     <Folder Include="ViewModel\ReceiveViewModels\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
