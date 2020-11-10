@@ -636,6 +636,9 @@ namespace atomex.ViewModel
         {
             Warning = string.Empty;
 
+            if (value == 0)
+                return;
+
             var previousAmount = _amount;
             _amount = value;
 
