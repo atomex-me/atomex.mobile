@@ -79,7 +79,7 @@
     
     <!-- My Wallets Page -->
     <data name="SelectWalletLabel" xml:space="preserve">
-        <value>Please select your wallet</value>
+        <value>Please, select your wallet</value>
     </data>
     <data name="MyWalletsTitle" xml:space="preserve">
         <value>My wallets</value>
@@ -90,7 +90,7 @@
         <value>Unlock wallet</value>
     </data>
     <data name="UnlockLabel" xml:space="preserve">
-        <value>Please enter your password</value>
+        <value>Please, enter your password</value>
     </data>
     <data name="UnlockButton" xml:space="preserve">
         <value>Unlock</value>
@@ -107,13 +107,13 @@
         <value>Step 1: Wallet type</value>
     </data>
     <data name="SelectTypeLabel" xml:space="preserve">
-        <value>Please select your wallet type</value>
+        <value>Please, select your wallet type</value>
     </data>
     <data name="WalletNameStepLabel" xml:space="preserve">
         <value>Step 2: Wallet name</value>
     </data>
     <data name="EnterNameLabel" xml:space="preserve">
-        <value>Please enter a name for your wallet</value>
+        <value>Please, enter a name for your wallet</value>
     </data>
     <data name="WalletNameEntryPlaceholder" xml:space="preserve">
         <value>Wallet name</value>
@@ -140,7 +140,7 @@
         <value>     If you lose your mnemonic phrase, your wallet cannot be recovered</value>
     </data>
     <data name="EnterMnemonicPhraseLabel" xml:space="preserve">
-        <value>     Please enter a mnemonic phrase for your wallet</value>
+        <value>     Please, enter a mnemonic phrase for your wallet</value>
     </data>
     <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
         <value>Enter mnemonic phrase here...</value>
@@ -149,7 +149,7 @@
         <value>Step 4: Derived key password (optional)</value>
     </data>
     <data name="DerivedPasswordDescriptionText" xml:space="preserve">
-        <value>     This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and it password</value>
+        <value>     This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and its password</value>
     </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
         <value>   If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
@@ -519,7 +519,7 @@
         <value>Price has changed</value>
     </data>
     <data name="SwapCreated" xml:space="preserve">
-        <value>Swap succesfully created</value>
+        <value>Swap successfully created</value>
     </data>
     <data name="GenerateMnemonic" xml:space="preserve">
         <value>Generate mnemonic phrase</value>
@@ -591,7 +591,7 @@
         <value>Not enough liquidity to convert a specified amount</value>
     </data>
     <data name="PriceChangedError" xml:space="preserve">
-        <value>Oops, the price has changed during the order sending. Please try again</value>
+        <value>Oops, the price has changed during the order sending. Please, try again</value>
     </data>
     <data name="OrderRejectedError" xml:space="preserve">
         <value>Order rejected</value>
@@ -600,7 +600,7 @@
         <value>Atomex is not responding for a long time</value>
     </data>
     <data name="ConversionError" xml:space="preserve">
-        <value>Conversion error. Please contant technical support</value>
+        <value>Conversion error. Please, contact technical support</value>
     </data>
     <data name="AvailableFundsError" xml:space="preserve">
         <value>The transfer amount (including commission) exceeds the amount of available funds</value>
@@ -624,6 +624,6 @@
         <value>The selected baker has a minimum delegation limit, which exceeds the balance of your selected wallet</value>
     </data>
     <data name="BakerIsOverdelegatedWarning" xml:space="preserve">
-        <value>This baker is overdelegated, it will be better to choose another</value>
+        <value>This baker is overdelegated, it will be better to choose another one</value>
     </data>
 </root>

@@ -18,7 +18,7 @@
                                 VerticalOptions="Center"
                                 Spacing="0">
                     <Label Style="{DynamicResource TotalAmountLabelStyle}"
-                            Text="{Binding TotalCost, StringFormat='{0:0.#} $'}"/>
+                            Text="{Binding TotalAmountInBase, StringFormat='{0:0.#} $'}"/>
                     <Label Text="{x:Static resources:AppResources.MainWalletLabel}"
                             Style="{DynamicResource MainWalletLabelStyle}"/>
                 </StackLayout>

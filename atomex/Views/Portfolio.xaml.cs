@@ -5,6 +5,7 @@ using atomex.ViewModel;
 using atomex.CustomElements;
 using System.Linq;
 using System.Collections.Generic;
+using Serilog;
 
 namespace atomex
 {
@@ -55,7 +56,7 @@ namespace atomex
             {
                 if (_currenciesViewModel.CurrencyViewModels != null)
                 {
-                    if (_currenciesViewModel.TotalCost == 0)
+                    if (_currenciesViewModel.TotalAmountInBase == 0)
                     {
                         var entry = new Microcharts.Entry[]
                         {
@@ -81,7 +82,10 @@ namespace atomex
                     }
                 }
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update chart error");
+            }
         }
 
         private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)

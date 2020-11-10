@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Atomex;
 using Atomex.Abstract;
 using Atomex.Common;
+using Serilog;
 
 namespace atomex.ViewModel
 {
@@ -14,11 +15,11 @@ namespace atomex.ViewModel
 
         private IAtomexApp App { get; }
 
-        private decimal _totalCost;
-        public decimal TotalCost
+        private decimal _totalAmountInBase;
+        public decimal TotalAmountInBase
         {
-            get => _totalCost;
-            set { _totalCost = value; OnPropertyChanged(nameof(TotalCost)); }
+            get => _totalAmountInBase;
+            set { _totalAmountInBase = value; OnPropertyChanged(nameof(TotalAmountInBase)); }
         }
 
 
@@ -74,24 +75,33 @@ namespace atomex.ViewModel
 
         private void CurrencyUpdatedEventHandler(object sender, EventArgs e)
         {
-            TotalCost = 0;
-            foreach (var c in CurrencyViewModels)
+            try
             {
-                var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
-                c.Price = quote.Bid;
-                c.AmountInBase = c.AvailableAmount * quote.Bid;
-                TotalCost += c.AmountInBase;
-            }
-
-            if (TotalCost != 0)
-            {
+                decimal totalAmount = 0;
                 foreach (var c in CurrencyViewModels)
                 {
-                    c.PortfolioPercent = (float)(c.AmountInBase / TotalCost * 100);
+                    var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
+                    c.Price = quote.Bid;
+                    c.AmountInBase = c.AvailableAmount * quote.Bid;
+                    totalAmount += c.AmountInBase;
                 }
-            }
 
-            QuotesUpdated?.Invoke(this, EventArgs.Empty);
+                TotalAmountInBase = totalAmount;
+
+                if (TotalAmountInBase != 0)
+                {
+                    foreach (var c in CurrencyViewModels)
+                    {
+                        c.PortfolioPercent = (float)(c.AmountInBase / TotalAmountInBase * 100);
+                    }
+                }
+
+                QuotesUpdated?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "CurrencyUpdatedEventHandler error");
+            }
         }
     }
 }

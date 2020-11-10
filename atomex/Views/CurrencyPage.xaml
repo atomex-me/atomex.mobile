@@ -401,6 +401,7 @@
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalTextAlignment="Start"
+                                       LineBreakMode="TailTruncation"
                                        IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                                     <Label.FormattedText>
                                         <FormattedString>
