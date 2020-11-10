@@ -437,6 +437,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string GasUsedLabel {
+            get {
+                return ResourceManager.GetString("GasUsedLabel", resourceCulture);
+            }
+        }
+        
+        internal static string IsInternalLabel {
+            get {
+                return ResourceManager.GetString("IsInternalLabel", resourceCulture);
+            }
+        }
+        
         internal static string ConfirmTransactionLabel {
             get {
                 return ResourceManager.GetString("ConfirmTransactionLabel", resourceCulture);

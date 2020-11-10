@@ -16,8 +16,9 @@
                                Color="Black"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
-                <Grid Margin="10,30,10,0"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                <Grid Margin="10,30"
                       RowSpacing="0"
                       ColumnSpacing="0">
                     <Grid.RowDefinitions>
@@ -103,88 +104,76 @@
                         </Label.FormattedText>
                     </Label>
                 </Grid>
-                <TableView Intent="Form"
-                           Style="{DynamicResource ConfirmTxTableStyle}"
-                           HasUnevenRows="False">
-                    <TableRoot>
-                        <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}"
-                                      TextColor="{DynamicResource HintTextColor}">
-                            <ViewCell>
-                                <StackLayout Margin="20,0"
-                                             VerticalOptions="Center">
-                                    <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
-                                           Style="{DynamicResource EstimatedLabelStyle}"/>
-                                    <Label Text="{Binding EstimatedPrice}"
-                                           VerticalOptions="CenterAndExpand"
-                                           TextColor="{DynamicResource HintTextColor}"
-                                           FontFamily="{DynamicResource BoldFont}"
-                                           FontSize="14"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Margin="20,0"
-                                             VerticalOptions="Center">
-                                    <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                                           Style="{DynamicResource EstimatedLabelStyle}"/>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label VerticalOptions="CenterAndExpand"
-                                               TextColor="{DynamicResource HintTextColor}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding EstimatedPaymentFee}"
-                                                          FontSize="14"
-                                                          FontFamily="{DynamicResource BoldFont}"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="12"
-                                                          FontFamily="{DynamicResource BoldFont}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label Text="{Binding EstimatedPaymentFeeInBase, StringFormat='({0:0.##} $)'}"
-                                               TextColor="{DynamicResource AdditionalTextColor}"
-                                               FontSize="12"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               VerticalTextAlignment="Center"/>
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Margin="20,0"
-                                             VerticalOptions="Center">
-                                    <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                                           Style="{DynamicResource EstimatedLabelStyle}"/>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label VerticalOptions="CenterAndExpand"
-                                               TextColor="{DynamicResource HintTextColor}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding EstimatedRedeemFee}"
-                                                          FontSize="14"
-                                                          FontFamily="{DynamicResource BoldFont}"/>
-                                                    <Span Text=" "/>
-                                                    <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
-                                                          FontSize="12"
-                                                          FontFamily="{DynamicResource BoldFont}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label> 
-                                        <Label Text="{Binding EstimatedRedeemFeeInBase, StringFormat='({0:0.##} $)'}"
-                                               TextColor="{DynamicResource AdditionalTextColor}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               VerticalTextAlignment="Center"/>
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
-                <Button Text="{x:Static resources:AppResources.ConvertButton}"
-                        x:Name="ConvertButton"
-                        Margin="20,5,20,20"
-                        Style="{DynamicResource MainButtonStyle}"
-                        Clicked="OnConvertButtonClicked"/>
+                <StackLayout HorizontalOptions="Fill" BackgroundColor="#e0e0e0"
+                             HeightRequest="1"/>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding EstimatedPrice}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           LineBreakMode="MiddleTruncation"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding EstimatedPaymentFee}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding EstimatedPaymentFee}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"/>
+                                <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource HintTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding EstimatedPaymentFee}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding EstimatedRedeemFee}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"/>
+                                <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource HintTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout VerticalOptions="EndAndExpand"
+                             Margin="20">
+                    <Button Text="{x:Static resources:AppResources.SendButton}"
+                            x:Name="ConvertButton"
+                            Style="{DynamicResource MainButtonStyle}"
+                            Clicked="OnConvertButtonClicked"/>
+                </StackLayout>
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>

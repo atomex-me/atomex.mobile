@@ -289,7 +289,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="Gas Price"
+                <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasPrice}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -310,7 +310,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="Gas Limit"
+                <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasLimit}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -331,7 +331,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="Gas Used"
+                <Label Text="{x:Static resources:AppResources.GasUsedLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasUsed}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -352,7 +352,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="Fee"
+                <Label Text="{x:Static resources:AppResources.FeeLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding Fee}"
                        Style="{DynamicResource TxInfoRowTextStyle}">
@@ -381,7 +381,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="Is Internal"
+                <Label Text="{x:Static resources:AppResources.IsInternalLabel}"
                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding IsInternal}"
                        Style="{DynamicResource TxInfoRowTextStyle}">

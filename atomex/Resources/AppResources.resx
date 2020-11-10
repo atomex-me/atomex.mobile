@@ -227,6 +227,12 @@
     <data name="GasLimitLabel" xml:space="preserve">
         <value>Gas limit</value>
     </data>
+    <data name="GasUsedLabel" xml:space="preserve">
+        <value>Gas used</value>
+    </data>
+    <data name="IsInternalLabel" xml:space="preserve">
+        <value>Is Internal</value>
+    </data>
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>Confirm transaction</value>
     </data>
