@@ -23,7 +23,7 @@ namespace atomex.ViewModel
                 {
                     Settings.PeriodOfInactivityInMin = value;
                     _account.UseUserSettings(Settings);
-                    Apply();
+                    //Apply();
                     OnPropertyChanged(nameof(PeriodOfInactivityInMin));
                 }
             }
@@ -39,7 +39,7 @@ namespace atomex.ViewModel
                 {
                     Settings.AutoSignOut = value;
                     _account.UseUserSettings(Settings);
-                    Apply();
+                    //Apply();
                     OnPropertyChanged(nameof(AutoSignOut));
                 }
             }
@@ -52,14 +52,12 @@ namespace atomex.ViewModel
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             _account = app.Account;
             Settings = app.Account.UserSettings;
-            var pathToWallet = Path.GetDirectoryName(_account.Wallet.PathToWallet);
-            _pathToUserSettings = Path.Combine(pathToWallet, Account.DefaultUserSettingsFileName);
         }
 
-        private void Apply()
-        {  
-            _account.UserSettings.SaveToFile(_pathToUserSettings);
-        }
+        //private void Apply()
+        //{  
+        //    _account.UserSettings.SaveToFile(_pathToUserSettings);
+        //}
     }
 }
 

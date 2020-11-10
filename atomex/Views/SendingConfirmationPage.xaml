@@ -4,9 +4,9 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SendingConfirmationPage"
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <RelativeLayout MinimumHeightRequest="440">
+        <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
@@ -14,85 +14,135 @@
                                RelativeLayout.HeightConstraint="50"
                                Color="Black"/>
             <StackLayout x:Name="Content"
-                         VerticalOptions="FillAndExpand">
-                <TableView Intent="Form"
-                           RowHeight="70">
-                    <TableRoot>
-                        <TableSection Title="{x:Static resources:AppResources.ConfirmTransactionLabel}">
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
-                                             VerticalOptions="CenterAndExpand">
-                                    <Label Text="{x:Static resources:AppResources.ToLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Text="{Binding To}"
-                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
-                                             VerticalOptions="CenterAndExpand">
-                                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Amount}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
-                                                <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="{DynamicResource HintTextColor}"
-                                                      FontSize="12"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
-                                             VerticalOptions="CenterAndExpand">
-                                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}"
-                                           x:Name="FeeValue">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Fee}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
-                                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="{DynamicResource HintTextColor}"
-                                                      FontSize="12"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Style="{DynamicResource ConfirmationPropertyValueStyle}"
-                                           x:Name="EthereumFeeValue"
-                                           IsVisible="False">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding TotalFeeString}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
-                                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                                      TextColor="{DynamicResource HintTextColor}"
-                                                      FontSize="12"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
-                                             VerticalOptions="CenterAndExpand">
-                                    <Button Text="{x:Static resources:AppResources.SendButton}"
-                                            x:Name="SendButton"
-                                            Style="{DynamicResource MainButtonStyle}"
-                                            Clicked="OnSendButtonClicked"/>
-                                </StackLayout>
-                            </ViewCell>
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
+                         VerticalOptions="FillAndExpand"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             Margin="20,10,20,0">
+                    <Image Margin="0,10"
+                           WidthRequest="30"
+                           HeightRequest="30"
+                           Source="Send"/>
+                    <Label Text="{Binding Amount}"
+                           VerticalTextAlignment="Center"
+                           Padding="10,0"
+                           TextColor="Red">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Amount, StringFormat='- {0:0.#########}'}"
+                                      Style="{DynamicResource TxAmountLabelStyle}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding Currency.Name}"
+                                      Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                                <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource AdditionalTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout HorizontalOptions="Fill" BackgroundColor="#e0e0e0"
+                             HeightRequest="1"/>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.ToLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding To}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           LineBreakMode="MiddleTruncation"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding Amount}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding Currency.Name}"/>
+                                <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource HintTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                             x:Name="FeeValue">
+                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding Fee}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Fee}"
+                                      />
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
+                                     />
+                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource HintTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                             x:Name="EthereumFeeValue"
+                             IsVisible="False">
+                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TotalFeeString}"
+                                      />
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
+                                      />
+                                <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
+                                      TextColor="{DynamicResource HintTextColor}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout VerticalOptions="EndAndExpand"
+                             Margin="20">
+                    <Button Text="{x:Static resources:AppResources.SendButton}"
+                            x:Name="SendButton"
+                            Style="{DynamicResource MainButtonStyle}"
+                            Clicked="OnSendButtonClicked"/>
+                </StackLayout>
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>
