@@ -51,6 +51,7 @@ namespace atomex.Views.CreateNewWallet
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
                 _createNewWalletViewModel.GenerateMnemonic();
+                MnemonicPhraseFrame.Opacity = 0;
                 LoseMnemonicPhraseText.IsVisible = true;
                 MnemonicPhraseFrame.IsVisible = true;
                 await Task.WhenAll(
@@ -76,13 +77,11 @@ namespace atomex.Views.CreateNewWallet
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
                 MnemonicPhraseFrame.IsVisible = false;
-                MnemonicPhraseFrame.Opacity = 0;
+                await Task.WhenAll(
+                    LoseMnemonicPhraseText.FadeTo(0, 500, Easing.Linear)
+                );
+                LoseMnemonicPhraseText.IsVisible = false;
             }
-            await Task.WhenAll(            
-                LoseMnemonicPhraseText.FadeTo(0, 500, Easing.Linear)
-            );
-            MnemonicPhraseFrame.IsVisible = false;
-            LoseMnemonicPhraseText.IsVisible = false;
         }
     }
 }

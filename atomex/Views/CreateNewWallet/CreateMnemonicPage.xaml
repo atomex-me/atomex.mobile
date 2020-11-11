@@ -105,8 +105,7 @@
                    x:Name="MnemonicPhraseFrame"
                    HorizontalOptions="CenterAndExpand"
                    BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
-                   Padding="5"
-                   Opacity="0">
+                   Padding="5">
                 <Label Text="{Binding Mnemonic}"
                         Style="{DynamicResource ErrorTextStyle}"
                         HorizontalTextAlignment="Center"
@@ -123,8 +122,7 @@
             </Frame>
             <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
                    x:Name="LoseMnemonicPhraseText"
-                   Style="{DynamicResource ErrorTextStyle}"
-                   Opacity="0"/>
+                   Style="{DynamicResource ErrorTextStyle}"/>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
