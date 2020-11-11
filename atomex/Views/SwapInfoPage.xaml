@@ -3,117 +3,105 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SwapInfoPage"
-             Title="{x:Static resources:AppResources.SwapInfoPageTitle}">
+             Title="{x:Static resources:AppResources.SwapInfoPageTitle}"
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout>
-            <TableView Intent="Form"
-                       RowHeight="70">
-                <TableRoot>
-                    <TableSection Title="{x:Static resources:AppResources.SwapInfoLabel}"
-                                  TextColor="{DynamicResource HintTextColor}">
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal"
-                                         Padding="20,0">
-                                <RelativeLayout VerticalOptions="CenterAndExpand"
-                                                HorizontalOptions="Start">
-                                    <Image Source="{Binding FromCurrencyCode}"
-                                           x:Name="FromCurrencyIcon"
-                                           HeightRequest="48"
-                                           WidthRequest="48"/>
-                                    <Image Source="{Binding ToCurrencyCode}"
-                                           HeightRequest="48"
-                                           WidthRequest="48"
-                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
-                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+27}"/>
-                                </RelativeLayout>
-                                <StackLayout VerticalOptions="CenterAndExpand"
-                                             Padding="10,0">
-                                    <Label Text="{Binding FromAmount}"
-                                           VerticalTextAlignment="Center"
-                                           TextColor="Red">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding FromAmount, StringFormat='-{0:0.#########}'}"
-                                                      FontSize="16"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding FromCurrencyCode}"
-                                                      FontSize="12"/>
-                                             </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Text="{Binding ToAmount}"
-                                           VerticalTextAlignment="Center"
-                                           TextColor="Green">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding ToAmount, StringFormat='+{0:0.#########}'}"
-                                                      FontSize="16"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding ToCurrencyCode}"
-                                                      FontSize="12"/>
-                                             </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.State}"
-                                       Style="{DynamicResource SwapStateLabelStyle}"/>
-                                <Frame CornerRadius="8"
-                                       Padding="0"
-                                       Margin="20"
-                                       HasShadow="False">
-                                    <Frame.Triggers>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding CompactState}"
-                                                     Value="Completed">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapCompletedStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding CompactState}"
-                                                     Value="InProgress">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapInProgressStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding CompactState}"
-                                                     Value="Canceled">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapCanceledStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding CompactState}"
-                                                     Value="Refunded">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapRefundedStateColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
-                                                     Binding="{Binding CompactState}"
-                                                     Value="Unsettled">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapUnsettledStateColor}"/>
-                                        </DataTrigger>
-                                    </Frame.Triggers>
-                                    <Label Padding="10,0"
-                                           Style="{DynamicResource TxStateLabelStyle}"
-                                           Text="{Binding CompactState}" />
-                                </Frame>
-                            </StackLayout>
-                        </ViewCell>
-                        <TextCell Text="{x:Static resources:AppResources.Price}"
-                                  TextColor="{DynamicResource MainTextColor}"
-                                  Detail="{Binding Price}"
-                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
-                        <TextCell Text="{x:Static resources:AppResources.TransactionTime}"
-                                  TextColor="{DynamicResource MainTextColor}"
-                                  Detail="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                                  DetailColor="{DynamicResource AdditionalTextColor}"/>
-                    </TableSection>
-                </TableRoot>
-            </TableView>       
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             HeightRequest="60"
+                             Margin="20,5,20,0"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+                    <RelativeLayout VerticalOptions="CenterAndExpand"
+                                    HorizontalOptions="Start">
+                        <Image Source="{Binding FromCurrencyCode}"
+                                x:Name="FromCurrencyIcon"
+                                HeightRequest="40"
+                                WidthRequest="40"/>
+                        <Image Source="{Binding ToCurrencyCode}"
+                                HeightRequest="40"
+                                WidthRequest="40"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+27}"/>
+                    </RelativeLayout>
+                    <StackLayout VerticalOptions="CenterAndExpand"
+                                 Padding="10,0">
+                        <Label Text="{Binding FromAmount}"
+                                VerticalTextAlignment="Center"
+                                TextColor="Red">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding FromAmount, StringFormat='-{0:0.#########}'}"
+                                          FontSize="14"
+                                          FontFamily="{DynamicResource RegularFont}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding FromCurrencyCode}"
+                                          FontSize="12"
+                                          FontFamily="{DynamicResource RegularFont}"/>
+                                    </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding ToAmount}"
+                               VerticalTextAlignment="Center"
+                               TextColor="Green">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ToAmount, StringFormat='+{0:0.#########}'}"
+                                          FontSize="14"
+                                          FontFamily="{DynamicResource RegularFont}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding ToCurrencyCode}"
+                                          FontSize="12"
+                                          FontFamily="{DynamicResource RegularFont}"/>
+                                    </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.Price}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding Price}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.TransactionTime}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.State}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding CompactState}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
