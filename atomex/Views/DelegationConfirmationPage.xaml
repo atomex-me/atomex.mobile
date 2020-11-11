@@ -4,9 +4,9 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationConfirmationPage"
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
-        <RelativeLayout MinimumHeightRequest="440">
+        <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
                                RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
@@ -14,70 +14,123 @@
                                RelativeLayout.HeightConstraint="50"
                                Color="Black"/>
             <StackLayout x:Name="Content"
-                         VerticalOptions="FillAndExpand">
-                <TableView Intent="Form"
-                           RowHeight="70">
-                    <TableRoot>
-                        <TableSection Title="{x:Static resources:AppResources.WantToDelegate}">
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
-                                    <Label Text="{x:Static resources:AppResources.FromLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
-                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
-                                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0} XTZ'}"
-                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal"
-                                             Style="{DynamicResource ConfirmationPropertyStyle}">
-                                    <Label Text="{x:Static resources:AppResources.ToLabel}"
-                                           VerticalTextAlignment="Center"
-                                           WidthRequest="30"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Image Source="{Binding BakerViewModel.Logo}"
-                                           Margin="10,10,0,10"/>
-                                    <StackLayout VerticalOptions="Center">
-                                        <Label Text="{Binding BakerViewModel.Name}"
-                                               VerticalTextAlignment="End"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               TextColor="{DynamicResource MainTextColor}"
-                                               FontSize="16"/>
-                                        <Label Text="{Binding Address}"
-                                               VerticalTextAlignment="Start"
-                                               TextColor="{DynamicResource AdditionalTextColor}"
-                                               FontSize="14"
-                                               LineBreakMode="MiddleTruncation"/>
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}">
-                                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
-                                           Style="{DynamicResource ConfirmationPropertyKeyStyle}"/>
-                                    <Label Text="{Binding Fee, StringFormat='{0} XTZ'}"
-                                           Style="{DynamicResource ConfirmationPropertyValueStyle}"/>
-                                </StackLayout>
-                            </ViewCell>
-                            <ViewCell>
-                                <StackLayout Style="{DynamicResource ConfirmationPropertyStyle}"
-                                             VerticalOptions="CenterAndExpand">
-                                    <Button Text="{x:Static resources:AppResources.DelegateButton}"
-                                            x:Name="DelegateButton"
-                                            Style="{DynamicResource MainButtonStyle}"
-                                            Clicked="OnDelegateButtonClicked"/>
-                                </StackLayout>
-                            </ViewCell>
-                        </TableSection>
-                    </TableRoot>
-                </TableView>
+                         VerticalOptions="FillAndExpand"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                <Label Text="{x:Static resources:AppResources.WantToDelegate}"
+                       FontFamily="{DynamicResource BlackFont}"
+                       TextColor="{DynamicResource MainTextColor}"
+                       FontSize="16"
+                       Margin="20,20,20,10"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="600"
+                      Y2="0"
+                      Stroke="#e0e0e0"
+                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.FromLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           LineBreakMode="MiddleTruncation"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding Amount}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#########}'}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="14"/>
+                                <Span Text=" "/>
+                                <Span Text="XTZ"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{x:Static resources:AppResources.ToLabel}"
+                                VerticalTextAlignment="Center"
+                                WidthRequest="30"
+                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                        <Image Source="{Binding BakerViewModel.Logo}"
+                                WidthRequest="30"
+                                HeightRequest="30"
+                                VerticalOptions="Center"
+                                Margin="0"/>
+                        <StackLayout VerticalOptions="Center"
+                                        HorizontalOptions="Start">
+                            <Label Text="{Binding BakerViewModel.Name}"
+                                    LineBreakMode="TailTruncation"
+                                    VerticalTextAlignment="End"
+                                    FontFamily="{DynamicResource RegularFont}"
+                                    TextColor="{DynamicResource MainTextColor}"
+                                    FontSize="14"/>
+                            <Label Text="{Binding Address}"
+                                    VerticalTextAlignment="Start"
+                                    TextColor="{DynamicResource AdditionalTextColor}"
+                                    FontSize="12"
+                                    LineBreakMode="MiddleTruncation"/>
+                        </StackLayout>
+                    </StackLayout>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                    <Label Text="{Binding Fee}"
+                           Style="{DynamicResource TxInfoRowTextStyle}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="14"/>
+                                <Span Text=" "/>
+                                <Span Text="XTZ"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="600"
+                          Y2="0"
+                          Stroke="#e0e0e0"
+                          StrokeThickness="1"/>
+                </StackLayout>
+                <StackLayout VerticalOptions="EndAndExpand"
+                             Margin="20">
+                    <Button Text="{x:Static resources:AppResources.DelegateButton}"
+                            x:Name="DelegateButton"
+                            Style="{DynamicResource MainButtonStyle}"
+                            Clicked="OnDelegateButtonClicked"/>
+                </StackLayout>
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>

@@ -275,7 +275,7 @@
         </Setter>
     </Style>
 
-    <!-- Transaction info Page -->
+    <!-- TxInfo / SwapInfo / Confirmations Pages  -->
     <Style x:Key="TxAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="16"/>
@@ -317,22 +317,6 @@
                             Android="-25"/>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <!-- Delegation / sending confirmation Page -->
-    <Style x:Key="ConfirmationPropertyStyle" TargetType="StackLayout">
-        <Setter Property="Padding" Value="20,10"/>
-    </Style>
-    <Style x:Key="ConfirmationPropertyKeyStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/> 
-    </Style>
-    <Style x:Key="ConfirmationPropertyValueStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
-        <Setter Property="LineBreakMode" Value="MiddleTruncation"/> 
     </Style>
 
     <!-- Receive Page -->
