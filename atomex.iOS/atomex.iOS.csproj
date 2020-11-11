@@ -235,9 +235,6 @@
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC-1.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC-2.pdf" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.png" />
-    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-1.png" />
-    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-2.png" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows-3.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows.pdf" />
@@ -282,6 +279,9 @@
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray-1.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.pdf" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

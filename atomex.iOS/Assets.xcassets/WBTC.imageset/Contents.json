@@ -1,10 +1,10 @@
 {
   "images": [
     {
+      "filename": "WBTC.pdf",
       "idiom": "universal"
     },
     {
-      "filename": "WBTC.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -17,10 +17,10 @@
       "idiom": "universal"
     },
     {
+      "filename": "WBTC-1.pdf",
       "idiom": "iphone"
     },
     {
-      "filename": "WBTC-1.png",
       "scale": "1x",
       "idiom": "iphone"
     },
@@ -38,10 +38,10 @@
       "idiom": "iphone"
     },
     {
+      "filename": "WBTC-2.pdf",
       "idiom": "ipad"
     },
     {
-      "filename": "WBTC-2.png",
       "scale": "1x",
       "idiom": "ipad"
     },
