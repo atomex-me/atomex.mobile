@@ -169,7 +169,7 @@
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
-                    <Button Text="{x:Static resources:AppResources.SendButton}"
+                    <Button Text="{x:Static resources:AppResources.ConvertButton}"
                             x:Name="ConvertButton"
                             Style="{DynamicResource MainButtonStyle}"
                             Clicked="OnConvertButtonClicked"/>

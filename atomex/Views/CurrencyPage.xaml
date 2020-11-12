@@ -91,6 +91,7 @@
                       ItemTapped="OnListViewItemTapped"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
+                      SeparatorColor="{DynamicResource ListViewSeparatorColor}"
                       VerticalOptions="FillAndExpand"
                       IsPullToRefreshEnabled="True"
                       Refreshing="Refresh"
