@@ -22,10 +22,10 @@ namespace atomex.iOS.Services
 
         public async void Show(string message, ToastPosition toastPosition)
         {
+            UIWindow window = UIApplication.SharedApplication.KeyWindow;
+
             if (ToastView == null)
             {
-                UIWindow window = UIApplication.SharedApplication.KeyWindow;
-
                 ToastView = new UIView();
                 ToastView.TranslatesAutoresizingMaskIntoConstraints = false;
                 ToastView.Frame = window.Frame;
@@ -33,11 +33,11 @@ namespace atomex.iOS.Services
                                                             green: 31f / 255.0f,
                                                             blue: 31f / 255.0f,
                                                             alpha: 0.7f);
-                ToastView.Layer.CornerRadius = 6;
+                ToastView.Layer.CornerRadius = 10;
                 ToastView.Layer.ShadowColor = UIColor.Gray.CGColor;
-                ToastView.Layer.ShadowOffset = new CoreGraphics.CGSize(3, 3);
+                ToastView.Layer.ShadowOffset = new CoreGraphics.CGSize(5, 5);
                 ToastView.Layer.ShadowOpacity = 0.7f;
-                ToastView.Layer.ShadowRadius = 3;
+                ToastView.Layer.ShadowRadius = 5;
 
                 window.AddSubview(ToastView);
 
@@ -64,6 +64,8 @@ namespace atomex.iOS.Services
                 topConstraint = ToastView.TopAnchor.ConstraintEqualTo(window.SafeAreaLayoutGuide.TopAnchor, 60);
                 centerConstraint = ToastView.CenterYAnchor.ConstraintEqualTo(window.SafeAreaLayoutGuide.CenterYAnchor, 0);
             }
+
+            window.AddSubview(ToastView);
 
             if (ToastView.Alpha == 1)
             {
