@@ -103,8 +103,8 @@
                     <DataTrigger TargetType="ListView"
                                  Binding="{Binding GroupedTransactions.Count}"
                                  Value="0">
-                        <Setter Property="BackgroundColor"
-                                Value="{DynamicResource AdditionalBackgroundColor}"/>
+                        <Setter Property="IsVisible"
+                                Value="False"/>
                     </DataTrigger>
                 </ListView.Triggers>
                 <ListView.GroupHeaderTemplate>
@@ -112,12 +112,12 @@
                         <ViewCell Height="20">
                             <StackLayout Spacing="0"
                                          BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-                                <Line X1="0"
-                                      Y1="0"
-                                      X2="600"
-                                      Y2="0"
-                                      Stroke="LightGray"
-                                      StrokeThickness="1"/>
+                                    <Line X1="0"
+                                          Y1="0"
+                                          X2="600"
+                                          Y2="0"
+                                          Stroke="#e0e0e0"
+                                          StrokeThickness="1"/>
                                 <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
                                        TextColor="{DynamicResource AdditionalTextColor}"
                                        FontFamily="{DynamicResource BoldFont}"
@@ -423,6 +423,48 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout IsVisible="False"
+                         BackgroundColor="{DynamicResource MainBackgroundColor}"
+                         VerticalOptions="FillAndExpand">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding GroupedTransactions.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             Spacing="0"
+                             HeightRequest="1"
+                             BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
+                <Image Source="Magnifier"
+                       WidthRequest="60"
+                       HeightRequest="60"
+                       Margin="20"/>
+                <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{DynamicResource AdditionalTextColor}"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+                <RelativeLayout HorizontalOptions="Center"
+                                Margin="20">
+                    <Button Text="{x:Static resources:AppResources.UpdateButton}"
+                            Style="{DynamicResource CurrencyActionButtonStyle}"
+                            x:Name="UpdateButton"
+                            CornerRadius="20"
+                            RelativeLayout.WidthConstraint="120"
+                            RelativeLayout.HeightConstraint="40"
+                            Clicked="OnUpdateButtonClick"/>
+                    <ActivityIndicator x:Name="Loader"
+                                       RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
+	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                       RelativeLayout.WidthConstraint="20"
+                                       RelativeLayout.HeightConstraint="20"
+                                       Color="Black"/>
+                </RelativeLayout>
+            </StackLayout>
         </StackLayout>
     </RefreshView>
 </ContentPage>

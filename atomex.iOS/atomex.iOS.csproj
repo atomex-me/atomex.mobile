@@ -282,6 +282,10 @@
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.pdf" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-1.pdf" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier.pdf" />
+    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -389,6 +393,7 @@
     <Folder Include="Assets.xcassets\ic_youtube.imageset\" />
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
     <Folder Include="Assets.xcassets\RightArrow__gray.imageset\" />
+    <Folder Include="Assets.xcassets\Magnifier.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

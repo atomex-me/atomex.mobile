@@ -77,5 +77,21 @@ namespace atomex
             RefreshLabel.IsVisible = false;
             AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
         }
+
+        async void OnUpdateButtonClick(object sender, EventArgs args)
+        {
+            try
+            {
+                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = UpdateButton.IsEnabled = false;
+                UpdateButton.Opacity = 0.5;
+                Loader.IsVisible = Loader.IsRunning = RefreshLabel.IsVisible = true;
+                await _currencyViewModel.UpdateCurrencyAsync();
+                Loader.IsVisible = Loader.IsRunning = RefreshLabel.IsVisible = false;
+                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = UpdateButton.IsEnabled = true;
+                UpdateButton.Opacity = 1;
+            }
+            catch (Exception e)
+            {}
+        }
     }
 }

@@ -371,6 +371,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UpdateButton {
+            get {
+                return ResourceManager.GetString("UpdateButton", resourceCulture);
+            }
+        }
+        
         internal static string BalanceUpdatingLabel {
             get {
                 return ResourceManager.GetString("BalanceUpdatingLabel", resourceCulture);
@@ -380,6 +386,12 @@ namespace atomex.Resources {
         internal static string LoadingLabel {
             get {
                 return ResourceManager.GetString("LoadingLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NoTransactionsLabel {
+            get {
+                return ResourceManager.GetString("NoTransactionsLabel", resourceCulture);
             }
         }
         

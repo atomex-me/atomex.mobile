@@ -190,11 +190,17 @@
     <data name="DelegateButton" xml:space="preserve">
         <value>Staking</value>
     </data>
+    <data name="UpdateButton" xml:space="preserve">
+        <value>Update</value>
+    </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Balance updating...</value>
     </data>
     <data name="LoadingLabel" xml:space="preserve">
         <value>Loading...</value>
+    </data>
+    <data name="NoTransactionsLabel" xml:space="preserve">
+        <value>No transactions yet</value>
     </data>
     
     <!-- Transaction Page -->

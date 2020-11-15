@@ -10,6 +10,7 @@
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ScrollView>
         <StackLayout HorizontalOptions="Center"
+                     VerticalOptions="CenterAndExpand"
                      Padding="30,5"
                      Spacing="0">
             <StackLayout Orientation="Horizontal"
