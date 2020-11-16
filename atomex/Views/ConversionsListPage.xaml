@@ -37,6 +37,7 @@
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
+                      VerticalOptions="FillAndExpand"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       Footer="">
                 <ListView.Triggers>
@@ -157,6 +158,7 @@
             </ListView>
             <Button Text="{x:Static resources:AppResources.CreateSwapButton}"
                     Style="{DynamicResource MainButtonStyle}"
+                    VerticalOptions="End"
                     Margin="20"
                     Clicked="OnCreateSwapButtonClicked"/>
         </StackLayout>
