@@ -57,6 +57,7 @@
                     </StackLayout>
                 </Frame>
                 <Button Text="{x:Static resources:AppResources.UnlockButton}"
+                        x:Name="UnlockButton"
                         Margin="0,20"
                         Style="{DynamicResource MainButtonStyle}"
                         Clicked="OnUnlockButtonClicked"/>

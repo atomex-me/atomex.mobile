@@ -59,14 +59,6 @@
                         <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="LightGray"
-                      Grid.Row="2"
-                      Grid.ColumnSpan="2"
-                      StrokeThickness="1"/>
                 <custom:CustomFrame Grid.Row="3"
                                     Grid.RowSpan="2"
                                     Grid.ColumnSpan="2"

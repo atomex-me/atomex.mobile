@@ -20,7 +20,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="30" />
-                                <RowDefinition Height="1" />
+                                <RowDefinition Height="0.5" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
@@ -75,15 +75,10 @@
                                    Margin="10,0"
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="End" />
-                            <Line X1="0"
-                                  Y1="0"
-                                  X2="600"
-                                  Y2="0"
-                                  Stroke="#e0e0e0"
-                                  Grid.Row="2"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan="2"
-                                  StrokeThickness="1"/>
+                            <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                         Grid.Row="2"
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"/>
                         </Grid>
                     </custom:CustomViewCell>
                 </DataTemplate>

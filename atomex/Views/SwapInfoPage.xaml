@@ -59,47 +59,27 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.Price}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding Price}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.TransactionTime}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.State}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding CompactState}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

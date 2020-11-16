@@ -24,24 +24,14 @@
                        Margin="20,20,20,10"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.FromLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                            Style="{DynamicResource TxInfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.AmountLabel}"
@@ -60,12 +50,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <StackLayout Orientation="Horizontal">
@@ -93,12 +78,7 @@
                                     LineBreakMode="MiddleTruncation"/>
                         </StackLayout>
                     </StackLayout>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.FeeLabel}"
@@ -117,12 +97,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">

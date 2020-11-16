@@ -5,7 +5,7 @@
              x:Class="atomex.Views.CreateSwap.ConfirmationPage"
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
              Icon="NavBar-conversion"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
@@ -104,20 +104,14 @@
                         </Label.FormattedText>
                     </Label>
                 </Grid>
-                <StackLayout HorizontalOptions="Fill" BackgroundColor="#e0e0e0"
-                             HeightRequest="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding EstimatedPrice}"
                            Style="{DynamicResource TxInfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
@@ -136,12 +130,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
@@ -160,12 +149,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">

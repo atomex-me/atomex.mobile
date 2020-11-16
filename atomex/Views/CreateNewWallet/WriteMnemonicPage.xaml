@@ -58,12 +58,8 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-            <Line X1="20"
-                  Y1="0"
-                  X2="600"
-                  Y2="0"
-                  Stroke="LightGray"
-                  StrokeThickness="1"/>
+            <StackLayout HeightRequest="1"
+                         Spacing="0"/>
             <custom:CustomFrame HasShadow="False"
                                 CornerRadius="0,0,20,20"
                                 x:Name="EditorFrame">

@@ -43,20 +43,14 @@
                         </Label.FormattedText>
                     </Label>
                 </StackLayout>
-                <StackLayout HorizontalOptions="Fill" BackgroundColor="#e0e0e0"
-                             HeightRequest="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.ToLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding To}"
                            Style="{DynamicResource TxInfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.AmountLabel}"
@@ -75,12 +69,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                              x:Name="FeeValue">
@@ -102,12 +91,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                              x:Name="EthereumFeeValue"
@@ -129,12 +113,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Stroke="#e0e0e0"
-                          StrokeThickness="1"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">

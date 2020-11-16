@@ -46,26 +46,18 @@
                                 Clicked="OnPasteButtonClicked"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 HorizontalOptions="End"/>
-                        <StackLayout Spacing="0"
-                                     HorizontalOptions="End">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnScanButtonClicked"/>
-                            </StackLayout.GestureRecognizers>
-                            <Image Source="Scan"
-                                    HeightRequest="30"
-                                    WidthRequest="30"                            
-                                    VerticalOptions="CenterAndExpand"
-                                    HorizontalOptions="End"
-                                    Margin="0,5,20,5"/>
-                        </StackLayout>
+                        <ImageButton Source="Scan"
+                                     WidthRequest="32"
+                                     HeightRequest="32"
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="Fill"
+                                     Margin="0,10,20,10"
+                                     BackgroundColor="{DynamicResource MainBackgroundColor}"
+                                     Clicked="OnScanButtonClicked"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <Line X1="20"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="LightGray"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
                 <controls:CustomFrame x:Name="AmountFrame"
                                       CornerRadius="0"
                                       HeightRequest="60"
@@ -104,17 +96,13 @@
                         </StackLayout>
                         <Button Text="{x:Static resources:AppResources.MaxButton}"
                                 HorizontalOptions="End"
-                                VerticalOptions="Center"
+                                VerticalOptions="FillAndExpand"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 Clicked="OnSetMaxAmountButtonClicked"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <Line X1="20"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="LightGray"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
                 <StackLayout x:Name="FeeRateLayout"
                              HeightRequest="60"
                              Padding="0"
@@ -130,15 +118,8 @@
                                           IsReadOnly="True"
                                           TextColor="{DynamicResource AdditionalTextColor}"
                                           Text="{Binding FeeRate, StringFormat='{0} sat/byte'}"/>
-                    <StackLayout VerticalOptions="FillAndExpand">
-                        <Line X1="20"
-                              Y1="0"
-                              X2="600"
-                              Y2="0"
-                              Stroke="LightGray"
-                              VerticalOptions="EndAndExpand"
-                              StrokeThickness="1"/>
-                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="20,0,0,0"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              x:Name="FeeLayout"
@@ -283,12 +264,8 @@
                                 </StackLayout>
                             </controls:CustomFrame>
                         </StackLayout>
-                        <Line X1="20"
-                              Y1="0"
-                              X2="600"
-                              Y2="0"
-                              Stroke="LightGray"
-                              StrokeThickness="1"/>
+                        <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                     Margin="20,0,0,0"/>
                         <StackLayout Orientation="Horizontal"
                                      Spacing="0"
                                      HeightRequest="60"
@@ -319,12 +296,8 @@
                                 </StackLayout>
                             </controls:CustomFrame>
                         </StackLayout>
-                        <Line X1="20"
-                              Y1="0"
-                              X2="600"
-                              Y2="0"
-                              Stroke="LightGray"
-                              StrokeThickness="1"/>
+                        <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                     Margin="20,0,0,0"/>
                         <StackLayout Orientation="Horizontal"
                                      HeightRequest="60"
                                      Spacing="0"

@@ -27,11 +27,11 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="0.5"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="0.75"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="0.5"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <custom:CustomFrame CornerRadius="10,10,0,0"
@@ -59,16 +59,10 @@
                            Grid.Column="2"
                            Margin="20,15"
                            HorizontalOptions="End"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Grid.Row="1"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="2"
-                          Stroke="LightGray"
-                          StrokeThickness="1"/>
-
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="2"/>
                     <custom:CustomFrame CornerRadius="0"
                                         Grid.Row="2"
                                         Grid.RowSpan="2"
@@ -98,16 +92,10 @@
                            Grid.Column="2"
                            Margin="20,15"
                            HorizontalOptions="End"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Grid.Row="3"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="2"
-                          Stroke="LightGray"
-                          StrokeThickness="1"/>
-
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.Row="3"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="2"/>
                     <custom:CustomFrame CornerRadius="0"
                                         Grid.Row="4"
                                         Grid.RowSpan="2"
@@ -137,16 +125,10 @@
                            Grid.Column="2"
                            Margin="20,15"
                            HorizontalOptions="End"/>
-                    <Line X1="0"
-                          Y1="0"
-                          X2="600"
-                          Y2="0"
-                          Grid.Row="5"
-                          Grid.Column="1"
-                          Grid.ColumnSpan="2"
-                          Stroke="LightGray"
-                          StrokeThickness="1"/>
-
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.Row="5"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="2"/>
                     <custom:CustomFrame CornerRadius="0,0,10,10"
                                         Grid.Row="6"
                                         Grid.RowSpan="2"
@@ -177,7 +159,6 @@
                            Margin="20,15"
                            HorizontalOptions="End"/>
                 </Grid>
-
                 <Label Text="{x:Static resources:AppResources.AccountSection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
@@ -189,8 +170,9 @@
                                     HeightRequest="40"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <Button Text="{x:Static resources:AppResources.SignOut}"
-                                        Style="{DynamicResource TransparentButtonStyle}"
-                                        Clicked="OnSignOutButtonClicked"/>
+                            Style="{DynamicResource TransparentButtonStyle}"
+                            CornerRadius="10"
+                            Clicked="OnSignOutButtonClicked"/>
                 </custom:CustomFrame>
             <!--<TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">

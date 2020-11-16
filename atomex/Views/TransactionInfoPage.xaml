@@ -177,23 +177,13 @@
                            Text="{Binding State}" />
                 </Frame>
             </StackLayout>
-            <Line X1="0"
-                  Y1="0"
-                  X2="600"
-                  Y2="0"
-                  Stroke="#e0e0e0"
-                  StrokeThickness="1"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <Label Text="{x:Static resources:AppResources.Description}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding Description}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <StackLayout Orientation="Horizontal">
@@ -204,36 +194,23 @@
                                Style="{DynamicResource TxInfoRowTextStyle}"
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
-                    <StackLayout>
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnCopyButtonClicked"/>
-                        </StackLayout.GestureRecognizers>
-                        <Image WidthRequest="24"
-                               HeightRequest="24"
-                               Margin="20,0,0,0"
-                               HorizontalOptions="EndAndExpand"
-                               VerticalOptions="CenterAndExpand"
-                               Source="Copy"/>
-                    </StackLayout>
+                    <ImageButton Source="Copy"
+                                 WidthRequest="32"
+                                 HeightRequest="32"
+                                 HorizontalOptions="End"
+                                 VerticalOptions="Center"
+                                 BackgroundColor="{DynamicResource MainBackgroundColor}"
+                                 Padding="5"
+                                 Clicked="OnCopyButtonClicked"/>
                 </StackLayout>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <Label Text="{x:Static resources:AppResources.TransactionTime}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -250,12 +227,7 @@
                 <Label Text="{Binding From}"
                        Style="{DynamicResource TxInfoRowTextStyle}"
                        LineBreakMode="MiddleTruncation"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -272,12 +244,7 @@
                 <Label Text="{Binding To}"
                        Style="{DynamicResource TxInfoRowTextStyle}"
                        LineBreakMode="MiddleTruncation"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -293,12 +260,7 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasPrice}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -314,12 +276,7 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasLimit}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -335,12 +292,7 @@
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasUsed}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -364,12 +316,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                          IsVisible="False">
@@ -400,22 +347,12 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-                <Line X1="0"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Stroke="#e0e0e0"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
                     Clicked="OnShowInExplorerClicked"/>
-            <Line X1="0"
-                  Y1="0"
-                  X2="600"
-                  Y2="0"
-                  Stroke="#e0e0e0"
-                  StrokeThickness="1"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

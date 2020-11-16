@@ -23,12 +23,7 @@
                             Style="{DynamicResource MainWalletLabelStyle}"/>
                 </StackLayout>
             </RelativeLayout>
-            <Line X1="0"
-                  Y1="0"
-                  X2="600"
-                  Y2="0"
-                  Stroke="LightGray"
-                  StrokeThickness="1"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding CurrencyViewModels}"
                       ItemTapped="OnListViewItemTapped"
                       HasUnevenRows="True"

@@ -83,6 +83,7 @@ namespace atomex
             {
                 Content.Opacity = 0.3f;
                 Loader.IsRunning = true;
+                UnlockButton.IsEnabled = false;
 
                 Account account = null;
 
@@ -104,11 +105,13 @@ namespace atomex
 
                     Content.Opacity = 1f;
                     Loader.IsRunning = false;
+                    UnlockButton.IsEnabled = true;
                 }
                 else
                 {
                     Content.Opacity = 1f;
                     Loader.IsRunning = false;
+                    UnlockButton.IsEnabled = true;
 
                     await DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
                 }

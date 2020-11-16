@@ -24,7 +24,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -102,14 +102,10 @@
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Line X1="20"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Grid.Row="2"
-                      Grid.ColumnSpan="4"
-                      Stroke="LightGray"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Grid.Row="2"
+                             Grid.ColumnSpan="4"
+                             Margin="20,0,0,0"/>
             </Grid>       
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
@@ -119,7 +115,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
@@ -137,13 +133,9 @@
                                           Unfocused="OnToAddressEntryFocused"
                                           Style="{DynamicResource EntryStyle}"/>
                 </Frame>
-                <Line X1="20"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Grid.Row="2"
-                      Stroke="LightGray"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Grid.Row="2"
+                             Margin="20,0,0,0"/>
             </Grid>
             <Grid VerticalOptions="Fill"
                   HorizontalOptions="Fill"
@@ -153,7 +145,7 @@
                     <RowDefinition Height="20" />
                     <RowDefinition Height="20" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="9*" />
@@ -215,14 +207,10 @@
                         <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Line X1="20"
-                      Y1="0"
-                      X2="600"
-                      Y2="0"
-                      Grid.Row="3"
-                      Grid.ColumnSpan="2"
-                      Stroke="LightGray"
-                      StrokeThickness="1"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Grid.Row="3"
+                             Grid.ColumnSpan="2"
+                             Margin="20,0,0,0"/>
             </Grid>
             <controls:CustomFrame CornerRadius="0,0,20,20"
                                   x:Name="FeeFrame"

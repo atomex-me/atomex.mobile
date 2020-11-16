@@ -19,13 +19,7 @@
                        HorizontalTextAlignment="Start"
                        HeightRequest="70"
                        TextChanged="OnSearchBakerTextChanged"/>
-            <Line X1="0"
-                  Y1="0"
-                  X2="600"
-                  Y2="0"
-                  Stroke="#e0e0e0"
-                  StrokeThickness="1"
-                  HorizontalOptions="FillAndExpand"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding FromBakersList}"
                       ItemTapped="OnBakerTapped"
                       x:Name="BakersListView"
@@ -153,15 +147,10 @@
                                     </Label.Triggers>
                                 </Label>
                             </StackLayout>
-                            <Line X1="0"
-                                  Y1="0"
-                                  X2="600"
-                                  Y2="0"
-                                  Stroke="#e0e0e0"
-                                  StrokeThickness="1"
-                                  Grid.Row="2"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan="2"/>
+                            <StackLayout Grid.Row="2"
+                                         Grid.Column="1"
+                                         Grid.ColumnSpan="2"
+                                         Style="{DynamicResource SeparatorStyle}"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
