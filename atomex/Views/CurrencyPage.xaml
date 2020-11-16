@@ -438,7 +438,7 @@
                     <Image Source="Magnifier"
                            WidthRequest="60"
                            HeightRequest="60"
-                           Margin="20"/>
+                           Margin="20,20,20,10"/>
                     <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{DynamicResource AdditionalTextColor}"

@@ -200,7 +200,8 @@
                                  HorizontalOptions="End"
                                  VerticalOptions="Center"
                                  BackgroundColor="{DynamicResource MainBackgroundColor}"
-                                 Padding="5"
+                                 Padding="3"
+                                 Margin="20,0,0,5"
                                  Clicked="OnCopyButtonClicked"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
