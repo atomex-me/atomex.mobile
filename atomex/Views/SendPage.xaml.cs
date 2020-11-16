@@ -86,6 +86,11 @@ namespace atomex
         {
             Amount.Focus();
         }
+        private void OnFeeEntryTapped(object sender, EventArgs args)
+        {
+            Fee.Focus();
+            Fee.CursorPosition = _sendViewModel.FeeString.Length;
+        }
 
         private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -222,6 +227,8 @@ namespace atomex
             await _sendViewModel.OnMaxClick();
             Amount.Text = _sendViewModel.AmountString;
             Fee.Text = _sendViewModel.FeeString;
+
+            Amount.CursorPosition = _sendViewModel.AmountString.Length;
         }
 
         private async void OnScanButtonClicked(object sender, EventArgs args)
