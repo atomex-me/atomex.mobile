@@ -435,35 +435,38 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Start"
                              Spacing="0"
                              HeightRequest="1"
                              BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
-                <Image Source="Magnifier"
-                       WidthRequest="60"
-                       HeightRequest="60"
-                       Margin="20"/>
-                <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{DynamicResource AdditionalTextColor}"
-                       FontSize="18"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start"/>
-                <RelativeLayout HorizontalOptions="Center"
-                                Margin="20">
-                    <Button Text="{x:Static resources:AppResources.UpdateButton}"
-                            Style="{DynamicResource CurrencyActionButtonStyle}"
-                            x:Name="UpdateButton"
-                            CornerRadius="20"
-                            RelativeLayout.WidthConstraint="120"
-                            RelativeLayout.HeightConstraint="40"
-                            Clicked="OnUpdateButtonClick"/>
-                    <ActivityIndicator x:Name="Loader"
-                                       RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
-	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
-                                       RelativeLayout.WidthConstraint="20"
-                                       RelativeLayout.HeightConstraint="20"
-                                       Color="Black"/>
-                </RelativeLayout>
+                <StackLayout VerticalOptions="CenterAndExpand">
+                    <Image Source="Magnifier"
+                           WidthRequest="60"
+                           HeightRequest="60"
+                           Margin="20"/>
+                    <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{DynamicResource AdditionalTextColor}"
+                           FontSize="18"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Start"/>
+                    <RelativeLayout HorizontalOptions="Center"
+                                    Margin="20">
+                        <Button Text="{x:Static resources:AppResources.UpdateButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                x:Name="UpdateButton"
+                                CornerRadius="20"
+                                RelativeLayout.WidthConstraint="120"
+                                RelativeLayout.HeightConstraint="40"
+                                Clicked="OnUpdateButtonClick"/>
+                        <ActivityIndicator x:Name="Loader"
+                                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                           RelativeLayout.WidthConstraint="20"
+                                           RelativeLayout.HeightConstraint="20"
+                                           Color="Black"/>
+                    </RelativeLayout>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
     </RefreshView>

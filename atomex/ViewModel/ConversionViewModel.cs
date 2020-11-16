@@ -637,7 +637,18 @@ namespace atomex.ViewModel
             Warning = string.Empty;
 
             if (value == 0)
+            {
+                _amount = 0;
+                OnPropertyChanged(nameof(Amount));
+
+                AmountInBase = 0;
+
+                TargetAmount = 0;
+
+                TargetAmountInBase = 0;
+
                 return;
+            }    
 
             var previousAmount = _amount;
             _amount = value;
