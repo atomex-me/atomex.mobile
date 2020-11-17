@@ -4,6 +4,7 @@ using Xamarin.Essentials;
 using atomex.ViewModel;
 using atomex.Resources;
 using atomex.Services;
+using System.Threading.Tasks;
 
 namespace atomex
 {
@@ -51,12 +52,23 @@ namespace atomex
 
         async void OnShareButtonClicked(object sender, EventArgs args)
         {
+            ShareButton.Opacity = 0.5;
+            Loader.IsVisible = Loader.IsRunning = true;
+            ShareButton.IsEnabled = false;
+
             await Share.RequestAsync(new ShareTextRequest
-            {
-                Text = AppResources.MyPublicAddress + " " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
-                Uri = _receiveViewModel.SelectedAddress.Address,
-                Title = AppResources.AddressSharing
-            });
+                {
+                    Text = AppResources.MyPublicAddress + " " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
+                    Uri = _receiveViewModel.SelectedAddress.Address,
+                    Title = AppResources.AddressSharing
+                });
+            
+
+            await Task.Delay(1000);
+
+            Loader.IsVisible = Loader.IsRunning = false;
+            ShareButton.Opacity = 1;
+            ShareButton.IsEnabled = true;
         }
     }
 }

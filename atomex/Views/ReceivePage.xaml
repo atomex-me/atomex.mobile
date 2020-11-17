@@ -129,9 +129,20 @@
                 <custom:LeftRoundedButton Text="{x:Static resources:AppResources.CopyButton}"
                                           Style="{DynamicResource CurrencyActionButtonStyle}"
                                           Clicked="OnCopyButtonClicked"/>
-                <custom:RightRoundedButton Text="{x:Static resources:AppResources.ShareButton}"
-                                           Style="{DynamicResource CurrencyActionButtonStyle}"
-                                           Clicked="OnShareButtonClicked"/>
+                <RelativeLayout>
+                    <custom:RightRoundedButton Text="{x:Static resources:AppResources.ShareButton}"
+                                               Style="{DynamicResource CurrencyActionButtonStyle}"
+                                               Clicked="OnShareButtonClicked"
+                                               RelativeLayout.WidthConstraint="80"
+                                               RelativeLayout.HeightConstraint="40"
+                                               x:Name="ShareButton"/>
+                    <ActivityIndicator x:Name="Loader"
+                                       RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
+	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                       RelativeLayout.WidthConstraint="20"
+                                       RelativeLayout.HeightConstraint="20"
+                                       Color="Black"/>
+                </RelativeLayout>
             </StackLayout>
             <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
                 <zxing:ZXingBarcodeImageView.BarcodeOptions>

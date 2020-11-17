@@ -102,10 +102,6 @@ namespace atomex
                     });
 
                     Application.Current.MainPage = new MainPage(mainViewModel);
-
-                    Content.Opacity = 1f;
-                    Loader.IsRunning = false;
-                    UnlockButton.IsEnabled = true;
                 }
                 else
                 {
