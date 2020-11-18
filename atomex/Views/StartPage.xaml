@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.StartPage"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             NavigationPage.HasNavigationBar="False">
     <RelativeLayout VerticalOptions="StartAndExpand">
         <StackLayout Orientation="Vertical"
                      VerticalOptions="Start"
@@ -15,8 +15,19 @@
                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
                    Margin="0"/>
         </StackLayout>
-        <StackLayout RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
-                     RelativeLayout.YConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
+        <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5}"
+                     Spacing="0">
+            <StackLayout VerticalOptions="CenterAndExpand"
+                         Spacing="0">
+                <Image Style="{DynamicResource LogoImageStyle}"/>
+                <Label Style="{DynamicResource LogoLabelStyle}"/>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
                      Style="{DynamicResource StartPageButtonsStyle}">
             <Button Text="{x:Static resources:AppResources.MyWalletsButton}"

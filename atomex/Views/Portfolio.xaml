@@ -91,7 +91,7 @@
                                        Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
                                        FontFamily="{DynamicResource LightFont}"
                                        VerticalOptions="Start"
-                                       HorizontalOptions="EndAndExpand"
+                                       HorizontalOptions="End"
                                        TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="10"/>
                             </Grid>

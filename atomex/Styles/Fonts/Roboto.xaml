@@ -35,4 +35,8 @@
         <On Platform="iOS" Value="Comfortaa-Regular" />
         <On Platform="Android" Value="Comfortaa-Regular.ttf#Comfortaa Regular" />
     </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="AgencyFont">
+        <On Platform="iOS" Value="Agency-FB" />
+        <On Platform="Android" Value="Agency-FB.ttf#Agency FB" />
+    </OnPlatform>
 </ResourceDictionary>

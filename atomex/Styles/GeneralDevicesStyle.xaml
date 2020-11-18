@@ -162,6 +162,24 @@
         <Setter Property="FontSize" Value="14"/>
     </Style>
 
+    <!-- Start Page -->
+    <Style x:Key="LogoLabelStyle" TargetType="Label">        
+        <Setter Property="Text" Value="atomex"/>
+        <Setter Property="TextColor" Value="{DynamicResource LogoLabelColor}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource LogoFont}"/>
+        <Setter Property="FontSize" Value="58"/>
+        <Setter Property="VerticalTextAlignment" Value="Start"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="LogoImageStyle" TargetType="Image">
+        <Setter Property="Source" Value="Logo"/>
+        <Setter Property="HeightRequest" Value="128"/>
+        <Setter Property="WidthRequest" Value="128"/>
+        <Setter Property="Margin" Value="0,10"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="End"/>
+    </Style>
+
     <!-- My Wallets Page -->
     <Style x:Key="SelectWalletTextStyle" TargetType="Label">
         <Setter Property="FontSize" Value="18"/>

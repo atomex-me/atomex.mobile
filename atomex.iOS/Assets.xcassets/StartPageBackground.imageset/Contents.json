@@ -4,7 +4,7 @@
       "idiom": "universal"
     },
     {
-      "filename": "StartPage-bg.png",
+      "filename": "StartPageBackground.png",
       "scale": "1x",
       "idiom": "universal"
     },
@@ -20,6 +20,7 @@
       "idiom": "iphone"
     },
     {
+      "filename": "StartPageBackground-1.png",
       "scale": "1x",
       "idiom": "iphone"
     },
@@ -40,6 +41,7 @@
       "idiom": "ipad"
     },
     {
+      "filename": "StartPageBackground-2.png",
       "scale": "1x",
       "idiom": "ipad"
     },

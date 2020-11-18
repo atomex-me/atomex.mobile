@@ -221,7 +221,6 @@
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Down-arrow-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrowPicker.imageset\Down-arrow-2-2.pdf" />
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPage-bg.png" />
     <ImageAsset Include="Assets.xcassets\NYX.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\FA2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NYX.imageset\XTZ.pdf" />
@@ -286,6 +285,9 @@
     <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2-2.pdf" />
     <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2-3.pdf" />
+    <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground.png" />
+    <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground-1.png" />
+    <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
