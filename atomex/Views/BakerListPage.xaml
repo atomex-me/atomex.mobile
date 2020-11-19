@@ -22,6 +22,7 @@
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding FromBakersList}"
                       ItemTapped="OnBakerTapped"
+                      CachingStrategy="RecycleElementAndDataTemplate"
                       x:Name="BakersListView"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"

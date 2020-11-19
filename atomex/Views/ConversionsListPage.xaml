@@ -34,6 +34,7 @@
         
             <ListView ItemsSource="{Binding GroupedSwaps}"
                       ItemTapped="OnListViewItemTapped"
+                      CachingStrategy="RecycleElementAndDataTemplate"
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"

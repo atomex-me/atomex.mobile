@@ -93,6 +93,7 @@
                       SeparatorVisibility="Default"
                       SeparatorColor="{DynamicResource ListViewSeparatorColor}"
                       VerticalOptions="FillAndExpand"
+                      CachingStrategy="RecycleElementAndDataTemplate"
                       IsPullToRefreshEnabled="True"
                       Refreshing="Refresh"
                       x:Name="TxListView"

@@ -8,6 +8,7 @@
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding CurrencyViewModels}"
+                  CachingStrategy="RecycleElementAndDataTemplate"
                   HasUnevenRows="True"
                   ItemTapped="OnListViewItemTapped"
                   SeparatorVisibility="Default"
