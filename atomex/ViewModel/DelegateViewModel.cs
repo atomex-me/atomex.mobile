@@ -41,11 +41,11 @@ namespace atomex.ViewModel
             set { _delegations = value; OnPropertyChanged(nameof(Delegations)); }
         }
 
-        private bool _loadingDelegations;
-        public bool LoadingDelegations
+        private bool _isLoadingDelegations;
+        public bool IsLoadingDelegations
         {
-            get => _loadingDelegations;
-            set { _loadingDelegations = value; OnPropertyChanged(nameof(LoadingDelegations)); }
+            get => _isLoadingDelegations;
+            set { _isLoadingDelegations = value; OnPropertyChanged(nameof(IsLoadingDelegations)); }
         }
 
         public WalletAddressViewModel WalletAddressViewModel
@@ -248,7 +248,8 @@ namespace atomex.ViewModel
             BaseCurrencyFormat = "$0.00";
             _minFee = 0.001258M;
             UseDefaultFee = true;
-            LoadingDelegations = true;
+            IsLoadingDelegations = true;
+            CanDelegate = false;
 
             SubscribeToServices();
             LoadDelegationInfoAsync().FireAndForget();
@@ -475,9 +476,9 @@ namespace atomex.ViewModel
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    CanDelegate = balance.Available > 0;
-                    LoadingDelegations = false;
+                    IsLoadingDelegations = false;
                     Delegations = delegations;
+                    CanDelegate = Delegations.Count > 0; 
                 });
             }
             catch (Exception e)
