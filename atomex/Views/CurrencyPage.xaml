@@ -138,7 +138,8 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1.5*" />
-                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="3*" />
                                     <ColumnDefinition Width="4.5*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.Triggers>
@@ -209,6 +210,7 @@
                                     </Image.Triggers>
                                 </Image>
                                 <Label Grid.Column="1"
+                                       Grid.ColumnSpan="2"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{DynamicResource MainTextColor}"
                                        FontSize="14"
@@ -246,7 +248,7 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Label Grid.Column="2"
+                                <Label Grid.Column="3"
                                        Grid.RowSpan="2"
                                        HorizontalTextAlignment="End"
                                        VerticalTextAlignment="Center"
@@ -354,6 +356,50 @@
                                        VerticalTextAlignment="Start"
                                        FontFamily="{DynamicResource LightFont}"
                                        TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontSize="12">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Output">
+                                            <Setter Property="Text" Value="To: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="Input">
+                                            <Setter Property="Text" Value="From: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapPayment">
+                                            <Setter Property="Text" Value="To: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRedeem">
+                                            <Setter Property="Text" Value="From: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapRefund">
+                                            <Setter Property="Text" Value="From: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Currency.Name}"
+                                                     Value="BTC">
+                                            <Setter Property="Text" Value="Id: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Currency.Name}"
+                                                     Value="LTC">
+                                            <Setter Property="Text" Value="Id: "/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="2"
+                                       VerticalTextAlignment="Start"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
                                        FontSize="12"
                                        LineBreakMode="MiddleTruncation"
                                        IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
@@ -361,12 +407,12 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="Output">
-                                            <Setter Property="Text" Value="{Binding To, StringFormat='To: {0}', FallbackValue='Unknown'}"/>
+                                            <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="Input">
-                                            <Setter Property="Text" Value="{Binding From, StringFormat='From: {0}', FallbackValue='Unknown'}"/>
+                                            <Setter Property="Text" Value="{Binding From, FallbackValue='Unknown'}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
@@ -376,44 +422,34 @@
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRedeem">
-                                            <Setter Property="Text" Value="{Binding From, StringFormat='From: {0}', FallbackValue='Unknown'}"/>
+                                            <Setter Property="Text" Value="{Binding From, FallbackValue='Unknown'}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Type}"
                                                      Value="SwapRefund">
-                                            <Setter Property="Text" Value="{Binding From, StringFormat='From: {0}', FallbackValue='Unknown'}"/>
+                                            <Setter Property="Text" Value="{Binding From, FallbackValue='Unknown'}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Currency.Name}"
                                                      Value="BTC">
-                                            <Setter Property="Text" Value="{Binding Id, StringFormat='Id: {0}'}"/>
+                                            <Setter Property="Text" Value="{Binding Id}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Currency.Name}"
                                                      Value="LTC">
-                                            <Setter Property="Text" Value="{Binding Id, StringFormat='Id: {0}'}"/>
+                                            <Setter Property="Text" Value="{Binding Id}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
                                 <Label Grid.Row="1"
-                                       Grid.Column="1"
+                                       Grid.Column="2"
+                                       Text="{Binding Alias}"
                                        VerticalTextAlignment="Start"
                                        LineBreakMode="TailTruncation"
-                                       IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="From:"
-                                                  TextColor="{DynamicResource AdditionalTextColor}"
-                                                  FontFamily="{DynamicResource LightFont}"
-                                                  FontSize="12"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding Alias}"
-                                                  TextColor="{DynamicResource HintTextColor}"
-                                                  FontFamily="{DynamicResource LightFont}"
-                                                  FontSize="12"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                                       TextColor="{DynamicResource HintTextColor}"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       FontSize="12"
+                                       IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                             </Grid>
                         </controls:CustomViewCell>
                     </DataTemplate>
