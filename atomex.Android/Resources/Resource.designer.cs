@@ -13149,22 +13149,25 @@ namespace atomex.Droid
 			public const int tooltip_frame_light = 2131231030;
 			
 			// aapt resource value: 0x7F080137
-			public const int TZBTC = 2131231031;
+			public const int TxApprove = 2131231031;
 			
 			// aapt resource value: 0x7F080138
-			public const int USDT = 2131231032;
+			public const int TZBTC = 2131231032;
 			
 			// aapt resource value: 0x7F080139
-			public const int Wallet__blue = 2131231033;
+			public const int USDT = 2131231033;
 			
 			// aapt resource value: 0x7F08013A
-			public const int Wallet__white = 2131231034;
+			public const int Wallet__blue = 2131231034;
 			
 			// aapt resource value: 0x7F08013B
-			public const int WBTC = 2131231035;
+			public const int Wallet__white = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
-			public const int XTZ = 2131231036;
+			public const int WBTC = 2131231036;
+			
+			// aapt resource value: 0x7F08013D
+			public const int XTZ = 2131231037;
 			
 			static Drawable()
 			{

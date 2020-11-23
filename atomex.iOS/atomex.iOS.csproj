@@ -288,6 +288,10 @@
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground.png" />
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground-1.png" />
     <ImageAsset Include="Assets.xcassets\StartPageBackground.imageset\StartPageBackground-2.png" />
+    <ImageAsset Include="Assets.xcassets\TxApprove.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove.pdf" />
+    <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -396,6 +400,7 @@
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
     <Folder Include="Assets.xcassets\RightArrow__gray.imageset\" />
     <Folder Include="Assets.xcassets\Magnifier.imageset\" />
+    <Folder Include="Assets.xcassets\TxApprove.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

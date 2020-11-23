@@ -207,6 +207,24 @@
                                             <Setter Property="Source"
                                                     Value="SwapRefund"/>
                                         </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapCall">
+                                            <Setter Property="Source"
+                                                    Value="TxApprove"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenCall">
+                                            <Setter Property="Source"
+                                                    Value="TxApprove"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenApprove">
+                                            <Setter Property="Source"
+                                                    Value="TxApprove"/>
+                                        </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
                                 <Label Grid.Column="1"
@@ -245,6 +263,24 @@
                                                      Value="SwapRefund">
                                             <Setter Property="Text"
                                                     Value="Swap refund"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapCall">
+                                            <Setter Property="Text"
+                                                    Value="{Binding Description}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenCall">
+                                            <Setter Property="Text"
+                                                    Value="{Binding Description}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenApprove">
+                                            <Setter Property="Text"
+                                                    Value="{Binding Description}"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
@@ -349,6 +385,63 @@
                                                 </Setter.Value>
                                             </Setter>
                                         </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapCall">
+                                            <Setter Property="TextColor"
+                                                    Value="Black"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="14"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenCall">
+                                            <Setter Property="TextColor"
+                                                    Value="Black"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="14"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenApprove">
+                                            <Setter Property="TextColor"
+                                                    Value="Black"/>
+                                            <Setter Property="FormattedText">
+                                                <Setter.Value>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="14"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Currency.Name}"
+                                                              FontFamily="{DynamicResource RegularFont}"
+                                                              FontSize="12"/>
+                                                    </FormattedString>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
                                 <Label Grid.Row="1"
@@ -382,6 +475,21 @@
                                                      Binding="{Binding Type}"
                                                      Value="SwapRefund">
                                             <Setter Property="Text" Value="From: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapCall">
+                                            <Setter Property="Text" Value="To: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenCall">
+                                            <Setter Property="Text" Value="To: "/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenApprove">
+                                            <Setter Property="Text" Value="To: "/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Currency.Name}"
@@ -428,6 +536,21 @@
                                                      Binding="{Binding Type}"
                                                      Value="SwapRefund">
                                             <Setter Property="Text" Value="{Binding From, FallbackValue='Unknown'}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="SwapCall">
+                                            <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenCall">
+                                            <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Type}"
+                                                     Value="TokenApprove">
+                                            <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Currency.Name}"

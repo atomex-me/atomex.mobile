@@ -14,6 +14,7 @@
                       ItemTapped="OnWalletTapped"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
+                      VerticalScrollBarVisibility="Never"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
