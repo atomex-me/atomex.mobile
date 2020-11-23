@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 
@@ -11,7 +10,10 @@ namespace atomex.ViewModel.TransactionViewModels
         Output,
         SwapPayment,
         SwapRedeem,
-        SwapRefund
+        SwapRefund,
+        TokenCall,
+        SwapCall,
+        TokenApprove
     }
 
     public class TransactionViewModel : BaseViewModel
@@ -52,6 +54,7 @@ namespace atomex.ViewModel.TransactionViewModels
             Currency = Transaction.Currency;
             State = Transaction.State;
             Type = GetType(Transaction.Type);
+            //Type = Transaction.Type;
             Amount = amount;
 
             var netAmount = amount + fee;
@@ -60,7 +63,9 @@ namespace atomex.ViewModel.TransactionViewModels
             CurrencyCode = tx.Currency.Name;
             Time = tx.CreationTime ?? DateTime.UtcNow;
             CanBeRemoved = tx.State == BlockchainTransactionState.Failed ||
-                           tx.State == BlockchainTransactionState.Pending;
+                           tx.State == BlockchainTransactionState.Pending ||
+                           tx.State == BlockchainTransactionState.Unknown ||
+                           tx.State == BlockchainTransactionState.Unconfirmed;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.SwapPayment))
             {
@@ -110,6 +115,15 @@ namespace atomex.ViewModel.TransactionViewModels
 
             if (type.HasFlag(BlockchainTransactionType.SwapRefund))
                 return TransactionType.SwapRefund;
+
+            if (type.HasFlag(BlockchainTransactionType.SwapCall))
+                return TransactionType.SwapCall;
+
+            if (type.HasFlag(BlockchainTransactionType.TokenCall))
+                return TransactionType.TokenCall;
+
+            if (type.HasFlag(BlockchainTransactionType.TokenApprove))
+                return TransactionType.TokenApprove;
 
             if (type.HasFlag(BlockchainTransactionType.Input) &&
                 type.HasFlag(BlockchainTransactionType.Output))
