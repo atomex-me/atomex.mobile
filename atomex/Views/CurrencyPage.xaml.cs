@@ -5,6 +5,9 @@ using atomex.ViewModel.TransactionViewModels;
 using atomex.ViewModel.SendViewModels;
 using Atomex;
 using atomex.ViewModel.ReceiveViewModels;
+using Serilog;
+using atomex.Services;
+using atomex.Resources;
 
 namespace atomex
 {
@@ -13,6 +16,7 @@ namespace atomex
         private CurrencyViewModel _currencyViewModel;
         private INavigationService _navigationService { get; }
         private IAtomexApp AtomexApp { get; }
+        private IToastService _toastService;
 
         public CurrencyPage()
         {
@@ -29,6 +33,7 @@ namespace atomex
             {
                 DelegateButton.IsVisible = true;
             }
+            _toastService = DependencyService.Get<IToastService>();
         }
 
         async void ShowReceivePage(object sender, EventArgs args)
@@ -59,39 +64,33 @@ namespace atomex
             }
         }
 
-        async void Refresh(object sender, EventArgs args)
-        {
-            RefreshLabel.IsVisible = true;
-            AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = false;
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                RefreshView.IsRefreshing = true;
-                await _currencyViewModel.UpdateCurrencyAsync();
-                RefreshView.IsRefreshing = false;
-            }
-            else if (Device.RuntimePlatform == Device.Android)
-            {
-                await _currencyViewModel.UpdateCurrencyAsync();
-                TxListView.IsRefreshing = false;
-            }
-            RefreshLabel.IsVisible = false;
-            AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
-        }
-
-        async void OnUpdateButtonClick(object sender, EventArgs args)
+        async void UpdateCurrency(object sender, EventArgs args)
         {
             try
             {
-                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = UpdateButton.IsEnabled = false;
-                UpdateButton.Opacity = 0.5;
-                Loader.IsVisible = Loader.IsRunning = RefreshLabel.IsVisible = true;
+                TxListView.IsRefreshing = RefreshLabel.IsVisible = true;
+                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = false;
+                if (NoTxsLayout.IsVisible)
+                {
+                    UpdateButton.IsEnabled = false;
+                    UpdateButton.Opacity = 0.5;
+                    Loader.IsVisible = Loader.IsRunning = true;
+                }
                 await _currencyViewModel.UpdateCurrencyAsync();
-                Loader.IsVisible = Loader.IsRunning = RefreshLabel.IsVisible = false;
-                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = UpdateButton.IsEnabled = true;
-                UpdateButton.Opacity = 1;
+                if (NoTxsLayout.IsVisible)
+                {
+                    UpdateButton.IsEnabled = true;
+                    UpdateButton.Opacity = 1;
+                    Loader.IsVisible = Loader.IsRunning = false;
+                }
+                TxListView.IsRefreshing = RefreshLabel.IsVisible = false;
+                AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
+                _toastService?.Show(_currencyViewModel.Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top);
             }
-            catch (Exception e)
-            {}
+            catch (Exception)
+            {
+                Log.Error("UpdateCurrencyAsync error");
+            }
         }
     }
 }

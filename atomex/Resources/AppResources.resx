@@ -566,6 +566,9 @@
     <data name="MyPublicAddress" xml:space="preserve">
         <value>My public address to receive</value>
     </data>
+    <data name="HasBeenUpdated" xml:space="preserve">
+        <value>has been updated</value>
+    </data>
     <data name="AddressCopied" xml:space="preserve">
         <value>Address copied</value>
     </data>

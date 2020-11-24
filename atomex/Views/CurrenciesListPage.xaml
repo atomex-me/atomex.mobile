@@ -8,12 +8,13 @@
              BackgroundColor="{DynamicResource MainBackgroundColor}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding CurrencyViewModels}"
-                  CachingStrategy="RecycleElementAndDataTemplate"
+                  CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   ItemTapped="OnListViewItemTapped"
                   SeparatorVisibility="Default"
                   SeparatorColor="{DynamicResource ListViewSeparatorColor}"
-                  VerticalOptions="FillAndExpand">
+                  VerticalOptions="FillAndExpand"
+                  Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">

@@ -1043,6 +1043,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string HasBeenUpdated {
+            get {
+                return ResourceManager.GetString("HasBeenUpdated", resourceCulture);
+            }
+        }
+        
         internal static string AddressCopied {
             get {
                 return ResourceManager.GetString("AddressCopied", resourceCulture);

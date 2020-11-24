@@ -194,7 +194,14 @@ namespace atomex.ViewModel
 
         public async Task UpdateCurrencyAsync()
         {
-            await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
+            try
+            {
+                await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
+            }
+            catch(Exception)
+            {
+                Log.Error("HdWalletScanner error");
+            }
         }
     }
 }

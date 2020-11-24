@@ -131,7 +131,8 @@
                                           PlaceholderColor="Gray"
                                           Focused="OnToAddressEntryFocused"
                                           Unfocused="OnToAddressEntryFocused"
-                                          Style="{DynamicResource EntryStyle}"/>
+                                          Style="{DynamicResource EntryStyle}"
+                                          Margin="0,0,15,0"/>
                 </Frame>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                              Grid.Row="2"
