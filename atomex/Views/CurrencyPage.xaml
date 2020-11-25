@@ -85,6 +85,11 @@
                                                         Clicked="ShowConversionPage"/>
                     </StackLayout>
                 </StackLayout>
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Start"
+                             Spacing="0"
+                             HeightRequest="1"
+                             BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
                 <StackLayout IsVisible="False"
                              x:Name="NoTxsLayout"
                              BackgroundColor="{DynamicResource MainBackgroundColor}"
@@ -97,11 +102,6 @@
                                     Value="True"/>
                         </DataTrigger>
                     </StackLayout.Triggers>
-                    <StackLayout HorizontalOptions="FillAndExpand"
-                                 VerticalOptions="Start"
-                                 Spacing="0"
-                                 HeightRequest="1"
-                                 BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
                     <Image Source="Magnifier"
                             WidthRequest="60"
                             HeightRequest="60"
@@ -135,18 +135,15 @@
         <ListView.GroupHeaderTemplate>
             <DataTemplate>
                 <ViewCell Height="20">
-                    <StackLayout Spacing="0"
-                                 BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-                        <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                        <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                TextColor="{DynamicResource AdditionalTextColor}"
-                                FontFamily="{DynamicResource BoldFont}"
-                                Padding="10,0"
-                                FontSize="12"
-                                VerticalTextAlignment="Center"
-                                VerticalOptions="CenterAndExpand"/>
-                    </StackLayout>
-                    </ViewCell>
+                    <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                           BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                           TextColor="{DynamicResource AdditionalTextColor}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           Padding="10,0"
+                           FontSize="12"
+                           VerticalTextAlignment="Center"
+                           VerticalOptions="CenterAndExpand"/>
+                </ViewCell>
             </DataTemplate>
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>

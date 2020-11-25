@@ -37,7 +37,8 @@
                       CachingStrategy="RecycleElementAndDataTemplate"
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
-                      SeparatorVisibility="None"
+                      SeparatorVisibility="Default"
+                      SeparatorColor="{DynamicResource ListViewSeparatorColor}"
                       VerticalOptions="FillAndExpand"
                       BackgroundColor="{DynamicResource MainBackgroundColor}"
                       Footer="">
@@ -55,11 +56,11 @@
                             <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
                                    BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                                    TextColor="{DynamicResource AdditionalTextColor}"
+                                   FontFamily="{DynamicResource RegularFont}"
                                    Padding="10,0"
                                    FontSize="12"
                                    VerticalTextAlignment="Center"
-                                   VerticalOptions="CenterAndExpand"
-                                   />
+                                   VerticalOptions="CenterAndExpand"/>
                          </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
