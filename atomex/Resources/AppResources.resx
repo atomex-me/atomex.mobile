@@ -219,6 +219,9 @@
     <data name="ShowInExplorerButton" xml:space="preserve">
         <value>Show in explorer</value>
     </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Delete</value>
+    </data>
     
     <!-- Send Page -->
     <data name="SendPageTitle" xml:space="preserve">
@@ -640,5 +643,8 @@
     </data>
     <data name="BakerIsOverdelegatedWarning" xml:space="preserve">
         <value>This baker is overdelegated, it will be better to choose another one</value>
+    </data>
+    <data name="RemoveTxWarning" xml:space="preserve">
+        <value>This action affects only the local database and does not affect the blockchain</value>
     </data>
 </root>

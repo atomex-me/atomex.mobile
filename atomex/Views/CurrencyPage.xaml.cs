@@ -57,7 +57,7 @@ namespace atomex
         {
             if (e.Item != null)
             {
-                await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel));
+                await Navigation.PushAsync(new TransactionInfoPage(e.Item as TransactionViewModel, _currencyViewModel));
                 var listView = sender as ListView;
                 if (listView != null)
                     listView.SelectedItem = null;
@@ -87,9 +87,9 @@ namespace atomex
                 AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
                 _toastService?.Show(_currencyViewModel.Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log.Error("UpdateCurrencyAsync error");
+                Log.Error(e, "UpdateCurrencyAsync error");
             }
         }
     }

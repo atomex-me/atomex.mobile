@@ -4,6 +4,7 @@ using atomex.ViewModel.TransactionViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using atomex.Services;
+using atomex.ViewModel;
 
 namespace atomex
 {
@@ -11,9 +12,11 @@ namespace atomex
     {
         private TransactionViewModel _transactionViewModel;
 
+        private CurrencyViewModel _currencyViewModel;
+
         private IToastService _toastService;
 
-        public TransactionInfoPage(TransactionViewModel transactionViewModel)
+        public TransactionInfoPage(TransactionViewModel transactionViewModel, CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
             if (transactionViewModel != null)
@@ -21,6 +24,7 @@ namespace atomex
                 _transactionViewModel = transactionViewModel;
                 BindingContext = transactionViewModel;
             }
+            _currencyViewModel = currencyViewModel;
             _toastService = DependencyService.Get<IToastService>();
         }
 
@@ -42,6 +46,17 @@ namespace atomex
             if (_transactionViewModel != null)
             {
                 Launcher.OpenAsync(new Uri(_transactionViewModel.TxExplorerUri));
+            }
+        }
+
+        private async void OnDeleteTxButtonClicked(object sender, EventArgs args)
+        {
+            if (_currencyViewModel != null)
+            {
+                var res = await DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                if (!res) return;
+                _currencyViewModel.RemoveTransactonAsync(_transactionViewModel.Id);
+                await Navigation.PopAsync();
             }
         }
     }

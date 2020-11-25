@@ -425,6 +425,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string DeleteButton {
+            get {
+                return ResourceManager.GetString("DeleteButton", resourceCulture);
+            }
+        }
+        
         internal static string SendPageTitle {
             get {
                 return ResourceManager.GetString("SendPageTitle", resourceCulture);
@@ -1184,6 +1190,12 @@ namespace atomex.Resources {
         internal static string BakerIsOverdelegatedWarning {
             get {
                 return ResourceManager.GetString("BakerIsOverdelegatedWarning", resourceCulture);
+            }
+        }
+        
+        internal static string RemoveTxWarning {
+            get {
+                return ResourceManager.GetString("RemoveTxWarning", resourceCulture);
             }
         }
     }

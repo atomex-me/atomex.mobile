@@ -198,9 +198,30 @@ namespace atomex.ViewModel
             {
                 await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                Log.Error("HdWalletScanner error");
+                Log.Error(e, "HdWalletScanner error");
+            }
+        }
+
+        public async void RemoveTransactonAsync(string id)
+        {
+            if (App.Account == null)
+                return;
+
+            try
+            {
+                var txId = $"{id}:{Currency.Name}";
+
+                var isRemoved = await App.Account
+                    .RemoveTransactionAsync(txId);
+
+                if (isRemoved)
+                    await LoadTransactionsAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Transaction remove error");
             }
         }
     }

@@ -423,6 +423,12 @@
                     Style="{DynamicResource TransparentButtonStyle}"
                     Clicked="OnShowInExplorerClicked"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            <Button Text="{x:Static resources:AppResources.DeleteButton}"
+                    Style="{DynamicResource TransparentButtonStyle}"
+                    TextColor="{DynamicResource ErrorTextColor}"
+                    IsVisible="{Binding CanBeRemoved}"
+                    Clicked="OnDeleteTxButtonClicked"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
