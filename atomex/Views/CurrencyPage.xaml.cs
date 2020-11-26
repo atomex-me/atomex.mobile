@@ -27,7 +27,7 @@ namespace atomex
             InitializeComponent();
             _navigationService = navigationService;
             _currencyViewModel = currencyViewModel;
-            AtomexApp = atomexApp;
+            AtomexApp = atomexApp ?? throw new ArgumentNullException(nameof(AtomexApp));
             BindingContext = _currencyViewModel;
             if (_currencyViewModel.CurrencyCode == "XTZ")
             {

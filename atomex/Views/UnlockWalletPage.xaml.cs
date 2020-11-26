@@ -5,6 +5,7 @@ using atomex.ViewModel;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -114,7 +115,7 @@ namespace atomex
             }
             catch (Exception e)
             {
-                //
+                Log.Error(e, "Unlock error");
             }
         }
 
@@ -139,6 +140,7 @@ namespace atomex
                     }
                     catch (Exception ex)
                     {
+                        Log.Error(ex, "Device doesn't support secure storage on device");
                         // Possible that device doesn't support secure storage on device.
                     }
                 }

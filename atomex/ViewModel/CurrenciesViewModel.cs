@@ -13,7 +13,7 @@ namespace atomex.ViewModel
     {
         public event EventHandler QuotesUpdated;
 
-        private IAtomexApp App { get; }
+        private IAtomexApp AtomexApp { get; }
 
         private decimal _totalAmountInBase;
         public decimal TotalAmountInBase
@@ -27,7 +27,7 @@ namespace atomex.ViewModel
         {
             get
             {
-                return App.Account.Currencies;
+                return AtomexApp.Account.Currencies;
             }
         }
 
@@ -35,7 +35,7 @@ namespace atomex.ViewModel
 
         public CurrenciesViewModel(IAtomexApp app, bool restore)
         {
-            App = app;
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             CurrencyViewModels = new List<CurrencyViewModel>();
             FillCurrenciesAsync(restore).FireAndForget();
             SubscribeToServices();
@@ -43,7 +43,7 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            App.QuotesProvider.QuotesUpdated += CurrencyUpdatedEventHandler;
+            AtomexApp.QuotesProvider.QuotesUpdated += CurrencyUpdatedEventHandler;
             CurrencyUpdatedEventHandler(this, EventArgs.Empty);
         }
 
@@ -51,9 +51,9 @@ namespace atomex.ViewModel
         {
             await Task.WhenAll(Currencies.Select(async c =>
             {
-                var balance = await App.Account.GetBalanceAsync(c.Name);
+                var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
 
-                CurrencyViewModel currency = new CurrencyViewModel(App)
+                CurrencyViewModel currency = new CurrencyViewModel(AtomexApp)
                 {
                     Currency = c,
                     TotalAmount = balance.Confirmed,
@@ -80,7 +80,7 @@ namespace atomex.ViewModel
                 decimal totalAmount = 0;
                 foreach (var c in CurrencyViewModels)
                 {
-                    var quote = App.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
+                    var quote = AtomexApp.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
                     c.Price = quote.Bid;
                     c.AmountInBase = c.AvailableAmount * quote.Bid;
                     totalAmount += c.AmountInBase;

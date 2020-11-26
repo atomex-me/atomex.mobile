@@ -16,7 +16,7 @@ namespace atomex.ViewModel
 {
     public class CurrencyViewModel : BaseViewModel
     {
-        private IAtomexApp App { get; set; }
+        private IAtomexApp AtomexApp { get; set; }
 
         public Currency Currency { get; set; }
 
@@ -94,14 +94,14 @@ namespace atomex.ViewModel
 
         public CurrencyViewModel(IAtomexApp app)
         {
-            App = app;
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             SubscibeToServices();
         }
 
         private void SubscibeToServices()
         {
-            App.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
-            App.Account.BalanceUpdated += BalanceUpdated;
+            AtomexApp.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
+            AtomexApp.Account.BalanceUpdated += BalanceUpdated;
         }
 
         private async void BalanceUpdated(object sender, CurrencyEventArgs args)
@@ -121,7 +121,7 @@ namespace atomex.ViewModel
         }
 
         public async Task UpdateBalanceAsync() {
-            var balance = await App.Account
+            var balance = await AtomexApp.Account
                 .GetBalanceAsync(Currency.Name)
                 .ConfigureAwait(false);
 
@@ -131,7 +131,7 @@ namespace atomex.ViewModel
 
             UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
 
-            var quote = App.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+            var quote = AtomexApp.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
             Price = quote.Bid;
             AmountInBase = AvailableAmount * quote.Bid;
         }
@@ -159,10 +159,10 @@ namespace atomex.ViewModel
 
             try
             {
-                if (App.Account == null)
+                if (AtomexApp.Account == null)
                     return;
 
-                var transactions = (await App.Account
+                var transactions = (await AtomexApp.Account
                     .GetTransactionsAsync(Currency.Name))
                     .ToList();
 
@@ -189,14 +189,14 @@ namespace atomex.ViewModel
 
         public IAtomexApp GetAtomexApp()
         {
-            return App;
+            return AtomexApp;
         }
 
         public async Task UpdateCurrencyAsync()
         {
             try
             {
-                await new HdWalletScanner(App.Account).ScanAsync(Currency.Name);
+                await new HdWalletScanner(AtomexApp.Account).ScanAsync(Currency.Name);
             }
             catch(Exception e)
             {
@@ -206,14 +206,14 @@ namespace atomex.ViewModel
 
         public async void RemoveTransactonAsync(string id)
         {
-            if (App.Account == null)
+            if (AtomexApp.Account == null)
                 return;
 
             try
             {
                 var txId = $"{id}:{Currency.Name}";
 
-                var isRemoved = await App.Account
+                var isRemoved = await AtomexApp.Account
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)

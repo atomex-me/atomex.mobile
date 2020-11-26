@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 using atomex.ViewModel;
 using Atomex;
+using System;
 
 namespace atomex
 {
@@ -18,7 +19,7 @@ namespace atomex
         public CurrenciesListPage(CurrenciesViewModel currenciesViewModel, IAtomexApp atomexApp, INavigationService navigationService)
         {
             InitializeComponent();
-            AtomexApp = atomexApp;
+            AtomexApp = atomexApp ?? throw new ArgumentNullException(nameof(AtomexApp));
             _navigationService = navigationService;
             BindingContext = currenciesViewModel;
         }

@@ -74,7 +74,7 @@ namespace atomex
             }
             catch (CryptographicException e)
             {
-                Log.Error("Invalid password error");
+                Log.Error(e, "Invalid password error");
                 return null;
             }
         }

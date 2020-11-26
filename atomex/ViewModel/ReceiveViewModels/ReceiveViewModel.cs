@@ -9,7 +9,7 @@ namespace atomex.ViewModel
     public class ReceiveViewModel : BaseViewModel
     {
 
-        protected IAtomexApp App { get; }
+        protected IAtomexApp AtomexApp { get; }
 
         protected CurrencyViewModel _currencyViewModel;
         public virtual CurrencyViewModel CurrencyViewModel
@@ -20,11 +20,11 @@ namespace atomex.ViewModel
                 _currencyViewModel = value;
                 OnPropertyChanged(nameof(CurrencyViewModel));
 
-                var activeAddresses = App.Account
+                var activeAddresses = AtomexApp.Account
                     .GetUnspentAddressesAsync(_currencyViewModel.CurrencyCode)
                     .WaitForResult();
 
-                var freeAddress = App.Account
+                var freeAddress = AtomexApp.Account
                     .GetFreeExternalAddressAsync(_currencyViewModel.CurrencyCode)
                     .WaitForResult();
 
@@ -65,7 +65,7 @@ namespace atomex.ViewModel
 
         public ReceiveViewModel(CurrencyViewModel currencyViewModel)
         {
-            App = currencyViewModel.GetAtomexApp() ?? throw new ArgumentNullException(nameof(App));
+            AtomexApp = currencyViewModel.GetAtomexApp() ?? throw new ArgumentNullException(nameof(AtomexApp));
             CurrencyViewModel = currencyViewModel;
         }
 

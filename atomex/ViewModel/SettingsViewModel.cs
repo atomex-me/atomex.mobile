@@ -45,7 +45,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private string _pathToUserSettings;
+        //private string _pathToUserSettings;
 
         public SettingsViewModel(IAtomexApp app)
         {

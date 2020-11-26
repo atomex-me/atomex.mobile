@@ -367,7 +367,7 @@ namespace atomex
                 }
                 catch (CryptographicException e)
                 {
-                    Log.Error("Create wallet error");
+                    Log.Error(e, "Create wallet error");
                     return null;
                 }
             }

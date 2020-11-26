@@ -20,7 +20,7 @@ namespace atomex.ViewModel
 {
     public class DelegateViewModel : BaseViewModel
     {
-        private IAtomexApp App { get; }
+        private IAtomexApp AtomexApp { get; }
 
         private readonly Tezos _tezos;
         private WalletAddressViewModel _walletAddressViewModel;
@@ -131,7 +131,7 @@ namespace atomex.ViewModel
                 }
 
                 OnPropertyChanged(nameof(Fee));
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
         }
 
@@ -240,9 +240,9 @@ namespace atomex.ViewModel
 
         public DelegateViewModel(IAtomexApp app)
         {
-            App = app ?? throw new ArgumentNullException(nameof(app));
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
-            _tezos = App.Account.Currencies.Get<Tezos>("XTZ");
+            _tezos = AtomexApp.Account.Currencies.Get<Tezos>("XTZ");
             FeeCurrencyCode = _tezos.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
@@ -266,7 +266,7 @@ namespace atomex.ViewModel
                 await Task.Run(async () =>
                 {
                     bakers = (await BbApi
-                        .GetBakers(App.Account.Network)
+                        .GetBakers(AtomexApp.Account.Network)
                         .ConfigureAwait(false))
                         .Select(x => new BakerViewModel
                         {
@@ -299,7 +299,7 @@ namespace atomex.ViewModel
 
         private async Task PrepareWallet(CancellationToken cancellationToken = default)
         {
-            FromAddressList = (await App.Account
+            FromAddressList = (await AtomexApp.Account
                 .GetUnspentAddressesAsync(_tezos.Name, cancellationToken).ConfigureAwait(false))
                 .OrderByDescending(x => x.Balance)
                 .Select(w => new WalletAddressViewModel(w, _tezos.Format))
@@ -320,7 +320,7 @@ namespace atomex.ViewModel
             if (_walletAddressViewModel.WalletAddress == null)
                 return new Error(Errors.InvalidWallets, AppResources.DontHaveNonEmptyAccountsError);
 
-            var wallet = (HdWallet)App.Account.Wallet;
+            var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
             var rpc = new Rpc(_tezos.RpcNodeUri);
 
@@ -376,7 +376,7 @@ namespace atomex.ViewModel
 
         public async Task<Result<string>> Delegate()
         {
-            var wallet = (HdWallet)App.Account.Wallet;
+            var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
 
             try
@@ -401,11 +401,11 @@ namespace atomex.ViewModel
         {
             try
             {
-                var balance = await App.Account
+                var balance = await AtomexApp.Account
                     .GetBalanceAsync(_tezos.Name)
                     .ConfigureAwait(false);
 
-                var addresses = await App.Account
+                var addresses = await AtomexApp.Account
                     .GetUnspentAddressesAsync(_tezos.Name)
                     .ConfigureAwait(false);
 
@@ -417,7 +417,7 @@ namespace atomex.ViewModel
 
                 var headLevel = head.Value;
 
-                decimal currentCycle = App.Account.Network == Network.MainNet ?
+                decimal currentCycle = AtomexApp.Account.Network == Network.MainNet ?
                     Math.Floor((headLevel - 1) / 4096) :
                     Math.Floor((headLevel - 1) / 2048);
 
@@ -436,10 +436,10 @@ namespace atomex.ViewModel
                     }
 
                     var baker = await BbApi
-                        .GetBaker(account.Value.DelegateAddress, App.Account.Network)
+                        .GetBaker(account.Value.DelegateAddress, AtomexApp.Account.Network)
                         .ConfigureAwait(false);
 
-                    decimal txCycle = App.Account.Network == Network.MainNet ?
+                    decimal txCycle = AtomexApp.Account.Network == Network.MainNet ?
                         Math.Floor((account.Value.DelegationLevel - 1) / 4096) :
                         Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
@@ -489,8 +489,8 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            if (App.HasQuotesProvider)
-                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            if (AtomexApp.HasQuotesProvider)
+                AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)

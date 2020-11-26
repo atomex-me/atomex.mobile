@@ -13,12 +13,12 @@ namespace atomex.ViewModel.ReceiveViewModels
                 _currencyViewModel = value;
                 OnPropertyChanged(nameof(CurrencyViewModel));
 
-                var activeTokenAddresses = App.Account
+                var activeTokenAddresses = AtomexApp.Account
                          .GetUnspentTokenAddressesAsync(_currencyViewModel.CurrencyCode)
                          .WaitForResult()
                          .ToList();
 
-                var activeAddresses = App.Account
+                var activeAddresses = AtomexApp.Account
                     .GetUnspentAddressesAsync(_currencyViewModel.CurrencyCode)
                     .WaitForResult()
                     .ToList();
@@ -27,7 +27,7 @@ namespace atomex.ViewModel.ReceiveViewModels
 
                 activeAddresses = activeAddresses.Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null).ToList();
 
-                var freeAddress = App.Account
+                var freeAddress = AtomexApp.Account
                     .GetFreeExternalAddressAsync(_currencyViewModel.CurrencyCode)
                     .WaitForResult();
 

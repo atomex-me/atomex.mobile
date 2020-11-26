@@ -27,7 +27,7 @@ namespace atomex.ViewModel
         {
             get
             {
-                return App.Account.Symbols;
+                return AtomexApp.Account.Symbols;
             }
         }
 
@@ -35,11 +35,11 @@ namespace atomex.ViewModel
         {
             get
             {
-                return App.Account.Currencies;
+                return AtomexApp.Account.Currencies;
             }
         }
 
-        protected IAtomexApp App { get; }
+        protected IAtomexApp AtomexApp { get; }
         private IAtomexClient Terminal { get; set;  }
 
         private static TimeSpan SWAP_TIMEOUT = TimeSpan.FromSeconds(60);
@@ -133,8 +133,8 @@ namespace atomex.ViewModel
 
                 TargetFeeCurrencyCode = _toCurrencyViewModel?.FeeCurrencyCode;
 
-                OnQuotesUpdatedEventHandler(App.Terminal, null);
-                OnBaseQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
 
                 //UpdateRedeemAndRewardFeesAsync();
             }
@@ -312,7 +312,7 @@ namespace atomex.ViewModel
 
         public ConversionViewModel(IAtomexApp app)
         {
-            App = app;
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             _fromCurrencies = new List<CurrencyViewModel>();
             _toCurrencies = new List<CurrencyViewModel>();
             _currencyViewModels = new List<CurrencyViewModel>();
@@ -323,11 +323,11 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            App.TerminalChanged += OnTerminalChangedEventHandler;
-            OnTerminalChangedEventHandler(this, new TerminalChangedEventArgs(App.Terminal));
+            AtomexApp.TerminalChanged += OnTerminalChangedEventHandler;
+            OnTerminalChangedEventHandler(this, new TerminalChangedEventArgs(AtomexApp.Terminal));
 
-            if (App.HasQuotesProvider)
-                App.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
+            if (AtomexApp.HasQuotesProvider)
+                AtomexApp.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
         }
 
         private void OnTerminalChangedEventHandler(object sender, TerminalChangedEventArgs args)
@@ -355,9 +355,9 @@ namespace atomex.ViewModel
         {
             await Task.WhenAll(Currencies.Select(async c =>
             {
-                var balance = await App.Account.GetBalanceAsync(c.Name);
+                var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
 
-                _currencyViewModels.Add(new CurrencyViewModel(App)
+                _currencyViewModels.Add(new CurrencyViewModel(AtomexApp)
                 {
                     Currency = c,
                     TotalAmount = balance.Confirmed,
@@ -372,7 +372,7 @@ namespace atomex.ViewModel
 
         private async Task UpdateSwaps()
         {
-            var swaps = await App.Account.GetSwapsAsync();
+            var swaps = await AtomexApp.Account.GetSwapsAsync();
 
             var swapViewModels = swaps
                                .Select(s => SwapViewModelFactory.CreateSwapViewModel(s, Currencies))
@@ -433,7 +433,7 @@ namespace atomex.ViewModel
                 if (orderBook == null)
                     return;
 
-                var walletAddress = await App.Account
+                var walletAddress = await AtomexApp.Account
                     .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
 
                 var baseCurrency = Currencies.GetByName(symbol.Base);
@@ -466,7 +466,7 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(EstimatedMaxAmount));
                     OnPropertyChanged(nameof(TargetAmount));
                     OnPropertyChanged(nameof(IsNoLiquidity));
-                    UpdateTargetAmountInBase(App.QuotesProvider);
+                    UpdateTargetAmountInBase(AtomexApp.QuotesProvider);
                 });
             }
             catch (Exception e)
@@ -494,7 +494,7 @@ namespace atomex.ViewModel
         {
             try
             {
-                var account = App.Account;
+                var account = AtomexApp.Account;
 
                 var fromWallets = (await account
                     .GetUnspentAddressesAsync(
@@ -514,10 +514,10 @@ namespace atomex.ViewModel
                 if (Amount > 0 && !fromWallets.Any())
                     return new Error(Errors.SwapError, AppResources.InsufficientFunds);
 
-                var symbol = App.Account.Symbols.SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
-                var baseCurrency = App.Account.Currencies.GetByName(symbol.Base);
+                var symbol = AtomexApp.Account.Symbols.SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
+                var baseCurrency = AtomexApp.Account.Currencies.GetByName(symbol.Base);
                 var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
-                var terminal = App.Terminal;
+                var terminal = AtomexApp.Terminal;
                 var price = EstimatedPrice;
                 var orderPrice = _estimatedOrderPrice;
 
@@ -607,7 +607,7 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            var (maxAmount, maxFee, _) = await App.Account
+            var (maxAmount, maxFee, _) = await AtomexApp.Account
                 .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
 
             _amount = maxAmount;
@@ -627,8 +627,8 @@ namespace atomex.ViewModel
 
                 UpdateRedeemAndRewardFeesAsync();
 
-                OnQuotesUpdatedEventHandler(App.Terminal, null);
-                OnBaseQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
         }
 
@@ -653,10 +653,10 @@ namespace atomex.ViewModel
             var previousAmount = _amount;
             _amount = value;
 
-            var (maxAmount, maxFee, reserve) = await App.Account
+            var (maxAmount, maxFee, reserve) = await AtomexApp.Account
                 .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
 
-            var swaps = await App.Account
+            var swaps = await AtomexApp.Account
                 .GetSwapsAsync();
 
             var usedAmount = swaps.Sum(s => (s.IsActive && s.SoldCurrency == FromCurrencyViewModel.Currency.Name && !s.StateFlags.HasFlag(SwapStateFlags.IsPaymentConfirmed))
@@ -678,7 +678,7 @@ namespace atomex.ViewModel
 
             var estimatedPaymentFee = _amount != 0
                 ? (_amount < availableAmount
-                    ? await App.Account
+                    ? await AtomexApp.Account
                         .EstimateFeeAsync(FromCurrencyViewModel.Currency.Name, null, _amount, BlockchainTransactionType.SwapPayment)
                     : null)
                 : 0;
@@ -730,13 +730,13 @@ namespace atomex.ViewModel
 
             UpdateRedeemAndRewardFeesAsync();
 
-            OnQuotesUpdatedEventHandler(App.Terminal, null);
-            OnBaseQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+            OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
         private async void UpdateRedeemAndRewardFeesAsync()
         {
-            var walletAddress = await App.Account
+            var walletAddress = await AtomexApp.Account
                      .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
 
             EstimatedRedeemFee = await ToCurrencyViewModel.Currency.GetRedeemFeeAsync(walletAddress);

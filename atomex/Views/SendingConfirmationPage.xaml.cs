@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using atomex.ViewModel.SendViewModels;
 using atomex.Resources;
+using Serilog;
 
 namespace atomex
 {
@@ -51,6 +52,7 @@ namespace atomex
             {
                 BlockActions(false);
                 await DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+                Log.Error(e, "Sending tx error");
             }
         }
 

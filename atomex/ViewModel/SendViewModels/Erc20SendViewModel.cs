@@ -72,7 +72,7 @@ namespace atomex.ViewModel.SendViewModels
 
             if (!UseDefaultFee)
             {
-                var (maxAmount, maxFee, _) = await App.Account
+                var (maxAmount, maxFee, _) = await AtomexApp.Account
                     .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, _fee, _feePrice, false);
 
                 if (_amount > maxAmount)
@@ -94,7 +94,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(TotalFeeString));
             }
 
-            OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
             
         public override bool UseDefaultFee
@@ -120,7 +120,7 @@ namespace atomex.ViewModel.SendViewModels
 
             if (UseDefaultFee)
             {
-                var (maxAmount, maxFeeAmount, _) = await App.Account
+                var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
                      .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, 0, 0, false);
 
                 _fee = Currency.GetDefaultFee();
@@ -148,7 +148,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                var (maxAmount, _, _) = await App.Account
+                var (maxAmount, _, _) = await AtomexApp.Account
                      .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, _fee, _feePrice, false);
 
                 if (_amount > maxAmount)
@@ -167,7 +167,7 @@ namespace atomex.ViewModel.SendViewModels
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
             }
 
-            OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
         public override async Task UpdateFee(decimal fee)
@@ -196,7 +196,7 @@ namespace atomex.ViewModel.SendViewModels
 
             if (!UseDefaultFee)
             {
-                var (maxAmount, maxFee, _) = await App.Account
+                var (maxAmount, maxFee, _) = await AtomexApp.Account
                         .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, _fee, _feePrice, false);
 
                 if (_amount > maxAmount)
@@ -216,7 +216,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(TotalFeeString));
 
             }
-            OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
         public override async Task OnMaxClick()
@@ -228,7 +228,7 @@ namespace atomex.ViewModel.SendViewModels
                 return;
             if (UseDefaultFee)
             {
-                var (maxAmount, maxFeeAmount, _) = await App.Account
+                var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
                     .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, 0, 0, false);
                 if (maxAmount > 0)
                     _amount = maxAmount;
@@ -258,7 +258,7 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
                 }
-                var (maxAmount, maxFeeAmount, _) = await App.Account
+                var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
                     .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output, _fee, _feePrice, false);
 
                 _amount = maxAmount;
@@ -272,7 +272,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(TotalFeeString));
             }
 
-            OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+            OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
          
 

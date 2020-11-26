@@ -2,6 +2,7 @@
 using System.Globalization;
 using atomex.Resources;
 using atomex.ViewModel;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex
@@ -131,6 +132,7 @@ namespace atomex
             {
                 BlockActions(false);
                 await DisplayAlert(AppResources.Error, AppResources.DelegationValidationError, AppResources.AcceptButton);
+                Log.Error(e, "Delegation validation error");
             }
         }
 

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using atomex.iOS.Services;
 using atomex.Services;
+using Serilog;
 using UIKit;
 using Xamarin.Forms;
 
@@ -112,7 +113,7 @@ namespace atomex.iOS.Services
             }
             catch (Exception e)
             {
-
+                Log.Error(e, "ToastView animation error");
             }
             finally
             {

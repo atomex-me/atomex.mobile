@@ -38,7 +38,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 if (UseDefaultFee)
                 {
-                    var (maxAmount, _, _) = await App.Account
+                    var (maxAmount, _, _) = await AtomexApp.Account
                         .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output);
 
                     if (_amount > maxAmount)
@@ -48,7 +48,7 @@ namespace atomex.ViewModel.SendViewModels
                     }
 
                     var estimatedFeeAmount = _amount != 0
-                        ? await App.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
+                        ? await AtomexApp.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
                         : 0;
 
                     OnPropertyChanged(nameof(AmountString));
@@ -73,7 +73,7 @@ namespace atomex.ViewModel.SendViewModels
                     Fee = _fee;
                 }
 
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
             catch { }
         }
@@ -124,7 +124,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(AmountString));
                 OnPropertyChanged(nameof(FeeString));
 
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
             catch { }
         }
@@ -140,7 +140,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (UseDefaultFee) // auto fee
                 {
-                    var (maxAmount, maxFeeAmount, _) = await App.Account
+                    var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
                         .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output);
 
                     if (maxAmount > 0)
@@ -187,7 +187,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(AmountString));
                 OnPropertyChanged(nameof(FeeString));
 
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
             catch { }
         }
@@ -197,7 +197,7 @@ namespace atomex.ViewModel.SendViewModels
             decimal fee,
             CancellationToken cancellationToken = default)
         {
-            return await App.Account
+            return await AtomexApp.Account
                 .GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name)
                 .EstimateTxSizeAsync(amount, fee, cancellationToken);
         }
