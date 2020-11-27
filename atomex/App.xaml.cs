@@ -15,6 +15,8 @@ namespace atomex
 {
     public partial class App : Application
     {
+        public static string DeviceToken;
+        public static string FileSystem;
 
         private IAtomexApp AtomexApp;
 

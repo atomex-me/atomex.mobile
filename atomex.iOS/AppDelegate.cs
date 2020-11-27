@@ -34,9 +34,9 @@ namespace atomex.iOS
         {
             FileSystem.UseFileSystem(new IosFileSystem());
 
-            Xamarin.Forms.Forms.SetFlags("Shapes_Experimental");
+            Forms.SetFlags("Shapes_Experimental");
 
-            global::Xamarin.Forms.Forms.Init();
+            Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
             Firebase.Core.App.Configure();
@@ -76,6 +76,9 @@ namespace atomex.iOS
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
 
+            App.FileSystem = "iOS";
+            App.DeviceToken = DeviceToken;
+
             StartSentry();
         }
 
@@ -108,49 +111,49 @@ namespace atomex.iOS
             completionHandler(settings);
         }
 
-        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-        {
-            switch (response.ActionIdentifier)
-            {
-                case "swap":
-                    // Do something
-                    break;
-                default:
-                    // Take action based on identifier
-                    if (response.IsDefaultAction)
-                    {
-                        // Handle default action...
-                        DependencyService.Get<INotificationManager>().RemoveNotifications();
-                    }
-                    else if (response.IsDismissAction)
-                    {
-                        // Handle dismiss action
-                    }
-                    break;
-            }
-            completionHandler();
-        }
+        //public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+        //{
+        //    switch (response.ActionIdentifier)
+        //    {
+        //        case "custom":
+        //            // Do something
+        //            break;
+        //        default:
+        //            // Take action based on identifier
+        //            if (response.IsDefaultAction)
+        //            {
+        //                // Handle default action...
+        //                DependencyService.Get<INotificationManager>().RemoveNotifications();
+        //            }
+        //            else if (response.IsDismissAction)
+        //            {
+        //                // Handle dismiss action
+        //            }
+        //            break;
+        //    }
+        //    completionHandler();
+        //}
 
         
 
-        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
-        {
-            new UIAlertViewDelegate();
-        }
-
-        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
-        {
-
-        }
-
-        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
-        {
-
-        }
-
-        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-        {
+        //public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        //{
             
-        }
+        //}
+
+        //public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        //{
+
+        //}
+
+        //public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        //{
+
+        //}
+
+        //public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        //{
+            
+        //}
     }
 }

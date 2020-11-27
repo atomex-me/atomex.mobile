@@ -7,6 +7,7 @@ using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
 using Atomex.Common.Configuration;
 using System.Linq;
+using atomex.Services;
 
 namespace atomex.ViewModel
 {
@@ -36,23 +37,12 @@ namespace atomex.ViewModel
 
             AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
 
-
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
 
-            //ActivityObserver().FireAndForget();
+            _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }
-
-        //private async Task ActivityObserver()
-        //{
-        //    while (true)
-        //    {
-        //        await Task.Delay(TimeSpan.FromMinutes(SettingsViewModel.PeriodOfInactivityInMin));
-        //        Locked?.Invoke(this, EventArgs.Empty);
-        //        return;
-        //    }
-        //}
 
         public void SignOut()
         {

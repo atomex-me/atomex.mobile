@@ -1,5 +1,4 @@
-﻿using System;
-using atomex.Services;
+﻿using atomex.Services;
 using Android.Content;
 using Xamarin.Forms;
 using Android.Widget;
