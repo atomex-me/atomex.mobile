@@ -111,49 +111,49 @@ namespace atomex.iOS
             completionHandler(settings);
         }
 
-        //public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-        //{
-        //    switch (response.ActionIdentifier)
-        //    {
-        //        case "custom":
-        //            // Do something
-        //            break;
-        //        default:
-        //            // Take action based on identifier
-        //            if (response.IsDefaultAction)
-        //            {
-        //                // Handle default action...
-        //                DependencyService.Get<INotificationManager>().RemoveNotifications();
-        //            }
-        //            else if (response.IsDismissAction)
-        //            {
-        //                // Handle dismiss action
-        //            }
-        //            break;
-        //    }
-        //    completionHandler();
-        //}
+        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+        {
+            switch (response.ActionIdentifier)
+            {
+                case "custom":
+                    // Do something
+                    break;
+                default:
+                    // Take action based on identifier
+                    if (response.IsDefaultAction)
+                    {
+                        // Handle default action...
+                        DependencyService.Get<INotificationManager>().RemoveNotifications();
+                    }
+                    else if (response.IsDismissAction)
+                    {
+                        // Handle dismiss action
+                    }
+                    break;
+            }
+            completionHandler();
+        }
 
-        
 
-        //public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
-        //{
-            
-        //}
 
-        //public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
-        //{
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
 
-        //}
+        }
 
-        //public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
-        //{
+        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        {
 
-        //}
+        }
 
-        //public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-        //{
-            
-        //}
+        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        {
+
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            completionHandler(UIBackgroundFetchResult.NewData);
+        }
     }
 }
