@@ -29,7 +29,7 @@ namespace atomex
             _currencyViewModel = currencyViewModel;
             AtomexApp = atomexApp ?? throw new ArgumentNullException(nameof(AtomexApp));
             BindingContext = _currencyViewModel;
-            if (_currencyViewModel.CurrencyCode == "XTZ")
+            if (_currencyViewModel?.CurrencyCode == "XTZ")
             {
                 DelegateButton.IsVisible = true;
             }

@@ -8,13 +8,12 @@
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding CurrencyViewModels}"
-                  ItemTapped="OnListViewItemTapped"
-                  HasUnevenRows="True"
-                  SeparatorVisibility="None"
-                  BackgroundColor="{DynamicResource MainBackgroundColor}"
-                  Footer="">
-            <ListView.Header>
+        <CollectionView ItemsSource="{Binding CurrencyViewModels}"
+                        SelectionMode="Single"
+                        SelectionChanged="Test"
+                        BackgroundColor="{DynamicResource MainBackgroundColor}"
+                        Footer="">
+            <CollectionView.Header>
                 <StackLayout Spacing="0"
                              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
                     <StackLayout HorizontalOptions="FillAndExpand"
@@ -40,76 +39,89 @@
                                  HeightRequest="1"
                                  BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
                 </StackLayout>
-            </ListView.Header>
-            <ListView.ItemTemplate>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
-                        <Grid Padding="10,0"
-                              RowSpacing="3">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*" />
-                                <ColumnDefinition Width="3.5*" />
-                                <ColumnDefinition Width="1.5*" />
-                                <ColumnDefinition Width="3.5*" />
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.RowSpan="2"
-                                   HeightRequest="30"
-                                   WidthRequest="30"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"
-                                   Source="{Binding CurrencyCode}"/>
-                            <Label Grid.Column="1"
-                                   Text="{Binding Currency.Description}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{DynamicResource MainTextColor}"
-                                   FontSize="14"
-                                   VerticalTextAlignment="End"/>
-                            <Label Grid.RowSpan="2"
-                                   Grid.Column="2"
-                                   Text="{Binding PortfolioPercent, StringFormat='{0:0.#} %'}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{DynamicResource MainTextColor}"
-                                   VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Center"
-                                   FontSize="12"/>
-                            <Label Grid.Column="3"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{DynamicResource MainTextColor}"
-                                   HorizontalOptions="End"
-                                   VerticalTextAlignment="End">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
-                                              FontSize="14"/>
-                                        <Span Text=" " /> 
-                                        <Span Text="{Binding CurrencyCode}"
-                                              FontSize="12"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="1"
-                                   Grid.Column="1"
-                                   Text="{Binding Price, StringFormat='{0:f2} $'}"
-                                   VerticalOptions="Start"
-                                   FontFamily="{DynamicResource LightFont}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                   FontSize="10"/>
-                            <Label Grid.Row="1"
-                                   Grid.Column="3"
-                                   Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
-                                   FontFamily="{DynamicResource LightFont}"
-                                   VerticalOptions="Start"
-                                   HorizontalOptions="End"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                   FontSize="10"/>
-                        </Grid>
-                    </custom:CustomViewCell>
+                    <Grid Padding="10,0"
+                            RowSpacing="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="3.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="3.5*" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+					        <VisualStateGroup Name="CommonStates">
+						        <VisualState Name="Normal" />
+						        <VisualState Name="Selected">
+							        <VisualState.Setters>
+								        <Setter Property="BackgroundColor" Value="{DynamicResource ListViewSelectedBackgroundColor}" />
+							        </VisualState.Setters>
+						        </VisualState>
+                                <!--<VisualState Name="UnSelected">
+							        <VisualState.Setters>
+								        <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}" />
+							        </VisualState.Setters>
+						        </VisualState>-->
+					        </VisualStateGroup>
+				        </VisualStateManager.VisualStateGroups>
+                        <Image Grid.RowSpan="2"
+                               HeightRequest="30"
+                               WidthRequest="30"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Source="{Binding CurrencyCode}"/>
+                        <Label Grid.Column="1"
+                               Text="{Binding Currency.Description}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{DynamicResource MainTextColor}"
+                               FontSize="14"
+                               VerticalTextAlignment="End"/>
+                        <Label Grid.RowSpan="2"
+                               Grid.Column="2"
+                               Text="{Binding PortfolioPercent, StringFormat='{0:0.#} %'}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{DynamicResource MainTextColor}"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               FontSize="12"/>
+                        <Label Grid.Column="3"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{DynamicResource MainTextColor}"
+                               HorizontalOptions="End"
+                               VerticalTextAlignment="End">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
+                                          FontSize="14"/>
+                                    <Span Text=" " /> 
+                                    <Span Text="{Binding CurrencyCode}"
+                                          FontSize="12"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding Price, StringFormat='{0:f2} $'}"
+                               VerticalOptions="Start"
+                               FontFamily="{DynamicResource LightFont}"
+                               TextColor="{DynamicResource AdditionalTextColor}"
+                               FontSize="10"/>
+                        <Label Grid.Row="1"
+                               Grid.Column="3"
+                               Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
+                               FontFamily="{DynamicResource LightFont}"
+                               VerticalOptions="Start"
+                               HorizontalOptions="End"
+                               TextColor="{DynamicResource AdditionalTextColor}"
+                               FontSize="10"/>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>            
+            </CollectionView.ItemTemplate>
+        </CollectionView>            
     </ContentPage.Content>
 </ContentPage>

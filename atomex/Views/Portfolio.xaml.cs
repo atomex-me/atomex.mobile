@@ -98,5 +98,12 @@ namespace atomex
                     listView.SelectedItem = null;
             }
         }
+
+        private void Test(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.Count > 0)
+                _navigationService.ShowCurrency(e.CurrentSelection.First() as CurrencyViewModel);
+            //VisualStateManager.GoToState((Grid)sender, "UnSelected");
+        }
     }
 }
