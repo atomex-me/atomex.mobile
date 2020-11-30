@@ -44,31 +44,19 @@ namespace atomex.Views.CreateNewWallet
                     NameHint.IsVisible = true;
                     NameHint.Text = Entry.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        NameHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        Entry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        NameHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = NameHint.FadeTo(1, 500, Easing.Linear);
+                    _ = Entry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = NameHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    NameHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    Entry.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await NameHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    NameHint.FadeTo(0, 500, Easing.Linear),
+                    Entry.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    NameHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+                
                 NameHint.IsVisible = false;
             }
         }

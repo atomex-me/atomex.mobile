@@ -18,6 +18,7 @@ namespace atomex
             InitializeComponent();
             _sendViewModel = sendViewModel;
             BindingContext = sendViewModel;
+            Amount.Placeholder = AppResources.AmountEntryPlaceholder + ", " + sendViewModel.CurrencyCode;
             if (sendViewModel.Currency.FeeCode == "ETH")
             {
                 GasLayout.IsVisible = true;
@@ -99,33 +100,21 @@ namespace atomex
                 if (!AmountHint.IsVisible)
                 {
                     AmountHint.IsVisible = true;
-                    AmountHint.Text = Amount.Placeholder + ", " + _sendViewModel.CurrencyCode;
+                    AmountHint.Text = Amount.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        AmountHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = AmountHint.FadeTo(1, 500, Easing.Linear);
+                    _ = Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    AmountHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    AmountHint.FadeTo(0, 500, Easing.Linear),
+                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+
                 AmountHint.IsVisible = false;
             }
         }
@@ -139,31 +128,19 @@ namespace atomex
                     AddressHint.IsVisible = true;
                     AddressHint.Text = Address.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        AddressHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        Address.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        AddressHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = AddressHint.FadeTo(1, 500, Easing.Linear);
+                    _ = Address.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = AddressHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    AddressHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    Address.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await AddressHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    AddressHint.FadeTo(0, 500, Easing.Linear),
+                    Address.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    AddressHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+
                 AddressHint.IsVisible = false;
             }
         }
@@ -182,31 +159,19 @@ namespace atomex
                     FeeHint.IsVisible = true;
                     FeeHint.Text = Fee.Placeholder + ", " + _sendViewModel.CurrencyViewModel.FeeCurrencyCode;
 
-                    await Task.Run(() =>
-                    {
-                        FeeHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        Fee.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        FeeHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = FeeHint.FadeTo(1, 500, Easing.Linear);
+                    _ = Fee.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = FeeHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    FeeHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    Fee.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await FeeHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    FeeHint.FadeTo(0, 500, Easing.Linear),
+                    Fee.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    FeeHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+
                 FeeHint.IsVisible = false;
             }
         }

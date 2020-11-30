@@ -43,31 +43,19 @@ namespace atomex.Views.CreateNewWallet
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        PasswordHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = PasswordHint.FadeTo(1, 500, Easing.Linear);
+                    _ = PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    PasswordHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    PasswordHint.FadeTo(0, 500, Easing.Linear),
+                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, PasswordEntry.Text);

@@ -45,31 +45,18 @@ namespace atomex.Views.CreateNewWallet
                     PasswordHint.IsVisible = true;
                     PasswordHint.Text = PasswordEntry.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        PasswordHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = PasswordHint.FadeTo(1, 500, Easing.Linear);
+                    _ = PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    PasswordHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    PasswordHint.FadeTo(0, 500, Easing.Linear),
+                    PasswordEntry.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    PasswordHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
                 PasswordHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, args.NewTextValue);
@@ -99,31 +86,18 @@ namespace atomex.Views.CreateNewWallet
                     PasswordConfirmationHint.IsVisible = true;
                     PasswordConfirmationHint.Text = PasswordConfirmationEntry.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        PasswordConfirmationHint.FadeTo(1, 500, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordConfirmationEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        PasswordConfirmationHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = PasswordConfirmationHint.FadeTo(1, 500, Easing.Linear);
+                    _ = PasswordConfirmationEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = PasswordConfirmationHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    PasswordConfirmationHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    PasswordConfirmationEntry.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await PasswordConfirmationHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    PasswordConfirmationHint.FadeTo(0, 500, Easing.Linear),
+                    PasswordConfirmationEntry.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    PasswordConfirmationHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
                 PasswordConfirmationHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPasswordConfirmation, args.NewTextValue);

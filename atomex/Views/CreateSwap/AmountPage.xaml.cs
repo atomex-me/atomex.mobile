@@ -44,16 +44,6 @@ namespace atomex.Views.CreateSwap
 
         private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
-            //try
-            //{
-            //    decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
-            //    _conversionViewModel.Amount = amount;
-            //}
-            //catch (FormatException)
-            //{
-            //    _conversionViewModel.Amount = 0;
-            //}
-
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
                 if (!AmountHint.IsVisible)
@@ -61,31 +51,19 @@ namespace atomex.Views.CreateSwap
                     AmountHint.IsVisible = true;
                     AmountHint.Text = Amount.Placeholder;
 
-                    await Task.Run(() =>
-                    {
-                        AmountHint.FadeTo(1, 1000, Easing.Linear);
-                    });
-                    await Task.Run(() =>
-                    {
-                        Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    });
-                    await Task.Run(() =>
-                    {
-                        AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
-                    });
+                    _ = AmountHint.FadeTo(1, 500, Easing.Linear);
+                    _ = Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
+                    _ = AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
                 }
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    AmountHint.FadeTo(0, 500, Easing.Linear);
-                });
-                await Task.Run(() =>
-                {
-                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut);
-                });
-                await AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut);
+                await Task.WhenAll(
+                    AmountHint.FadeTo(0, 500, Easing.Linear),
+                    Amount.TranslateTo(0, 0, 500, Easing.CubicOut),
+                    AmountHint.TranslateTo(0, -10, 500, Easing.CubicOut)
+                );
+         
                 AmountHint.IsVisible = false;
             }
         }
