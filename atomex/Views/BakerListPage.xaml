@@ -20,17 +20,14 @@
                        HeightRequest="70"
                        TextChanged="OnSearchBakerTextChanged"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <ListView ItemsSource="{Binding FromBakersList}"
-                      ItemTapped="OnBakerTapped"
-                      CachingStrategy="RecycleElementAndDataTemplate"
-                      x:Name="BakersListView"
-                      SeparatorVisibility="None"
-                      HasUnevenRows="True"
-                      VerticalOptions="FillAndExpand"
-                      Footer="">
-                <ListView.ItemTemplate>
+            <CollectionView ItemsSource="{Binding FromBakersList}"
+                            SelectionMode="Single"
+                            SelectionChanged="BakerSelected"
+                            x:Name="BakersListView"
+                            VerticalOptions="FillAndExpand"
+                            Footer="">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell Height="61">
                             <Grid Margin="0"
                                   Padding="10,0"
                                   ColumnSpacing="0"
@@ -153,10 +150,9 @@
                                          Grid.ColumnSpan="2"
                                          Style="{DynamicResource SeparatorStyle}"/>
                             </Grid>
-                        </ViewCell>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

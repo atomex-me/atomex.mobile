@@ -25,19 +25,19 @@ namespace atomex
             OnBakerSelected = onBakerSelected;
         }
 
-        private async void OnBakerTapped(object sender, ItemTappedEventArgs args)
+        private async void BakerSelected(object sender, SelectionChangedEventArgs args)
         {
-            if (args.Item == null)
-                return;
+            if (args.CurrentSelection.Count > 0)
+            {
+                var baker = args.CurrentSelection.First() as BakerViewModel;
 
-            var baker = args.Item as BakerViewModel;
+                if (baker == null)
+                    return;
 
-            if (baker == null)
-                return;
+                OnBakerSelected.Invoke(baker);
 
-            OnBakerSelected.Invoke(baker);
-
-            await Navigation.PopAsync();
+                await Navigation.PopAsync();
+            }
         }
 
         private void OnSearchBakerTextChanged(object sender, TextChangedEventArgs args)

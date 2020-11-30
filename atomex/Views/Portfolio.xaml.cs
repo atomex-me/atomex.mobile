@@ -88,18 +88,7 @@ namespace atomex
             }
         }
 
-        private void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            if (e.Item != null)
-            {
-                _navigationService.ShowCurrency(e.Item as CurrencyViewModel);
-                var listView = sender as ListView;
-                if (listView != null)
-                    listView.SelectedItem = null;
-            }
-        }
-
-        private void Test(object sender, SelectionChangedEventArgs e)
+        private void ItemSelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection.Count > 0)
                 _navigationService.ShowCurrency(e.CurrentSelection.First() as CurrencyViewModel);

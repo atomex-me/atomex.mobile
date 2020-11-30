@@ -10,7 +10,7 @@
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding CurrencyViewModels}"
                         SelectionMode="Single"
-                        SelectionChanged="Test"
+                        SelectionChanged="ItemSelected"
                         BackgroundColor="{DynamicResource MainBackgroundColor}"
                         Footer="">
             <CollectionView.Header>
