@@ -28,7 +28,7 @@ namespace atomex.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
-        public string DeviceToken { get; set; }
+        private string DeviceToken { get; set; }
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
@@ -50,7 +50,7 @@ namespace atomex.iOS
 
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
-                    Console.WriteLine(granted);
+                    Log.Error("No rights granted for notifications");
                 });
             }
             else

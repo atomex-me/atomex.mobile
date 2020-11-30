@@ -17,7 +17,7 @@ namespace atomex.Droid.Services
 
         public void SendRegistrationTokenToServer(string token)
         {
-            // send token to server
+            App.DeviceToken = token;
         }
     }
 }

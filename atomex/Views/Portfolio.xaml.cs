@@ -103,6 +103,9 @@ namespace atomex
         {
             if (e.CurrentSelection.Count > 0)
                 _navigationService.ShowCurrency(e.CurrentSelection.First() as CurrencyViewModel);
+            var collectionView = sender as CollectionView;
+            if (collectionView != null)
+                collectionView.SelectedItem = null;
             //VisualStateManager.GoToState((Grid)sender, "UnSelected");
         }
     }

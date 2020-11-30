@@ -30,22 +30,22 @@ namespace atomex.Droid.Services
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
             //intent.PutExtra("SomeSpecialKey", "some special value");
-            foreach (var key in data.Keys)
-            {
-                intent.PutExtra(key, data[key]);
-            }
+            //foreach (var key in data.Keys)
+            //{
+            //    intent.PutExtra(key, data[key]);
+            //}
 
-            if (intent.Extras != null)
-            {
-                if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
-                {
-                    if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
-                        intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
-                    {
-                        messageBody = string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey));
-                    }
-                }
-            }
+            //if (intent.Extras != null)
+            //{
+            //    if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
+            //    {
+            //        if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
+            //            intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
+            //        {
+            //            messageBody = string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey));
+            //        }
+            //    }
+            //}
 
             var pendingIntent = PendingIntent.GetActivity(this,
                 AndroidNotificationManager.NOTIFICATION_ID,
@@ -53,11 +53,10 @@ namespace atomex.Droid.Services
                 PendingIntentFlags.OneShot);
 
             var notificationBuilder = new NotificationCompat.Builder(this, AndroidNotificationManager.CHANNEL_ID)
-                //.SetSmallIcon(Resource.Drawable.ic_stat_ic_notification)
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle("Atomex")
                 .SetContentText(messageBody)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.ic_launcher))
+                .SetLargeIcon(BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.ic_launcher))
                 .SetSmallIcon(Resource.Drawable.ic_notification)
                 .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
 
