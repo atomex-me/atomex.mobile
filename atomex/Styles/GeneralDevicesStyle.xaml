@@ -255,7 +255,7 @@
     <!-- Portfolio Page -->
     <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
         <Setter Property="HeightRequest" Value="240"/>
-        <Setter Property="Margin" Value="0,10"/>
+        <Setter Property="Margin" Value="0,20"/>
     </Style>
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
@@ -296,7 +296,7 @@
         <Setter Property="IsVisible" Value="False"/>
         <Setter Property="Padding">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="Thickness" iOS="0,10,0,14" Android="0,16,0,17"/>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0,15" Android="0,16,0,17"/>
             </Setter.Value>
         </Setter>
     </Style>

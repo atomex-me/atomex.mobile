@@ -24,15 +24,11 @@
               Refreshing="UpdateCurrency"
               x:Name="TxListView"
               RefreshControlColor="{DynamicResource HintTextColor}"
+              BackgroundColor="{DynamicResource MainBackgroundColor}"
               Footer="">
         <ListView.Header>
             <StackLayout Spacing="0"
                          BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-                <StackLayout HorizontalOptions="FillAndExpand"
-                             VerticalOptions="Start"
-                             Spacing="0"
-                             HeightRequest="1"
-                             BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
                 <StackLayout VerticalOptions="Center" Margin="0,20">
                     <Image Style="{DynamicResource CurrencyIconStyle}"
                            Source="{Binding CurrencyCode}"/>
@@ -85,11 +81,7 @@
                                                         Clicked="ShowConversionPage"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout HorizontalOptions="FillAndExpand"
-                             VerticalOptions="Start"
-                             Spacing="0"
-                             HeightRequest="1"
-                             BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout IsVisible="False"
                              x:Name="NoTxsLayout"
                              BackgroundColor="{DynamicResource MainBackgroundColor}"
@@ -135,14 +127,18 @@
         <ListView.GroupHeaderTemplate>
             <DataTemplate>
                 <ViewCell Height="20">
-                    <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                           BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                           TextColor="{DynamicResource AdditionalTextColor}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           Padding="10,0"
-                           FontSize="12"
-                           VerticalTextAlignment="Center"
-                           VerticalOptions="CenterAndExpand"/>
+                    <StackLayout HeightRequest="20"
+                                 BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                                 Spacing="0">
+                        <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                               BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                               TextColor="{DynamicResource AdditionalTextColor}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               Padding="10,0"
+                               FontSize="12"
+                               VerticalTextAlignment="Center"
+                               VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
                 </ViewCell>
             </DataTemplate>
         </ListView.GroupHeaderTemplate>

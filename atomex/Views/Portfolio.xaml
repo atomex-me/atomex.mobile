@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
@@ -11,15 +10,11 @@
         <CollectionView ItemsSource="{Binding CurrencyViewModels}"
                         SelectionMode="Single"
                         SelectionChanged="ItemSelected"
-                        BackgroundColor="{DynamicResource MainBackgroundColor}"
+                        BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                         Footer="">
             <CollectionView.Header>
                 <StackLayout Spacing="0"
                              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-                    <StackLayout HorizontalOptions="FillAndExpand"
-                                 Spacing="0"
-                                 HeightRequest="1"
-                                 BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
                     <RelativeLayout Style="{DynamicResource PortfolioChartStyle}">
                         <chart:ChartView x:Name="PortfolioChart"
                                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -34,16 +29,14 @@
                                    Style="{DynamicResource MainWalletLabelStyle}"/>
                         </StackLayout>
                     </RelativeLayout>
-                    <StackLayout HorizontalOptions="FillAndExpand"
-                                 Spacing="0"
-                                 HeightRequest="1"
-                                 BackgroundColor="{DynamicResource ListViewSeparatorColor}"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10,0"
-                            RowSpacing="3">
+                          RowSpacing="3"
+                          BackgroundColor="{DynamicResource MainBackgroundColor}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
@@ -62,11 +55,6 @@
 								        <Setter Property="BackgroundColor" Value="{DynamicResource ListViewSelectedBackgroundColor}" />
 							        </VisualState.Setters>
 						        </VisualState>
-                                <!--<VisualState Name="UnSelected">
-							        <VisualState.Setters>
-								        <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}" />
-							        </VisualState.Setters>
-						        </VisualState>-->
 					        </VisualStateGroup>
 				        </VisualStateManager.VisualStateGroups>
                         <Image Grid.RowSpan="2"

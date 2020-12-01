@@ -53,14 +53,18 @@
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <ViewCell Height="20">
-                            <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                   BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   Padding="10,0"
-                                   FontSize="12"
-                                   VerticalTextAlignment="Center"
-                                   VerticalOptions="CenterAndExpand"/>
+                            <StackLayout HeightRequest="20"
+                                         BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                                         Spacing="0">
+                                <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                       BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       Padding="10,0"
+                                       FontSize="12"
+                                       VerticalTextAlignment="Center"
+                                       VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
                          </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>

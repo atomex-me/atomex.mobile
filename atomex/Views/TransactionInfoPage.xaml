@@ -428,7 +428,8 @@
                     TextColor="{DynamicResource ErrorTextColor}"
                     IsVisible="{Binding CanBeRemoved}"
                     Clicked="OnDeleteTxButtonClicked"/>
-            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"
+                         IsVisible="{Binding CanBeRemoved}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
