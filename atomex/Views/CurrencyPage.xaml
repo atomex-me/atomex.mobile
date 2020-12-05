@@ -95,9 +95,9 @@
                         </DataTrigger>
                     </StackLayout.Triggers>
                     <Image Source="Magnifier"
-                            WidthRequest="60"
-                            HeightRequest="60"
-                            Margin="20,20,20,10"
+                            WidthRequest="45"
+                            HeightRequest="45"
+                            Margin="20,40,20,10"
                             VerticalOptions="CenterAndExpand"/>
                     <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
                             FontFamily="{DynamicResource RegularFont}"

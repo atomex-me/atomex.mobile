@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.MyWalletsPage"
              Title="{x:Static resources:AppResources.MyWalletsTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
     <ContentPage.Content>
         <StackLayout Padding="20,0">
             <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"
@@ -15,6 +15,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalScrollBarVisibility="Never"
+                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>

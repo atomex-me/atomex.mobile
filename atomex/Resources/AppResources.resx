@@ -23,6 +23,12 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
+     <data name="MainNetButton" xml:space="preserve">
+        <value>MainNet</value>
+    </data>
+    <data name="TestNetButton" xml:space="preserve">
+        <value>TestNet</value>
+    </data>
     <data name="PasswordEntryPlaceholder" xml:space="preserve">
         <value>Password</value>
     </data>
@@ -122,7 +128,7 @@
         <value>Step 3: Mnemonic phrase</value>
     </data>
     <data name="MnemonicDescriptionText" xml:space="preserve">
-        <value>     Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place</value>
+        <value>Mnemonic phrase is used to restore your wallet if the data on your device has been lost. Please, write it down and keep it in safe place</value>
     </data>
     <data name="LanguageLabel" xml:space="preserve">
         <value>Language</value>
@@ -137,10 +143,10 @@
         <value>Generate</value>
     </data>
     <data name="LoseMnemonicPhraseText" xml:space="preserve">
-        <value>     If you lose your mnemonic phrase, your wallet cannot be recovered</value>
+        <value>If you lose your mnemonic phrase, your wallet cannot be recovered</value>
     </data>
     <data name="EnterMnemonicPhraseLabel" xml:space="preserve">
-        <value>     Please, enter a mnemonic phrase for your wallet</value>
+        <value>Please, enter a mnemonic phrase for your wallet</value>
     </data>
     <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
         <value>Enter mnemonic phrase here...</value>
@@ -149,16 +155,16 @@
         <value>Step 4: Derived key password (optional)</value>
     </data>
     <data name="DerivedPasswordDescriptionText" xml:space="preserve">
-        <value>     This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and its password</value>
+        <value>This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and its password</value>
     </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
-        <value>   If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
+        <value>If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
     </data>
     <data name="StoragePasswordStepLabel" xml:space="preserve">
         <value>Step 5: Storage password</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>   This password is used to protect the stored secret keys and will be needed every time you start your wallet application.</value>
+        <value>This password is used to protect the stored secret keys and will be needed every time you start your wallet application.</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>
@@ -307,10 +313,10 @@
         <value>Do you really want to delegate?</value>
     </data>
     <data name="FromLabel" xml:space="preserve">
-        <value>From</value>
+        <value>From:</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
-        <value>To</value>
+        <value>To:</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Copy Uri and Exit</value>

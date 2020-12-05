@@ -9,14 +9,15 @@
     <ScrollView>
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
-                     Margin="20,0">
+                     Style="{DynamicResource CreateWalletStackLayoutStyle}">
             <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
                    Style="{DynamicResource CreateNewWalletTitleStyle}"/>
             <Label Text="{x:Static resources:AppResources.MnemonicDescriptionText}"
-                   Style="{DynamicResource CreateNewWalletTextStyle}"/>
+                   Style="{DynamicResource CreateNewWalletLeftAlignTextStyle}"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
-                  RowSpacing="0">
+                  RowSpacing="0"
+                  Margin="0,10,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
                     <RowDefinition Height="35" />

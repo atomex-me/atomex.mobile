@@ -46,7 +46,7 @@ namespace atomex.Views.CreateNewWallet
 
                     _ = NameHint.FadeTo(1, 500, Easing.Linear);
                     _ = Entry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = NameHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = NameHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else

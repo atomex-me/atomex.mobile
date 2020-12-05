@@ -26,7 +26,7 @@
                                  HorizontalOptions="FillAndExpand">
                         <StackLayout VerticalOptions="CenterAndExpand"
                                      HorizontalOptions="Start"
-                                     Padding="20,0,0,0">
+                                     Padding="15,0,0,0">
                             <Image WidthRequest="24"
                                    HeightRequest="24"
                                    HorizontalOptions="CenterAndExpand"
@@ -37,7 +37,8 @@
                             </Image>
                         </StackLayout>
                         <RelativeLayout HorizontalOptions="FillAndExpand"
-                                        HeightRequest="60">
+                                        HeightRequest="60"
+                                        Margin="-10,0,0,0">
                             <controls:CustomEntry x:Name="PasswordEntry"
                                                   Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
                                                   Keyboard="Text"

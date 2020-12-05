@@ -65,7 +65,7 @@
                                    TextColor="{DynamicResource AdditionalTextColor}"
                                    FontFamily="{DynamicResource LightFont}"
                                    FontSize="10"
-                                   Margin="0,5"
+                                   Margin="0,3"
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Row="1"
@@ -74,7 +74,7 @@
                                    FontFamily="{DynamicResource LightFont}"
                                    TextColor="{DynamicResource AdditionalTextColor}"
                                    FontSize="10"
-                                   Margin="10,5"
+                                   Margin="10,3"
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="End" />
                         </Grid>

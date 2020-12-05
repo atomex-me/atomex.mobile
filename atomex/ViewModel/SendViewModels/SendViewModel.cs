@@ -70,7 +70,7 @@ namespace atomex.ViewModel.SendViewModels
         public decimal Amount
         {
             get => _amount;
-            set { UpdateAmount(value); }
+            set { _ = UpdateAmount(value); }
         }
 
         public string AmountString

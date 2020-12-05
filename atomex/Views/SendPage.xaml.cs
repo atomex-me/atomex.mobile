@@ -104,7 +104,7 @@ namespace atomex
 
                     _ = AmountHint.FadeTo(1, 500, Easing.Linear);
                     _ = Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = AmountHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else
@@ -130,7 +130,7 @@ namespace atomex
 
                     _ = AddressHint.FadeTo(1, 500, Easing.Linear);
                     _ = Address.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = AddressHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = AddressHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else
@@ -161,7 +161,7 @@ namespace atomex
 
                     _ = FeeHint.FadeTo(1, 500, Easing.Linear);
                     _ = Fee.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = FeeHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = FeeHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else

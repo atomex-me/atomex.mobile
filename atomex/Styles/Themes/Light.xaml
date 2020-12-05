@@ -14,11 +14,11 @@
     <Color x:Key="MainButtonBorderColor">#3a6cb1</Color>
     <Color x:Key="MainButtonTextColor">#ffffff</Color>
     <Color x:Key="AdditionalButtonBackgroundColor">#ffffff</Color>
-    <Color x:Key="AdditionalButtonBorderColor">#223a66</Color>
+    <Color x:Key="AdditionalButtonBorderColor">#909CB2</Color>
     <Color x:Key="AdditionalButtonTextColor">#223a66</Color>
 
     <Color x:Key="NavigationBarTextColor">#ffffff</Color>
-    <Color x:Key="MainTextColor">#000000</Color>
+    <Color x:Key="MainTextColor">#454545</Color>
     <Color x:Key="AdditionalTextColor">#918f92</Color>
     <Color x:Key="LogoLabelColor">#ffffff</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>

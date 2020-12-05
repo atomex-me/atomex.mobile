@@ -15,6 +15,10 @@
         <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
+    <Style x:Key="WalletTypeButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="WidthRequest" Value="150"/>
+    </Style>
     <Style x:Key="AdditionalButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
         <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
@@ -105,7 +109,7 @@
         <Setter Property="TextColor" Value="{DynamicResource ErrorTextColor}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
 
@@ -143,7 +147,7 @@
 
     <!-- Create New Wallet Pages -->
     <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -152,7 +156,13 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="CreateNewWalletLeftAlignTextStyle" TargetType="Label" BasedOn="{StaticResource CreateNewWalletTextStyle}">
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+    </Style>
+    <Style x:Key="CreateWalletStackLayoutStyle" TargetType="StackLayout">
+        <Setter Property="Margin" Value="30,0"/>
     </Style>
     <Style x:Key="MnemonicPhraseEditorStyle" TargetType="Editor">
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
@@ -191,7 +201,7 @@
     <Style x:Key="SelectWalletTextStyle" TargetType="Label">
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="20,20,20,5"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BlackFont}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
@@ -237,7 +247,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 
     <!-- Settings Pages -->

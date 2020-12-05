@@ -9,7 +9,7 @@
     <ScrollView x:Name="ScrollView">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
-                     Margin="20,0"
+                     Style="{DynamicResource CreateWalletStackLayoutStyle}"
                      Spacing="0">
             <StackLayout x:Name="Labels">
                 <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
@@ -19,6 +19,7 @@
             </StackLayout>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
+                  Margin="0,10,0,0"
                   RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />

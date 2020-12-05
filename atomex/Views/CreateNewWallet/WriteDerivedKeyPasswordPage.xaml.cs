@@ -36,7 +36,7 @@ namespace atomex.Views.CreateNewWallet
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (!String.IsNullOrEmpty(args.NewTextValue))
+            if (!string.IsNullOrEmpty(args.NewTextValue))
             {
                 if (!PasswordHint.IsVisible)
                 {
@@ -45,7 +45,7 @@ namespace atomex.Views.CreateNewWallet
 
                     _ = PasswordHint.FadeTo(1, 500, Easing.Linear);
                     _ = PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = PasswordHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else

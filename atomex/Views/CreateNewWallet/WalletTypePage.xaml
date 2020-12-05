@@ -12,29 +12,14 @@
                Style="{DynamicResource CreateNewWalletTitleStyle}"/>
         <Label Text="{x:Static resources:AppResources.SelectTypeLabel}"
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
-        <Frame Padding="0"
-               HasShadow="False"
-               CornerRadius="10"
-               x:Name="Frame">
-            <RelativeLayout WidthRequest="220">
-                <custom:CustomPicker ItemsSource="{Binding Networks}"
-                                     SelectedItem="{Binding Network}"
-                                     x:Name="Picker"
-                                     Focused="OnPickerFocused"
-                                     Unfocused="OnPickerFocused"
-                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                     Style="{DynamicResource PickerStyle}"/>
-                <Image Source="DownArrowPicker"
-                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Width, Factor=0.9}"
-                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Picker, Property=Height, Factor=0.5, Constant=-5}"
-                       WidthRequest="10"
-                       HeightRequest="10"/>
-            </RelativeLayout>
-        </Frame>
-        <Button Text="{x:Static resources:AppResources.NextButton}"
-                Margin="0,20"
-                Style="{DynamicResource MainButtonStyle}"
-                Clicked="OnNextButtonClicked"/>
+        <StackLayout Orientation="Horizontal" Margin="0,20" HorizontalOptions="Center">
+            <custom:LeftRoundedButton Text="{x:Static resources:AppResources.MainNetButton}"
+                Style="{DynamicResource WalletTypeButtonStyle}"
+                Clicked="OnMainNetButtonClicked"/>
+            <custom:RightRoundedButton Text="{x:Static resources:AppResources.TestNetButton}"
+                Style="{DynamicResource WalletTypeButtonStyle}"
+                Clicked="OnTestNetButtonClicked"/>
+        </StackLayout>
     </StackLayout> 
    
 </ContentPage>

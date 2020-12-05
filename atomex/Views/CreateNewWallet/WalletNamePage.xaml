@@ -17,6 +17,7 @@
             </StackLayout>
             <Frame x:Name="Frame"
                    Style="{DynamicResource EntryFrameStyle}"
+                   Margin="0,10,0,0"
                    CornerRadius="10">
                 <StackLayout HeightRequest="60">
                     <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">

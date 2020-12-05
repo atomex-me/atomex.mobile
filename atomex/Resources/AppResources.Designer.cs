@@ -65,6 +65,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MainNetButton {
+            get {
+                return ResourceManager.GetString("MainNetButton", resourceCulture);
+            }
+        }
+
+        internal static string TestNetButton {
+            get {
+                return ResourceManager.GetString("TestNetButton", resourceCulture);
+            }
+        }
+
         internal static string PasswordEntryPlaceholder {
             get {
                 return ResourceManager.GetString("PasswordEntryPlaceholder", resourceCulture);

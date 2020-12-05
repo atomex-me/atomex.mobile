@@ -6,8 +6,7 @@ namespace atomex.Views.CreateNewWallet
 {
     public partial class WalletTypePage : ContentPage
     {
-
-        private CreateNewWalletViewModel _createNewWalletViewModel;
+        private readonly CreateNewWalletViewModel _createNewWalletViewModel;
 
         public WalletTypePage()
         {
@@ -17,17 +16,21 @@ namespace atomex.Views.CreateNewWallet
         public WalletTypePage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
+
             _createNewWalletViewModel = createNewWalletViewModel;
-            BindingContext = createNewWalletViewModel;
         }
 
-        private void OnPickerFocused(object sender, FocusEventArgs args)
+        private async void OnMainNetButtonClicked(object sender, EventArgs args)
         {
-            Frame.HasShadow = args.IsFocused;
+            _createNewWalletViewModel.Network = Atomex.Core.Network.MainNet;
+
+            await Navigation.PushAsync(new WalletNamePage(_createNewWalletViewModel));
         }
 
-        private async void OnNextButtonClicked(object sender, EventArgs args)
+        private async void OnTestNetButtonClicked(object sender, EventArgs args)
         {
+            _createNewWalletViewModel.Network = Atomex.Core.Network.TestNet;
+
             await Navigation.PushAsync(new WalletNamePage(_createNewWalletViewModel));
         }
     }

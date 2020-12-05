@@ -53,7 +53,7 @@ namespace atomex.Views.CreateSwap
 
                     _ = AmountHint.FadeTo(1, 500, Easing.Linear);
                     _ = Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = AmountHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = AmountHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else

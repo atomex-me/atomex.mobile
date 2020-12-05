@@ -50,7 +50,7 @@ namespace atomex
 
                     _ = PasswordHint.FadeTo(1, 500, Easing.Linear);
                     _ = PasswordEntry.TranslateTo(0, 10, 500, Easing.CubicOut);
-                    _ = PasswordHint.TranslateTo(0, -20, 500, Easing.CubicOut);
+                    _ = PasswordHint.TranslateTo(0, -15, 500, Easing.CubicOut);
                 }
             }
             else
