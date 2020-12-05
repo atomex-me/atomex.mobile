@@ -20,7 +20,7 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>atomex</string>
+	<string>Atomex</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.atomex.ios</string>
 	<key>CFBundleVersion</key>
@@ -57,5 +57,9 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 </dict>
 </plist>

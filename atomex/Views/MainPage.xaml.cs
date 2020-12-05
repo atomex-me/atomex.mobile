@@ -1,19 +1,21 @@
 ﻿using System.ComponentModel;
+
 using Xamarin.Forms;
-using atomex.ViewModel;
-using atomex.Views.CreateSwap;
-using atomex.Resources;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Application = Xamarin.Forms.Application;
-using TabbedPage = Xamarin.Forms.TabbedPage;
+
+using atomex.CustomElements;
+using atomex.Resources;
+using atomex.ViewModel;
+using atomex.Views.CreateSwap;
 
 namespace atomex
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
-    public partial class MainPage : TabbedPage, INavigationService
+    public partial class MainPage : CustomTabbedPage, INavigationService
     {
         private readonly NavigationPage navigationConversionPage;
 
@@ -23,6 +25,8 @@ namespace atomex
 
         public MainPage(MainViewModel mainViewModel)
         {
+            InitializeComponent();
+
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             _mainViewModel = mainViewModel;
 
@@ -56,22 +60,20 @@ namespace atomex
                     navigationConversionPage.BarBackgroundColor =
                     navigationSettingsPage.BarBackgroundColor =
                     (Color)navBarColor;
+
             if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
                 navigationWalletsListPage.BarTextColor =
                     navigationPortfolioPage.BarTextColor =
                     navigationConversionPage.BarTextColor =
                     navigationSettingsPage.BarTextColor =
                     (Color)navBarTextColor;
+
             if (Application.Current.Resources.TryGetValue("TabBarBackgroundColor", out var tabBarBackgroundColor))
                 navigationWalletsListPage.BackgroundColor =
-                    navigationPortfolioPage.BackgroundColor=
+                    navigationPortfolioPage.BackgroundColor =
                     navigationConversionPage.BackgroundColor =
                     navigationSettingsPage.BackgroundColor =
                     (Color)tabBarBackgroundColor;
-            if (Application.Current.Resources.TryGetValue("SelectedTabColor", out var selectedTabColor))
-                this.SelectedTabColor = (Color)selectedTabColor;
-            if (Application.Current.Resources.TryGetValue("UnselectedTabColor", out var unSelectedTabColor))
-                this.UnselectedTabColor = (Color)unSelectedTabColor;
 
             Children.Add(navigationPortfolioPage);
             Children.Add(navigationWalletsListPage);
@@ -92,19 +94,20 @@ namespace atomex
 
             if (Application.Current.Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
                 ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
+
             if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
                 ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
         public void ConvertCurrency(string currencyCode)
         {
-            var conversionViewModel = navigationConversionPage.RootPage.BindingContext as ConversionViewModel;
-            if (conversionViewModel != null)
+            if (navigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
                 navigationConversionPage.Navigation.PopToRootAsync(false);
                 navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
-                this.CurrentPage = navigationConversionPage;
+
+                CurrentPage = navigationConversionPage;
             }
         }
 
@@ -112,7 +115,8 @@ namespace atomex
         {
             navigationWalletsListPage.Navigation.PopToRootAsync(false);
             navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
-            this.CurrentPage = navigationWalletsListPage;
+
+            CurrentPage = navigationWalletsListPage;
         }
     }
 }

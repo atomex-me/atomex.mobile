@@ -83,7 +83,8 @@
                                        Grid.ColumnSpan="4"
                                        Padding="0"
                                        HasShadow="False"
-                                       CornerRadius="10"/>
+                                       CornerRadius="10"
+                                       BackgroundColor="{DynamicResource ListViewItemBackgroundColor}"/>
                                 <Label Text="{Binding Balance, StringFormat='{0:0.##} XTZ'}"
                                        VerticalTextAlignment="End"
                                        TextColor="{DynamicResource MainTextColor}"

@@ -101,7 +101,8 @@
             </StackLayout>
             <Frame Padding="0"
                    CornerRadius="10"
-                   HasShadow="False">
+                   HasShadow="False"
+                   Style="{DynamicResource QrCodeFrameStyle}">
                 <StackLayout Spacing="0"
                              VerticalOptions="FillAndExpand">
                     <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"

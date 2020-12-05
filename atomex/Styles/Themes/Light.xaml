@@ -28,6 +28,7 @@
     <Color x:Key="DefaultFrameBackgroundColor">#ffffff</Color>
 
     <Color x:Key="ListViewSeparatorColor">#e0e0e0</Color>
+    <Color x:Key="ListViewItemBackgroundColor">White</Color>
     <Color x:Key="ListViewSelectedBackgroundColor">LightGray</Color>
 
 
@@ -49,5 +50,16 @@
     <Color x:Key="TxListViewFailedStateColor">#44ffcccc</Color>
     <Color x:Key="TxListViewPendingStateColor">#44ffffcc</Color>
     <Color x:Key="TxListViewConfirmedStateColor">#ffffff</Color>
+
+    <Style TargetType="ListView">
+        <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
+
+    <Color x:Key="EntryFrameBackgroundColor">#ffffff</Color>
+    <Color x:Key="PickerBackgroundColor">#ffffff</Color>
+
+    <Style x:Key="QrCodeFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
 
 </ResourceDictionary>

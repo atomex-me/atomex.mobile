@@ -97,6 +97,7 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource EntryFrameBackgroundColor}"/>
     </Style>
     <Style x:Key="ErrorFrameStyle" TargetType="Frame">
         <Setter Property="BackgroundColor" Value="{DynamicResource ErrorFrameBackgroundColor}"/>
@@ -112,6 +113,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource PickerBackgroundColor}"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
     </Style>
     <Style x:Key="MnemonicPickerStyle" TargetType="Picker">
@@ -119,6 +121,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource PickerBackgroundColor}"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Start"/>
         <Setter Property="Margin">
@@ -161,14 +164,18 @@
     </Style>
 
     <!-- Start Page -->
-    <Style x:Key="LogoLabelStyle" TargetType="Label">        
-        <Setter Property="Text" Value="atomex"/>
+    <Style x:Key="LogoLabelStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource LogoLabelColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource LogoFont}"/>
         <Setter Property="FontSize" Value="44"/>
         <Setter Property="VerticalTextAlignment" Value="Start"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
+
+    <Style x:Key="LogoCompressedLabelStyle" TargetType="Label" BasedOn="{StaticResource LogoLabelStyle}">
+        <Setter Property="Margin" Value="-5,0,0,0"/>
+    </Style>
+
     <Style x:Key="LogoImageStyle" TargetType="Image">
         <Setter Property="Source" Value="Logo"/>
         <Setter Property="HeightRequest" Value="96"/>

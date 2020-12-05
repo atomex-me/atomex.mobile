@@ -5,7 +5,7 @@ namespace atomex.CustomElements
     public class CustomViewCell : ViewCell
     {
         public static readonly BindableProperty SelectedBackgroundColorProperty =
-        BindableProperty.Create("SelectedBackgroundColor",
+            BindableProperty.Create("SelectedBackgroundColor",
                                 typeof(Color),
                                 typeof(CustomViewCell),
                                 Color.Default);

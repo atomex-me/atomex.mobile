@@ -23,7 +23,14 @@
             <StackLayout VerticalOptions="CenterAndExpand"
                          Spacing="0">
                 <Image Style="{DynamicResource LogoImageStyle}"/>
-                <Label Style="{DynamicResource LogoLabelStyle}"/>
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Spacing="0">
+                    <Label Text="a" Style="{DynamicResource LogoLabelStyle}"/>
+                    <Label Text="t" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                    <Label Text="o" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                    <Label Text="m" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                    <Label Text="e" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                    <Label Text="x" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
         <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
