@@ -40,9 +40,7 @@
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
-    <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
-    <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
-    <CodesignResourceRules></CodesignResourceRules>
+    <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
@@ -59,7 +57,6 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
     <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
-    <ExternalConsole>false</ExternalConsole>
 <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
