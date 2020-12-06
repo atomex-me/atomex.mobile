@@ -77,7 +77,7 @@
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{x:Static resources:AppResources.State}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                    <Label Text="{Binding CompactState}"
+                    <Label Text="{Binding State}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>

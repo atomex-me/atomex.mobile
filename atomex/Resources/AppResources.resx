@@ -313,10 +313,10 @@
         <value>Do you really want to delegate?</value>
     </data>
     <data name="FromLabel" xml:space="preserve">
-        <value>From:</value>
+        <value>From</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
-        <value>To:</value>
+        <value>To</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Copy Uri and Exit</value>

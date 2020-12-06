@@ -39,27 +39,15 @@ namespace atomex
         public decimal Price { get; set; }
         public string PriceFormat { get; set; }
 
-        public string State
+        public string State => CompactState switch
         {
-            get
-            {
-                switch (CompactState)
-                {
-                    case SwapCompactState.Canceled:
-                        return "Canceled";
-                    case SwapCompactState.InProgress:
-                        return "In Progress";
-                    case SwapCompactState.Completed:
-                        return "Completed";
-                    case SwapCompactState.Refunded:
-                        return "Refunded";
-                    case SwapCompactState.Unsettled:
-                        return "Unsettled";
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
+            SwapCompactState.Canceled   => "Canceled",
+            SwapCompactState.InProgress => "In Progress",
+            SwapCompactState.Completed  => "Completed",
+            SwapCompactState.Refunded   => "Refunded",
+            SwapCompactState.Unsettled  => "Unsettled",
+            _ => throw new ArgumentOutOfRangeException(),
+        };
     }
 }
 

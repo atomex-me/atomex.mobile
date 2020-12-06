@@ -55,11 +55,16 @@
         <Setter Property="BackgroundColor" Value="White"/>
     </Style>
 
-    <Color x:Key="EntryFrameBackgroundColor">#ffffff</Color>
-    <Color x:Key="PickerBackgroundColor">#ffffff</Color>
+    <Color x:Key="EntryFrameBackgroundColor">White</Color>
+    <Color x:Key="PickerBackgroundColor">White</Color>
 
     <Style x:Key="QrCodeFrameStyle" TargetType="Frame">
         <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="BackgroundColor">White</Setter>
+        <Setter Property="TextColor">#454545</Setter>
     </Style>
 
 </ResourceDictionary>

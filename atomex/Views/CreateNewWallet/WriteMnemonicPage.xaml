@@ -63,7 +63,8 @@
                          Spacing="0"/>
             <custom:CustomFrame HasShadow="False"
                                 CornerRadius="0,0,20,20"
-                                x:Name="EditorFrame">
+                                x:Name="EditorFrame"
+                                BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"

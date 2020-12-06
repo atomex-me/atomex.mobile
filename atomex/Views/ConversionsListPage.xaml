@@ -34,7 +34,7 @@
         
             <ListView ItemsSource="{Binding GroupedSwaps}"
                       ItemTapped="OnListViewItemTapped"
-                      CachingStrategy="RecycleElementAndDataTemplate"
+                      CachingStrategy="RetainElement"
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
@@ -121,7 +121,8 @@
                                        CornerRadius="8"
                                        Padding="2"
                                        Margin="0,10"
-                                       HasShadow="False">
+                                       HasShadow="False"
+                                       BackgroundColor="{DynamicResource MainBackgroundColor}">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"

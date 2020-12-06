@@ -20,19 +20,19 @@ namespace atomex
 
             return new SwapViewModel
             {
-                Id = swap.Id.ToString(),
-                CompactState = CompactStateBySwap(swap),
-                Mode = ModeBySwap(swap),
-                Time = swap.TimeStamp,
+                Id               = swap.Id.ToString(),
+                CompactState     = CompactStateBySwap(swap),
+                Mode             = ModeBySwap(swap),
+                Time             = swap.TimeStamp,
 
-                FromAmount = fromAmount,
+                FromAmount       = fromAmount,
                 FromCurrencyCode = soldCurrency.Name,
 
-                ToAmount = toAmount,
-                ToCurrencyCode = purchasedCurrency.Name,
+                ToAmount         = toAmount,
+                ToCurrencyCode   = purchasedCurrency.Name,
 
-                Price = swap.Price,
-                PriceFormat = $"F{quoteCurrency.Digits}"
+                Price            = swap.Price,
+                PriceFormat      = $"F{quoteCurrency.Digits}"
             };
         }
 

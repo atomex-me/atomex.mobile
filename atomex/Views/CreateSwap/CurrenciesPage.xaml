@@ -52,30 +52,28 @@
                             <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <StackLayout Orientation="Horizontal"
-                                 Grid.Row="1"
-                                 Grid.Column="1">
-                        <Label Text="{x:Static resources:AppResources.FromLabel}"
-                               FontFamily="{DynamicResource MediumFont}"
-                               FontSize="15"
-                               TextColor="{DynamicResource MainTextColor}"
-                               VerticalTextAlignment="End"
-                               HorizontalTextAlignment="Start">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <Label Text="{Binding FromCurrencyViewModel.Currency.Description}"
-                               FontFamily="{DynamicResource BoldFont}"
-                               FontSize="16"
-                               TextColor="{DynamicResource MainTextColor}"
-                               VerticalTextAlignment="End"
-                               HorizontalTextAlignment="Start">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </StackLayout>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </Label.GestureRecognizers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{x:Static resources:AppResources.FromLabel}"
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="15"/>
+                                <Span Text=": "
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="15"/>
+                                <Span Text="{Binding FromCurrencyViewModel.Currency.Description}"
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="16"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <Label Grid.Row="2"
                            Grid.Column="1"
                            Style="{DynamicResource PickerBalanceLabelStyle}"
@@ -146,31 +144,29 @@
                             <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
                         </Image.GestureRecognizers>
                     </Image>
-                   <StackLayout Orientation="Horizontal"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Grid.RowSpan="3">
-                        <Label Text="{x:Static resources:AppResources.ToLabel}"
-                               FontFamily="{DynamicResource MediumFont}"
-                               FontSize="15"
-                               TextColor="{DynamicResource MainTextColor}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Start">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <Label Text="{Binding ToCurrencyViewModel.Currency.Description}"
-                               FontFamily="{DynamicResource BoldFont}"
-                               FontSize="16"
-                               TextColor="{DynamicResource MainTextColor}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Start">
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Grid.RowSpan="3"
+                           TextColor="{DynamicResource MainTextColor}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
                         </Label.GestureRecognizers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{x:Static resources:AppResources.ToLabel}"
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="15"/>
+                                <Span Text=": "
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="15"/>
+                                <Span Text="{Binding ToCurrencyViewModel.Currency.Description}"
+                                      FontFamily="{DynamicResource MediumFont}"
+                                      FontSize="16"/>
+                            </FormattedString>
+                        </Label.FormattedText>
                     </Label>
-                    </StackLayout>
                     <Image Source="DownArrowPicker"
                            Grid.RowSpan="3"
                            Grid.Column="2"
