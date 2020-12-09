@@ -40,7 +40,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-<AndroidPackageFormat>aab</AndroidPackageFormat>
+<AndroidPackageFormat>apk</AndroidPackageFormat>
 <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
@@ -122,6 +122,7 @@
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <Compile Include="CustomElements\CustomTabbedPageRenderer.cs" />
+    <Compile Include="CustomElements\CustomLabelRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
