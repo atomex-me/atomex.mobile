@@ -27,6 +27,9 @@
                         <StackLayout Orientation="Horizontal">
                             <StackLayout Grid.Column="0"
                                          HorizontalOptions="FillAndExpand">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="AmountEntryTapped"/>
+                                </StackLayout.GestureRecognizers>
                                 <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                     <custom:CustomEntry Keyboard="Numeric"
                                                         x:Name="Amount"

@@ -83,6 +83,14 @@
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
+    <Style x:Key="SuccessTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{DynamicResource SuccessTextColor}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
 
     <!-- Entries -->
     <Style x:Key="EntryStyle" TargetType="Entry">
@@ -113,14 +121,6 @@
 
     <!-- Picker -->
     <Style x:Key="PickerStyle" TargetType="Picker">
-        <Setter Property="HeightRequest" Value="60"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource PickerBackgroundColor}"/>
-        <Setter Property="HorizontalTextAlignment" Value="Start"/>
-    </Style>
-    <Style x:Key="MnemonicPickerStyle" TargetType="Picker">
         <Setter Property="HeightRequest" Value="60"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>

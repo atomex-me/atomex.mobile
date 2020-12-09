@@ -206,8 +206,8 @@
                          BackgroundColor="White"
                          BorderWidth="1"
                          BorderColor="{DynamicResource AdditionalBackgroundColor}" 
-                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,ElementName=Test,Property=Height,Factor=0,Constant=100}"
-                         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,ElementName=Test,Property=Width,Factor=.5,Constant=50}"
+                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0,Constant=110}"
+                         RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=50}"
                          Clicked="OnSwapCurrenciesClicked"/>
         </RelativeLayout>
     </ContentPage.Content>

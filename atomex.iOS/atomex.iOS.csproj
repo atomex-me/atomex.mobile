@@ -303,6 +303,9 @@
     <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove.pdf" />
     <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove-1.pdf" />
     <ImageAsset Include="Assets.xcassets\TxApprove.imageset\TxApprove-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\Warning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Warning.imageset\Warning.pdf" />
+    <ImageAsset Include="Assets.xcassets\Warning.imageset\Warning-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -412,6 +415,7 @@
     <Folder Include="Assets.xcassets\RightArrow__gray.imageset\" />
     <Folder Include="Assets.xcassets\Magnifier.imageset\" />
     <Folder Include="Assets.xcassets\TxApprove.imageset\" />
+    <Folder Include="Assets.xcassets\Warning.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

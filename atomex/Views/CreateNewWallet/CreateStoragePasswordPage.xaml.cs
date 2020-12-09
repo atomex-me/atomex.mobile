@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Wallet;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -131,6 +132,7 @@ namespace atomex.Views.CreateNewWallet
                     catch (Exception ex)
                     {
                         // Possible that device doesn't support secure storage on device.
+                        Log.Error(ex, "Device doesn't support secure storage on device");
                     }
 
                     MainViewModel mainViewModel = null;

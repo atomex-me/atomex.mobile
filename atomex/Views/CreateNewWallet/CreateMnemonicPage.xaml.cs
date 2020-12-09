@@ -21,9 +21,9 @@ namespace atomex.Views.CreateNewWallet
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
             if (!string.IsNullOrEmpty(createNewWalletViewModel.Mnemonic))
-                LoseMnemonicPhraseText.IsVisible = true;
+                LoseMnemonicPhrase.IsVisible = true;
             else
-                LoseMnemonicPhraseText.IsVisible = false;
+                LoseMnemonicPhrase.IsVisible = false;
         }
 
         private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
@@ -52,11 +52,11 @@ namespace atomex.Views.CreateNewWallet
             {
                 _createNewWalletViewModel.GenerateMnemonic();
                 MnemonicPhraseFrame.Opacity = 0;
-                LoseMnemonicPhraseText.IsVisible = true;
+                LoseMnemonicPhrase.IsVisible = true;
                 MnemonicPhraseFrame.IsVisible = true;
                 await Task.WhenAll(
                     MnemonicPhraseFrame.FadeTo(1, 500, Easing.Linear),
-                    LoseMnemonicPhraseText.FadeTo(1, 500, Easing.Linear)
+                    LoseMnemonicPhrase.FadeTo(1, 500, Easing.Linear)
                 );
             }
             else
@@ -78,9 +78,9 @@ namespace atomex.Views.CreateNewWallet
             {
                 MnemonicPhraseFrame.IsVisible = false;
                 await Task.WhenAll(
-                    LoseMnemonicPhraseText.FadeTo(0, 500, Easing.Linear)
+                    LoseMnemonicPhrase.FadeTo(0, 500, Easing.Linear)
                 );
-                LoseMnemonicPhraseText.IsVisible = false;
+                LoseMnemonicPhrase.IsVisible = false;
             }
         }
     }

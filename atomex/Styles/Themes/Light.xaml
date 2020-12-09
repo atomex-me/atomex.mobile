@@ -23,9 +23,10 @@
     <Color x:Key="LogoLabelColor">#ffffff</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
     <Color x:Key="ErrorTextColor">#8B0000</Color>
+    <Color x:Key="SuccessTextColor">#008B00</Color>
 
     <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
-    <Color x:Key="DefaultFrameBackgroundColor">#ffffff</Color>
+    <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
 
     <Color x:Key="ListViewSeparatorColor">#e0e0e0</Color>
     <Color x:Key="ListViewItemBackgroundColor">White</Color>
@@ -56,7 +57,7 @@
     </Style>
 
     <Color x:Key="EntryFrameBackgroundColor">White</Color>
-    <Color x:Key="PickerBackgroundColor">White</Color>
+    <Color x:Key="PickerBackgroundColor">Transparent</Color>
 
     <Style x:Key="QrCodeFrameStyle" TargetType="Frame">
         <Setter Property="BackgroundColor" Value="White"/>

@@ -33,9 +33,7 @@
                                     Grid.ColumnSpan="2"
                                     CornerRadius="20,20,0,0"
                                     Style="{DynamicResource EntryFrameStyle}"
-                                    x:Name="LanguageFrame">
-                    
-                </custom:CustomFrame>
+                                    x:Name="LanguageFrame"/>
                 <custom:CustomPicker Grid.Row="1"
                                      ItemsSource="{Binding Languages}"
                                      ItemDisplayBinding="{Binding Name}"
@@ -44,7 +42,7 @@
                                      Focused="OnLanguagePickerFocused"
                                      Unfocused="OnLanguagePickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource MnemonicPickerStyle}"/>
+                                     Style="{DynamicResource PickerStyle}"/>
                 <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
@@ -74,7 +72,7 @@
                                      Focused="OnWordCountPickerFocused"
                                      Unfocused="OnWordCountPickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource MnemonicPickerStyle}"/>
+                                     Style="{DynamicResource PickerStyle}"/>
                 <Label Grid.Row="3"
                        Text ="{x:Static resources:AppResources.WordCountLabel}"
                        Style="{DynamicResource PickerHintStyle}">
@@ -97,25 +95,33 @@
                    CornerRadius="10"
                    x:Name="MnemonicPhraseFrame"
                    HorizontalOptions="CenterAndExpand"
-                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   BackgroundColor="{DynamicResource SuccessFrameBackgroundColor}"
                    Padding="5">
                 <Label Text="{Binding Mnemonic}"
-                        Style="{DynamicResource ErrorTextStyle}"
-                        HorizontalTextAlignment="Center"
-                        LineBreakMode="WordWrap">
+                       Style="{DynamicResource SuccessTextStyle}"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
-                                        Binding="{Binding Mnemonic}"
-                                        Value="">
+                                     Binding="{Binding Mnemonic}"
+                                     Value="">
                             <Setter Property="IsVisible"
                                     Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
             </Frame>
-            <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
-                   x:Name="LoseMnemonicPhraseText"
-                   Style="{DynamicResource ErrorTextStyle}"/>
+            <StackLayout Orientation="Horizontal"
+                         x:Name="LoseMnemonicPhrase">
+                <Image Source="Warning"
+                       HeightRequest="32"
+                       WidthRequest="32"/>
+                <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
+                       TextColor="{DynamicResource MainTextColor}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Start"/>
+            </StackLayout>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"

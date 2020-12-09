@@ -42,6 +42,12 @@ namespace atomex.Views.CreateSwap
             }
         }
 
+        private void AmountEntryTapped(object sender, EventArgs args)
+        {
+            Amount.Focus();
+            Amount.CursorPosition = _conversionViewModel.Amount.ToString().Length;
+        }
+
         private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))

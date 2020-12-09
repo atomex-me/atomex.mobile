@@ -33,7 +33,7 @@ namespace atomex
             if (_transactionViewModel != null)
             {
                 await Clipboard.SetTextAsync(_transactionViewModel.Id);
-                _toastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Bottom);
+                _toastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top);
             }
             else
             {

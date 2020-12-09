@@ -13567,10 +13567,13 @@ namespace atomex.Droid
 			public const int Wallet__white = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
-			public const int WBTC = 2131231036;
+			public const int Warning = 2131231036;
 			
 			// aapt resource value: 0x7F08013D
-			public const int XTZ = 2131231037;
+			public const int WBTC = 2131231037;
+			
+			// aapt resource value: 0x7F08013E
+			public const int XTZ = 2131231038;
 			
 			static Drawable()
 			{

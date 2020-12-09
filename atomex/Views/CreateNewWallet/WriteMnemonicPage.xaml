@@ -40,7 +40,7 @@
                                      SelectedItem="{Binding Language}"
                                      x:Name="LanguagesPicker"
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                     Style="{DynamicResource MnemonicPickerStyle}"
+                                     Style="{DynamicResource PickerStyle}"
                                      Focused="OnPickerFocused"
                                      Unfocused="OnPickerFocused"/>
                 <Label Text ="{x:Static resources:AppResources.LanguageLabel}"

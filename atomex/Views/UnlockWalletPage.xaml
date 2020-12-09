@@ -20,8 +20,8 @@
                        Style="{DynamicResource UnlockWalletTextStyle}"
                        x:Name="Label"/>
                 <Frame x:Name="PasswordFrame"
-                                      CornerRadius="10"
-                                      Style="{DynamicResource EntryFrameStyle}">
+                       CornerRadius="10"
+                       Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <StackLayout VerticalOptions="CenterAndExpand"
