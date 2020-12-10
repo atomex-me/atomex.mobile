@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Xamarin.Forms;
 using ZXing;
 using ZXing.Net.Mobile.Forms;
@@ -16,6 +14,7 @@ namespace atomex
             InitializeComponent();
             OnQrScanned = onQrScanned;
         }
+
         public void OnScanResultHandle(Result result)
         {
             Device.BeginInvokeOnMainThread(async () =>

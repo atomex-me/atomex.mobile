@@ -33,6 +33,8 @@ namespace atomex.Droid
             Xamarin.Essentials.Platform.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
+            global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
+
             App.FileSystem = "Android";
             App.DeviceToken = FirebaseInstanceId.Instance.Token;
 
