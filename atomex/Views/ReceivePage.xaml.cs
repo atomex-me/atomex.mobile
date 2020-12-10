@@ -59,10 +59,8 @@ namespace atomex
             await Share.RequestAsync(new ShareTextRequest
                 {
                     Text = AppResources.MyPublicAddress + " " + _receiveViewModel.SelectedAddress.WalletAddress.Currency + ":\r\n" + _receiveViewModel.SelectedAddress.Address,
-                    Uri = _receiveViewModel.SelectedAddress.Address,
                     Title = AppResources.AddressSharing
                 });
-            
 
             await Task.Delay(1000);
 
