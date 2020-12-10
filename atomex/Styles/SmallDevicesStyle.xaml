@@ -69,6 +69,7 @@
     <Style x:Key="EntryHintStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="FontSize" Value="12"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="VerticalTextAlignment" Value="End"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="Padding" Value="20,10,0,0"/>
@@ -368,6 +369,7 @@
     <Style x:Key="PickerHintStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="FontSize" Value="12"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="VerticalTextAlignment" Value="End"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="Padding">
