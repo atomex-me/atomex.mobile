@@ -542,7 +542,7 @@
                                 <DataTrigger TargetType="Label"
                                                 Binding="{Binding Type}"
                                                 Value="SwapPayment">
-                                    <Setter Property="Text" Value="{Binding To, StringFormat='To: {0}', FallbackValue='Unknown'}"/>
+                                    <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                                 Binding="{Binding Type}"
