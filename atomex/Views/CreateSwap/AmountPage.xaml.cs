@@ -76,8 +76,12 @@ namespace atomex.Views.CreateSwap
 
         private async void OnMaxAmountButtonClicked(object sender, EventArgs args)
         {
+            MaxButton.IsVisible = MaxButton.IsEnabled = false;
+            Loader.IsRunning = Loader.IsVisible = true;
             await _conversionViewModel.OnMaxClick();
             Amount.Text = _conversionViewModel.Amount.ToString();
+            Loader.IsRunning = Loader.IsVisible = false;
+            MaxButton.IsVisible = MaxButton.IsEnabled = true;
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

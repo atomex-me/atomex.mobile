@@ -144,7 +144,7 @@ namespace atomex.ViewModel
         public decimal Amount
         {
             get => _amount;
-            set { UpdateAmount(value); }
+            set { _ = UpdateAmount(value); }
         }
 
         private decimal _amountInBase;
@@ -607,32 +607,10 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            var (maxAmount, maxFee, _) = await AtomexApp.Account
-                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
-
-            _amount = maxAmount;
-            OnPropertyChanged(nameof(Amount));
-
-            if (maxAmount <= 0)
-            {
-
-                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-
-                if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
-            }
-            else
-            {
-                EstimatedPaymentFee = maxFee;
-
-                UpdateRedeemAndRewardFeesAsync();
-
-                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
-                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-            }
+            await UpdateAmount(decimal.MaxValue);
         }
 
-        protected virtual async void UpdateAmount(decimal value)
+        protected virtual async Task UpdateAmount(decimal value)
         {
             Warning = string.Empty;
 

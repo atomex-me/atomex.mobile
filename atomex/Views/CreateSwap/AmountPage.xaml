@@ -47,10 +47,23 @@
                                            VerticalTextAlignment="Center"/>
                                 </RelativeLayout>
                             </StackLayout>
-                            <Button Grid.Column="1"
-                                    Text="{x:Static resources:AppResources.MaxButton}"
-                                    Style="{DynamicResource TransparentButtonStyle}"
-                                    Clicked="OnMaxAmountButtonClicked"/>
+                            <StackLayout Grid.Column="1"
+                                         Orientation="Horizontal">
+                                <RelativeLayout WidthRequest="80">
+                                    <Button Text="{x:Static resources:AppResources.MaxButton}"
+                                            Style="{DynamicResource TransparentButtonStyle}"
+                                            x:Name="MaxButton"
+                                            Clicked="OnMaxAmountButtonClicked"
+                                            RelativeLayout.HeightConstraint="60"/>
+                                     <ActivityIndicator x:Name="Loader"
+                                                        RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-10}"
+	             	                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-10}"
+                                                        RelativeLayout.WidthConstraint="20"
+                                                        RelativeLayout.HeightConstraint="20"
+                                                        Color="Black"
+                                                        IsVisible="False"/>
+                                </RelativeLayout>
+                            </StackLayout>
                          </StackLayout>
                     </Frame>
                 </Grid>
