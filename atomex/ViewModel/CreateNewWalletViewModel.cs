@@ -182,6 +182,7 @@ namespace atomex
 
         public string SaveWalletName()
         {
+            WalletName = WalletName.Trim();
             if (string.IsNullOrEmpty(WalletName))
             {
                 return AppResources.EmptyWalletName;
