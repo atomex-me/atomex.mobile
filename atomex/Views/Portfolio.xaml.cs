@@ -26,7 +26,7 @@ namespace atomex
             "#af7e68",
             "#bcc1b7",
             "#acaead",
-            "#f3f1ec",
+            "#f3f1ec"
         };
 
         public Portfolio()
@@ -66,7 +66,7 @@ namespace atomex
                     }
                     else
                     {
-                        var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.AvailableAmount != 0).ToList();
+                        var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.TotalAmount != 0).ToList();
                         var entries = new Microcharts.Entry[nonzeroWallets.Count];
                         for (int i = 0; i < nonzeroWallets.Count; i++)
                         {

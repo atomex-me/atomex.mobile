@@ -43,7 +43,7 @@
                                    VerticalTextAlignment="End"
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="2"
-                                   Text="{Binding AvailableAmount}"
+                                   Text="{Binding TotalAmount}"
                                    FontFamily="{DynamicResource RegularFont}"
                                    TextColor="{DynamicResource MainTextColor}"
                                    Margin="10,0"
@@ -51,7 +51,7 @@
                                    HorizontalTextAlignment="End">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#####}'}"
+                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.#####}'}"
                                               FontSize="14"/>
                                         <Span Text=" " /> 
                                         <Span Text="{Binding CurrencyCode}"

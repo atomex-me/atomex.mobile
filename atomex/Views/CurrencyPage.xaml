@@ -38,7 +38,7 @@
                            HorizontalOptions="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"
+                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"
                                       FontSize="20"
                                       FontFamily="{DynamicResource BoldFont}"/>
                                 <Span Text=" " /> 
