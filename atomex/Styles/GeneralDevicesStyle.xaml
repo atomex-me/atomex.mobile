@@ -133,7 +133,7 @@
         <Setter Property="VerticalTextAlignment" Value="Start"/>
         <Setter Property="Margin">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="Thickness" iOS="0,5,0,0" Android="0"/>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0,5,0,0" Android="0,-5,0,0"/>
             </Setter.Value>
         </Setter>
     </Style>

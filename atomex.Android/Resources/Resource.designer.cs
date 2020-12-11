@@ -12191,82 +12191,85 @@ namespace atomex.Droid
 			public const int mtrl_text_btn_text_color_selector = 2131099770;
 			
 			// aapt resource value: 0x7F06007F
-			public const int notification_action_color_filter = 2131099775;
+			public const int navigationBarBackground = 2131099775;
 			
 			// aapt resource value: 0x7F060080
-			public const int notification_icon_bg_color = 2131099776;
+			public const int notification_action_color_filter = 2131099776;
 			
 			// aapt resource value: 0x7F060081
-			public const int notification_material_background_media_default_color = 2131099777;
+			public const int notification_icon_bg_color = 2131099777;
 			
 			// aapt resource value: 0x7F060082
-			public const int primary_dark_material_dark = 2131099778;
+			public const int notification_material_background_media_default_color = 2131099778;
 			
 			// aapt resource value: 0x7F060083
-			public const int primary_dark_material_light = 2131099779;
+			public const int primary_dark_material_dark = 2131099779;
 			
 			// aapt resource value: 0x7F060084
-			public const int primary_material_dark = 2131099780;
+			public const int primary_dark_material_light = 2131099780;
 			
 			// aapt resource value: 0x7F060085
-			public const int primary_material_light = 2131099781;
+			public const int primary_material_dark = 2131099781;
 			
 			// aapt resource value: 0x7F060086
-			public const int primary_text_default_material_dark = 2131099782;
+			public const int primary_material_light = 2131099782;
 			
 			// aapt resource value: 0x7F060087
-			public const int primary_text_default_material_light = 2131099783;
+			public const int primary_text_default_material_dark = 2131099783;
 			
 			// aapt resource value: 0x7F060088
-			public const int primary_text_disabled_material_dark = 2131099784;
+			public const int primary_text_default_material_light = 2131099784;
 			
 			// aapt resource value: 0x7F060089
-			public const int primary_text_disabled_material_light = 2131099785;
+			public const int primary_text_disabled_material_dark = 2131099785;
 			
 			// aapt resource value: 0x7F06008A
-			public const int ripple_material_dark = 2131099786;
+			public const int primary_text_disabled_material_light = 2131099786;
 			
 			// aapt resource value: 0x7F06008B
-			public const int ripple_material_light = 2131099787;
+			public const int ripple_material_dark = 2131099787;
 			
 			// aapt resource value: 0x7F06008C
-			public const int secondary_text_default_material_dark = 2131099788;
+			public const int ripple_material_light = 2131099788;
 			
 			// aapt resource value: 0x7F06008D
-			public const int secondary_text_default_material_light = 2131099789;
+			public const int secondary_text_default_material_dark = 2131099789;
 			
 			// aapt resource value: 0x7F06008E
-			public const int secondary_text_disabled_material_dark = 2131099790;
+			public const int secondary_text_default_material_light = 2131099790;
 			
 			// aapt resource value: 0x7F06008F
-			public const int secondary_text_disabled_material_light = 2131099791;
+			public const int secondary_text_disabled_material_dark = 2131099791;
 			
 			// aapt resource value: 0x7F060090
-			public const int splashBackground = 2131099792;
+			public const int secondary_text_disabled_material_light = 2131099792;
 			
 			// aapt resource value: 0x7F060091
-			public const int switch_thumb_disabled_material_dark = 2131099793;
+			public const int splashBackground = 2131099793;
 			
 			// aapt resource value: 0x7F060092
-			public const int switch_thumb_disabled_material_light = 2131099794;
+			public const int switch_thumb_disabled_material_dark = 2131099794;
 			
 			// aapt resource value: 0x7F060093
-			public const int switch_thumb_material_dark = 2131099795;
+			public const int switch_thumb_disabled_material_light = 2131099795;
 			
 			// aapt resource value: 0x7F060094
-			public const int switch_thumb_material_light = 2131099796;
+			public const int switch_thumb_material_dark = 2131099796;
 			
 			// aapt resource value: 0x7F060095
-			public const int switch_thumb_normal_material_dark = 2131099797;
+			public const int switch_thumb_material_light = 2131099797;
 			
 			// aapt resource value: 0x7F060096
-			public const int switch_thumb_normal_material_light = 2131099798;
+			public const int switch_thumb_normal_material_dark = 2131099798;
 			
 			// aapt resource value: 0x7F060097
-			public const int tooltip_background_dark = 2131099799;
+			public const int switch_thumb_normal_material_light = 2131099799;
 			
 			// aapt resource value: 0x7F060098
-			public const int tooltip_background_light = 2131099800;
+			public const int tooltip_background_dark = 2131099800;
+			
+			// aapt resource value: 0x7F060099
+			public const int tooltip_background_light = 2131099801;
 			
 			static Color()
 			{

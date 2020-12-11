@@ -11,6 +11,7 @@ using Serilog;
 using Serilog.Events;
 using Sentry;
 using Log = Serilog.Log;
+using Android.Views;
 
 namespace atomex.Droid
 {
@@ -22,6 +23,9 @@ namespace atomex.Droid
             base.OnCreate(bundle);
 
             FileSystem.UseFileSystem(new AndroidFileSystem());
+
+            //Window.DecorView.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
+            Window.SetNavigationBarColor(Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.navigationBarBackground)));
 
             CrossFingerprint.SetCurrentActivityResolver(() => this);
 

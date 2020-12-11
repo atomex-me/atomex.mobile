@@ -33,7 +33,11 @@
                                     Grid.ColumnSpan="2"
                                     CornerRadius="20,20,0,0"
                                     Style="{DynamicResource EntryFrameStyle}"
-                                    x:Name="LanguageFrame"/>
+                                    x:Name="LanguageFrame">
+                    <custom:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
+                    </custom:CustomFrame.GestureRecognizers>
+                </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="1"
                                      ItemsSource="{Binding Languages}"
                                      ItemDisplayBinding="{Binding Name}"
@@ -63,7 +67,11 @@
                                     Grid.ColumnSpan="2"
                                     CornerRadius="0,0,20,20"
                                     x:Name="WordCountFrame"
-                                    Style="{DynamicResource EntryFrameStyle}"/>
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
+                    </Frame.GestureRecognizers>
+                </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="4"
                                      ItemsSource="{Binding WordCountToEntropyLength}"
                                      ItemDisplayBinding="{Binding WordCount}"

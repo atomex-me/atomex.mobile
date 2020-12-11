@@ -33,7 +33,11 @@
                                     Grid.ColumnSpan="2"
                                     x:Name="PickerFrame"
                                     CornerRadius="20,20,0,0"
-                                    Style="{DynamicResource EntryFrameStyle}"/>
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <custom:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPickerClicked"/>
+                    </custom:CustomFrame.GestureRecognizers>
+                </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="1"
                                      ItemsSource="{Binding Languages}"
                                      ItemDisplayBinding="{Binding Name}"
