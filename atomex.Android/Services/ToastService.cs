@@ -12,7 +12,6 @@ namespace atomex.Droid.Services
         {
             Context context = Android.App.Application.Context;
             Toast toast = Toast.MakeText(context, message, ToastLength.Short);
-
             switch (toastPosition)
             {
                 case ToastPosition.Top:

@@ -216,6 +216,9 @@
                                   x:Name="FeeFrame"
                                   HeightRequest="60"
                                   Style="{DynamicResource EntryFrameStyle}">
+                <controls:CustomFrame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnFeeEntryTapped"/>
+                </controls:CustomFrame.GestureRecognizers>
                 <controls:CustomFrame.Triggers>
                     <DataTrigger TargetType="controls:CustomFrame"
                                  Binding="{Binding UseDefaultFee}"

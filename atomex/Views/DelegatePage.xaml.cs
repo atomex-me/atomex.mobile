@@ -91,6 +91,11 @@ namespace atomex
             }
         }
 
+        private void OnFeeEntryTapped(object sender, EventArgs args)
+        {
+            Fee.Focus();
+        }
+
         private void OnUseDefaultFeeToggled(object sender, ToggledEventArgs args)
         {
             if (args.Value)
