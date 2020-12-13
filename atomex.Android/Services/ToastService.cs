@@ -12,6 +12,8 @@ namespace atomex.Droid.Services
         {
             Context context = Android.App.Application.Context;
             Toast toast = Toast.MakeText(context, message, ToastLength.Short);
+            toast.View.SetBackgroundResource(Resource.Drawable.CustomToast);
+
             switch (toastPosition)
             {
                 case ToastPosition.Top:
