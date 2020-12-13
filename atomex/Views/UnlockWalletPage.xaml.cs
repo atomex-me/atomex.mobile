@@ -29,9 +29,14 @@ namespace atomex
             BiometricAuth(this, EventArgs.Empty);
         }
 
-        private void PasswordEntryFocused(object sender, FocusEventArgs args)
+        private async void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
+
+            if (args.IsFocused)
+                await Content.TranslateTo(0, -Page.Height / 2 + PasswordFrame.Height, 500, Easing.CubicInOut);
+            else
+                await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
         }
 
         private void PasswordEntryClicked(object sender, EventArgs args)

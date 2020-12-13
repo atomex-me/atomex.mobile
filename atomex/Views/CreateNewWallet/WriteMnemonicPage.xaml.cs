@@ -29,19 +29,15 @@ namespace atomex.Views.CreateNewWallet
             LanguagesPicker.Focus();
         }
 
-        private void OnEditorFocused(object sender, FocusEventArgs args)
+        private async void OnEditorFocused(object sender, FocusEventArgs args)
         {
             EditorFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-            {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (EditorFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+            if (args.IsFocused)
+                await Content.TranslateTo(0, -Page.Height / 2 + EditorFrame.Height + Labels.Height, 500, Easing.CubicInOut);
+            else
+                await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

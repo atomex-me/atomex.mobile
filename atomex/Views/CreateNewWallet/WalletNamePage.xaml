@@ -6,9 +6,10 @@
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
+    <StackLayout x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
+                     VerticalOptions="CenterAndExpand"
+                     x:Name="Content">
             <StackLayout x:Name="Labels">
                 <Label Text="{x:Static resources:AppResources.WalletNameStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
@@ -19,13 +20,20 @@
                    Style="{DynamicResource EntryFrameStyle}"
                    Margin="0,10,0,0"
                    CornerRadius="10">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                </Frame.GestureRecognizers>
                 <StackLayout HeightRequest="60">
                     <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
                         <Label x:Name="NameHint"
                                Style="{DynamicResource EntryHintStyle}"
                                VerticalTextAlignment="Center"
                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
-                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <controls:CustomEntry x:Name="Entry"
                                               Placeholder="{x:Static resources:AppResources.WalletNameEntryPlaceholder}"
                                               Keyboard="Text"
@@ -47,5 +55,5 @@
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>
         </StackLayout>
-    </ScrollView>
+    </StackLayout>
 </ContentPage>

@@ -6,7 +6,6 @@
              x:Class="atomex.DelegatePage"
              Title="{x:Static resources:AppResources.DelegatePageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
                      Margin="20"
@@ -305,5 +304,4 @@
 	                               Style="{DynamicResource DelegationLoaderStyle}"/>
             </RelativeLayout>
         </StackLayout>
-    </ScrollView>
 </ContentPage>

@@ -6,7 +6,7 @@
              x:Class="atomex.UnlockWalletPage"
              Title="{x:Static resources:AppResources.UnlockTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
+    <StackLayout x:Name="Page">
         <RelativeLayout>
             <StackLayout x:Name="Content"
                          Padding="30"
@@ -71,5 +71,5 @@
                                Color="Black"
                                IsRunning="False"/>
         </RelativeLayout>
-    </ScrollView>
+    </StackLayout>
 </ContentPage>

@@ -21,19 +21,15 @@ namespace atomex.Views.CreateNewWallet
             BindingContext = createNewWalletViewModel;
         }
 
-        private void PasswordEntryFocused(object sender, FocusEventArgs args)
+        private async void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-            {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+            if (args.IsFocused)
+                await Content.TranslateTo(0, -Page.Height / 2 + PasswordFrame.Height + Labels.Height, 500, Easing.CubicInOut);
+            else
+                await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
         }
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -62,19 +58,15 @@ namespace atomex.Views.CreateNewWallet
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, args.NewTextValue);
         }
 
-        private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
+        private async void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-            {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+            if (args.IsFocused)
+                await Content.TranslateTo(0, -Page.Height / 2 + PasswordFrame.Height + Labels.Height, 500, Easing.CubicInOut);
+            else
+                await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
         }
 
         private async void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
