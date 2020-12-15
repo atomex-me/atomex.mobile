@@ -22,6 +22,9 @@
                 <Frame x:Name="PasswordFrame"
                        CornerRadius="10"
                        Style="{DynamicResource EntryFrameStyle}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                    </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <StackLayout VerticalOptions="CenterAndExpand"
@@ -45,7 +48,7 @@
                                                   Focused="PasswordEntryFocused"
                                                   Unfocused="PasswordEntryFocused"
                                                   IsPassword="True"
-                                                  Style="{DynamicResource EntryStyle}"
+                                                  Style="{DynamicResource CustomEntryStyle}"
                                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                                                   TextChanged="OnPasswordTextChanged"/>

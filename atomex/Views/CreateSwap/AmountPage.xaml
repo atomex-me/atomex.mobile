@@ -34,7 +34,7 @@
                                     <custom:CustomEntry Keyboard="Numeric"
                                                         x:Name="Amount"
                                                         Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
-                                                        Style="{DynamicResource EntryStyle}"
+                                                        Style="{DynamicResource CustomEntryStyle}"
                                                         Focused="AmountEntryFocused"
                                                         Unfocused="AmountEntryFocused"
                                                         TextChanged="OnAmountTextChanged"

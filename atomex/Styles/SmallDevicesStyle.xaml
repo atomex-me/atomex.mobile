@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-             x:Class="atomex.Styles.SmallDevicesStyle">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:controls="clr-namespace:atomex.CustomElements"
+                    xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+                    x:Class="atomex.Styles.SmallDevicesStyle">
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
@@ -103,6 +104,9 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="PlaceholderColor" Value="{DynamicResource AdditionalTextColor}"/>
+    </Style>
+    <Style x:Key="CustomEntryStyle" TargetType="controls:CustomEntry" BasedOn="{StaticResource EntryStyle}">
+        <Setter Property="Padding" Value="20,0"/>
     </Style>
 
     <!-- Frames -->

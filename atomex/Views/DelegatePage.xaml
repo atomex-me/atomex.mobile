@@ -130,7 +130,7 @@
                                           PlaceholderColor="Gray"
                                           Focused="OnToAddressEntryFocused"
                                           Unfocused="OnToAddressEntryFocused"
-                                          Style="{DynamicResource EntryStyle}"
+                                          Style="{DynamicResource CustomEntryStyle}"
                                           Margin="0,0,15,0"/>
                 </Frame>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -163,7 +163,7 @@
                                            Focused="OnFromAddressPickerFocused"
                                            Unfocused="OnFromAddressPickerFocused"
                                            TextColor="Transparent"
-                                           Style="{DynamicResource EntryStyle}"/>
+                                           Style="{DynamicResource CustomEntryStyle}"/>
                 </controls:CustomFrame>
                 <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
@@ -245,7 +245,7 @@
                         </Label.FormattedText>
                     </Label>
                     <StackLayout Orientation="Horizontal">
-                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                        <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                               x:Name="Fee"
                                               Keyboard="Numeric"
                                               Focused="OnFeeEntryFocused"

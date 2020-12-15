@@ -39,7 +39,7 @@
                                               Keyboard="Text"
                                               Focused="EntryFocused"
                                               Unfocused="EntryFocused"
-                                              Style="{DynamicResource EntryStyle}"
+                                              Style="{DynamicResource CustomEntryStyle}"
                                               TextChanged="OnTextChanged"
                                               Text="{Binding WalletName}"
                                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"

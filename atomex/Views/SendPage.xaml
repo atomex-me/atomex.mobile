@@ -32,7 +32,7 @@
                                                       Focused="AddressEntryFocused"
                                                       Unfocused="AddressEntryFocused"
                                                       TextChanged="OnAddressTextChanged"
-                                                      Style="{DynamicResource EntryStyle}"                                                     
+                                                      Style="{DynamicResource CustomEntryStyle}"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label x:Name="AddressHint"
@@ -80,7 +80,7 @@
                                                       Focused="AmountEntryFocused"
                                                       Unfocused="AmountEntryFocused"
                                                       TextChanged="OnAmountTextChanged"
-                                                      Style="{DynamicResource EntryStyle}"
+                                                      Style="{DynamicResource CustomEntryStyle}"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label VerticalTextAlignment="Center"
@@ -114,7 +114,7 @@
                     <Label Text="{x:Static resources:AppResources.FeeRateLabel}"
                            Style="{DynamicResource EntryHintStyle}"
                            IsVisible="True"/>
-                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                    <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                           IsReadOnly="True"
                                           TextColor="{DynamicResource AdditionalTextColor}"
                                           Text="{Binding FeeRate, StringFormat='{0} sat/byte'}"/>
@@ -155,7 +155,7 @@
                                            VerticalTextAlignment="Center"
                                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
-                                    <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                    <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                           x:Name="Fee"
                                                           Keyboard="Numeric"
                                                           Placeholder="{x:Static resources:AppResources.FeeLabel}"
@@ -236,7 +236,7 @@
                                     <StackLayout Spacing="0"
                                                  Orientation="Horizontal"
                                                  VerticalOptions="FillAndExpand">
-                                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                        <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                               Keyboard="Numeric"
                                                               x:Name="GasPrice"
                                                               Text="{Binding FeePrice, StringFormat='{0:0.######}', Mode=TwoWay}"
@@ -244,24 +244,24 @@
                                                               VerticalTextAlignment="Center"
                                                               Focused="GasPriceEntryFocused"
                                                               Unfocused="GasPriceEntryFocused">
-                                        <controls:CustomEntry.Triggers>
-                                            <DataTrigger TargetType="controls:CustomEntry"
-                                                         Binding="{Binding UseDefaultFee}"
-                                                         Value="True">
-                                                <Setter Property="IsReadOnly"
-                                                        Value="True"/>
-                                                <Setter Property="TextColor"
-                                                        Value="{DynamicResource AdditionalTextColor}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="controls:CustomEntry"
-                                                         Binding="{Binding UseDefaultFee}"
-                                                         Value="False">
-                                                <Setter Property="IsReadOnly"
-                                                        Value="False"/>
-                                                <Setter Property="TextColor"
-                                                        Value="Black"/>
-                                            </DataTrigger>
-                                        </controls:CustomEntry.Triggers>
+                                            <controls:CustomEntry.Triggers>
+                                                <DataTrigger TargetType="controls:CustomEntry"
+                                                             Binding="{Binding UseDefaultFee}"
+                                                             Value="True">
+                                                    <Setter Property="IsReadOnly"
+                                                            Value="True"/>
+                                                    <Setter Property="TextColor"
+                                                            Value="{DynamicResource AdditionalTextColor}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="controls:CustomEntry"
+                                                             Binding="{Binding UseDefaultFee}"
+                                                             Value="False">
+                                                    <Setter Property="IsReadOnly"
+                                                            Value="False"/>
+                                                    <Setter Property="TextColor"
+                                                            Value="Black"/>
+                                                </DataTrigger>
+                                            </controls:CustomEntry.Triggers>
                                         </controls:CustomEntry>
                                     </StackLayout>
                                 </StackLayout>
@@ -289,7 +289,7 @@
                                     <StackLayout Orientation="Horizontal"
                                                  Spacing="0"
                                                  VerticalOptions="FillAndExpand">
-                                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                        <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                               Text="{Binding GasString}"
                                                               HorizontalTextAlignment="Start"
                                                               VerticalTextAlignment="Center"
@@ -321,7 +321,7 @@
                                     <StackLayout Orientation="Horizontal"
                                                  Spacing="0"
                                                  VerticalOptions="FillAndExpand">
-                                        <controls:CustomEntry Style="{DynamicResource EntryStyle}"
+                                        <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                               Text="{Binding TotalFeeString}"
                                                               Keyboard="Numeric"
                                                               HorizontalTextAlignment="Start"

@@ -136,6 +136,10 @@ namespace atomex
                         // Possible that device doesn't support secure storage on device.
                     }
                 }
+                else
+                {
+                    await DisplayAlert("Sorry", "You were not authenticated", AppResources.AcceptButton);
+                }
             }
         }
     }

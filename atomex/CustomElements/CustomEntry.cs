@@ -4,14 +4,17 @@ namespace atomex.CustomElements
 {
     public class CustomEntry : Entry
     {
-        public CustomEntry()
-        {
-            this.Focused += OnFocused;
-        }
+        public static readonly BindableProperty PaddingProperty =
+                      BindableProperty.Create(
+                          nameof(Padding),
+                          typeof(Thickness),
+                          typeof(CustomEntry),
+                          new Thickness());
 
-        private void OnFocused(object sender, FocusEventArgs e)
+        public Thickness Padding
         {
-            
+            get { return (Thickness)this.GetValue(PaddingProperty); }
+            set { this.SetValue(PaddingProperty, value); }
         }
     }
 }
