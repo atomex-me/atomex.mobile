@@ -26,7 +26,7 @@ namespace atomex
             _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
 
-            BiometricAuth(this, EventArgs.Empty);
+            //BiometricAuth(this, EventArgs.Empty);
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
