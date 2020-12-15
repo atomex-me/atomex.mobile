@@ -26,7 +26,8 @@ namespace atomex.Services
                 new KeyValuePair<string, IEnumerable<string>>("Authorization", new string[] {$"Bearer {token}"})
             };
 
-            var baseUri = "https://api.atomex.me/";
+            string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me";
+
             var requestUri = $"v1/guard/push?token={deviceToken}&platform={fileSystem}";
 
             try

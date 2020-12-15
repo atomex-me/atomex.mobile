@@ -52,11 +52,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
+    <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
-    <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
 <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
@@ -66,11 +65,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignKey>Apple Development: Igor Matcak (572BY3ZBQR)</CodesignKey>
+    <CodesignKey>Apple Distribution: ATOMEX OU (BJT6S7XYJV)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>
     <MtouchLink>SdkOnly</MtouchLink>
-    <CodesignProvision>VS: com.atomex.ios Development</CodesignProvision>
 <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
