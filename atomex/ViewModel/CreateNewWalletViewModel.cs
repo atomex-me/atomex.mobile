@@ -385,9 +385,19 @@ namespace atomex
             Language = Languages.FirstOrDefault();
             Entropy = WordCountToEntropyLength.FirstOrDefault();
             Mnemonic = string.Empty;
+            ClearDerivedPswd();
+            ClearStoragePswd();
+        }
+
+        public void ClearDerivedPswd()
+        {
             DerivedPassword = null;
             DerivedPasswordConfirmation = null;
             DerivedPasswordScore = 0;
+        }
+
+        public void ClearStoragePswd()
+        {
             StoragePassword = null;
             StoragePasswordConfirmation = null;
             StoragePasswordScore = 0;

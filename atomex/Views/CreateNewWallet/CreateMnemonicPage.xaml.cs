@@ -70,6 +70,7 @@ namespace atomex.Views.CreateNewWallet
                     await Navigation.PushAsync(new CreateDerivedKeyPasswordPage(_createNewWalletViewModel));
                 }
             }
+            _createNewWalletViewModel.ClearDerivedPswd();
         }
 
         private async void MnemonicPhraseChanged(object sender, EventArgs args)

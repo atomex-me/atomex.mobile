@@ -125,6 +125,7 @@ namespace atomex.Views.CreateNewWallet
             if (result == null)
             {
                 _createNewWalletViewModel.CreateHdWallet();
+                _createNewWalletViewModel.ClearStoragePswd();
                 await Navigation.PushAsync(new CreateStoragePasswordPage(_createNewWalletViewModel));
             }
             else
