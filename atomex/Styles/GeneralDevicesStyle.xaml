@@ -140,6 +140,9 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="CustomPickerStyle" TargetType="controls:CustomPicker" BasedOn="{StaticResource PickerStyle}">
+        <Setter Property="Padding" Value="20,0"/>
+    </Style>
 
     <!-- ListView Separator -->
     <Style x:Key="SeparatorStyle" TargetType="StackLayout">

@@ -27,33 +27,36 @@ namespace atomex.Droid.CustomElements
 
             if (this.Element is CustomEntry customEntry)
             {
-                var paddingLeft = (int)customEntry.Padding.Left;
-                var paddingTop = (int)customEntry.Padding.Top;
-                var paddingRight = (int)customEntry.Padding.Right;
-                var paddingBottom = (int)customEntry.Padding.Bottom;
+                if (Control != null)
+                {
+                    var paddingLeft = (int)customEntry.Padding.Left;
+                    var paddingTop = (int)customEntry.Padding.Top;
+                    var paddingRight = (int)customEntry.Padding.Right;
+                    var paddingBottom = (int)customEntry.Padding.Bottom;
 
-                int dpLeftValue = (int)TypedValue.ApplyDimension(
-                            ComplexUnitType.Dip,
-                            paddingLeft,
-                            Context.Resources.DisplayMetrics);
-                int dpRightValue = (int)TypedValue.ApplyDimension(
-                            ComplexUnitType.Dip,
-                            paddingRight,
-                            Context.Resources.DisplayMetrics);
-                int dpTopValue = (int)TypedValue.ApplyDimension(
-                            ComplexUnitType.Dip,
-                            paddingTop,
-                            Context.Resources.DisplayMetrics);
-                int dpBottomValue = (int)TypedValue.ApplyDimension(
-                            ComplexUnitType.Dip,
-                            paddingBottom,
-                            Context.Resources.DisplayMetrics);
+                    int dpLeftValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingLeft,
+                                Context.Resources.DisplayMetrics);
+                    int dpRightValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingRight,
+                                Context.Resources.DisplayMetrics);
+                    int dpTopValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingTop,
+                                Context.Resources.DisplayMetrics);
+                    int dpBottomValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingBottom,
+                                Context.Resources.DisplayMetrics);
 
-                this.Control.SetPadding(dpLeftValue, dpTopValue, dpRightValue, dpBottomValue);
+                    this.Control.SetPadding(dpLeftValue, dpTopValue, dpRightValue, dpBottomValue);
 
 
-                Control.SetBackgroundColor(Android.Graphics.Color.Transparent);
-                this.Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
+                    Control.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                    this.Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
+                }
             }
         }
     }

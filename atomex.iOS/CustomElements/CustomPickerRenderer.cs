@@ -1,12 +1,10 @@
-﻿using System;
-using UIKit;
+﻿using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using atomex.CustomElements;
 using atomex.iOS;
 using System.ComponentModel;
 using CoreGraphics;
-using System.Drawing;
 
 [assembly: ExportRenderer(typeof(CustomPicker), typeof(CustomPickerRenderer))]
 namespace atomex.iOS
@@ -17,15 +15,22 @@ namespace atomex.iOS
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (Control != null)
+            if (e.PropertyName == "Renderer")
             {
-                Control.Layer.BorderWidth = 0;
-                Control.BorderStyle = UITextBorderStyle.None;
+                if (Control != null)
+                {
+                    Control.Layer.BorderWidth = 0;
+                    Control.BorderStyle = UITextBorderStyle.None;
 
-                Control.LeftView = new UIView(new CGRect(0, 0, 20, 0));
-                Control.LeftViewMode = UITextFieldViewMode.Always;
-                Control.RightView = new UIView(new CGRect(0, 0, 0, 20));
-                Control.LeftViewMode = UITextFieldViewMode.Always;
+                    var padding = (Element as CustomPicker)?.Padding;
+                    if (!padding.HasValue)
+                        return;
+
+                    Control.LeftView = new UIView(new CGRect(0, 0, padding.Value.Left, 0));
+                    Control.LeftViewMode = UITextFieldViewMode.Always;
+                    Control.RightView = new UIView(new CGRect(0, 0, 0, padding.Value.Right));
+                    Control.LeftViewMode = UITextFieldViewMode.Always;
+                }
             }
         }
     }

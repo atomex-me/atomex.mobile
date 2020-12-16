@@ -46,7 +46,7 @@
                                      Focused="OnLanguagePickerFocused"
                                      Unfocused="OnLanguagePickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource PickerStyle}"/>
+                                     Style="{DynamicResource CustomPickerStyle}"/>
                 <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
@@ -80,7 +80,7 @@
                                      Focused="OnWordCountPickerFocused"
                                      Unfocused="OnWordCountPickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource PickerStyle}"/>
+                                     Style="{DynamicResource CustomPickerStyle}"/>
                 <Label Grid.Row="3"
                        Text ="{x:Static resources:AppResources.WordCountLabel}"
                        Style="{DynamicResource PickerHintStyle}">

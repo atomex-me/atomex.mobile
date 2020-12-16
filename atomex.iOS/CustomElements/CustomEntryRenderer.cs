@@ -15,10 +15,10 @@ namespace atomex.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            
-            if (Control != null)
+      
+            if (e.PropertyName == "Renderer")
             {
-                if (e.PropertyName == "Renderer")
+                if (Control != null)
                 {
                     Control.BorderStyle = UITextBorderStyle.None;
 
