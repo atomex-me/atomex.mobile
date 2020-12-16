@@ -33,10 +33,22 @@ namespace atomex
         {
             PasswordFrame.HasShadow = args.IsFocused;
 
-            //if (args.IsFocused)
-            //    await Content.TranslateTo(0, -Page.Height / 2 + PasswordFrame.Height, 500, Easing.CubicInOut);
-            //else
-            //    await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
+            if (args.IsFocused)
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private void PasswordEntryClicked(object sender, EventArgs args)

@@ -21,14 +21,26 @@ namespace atomex.Views.CreateNewWallet
             BindingContext = createNewWalletViewModel;
         }
 
-        private async void PasswordEntryFocused(object sender, FocusEventArgs args)
+        private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
 
             if (args.IsFocused)
-                await Content.TranslateTo(0, -Page.Height / 2 + PasswordFrame.Height + Labels.Height, 500, Easing.CubicInOut);
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
+            }
             else
-                await Content.TranslateTo(0, 0, 1000, Easing.BounceOut);
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)

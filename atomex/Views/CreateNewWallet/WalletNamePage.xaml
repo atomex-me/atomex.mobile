@@ -6,11 +6,10 @@
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
              BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <StackLayout x:Name="Page">
+    <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand"
-                     x:Name="Content">
-            <StackLayout x:Name="Labels">
+                     VerticalOptions="CenterAndExpand">
+            <StackLayout>
                 <Label Text="{x:Static resources:AppResources.WalletNameStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
                 <Label Text="{x:Static resources:AppResources.EnterNameLabel}"
@@ -55,5 +54,5 @@
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>
         </StackLayout>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>
