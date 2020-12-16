@@ -12,6 +12,8 @@ namespace atomex.Droid.Services
         {
             Context context = Android.App.Application.Context;
             Toast toast = Toast.MakeText(context, message, ToastLength.Short);
+
+            toast.View.FindViewById<TextView>(Android.Resource.Id.Message).SetTextColor(Android.Graphics.Color.White);
             toast.View.SetBackgroundResource(Resource.Drawable.CustomToast);
 
             switch (toastPosition)
@@ -26,7 +28,7 @@ namespace atomex.Droid.Services
                     toast.SetGravity(Android.Views.GravityFlags.Bottom, 0, 200);
                     break;
                 default:
-                    toast.SetGravity(Android.Views.GravityFlags.Bottom, 0, 200);
+                    toast.SetGravity(Android.Views.GravityFlags.Top, 0, 200);
                     break;
             }
             toast.Show();
