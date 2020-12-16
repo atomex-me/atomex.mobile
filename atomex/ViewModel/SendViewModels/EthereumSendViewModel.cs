@@ -61,7 +61,7 @@ namespace atomex.ViewModel.SendViewModels
         public override decimal FeePrice
         {
             get => _feePrice;
-            set { UpdateFeePrice(value); }
+            set { _ = UpdateFeePrice(value); }
             
         }
 
@@ -167,7 +167,7 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
-        private async void UpdateFeePrice(decimal value)
+        public virtual async Task UpdateFeePrice(decimal value)
         {
             Warning = string.Empty;
 
@@ -199,7 +199,7 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                
+                OnPropertyChanged(nameof(FeePrice));
                 OnPropertyChanged(nameof(FeePriceString));
                 UpdateTotalFeeString();
                 OnPropertyChanged(nameof(TotalFeeString));

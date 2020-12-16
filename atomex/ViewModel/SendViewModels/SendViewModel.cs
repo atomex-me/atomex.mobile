@@ -233,7 +233,7 @@ namespace atomex.ViewModel.SendViewModels
             SubscribeToServices();
         }
 
-        private async Task UpdateFeePrice()
+        public virtual async Task UpdateFeePrice()
         {
             FeePrice = await Currency.GetDefaultFeePriceAsync();
         }
