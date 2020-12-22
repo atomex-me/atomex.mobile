@@ -80,7 +80,8 @@ namespace atomex.Services
 
             var signatureHex = Hex.ToHexString(signature);
 
-            var baseUri = "https://api.atomex.me/";
+            string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me";
+
             var requestUri = "v1/token";
 
             var jsonRequest = JsonConvert.SerializeObject(new
