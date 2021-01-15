@@ -5,19 +5,20 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.CurrenciesListPage"
              Title="{x:Static resources:AppResources.WalletsPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding CurrencyViewModels}"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   ItemTapped="OnListViewItemTapped"
                   SeparatorVisibility="Default"
-                  SeparatorColor="{DynamicResource ListViewSeparatorColor}"
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                   VerticalOptions="FillAndExpand"
                   Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
+                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid ColumnSpacing="0"
                               RowSpacing="0">
                             <Grid.RowDefinitions>
@@ -38,14 +39,14 @@
                             <Label Grid.Column="1"
                                    Text="{Binding Currency.Description}"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{DynamicResource MainTextColor}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    FontSize="14"
                                    VerticalTextAlignment="End"
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="2"
                                    Text="{Binding TotalAmount}"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{DynamicResource MainTextColor}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    Margin="10,0"
                                    VerticalTextAlignment="End"
                                    HorizontalTextAlignment="End">
@@ -62,7 +63,7 @@
                             <Label Grid.Row="1"
                                    Grid.Column="1"
                                    Text="{Binding Price, StringFormat='{0:f2} $'}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontFamily="{DynamicResource LightFont}"
                                    FontSize="10"
                                    Margin="0,3"
@@ -72,7 +73,7 @@
                                    Grid.Column="2"
                                    Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
                                    FontFamily="{DynamicResource LightFont}"
-                                   TextColor="{DynamicResource AdditionalTextColor}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontSize="10"
                                    Margin="10,3"
                                    VerticalTextAlignment="Start"

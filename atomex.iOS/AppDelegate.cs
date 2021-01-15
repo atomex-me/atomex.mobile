@@ -35,11 +35,10 @@ namespace atomex.iOS
             FileSystem.UseFileSystem(new IosFileSystem());
 
             Forms.SetFlags("Shapes_Experimental");
-
+            Forms.SetFlags("Brush_Experimental");
             Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
-            Firebase.Core.App.Configure();
 
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))

@@ -5,7 +5,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegatePage"
              Title="{x:Static resources:AppResources.DelegatePageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView x:Name="Page">
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
@@ -13,7 +13,7 @@
                      Spacing="0">
             <Label Text="{x:Static resources:AppResources.DelegateToBakeryLabel}"
                    FontFamily="{DynamicResource BoldFont}"
-                   TextColor="{DynamicResource MainTextColor}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    FontSize="18"
                    HorizontalTextAlignment="Center"
                    Padding="20,10"/>
@@ -69,11 +69,11 @@
                     <Label Text="{Binding BakerViewModel.Name}"
                            VerticalTextAlignment="End"
                            FontFamily="{DynamicResource BoldFont}"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"/>
                     <Label VerticalTextAlignment="Start"
                            FontFamily="{DynamicResource LightFont}"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="12">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
@@ -81,12 +81,12 @@
                                      Value="Custom Baker">
                                 <Setter Property="IsVisible"
                                         Value="False"/>
-                        </DataTrigger>
+                            </DataTrigger>
                         </Label.Triggers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"
-                                      TextColor="Green"/>
+                                      TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                                 <Span Text=" (min "/>
                                 <Span Text="{Binding BakerViewModel.MinDelegation}"/>
                                 <Span Text=" XTZ)"/>
@@ -96,7 +96,7 @@
                 </StackLayout>
                 <Image Grid.Column="3"
                        Grid.RowSpan="2"
-                       Source="RightArrow__black"
+                       Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
                        Margin="0,25,15,25">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
@@ -111,7 +111,7 @@
                   HorizontalOptions="Fill"
                   RowSpacing="0"
                   ColumnSpacing="0"
-                  BackgroundColor="{DynamicResource MainBackgroundColor}">
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="40" />
@@ -120,6 +120,7 @@
                 <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
                        Padding="20,5,20,0"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"
                        IsVisible="True"/>
                 <Frame Grid.Row="1"
                        Grid.RowSpan="3"
@@ -128,7 +129,7 @@
                     <controls:CustomEntry x:Name="ToAddressEntry"
                                           Keyboard="Text"
                                           Placeholder="{x:Static resources:AppResources.BakerAddressPlaceholder}"
-                                          PlaceholderColor="Gray"
+                                          PlaceholderColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                           Focused="OnToAddressEntryFocused"
                                           Unfocused="OnToAddressEntryFocused"
                                           Style="{DynamicResource CustomEntryStyle}"
@@ -173,7 +174,7 @@
                 <Label Grid.Row="1"
                        Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
                        FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
                        LineBreakMode="MiddleTruncation"
                        Padding="20,0,10,0"
@@ -200,7 +201,7 @@
                     </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Image Source="DownArrowPicker"
+                <Image Source="DownArrow"
                        Grid.Column="1"
                        Grid.RowSpan="3"
                        Margin="0,25,15,25">
@@ -258,7 +259,7 @@
                                     <Setter Property="IsReadOnly"
                                             Value="True"/>
                                     <Setter Property="TextColor"
-                                            Value="{DynamicResource AdditionalTextColor}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                     <Setter Property="Opacity"
                                             Value="0.7"/>
                                 </DataTrigger>
@@ -268,14 +269,14 @@
                                     <Setter Property="IsReadOnly"
                                             Value="False"/>
                                     <Setter Property="TextColor"
-                                            Value="Black"/>
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                     <Setter Property="Opacity"
                                             Value="1"/>
                                 </DataTrigger>
                             </controls:CustomEntry.Triggers>
                         </controls:CustomEntry>
                         <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
-                               TextColor="{DynamicResource AdditionalTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="12"
                                VerticalTextAlignment="Start"
@@ -287,11 +288,11 @@
                          Padding="20">
                 <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
                        FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
-                <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
+                <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         IsToggled="{Binding UseDefaultFee}"
                         Toggled="OnUseDefaultFeeToggled"
                         HorizontalOptions="EndAndExpand"/>

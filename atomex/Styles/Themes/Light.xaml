@@ -2,10 +2,13 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-     <!-- Base Colors -->
+
+    <!-- Light theme colors -->
     <Color x:Key="MainBackgroundColor">#ffffff</Color>
     <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
+
     <Color x:Key="NavigationBarBackgroundColor">#2B5286</Color>
+    <Color x:Key="NavigationBarTextColor">#ffffff</Color>
     <Color x:Key="TabBarBackgroundColor">#edecf0</Color>
     <Color x:Key="SelectedTabColor">#3a6cb1</Color>
     <Color x:Key="UnselectedTabColor">Gray</Color>
@@ -13,25 +16,70 @@
     <Color x:Key="MainButtonBackgroundColor">#3a6cb1</Color>
     <Color x:Key="MainButtonBorderColor">#3a6cb1</Color>
     <Color x:Key="MainButtonTextColor">#ffffff</Color>
+
     <Color x:Key="AdditionalButtonBackgroundColor">#ffffff</Color>
     <Color x:Key="AdditionalButtonBorderColor">#909CB2</Color>
     <Color x:Key="AdditionalButtonTextColor">#223a66</Color>
 
-    <Color x:Key="NavigationBarTextColor">#ffffff</Color>
     <Color x:Key="MainTextColor">#454545</Color>
     <Color x:Key="AdditionalTextColor">#918f92</Color>
-    <Color x:Key="LogoLabelColor">#ffffff</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
-    <Color x:Key="ErrorTextColor">#8B0000</Color>
+    <Color x:Key="ErrorTextColor">#AE0000</Color>
     <Color x:Key="SuccessTextColor">#008B00</Color>
 
+    <Color x:Key="FrameBackgroundColor">White</Color>
     <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
     <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
+
+    <Color x:Key="LoaderColor">#3a6cb1</Color>
+
+    <Color x:Key="StartPageBackgroundStartColor">#2b5287</Color>
+    <Color x:Key="StartPageBackgroundStopColor">#123054</Color>
 
     <Color x:Key="ListViewSeparatorColor">#e0e0e0</Color>
     <Color x:Key="ListViewItemBackgroundColor">White</Color>
     <Color x:Key="ListViewSelectedBackgroundColor">LightGray</Color>
 
+
+
+    <!-- Dark theme colors  -->
+    <Color x:Key="MainBackgroundColorDark">#18222d</Color>
+    <Color x:Key="AdditionalBackgroundColorDark">#08121D</Color>
+
+    <Color x:Key="NavigationBarBackgroundColorDark">#203040</Color>
+    <Color x:Key="NavigationBarTextColorDark">#ffffff</Color>
+    <Color x:Key="TabBarBackgroundColorDark">#203040</Color>
+    <Color x:Key="SelectedTabColorDark">#298ad4</Color>
+    <Color x:Key="UnselectedTabColorDark">#9dafbe</Color>
+
+    <Color x:Key="MainButtonBackgroundColorDark">#2b5277</Color>
+    <Color x:Key="MainButtonBorderColorDark">#2b5277</Color>
+    <Color x:Key="MainButtonTextColorDark">#f6f6f6</Color>
+
+    <Color x:Key="AdditionalButtonBackgroundColorDark">#627A96</Color>
+    <Color x:Key="AdditionalButtonBorderColorDark">#627A96</Color>
+    <Color x:Key="AdditionalButtonTextColorDark">#f6f6f6</Color>
+
+    <Color x:Key="MainTextColorDark">#f6f6f6</Color>
+    <Color x:Key="AdditionalTextColorDark">#9dafbe</Color>
+    <Color x:Key="HintTextColorDark">#298ad4</Color>
+    <Color x:Key="ErrorTextColorDark">#dd2a33</Color>
+    <Color x:Key="SuccessTextColorDark">#31B823</Color>
+
+    <Color x:Key="FrameBackgroundColorDark">#213040</Color>
+    <Color x:Key="ErrorFrameBackgroundColorDark">#4E4646</Color>
+    <Color x:Key="SuccessFrameBackgroundColorDark">#383E38</Color>
+
+    <Color x:Key="LoaderColorDark">#f6f6f6</Color>
+
+    <Color x:Key="StartPageBackgroundStartColorDark">#2b5277</Color>
+    <Color x:Key="StartPageBackgroundStopColorDark">#0e1621</Color>
+
+    <Color x:Key="ListViewSeparatorColorDark">#546371</Color>
+    <Color x:Key="ListViewItemBackgroundColorDark">#18222d</Color>
+    <Color x:Key="ListViewSelectedBackgroundColorDark">#213040</Color>
+
+    
 
     <!-- Swap states colors  -->
     <Color x:Key="SwapCompletedStateColor">#3a6cb1</Color>
@@ -50,22 +98,6 @@
     <!-- ListView transactions states colors  -->
     <Color x:Key="TxListViewFailedStateColor">#44ffcccc</Color>
     <Color x:Key="TxListViewPendingStateColor">#44ffffcc</Color>
-    <Color x:Key="TxListViewConfirmedStateColor">#ffffff</Color>
-
-    <Style TargetType="ListView">
-        <Setter Property="BackgroundColor" Value="White"/>
-    </Style>
-
-    <Color x:Key="EntryFrameBackgroundColor">White</Color>
-    <Color x:Key="PickerBackgroundColor">Transparent</Color>
-
-    <Style x:Key="QrCodeFrameStyle" TargetType="Frame">
-        <Setter Property="BackgroundColor" Value="White"/>
-    </Style>
-
-    <Style TargetType="Editor">
-        <Setter Property="BackgroundColor">White</Setter>
-        <Setter Property="TextColor">#454545</Setter>
-    </Style>
+    <Color x:Key="TxListViewConfirmedStateColor">Transparent</Color>
 
 </ResourceDictionary>

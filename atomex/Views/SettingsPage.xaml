@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.SettingsPage"
              Title="{x:Static resources:AppResources.SettingsPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
@@ -14,7 +14,7 @@
                 <Label Text="{x:Static resources:AppResources.CommunitySection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
-                       TextColor="{DynamicResource AdditionalTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="Center"
                        TextTransform="Uppercase"
                        Padding="20,5"/>
@@ -48,7 +48,7 @@
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
@@ -80,7 +80,7 @@
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
@@ -113,14 +113,14 @@
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__gray"
+                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                            Grid.Row="4"
                            Grid.Column="2"
                            Margin="20,15"
@@ -146,7 +146,7 @@
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
@@ -162,7 +162,7 @@
                 <Label Text="{x:Static resources:AppResources.AccountSection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
-                       TextColor="{DynamicResource AdditionalTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="Center"
                        TextTransform="Uppercase"
                        Padding="20,25,20,5"/>

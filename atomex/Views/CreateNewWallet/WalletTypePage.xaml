@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="{x:Static resources:AppResources.WalletTypeStepLabel}"

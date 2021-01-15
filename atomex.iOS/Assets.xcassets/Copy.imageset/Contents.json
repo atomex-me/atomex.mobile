@@ -1,23 +1,22 @@
 {
   "images": [
     {
-      "filename": "Copy-1.pdf",
-      "idiom": "universal"
-    },
-    {
-      "scale": "1x",
-      "idiom": "universal"
-    },
-    {
-      "scale": "2x",
-      "idiom": "universal"
-    },
-    {
-      "scale": "3x",
-      "idiom": "universal"
-    },
-    {
       "filename": "Copy.pdf",
+      "idiom": "universal"
+    },
+    {
+      "scale": "1x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "2x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "3x",
+      "idiom": "universal"
+    },
+    {
       "idiom": "iphone"
     },
     {
@@ -88,6 +87,7 @@
       "idiom": "car"
     },
     {
+      "filename": "Copy__white.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -305,6 +305,7 @@
       "idiom": "car"
     },
     {
+      "filename": "Copy-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationConfirmationPage"
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
@@ -12,14 +12,14 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
-                               Color="Black"/>
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
                 <Label Text="{x:Static resources:AppResources.WantToDelegate}"
                        FontFamily="{DynamicResource BlackFont}"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="16"
                        Margin="20,20,20,10"
                        VerticalTextAlignment="Center"
@@ -69,11 +69,11 @@
                                     LineBreakMode="TailTruncation"
                                     VerticalTextAlignment="End"
                                     FontFamily="{DynamicResource RegularFont}"
-                                    TextColor="{DynamicResource MainTextColor}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                     FontSize="14"/>
                             <Label Text="{Binding Address}"
                                     VerticalTextAlignment="Start"
-                                    TextColor="{DynamicResource AdditionalTextColor}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                     FontSize="12"
                                     LineBreakMode="MiddleTruncation"/>
                         </StackLayout>

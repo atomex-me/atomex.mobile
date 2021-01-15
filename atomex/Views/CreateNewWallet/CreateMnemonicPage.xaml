@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView>
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
@@ -55,7 +55,7 @@
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -91,7 +91,7 @@
                 <Image Grid.RowSpan="2"
                        Grid.Row="3"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -103,7 +103,7 @@
                    CornerRadius="10"
                    x:Name="MnemonicPhraseFrame"
                    HorizontalOptions="CenterAndExpand"
-                   BackgroundColor="{DynamicResource SuccessFrameBackgroundColor}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource SuccessFrameBackgroundColorDark}, Light={StaticResource SuccessFrameBackgroundColor}}"
                    Padding="5">
                 <Label Text="{Binding Mnemonic}"
                        Style="{DynamicResource SuccessTextStyle}"
@@ -125,7 +125,7 @@
                        HeightRequest="32"
                        WidthRequest="32"/>
                 <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
                        HorizontalTextAlignment="Start"/>

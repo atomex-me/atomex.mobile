@@ -5,17 +5,17 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.DelegationsListPage"
              Title="{x:Static resources:AppResources.DelegationListPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand"
                      Padding="20">
             <StackLayout IsVisible="{Binding IsLoadingDelegations}"
                          VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator Color="{DynamicResource HintTextColor}"                                
+                    <ActivityIndicator Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                                        IsRunning="True"/>
                     <Label Text="{x:Static resources:AppResources.LoadingLabel}"
-                           TextColor="{DynamicResource HintTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                            FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
@@ -34,14 +34,14 @@
                                 Value="True"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Image Source="SwapRedeem"       
+                <Image Source="ic_redeem"
                        HeightRequest="48"
                        WidthRequest="48"
                        VerticalOptions="EndAndExpand"
                        HorizontalOptions="CenterAndExpand"/>
                 <Label Text="{x:Static resources:AppResources.NoDelegationsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        HorizontalTextAlignment="Center"
                        VerticalOptions="StartAndExpand"
                        FontSize="18"
@@ -51,7 +51,7 @@
                       ItemTapped="OnDelegationTapped"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
-                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                       Margin="0,2"
                       Footer=""
                       IsVisible="False">
@@ -65,7 +65,7 @@
                 </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid Margin="2"
                                   ColumnSpacing="0"
                                   RowSpacing="0">
@@ -84,10 +84,10 @@
                                        Padding="0"
                                        HasShadow="False"
                                        CornerRadius="10"
-                                       BackgroundColor="{DynamicResource ListViewItemBackgroundColor}"/>
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ListViewItemBackgroundColorDark}, Light={StaticResource ListViewItemBackgroundColor}}"/>
                                 <Label Text="{Binding Balance, StringFormat='{0:0.##} XTZ'}"
                                        VerticalTextAlignment="End"
-                                       TextColor="{DynamicResource MainTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontFamily="{DynamicResource BoldFont}"
                                        FontSize="14"
                                        Padding="10,0,0,0"/>
@@ -95,7 +95,7 @@
                                        Text="{Binding Address}"
                                        Padding="10,0,0,0"
                                        FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{DynamicResource MainTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="12"
                                        LineBreakMode="MiddleTruncation"
                                        VerticalTextAlignment="Start"/>
@@ -134,7 +134,7 @@
                                 <Label Grid.Column="3"
                                        Text="{Binding Baker.Name}"
                                        FontFamily="{DynamicResource BoldFont}"
-                                       TextColor="{DynamicResource MainTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="14"
                                        Padding="5,0"
                                        MaxLines="1"
@@ -157,7 +157,7 @@
                                 <Label Grid.Row="1"
                                        Grid.Column="3"
                                        Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
-                                       TextColor="Green"
+                                       TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        FontSize="12"
                                        Padding="5,0"
@@ -180,7 +180,7 @@
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"
                                        FontFamily="{DynamicResource BoldFont}"
-                                       TextColor="{DynamicResource HintTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                        FontSize="12"
                                        Padding="10,0"
                                        IsVisible="False">

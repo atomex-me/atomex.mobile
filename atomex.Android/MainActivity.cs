@@ -12,6 +12,7 @@ using Serilog.Events;
 using Sentry;
 using Log = Serilog.Log;
 using Android.Views;
+using Xamarin.Forms;
 
 namespace atomex.Droid
 {
@@ -20,22 +21,24 @@ namespace atomex.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            Forms.SetFlags("Brush_Experimental");
+            Forms.SetFlags("Shapes_Experimental");
+
             base.OnCreate(bundle);
 
             FileSystem.UseFileSystem(new AndroidFileSystem());
 
             //Window.DecorView.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
-            Window.SetNavigationBarColor(Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.navigationBarBackground)));
+
+            Window.SetNavigationBarColor(Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.colorPrimary)));
 
             CrossFingerprint.SetCurrentActivityResolver(() => this);
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            Xamarin.Forms.Forms.SetFlags("Shapes_Experimental");
-
             Xamarin.Essentials.Platform.Init(this, bundle);
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+            Forms.Init(this, bundle);
 
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
 

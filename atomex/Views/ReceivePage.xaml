@@ -7,7 +7,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.ReceivePage"
              Title="{x:Static resources:AppResources.ReceivePageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView>
         <StackLayout HorizontalOptions="Center"
                      VerticalOptions="CenterAndExpand"
@@ -53,7 +53,7 @@
                     </Label>
                     <Label Grid.Row="1"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            Text="{Binding SelectedAddress.Address}"
                            FontSize="12"
                            Padding="20,5,0,11"
@@ -67,7 +67,7 @@
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Padding="0,0,10,10"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="End">
                         <Label.FormattedText>
@@ -85,7 +85,7 @@
                             <TapGestureRecognizer Tapped="OnPickerClicked"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="DownArrowPicker"
+                    <Image Source="DownArrow"
                            Grid.RowSpan="2"
                            Grid.Column="2"
                            WidthRequest="10"
@@ -140,14 +140,9 @@
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                        RelativeLayout.WidthConstraint="20"
                                        RelativeLayout.HeightConstraint="20"
-                                       Color="Black"/>
+                                       Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
                 </RelativeLayout>
             </StackLayout>
-            <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
-                <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                    <zxcm:EncodingOptions Width="300" Height="100" />
-                </zxing:ZXingBarcodeImageView.BarcodeOptions>
-            </zxing:ZXingBarcodeImageView>-->
         </StackLayout>
     </ScrollView>
 </ContentPage>

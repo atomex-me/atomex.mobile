@@ -5,7 +5,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20,0"
@@ -60,7 +60,7 @@
 	             	                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-10}"
                                                         RelativeLayout.WidthConstraint="20"
                                                         RelativeLayout.HeightConstraint="20"
-                                                        Color="Black"
+                                                        Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                                                         IsVisible="False"/>
                                 </RelativeLayout>
                             </StackLayout>
@@ -69,7 +69,7 @@
                 </Grid>
                 <Label Margin="10,0"
                        VerticalTextAlignment="Center"
-                       TextColor="{DynamicResource MainTextColor}">
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
@@ -109,7 +109,7 @@
                     <Label Grid.Row="1"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="End"
-                           TextColor="{DynamicResource MainTextColor}">
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Amount, StringFormat='{0:0.########}'}"
@@ -126,7 +126,7 @@
                            Grid.Row="1"
                            Grid.Column="2"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource ErrorTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
                            FontSize="14"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="End"
@@ -135,7 +135,7 @@
                            Grid.Column="2"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
-                           TextColor="{DynamicResource MainTextColor}">
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding IsNoLiquidity}"

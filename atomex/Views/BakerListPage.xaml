@@ -4,15 +4,15 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.BakerListPage"
              Title="{x:Static resources:AppResources.BakerListPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
             <SearchBar Placeholder="{x:Static resources:AppResources.SearchBarPlaceholder}"
-                       CancelButtonColor="{DynamicResource HintTextColor}"
-                       PlaceholderColor="{DynamicResource HintTextColor}"
-                       TextColor="{DynamicResource MainTextColor}"
-                       BackgroundColor="{DynamicResource MainBackgroundColor}"
+                       CancelButtonColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                       PlaceholderColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="12"
                        TextTransform="Lowercase"
@@ -32,7 +32,7 @@
                                   Padding="10,0"
                                   ColumnSpacing="0"
                                   RowSpacing="0"
-                                  BackgroundColor="{DynamicResource MainBackgroundColor}">
+                                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
@@ -43,11 +43,16 @@
                                     <ColumnDefinition Width="5*" />
                                     <ColumnDefinition Width="3.5*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Grid.RowSpan="2"
-                                       Source="{Binding Logo}"
-                                       VerticalOptions="Center"
+                                <Frame Grid.RowSpan="2"
+                                       Margin="0,12"
+                                       Padding="0"
+                                       CornerRadius="6"
                                        HorizontalOptions="Center"
-                                       Margin="0,12"/>
+                                       IsClippedToBounds="True">
+                                    <Image Source="{Binding Logo}"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"/>
+                                </Frame>
                                 <StackLayout Grid.Column="1"
                                              Grid.RowSpan="2"
                                              VerticalOptions="Center"
@@ -56,11 +61,11 @@
                                     <Label Text="{Binding Name}"
                                            VerticalTextAlignment="End"
                                            FontFamily="{DynamicResource BoldFont}"
-                                           TextColor="{DynamicResource MainTextColor}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            FontSize="14"/>
                                     <Label VerticalTextAlignment="Start"
                                            FontFamily="{DynamicResource LightFont}"
-                                           TextColor="{DynamicResource MainTextColor}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            FontSize="12">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
@@ -73,7 +78,7 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding EstimatedRoi, StringFormat='{0:P}'}"
-                                                      TextColor="Green"/>
+                                                      TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                                                 <Span Text=" (min "/>
                                                 <Span Text="{Binding MinDelegation}"/>
                                                 <Span Text=" XTZ)"/>
@@ -97,6 +102,7 @@
                                 <Label Text="{x:Static resources:AppResources.Available}"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="End"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontFamily="{DynamicResource LightFont}"
                                        FontSize="10">
                                     <Label.Triggers>
@@ -111,6 +117,7 @@
                                 <Label Text="{Binding StakingAvailable, StringFormat='{0:0}'}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="End"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontFamily="{DynamicResource LightFont}"
                                        FontSize="12">
                                     <Label.Triggers>
@@ -128,7 +135,7 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Label TextColor="{DynamicResource ErrorTextColor}"
+                                <Label TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
                                        Text="Baker is full"
                                        FontFamily="{DynamicResource BoldFont}"
                                        VerticalTextAlignment="Center"

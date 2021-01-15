@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
              Title="{x:Static resources:AppResources.SendPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
@@ -52,7 +52,7 @@
                                      HorizontalOptions="Start"
                                      VerticalOptions="Fill"
                                      Margin="0,10,20,10"
-                                     BackgroundColor="{DynamicResource MainBackgroundColor}"
+                                     BackgroundColor="Transparent"
                                      Clicked="OnScanButtonClicked"/>
                     </StackLayout>
                 </controls:CustomFrame>
@@ -88,7 +88,7 @@
                                        Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
                                        FontFamily="{DynamicResource LightFont}"
                                        FontSize="12"
-                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                                 </Label>
@@ -107,7 +107,7 @@
                              HeightRequest="60"
                              Padding="0"
                              Spacing="8"
-                             BackgroundColor="White"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"
                              HorizontalOptions="FillAndExpand"
                              Opacity="0.7"
                              IsVisible="False">
@@ -116,7 +116,7 @@
                            IsVisible="True"/>
                     <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                           IsReadOnly="True"
-                                          TextColor="{DynamicResource AdditionalTextColor}"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                           Text="{Binding FeeRate, StringFormat='{0} sat/byte'}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
                                  Margin="20,0,0,0"/>
@@ -171,7 +171,7 @@
                                                 <Setter Property="IsReadOnly"
                                                         Value="True"/>
                                                 <Setter Property="TextColor"
-                                                        Value="{DynamicResource AdditionalTextColor}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                             </DataTrigger>
                                             <DataTrigger TargetType="controls:CustomEntry"
                                                          Binding="{Binding UseDefaultFee}"
@@ -179,12 +179,12 @@
                                                 <Setter Property="IsReadOnly"
                                                         Value="False"/>
                                                 <Setter Property="TextColor"
-                                                        Value="Black"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                             </DataTrigger>
                                         </controls:CustomEntry.Triggers>
                                     </controls:CustomEntry>
                                     <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
-                                           TextColor="{DynamicResource AdditionalTextColor}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                            FontFamily="{DynamicResource LightFont}"
                                            FontSize="12"
                                            VerticalTextAlignment="Center"
@@ -251,7 +251,7 @@
                                                     <Setter Property="IsReadOnly"
                                                             Value="True"/>
                                                     <Setter Property="TextColor"
-                                                            Value="{DynamicResource AdditionalTextColor}"/>
+                                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="controls:CustomEntry"
                                                              Binding="{Binding UseDefaultFee}"
@@ -259,7 +259,7 @@
                                                     <Setter Property="IsReadOnly"
                                                             Value="False"/>
                                                     <Setter Property="TextColor"
-                                                            Value="Black"/>
+                                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                                 </DataTrigger>
                                             </controls:CustomEntry.Triggers>
                                         </controls:CustomEntry>
@@ -294,7 +294,7 @@
                                                               HorizontalTextAlignment="Start"
                                                               VerticalTextAlignment="Center"
                                                               IsReadOnly="True"
-                                                              TextColor="{DynamicResource AdditionalTextColor}"/>
+                                                              TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                     </StackLayout>
                                 </StackLayout>
                             </controls:CustomFrame>
@@ -327,9 +327,9 @@
                                                               HorizontalTextAlignment="Start"
                                                               VerticalTextAlignment="Center"
                                                               IsReadOnly="True"
-                                                              TextColor="{DynamicResource AdditionalTextColor}"/>
+                                                              TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                         <Label Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                               TextColor="{DynamicResource AdditionalTextColor}"
+                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                FontFamily="{DynamicResource LightFont}"
                                                FontSize="12"
                                                VerticalTextAlignment="Start"
@@ -346,11 +346,11 @@
                              Padding="20">
                     <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Center"/>
-                    <Switch OnColor="{DynamicResource MainButtonBackgroundColor}"
+                    <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                             IsToggled="{Binding UseDefaultFee}"
                             Toggled="OnUseDefaultFeeToggled"
                             HorizontalOptions="EndAndExpand"/>

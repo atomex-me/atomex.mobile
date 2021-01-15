@@ -6,7 +6,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
             <StackLayout Spacing="1"
@@ -54,7 +54,7 @@
                     </Image>
                     <Label Grid.Row="1"
                            Grid.Column="1"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
@@ -96,7 +96,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="DownArrowPicker"
+                    <Image Source="DownArrow"
                            Grid.RowSpan="3"
                            Grid.Column="2"
                            HorizontalOptions="Start"
@@ -147,7 +147,7 @@
                     <Label Grid.Row="0"
                            Grid.Column="1"
                            Grid.RowSpan="3"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
@@ -167,7 +167,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="DownArrowPicker"
+                    <Image Source="DownArrow"
                            Grid.RowSpan="3"
                            Grid.Column="2"
                            HorizontalOptions="Start"
@@ -178,7 +178,7 @@
                     </Image>
                 </Grid>
                 <Label Margin="20,10"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
@@ -203,9 +203,9 @@
                          CornerRadius="20"
                          HorizontalOptions="Center"
                          Padding="10"
-                         BackgroundColor="White"
+                         BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                          BorderWidth="1"
-                         BorderColor="{DynamicResource AdditionalBackgroundColor}" 
+                         BorderColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0,Constant=110}"
                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=50}"
                          Clicked="OnSwapCurrenciesClicked"/>

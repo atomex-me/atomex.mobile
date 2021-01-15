@@ -1,23 +1,22 @@
 {
   "images": [
     {
-      "filename": "Swap-arrows-3.pdf",
-      "idiom": "universal"
-    },
-    {
-      "scale": "1x",
-      "idiom": "universal"
-    },
-    {
-      "scale": "2x",
-      "idiom": "universal"
-    },
-    {
-      "scale": "3x",
-      "idiom": "universal"
-    },
-    {
       "filename": "Swap-arrows.pdf",
+      "idiom": "universal"
+    },
+    {
+      "scale": "1x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "2x",
+      "idiom": "universal"
+    },
+    {
+      "scale": "3x",
+      "idiom": "universal"
+    },
+    {
       "idiom": "iphone"
     },
     {
@@ -88,6 +87,7 @@
       "idiom": "car"
     },
     {
+      "filename": "sort_white.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -305,6 +305,7 @@
       "idiom": "car"
     },
     {
+      "filename": "Swap-arrows-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

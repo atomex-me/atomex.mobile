@@ -42,7 +42,7 @@ namespace atomex
             if (_receiveViewModel.SelectedAddress != null)
             {
                 await Clipboard.SetTextAsync(_receiveViewModel.SelectedAddress.Address);
-                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top);
+                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             else
             {

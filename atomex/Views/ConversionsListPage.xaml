@@ -6,7 +6,7 @@
              x:Class="atomex.ConversionsListPage"
              Title="{x:Static resources:AppResources.SwapListPageTitle}">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{DynamicResource MainBackgroundColor}">
+        <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          IsVisible="False">
@@ -18,7 +18,7 @@
                                 Value="True"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Image Source="SwapRedeem"       
+                <Image Source="ic_redeem"
                        HeightRequest="48"
                        WidthRequest="48"
                        VerticalOptions="EndAndExpand"
@@ -26,7 +26,7 @@
                 <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
-                       TextColor="{DynamicResource MainTextColor}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        VerticalOptions="StartAndExpand"
                        FontSize="18"
                        Margin="20"/>
@@ -38,9 +38,9 @@
                       IsGroupingEnabled="True"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
-                      SeparatorColor="{DynamicResource ListViewSeparatorColor}"
+                      SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                       VerticalOptions="FillAndExpand"
-                      BackgroundColor="{DynamicResource MainBackgroundColor}"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
@@ -54,11 +54,11 @@
                     <DataTemplate>
                         <ViewCell Height="20">
                             <StackLayout HeightRequest="20"
-                                         BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                          Spacing="0">
                                 <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                       BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
-                                       TextColor="{DynamicResource AdditionalTextColor}"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        Padding="10,0"
                                        FontSize="12"
@@ -70,7 +70,7 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid Padding="8"
                                   RowSpacing="0"
                                   ColumnSpacing="0">
@@ -95,7 +95,7 @@
                                 </RelativeLayout>
                                 <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
-                                       TextColor="{DynamicResource MainTextColor}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        Padding="5">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -122,7 +122,7 @@
                                        Padding="2"
                                        Margin="0,10"
                                        HasShadow="False"
-                                       BackgroundColor="{DynamicResource MainBackgroundColor}">
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                                     <Frame.Triggers>
                                         <DataTrigger TargetType="Frame"
                                                      Binding="{Binding State}"

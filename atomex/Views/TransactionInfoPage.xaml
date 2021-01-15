@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.TransactionInfoPage"
              Title="{x:Static resources:AppResources.TransactionInfoPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ScrollView>
         <StackLayout>
             <StackLayout Orientation="Horizontal"
@@ -16,49 +16,49 @@
                                      Binding="{Binding Type}"
                                      Value="Input">
                             <Setter Property="Source"
-                                    Value="Receive"/>
+                                    Value="ic_input"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="Output">
                             <Setter Property="Source"
-                                    Value="Send"/>
+                                    Value="ic_output"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="SwapPayment">
                             <Setter Property="Source"
-                                    Value="SwapPayment"/>
+                                    Value="ic_payment"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="SwapRedeem">
                             <Setter Property="Source"
-                                    Value="SwapRedeem"/>
+                                    Value="ic_redeem"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="SwapRefund">
                             <Setter Property="Source"
-                                    Value="SwapRefund"/>
+                                    Value="ic_refund"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="SwapCall">
                         <Setter Property="Source"
-                                Value="TxApprove"/>
+                                Value="ic_approve"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="TokenCall">
                             <Setter Property="Source"
-                                    Value="TxApprove"/>
+                                    Value="ic_approve"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding Type}"
                                      Value="TokenApprove">
                             <Setter Property="Source"
-                                    Value="TxApprove"/>
+                                    Value="ic_approve"/>
                         </DataTrigger>
                     </Image.Triggers>
                 </Image>
@@ -70,7 +70,7 @@
                                      Binding="{Binding Type}"
                                      Value="Input">
                             <Setter Property="TextColor"
-                                    Value="Green"/>
+                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -87,7 +87,7 @@
                                      Binding="{Binding Type}"
                                      Value="Output">
                             <Setter Property="TextColor"
-                                    Value="Red"/>
+                                    Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -104,7 +104,7 @@
                                      Binding="{Binding Type}"
                                      Value="SwapPayment">
                             <Setter Property="TextColor"
-                                    Value="Red"/>
+                                    Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -121,7 +121,7 @@
                                      Binding="{Binding Type}"
                                      Value="SwapRedeem">
                             <Setter Property="TextColor"
-                                    Value="Green"/>
+                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -138,7 +138,7 @@
                                      Binding="{Binding Type}"
                                      Value="SwapRefund">
                             <Setter Property="TextColor"
-                                    Value="Green"/>
+                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -155,7 +155,7 @@
                                      Binding="{Binding Type}"
                                      Value="SwapCall">
                             <Setter Property="TextColor"
-                                    Value="Black"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -172,7 +172,7 @@
                                      Binding="{Binding Type}"
                                      Value="TokenCall">
                             <Setter Property="TextColor"
-                                    Value="Black"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -189,7 +189,7 @@
                                      Binding="{Binding Type}"
                                      Value="TokenApprove">
                             <Setter Property="TextColor"
-                                    Value="Black"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                             <Setter Property="FormattedText">
                                 <Setter.Value>
                                     <FormattedString>
@@ -268,7 +268,7 @@
                                  HeightRequest="32"
                                  HorizontalOptions="End"
                                  VerticalOptions="Center"
-                                 BackgroundColor="{DynamicResource MainBackgroundColor}"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                  Padding="3"
                                  Margin="20,0,0,5"
                                  Clicked="OnCopyButtonClicked"/>
@@ -425,7 +425,7 @@
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <Button Text="{x:Static resources:AppResources.DeleteButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
-                    TextColor="{DynamicResource ErrorTextColor}"
+                    TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
                     IsVisible="{Binding CanBeRemoved}"
                     Clicked="OnDeleteTxButtonClicked"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"

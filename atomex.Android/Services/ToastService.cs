@@ -8,13 +8,21 @@ namespace atomex.Droid.Services
 {
     public class ToastService : IToastService
     {
-        public async void Show(string message, ToastPosition toastPosition)
+        public async void Show(string message, ToastPosition toastPosition, string appTheme)
         {
             Context context = Android.App.Application.Context;
             Toast toast = Toast.MakeText(context, message, ToastLength.Short);
 
-            toast.View.FindViewById<TextView>(Android.Resource.Id.Message).SetTextColor(Android.Graphics.Color.White);
             toast.View.SetBackgroundResource(Resource.Drawable.CustomToast);
+            TextView tv = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
+            tv.SetHeight(100);
+            tv.Gravity = Android.Views.GravityFlags.Center;
+
+            if (appTheme == "Dark")
+                tv.SetTextColor(Android.Graphics.Color.Black);    
+            
+            else
+                tv.SetTextColor(Android.Graphics.Color.White);
 
             switch (toastPosition)
             {

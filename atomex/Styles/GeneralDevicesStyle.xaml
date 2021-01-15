@@ -4,11 +4,24 @@
                     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
                     xmlns:controls="clr-namespace:atomex.CustomElements"
                     x:Class="atomex.Styles.GeneralDevicesStyle">
+    <Style TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+    </Style>
+
+    <!-- Background -->
+    <Style x:Key="MainBackgroundStyle" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+    </Style>
+    <Style x:Key="AdditionalBackgroundStyle" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"/>
+    </Style>
+
     <!-- Buttons -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
-        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBorderColorDark}, Light={StaticResource MainButtonBorderColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="CornerRadius" Value="25"/>
         <Setter Property="HeightRequest" Value="50"/>
@@ -20,23 +33,12 @@
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="WidthRequest" Value="150"/>
     </Style>
-    <Style x:Key="AdditionalButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
-        <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
-        <Setter Property="BorderWidth" Value="1"/>
-        <Setter Property="CornerRadius" Value="25"/>
-        <Setter Property="HeightRequest" Value="50"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-    </Style>
     <Style x:Key="TransparentButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{DynamicResource MainBackgroundColor}"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="20,0"/>
         <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
 
@@ -48,8 +50,8 @@
         <Setter Property="VerticalOptions" Value="FillAndExpand"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
-        <Setter Property="PlaceholderColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
     </Style>
     <Style x:Key="CustomEntryStyle" TargetType="controls:CustomEntry" BasedOn="{StaticResource EntryStyle}">
         <Setter Property="Padding" Value="20,0"/>
@@ -60,21 +62,20 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource EntryFrameBackgroundColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"/>
     </Style>
     <Style x:Key="ErrorFrameStyle" TargetType="Frame">
-        <Setter Property="BackgroundColor" Value="{DynamicResource ErrorFrameBackgroundColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ErrorFrameBackgroundColorDark}, Light={StaticResource ErrorFrameBackgroundColor}}"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="Margin" Value="0,10"/>
     </Style>
 
-    
     <!-- Labels -->
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
         <Setter Property="Margin" Value="15,0,0,0"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="FontSize">
             <Setter.Value>
@@ -83,7 +84,7 @@
         </Setter>
     </Style>
     <Style x:Key="TxStateLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="BackgroundColor" Value="Transparent"/>
@@ -91,7 +92,7 @@
         <Setter Property="FontSize" Value="14"/>
     </Style>
     <Style x:Key="PickerBalanceLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="End"/>
         <Setter Property="Padding" Value="10,0"/>
@@ -106,11 +107,11 @@
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="Padding" Value="20,10,0,0"/>
         <Setter Property="IsVisible" Value="False"/>
-        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
     </Style>
     <Style x:Key="ErrorTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource ErrorTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -118,7 +119,7 @@
     </Style>
     <Style x:Key="SuccessTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource SuccessTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -130,8 +131,8 @@
         <Setter Property="HeightRequest" Value="60"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource PickerBackgroundColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Start"/>
         <Setter Property="Margin">
@@ -149,21 +150,21 @@
         <Setter Property="HeightRequest" Value="0.5"/>
         <Setter Property="Spacing" Value="0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource ListViewSeparatorColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"/>
     </Style>
 
     <!-- Create New Wallet Pages -->
     <Style x:Key="CreateNewWalletTitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
         <Setter Property="FontSize" Value="24"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0,20,0,0"/>
     </Style>
     <Style x:Key="CreateNewWalletTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="CreateNewWalletLeftAlignTextStyle" TargetType="Label" BasedOn="{StaticResource CreateNewWalletTextStyle}">
@@ -177,25 +178,24 @@
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-        <Setter Property="PlaceholderColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="AutoSize" Value="TextChanges"/>
         <Setter Property="IsEnabled" Value="True"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="20"/>
     </Style>
 
     <!-- Start Page -->
     <Style x:Key="LogoLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource LogoLabelColor}"/>
+        <Setter Property="TextColor" Value="White"/>
         <Setter Property="FontFamily" Value="{DynamicResource LogoFont}"/>
         <Setter Property="FontSize" Value="58"/>
         <Setter Property="VerticalTextAlignment" Value="Start"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
-
     <Style x:Key="LogoCompressedLabelStyle" TargetType="Label" BasedOn="{StaticResource LogoLabelStyle}">
         <Setter Property="Margin" Value="-5,0,0,0"/>
     </Style>
-
     <Style x:Key="LogoImageStyle" TargetType="Image">
         <Setter Property="Source" Value="Logo"/>
         <Setter Property="HeightRequest" Value="128"/>
@@ -210,7 +210,7 @@
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Padding" Value="20,20,20,5"/>
         <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
     <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
@@ -219,8 +219,8 @@
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="30"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalButtonBackgroundColor}"/>
-        <Setter Property="BorderColor" Value="{DynamicResource AdditionalButtonBorderColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBorderColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"/>
     </Style>
     <Style x:Key="MainNetWalletFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="10"/>
@@ -228,11 +228,11 @@
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="30"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
-        <Setter Property="BorderColor" Value="{DynamicResource MainButtonBorderColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBorderColorDark}, Light={StaticResource MainButtonBorderColor}}"/>
     </Style>
     <Style x:Key="MainNetWalletlButtonTextStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
@@ -241,7 +241,7 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="TestNetWalletlButtonTextStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalButtonTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
@@ -253,7 +253,7 @@
     <!-- Unlock Page -->
     <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="10,10,10,0"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -271,7 +271,7 @@
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
     <Style x:Key="OptionValueLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalOptions" Value="End"/>                                   
@@ -286,14 +286,7 @@
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="FontSize" Value="22"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-    </Style>
-    <Style x:Key="MainWalletLabelStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
@@ -307,14 +300,28 @@
         </Setter>
         <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainButtonTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="WidthRequest" Value="80"/>
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Margin" Value="1,0"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource MainButtonBackgroundColor}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+    </Style>
+    <Style x:Key="TxListViewStyle" TargetType="ListView">
+        <Setter Property="IsGroupingEnabled" Value="True"/>
+        <Setter Property="HasUnevenRows" Value="True"/>
+        <Setter Property="SeparatorVisibility" Value="Default"/>
+        <Setter Property="SeparatorColor" Value="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="IsPullToRefreshEnabled" Value="True"/>
+        <Setter Property="RefreshControlColor">
+            <Setter.Value>
+                <x:OnPlatform Android="{AppThemeBinding Dark=Black, Light={StaticResource LoaderColor}}" iOS="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
     </Style>
     <Style x:Key="RefreshLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource ItalicFont}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -358,21 +365,21 @@
     </Style>
     <Style x:Key="TxInfoRowTitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="HeightRequest" Value="16"/>
         <Setter Property="VerticalTextAlignment" Value="End"/>
     </Style>
     <Style x:Key="TxInfoRowTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="HeightRequest" Value="16"/>
     </Style>
 
     <!-- Delegate Page -->
     <Style x:Key="DelegationLoaderStyle" TargetType="ActivityIndicator">
-        <Setter Property="Color" Value="{DynamicResource MainBackgroundColor}"/>
+        <Setter Property="Color" Value="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColorDark}}"/>
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Margin">
             <Setter.Value>
@@ -388,6 +395,9 @@
         <Setter Property="HeightRequest" Value="300"/>
         <Setter Property="WidthRequest" Value="300"/>
     </Style>
+    <Style x:Key="QrCodeFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{DynamicResource FrameBackgroundColor}"/>
+    </Style>
     <Style x:Key="PickerHintStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="FontSize" Value="12"/>
@@ -399,19 +409,19 @@
                 <OnPlatform x:TypeArguments="Thickness" iOS="20,10,0,0" Android="20,0,0,0"/>
             </Setter.Value>
         </Setter>
-        <Setter Property="TextColor" Value="{DynamicResource HintTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
     </Style>
 
     <!-- Delegation info Page -->
     <Style x:Key="DelegationPropertyLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
     <Style x:Key="DelegationPropertyValueStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HorizontalTextAlignment" Value="End"/>
@@ -426,44 +436,44 @@
 
     <!-- Create swap Page -->
     <Style x:Key="CreateSwapTitleStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Padding" Value="20,20,20,10"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="EstimatedLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
     </Style>
     <Style x:Key="EstimatedValueStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
     <Style x:Key="CurrencyCodeLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
     <Style x:Key="InBaseLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource AdditionalTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
     </Style>
      <Style x:Key="MarketVolumeLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
     </Style>
     <Style x:Key="MarketVolumeValueStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
-        <Style x:Key="ConfirmTxTableStyle" TargetType="TableView">
-        <Setter Property="BackgroundColor" Value="{DynamicResource AdditionalBackgroundColor}"/>
+    <Style x:Key="ConfirmTxTableStyle" TargetType="TableView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"/>
         <Setter Property="RowHeight" Value="70"/>
         <Setter Property="HeightRequest" Value="280"/>
     </Style>

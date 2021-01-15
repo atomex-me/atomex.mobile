@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MainTheme" parent="MainTheme.Base">
+    <style name="Theme.AppCompat.DayNight" parent="Theme.AppCompat.Light">
         <item name="android:navigationBarColor">@android:color/white</item>
     </style>
     <!-- Base theme applied no matter what API -->
@@ -11,7 +11,7 @@
         <item name="windowActionBar">false</item>
         <!-- Set theme colors from https://aka.ms/material-colors -->
         <!-- colorPrimary is used for the default action bar background -->
-        <item name="colorPrimary">#f7f5fa</item>
+        <item name="colorPrimary">#2B5286</item>
         <!-- colorPrimaryDark is used for the status bar -->
         <item name="colorPrimaryDark">#2B5286</item>
         <!-- <item name="colorPrimaryDark">#1976D2</item> -->
@@ -22,10 +22,6 @@
          colorControlHighlight and colorSwitchThumbNormal. -->
         <item name="windowActionModeOverlay">true</item>
         <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
-    </style>
-    <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">#FF4081</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
     </style>
     <style name="MyTheme.Splash" parent ="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen</item>

@@ -5,11 +5,12 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
                      Style="{DynamicResource CreateWalletStackLayoutStyle}"
+                     Padding="0,20"
                      Spacing="0">
             <StackLayout>
                 <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
@@ -55,7 +56,7 @@
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -65,10 +66,9 @@
             </Grid>
             <StackLayout HeightRequest="1"
                          Spacing="0"/>
-            <custom:CustomFrame HasShadow="False"
-                                CornerRadius="0,0,20,20"
+            <custom:CustomFrame CornerRadius="0,0,20,20"
                                 x:Name="EditorFrame"
-                                BackgroundColor="{DynamicResource MainBackgroundColor}">
+                                Style="{DynamicResource EntryFrameStyle}">
                 <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
