@@ -144,7 +144,7 @@ namespace atomex.ViewModel
         public decimal Amount
         {
             get => _amount;
-            set { _ = UpdateAmount(value); }
+            set { _ = UpdateAmountAsync(value); }
         }
 
         private decimal _amountInBase;
@@ -209,6 +209,27 @@ namespace atomex.ViewModel
             set { _estimatedMaxAmount = value; OnPropertyChanged(nameof(EstimatedMaxAmount)); }
         }
 
+        private decimal _estimatedMakerMinerFee;
+        public decimal EstimatedMakerMinerFee
+        {
+            get => _estimatedMakerMinerFee;
+            set { _estimatedMakerMinerFee = value; OnPropertyChanged(nameof(EstimatedMakerMinerFee)); }
+        }
+
+        private decimal _estimatedMakerMinerFeeInBase;
+        public decimal EstimatedMakerMinerFeeInBase
+        {
+            get => _estimatedMakerMinerFeeInBase;
+            set { _estimatedMakerMinerFeeInBase = value; OnPropertyChanged(nameof(EstimatedMakerMinerFeeInBase)); }
+        }
+
+        private decimal _estimatedTotalMinerFeeInBase;
+        public decimal EstimatedTotalMinerFeeInBase
+        {
+            get => _estimatedTotalMinerFeeInBase;
+            set { _estimatedTotalMinerFeeInBase = value; OnPropertyChanged(nameof(EstimatedTotalMinerFeeInBase)); }
+        }
+
         private string _currencyCode;
         public string CurrencyCode
         {
@@ -242,6 +263,20 @@ namespace atomex.ViewModel
         {
             get => _baseCurrencyCode;
             set { _baseCurrencyCode = value; OnPropertyChanged(nameof(BaseCurrencyCode)); }
+        }
+
+        protected bool _isCriticalWarning;
+        public bool IsCriticalWarning
+        {
+            get => _isCriticalWarning;
+            set { _isCriticalWarning = value; OnPropertyChanged(nameof(IsCriticalWarning)); }
+        }
+
+        private bool _canConvert = true;
+        public bool CanConvert
+        {
+            get => _canConvert;
+            set { _canConvert = value; OnPropertyChanged(nameof(CanConvert)); }
         }
 
         //private decimal _rewardForRedeem;
@@ -407,6 +442,34 @@ namespace atomex.ViewModel
             var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, BaseCurrencyCode)?.Bid ?? 0m;
             EstimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
+            EstimatedMakerMinerFeeInBase = _estimatedMakerMinerFee * fromCurrencyPrice;
+
+            EstimatedTotalMinerFeeInBase =
+                EstimatedPaymentFeeInBase +
+                EstimatedRedeemFeeInBase +
+                EstimatedMakerMinerFeeInBase;
+
+            if (AmountInBase != 0 && EstimatedTotalMinerFeeInBase / AmountInBase > 0.3m)
+            {
+                IsCriticalWarning = true;
+                Warning = string.Format(
+                    CultureInfo.InvariantCulture,
+                    Resources.CvTooHighNetworkFee,
+                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase:$0.00}"),
+                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase / AmountInBase:0.00%}"));
+            }
+            else if (AmountInBase != 0 && EstimatedTotalMinerFeeInBase / AmountInBase > 0.1m)
+            {
+                IsCriticalWarning = false;
+                Warning = string.Format(
+                    CultureInfo.InvariantCulture,
+                    Resources.CvSufficientNetworkFee,
+                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase:$0.00}"),
+                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase / AmountInBase:0.00%}"));
+            }
+
+            CanConvert = AmountInBase == 0 || EstimatedTotalMinerFeeInBase / AmountInBase <= 0.75m;
+
             //var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, BaseCurrencyCode)?.Bid ?? 0m;
             //RewardForRedeemInBase = _rewardForRedeem * toCurrencyPrice;
 
@@ -542,7 +605,8 @@ namespace atomex.ViewModel
                     Qty = qty,
                     Side = side,
                     Type = OrderType.FillOrKill,
-                    FromWallets = fromWallets.ToList()
+                    FromWallets = fromWallets.ToList(),
+                    MakerMinerFee = EstimatedMakerMinerFee
                 };
 
                 await order.CreateProofOfPossessionAsync(account);
@@ -607,10 +671,10 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            await UpdateAmount(decimal.MaxValue);
+            await UpdateAmountAsync(decimal.MaxValue);
         }
 
-        protected virtual async Task UpdateAmount(decimal value)
+        protected virtual async Task UpdateAmountAsync(decimal value)
         {
             Warning = string.Empty;
 
@@ -626,85 +690,41 @@ namespace atomex.ViewModel
                 TargetAmountInBase = 0;
 
                 return;
-            }    
-
-            var previousAmount = _amount;
-            _amount = value;
-
-            var (maxAmount, maxFee, reserve) = await AtomexApp.Account
-                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
-
-            var swaps = await AtomexApp.Account
-                .GetSwapsAsync();
-
-            var usedAmount = swaps.Sum(s => (s.IsActive && s.SoldCurrency == FromCurrencyViewModel.Currency.Name && !s.StateFlags.HasFlag(SwapStateFlags.IsPaymentConfirmed))
-                ? s.Symbol.IsBaseCurrency(FromCurrencyViewModel.Currency.Name)
-                   ? s.Qty
-                   : s.Qty * s.Price
-                : 0);
-
-            usedAmount = AmountHelper.RoundDown(usedAmount, FromCurrencyViewModel.Currency.DigitsMultiplier);
-
-            maxAmount = Math.Max(maxAmount - usedAmount, 0);
-
-
-            var includeFeeToAmount = FromCurrencyViewModel.Currency.FeeCurrencyName == FromCurrencyViewModel.Currency.Name;
-
-            var availableAmount = FromCurrencyViewModel.Currency is BitcoinBasedCurrency
-                ? FromCurrencyViewModel.AvailableAmount
-                : maxAmount + (includeFeeToAmount ? maxFee : 0);
-
-            var estimatedPaymentFee = _amount != 0
-                ? (_amount < availableAmount
-                    ? await AtomexApp.Account
-                        .EstimateFeeAsync(FromCurrencyViewModel.Currency.Name, null, _amount, BlockchainTransactionType.SwapPayment)
-                    : null)
-                : 0;
-
-            if (estimatedPaymentFee == null)
-            {
-                if (maxAmount > 0)
-                {
-                    _amount = maxAmount;
-                    estimatedPaymentFee = maxFee;
-                }
-                else
-                {
-                    _amount = 0; // previousAmount;
-                    OnPropertyChanged(nameof(Amount));
-                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-
-                    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
-
-                    return;
-                }
             }
 
-            EstimatedPaymentFee = estimatedPaymentFee.Value;
+            // esitmate max payment amount and max fee
+            var swapParams = await EstimateSwapPaymentParamsAsync(
+                    amount: value,
+                    fromCurrency: FromCurrencyViewModel.Currency,
+                    toCurrency: ToCurrencyViewModel.Currency,
+                    account: AtomexApp.Account,
+                    atomexClient: AtomexApp.Terminal);
 
-            if (_amount + (includeFeeToAmount ? _estimatedPaymentFee : 0) > availableAmount)
-                _amount = Math.Max(availableAmount - (includeFeeToAmount ? _estimatedPaymentFee : 0), 0);
+            IsCriticalWarning = false;
 
-            //if (_amount <= 0)
-            //{
-            //    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-            //    {
-            //        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
-            //        return;
-            //    }
 
-            //    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.AmountLessThanZeroError);
-            //    return;
-            //}
-
-            if (_amount > maxAmount)
+            if (swapParams.Error != null)
             {
-                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-                return;
+                Warning = swapParams.Error.Code switch
+                {
+                    Errors.InsufficientFunds => Resources.CvInsufficientFunds,
+                    Errors.InsufficientChainFunds => string.Format(CultureInfo.InvariantCulture, Resources.CvInsufficientChainFunds, FromCurrency.FeeCurrencyName),
+                    _ => Resources.CvError
+                };
             }
+            else
+            {
+                Warning = string.Empty;
+            }
+
+
+            _amount = swapParams.Amount;
+            _estimatedPaymentFee = swapParams.PaymentFee;
+            _estimatedMakerMinerFee = swapParams.MakerMinerFee;
 
             OnPropertyChanged(nameof(Amount));
+            OnPropertyChanged(nameof(EstimatedPaymentFee));
+            OnPropertyChanged(nameof(EstimatedMakerMinerFee));
 
             UpdateRedeemAndRewardFeesAsync();
 
