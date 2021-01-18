@@ -396,6 +396,9 @@
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Est. price</value>
     </data>
+    <data name="EstimatedMinerFeeLabel" xml:space="preserve">
+        <value>Est. miner fees</value>
+    </data>
     <data name="EnterAmountLabel" xml:space="preserve">
         <value>Enter amount</value>
     </data>
@@ -405,12 +408,19 @@
     <data name="NoLiquidityLabel" xml:space="preserve">
         <value>No liquidity</value>
     </data>
-    <data name="EstimatedPaymentFeeLabel" xml:space="preserve">
-        <value>Est. payment fee</value>
+    <data name="PaymentFeeLabel" xml:space="preserve">
+        <value>Payment fee</value>
     </data>
-    <data name="EstimatedRedeemFeeLabel" xml:space="preserve">
-        <value>Est. redeem fee</value>
+    <data name="RedeemFeeLabel" xml:space="preserve">
+        <value>Redeem fee</value>
     </data>
+    <data name="MakerFeeLabel" xml:space="preserve">
+        <value>Maker fee</value>
+    </data>
+    <data name="TotalMinerFeeLabel" xml:space="preserve">
+        <value>Total miner fee</value>
+    </data>
+
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
@@ -530,6 +540,20 @@
     </data>
     <data name="InsufficientChainFunds" xml:space="preserve">
         <value>Insufficient {0} to cover token transfer fee</value>
+    </data>
+    <data name="SufficientNetworkFee" xml:space="preserve">
+        <value>Sufficient network fee for this amount ({0} is {1})</value>
+    </data>
+    <data name="TooHighNetworkFee" xml:space="preserve">
+         <value>Too high network fee for this amount ({0} is {1})</value>
+    </data>
+    <data name="TotalMinerFeeMessage" xml:space="preserve">
+        <value>Payment fee: {0} {1} +
+Redeem fee: {2} {3} +
+Maker fee: {4} {5} =
+                
+Total miner fee: {6}
+        </value>
     </data>
     <data name="LowFees" xml:space="preserve">
         <value>Too low fees</value>

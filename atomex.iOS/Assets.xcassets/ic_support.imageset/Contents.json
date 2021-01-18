@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "ic_question_2.pdf",
+      "filename": "question.pdf",
       "idiom": "universal"
     },
     {
@@ -87,7 +87,6 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_question_dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -305,7 +304,6 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_question_2-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

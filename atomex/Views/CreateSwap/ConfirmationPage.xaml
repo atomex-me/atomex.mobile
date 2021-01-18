@@ -13,7 +13,7 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"/>
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -114,7 +114,7 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
+                    <Label Text="{x:Static resources:AppResources.PaymentFeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding EstimatedPaymentFee}"
                            Style="{DynamicResource TxInfoRowTextStyle}">
@@ -133,7 +133,7 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
+                    <Label Text="{x:Static resources:AppResources.RedeemFeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding EstimatedPaymentFee}"
                            Style="{DynamicResource TxInfoRowTextStyle}">

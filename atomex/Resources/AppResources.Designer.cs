@@ -725,6 +725,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string EstimatedMinerFeeLabel {
+            get {
+                return ResourceManager.GetString("EstimatedMinerFeeLabel", resourceCulture);
+            }
+        }
+        
         internal static string EnterAmountLabel {
             get {
                 return ResourceManager.GetString("EnterAmountLabel", resourceCulture);
@@ -743,15 +749,27 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string EstimatedPaymentFeeLabel {
+        internal static string PaymentFeeLabel {
             get {
-                return ResourceManager.GetString("EstimatedPaymentFeeLabel", resourceCulture);
+                return ResourceManager.GetString("PaymentFeeLabel", resourceCulture);
             }
         }
         
-        internal static string EstimatedRedeemFeeLabel {
+        internal static string RedeemFeeLabel {
             get {
-                return ResourceManager.GetString("EstimatedRedeemFeeLabel", resourceCulture);
+                return ResourceManager.GetString("RedeemFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string MakerFeeLabel {
+            get {
+                return ResourceManager.GetString("MakerFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TotalMinerFeeLabel {
+            get {
+                return ResourceManager.GetString("TotalMinerFeeLabel", resourceCulture);
             }
         }
         
@@ -962,6 +980,24 @@ namespace atomex.Resources {
         internal static string InsufficientChainFunds {
             get {
                 return ResourceManager.GetString("InsufficientChainFunds", resourceCulture);
+            }
+        }
+        
+        internal static string SufficientNetworkFee {
+            get {
+                return ResourceManager.GetString("SufficientNetworkFee", resourceCulture);
+            }
+        }
+        
+        internal static string TooHighNetworkFee {
+            get {
+                return ResourceManager.GetString("TooHighNetworkFee", resourceCulture);
+            }
+        }
+        
+        internal static string TotalMinerFeeMessage {
+            get {
+                return ResourceManager.GetString("TotalMinerFeeMessage", resourceCulture);
             }
         }
         

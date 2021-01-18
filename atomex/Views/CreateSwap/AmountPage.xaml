@@ -7,9 +7,18 @@
              Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20,0"
-                         Spacing="0">
+        <RelativeLayout>
+            <ActivityIndicator x:Name="FeeCalculationLoader"
+                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                               RelativeLayout.WidthConstraint="50"
+                               RelativeLayout.HeightConstraint="50"
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
+            <StackLayout x:Name="Content"
+                         Padding="20,0"
+                         Spacing="0"
+                         RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
                 <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
                        Style="{DynamicResource CreateSwapTitleStyle}"/>
                 <Grid ColumnSpacing="0">
@@ -180,41 +189,29 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label HorizontalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.EstimatedPaymentFeeLabel}"
-                                  Style="{DynamicResource EstimatedLabelStyle}"/>
-                            <Span Text=": "
-                                  Style="{DynamicResource EstimatedLabelStyle}"/>
-                            <Span Text="{Binding EstimatedPaymentFee}"
-                                  Style="{DynamicResource EstimatedValueStyle}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"
-                                  Style="{DynamicResource CurrencyCodeLabelStyle}"/>
-                            <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                  Style="{DynamicResource InBaseLabelStyle}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label HorizontalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.EstimatedRedeemFeeLabel}"
-                                  Style="{DynamicResource EstimatedLabelStyle}"/>
-                            <Span Text=": "
-                                  Style="{DynamicResource EstimatedLabelStyle}"/>
-                            <Span Text="{Binding EstimatedRedeemFee}"
-                                  Style="{DynamicResource EstimatedValueStyle}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"
-                                  Style="{DynamicResource CurrencyCodeLabelStyle}"/>
-                            <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                  Style="{DynamicResource InBaseLabelStyle}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Frame Style="{DynamicResource ErrorFrameStyle}">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             Padding="0,2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{x:Static resources:AppResources.EstimatedMinerFeeLabel}"
+                                      Style="{DynamicResource EstimatedLabelStyle}"/>
+                                <Span Text=": "
+                                      Style="{DynamicResource EstimatedLabelStyle}"/>
+                                <Span Text="{Binding EstimatedTotalMinerFeeInBase, StringFormat=' {0:0.##} $'}"
+                                      Style="{DynamicResource EstimatedValueStyle}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Image Source="ic_question"
+                           WidthRequest="16"
+                           HeightRequest="16"/>
+                </StackLayout>
+                <Frame Style="{DynamicResource WarningFrameStyle}">
                     <Frame.Triggers>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding Warning}"
@@ -222,17 +219,70 @@
                             <Setter Property="IsVisible"
                                     Value="False"/>
                         </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding IsCriticalWarning}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource ErrorFrameBackgroundColorDark}, Light={StaticResource ErrorFrameBackgroundColor}}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding IsCriticalWarning}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource WarningFrameBackgroundColorDark}, Light={StaticResource WarningFrameBackgroundColor}}"/>
+                        </DataTrigger>
                     </Frame.Triggers>
-                    <Label Text="{Binding Warning}"
-                           Style="{DynamicResource ErrorTextStyle}"
-                           HorizontalTextAlignment="Center"/>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="0"
+                                 HorizontalOptions="CenterAndExpand">
+                        <Image Source="Warning"
+                               HeightRequest="24"
+                               WidthRequest="24"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"/>
+                        <Label Text="{Binding Warning}"
+                               Style="{DynamicResource ErrorTextStyle}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsCriticalWarning}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsCriticalWarning}"
+                                             Value="False">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
                 </Frame>
                 <Button Text="{x:Static resources:AppResources.NextButton}"
                         Margin="16"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
-                        Clicked="OnNextButtonClicked" />
+                        IsEnabled="{Binding CanConvert}"
+                        Clicked="OnNextButtonClicked" >
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding CanConvert}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding CanConvert}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="LightGray"/>
+                            <Setter Property="BorderColor"
+                                    Value="LightGray"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
-        </ScrollView>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -25,10 +25,12 @@
     <Color x:Key="AdditionalTextColor">#918f92</Color>
     <Color x:Key="HintTextColor">#3a6cb1</Color>
     <Color x:Key="ErrorTextColor">#AE0000</Color>
+    <Color x:Key="WarningTextColor">#f29c1f</Color>
     <Color x:Key="SuccessTextColor">#008B00</Color>
 
     <Color x:Key="FrameBackgroundColor">White</Color>
     <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
+    <Color x:Key="WarningFrameBackgroundColor">#FFFBCE</Color>
     <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
 
     <Color x:Key="LoaderColor">#3a6cb1</Color>
@@ -64,10 +66,12 @@
     <Color x:Key="AdditionalTextColorDark">#9dafbe</Color>
     <Color x:Key="HintTextColorDark">#298ad4</Color>
     <Color x:Key="ErrorTextColorDark">#dd2a33</Color>
+    <Color x:Key="WarningTextColorDark">#f29c1f</Color>
     <Color x:Key="SuccessTextColorDark">#31B823</Color>
 
     <Color x:Key="FrameBackgroundColorDark">#213040</Color>
     <Color x:Key="ErrorFrameBackgroundColorDark">#4E4646</Color>
+    <Color x:Key="WarningFrameBackgroundColorDark">#747568</Color>
     <Color x:Key="SuccessFrameBackgroundColorDark">#383E38</Color>
 
     <Color x:Key="LoaderColorDark">#f6f6f6</Color>

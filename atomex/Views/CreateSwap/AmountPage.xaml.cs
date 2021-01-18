@@ -23,7 +23,7 @@ namespace atomex.Views.CreateSwap
             Amount.Placeholder = AppResources.AmountEntryPlaceholder + ", " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
             BindingContext = _conversionViewModel;
         }
-        private void AmountEntryFocused(object sender, FocusEventArgs args)
+        private async void AmountEntryFocused(object sender, FocusEventArgs args)
         {
             AmountFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
@@ -31,7 +31,9 @@ namespace atomex.Views.CreateSwap
                 try
                 {
                     decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
-                    _conversionViewModel.Amount = amount;
+                    BlockActions(true);
+                    await _conversionViewModel.UpdateAmountAsync(amount);
+                    BlockActions(false);
                     Amount.Text = _conversionViewModel.Amount.ToString();
                 }
                 catch (FormatException)
@@ -78,10 +80,38 @@ namespace atomex.Views.CreateSwap
         {
             MaxButton.IsVisible = MaxButton.IsEnabled = false;
             Loader.IsRunning = Loader.IsVisible = true;
+            BlockActions(true);
             await _conversionViewModel.OnMaxClick();
+            BlockActions(false);
             Amount.Text = _conversionViewModel.Amount.ToString();
             Loader.IsRunning = Loader.IsVisible = false;
             MaxButton.IsVisible = MaxButton.IsEnabled = true;
+        }
+
+        private void BlockActions(bool flag)
+        {
+            FeeCalculationLoader.IsVisible = FeeCalculationLoader.IsRunning = flag;
+            
+            if (flag)
+                Content.Opacity = 0.5;
+            else
+                Content.Opacity = 1;
+        }
+
+        private async void OnTotalFeeTapped(object sender, EventArgs args)
+        {
+            string message = string.Format(
+                   CultureInfo.InvariantCulture,
+                   AppResources.TotalMinerFeeMessage,
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerMinerFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerMinerFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalMinerFeeInBase:0.00$}"));
+
+            await DisplayAlert(string.Empty, message, AppResources.AcceptButton);
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
@@ -104,11 +134,6 @@ namespace atomex.Views.CreateSwap
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_conversionViewModel.Warning))
-            {
-                await DisplayAlert(AppResources.Error, AppResources.FailedToConvert, AppResources.AcceptButton);
-                return;
-            }
             await Navigation.PushAsync(new ConfirmationPage(_conversionViewModel));
         }
     }
