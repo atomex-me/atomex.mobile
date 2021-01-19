@@ -317,6 +317,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="WidthRequest" Value="80"/>
+        <Setter Property="RelativeLayout.WidthConstraint" Value="80"/>
+        <Setter Property="RelativeLayout.HeightConstraint" Value="40"/>
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Margin" Value="1,0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>

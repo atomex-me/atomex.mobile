@@ -132,8 +132,6 @@
                     <custom:RightRoundedButton Text="{x:Static resources:AppResources.ShareButton}"
                                                Style="{DynamicResource CurrencyActionButtonStyle}"
                                                Clicked="OnShareButtonClicked"
-                                               RelativeLayout.WidthConstraint="80"
-                                               RelativeLayout.HeightConstraint="40"
                                                x:Name="ShareButton"/>
                     <ActivityIndicator x:Name="Loader"
                                        RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
