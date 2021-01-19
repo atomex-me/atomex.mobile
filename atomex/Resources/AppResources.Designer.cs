@@ -725,9 +725,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string EstimatedMinerFeeLabel {
+        internal static string EstimatedNetworkFeeLabel {
             get {
-                return ResourceManager.GetString("EstimatedMinerFeeLabel", resourceCulture);
+                return ResourceManager.GetString("EstimatedNetworkFeeLabel", resourceCulture);
             }
         }
         
@@ -764,12 +764,6 @@ namespace atomex.Resources {
         internal static string MakerFeeLabel {
             get {
                 return ResourceManager.GetString("MakerFeeLabel", resourceCulture);
-            }
-        }
-        
-        internal static string TotalMinerFeeLabel {
-            get {
-                return ResourceManager.GetString("TotalMinerFeeLabel", resourceCulture);
             }
         }
         
@@ -995,15 +989,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string TotalMinerFeeMessage {
+        internal static string TotalNetworkFeeDetail {
             get {
-                return ResourceManager.GetString("TotalMinerFeeMessage", resourceCulture);
+                return ResourceManager.GetString("TotalNetworkFeeDetail", resourceCulture);
             }
         }
         
         internal static string LowFees {
             get {
                 return ResourceManager.GetString("LowFees", resourceCulture);
+            }
+        }
+        
+        internal static string NetworkFee {
+            get {
+                return ResourceManager.GetString("NetworkFee", resourceCulture);
             }
         }
         

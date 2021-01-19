@@ -14,10 +14,9 @@
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
-            <StackLayout x:Name="Content"
-                         VerticalOptions="FillAndExpand"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <ScrollView RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <StackLayout x:Name="Content">
                 <Grid Margin="10,30"
                       RowSpacing="0"
                       ColumnSpacing="0">
@@ -114,41 +113,18 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.PaymentFeeLabel}"
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label Text="{x:Static resources:AppResources.EstimatedNetworkFeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                    <Label Text="{Binding EstimatedPaymentFee}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding EstimatedPaymentFee}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding FromCurrencyViewModel.FeeCurrencyCode}"/>
-                                <Span Text="{Binding EstimatedPaymentFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="12"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.RedeemFeeLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                    <Label Text="{Binding EstimatedPaymentFee}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding EstimatedRedeemFee}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding ToCurrencyViewModel.FeeCurrencyCode}"/>
-                                <Span Text="{Binding EstimatedRedeemFeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="12"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat=' {0:0.##} $'}"
+                               Style="{DynamicResource TxInfoRowTextStyle}"/>
+                        <Image Source="ic_question"
+                               WidthRequest="16"
+                               HeightRequest="16"/>
+                    </StackLayout>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
@@ -159,6 +135,7 @@
                             Clicked="OnConvertButtonClicked"/>
                 </StackLayout>
             </StackLayout>
+            </ScrollView>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

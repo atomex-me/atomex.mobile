@@ -178,6 +178,9 @@
                            VerticalTextAlignment="Start"/>
                 </Grid>
                 <Label HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
+                    </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
@@ -198,11 +201,11 @@
                     <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.EstimatedMinerFeeLabel}"
+                                <Span Text="{x:Static resources:AppResources.EstimatedNetworkFeeLabel}"
                                       Style="{DynamicResource EstimatedLabelStyle}"/>
                                 <Span Text=": "
                                       Style="{DynamicResource EstimatedLabelStyle}"/>
-                                <Span Text="{Binding EstimatedTotalMinerFeeInBase, StringFormat=' {0:0.##} $'}"
+                                <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat=' {0:0.##} $'}"
                                       Style="{DynamicResource EstimatedValueStyle}"/>
                             </FormattedString>
                         </Label.FormattedText>

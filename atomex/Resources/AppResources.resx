@@ -396,8 +396,8 @@
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Est. price</value>
     </data>
-    <data name="EstimatedMinerFeeLabel" xml:space="preserve">
-        <value>Est. miner fees</value>
+    <data name="EstimatedNetworkFeeLabel" xml:space="preserve">
+        <value>Est. network fees</value>
     </data>
     <data name="EnterAmountLabel" xml:space="preserve">
         <value>Enter amount</value>
@@ -416,9 +416,6 @@
     </data>
     <data name="MakerFeeLabel" xml:space="preserve">
         <value>Maker fee</value>
-    </data>
-    <data name="TotalMinerFeeLabel" xml:space="preserve">
-        <value>Total miner fee</value>
     </data>
 
     
@@ -547,16 +544,20 @@
     <data name="TooHighNetworkFee" xml:space="preserve">
          <value>Too high network fee for this amount ({0} is {1})</value>
     </data>
-    <data name="TotalMinerFeeMessage" xml:space="preserve">
-        <value>Payment fee: {0} {1} +
-Redeem fee: {2} {3} +
-Maker fee: {4} {5} =
-                
-Total miner fee: {6}
+    <data name="TotalNetworkFeeDetail" xml:space="preserve">
+        <value>
+Payment fee: {0} {1}
+Redeem fee: {2} {3}
+Maker fee: {4} {5}
+            
+Total network fee: {6}
         </value>
     </data>
     <data name="LowFees" xml:space="preserve">
         <value>Too low fees</value>
+    </data>
+    <data name="NetworkFee" xml:space="preserve">
+        <value>Network fee for atomic swap</value>
     </data>
     <data name="FailedToSend" xml:space="preserve">
         <value>Failed to send</value>

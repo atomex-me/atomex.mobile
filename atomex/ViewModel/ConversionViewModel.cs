@@ -209,25 +209,25 @@ namespace atomex.ViewModel
             set { _estimatedMaxAmount = value; OnPropertyChanged(nameof(EstimatedMaxAmount)); }
         }
 
-        private decimal _estimatedMakerMinerFee;
-        public decimal EstimatedMakerMinerFee
+        private decimal _estimatedMakerNetworkFee;
+        public decimal EstimatedMakerNetworkFee
         {
-            get => _estimatedMakerMinerFee;
-            set { _estimatedMakerMinerFee = value; OnPropertyChanged(nameof(EstimatedMakerMinerFee)); }
+            get => _estimatedMakerNetworkFee;
+            set { _estimatedMakerNetworkFee = value; OnPropertyChanged(nameof(EstimatedMakerNetworkFee)); }
         }
 
-        private decimal _estimatedMakerMinerFeeInBase;
-        public decimal EstimatedMakerMinerFeeInBase
+        private decimal _estimatedMakerNetworkFeeInBase;
+        public decimal EstimatedMakerNetworkFeeInBase
         {
-            get => _estimatedMakerMinerFeeInBase;
-            set { _estimatedMakerMinerFeeInBase = value; OnPropertyChanged(nameof(EstimatedMakerMinerFeeInBase)); }
+            get => _estimatedMakerNetworkFeeInBase;
+            set { _estimatedMakerNetworkFeeInBase = value; OnPropertyChanged(nameof(EstimatedMakerNetworkFeeInBase)); }
         }
 
-        private decimal _estimatedTotalMinerFeeInBase;
-        public decimal EstimatedTotalMinerFeeInBase
+        private decimal _estimatedTotalNetworkFeeInBase;
+        public decimal EstimatedTotalNetworkFeeInBase
         {
-            get => _estimatedTotalMinerFeeInBase;
-            set { _estimatedTotalMinerFeeInBase = value; OnPropertyChanged(nameof(EstimatedTotalMinerFeeInBase)); }
+            get => _estimatedTotalNetworkFeeInBase;
+            set { _estimatedTotalNetworkFeeInBase = value; OnPropertyChanged(nameof(EstimatedTotalNetworkFeeInBase)); }
         }
 
         private string _currencyCode;
@@ -442,33 +442,33 @@ namespace atomex.ViewModel
             var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, BaseCurrencyCode)?.Bid ?? 0m;
             EstimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
-            EstimatedMakerMinerFeeInBase = _estimatedMakerMinerFee * fromCurrencyPrice;
+            EstimatedMakerNetworkFeeInBase = _estimatedMakerNetworkFee * fromCurrencyPrice;
 
-            EstimatedTotalMinerFeeInBase =
+            EstimatedTotalNetworkFeeInBase =
                 EstimatedPaymentFeeInBase +
                 EstimatedRedeemFeeInBase +
-                EstimatedMakerMinerFeeInBase;
+                EstimatedMakerNetworkFeeInBase;
 
-            if (AmountInBase != 0 && EstimatedTotalMinerFeeInBase / AmountInBase > 0.3m)
+            if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.3m)
             {
                 IsCriticalWarning = true;
                 Warning = string.Format(
                     CultureInfo.InvariantCulture,
                     AppResources.TooHighNetworkFee,
-                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase:0.00$}"),
-                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase / AmountInBase:0.00%}"));
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
             }
-            else if (AmountInBase != 0 && EstimatedTotalMinerFeeInBase / AmountInBase > 0.1m)
+            else if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.1m)
             {
                 IsCriticalWarning = false;
                 Warning = string.Format(
                     CultureInfo.InvariantCulture,
                     AppResources.SufficientNetworkFee,
-                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase:0.00$}"),
-                    FormattableString.Invariant($"{EstimatedTotalMinerFeeInBase / AmountInBase:0.00%}"));
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
             }
 
-            CanConvert = AmountInBase == 0 || EstimatedTotalMinerFeeInBase / AmountInBase <= 0.75m;
+            CanConvert = AmountInBase == 0 || EstimatedTotalNetworkFeeInBase / AmountInBase <= 0.75m;
 
             //var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, BaseCurrencyCode)?.Bid ?? 0m;
             //RewardForRedeemInBase = _rewardForRedeem * toCurrencyPrice;
@@ -577,7 +577,7 @@ namespace atomex.ViewModel
                     Side = side,
                     Type = OrderType.FillOrKill,
                     FromWallets = fromWallets.ToList(),
-                    MakerMinerFee = EstimatedMakerMinerFee
+                    MakerNetworkFee = EstimatedMakerNetworkFee
                 };
 
                 await order.CreateProofOfPossessionAsync(account);
@@ -662,7 +662,7 @@ namespace atomex.ViewModel
 
                     TargetAmountInBase = 0;
 
-                    EstimatedTotalMinerFeeInBase = 0;
+                    EstimatedTotalNetworkFeeInBase = 0;
 
                     EstimatedPaymentFee = 0;
 
@@ -672,9 +672,9 @@ namespace atomex.ViewModel
 
                     EstimatedRedeemFeeInBase = 0;
 
-                    EstimatedMakerMinerFee = 0;
+                    EstimatedMakerNetworkFee = 0;
 
-                    EstimatedMakerMinerFeeInBase = 0;
+                    EstimatedMakerNetworkFeeInBase = 0;
 
                     return;
                 }
@@ -705,11 +705,11 @@ namespace atomex.ViewModel
 
                 _amount = swapParams.Amount;
                 _estimatedPaymentFee = swapParams.PaymentFee;
-                _estimatedMakerMinerFee = swapParams.MakerMinerFee;
+                _estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
 
                 OnPropertyChanged(nameof(Amount));
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
-                OnPropertyChanged(nameof(EstimatedMakerMinerFee));
+                OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
 
                 UpdateRedeemAndRewardFeesAsync();
 

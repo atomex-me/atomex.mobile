@@ -102,16 +102,16 @@ namespace atomex.Views.CreateSwap
         {
             string message = string.Format(
                    CultureInfo.InvariantCulture,
-                   AppResources.TotalMinerFeeMessage,
+                   AppResources.TotalNetworkFeeDetail,
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFeeInBase:(0.00$)}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerMinerFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerMinerFeeInBase:(0.00$)}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalMinerFeeInBase:0.00$}"));
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalNetworkFeeInBase:0.00$}"));
 
-            await DisplayAlert(string.Empty, message, AppResources.AcceptButton);
+            await DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
