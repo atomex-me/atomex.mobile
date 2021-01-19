@@ -71,6 +71,13 @@
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="Margin" Value="0,10"/>
     </Style>
+    <Style x:Key="WarningFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource WarningFrameBackgroundColorDark}, Light={StaticResource WarningFrameBackgroundColor}}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="Margin" Value="0,10"/>
+    </Style>
 
     <!-- Labels -->
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
@@ -112,6 +119,14 @@
     <Style x:Key="ErrorTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    <Style x:Key="WarningTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>

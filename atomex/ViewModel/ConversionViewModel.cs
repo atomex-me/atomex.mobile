@@ -144,7 +144,7 @@ namespace atomex.ViewModel
         public decimal Amount
         {
             get => _amount;
-            set { _ = UpdateAmount(value); }
+            set { _ = UpdateAmountAsync(value); }
         }
 
         private decimal _amountInBase;
@@ -209,6 +209,27 @@ namespace atomex.ViewModel
             set { _estimatedMaxAmount = value; OnPropertyChanged(nameof(EstimatedMaxAmount)); }
         }
 
+        private decimal _estimatedMakerNetworkFee;
+        public decimal EstimatedMakerNetworkFee
+        {
+            get => _estimatedMakerNetworkFee;
+            set { _estimatedMakerNetworkFee = value; OnPropertyChanged(nameof(EstimatedMakerNetworkFee)); }
+        }
+
+        private decimal _estimatedMakerNetworkFeeInBase;
+        public decimal EstimatedMakerNetworkFeeInBase
+        {
+            get => _estimatedMakerNetworkFeeInBase;
+            set { _estimatedMakerNetworkFeeInBase = value; OnPropertyChanged(nameof(EstimatedMakerNetworkFeeInBase)); }
+        }
+
+        private decimal _estimatedTotalNetworkFeeInBase;
+        public decimal EstimatedTotalNetworkFeeInBase
+        {
+            get => _estimatedTotalNetworkFeeInBase;
+            set { _estimatedTotalNetworkFeeInBase = value; OnPropertyChanged(nameof(EstimatedTotalNetworkFeeInBase)); }
+        }
+
         private string _currencyCode;
         public string CurrencyCode
         {
@@ -242,6 +263,20 @@ namespace atomex.ViewModel
         {
             get => _baseCurrencyCode;
             set { _baseCurrencyCode = value; OnPropertyChanged(nameof(BaseCurrencyCode)); }
+        }
+
+        protected bool _isCriticalWarning;
+        public bool IsCriticalWarning
+        {
+            get => _isCriticalWarning;
+            set { _isCriticalWarning = value; OnPropertyChanged(nameof(IsCriticalWarning)); }
+        }
+
+        private bool _canConvert = false;
+        public bool CanConvert
+        {
+            get => _canConvert;
+            set { _canConvert = value; OnPropertyChanged(nameof(CanConvert)); }
         }
 
         //private decimal _rewardForRedeem;
@@ -407,6 +442,34 @@ namespace atomex.ViewModel
             var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, BaseCurrencyCode)?.Bid ?? 0m;
             EstimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
+            EstimatedMakerNetworkFeeInBase = _estimatedMakerNetworkFee * fromCurrencyPrice;
+
+            EstimatedTotalNetworkFeeInBase =
+                EstimatedPaymentFeeInBase +
+                EstimatedRedeemFeeInBase +
+                EstimatedMakerNetworkFeeInBase;
+
+            if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.3m)
+            {
+                IsCriticalWarning = true;
+                Warning = string.Format(
+                    CultureInfo.InvariantCulture,
+                    AppResources.TooHighNetworkFee,
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
+            }
+            else if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.1m)
+            {
+                IsCriticalWarning = false;
+                Warning = string.Format(
+                    CultureInfo.InvariantCulture,
+                    AppResources.SufficientNetworkFee,
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
+            }
+
+            CanConvert = AmountInBase == 0 || EstimatedTotalNetworkFeeInBase / AmountInBase <= 0.75m;
+
             //var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, BaseCurrencyCode)?.Bid ?? 0m;
             //RewardForRedeemInBase = _rewardForRedeem * toCurrencyPrice;
 
@@ -417,48 +480,18 @@ namespace atomex.ViewModel
         {
             try
             {
-                if (!(sender is IAtomexClient terminal))
-                    return;
+                var swapPriceEstimation = await Atomex.ViewModels.Helpers.EstimateSwapPriceAsync(
+                     amount: Amount,
+                     fromCurrency: FromCurrencyViewModel.Currency,
+                     toCurrency: ToCurrencyViewModel.Currency,
+                     account: AtomexApp.Account,
+                     atomexClient: AtomexApp.Terminal);
 
-                if (ToCurrencyViewModel == null)
-                    return;
-
-                var symbol = Symbols.SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
-                if (symbol == null)
-                    return;
-
-                var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
-                var orderBook = terminal.GetOrderBook(symbol);
-
-                if (orderBook == null)
-                    return;
-
-                var walletAddress = await AtomexApp.Account
-                    .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
-
-                var baseCurrency = Currencies.GetByName(symbol.Base);
-
-                (_estimatedOrderPrice, _estimatedPrice) = orderBook.EstimateOrderPrices(
-                    side,
-                    Amount,
-                    FromCurrencyViewModel.Currency.DigitsMultiplier,
-                    baseCurrency.DigitsMultiplier);
-
-                _estimatedMaxAmount = orderBook.EstimateMaxAmount(side, FromCurrencyViewModel.Currency.DigitsMultiplier);
-                EstimatedRedeemFee = await ToCurrencyViewModel.Currency.GetRedeemFeeAsync(walletAddress);
-
-                _isNoLiquidity = Amount != 0 && _estimatedOrderPrice == 0;
-
-                if (symbol.IsBaseCurrency(ToCurrencyViewModel.Currency.Name))
-                {
-                    _targetAmount = _estimatedPrice != 0
-                        ? AmountHelper.RoundDown(Amount / _estimatedPrice, ToCurrencyViewModel.Currency.DigitsMultiplier)
-                        : 0m;
-                }
-                else if (symbol.IsQuoteCurrency(ToCurrencyViewModel.Currency.Name))
-                {
-                    _targetAmount = AmountHelper.RoundDown(Amount * _estimatedPrice, ToCurrencyViewModel.Currency.DigitsMultiplier);
-                }
+                _targetAmount = swapPriceEstimation.TargetAmount;
+                _estimatedPrice = swapPriceEstimation.Price;
+                _estimatedOrderPrice = swapPriceEstimation.OrderPrice;
+                _estimatedMaxAmount = swapPriceEstimation.MaxAmount;
+                _isNoLiquidity = swapPriceEstimation.IsNoLiquidity;
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
@@ -466,8 +499,9 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(EstimatedMaxAmount));
                     OnPropertyChanged(nameof(TargetAmount));
                     OnPropertyChanged(nameof(IsNoLiquidity));
-                    UpdateTargetAmountInBase(AtomexApp.QuotesProvider);
                 });
+
+                UpdateTargetAmountInBase(AtomexApp.QuotesProvider);
             }
             catch (Exception e)
             {
@@ -542,7 +576,8 @@ namespace atomex.ViewModel
                     Qty = qty,
                     Side = side,
                     Type = OrderType.FillOrKill,
-                    FromWallets = fromWallets.ToList()
+                    FromWallets = fromWallets.ToList(),
+                    MakerNetworkFee = EstimatedMakerNetworkFee
                 };
 
                 await order.CreateProofOfPossessionAsync(account);
@@ -607,109 +642,84 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            await UpdateAmount(decimal.MaxValue);
+            await UpdateAmountAsync(decimal.MaxValue);
         }
 
-        protected virtual async Task UpdateAmount(decimal value)
+        public virtual async Task UpdateAmountAsync(decimal value)
         {
             Warning = string.Empty;
 
-            if (value == 0)
+            try
             {
-                _amount = 0;
-                OnPropertyChanged(nameof(Amount));
-
-                AmountInBase = 0;
-
-                TargetAmount = 0;
-
-                TargetAmountInBase = 0;
-
-                return;
-            }    
-
-            var previousAmount = _amount;
-            _amount = value;
-
-            var (maxAmount, maxFee, reserve) = await AtomexApp.Account
-                .EstimateMaxAmountToSendAsync(FromCurrencyViewModel.Currency.Name, null, BlockchainTransactionType.SwapPayment, 0, 0, true);
-
-            var swaps = await AtomexApp.Account
-                .GetSwapsAsync();
-
-            var usedAmount = swaps.Sum(s => (s.IsActive && s.SoldCurrency == FromCurrencyViewModel.Currency.Name && !s.StateFlags.HasFlag(SwapStateFlags.IsPaymentConfirmed))
-                ? s.Symbol.IsBaseCurrency(FromCurrencyViewModel.Currency.Name)
-                   ? s.Qty
-                   : s.Qty * s.Price
-                : 0);
-
-            usedAmount = AmountHelper.RoundDown(usedAmount, FromCurrencyViewModel.Currency.DigitsMultiplier);
-
-            maxAmount = Math.Max(maxAmount - usedAmount, 0);
-
-
-            var includeFeeToAmount = FromCurrencyViewModel.Currency.FeeCurrencyName == FromCurrencyViewModel.Currency.Name;
-
-            var availableAmount = FromCurrencyViewModel.Currency is BitcoinBasedCurrency
-                ? FromCurrencyViewModel.AvailableAmount
-                : maxAmount + (includeFeeToAmount ? maxFee : 0);
-
-            var estimatedPaymentFee = _amount != 0
-                ? (_amount < availableAmount
-                    ? await AtomexApp.Account
-                        .EstimateFeeAsync(FromCurrencyViewModel.Currency.Name, null, _amount, BlockchainTransactionType.SwapPayment)
-                    : null)
-                : 0;
-
-            if (estimatedPaymentFee == null)
-            {
-                if (maxAmount > 0)
+                if (value == 0)
                 {
-                    _amount = maxAmount;
-                    estimatedPaymentFee = maxFee;
-                }
-                else
-                {
-                    _amount = 0; // previousAmount;
+                    _amount = 0;
                     OnPropertyChanged(nameof(Amount));
-                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
 
-                    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-                        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
+                    AmountInBase = 0;
+
+                    TargetAmount = 0;
+
+                    TargetAmountInBase = 0;
+
+                    EstimatedTotalNetworkFeeInBase = 0;
+
+                    EstimatedPaymentFee = 0;
+
+                    EstimatedPaymentFeeInBase = 0;
+
+                    EstimatedRedeemFee = 0;
+
+                    EstimatedRedeemFeeInBase = 0;
+
+                    EstimatedMakerNetworkFee = 0;
+
+                    EstimatedMakerNetworkFeeInBase = 0;
 
                     return;
                 }
+
+                // esitmate max payment amount and max fee
+                var swapParams = await Atomex.ViewModels.Helpers.EstimateSwapPaymentParamsAsync(
+                        amount: value,
+                        fromCurrency: FromCurrencyViewModel.Currency,
+                        toCurrency: ToCurrencyViewModel.Currency,
+                        account: AtomexApp.Account,
+                        atomexClient: AtomexApp.Terminal);
+
+                IsCriticalWarning = false;
+
+                if (swapParams.Error != null)
+                {
+                    Warning = swapParams.Error.Code switch
+                    {
+                        Errors.InsufficientFunds => AppResources.InsufficientFunds,
+                        Errors.InsufficientChainFunds => string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName),
+                        _ => AppResources.Error
+                    };
+                }
+                else
+                {
+                    Warning = string.Empty;
+                }
+
+                _amount = swapParams.Amount;
+                _estimatedPaymentFee = swapParams.PaymentFee;
+                _estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
+
+                OnPropertyChanged(nameof(Amount));
+                OnPropertyChanged(nameof(EstimatedPaymentFee));
+                OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
+
+                UpdateRedeemAndRewardFeesAsync();
+
+                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-
-            EstimatedPaymentFee = estimatedPaymentFee.Value;
-
-            if (_amount + (includeFeeToAmount ? _estimatedPaymentFee : 0) > availableAmount)
-                _amount = Math.Max(availableAmount - (includeFeeToAmount ? _estimatedPaymentFee : 0), 0);
-
-            //if (_amount <= 0)
-            //{
-            //    if (FromCurrencyViewModel.Currency.Name != FromCurrencyViewModel.Currency.FeeCurrencyName && FromCurrencyViewModel.AvailableAmount > 0)
-            //    {
-            //        Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName);
-            //        return;
-            //    }
-
-            //    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.AmountLessThanZeroError);
-            //    return;
-            //}
-
-            if (_amount > maxAmount)
+            catch(Exception e)
             {
-                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-                return;
+                Log.Error(e, "UpdateAmountAsync error");
             }
-
-            OnPropertyChanged(nameof(Amount));
-
-            UpdateRedeemAndRewardFeesAsync();
-
-            OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
-            OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
         private async void UpdateRedeemAndRewardFeesAsync()

@@ -319,7 +319,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\ic_question.xml">
+    <AndroidResource Include="Resources\drawable\ic_support.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -428,7 +428,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-night\ic_question.xml">
+    <AndroidResource Include="Resources\drawable-night\ic_support.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -605,6 +605,14 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\SwapArrows.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_question.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_question.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

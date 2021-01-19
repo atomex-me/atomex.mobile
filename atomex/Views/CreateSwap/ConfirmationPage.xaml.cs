@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
@@ -47,6 +48,22 @@ namespace atomex.Views.CreateSwap
                 _conversionViewModel.Amount = 0;
                 await Navigation.PopToRootAsync();
             }
+        }
+
+        private async void OnTotalFeeTapped(object sender, EventArgs args)
+        {
+            string message = string.Format(
+                   CultureInfo.InvariantCulture,
+                   AppResources.TotalNetworkFeeDetail,
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalNetworkFeeInBase:0.00$}"));
+
+            await DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
         }
 
         private void BlockActions(bool flag)

@@ -155,14 +155,12 @@
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\question.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
     <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.pdf" />
@@ -228,6 +226,12 @@
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_support.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -317,7 +321,6 @@
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
     <Folder Include="Assets.xcassets\AtomexLogo.imageset\" />
     <Folder Include="Assets.xcassets\NavBarConversion.imageset\" />
-    <Folder Include="Assets.xcassets\ic_question.imageset\" />
     <Folder Include="Assets.xcassets\ic_twitter.imageset\" />
     <Folder Include="Assets.xcassets\ic_youtube.imageset\" />
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
@@ -362,6 +365,8 @@
     <Folder Include="Assets.xcassets\ic_payment.imageset\" />
     <Folder Include="Assets.xcassets\ic_redeem.imageset\" />
     <Folder Include="Assets.xcassets\ic_refund.imageset\" />
+    <Folder Include="Assets.xcassets\ic_support.imageset\" />
+    <Folder Include="Assets.xcassets\ic_question.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

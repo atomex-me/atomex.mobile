@@ -139,7 +139,7 @@
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="6"
-                           Source="ic_question"
+                           Source="ic_support"
                            Margin="6"/>
                     <Label Text="{x:Static resources:AppResources.Support}"
                            Grid.Row="6"
