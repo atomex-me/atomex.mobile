@@ -34,7 +34,6 @@
     <Folder Include="Common\" />
     <Folder Include="Styles\" />
     <Folder Include="Styles\Fonts\" />
-    <Folder Include="Styles\Themes\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
     <Folder Include="ViewModel\ReceiveViewModels\" />

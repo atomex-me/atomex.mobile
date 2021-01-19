@@ -69,11 +69,6 @@
                                  VerticalOptions="FillAndExpand">
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
-                                <Label x:Name="AmountHint"
-                                       Style="{DynamicResource EntryHintStyle}"
-                                       VerticalTextAlignment="Center"
-                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <controls:CustomEntry x:Name="Amount"
                                                       Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
                                                       Keyboard="Numeric"
@@ -83,6 +78,11 @@
                                                       Style="{DynamicResource CustomEntryStyle}"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="AmountHint"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"

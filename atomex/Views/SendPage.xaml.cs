@@ -41,7 +41,7 @@ namespace atomex
                 decimal amount;
                 try
                 {
-                    decimal.TryParse(Amount.Text?.Replace(",","."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
+                    decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
                 }
                 catch (FormatException)
                 {
