@@ -66,7 +66,8 @@
                         <TapGestureRecognizer Tapped="OnAmountEntryTapped"/>
                     </controls:CustomFrame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
-                                 VerticalOptions="FillAndExpand">
+                                 VerticalOptions="FillAndExpand"
+                                 Spacing="0">
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Amount"
@@ -76,7 +77,8 @@
                                                       Unfocused="AmountEntryFocused"
                                                       TextChanged="OnAmountTextChanged"
                                                       Style="{DynamicResource CustomEntryStyle}"
-                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                      Padding="20,0,0,0"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label x:Name="AmountHint"
                                        Style="{DynamicResource EntryHintStyle}"
@@ -87,9 +89,10 @@
                                        HorizontalTextAlignment="End"
                                        Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
                                        FontFamily="{DynamicResource LightFont}"
-                                       FontSize="12"
+                                       FontSize="11"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.3}"
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                                 </Label>
                             </RelativeLayout>
@@ -186,7 +189,7 @@
                                     <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
                                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                            FontFamily="{DynamicResource LightFont}"
-                                           FontSize="12"
+                                           FontSize="11"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            Padding="0,0,20,0"
@@ -331,7 +334,7 @@
                                         <Label Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                FontFamily="{DynamicResource LightFont}"
-                                               FontSize="12"
+                                               FontSize="11"
                                                VerticalTextAlignment="Start"
                                                HorizontalTextAlignment="Start"
                                                Padding="20,0"
