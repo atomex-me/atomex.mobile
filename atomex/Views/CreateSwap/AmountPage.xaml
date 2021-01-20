@@ -13,6 +13,7 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
+                               BackgroundColor="Transparent"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
             <StackLayout x:Name="Content"
                          Padding="20,0"
@@ -69,6 +70,7 @@
 	             	                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-10}"
                                                         RelativeLayout.WidthConstraint="20"
                                                         RelativeLayout.HeightConstraint="20"
+                                                        BackgroundColor="Transparent"
                                                         Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                                                         IsVisible="False"/>
                                 </RelativeLayout>

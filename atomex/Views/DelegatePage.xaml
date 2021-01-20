@@ -306,7 +306,8 @@
                 <ActivityIndicator x:Name="ValidatingLoader"
                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Height, Factor=0.5}"
                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView, ElementName=NextButton, Property=Width, Factor=0.5}"
-	                               Style="{DynamicResource DelegationLoaderStyle}"/>
+	                               Style="{DynamicResource DelegationLoaderStyle}"
+                                   BackgroundColor="Transparent"/>
             </RelativeLayout>
         </StackLayout>
     </ScrollView>

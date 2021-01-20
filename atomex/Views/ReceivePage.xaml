@@ -138,7 +138,8 @@
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                        RelativeLayout.WidthConstraint="20"
                                        RelativeLayout.HeightConstraint="20"
-                                       Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
+                                       Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                                       BackgroundColor="Transparent"/>
                 </RelativeLayout>
             </StackLayout>
         </StackLayout>

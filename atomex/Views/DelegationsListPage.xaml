@@ -13,6 +13,7 @@
                          VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="CenterAndExpand">
                     <ActivityIndicator Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
+                                       BackgroundColor="Transparent"
                                        IsRunning="True"/>
                     <Label Text="{x:Static resources:AppResources.LoadingLabel}"
                            TextColor="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
