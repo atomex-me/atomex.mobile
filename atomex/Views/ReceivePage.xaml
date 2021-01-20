@@ -103,6 +103,34 @@
                    Style="{DynamicResource QrCodeFrameStyle}">
                 <StackLayout Spacing="0"
                              VerticalOptions="FillAndExpand">
+                    <StackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="20,20,20,0"
+                                 Orientation="Horizontal">
+                        <Frame CornerRadius="12"
+                               BackgroundColor="Black"
+                               HeightRequest="50"
+                               WidthRequest="50"
+                               Padding="0"
+                               HasShadow="False">
+                            <Image Source="Logo"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   WidthRequest="40"
+                                   HeightRequest="40"/>
+                        </Frame>
+                        <StackLayout Spacing="0"
+                                     Orientation="Horizontal"
+                                     VerticalOptions="CenterAndExpand"
+                                     Padding="5,0">
+                            <Label Text="a" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="t" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="o" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="m" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="e" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="x" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                        </StackLayout>
+                    </StackLayout>
                     <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"
                                                  BarcodeValue="{Binding SelectedAddress.Address}"
                                                  BarcodeFormat="QR_CODE">
