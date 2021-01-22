@@ -74,8 +74,6 @@ namespace atomex
 
         public void SetAppTheme()
         {
-            // на этапе загрузки засетить все цвета
-
             string navBarBackgroundColorName = "NavigationBarBackgroundColor";
             string navBarTextColorName = "NavigationBarTextColor";
             string tabBarBackgroundColorName = "TabBarBackgroundColor";
@@ -86,7 +84,6 @@ namespace atomex
                 navBarTextColorName = "NavigationBarTextColorDark";
                 tabBarBackgroundColorName = "TabBarBackgroundColorDark";
             }
-
 
             if (Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor))
                 navigationWalletsListPage.BarBackgroundColor =

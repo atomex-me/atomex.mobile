@@ -428,15 +428,14 @@
         </Setter>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
     </Style>
-    <Style x:Key="LogoCompressedBlackLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="Black"/>
+    <Style x:Key="QrCodeLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource LogoFont}"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="Margin" Value="-2,0,0,0"/>
     </Style>
-
 
     <!-- Delegation info Page -->
     <Style x:Key="DelegationPropertyLabelStyle" TargetType="Label">

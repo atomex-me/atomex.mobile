@@ -428,8 +428,8 @@
         </Setter>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
     </Style>
-    <Style x:Key="LogoCompressedBlackLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="Black"/>
+    <Style x:Key="QrCodeLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColor}"/>
         <Setter Property="FontFamily" Value="{DynamicResource LogoFont}"/>
         <Setter Property="FontSize" Value="32"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>

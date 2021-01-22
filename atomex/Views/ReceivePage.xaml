@@ -108,7 +108,7 @@
                                  Padding="20,20,20,0"
                                  Orientation="Horizontal">
                         <Frame CornerRadius="12"
-                               BackgroundColor="Black"
+                               BackgroundColor="{DynamicResource MainTextColor}"
                                HeightRequest="50"
                                WidthRequest="50"
                                Padding="0"
@@ -123,12 +123,12 @@
                                      Orientation="Horizontal"
                                      VerticalOptions="CenterAndExpand"
                                      Padding="5,0">
-                            <Label Text="a" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
-                            <Label Text="t" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
-                            <Label Text="o" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
-                            <Label Text="m" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
-                            <Label Text="e" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
-                            <Label Text="x" Style="{DynamicResource LogoCompressedBlackLabelStyle}"/>
+                            <Label Text="a" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="t" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="o" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="m" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="e" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="x" Style="{DynamicResource QrCodeLabelStyle}"/>
                         </StackLayout>
                     </StackLayout>
                     <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"
