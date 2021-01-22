@@ -357,13 +357,29 @@ namespace atomex
 
                 Wallet.SaveToFile(Wallet.PathToWallet, StoragePassword);
 
+                ClientType clientType;
+
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        clientType = ClientType.iOS;
+                        break;
+                    case Device.Android:
+                        clientType = ClientType.Android;
+                        break;
+                    default:
+                        clientType = ClientType.Unknown;
+                        break;
+                }
+
                 try
                 {
                     var account = new Account(
                         wallet: Wallet,
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
-                        symbolsProvider: AtomexApp.SymbolsProvider);
+                        symbolsProvider: AtomexApp.SymbolsProvider,
+                        clientType);
                     return account;
                 }
                 catch (CryptographicException e)

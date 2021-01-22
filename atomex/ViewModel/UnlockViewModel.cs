@@ -8,6 +8,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Wallet;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex
 {
@@ -59,6 +60,21 @@ namespace atomex
             {
                 var fileSystem = FileSystem.Current;
 
+                ClientType clientType;
+
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        clientType = ClientType.iOS;
+                        break;
+                    case Device.Android:
+                        clientType = ClientType.Android;
+                        break;
+                    default:
+                        clientType = ClientType.Unknown;
+                        break;
+                }
+
                 var walletPath = Path.Combine(
                     fileSystem.PathToDocuments,
                     WalletInfo.DefaultWalletsDirectory,
@@ -69,8 +85,8 @@ namespace atomex
                     walletPath,
                     Password,
                     AtomexApp.CurrenciesProvider,
-                    AtomexApp.SymbolsProvider
-                    );
+                    AtomexApp.SymbolsProvider,
+                    clientType);
             }
             catch (CryptographicException e)
             {

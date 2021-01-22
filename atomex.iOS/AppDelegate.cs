@@ -75,7 +75,7 @@ namespace atomex.iOS
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
 
-            App.FileSystem = "iOS";
+            App.FileSystem = Device.iOS;
             App.DeviceToken = DeviceToken;
 
             StartSentry();

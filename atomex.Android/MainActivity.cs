@@ -42,7 +42,7 @@ namespace atomex.Droid
 
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
 
-            App.FileSystem = "Android";
+            App.FileSystem = Device.Android;
             App.DeviceToken = FirebaseInstanceId.Instance.Token;
 
             StartSentry();
