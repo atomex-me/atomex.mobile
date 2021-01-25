@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Wallet;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -30,14 +31,22 @@ namespace atomex.Views.CreateNewWallet
             PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -71,14 +80,22 @@ namespace atomex.Views.CreateNewWallet
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordConfirmationEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
@@ -131,6 +148,7 @@ namespace atomex.Views.CreateNewWallet
                     catch (Exception ex)
                     {
                         // Possible that device doesn't support secure storage on device.
+                        Log.Error(ex, "Device doesn't support secure storage on device");
                     }
 
                     MainViewModel mainViewModel = null;

@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Text;
+using Android.Util;
 using atomex.CustomElements;
 using atomex.Droid.CustomElements;
 using Xamarin.Forms;
@@ -18,11 +19,44 @@ namespace atomex.Droid.CustomElements
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
             base.OnElementChanged(e);
-            if (Control != null)
+
+            if (e.NewElement == null)
             {
-                Control.SetPadding(60, -10, 60, 0);
-                Control.SetBackgroundColor(Android.Graphics.Color.Transparent);
-                this.Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
+                return;
+            }
+
+            if (this.Element is CustomEntry customEntry)
+            {
+                if (Control != null)
+                {
+                    var paddingLeft = (int)customEntry.Padding.Left;
+                    var paddingTop = (int)customEntry.Padding.Top;
+                    var paddingRight = (int)customEntry.Padding.Right;
+                    var paddingBottom = (int)customEntry.Padding.Bottom;
+
+                    int dpLeftValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingLeft,
+                                Context.Resources.DisplayMetrics);
+                    int dpRightValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingRight,
+                                Context.Resources.DisplayMetrics);
+                    int dpTopValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingTop,
+                                Context.Resources.DisplayMetrics);
+                    int dpBottomValue = (int)TypedValue.ApplyDimension(
+                                ComplexUnitType.Dip,
+                                paddingBottom,
+                                Context.Resources.DisplayMetrics);
+
+                    this.Control.SetPadding(dpLeftValue, dpTopValue, dpRightValue, dpBottomValue);
+
+
+                    Control.SetBackgroundColor(Android.Graphics.Color.Transparent);
+                    this.Control.SetRawInputType(InputTypes.TextFlagNoSuggestions);
+                }
             }
         }
     }

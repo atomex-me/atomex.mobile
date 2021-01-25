@@ -82,7 +82,7 @@ namespace atomex.ViewModel
                 {
                     var quote = AtomexApp.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
                     c.Price = quote.Bid;
-                    c.AmountInBase = c.AvailableAmount * quote.Bid;
+                    c.AmountInBase = c.TotalAmount * quote.Bid;
                     totalAmount += c.AmountInBase;
                 }
 

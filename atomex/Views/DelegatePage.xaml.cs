@@ -70,16 +70,15 @@ namespace atomex
         {
             //FeeFrame.HasShadow = args.IsFocused;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.1), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - FeeFrame.Height / 2, true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
-
-            if (!args.IsFocused)
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, FeeFrame.Height, true);
+                    return false;
+                });
+            }
+            else
             {
                 decimal fee;
                 try
@@ -92,7 +91,18 @@ namespace atomex
                 }
                 _delegateViewModel.Fee = fee;
                 Fee.Text = _delegateViewModel.Fee.ToString();
+
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
             }
+        }
+
+        private void OnFeeEntryTapped(object sender, EventArgs args)
+        {
+            Fee.Focus();
         }
 
         private void OnUseDefaultFeeToggled(object sender, ToggledEventArgs args)

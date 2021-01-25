@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using atomex.CustomElements;
 using atomex.Services;
 using atomex.Styles;
 using Atomex;
@@ -28,7 +29,6 @@ namespace atomex
             InitializeComponent();
             LoadStyles();
 
-            // use the dependency service to get a platform-specific implementation and initialize it
             DependencyService.Get<INotificationManager>().Initialize();
 
             var coreAssembly = AppDomain.CurrentDomain
@@ -60,11 +60,58 @@ namespace atomex
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
             MainPage = new NavigationPage(new StartPage(startViewModel));
 
-            if (Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
-                ((NavigationPage)MainPage).BarBackgroundColor = (Color)navBarColor;
-            if (Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
-                ((NavigationPage)MainPage).BarTextColor = (Color)navBarTextColor;
+            Current.RequestedThemeChanged += (s, a) =>
+            {
+                Device.BeginInvokeOnMainThread(SetAppTheme);
+            };
+            SetAppTheme();
+        }
 
+        public void SetAppTheme()
+        {
+            if (MainPage is NavigationPage)
+            {
+                string navBarBackgroundColorName = "NavigationBarBackgroundColor";
+                string navBarTextColorName = "NavigationBarTextColor";
+                if (Current.RequestedTheme == OSAppTheme.Dark)
+                {
+                    navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
+                    navBarTextColorName = "NavigationBarTextColorDark";
+                }
+                if (Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor))
+                    ((NavigationPage)MainPage).BarBackgroundColor = (Color)navBarColor;
+                if (Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor))
+                    ((NavigationPage)MainPage).BarTextColor = (Color)navBarTextColor;
+            }
+            else if (MainPage is CustomTabbedPage)
+            {
+                
+                var tabs = ((CustomTabbedPage)MainPage).Children;
+             
+                string navBarBackgroundColorName = "NavigationBarBackgroundColor";
+                string navBarTextColorName = "NavigationBarTextColor";
+                string tabBarBackgroundColorName = "TabBarBackgroundColor";
+
+                if (Current.RequestedTheme == OSAppTheme.Dark)
+                {
+                    navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
+                    navBarTextColorName = "NavigationBarTextColorDark";
+                    tabBarBackgroundColorName = "TabBarBackgroundColorDark";
+                }
+
+                Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor);
+                Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor);
+                Current.Resources.TryGetValue(tabBarBackgroundColorName, out var tabBarBackgroundColor);
+
+                ((CustomTabbedPage)MainPage).BarBackgroundColor = (Color)tabBarBackgroundColor;
+                ((CustomTabbedPage)MainPage).BackgroundColor = (Color)navBarColor;
+
+                foreach (NavigationPage tab in tabs)
+                {
+                    tab.BarBackgroundColor = (Color)navBarColor;
+                    tab.BarTextColor = (Color)navBarTextColor;
+                }
+            }
         }
 
         protected override void OnStart()

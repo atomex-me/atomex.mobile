@@ -20,14 +20,16 @@ namespace atomex
             "#a43604",
             "#eb8b35",
             "#cdbba3",
-            "#dedfe4",
+            "#B8B6B9",
             "#161f21",
             "#492b22",
             "#af7e68",
             "#bcc1b7",
             "#acaead",
-            "#f3f1ec",
+            "#5F4FA1"
         };
+
+        private SKColor bgChartColor;
 
         public Portfolio()
         {
@@ -39,6 +41,13 @@ namespace atomex
             InitializeComponent();
             _currenciesViewModel = currenciesViewModel;
             _navigationService = navigationService;
+
+            string bgColorName = "AdditionalBackgroundColor";
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+                bgColorName = "AdditionalBackgroundColorDark";
+
+            if (Application.Current.Resources.TryGetValue(bgColorName, out var bgColor))
+                SKColor.TryParse(bgColor.ToString(), out bgChartColor);
 
             _currenciesViewModel.QuotesUpdated += (s, a) =>
             {
@@ -58,27 +67,28 @@ namespace atomex
                 {
                     if (_currenciesViewModel.TotalAmountInBase == 0)
                     {
+                        
                         var entry = new Microcharts.Entry[]
                         {
                             new Microcharts.Entry(100) { Color = SKColor.Parse("#dcdcdc") }
                         };
-                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = SKColor.Parse("#f3f2f7"), FontFamily = "Roboto-Thin" };
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entry, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = bgChartColor, FontFamily = "Roboto-Bold" };
                     }
                     else
                     {
-                        var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.AvailableAmount != 0).ToList();
+                        var nonzeroWallets = _currenciesViewModel.CurrencyViewModels.Where(w => w.TotalAmount != 0).ToList();
                         var entries = new Microcharts.Entry[nonzeroWallets.Count];
                         for (int i = 0; i < nonzeroWallets.Count; i++)
                         {
                             entries[i] = new Microcharts.Entry(nonzeroWallets[i].PortfolioPercent)
                             {
                                 Label = nonzeroWallets[i].CurrencyCode,
+                                TextColor = SKColor.Parse(chartColors[i]),
                                 ValueLabel = string.Format("{0:0.#} %", nonzeroWallets[i].PortfolioPercent),
                                 Color = SKColor.Parse(chartColors[i])
                             };
                         }
-                        
-                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = SKColor.Parse("#f3f2f7"), FontFamily = "Roboto-Thin" };
+                        PortfolioChart.Chart = new CustomDonutChart() { Entries = entries, HoleRadius = 0.6f, LabelTextSize = 20, BackgroundColor = bgChartColor, FontFamily = "Roboto-Bold" };
                     }
                 }
             }
@@ -95,7 +105,7 @@ namespace atomex
             var collectionView = sender as CollectionView;
             if (collectionView != null)
                 collectionView.SelectedItem = null;
-            //VisualStateManager.GoToState((Grid)sender, "UnSelected");
+            ////VisualStateManager.GoToState((Grid)sender, "UnSelected");
         }
     }
 }

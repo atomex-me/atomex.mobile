@@ -3,6 +3,6 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:custom="clr-namespace:atomex.CustomElements"
             x:Class="atomex.MainPage"
-            BackgroundColor="{DynamicResource TabBarBackgroundColor}"
-            SelectedTabColor="{DynamicResource SelectedTabColor}"
-            UnselectedTabColor="{DynamicResource UnselectedTabColor}"/>
+            BackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColor}}"
+            SelectedTabColor="{AppThemeBinding Dark={StaticResource SelectedTabColorDark}, Light={StaticResource SelectedTabColor}}"
+            UnselectedTabColor="{AppThemeBinding Dark={StaticResource UnselectedTabColorDark}, Light={StaticResource UnselectedTabColor}}"/>

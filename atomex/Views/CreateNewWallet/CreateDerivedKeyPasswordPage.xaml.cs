@@ -26,14 +26,22 @@ namespace atomex.Views.CreateNewWallet
             PasswordFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
@@ -67,14 +75,22 @@ namespace atomex.Views.CreateNewWallet
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (PasswordFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordConfirmationEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnPasswordConfirmationTextChanged(object sender, TextChangedEventArgs args)
@@ -109,6 +125,7 @@ namespace atomex.Views.CreateNewWallet
             if (result == null)
             {
                 _createNewWalletViewModel.CreateHdWallet();
+                _createNewWalletViewModel.ClearStoragePswd();
                 await Navigation.PushAsync(new CreateStoragePasswordPage(_createNewWalletViewModel));
             }
             else

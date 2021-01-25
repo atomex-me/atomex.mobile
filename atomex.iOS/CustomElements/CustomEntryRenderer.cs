@@ -15,18 +15,22 @@ namespace atomex.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            
-            if (Control != null)
+      
+            if (e.PropertyName == "Renderer")
             {
-                //Control.Layer.BorderWidth = 0;
-                //Control.Layer.CornerRadius = 0;
-                Control.BorderStyle = UITextBorderStyle.None;
-                //Control.Layer.BackgroundColor = UIColor.White.CGColor;
+                if (Control != null)
+                {
+                    Control.BorderStyle = UITextBorderStyle.None;
 
-                Control.LeftView = new UIView(new CGRect(0, 0, 20, 0));
-                Control.LeftViewMode = UITextFieldViewMode.Always;
-                Control.RightView = new UIView(new CGRect(0, 0, 0, 20));
-                Control.LeftViewMode = UITextFieldViewMode.Always;
+                    var padding = (Element as CustomEntry)?.Padding;
+                    if (!padding.HasValue)
+                        return;
+
+                    Control.LeftView = new UIView(new CGRect(0, 0, padding.Value.Left, 0));
+                    Control.LeftViewMode = UITextFieldViewMode.Always;
+                    Control.RightView = new UIView(new CGRect(0, 0, 0, padding.Value.Right));
+                    Control.LeftViewMode = UITextFieldViewMode.Always;
+                }
             }
 
             //if (e.PropertyName == "IsFocused")

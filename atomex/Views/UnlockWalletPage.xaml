@@ -5,8 +5,8 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.UnlockWalletPage"
              Title="{x:Static resources:AppResources.UnlockTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ScrollView x:Name="Page">
         <RelativeLayout>
             <StackLayout x:Name="Content"
                          Padding="30"
@@ -20,8 +20,11 @@
                        Style="{DynamicResource UnlockWalletTextStyle}"
                        x:Name="Label"/>
                 <Frame x:Name="PasswordFrame"
-                                      CornerRadius="10"
-                                      Style="{DynamicResource EntryFrameStyle}">
+                       CornerRadius="10"
+                       Style="{DynamicResource EntryFrameStyle}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                    </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <StackLayout VerticalOptions="CenterAndExpand"
@@ -45,7 +48,7 @@
                                                   Focused="PasswordEntryFocused"
                                                   Unfocused="PasswordEntryFocused"
                                                   IsPassword="True"
-                                                  Style="{DynamicResource EntryStyle}"
+                                                  Style="{DynamicResource CustomEntryStyle}"
                                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                                                   TextChanged="OnPasswordTextChanged"/>
@@ -68,7 +71,8 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
-                               Color="Black"
+                               BackgroundColor="Transparent"
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
                                IsRunning="False"/>
         </RelativeLayout>
     </ScrollView>

@@ -14,6 +14,7 @@ namespace atomex.iOS.Services
     {
         UIView ToastView;
         UILabel MessageLabel;
+        string initAppTheme;
 
         CancellationTokenSource cancelationToken;
 
@@ -21,19 +22,28 @@ namespace atomex.iOS.Services
         NSLayoutConstraint centerConstraint;
         NSLayoutConstraint bottomConstraint;
 
-        public async void Show(string message, ToastPosition toastPosition)
+        public async void Show(string message, ToastPosition toastPosition, string appTheme)
         {
             UIWindow window = UIApplication.SharedApplication.KeyWindow;
 
-            if (ToastView == null)
+            if (ToastView == null || !initAppTheme.Equals(appTheme))
             {
                 ToastView = new UIView();
                 ToastView.TranslatesAutoresizingMaskIntoConstraints = false;
                 ToastView.Frame = window.Frame;
-                ToastView.BackgroundColor = UIColor.FromRGBA(red: 31f / 255.0f,
-                                                            green: 31f / 255.0f,
-                                                            blue: 31f / 255.0f,
-                                                            alpha: 0.7f);
+
+                initAppTheme = appTheme;
+
+                if (appTheme == OSAppTheme.Dark.ToString())
+                    ToastView.BackgroundColor = UIColor.FromRGBA(red: 202f / 255.0f,
+                                                                 green: 214f / 255.0f,
+                                                                 blue: 224f / 255.0f,
+                                                                 alpha: 0.8f);
+                else
+                    ToastView.BackgroundColor = UIColor.FromRGBA(red: 31f / 255.0f,
+                                                                 green: 31f / 255.0f,
+                                                                 blue: 31f / 255.0f,
+                                                                 alpha: 0.7f);
                 ToastView.Layer.CornerRadius = 10;
                 ToastView.Layer.ShadowColor = UIColor.Gray.CGColor;
                 ToastView.Layer.ShadowOffset = new CoreGraphics.CGSize(5, 5);
@@ -46,10 +56,14 @@ namespace atomex.iOS.Services
                 {
                     TranslatesAutoresizingMaskIntoConstraints = false,
                     Font = UIFont.SystemFontOfSize(14),
-                    TextColor = UIColor.White,
                     TextAlignment = UITextAlignment.Center,
                     Lines = 0
                 };
+
+                if (appTheme == OSAppTheme.Dark.ToString())
+                    MessageLabel.TextColor = UIColor.Black;
+                else
+                    MessageLabel.TextColor = UIColor.White;
 
                 ToastView.AddSubview(MessageLabel);
 

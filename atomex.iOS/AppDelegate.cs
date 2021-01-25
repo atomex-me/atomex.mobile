@@ -35,11 +35,10 @@ namespace atomex.iOS
             FileSystem.UseFileSystem(new IosFileSystem());
 
             Forms.SetFlags("Shapes_Experimental");
-
+            Forms.SetFlags("Brush_Experimental");
             Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
-            Firebase.Core.App.Configure();
 
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
@@ -76,7 +75,7 @@ namespace atomex.iOS
             Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
             DeviceToken = BitConverter.ToString(result).Replace("-", "");
 
-            App.FileSystem = "iOS";
+            App.FileSystem = Device.iOS;
             App.DeviceToken = DeviceToken;
 
             StartSentry();

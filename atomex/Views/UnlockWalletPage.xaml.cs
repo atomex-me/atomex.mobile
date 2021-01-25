@@ -26,12 +26,29 @@ namespace atomex
             _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
 
-            BiometricAuth(this, EventArgs.Empty);
+            //BiometricAuth(this, EventArgs.Empty);
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
+
+            if (args.IsFocused)
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private void PasswordEntryClicked(object sender, EventArgs args)
@@ -130,6 +147,10 @@ namespace atomex
                         Log.Error(ex, "Device doesn't support secure storage on device");
                         // Possible that device doesn't support secure storage on device.
                     }
+                }
+                else
+                {
+                    await DisplayAlert("Sorry", "You were not authenticated", AppResources.AcceptButton);
                 }
             }
         }

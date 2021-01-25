@@ -21,6 +21,10 @@ namespace atomex
 
         private readonly NavigationPage navigationWalletsListPage;
 
+        private readonly NavigationPage navigationPortfolioPage;
+
+        private readonly NavigationPage navigationSettingsPage;
+
         public MainViewModel _mainViewModel { get; }
 
         public MainPage(MainViewModel mainViewModel)
@@ -28,9 +32,10 @@ namespace atomex
             InitializeComponent();
 
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+
             _mainViewModel = mainViewModel;
 
-            var navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel, this))
+            navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel, this))
             {
                 IconImageSource = "NavBarPortfolio",
                 Title = AppResources.PortfolioTab
@@ -48,32 +53,13 @@ namespace atomex
                 Title = AppResources.ConversionTab
             };
 
-            var navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
+            navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
             {
                 IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
 
-            if (Application.Current.Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
-                navigationWalletsListPage.BarBackgroundColor =
-                    navigationPortfolioPage.BarBackgroundColor =
-                    navigationConversionPage.BarBackgroundColor =
-                    navigationSettingsPage.BarBackgroundColor =
-                    (Color)navBarColor;
-
-            if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
-                navigationWalletsListPage.BarTextColor =
-                    navigationPortfolioPage.BarTextColor =
-                    navigationConversionPage.BarTextColor =
-                    navigationSettingsPage.BarTextColor =
-                    (Color)navBarTextColor;
-
-            if (Application.Current.Resources.TryGetValue("TabBarBackgroundColor", out var tabBarBackgroundColor))
-                navigationWalletsListPage.BackgroundColor =
-                    navigationPortfolioPage.BackgroundColor =
-                    navigationConversionPage.BackgroundColor =
-                    navigationSettingsPage.BackgroundColor =
-                    (Color)tabBarBackgroundColor;
+            SetAppTheme();
 
             Children.Add(navigationPortfolioPage);
             Children.Add(navigationWalletsListPage);
@@ -86,17 +72,62 @@ namespace atomex
             };
         }
 
+        public void SetAppTheme()
+        {
+            string navBarBackgroundColorName = "NavigationBarBackgroundColor";
+            string navBarTextColorName = "NavigationBarTextColor";
+            string tabBarBackgroundColorName = "TabBarBackgroundColor";
+
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+            {
+                navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
+                navBarTextColorName = "NavigationBarTextColorDark";
+                tabBarBackgroundColorName = "TabBarBackgroundColorDark";
+            }
+
+            if (Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor))
+                navigationWalletsListPage.BarBackgroundColor =
+                navigationPortfolioPage.BarBackgroundColor =
+                navigationConversionPage.BarBackgroundColor =
+                navigationSettingsPage.BarBackgroundColor =
+                (Color)navBarColor;
+
+            if (Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor))
+                navigationWalletsListPage.BarTextColor =
+                navigationPortfolioPage.BarTextColor =
+                navigationConversionPage.BarTextColor =
+                navigationSettingsPage.BarTextColor =
+                (Color)navBarTextColor;
+
+            if (Application.Current.Resources.TryGetValue(tabBarBackgroundColorName, out var tabBarBackgroundColor))
+                navigationWalletsListPage.BackgroundColor =
+                navigationPortfolioPage.BackgroundColor =
+                navigationConversionPage.BackgroundColor =
+                navigationSettingsPage.BackgroundColor =
+                (Color)tabBarBackgroundColor;
+        }
+
         private void SignOut()
         {
             _mainViewModel.SignOut();
             StartViewModel startViewModel = new StartViewModel(_mainViewModel.AtomexApp);
             Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
 
-            if (Application.Current.Resources.TryGetValue("NavigationBarBackgroundColor", out var navBarColor))
-                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
+            string navBarBackgroundColorName = "NavigationBarBackgroundColor";
+            string navBarTextColorName = "NavigationBarTextColor";
 
-            if (Application.Current.Resources.TryGetValue("NavigationBarTextColor", out var navBarTextColor))
-                ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+            {
+                navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
+                navBarTextColorName = "NavigationBarTextColorDark";
+            }
+
+            Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor);
+            Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor);
+
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
+            ((NavigationPage)Application.Current.MainPage).BackgroundColor = (Color)navBarColor;
+            ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
         public void ConvertCurrency(string currencyCode)

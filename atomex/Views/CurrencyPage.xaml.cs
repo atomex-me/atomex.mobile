@@ -85,7 +85,7 @@ namespace atomex
                 }
                 TxListView.IsRefreshing = RefreshLabel.IsVisible = false;
                 AvailableAmountLabel.IsVisible = AvailableAmountInBaseLabel.IsVisible = true;
-                _toastService?.Show(_currencyViewModel.Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top);
+                _toastService?.Show(_currencyViewModel.Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception e)
             {

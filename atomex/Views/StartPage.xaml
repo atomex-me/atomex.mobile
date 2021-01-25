@@ -5,20 +5,24 @@
              x:Class="atomex.StartPage"
              NavigationPage.HasNavigationBar="False">
     <RelativeLayout VerticalOptions="StartAndExpand">
-        <StackLayout Orientation="Vertical"
-                     VerticalOptions="Start"
-                     HorizontalOptions="FillAndExpand"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-            <Image Source="StartPageBackground"
-                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
-                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
-                   Margin="0"/>
-        </StackLayout>
+        <Frame HasShadow="True"
+               CornerRadius="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0"
+                                     EndPoint="0,1">
+                    <GradientStop Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStartColorDark}, Light={StaticResource StartPageBackgroundStartColor}}"
+                                  Offset="0.1"/>
+                    <GradientStop Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStopColorDark}, Light={StaticResource StartPageBackgroundStopColor}}"
+                                  Offset="1.0"/>
+                </LinearGradientBrush>
+            </Frame.Background>
+        </Frame>
         <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5}"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
                      Spacing="0">
             <StackLayout VerticalOptions="CenterAndExpand"
                          Spacing="0">
@@ -53,14 +57,20 @@
                                  Value="False">
                         <Setter Property="Opacity"
                                 Value="0.7"/>
+                        <Setter Property="BackgroundColor"
+                                Value="LightGray"/>
+                        <Setter Property="BorderColor"
+                                Value="LightGray"/>
+                        <Setter Property="TextColor"
+                                Value="Gray"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
             <Button Text="{x:Static resources:AppResources.CreateNewWalletButton}"
-                    Style="{DynamicResource AdditionalButtonStyle}"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="CreateNewWalletButtonClicked"/>
             <Button Text="{x:Static resources:AppResources.RestoreWalletButton}"
-                    Style="{DynamicResource AdditionalButtonStyle}"
+                    Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnRestoreWalletButtonClicked"/>
         </StackLayout>
     </RelativeLayout>

@@ -4444,7 +4444,6 @@ namespace atomex.Droid
 			global::Plugin.Fingerprint.Resource.Styleable.View_paddingStart = global::atomex.Droid.Resource.Styleable.View_paddingStart;
 			global::Plugin.Fingerprint.Resource.Styleable.View_theme = global::atomex.Droid.Resource.Styleable.View_theme;
 			global::Xamarin.Essentials.Resource.Attribute.alpha = global::atomex.Droid.Resource.Attribute.alpha;
-			global::Xamarin.Essentials.Resource.Attribute.coordinatorLayoutStyle = global::atomex.Droid.Resource.Attribute.coordinatorLayoutStyle;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::atomex.Droid.Resource.Attribute.font;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderAuthority = global::atomex.Droid.Resource.Attribute.fontProviderAuthority;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderCerts = global::atomex.Droid.Resource.Attribute.fontProviderCerts;
@@ -4455,23 +4454,15 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Attribute.fontStyle = global::atomex.Droid.Resource.Attribute.fontStyle;
 			global::Xamarin.Essentials.Resource.Attribute.fontVariationSettings = global::atomex.Droid.Resource.Attribute.fontVariationSettings;
 			global::Xamarin.Essentials.Resource.Attribute.fontWeight = global::atomex.Droid.Resource.Attribute.fontWeight;
-			global::Xamarin.Essentials.Resource.Attribute.keylines = global::atomex.Droid.Resource.Attribute.keylines;
-			global::Xamarin.Essentials.Resource.Attribute.layout_anchor = global::atomex.Droid.Resource.Attribute.layout_anchor;
-			global::Xamarin.Essentials.Resource.Attribute.layout_anchorGravity = global::atomex.Droid.Resource.Attribute.layout_anchorGravity;
-			global::Xamarin.Essentials.Resource.Attribute.layout_behavior = global::atomex.Droid.Resource.Attribute.layout_behavior;
-			global::Xamarin.Essentials.Resource.Attribute.layout_dodgeInsetEdges = global::atomex.Droid.Resource.Attribute.layout_dodgeInsetEdges;
-			global::Xamarin.Essentials.Resource.Attribute.layout_insetEdge = global::atomex.Droid.Resource.Attribute.layout_insetEdge;
-			global::Xamarin.Essentials.Resource.Attribute.layout_keyline = global::atomex.Droid.Resource.Attribute.layout_keyline;
-			global::Xamarin.Essentials.Resource.Attribute.statusBarBackground = global::atomex.Droid.Resource.Attribute.statusBarBackground;
 			global::Xamarin.Essentials.Resource.Attribute.ttcIndex = global::atomex.Droid.Resource.Attribute.ttcIndex;
+			global::Xamarin.Essentials.Resource.Color.androidx_core_ripple_material_light = global::atomex.Droid.Resource.Color.androidx_core_ripple_material_light;
+			global::Xamarin.Essentials.Resource.Color.androidx_core_secondary_text_default_material_light = global::atomex.Droid.Resource.Color.androidx_core_secondary_text_default_material_light;
 			global::Xamarin.Essentials.Resource.Color.browser_actions_bg_grey = global::atomex.Droid.Resource.Color.browser_actions_bg_grey;
 			global::Xamarin.Essentials.Resource.Color.browser_actions_divider_color = global::atomex.Droid.Resource.Color.browser_actions_divider_color;
 			global::Xamarin.Essentials.Resource.Color.browser_actions_text_color = global::atomex.Droid.Resource.Color.browser_actions_text_color;
 			global::Xamarin.Essentials.Resource.Color.browser_actions_title_color = global::atomex.Droid.Resource.Color.browser_actions_title_color;
 			global::Xamarin.Essentials.Resource.Color.notification_action_color_filter = global::atomex.Droid.Resource.Color.notification_action_color_filter;
 			global::Xamarin.Essentials.Resource.Color.notification_icon_bg_color = global::atomex.Droid.Resource.Color.notification_icon_bg_color;
-			global::Xamarin.Essentials.Resource.Color.ripple_material_light = global::atomex.Droid.Resource.Color.ripple_material_light;
-			global::Xamarin.Essentials.Resource.Color.secondary_text_default_material_light = global::atomex.Droid.Resource.Color.secondary_text_default_material_light;
 			global::Xamarin.Essentials.Resource.Dimension.browser_actions_context_menu_max_width = global::atomex.Droid.Resource.Dimension.browser_actions_context_menu_max_width;
 			global::Xamarin.Essentials.Resource.Dimension.browser_actions_context_menu_min_padding = global::atomex.Droid.Resource.Dimension.browser_actions_context_menu_min_padding;
 			global::Xamarin.Essentials.Resource.Dimension.compat_button_inset_horizontal_material = global::atomex.Droid.Resource.Dimension.compat_button_inset_horizontal_material;
@@ -4546,43 +4537,28 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Id.action_divider = global::atomex.Droid.Resource.Id.action_divider;
 			global::Xamarin.Essentials.Resource.Id.action_image = global::atomex.Droid.Resource.Id.action_image;
 			global::Xamarin.Essentials.Resource.Id.action_text = global::atomex.Droid.Resource.Id.action_text;
-			global::Xamarin.Essentials.Resource.Id.all = global::atomex.Droid.Resource.Id.all;
 			global::Xamarin.Essentials.Resource.Id.async = global::atomex.Droid.Resource.Id.async;
 			global::Xamarin.Essentials.Resource.Id.blocking = global::atomex.Droid.Resource.Id.blocking;
-			global::Xamarin.Essentials.Resource.Id.bottom = global::atomex.Droid.Resource.Id.bottom;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_header_text = global::atomex.Droid.Resource.Id.browser_actions_header_text;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_items = global::atomex.Droid.Resource.Id.browser_actions_menu_items;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_icon = global::atomex.Droid.Resource.Id.browser_actions_menu_item_icon;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_item_text = global::atomex.Droid.Resource.Id.browser_actions_menu_item_text;
 			global::Xamarin.Essentials.Resource.Id.browser_actions_menu_view = global::atomex.Droid.Resource.Id.browser_actions_menu_view;
-			global::Xamarin.Essentials.Resource.Id.center = global::atomex.Droid.Resource.Id.center;
-			global::Xamarin.Essentials.Resource.Id.center_horizontal = global::atomex.Droid.Resource.Id.center_horizontal;
-			global::Xamarin.Essentials.Resource.Id.center_vertical = global::atomex.Droid.Resource.Id.center_vertical;
 			global::Xamarin.Essentials.Resource.Id.chronometer = global::atomex.Droid.Resource.Id.chronometer;
-			global::Xamarin.Essentials.Resource.Id.clip_horizontal = global::atomex.Droid.Resource.Id.clip_horizontal;
-			global::Xamarin.Essentials.Resource.Id.clip_vertical = global::atomex.Droid.Resource.Id.clip_vertical;
 			global::Xamarin.Essentials.Resource.Id.dialog_button = global::atomex.Droid.Resource.Id.dialog_button;
-			global::Xamarin.Essentials.Resource.Id.end = global::atomex.Droid.Resource.Id.end;
-			global::Xamarin.Essentials.Resource.Id.fill = global::atomex.Droid.Resource.Id.fill;
-			global::Xamarin.Essentials.Resource.Id.fill_horizontal = global::atomex.Droid.Resource.Id.fill_horizontal;
-			global::Xamarin.Essentials.Resource.Id.fill_vertical = global::atomex.Droid.Resource.Id.fill_vertical;
 			global::Xamarin.Essentials.Resource.Id.forever = global::atomex.Droid.Resource.Id.forever;
 			global::Xamarin.Essentials.Resource.Id.icon = global::atomex.Droid.Resource.Id.icon;
 			global::Xamarin.Essentials.Resource.Id.icon_group = global::atomex.Droid.Resource.Id.icon_group;
 			global::Xamarin.Essentials.Resource.Id.info = global::atomex.Droid.Resource.Id.info;
 			global::Xamarin.Essentials.Resource.Id.italic = global::atomex.Droid.Resource.Id.italic;
-			global::Xamarin.Essentials.Resource.Id.left = global::atomex.Droid.Resource.Id.left;
 			global::Xamarin.Essentials.Resource.Id.line1 = global::atomex.Droid.Resource.Id.line1;
 			global::Xamarin.Essentials.Resource.Id.line3 = global::atomex.Droid.Resource.Id.line3;
-			global::Xamarin.Essentials.Resource.Id.none = global::atomex.Droid.Resource.Id.none;
 			global::Xamarin.Essentials.Resource.Id.normal = global::atomex.Droid.Resource.Id.normal;
 			global::Xamarin.Essentials.Resource.Id.notification_background = global::atomex.Droid.Resource.Id.notification_background;
 			global::Xamarin.Essentials.Resource.Id.notification_main_column = global::atomex.Droid.Resource.Id.notification_main_column;
 			global::Xamarin.Essentials.Resource.Id.notification_main_column_container = global::atomex.Droid.Resource.Id.notification_main_column_container;
-			global::Xamarin.Essentials.Resource.Id.right = global::atomex.Droid.Resource.Id.right;
 			global::Xamarin.Essentials.Resource.Id.right_icon = global::atomex.Droid.Resource.Id.right_icon;
 			global::Xamarin.Essentials.Resource.Id.right_side = global::atomex.Droid.Resource.Id.right_side;
-			global::Xamarin.Essentials.Resource.Id.start = global::atomex.Droid.Resource.Id.start;
 			global::Xamarin.Essentials.Resource.Id.tag_accessibility_actions = global::atomex.Droid.Resource.Id.tag_accessibility_actions;
 			global::Xamarin.Essentials.Resource.Id.tag_accessibility_clickable_spans = global::atomex.Droid.Resource.Id.tag_accessibility_clickable_spans;
 			global::Xamarin.Essentials.Resource.Id.tag_accessibility_heading = global::atomex.Droid.Resource.Id.tag_accessibility_heading;
@@ -4595,7 +4571,6 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Id.text2 = global::atomex.Droid.Resource.Id.text2;
 			global::Xamarin.Essentials.Resource.Id.time = global::atomex.Droid.Resource.Id.time;
 			global::Xamarin.Essentials.Resource.Id.title = global::atomex.Droid.Resource.Id.title;
-			global::Xamarin.Essentials.Resource.Id.top = global::atomex.Droid.Resource.Id.top;
 			global::Xamarin.Essentials.Resource.Integer.status_bar_notification_info_maxnum = global::atomex.Droid.Resource.Integer.status_bar_notification_info_maxnum;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_page = global::atomex.Droid.Resource.Layout.browser_actions_context_menu_page;
 			global::Xamarin.Essentials.Resource.Layout.browser_actions_context_menu_row = global::atomex.Droid.Resource.Layout.browser_actions_context_menu_row;
@@ -4606,6 +4581,10 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Layout.notification_template_icon_group = global::atomex.Droid.Resource.Layout.notification_template_icon_group;
 			global::Xamarin.Essentials.Resource.Layout.notification_template_part_chronometer = global::atomex.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::Xamarin.Essentials.Resource.Layout.notification_template_part_time = global::atomex.Droid.Resource.Layout.notification_template_part_time;
+			global::Xamarin.Essentials.Resource.String.copy_toast_msg = global::atomex.Droid.Resource.String.copy_toast_msg;
+			global::Xamarin.Essentials.Resource.String.fallback_menu_item_copy_link = global::atomex.Droid.Resource.String.fallback_menu_item_copy_link;
+			global::Xamarin.Essentials.Resource.String.fallback_menu_item_open_in_browser = global::atomex.Droid.Resource.String.fallback_menu_item_open_in_browser;
+			global::Xamarin.Essentials.Resource.String.fallback_menu_item_share_link = global::atomex.Droid.Resource.String.fallback_menu_item_share_link;
 			global::Xamarin.Essentials.Resource.String.status_bar_notification_info_overflow = global::atomex.Droid.Resource.String.status_bar_notification_info_overflow;
 			global::Xamarin.Essentials.Resource.Style.TextAppearance_Compat_Notification = global::atomex.Droid.Resource.Style.TextAppearance_Compat_Notification;
 			global::Xamarin.Essentials.Resource.Style.TextAppearance_Compat_Notification_Info = global::atomex.Droid.Resource.Style.TextAppearance_Compat_Notification_Info;
@@ -4614,22 +4593,10 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Style.TextAppearance_Compat_Notification_Title = global::atomex.Droid.Resource.Style.TextAppearance_Compat_Notification_Title;
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionContainer = global::atomex.Droid.Resource.Style.Widget_Compat_NotificationActionContainer;
 			global::Xamarin.Essentials.Resource.Style.Widget_Compat_NotificationActionText = global::atomex.Droid.Resource.Style.Widget_Compat_NotificationActionText;
-			global::Xamarin.Essentials.Resource.Style.Widget_Support_CoordinatorLayout = global::atomex.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem = global::atomex.Droid.Resource.Styleable.ColorStateListItem;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_alpha = global::atomex.Droid.Resource.Styleable.ColorStateListItem_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_alpha = global::atomex.Droid.Resource.Styleable.ColorStateListItem_android_alpha;
 			global::Xamarin.Essentials.Resource.Styleable.ColorStateListItem_android_color = global::atomex.Droid.Resource.Styleable.ColorStateListItem_android_color;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout = global::atomex.Droid.Resource.Styleable.CoordinatorLayout;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_keylines = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_keylines;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
-			global::Xamarin.Essentials.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamily = global::atomex.Droid.Resource.Styleable.FontFamily;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont = global::atomex.Droid.Resource.Styleable.FontFamilyFont;
 			global::Xamarin.Essentials.Resource.Styleable.FontFamilyFont_android_font = global::atomex.Droid.Resource.Styleable.FontFamilyFont_android_font;
@@ -4664,6 +4631,7 @@ namespace atomex.Droid
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_startY = global::atomex.Droid.Resource.Styleable.GradientColor_android_startY;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_tileMode = global::atomex.Droid.Resource.Styleable.GradientColor_android_tileMode;
 			global::Xamarin.Essentials.Resource.Styleable.GradientColor_android_type = global::atomex.Droid.Resource.Styleable.GradientColor_android_type;
+			global::Xamarin.Essentials.Resource.Xml.image_share_filepaths = global::atomex.Droid.Resource.Xml.image_share_filepaths;
 			global::Xamarin.Essentials.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::atomex.Droid.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_in = global::atomex.Droid.Resource.Animation.abc_fade_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.abc_fade_out = global::atomex.Droid.Resource.Animation.abc_fade_out;
@@ -4697,6 +4665,13 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.EnterFromRight = global::atomex.Droid.Resource.Animation.EnterFromRight;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToLeft = global::atomex.Droid.Resource.Animation.ExitToLeft;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToRight = global::atomex.Droid.Resource.Animation.ExitToRight;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_close_enter = global::atomex.Droid.Resource.Animation.fragment_close_enter;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_close_exit = global::atomex.Droid.Resource.Animation.fragment_close_exit;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fade_enter = global::atomex.Droid.Resource.Animation.fragment_fade_enter;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fade_exit = global::atomex.Droid.Resource.Animation.fragment_fade_exit;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fast_out_extra_slow_in = global::atomex.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_open_enter = global::atomex.Droid.Resource.Animation.fragment_open_enter;
+			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_open_exit = global::atomex.Droid.Resource.Animation.fragment_open_exit;
 			global::Xamarin.Forms.Platform.Android.Resource.Animator.design_appbar_state_list_animator = global::atomex.Droid.Resource.Animator.design_appbar_state_list_animator;
 			global::Xamarin.Forms.Platform.Android.Resource.Animator.design_fab_hide_motion_spec = global::atomex.Droid.Resource.Animator.design_fab_hide_motion_spec;
 			global::Xamarin.Forms.Platform.Android.Resource.Animator.design_fab_show_motion_spec = global::atomex.Droid.Resource.Animator.design_fab_show_motion_spec;
@@ -5210,6 +5185,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_btn_colored_borderless_text_material = global::atomex.Droid.Resource.Color.abc_btn_colored_borderless_text_material;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_btn_colored_text_material = global::atomex.Droid.Resource.Color.abc_btn_colored_text_material;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_color_highlight_material = global::atomex.Droid.Resource.Color.abc_color_highlight_material;
+			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_decor_view_status_guard = global::atomex.Droid.Resource.Color.abc_decor_view_status_guard;
+			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_decor_view_status_guard_light = global::atomex.Droid.Resource.Color.abc_decor_view_status_guard_light;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_hint_foreground_material_dark = global::atomex.Droid.Resource.Color.abc_hint_foreground_material_dark;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_hint_foreground_material_light = global::atomex.Droid.Resource.Color.abc_hint_foreground_material_light;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_primary_text_disable_only_material_dark = global::atomex.Droid.Resource.Color.abc_primary_text_disable_only_material_dark;
@@ -5230,6 +5207,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Color.abc_tint_switch_track = global::atomex.Droid.Resource.Color.abc_tint_switch_track;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.accent_material_dark = global::atomex.Droid.Resource.Color.accent_material_dark;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.accent_material_light = global::atomex.Droid.Resource.Color.accent_material_light;
+			global::Xamarin.Forms.Platform.Android.Resource.Color.androidx_core_ripple_material_light = global::atomex.Droid.Resource.Color.androidx_core_ripple_material_light;
+			global::Xamarin.Forms.Platform.Android.Resource.Color.androidx_core_secondary_text_default_material_light = global::atomex.Droid.Resource.Color.androidx_core_secondary_text_default_material_light;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.background_floating_material_dark = global::atomex.Droid.Resource.Color.background_floating_material_dark;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.background_floating_material_light = global::atomex.Droid.Resource.Color.background_floating_material_light;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.background_material_dark = global::atomex.Droid.Resource.Color.background_material_dark;
@@ -5258,7 +5237,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Color.design_fab_stroke_top_inner_color = global::atomex.Droid.Resource.Color.design_fab_stroke_top_inner_color;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.design_fab_stroke_top_outer_color = global::atomex.Droid.Resource.Color.design_fab_stroke_top_outer_color;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.design_snackbar_background_color = global::atomex.Droid.Resource.Color.design_snackbar_background_color;
-			global::Xamarin.Forms.Platform.Android.Resource.Color.design_tint_password_toggle = global::atomex.Droid.Resource.Color.design_tint_password_toggle;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.dim_foreground_disabled_material_dark = global::atomex.Droid.Resource.Color.dim_foreground_disabled_material_dark;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.dim_foreground_disabled_material_light = global::atomex.Droid.Resource.Color.dim_foreground_disabled_material_light;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.dim_foreground_material_dark = global::atomex.Droid.Resource.Color.dim_foreground_material_dark;
@@ -5283,7 +5261,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Color.material_grey_900 = global::atomex.Droid.Resource.Color.material_grey_900;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_bottom_nav_colored_item_tint = global::atomex.Droid.Resource.Color.mtrl_bottom_nav_colored_item_tint;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_bottom_nav_item_tint = global::atomex.Droid.Resource.Color.mtrl_bottom_nav_item_tint;
-			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_btn_bg_color_disabled = global::atomex.Droid.Resource.Color.mtrl_btn_bg_color_disabled;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_btn_bg_color_selector = global::atomex.Droid.Resource.Color.mtrl_btn_bg_color_selector;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_btn_ripple_color = global::atomex.Droid.Resource.Color.mtrl_btn_ripple_color;
 			global::Xamarin.Forms.Platform.Android.Resource.Color.mtrl_btn_stroke_color_selector = global::atomex.Droid.Resource.Color.mtrl_btn_stroke_color_selector;
@@ -5518,11 +5495,9 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_navigation_item_icon_padding = global::atomex.Droid.Resource.Dimension.mtrl_navigation_item_icon_padding;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_snackbar_background_corner_radius = global::atomex.Droid.Resource.Dimension.mtrl_snackbar_background_corner_radius;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_snackbar_margin = global::atomex.Droid.Resource.Dimension.mtrl_snackbar_margin;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_bottom_offset = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_bottom_offset;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_corner_radius_medium = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_corner_radius_medium;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_corner_radius_small = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_corner_radius_small;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_label_cutout_padding = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_label_cutout_padding;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_padding_end = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_padding_end;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_stroke_width_default = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_stroke_width_default;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_box_stroke_width_focused = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_stroke_width_focused;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.mtrl_textinput_outline_box_expanded_padding = global::atomex.Droid.Resource.Dimension.mtrl_textinput_outline_box_expanded_padding;
@@ -5542,10 +5517,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.notification_subtext_size = global::atomex.Droid.Resource.Dimension.notification_subtext_size;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.notification_top_pad = global::atomex.Droid.Resource.Dimension.notification_top_pad;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.notification_top_pad_large_text = global::atomex.Droid.Resource.Dimension.notification_top_pad_large_text;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.subtitle_corner_radius = global::atomex.Droid.Resource.Dimension.subtitle_corner_radius;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.subtitle_outline_width = global::atomex.Droid.Resource.Dimension.subtitle_outline_width;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.subtitle_shadow_offset = global::atomex.Droid.Resource.Dimension.subtitle_shadow_offset;
-			global::Xamarin.Forms.Platform.Android.Resource.Dimension.subtitle_shadow_radius = global::atomex.Droid.Resource.Dimension.subtitle_shadow_radius;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.tooltip_corner_radius = global::atomex.Droid.Resource.Dimension.tooltip_corner_radius;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.tooltip_horizontal_padding = global::atomex.Droid.Resource.Dimension.tooltip_horizontal_padding;
 			global::Xamarin.Forms.Platform.Android.Resource.Dimension.tooltip_margin = global::atomex.Droid.Resource.Dimension.tooltip_margin;
@@ -5659,7 +5630,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.ic_mtrl_chip_checked_black = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_checked_black;
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.ic_mtrl_chip_checked_circle = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_checked_circle;
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.ic_mtrl_chip_close_circle = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_close_circle;
-			global::Xamarin.Forms.Platform.Android.Resource.Drawable.mtrl_snackbar_background = global::atomex.Droid.Resource.Drawable.mtrl_snackbar_background;
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.mtrl_tabs_default_indicator = global::atomex.Droid.Resource.Drawable.mtrl_tabs_default_indicator;
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.navigation_empty_icon = global::atomex.Droid.Resource.Drawable.navigation_empty_icon;
 			global::Xamarin.Forms.Platform.Android.Resource.Drawable.notification_action_background = global::atomex.Droid.Resource.Drawable.notification_action_background;
@@ -5782,8 +5752,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Id.fill_vertical = global::atomex.Droid.Resource.Id.fill_vertical;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.@fixed = global::atomex.Droid.Resource.Id.@fixed;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.flyoutcontent_appbar = global::atomex.Droid.Resource.Id.flyoutcontent_appbar;
-			global::Xamarin.Forms.Platform.Android.Resource.Id.flyoutcontent_recycler = global::atomex.Droid.Resource.Id.flyoutcontent_recycler;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.forever = global::atomex.Droid.Resource.Id.forever;
+			global::Xamarin.Forms.Platform.Android.Resource.Id.fragment_container_view_tag = global::atomex.Droid.Resource.Id.fragment_container_view_tag;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.FUNCTION = global::atomex.Droid.Resource.Id.FUNCTION;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.ghost_view = global::atomex.Droid.Resource.Id.ghost_view;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.ghost_view_holder = global::atomex.Droid.Resource.Id.ghost_view_holder;
@@ -5898,7 +5868,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Id.textSpacerNoButtons = global::atomex.Droid.Resource.Id.textSpacerNoButtons;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.textSpacerNoTitle = global::atomex.Droid.Resource.Id.textSpacerNoTitle;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.textStart = global::atomex.Droid.Resource.Id.textStart;
-			global::Xamarin.Forms.Platform.Android.Resource.Id.text_input_password_toggle = global::atomex.Droid.Resource.Id.text_input_password_toggle;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.time = global::atomex.Droid.Resource.Id.time;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.title = global::atomex.Droid.Resource.Id.title;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.titleDividerNoCustom = global::atomex.Droid.Resource.Id.titleDividerNoCustom;
@@ -5918,7 +5887,9 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Id.up = global::atomex.Droid.Resource.Id.up;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.useLogo = global::atomex.Droid.Resource.Id.useLogo;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.view_offset_helper = global::atomex.Droid.Resource.Id.view_offset_helper;
+			global::Xamarin.Forms.Platform.Android.Resource.Id.view_tree_saved_state_registry_owner = global::atomex.Droid.Resource.Id.view_tree_saved_state_registry_owner;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.visible = global::atomex.Droid.Resource.Id.visible;
+			global::Xamarin.Forms.Platform.Android.Resource.Id.visible_removing_fragment_view_tag = global::atomex.Droid.Resource.Id.visible_removing_fragment_view_tag;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.withText = global::atomex.Droid.Resource.Id.withText;
 			global::Xamarin.Forms.Platform.Android.Resource.Id.wrap_content = global::atomex.Droid.Resource.Id.wrap_content;
 			global::Xamarin.Forms.Platform.Android.Resource.Integer.abc_config_activityDefaultDur = global::atomex.Droid.Resource.Integer.abc_config_activityDefaultDur;
@@ -5990,7 +5961,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_navigation_item_subheader = global::atomex.Droid.Resource.Layout.design_navigation_item_subheader;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_navigation_menu = global::atomex.Droid.Resource.Layout.design_navigation_menu;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_navigation_menu_item = global::atomex.Droid.Resource.Layout.design_navigation_menu_item;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_text_input_password_icon = global::atomex.Droid.Resource.Layout.design_text_input_password_icon;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.FallbackTabbarDoNotUse = global::atomex.Droid.Resource.Layout.FallbackTabbarDoNotUse;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.FallbackToolbarDoNotUse = global::atomex.Droid.Resource.Layout.FallbackToolbarDoNotUse;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.FlyoutContent = global::atomex.Droid.Resource.Layout.FlyoutContent;
@@ -6377,7 +6347,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_MaterialComponents_Overline = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Overline;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_MaterialComponents_Subtitle1 = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Subtitle1;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_MaterialComponents_Subtitle2 = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Subtitle2;
-			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_MaterialComponents_Tab = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Tab;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title;
@@ -6415,6 +6384,7 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::atomex.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Dialog_Alert = global::atomex.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::atomex.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
+			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Empty = global::atomex.Droid.Resource.Style.Theme_AppCompat_Empty;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Light = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Theme_AppCompat_Light_Dialog = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light_Dialog;
@@ -6943,9 +6913,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DesignTheme = global::atomex.Droid.Resource.Styleable.DesignTheme;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DesignTheme_bottomSheetDialogTheme = global::atomex.Droid.Resource.Styleable.DesignTheme_bottomSheetDialogTheme;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DesignTheme_bottomSheetStyle = global::atomex.Droid.Resource.Styleable.DesignTheme_bottomSheetStyle;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DrawerArrowToggle = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DrawerArrowToggle_arrowHeadLength = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle_arrowHeadLength;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.DrawerArrowToggle_arrowShaftLength = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle_arrowShaftLength;
@@ -6996,6 +6963,13 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ForegroundLinearLayout_android_foreground = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_android_foreground;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.Fragment = global::atomex.Droid.Resource.Styleable.Fragment;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.FragmentContainerView = global::atomex.Droid.Resource.Styleable.FragmentContainerView;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.FragmentContainerView_android_name = global::atomex.Droid.Resource.Styleable.FragmentContainerView_android_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.FragmentContainerView_android_tag = global::atomex.Droid.Resource.Styleable.FragmentContainerView_android_tag;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.Fragment_android_id = global::atomex.Droid.Resource.Styleable.Fragment_android_id;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.Fragment_android_name = global::atomex.Droid.Resource.Styleable.Fragment_android_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Styleable.Fragment_android_tag = global::atomex.Droid.Resource.Styleable.Fragment_android_tag;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.GradientColor = global::atomex.Droid.Resource.Styleable.GradientColor;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.GradientColorItem = global::atomex.Droid.Resource.Styleable.GradientColorItem;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.GradientColorItem_android_color = global::atomex.Droid.Resource.Styleable.GradientColorItem_android_color;
@@ -7052,39 +7026,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialCardView = global::atomex.Droid.Resource.Styleable.MaterialCardView;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialCardView_strokeColor = global::atomex.Droid.Resource.Styleable.MaterialCardView_strokeColor;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialCardView_strokeWidth = global::atomex.Droid.Resource.Styleable.MaterialCardView_strokeWidth;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_bottomSheetDialogTheme = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_bottomSheetDialogTheme;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_bottomSheetStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_bottomSheetStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_chipGroupStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipGroupStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_chipStandaloneStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipStandaloneStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_chipStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_colorAccent = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorAccent;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_colorBackgroundFloating = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorBackgroundFloating;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_colorPrimary = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorPrimary;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_colorPrimaryDark = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorPrimaryDark;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_colorSecondary = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorSecondary;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_editTextStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_editTextStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_floatingActionButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_floatingActionButtonStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_materialButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_materialButtonStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_materialCardViewStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_materialCardViewStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_navigationViewStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_navigationViewStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_scrimBackground = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_scrimBackground;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_snackbarButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_snackbarButtonStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_tabStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_tabStyle;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody1;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody2;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceButton = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceButton;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceCaption = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceCaption;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline1;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline2;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline3 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline3;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline4 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline4;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline5 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline5;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline6 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline6;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceOverline = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceOverline;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle1;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle2;
-			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MaterialComponentsTheme_textInputStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textInputStyle;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MenuGroup = global::atomex.Droid.Resource.Styleable.MenuGroup;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MenuGroup_android_checkableBehavior = global::atomex.Droid.Resource.Styleable.MenuGroup_android_checkableBehavior;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.MenuGroup_android_enabled = global::atomex.Droid.Resource.Styleable.MenuGroup_android_enabled;
@@ -7379,6 +7320,13 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Animation.EnterFromRight = global::atomex.Droid.Resource.Animation.EnterFromRight;
 			global::Xamarin.Forms.Platform.Resource.Animation.ExitToLeft = global::atomex.Droid.Resource.Animation.ExitToLeft;
 			global::Xamarin.Forms.Platform.Resource.Animation.ExitToRight = global::atomex.Droid.Resource.Animation.ExitToRight;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_close_enter = global::atomex.Droid.Resource.Animation.fragment_close_enter;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_close_exit = global::atomex.Droid.Resource.Animation.fragment_close_exit;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fade_enter = global::atomex.Droid.Resource.Animation.fragment_fade_enter;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fade_exit = global::atomex.Droid.Resource.Animation.fragment_fade_exit;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fast_out_extra_slow_in = global::atomex.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_open_enter = global::atomex.Droid.Resource.Animation.fragment_open_enter;
+			global::Xamarin.Forms.Platform.Resource.Animation.fragment_open_exit = global::atomex.Droid.Resource.Animation.fragment_open_exit;
 			global::Xamarin.Forms.Platform.Resource.Animator.design_appbar_state_list_animator = global::atomex.Droid.Resource.Animator.design_appbar_state_list_animator;
 			global::Xamarin.Forms.Platform.Resource.Animator.design_fab_hide_motion_spec = global::atomex.Droid.Resource.Animator.design_fab_hide_motion_spec;
 			global::Xamarin.Forms.Platform.Resource.Animator.design_fab_show_motion_spec = global::atomex.Droid.Resource.Animator.design_fab_show_motion_spec;
@@ -7892,6 +7840,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Color.abc_btn_colored_borderless_text_material = global::atomex.Droid.Resource.Color.abc_btn_colored_borderless_text_material;
 			global::Xamarin.Forms.Platform.Resource.Color.abc_btn_colored_text_material = global::atomex.Droid.Resource.Color.abc_btn_colored_text_material;
 			global::Xamarin.Forms.Platform.Resource.Color.abc_color_highlight_material = global::atomex.Droid.Resource.Color.abc_color_highlight_material;
+			global::Xamarin.Forms.Platform.Resource.Color.abc_decor_view_status_guard = global::atomex.Droid.Resource.Color.abc_decor_view_status_guard;
+			global::Xamarin.Forms.Platform.Resource.Color.abc_decor_view_status_guard_light = global::atomex.Droid.Resource.Color.abc_decor_view_status_guard_light;
 			global::Xamarin.Forms.Platform.Resource.Color.abc_hint_foreground_material_dark = global::atomex.Droid.Resource.Color.abc_hint_foreground_material_dark;
 			global::Xamarin.Forms.Platform.Resource.Color.abc_hint_foreground_material_light = global::atomex.Droid.Resource.Color.abc_hint_foreground_material_light;
 			global::Xamarin.Forms.Platform.Resource.Color.abc_primary_text_disable_only_material_dark = global::atomex.Droid.Resource.Color.abc_primary_text_disable_only_material_dark;
@@ -7912,6 +7862,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Color.abc_tint_switch_track = global::atomex.Droid.Resource.Color.abc_tint_switch_track;
 			global::Xamarin.Forms.Platform.Resource.Color.accent_material_dark = global::atomex.Droid.Resource.Color.accent_material_dark;
 			global::Xamarin.Forms.Platform.Resource.Color.accent_material_light = global::atomex.Droid.Resource.Color.accent_material_light;
+			global::Xamarin.Forms.Platform.Resource.Color.androidx_core_ripple_material_light = global::atomex.Droid.Resource.Color.androidx_core_ripple_material_light;
+			global::Xamarin.Forms.Platform.Resource.Color.androidx_core_secondary_text_default_material_light = global::atomex.Droid.Resource.Color.androidx_core_secondary_text_default_material_light;
 			global::Xamarin.Forms.Platform.Resource.Color.background_floating_material_dark = global::atomex.Droid.Resource.Color.background_floating_material_dark;
 			global::Xamarin.Forms.Platform.Resource.Color.background_floating_material_light = global::atomex.Droid.Resource.Color.background_floating_material_light;
 			global::Xamarin.Forms.Platform.Resource.Color.background_material_dark = global::atomex.Droid.Resource.Color.background_material_dark;
@@ -7940,7 +7892,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Color.design_fab_stroke_top_inner_color = global::atomex.Droid.Resource.Color.design_fab_stroke_top_inner_color;
 			global::Xamarin.Forms.Platform.Resource.Color.design_fab_stroke_top_outer_color = global::atomex.Droid.Resource.Color.design_fab_stroke_top_outer_color;
 			global::Xamarin.Forms.Platform.Resource.Color.design_snackbar_background_color = global::atomex.Droid.Resource.Color.design_snackbar_background_color;
-			global::Xamarin.Forms.Platform.Resource.Color.design_tint_password_toggle = global::atomex.Droid.Resource.Color.design_tint_password_toggle;
 			global::Xamarin.Forms.Platform.Resource.Color.dim_foreground_disabled_material_dark = global::atomex.Droid.Resource.Color.dim_foreground_disabled_material_dark;
 			global::Xamarin.Forms.Platform.Resource.Color.dim_foreground_disabled_material_light = global::atomex.Droid.Resource.Color.dim_foreground_disabled_material_light;
 			global::Xamarin.Forms.Platform.Resource.Color.dim_foreground_material_dark = global::atomex.Droid.Resource.Color.dim_foreground_material_dark;
@@ -7965,7 +7916,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Color.material_grey_900 = global::atomex.Droid.Resource.Color.material_grey_900;
 			global::Xamarin.Forms.Platform.Resource.Color.mtrl_bottom_nav_colored_item_tint = global::atomex.Droid.Resource.Color.mtrl_bottom_nav_colored_item_tint;
 			global::Xamarin.Forms.Platform.Resource.Color.mtrl_bottom_nav_item_tint = global::atomex.Droid.Resource.Color.mtrl_bottom_nav_item_tint;
-			global::Xamarin.Forms.Platform.Resource.Color.mtrl_btn_bg_color_disabled = global::atomex.Droid.Resource.Color.mtrl_btn_bg_color_disabled;
 			global::Xamarin.Forms.Platform.Resource.Color.mtrl_btn_bg_color_selector = global::atomex.Droid.Resource.Color.mtrl_btn_bg_color_selector;
 			global::Xamarin.Forms.Platform.Resource.Color.mtrl_btn_ripple_color = global::atomex.Droid.Resource.Color.mtrl_btn_ripple_color;
 			global::Xamarin.Forms.Platform.Resource.Color.mtrl_btn_stroke_color_selector = global::atomex.Droid.Resource.Color.mtrl_btn_stroke_color_selector;
@@ -8200,11 +8150,9 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_navigation_item_icon_padding = global::atomex.Droid.Resource.Dimension.mtrl_navigation_item_icon_padding;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_snackbar_background_corner_radius = global::atomex.Droid.Resource.Dimension.mtrl_snackbar_background_corner_radius;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_snackbar_margin = global::atomex.Droid.Resource.Dimension.mtrl_snackbar_margin;
-			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_bottom_offset = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_bottom_offset;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_corner_radius_medium = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_corner_radius_medium;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_corner_radius_small = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_corner_radius_small;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_label_cutout_padding = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_label_cutout_padding;
-			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_padding_end = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_padding_end;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_stroke_width_default = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_stroke_width_default;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_box_stroke_width_focused = global::atomex.Droid.Resource.Dimension.mtrl_textinput_box_stroke_width_focused;
 			global::Xamarin.Forms.Platform.Resource.Dimension.mtrl_textinput_outline_box_expanded_padding = global::atomex.Droid.Resource.Dimension.mtrl_textinput_outline_box_expanded_padding;
@@ -8224,10 +8172,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Dimension.notification_subtext_size = global::atomex.Droid.Resource.Dimension.notification_subtext_size;
 			global::Xamarin.Forms.Platform.Resource.Dimension.notification_top_pad = global::atomex.Droid.Resource.Dimension.notification_top_pad;
 			global::Xamarin.Forms.Platform.Resource.Dimension.notification_top_pad_large_text = global::atomex.Droid.Resource.Dimension.notification_top_pad_large_text;
-			global::Xamarin.Forms.Platform.Resource.Dimension.subtitle_corner_radius = global::atomex.Droid.Resource.Dimension.subtitle_corner_radius;
-			global::Xamarin.Forms.Platform.Resource.Dimension.subtitle_outline_width = global::atomex.Droid.Resource.Dimension.subtitle_outline_width;
-			global::Xamarin.Forms.Platform.Resource.Dimension.subtitle_shadow_offset = global::atomex.Droid.Resource.Dimension.subtitle_shadow_offset;
-			global::Xamarin.Forms.Platform.Resource.Dimension.subtitle_shadow_radius = global::atomex.Droid.Resource.Dimension.subtitle_shadow_radius;
 			global::Xamarin.Forms.Platform.Resource.Dimension.tooltip_corner_radius = global::atomex.Droid.Resource.Dimension.tooltip_corner_radius;
 			global::Xamarin.Forms.Platform.Resource.Dimension.tooltip_horizontal_padding = global::atomex.Droid.Resource.Dimension.tooltip_horizontal_padding;
 			global::Xamarin.Forms.Platform.Resource.Dimension.tooltip_margin = global::atomex.Droid.Resource.Dimension.tooltip_margin;
@@ -8341,7 +8285,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Drawable.ic_mtrl_chip_checked_black = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_checked_black;
 			global::Xamarin.Forms.Platform.Resource.Drawable.ic_mtrl_chip_checked_circle = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_checked_circle;
 			global::Xamarin.Forms.Platform.Resource.Drawable.ic_mtrl_chip_close_circle = global::atomex.Droid.Resource.Drawable.ic_mtrl_chip_close_circle;
-			global::Xamarin.Forms.Platform.Resource.Drawable.mtrl_snackbar_background = global::atomex.Droid.Resource.Drawable.mtrl_snackbar_background;
 			global::Xamarin.Forms.Platform.Resource.Drawable.mtrl_tabs_default_indicator = global::atomex.Droid.Resource.Drawable.mtrl_tabs_default_indicator;
 			global::Xamarin.Forms.Platform.Resource.Drawable.navigation_empty_icon = global::atomex.Droid.Resource.Drawable.navigation_empty_icon;
 			global::Xamarin.Forms.Platform.Resource.Drawable.notification_action_background = global::atomex.Droid.Resource.Drawable.notification_action_background;
@@ -8464,8 +8407,8 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Id.fill_vertical = global::atomex.Droid.Resource.Id.fill_vertical;
 			global::Xamarin.Forms.Platform.Resource.Id.@fixed = global::atomex.Droid.Resource.Id.@fixed;
 			global::Xamarin.Forms.Platform.Resource.Id.flyoutcontent_appbar = global::atomex.Droid.Resource.Id.flyoutcontent_appbar;
-			global::Xamarin.Forms.Platform.Resource.Id.flyoutcontent_recycler = global::atomex.Droid.Resource.Id.flyoutcontent_recycler;
 			global::Xamarin.Forms.Platform.Resource.Id.forever = global::atomex.Droid.Resource.Id.forever;
+			global::Xamarin.Forms.Platform.Resource.Id.fragment_container_view_tag = global::atomex.Droid.Resource.Id.fragment_container_view_tag;
 			global::Xamarin.Forms.Platform.Resource.Id.FUNCTION = global::atomex.Droid.Resource.Id.FUNCTION;
 			global::Xamarin.Forms.Platform.Resource.Id.ghost_view = global::atomex.Droid.Resource.Id.ghost_view;
 			global::Xamarin.Forms.Platform.Resource.Id.ghost_view_holder = global::atomex.Droid.Resource.Id.ghost_view_holder;
@@ -8580,7 +8523,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Id.textSpacerNoButtons = global::atomex.Droid.Resource.Id.textSpacerNoButtons;
 			global::Xamarin.Forms.Platform.Resource.Id.textSpacerNoTitle = global::atomex.Droid.Resource.Id.textSpacerNoTitle;
 			global::Xamarin.Forms.Platform.Resource.Id.textStart = global::atomex.Droid.Resource.Id.textStart;
-			global::Xamarin.Forms.Platform.Resource.Id.text_input_password_toggle = global::atomex.Droid.Resource.Id.text_input_password_toggle;
 			global::Xamarin.Forms.Platform.Resource.Id.time = global::atomex.Droid.Resource.Id.time;
 			global::Xamarin.Forms.Platform.Resource.Id.title = global::atomex.Droid.Resource.Id.title;
 			global::Xamarin.Forms.Platform.Resource.Id.titleDividerNoCustom = global::atomex.Droid.Resource.Id.titleDividerNoCustom;
@@ -8600,7 +8542,9 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Id.up = global::atomex.Droid.Resource.Id.up;
 			global::Xamarin.Forms.Platform.Resource.Id.useLogo = global::atomex.Droid.Resource.Id.useLogo;
 			global::Xamarin.Forms.Platform.Resource.Id.view_offset_helper = global::atomex.Droid.Resource.Id.view_offset_helper;
+			global::Xamarin.Forms.Platform.Resource.Id.view_tree_saved_state_registry_owner = global::atomex.Droid.Resource.Id.view_tree_saved_state_registry_owner;
 			global::Xamarin.Forms.Platform.Resource.Id.visible = global::atomex.Droid.Resource.Id.visible;
+			global::Xamarin.Forms.Platform.Resource.Id.visible_removing_fragment_view_tag = global::atomex.Droid.Resource.Id.visible_removing_fragment_view_tag;
 			global::Xamarin.Forms.Platform.Resource.Id.withText = global::atomex.Droid.Resource.Id.withText;
 			global::Xamarin.Forms.Platform.Resource.Id.wrap_content = global::atomex.Droid.Resource.Id.wrap_content;
 			global::Xamarin.Forms.Platform.Resource.Integer.abc_config_activityDefaultDur = global::atomex.Droid.Resource.Integer.abc_config_activityDefaultDur;
@@ -8672,7 +8616,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Layout.design_navigation_item_subheader = global::atomex.Droid.Resource.Layout.design_navigation_item_subheader;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_navigation_menu = global::atomex.Droid.Resource.Layout.design_navigation_menu;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_navigation_menu_item = global::atomex.Droid.Resource.Layout.design_navigation_menu_item;
-			global::Xamarin.Forms.Platform.Resource.Layout.design_text_input_password_icon = global::atomex.Droid.Resource.Layout.design_text_input_password_icon;
 			global::Xamarin.Forms.Platform.Resource.Layout.FallbackTabbarDoNotUse = global::atomex.Droid.Resource.Layout.FallbackTabbarDoNotUse;
 			global::Xamarin.Forms.Platform.Resource.Layout.FallbackToolbarDoNotUse = global::atomex.Droid.Resource.Layout.FallbackToolbarDoNotUse;
 			global::Xamarin.Forms.Platform.Resource.Layout.FlyoutContent = global::atomex.Droid.Resource.Layout.FlyoutContent;
@@ -9059,7 +9002,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_MaterialComponents_Overline = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Overline;
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_MaterialComponents_Subtitle1 = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Subtitle1;
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_MaterialComponents_Subtitle2 = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Subtitle2;
-			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_MaterialComponents_Tab = global::atomex.Droid.Resource.Style.TextAppearance_MaterialComponents_Tab;
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
 			global::Xamarin.Forms.Platform.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title = global::atomex.Droid.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title;
@@ -9097,6 +9039,7 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::atomex.Droid.Resource.Style.Theme_AppCompat_DialogWhenLarge;
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Dialog_Alert = global::atomex.Droid.Resource.Style.Theme_AppCompat_Dialog_Alert;
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::atomex.Droid.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
+			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Empty = global::atomex.Droid.Resource.Style.Theme_AppCompat_Empty;
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Light = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light;
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
 			global::Xamarin.Forms.Platform.Resource.Style.Theme_AppCompat_Light_Dialog = global::atomex.Droid.Resource.Style.Theme_AppCompat_Light_Dialog;
@@ -9625,9 +9568,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
 			global::Xamarin.Forms.Platform.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
 			global::Xamarin.Forms.Platform.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::atomex.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
-			global::Xamarin.Forms.Platform.Resource.Styleable.DesignTheme = global::atomex.Droid.Resource.Styleable.DesignTheme;
-			global::Xamarin.Forms.Platform.Resource.Styleable.DesignTheme_bottomSheetDialogTheme = global::atomex.Droid.Resource.Styleable.DesignTheme_bottomSheetDialogTheme;
-			global::Xamarin.Forms.Platform.Resource.Styleable.DesignTheme_bottomSheetStyle = global::atomex.Droid.Resource.Styleable.DesignTheme_bottomSheetStyle;
 			global::Xamarin.Forms.Platform.Resource.Styleable.DrawerArrowToggle = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle;
 			global::Xamarin.Forms.Platform.Resource.Styleable.DrawerArrowToggle_arrowHeadLength = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle_arrowHeadLength;
 			global::Xamarin.Forms.Platform.Resource.Styleable.DrawerArrowToggle_arrowShaftLength = global::atomex.Droid.Resource.Styleable.DrawerArrowToggle_arrowShaftLength;
@@ -9678,6 +9618,13 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.ForegroundLinearLayout_android_foreground = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_android_foreground;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_android_foregroundGravity;
 			global::Xamarin.Forms.Platform.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding = global::atomex.Droid.Resource.Styleable.ForegroundLinearLayout_foregroundInsidePadding;
+			global::Xamarin.Forms.Platform.Resource.Styleable.Fragment = global::atomex.Droid.Resource.Styleable.Fragment;
+			global::Xamarin.Forms.Platform.Resource.Styleable.FragmentContainerView = global::atomex.Droid.Resource.Styleable.FragmentContainerView;
+			global::Xamarin.Forms.Platform.Resource.Styleable.FragmentContainerView_android_name = global::atomex.Droid.Resource.Styleable.FragmentContainerView_android_name;
+			global::Xamarin.Forms.Platform.Resource.Styleable.FragmentContainerView_android_tag = global::atomex.Droid.Resource.Styleable.FragmentContainerView_android_tag;
+			global::Xamarin.Forms.Platform.Resource.Styleable.Fragment_android_id = global::atomex.Droid.Resource.Styleable.Fragment_android_id;
+			global::Xamarin.Forms.Platform.Resource.Styleable.Fragment_android_name = global::atomex.Droid.Resource.Styleable.Fragment_android_name;
+			global::Xamarin.Forms.Platform.Resource.Styleable.Fragment_android_tag = global::atomex.Droid.Resource.Styleable.Fragment_android_tag;
 			global::Xamarin.Forms.Platform.Resource.Styleable.GradientColor = global::atomex.Droid.Resource.Styleable.GradientColor;
 			global::Xamarin.Forms.Platform.Resource.Styleable.GradientColorItem = global::atomex.Droid.Resource.Styleable.GradientColorItem;
 			global::Xamarin.Forms.Platform.Resource.Styleable.GradientColorItem_android_color = global::atomex.Droid.Resource.Styleable.GradientColorItem_android_color;
@@ -9734,39 +9681,6 @@ namespace atomex.Droid
 			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialCardView = global::atomex.Droid.Resource.Styleable.MaterialCardView;
 			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialCardView_strokeColor = global::atomex.Droid.Resource.Styleable.MaterialCardView_strokeColor;
 			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialCardView_strokeWidth = global::atomex.Droid.Resource.Styleable.MaterialCardView_strokeWidth;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_bottomSheetDialogTheme = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_bottomSheetDialogTheme;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_bottomSheetStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_bottomSheetStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_chipGroupStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipGroupStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_chipStandaloneStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipStandaloneStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_chipStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_chipStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_colorAccent = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorAccent;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_colorBackgroundFloating = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorBackgroundFloating;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_colorPrimary = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorPrimary;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_colorPrimaryDark = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorPrimaryDark;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_colorSecondary = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_colorSecondary;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_editTextStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_editTextStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_floatingActionButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_floatingActionButtonStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_materialButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_materialButtonStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_materialCardViewStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_materialCardViewStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_navigationViewStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_navigationViewStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_scrimBackground = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_scrimBackground;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_snackbarButtonStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_snackbarButtonStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_tabStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_tabStyle;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody1;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceBody2;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceButton = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceButton;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceCaption = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceCaption;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline1;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline2;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline3 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline3;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline4 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline4;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline5 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline5;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline6 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceHeadline6;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceOverline = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceOverline;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle1 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle1;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle2 = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textAppearanceSubtitle2;
-			global::Xamarin.Forms.Platform.Resource.Styleable.MaterialComponentsTheme_textInputStyle = global::atomex.Droid.Resource.Styleable.MaterialComponentsTheme_textInputStyle;
 			global::Xamarin.Forms.Platform.Resource.Styleable.MenuGroup = global::atomex.Droid.Resource.Styleable.MenuGroup;
 			global::Xamarin.Forms.Platform.Resource.Styleable.MenuGroup_android_checkableBehavior = global::atomex.Droid.Resource.Styleable.MenuGroup_android_checkableBehavior;
 			global::Xamarin.Forms.Platform.Resource.Styleable.MenuGroup_android_enabled = global::atomex.Droid.Resource.Styleable.MenuGroup_android_enabled;
@@ -12191,82 +12105,88 @@ namespace atomex.Droid
 			public const int mtrl_text_btn_text_color_selector = 2131099770;
 			
 			// aapt resource value: 0x7F06007F
-			public const int notification_action_color_filter = 2131099775;
+			public const int navigationBarBackground = 2131099775;
 			
 			// aapt resource value: 0x7F060080
-			public const int notification_icon_bg_color = 2131099776;
+			public const int notification_action_color_filter = 2131099776;
 			
 			// aapt resource value: 0x7F060081
-			public const int notification_material_background_media_default_color = 2131099777;
+			public const int notification_icon_bg_color = 2131099777;
 			
 			// aapt resource value: 0x7F060082
-			public const int primary_dark_material_dark = 2131099778;
+			public const int notification_material_background_media_default_color = 2131099778;
 			
 			// aapt resource value: 0x7F060083
-			public const int primary_dark_material_light = 2131099779;
+			public const int primary_dark_material_dark = 2131099779;
 			
 			// aapt resource value: 0x7F060084
-			public const int primary_material_dark = 2131099780;
+			public const int primary_dark_material_light = 2131099780;
 			
 			// aapt resource value: 0x7F060085
-			public const int primary_material_light = 2131099781;
+			public const int primary_material_dark = 2131099781;
 			
 			// aapt resource value: 0x7F060086
-			public const int primary_text_default_material_dark = 2131099782;
+			public const int primary_material_light = 2131099782;
 			
 			// aapt resource value: 0x7F060087
-			public const int primary_text_default_material_light = 2131099783;
+			public const int primary_text_default_material_dark = 2131099783;
 			
 			// aapt resource value: 0x7F060088
-			public const int primary_text_disabled_material_dark = 2131099784;
+			public const int primary_text_default_material_light = 2131099784;
 			
 			// aapt resource value: 0x7F060089
-			public const int primary_text_disabled_material_light = 2131099785;
+			public const int primary_text_disabled_material_dark = 2131099785;
 			
 			// aapt resource value: 0x7F06008A
-			public const int ripple_material_dark = 2131099786;
+			public const int primary_text_disabled_material_light = 2131099786;
 			
 			// aapt resource value: 0x7F06008B
-			public const int ripple_material_light = 2131099787;
+			public const int ripple_material_dark = 2131099787;
 			
 			// aapt resource value: 0x7F06008C
-			public const int secondary_text_default_material_dark = 2131099788;
+			public const int ripple_material_light = 2131099788;
 			
 			// aapt resource value: 0x7F06008D
-			public const int secondary_text_default_material_light = 2131099789;
+			public const int secondary_text_default_material_dark = 2131099789;
 			
 			// aapt resource value: 0x7F06008E
-			public const int secondary_text_disabled_material_dark = 2131099790;
+			public const int secondary_text_default_material_light = 2131099790;
 			
 			// aapt resource value: 0x7F06008F
-			public const int secondary_text_disabled_material_light = 2131099791;
+			public const int secondary_text_disabled_material_dark = 2131099791;
 			
 			// aapt resource value: 0x7F060090
-			public const int splashBackground = 2131099792;
+			public const int secondary_text_disabled_material_light = 2131099792;
 			
 			// aapt resource value: 0x7F060091
-			public const int switch_thumb_disabled_material_dark = 2131099793;
+			public const int splashBackground = 2131099793;
 			
 			// aapt resource value: 0x7F060092
-			public const int switch_thumb_disabled_material_light = 2131099794;
+			public const int switch_thumb_disabled_material_dark = 2131099794;
 			
 			// aapt resource value: 0x7F060093
-			public const int switch_thumb_material_dark = 2131099795;
+			public const int switch_thumb_disabled_material_light = 2131099795;
 			
 			// aapt resource value: 0x7F060094
-			public const int switch_thumb_material_light = 2131099796;
+			public const int switch_thumb_material_dark = 2131099796;
 			
 			// aapt resource value: 0x7F060095
-			public const int switch_thumb_normal_material_dark = 2131099797;
+			public const int switch_thumb_material_light = 2131099797;
 			
 			// aapt resource value: 0x7F060096
-			public const int switch_thumb_normal_material_light = 2131099798;
+			public const int switch_thumb_normal_material_dark = 2131099798;
 			
 			// aapt resource value: 0x7F060097
-			public const int tooltip_background_dark = 2131099799;
+			public const int switch_thumb_normal_material_light = 2131099799;
 			
 			// aapt resource value: 0x7F060098
-			public const int tooltip_background_light = 2131099800;
+			public const int toastBackground = 2131099800;
+			
+			// aapt resource value: 0x7F060099
+			public const int tooltip_background_dark = 2131099801;
+			
+			// aapt resource value: 0x7F06009A
+			public const int tooltip_background_light = 2131099802;
 			
 			static Color()
 			{
@@ -13330,28 +13250,28 @@ namespace atomex.Droid
 			public const int CustomBakerLogo = 2131230956;
 			
 			// aapt resource value: 0x7F0800ED
-			public const int design_bottom_navigation_item_background = 2131230957;
+			public const int CustomToast = 2131230957;
 			
 			// aapt resource value: 0x7F0800EE
-			public const int design_fab_background = 2131230958;
+			public const int design_bottom_navigation_item_background = 2131230958;
 			
 			// aapt resource value: 0x7F0800EF
-			public const int design_ic_visibility = 2131230959;
+			public const int design_fab_background = 2131230959;
 			
 			// aapt resource value: 0x7F0800F0
-			public const int design_ic_visibility_off = 2131230960;
+			public const int design_ic_visibility = 2131230960;
 			
 			// aapt resource value: 0x7F0800F1
-			public const int design_password_eye = 2131230961;
+			public const int design_ic_visibility_off = 2131230961;
 			
 			// aapt resource value: 0x7F0800F2
-			public const int design_snackbar_background = 2131230962;
+			public const int design_password_eye = 2131230962;
 			
 			// aapt resource value: 0x7F0800F3
-			public const int DownArrowPicker = 2131230963;
+			public const int design_snackbar_background = 2131230963;
 			
 			// aapt resource value: 0x7F0800F4
-			public const int Entry = 2131230964;
+			public const int DownArrow = 2131230964;
 			
 			// aapt resource value: 0x7F0800F5
 			public const int ETH = 2131230965;
@@ -13375,169 +13295,169 @@ namespace atomex.Droid
 			public const int googleg_standard_color_18 = 2131230971;
 			
 			// aapt resource value: 0x7F0800FC
-			public const int ic_errorstatus = 2131230972;
+			public const int ic_approve = 2131230972;
 			
 			// aapt resource value: 0x7F0800FD
-			public const int ic_github = 2131230973;
+			public const int ic_errorstatus = 2131230973;
 			
 			// aapt resource value: 0x7F0800FE
-			public const int ic_launcher = 2131230974;
+			public const int ic_github = 2131230974;
 			
 			// aapt resource value: 0x7F0800FF
-			public const int ic_mtrl_chip_checked_black = 2131230975;
+			public const int ic_input = 2131230975;
 			
 			// aapt resource value: 0x7F080100
-			public const int ic_mtrl_chip_checked_circle = 2131230976;
+			public const int ic_launcher = 2131230976;
 			
 			// aapt resource value: 0x7F080101
-			public const int ic_mtrl_chip_close_circle = 2131230977;
+			public const int ic_mtrl_chip_checked_black = 2131230977;
 			
 			// aapt resource value: 0x7F080102
-			public const int ic_notification = 2131230978;
+			public const int ic_mtrl_chip_checked_circle = 2131230978;
 			
 			// aapt resource value: 0x7F080103
-			public const int ic_question = 2131230979;
+			public const int ic_mtrl_chip_close_circle = 2131230979;
 			
 			// aapt resource value: 0x7F080104
-			public const int ic_successstatus = 2131230980;
+			public const int ic_notification = 2131230980;
 			
 			// aapt resource value: 0x7F080105
-			public const int ic_telegram = 2131230981;
+			public const int ic_output = 2131230981;
 			
 			// aapt resource value: 0x7F080106
-			public const int ic_twitter = 2131230982;
+			public const int ic_payment = 2131230982;
 			
 			// aapt resource value: 0x7F080107
-			public const int ic_youtube = 2131230983;
+			public const int ic_question = 2131230983;
 			
 			// aapt resource value: 0x7F080108
-			public const int LeftRoundedButton = 2131230984;
+			public const int ic_redeem = 2131230984;
 			
 			// aapt resource value: 0x7F080109
-			public const int Lock = 2131230985;
+			public const int ic_refund = 2131230985;
 			
 			// aapt resource value: 0x7F08010A
-			public const int Logo = 2131230986;
+			public const int ic_successstatus = 2131230986;
 			
 			// aapt resource value: 0x7F08010B
-			public const int LogoLabel = 2131230987;
+			public const int ic_support = 2131230987;
 			
 			// aapt resource value: 0x7F08010C
-			public const int LTC = 2131230988;
+			public const int ic_telegram = 2131230988;
 			
 			// aapt resource value: 0x7F08010D
-			public const int Magnifier = 2131230989;
+			public const int ic_twitter = 2131230989;
 			
 			// aapt resource value: 0x7F08010E
-			public const int mtrl_snackbar_background = 2131230990;
+			public const int ic_youtube = 2131230990;
 			
 			// aapt resource value: 0x7F08010F
-			public const int mtrl_tabs_default_indicator = 2131230991;
+			public const int LeftRoundedButton = 2131230991;
 			
 			// aapt resource value: 0x7F080110
-			public const int NavBarConversion = 2131230992;
+			public const int Lock = 2131230992;
 			
 			// aapt resource value: 0x7F080111
-			public const int NavBarPortfolio = 2131230993;
+			public const int Logo = 2131230993;
 			
 			// aapt resource value: 0x7F080112
-			public const int NavBarSettings = 2131230994;
+			public const int LogoLabel = 2131230994;
 			
 			// aapt resource value: 0x7F080113
-			public const int NavBarWallets = 2131230995;
+			public const int LTC = 2131230995;
 			
 			// aapt resource value: 0x7F080114
-			public const int navigation_empty_icon = 2131230996;
+			public const int Magnifier = 2131230996;
 			
 			// aapt resource value: 0x7F080115
-			public const int notification_action_background = 2131230997;
+			public const int mtrl_snackbar_background = 2131230997;
 			
 			// aapt resource value: 0x7F080116
-			public const int notification_bg = 2131230998;
+			public const int mtrl_tabs_default_indicator = 2131230998;
 			
 			// aapt resource value: 0x7F080117
-			public const int notification_bg_low = 2131230999;
+			public const int NavBarConversion = 2131230999;
 			
 			// aapt resource value: 0x7F080118
-			public const int notification_bg_low_normal = 2131231000;
+			public const int NavBarPortfolio = 2131231000;
 			
 			// aapt resource value: 0x7F080119
-			public const int notification_bg_low_pressed = 2131231001;
+			public const int NavBarSettings = 2131231001;
 			
 			// aapt resource value: 0x7F08011A
-			public const int notification_bg_normal = 2131231002;
+			public const int NavBarWallets = 2131231002;
 			
 			// aapt resource value: 0x7F08011B
-			public const int notification_bg_normal_pressed = 2131231003;
+			public const int navigation_empty_icon = 2131231003;
 			
 			// aapt resource value: 0x7F08011C
-			public const int notification_icon_background = 2131231004;
+			public const int notification_action_background = 2131231004;
 			
 			// aapt resource value: 0x7F08011D
-			public const int notification_template_icon_bg = 2131231005;
+			public const int notification_bg = 2131231005;
 			
 			// aapt resource value: 0x7F08011E
-			public const int notification_template_icon_low_bg = 2131231006;
+			public const int notification_bg_low = 2131231006;
 			
 			// aapt resource value: 0x7F08011F
-			public const int notification_tile_bg = 2131231007;
+			public const int notification_bg_low_normal = 2131231007;
 			
 			// aapt resource value: 0x7F080120
-			public const int notify_panel_notification_icon_bg = 2131231008;
+			public const int notification_bg_low_pressed = 2131231008;
 			
 			// aapt resource value: 0x7F080121
-			public const int NYX = 2131231009;
+			public const int notification_bg_normal = 2131231009;
 			
 			// aapt resource value: 0x7F080122
-			public const int Receive = 2131231010;
+			public const int notification_bg_normal_pressed = 2131231010;
 			
 			// aapt resource value: 0x7F080123
-			public const int RightArrow__black = 2131231011;
+			public const int notification_icon_background = 2131231011;
 			
 			// aapt resource value: 0x7F080124
-			public const int RightArrow__blue = 2131231012;
+			public const int notification_template_icon_bg = 2131231012;
 			
 			// aapt resource value: 0x7F080125
-			public const int RightArrow__gray = 2131231013;
+			public const int notification_template_icon_low_bg = 2131231013;
 			
 			// aapt resource value: 0x7F080126
-			public const int RightArrow__white = 2131231014;
+			public const int notification_tile_bg = 2131231014;
 			
 			// aapt resource value: 0x7F080127
-			public const int RightRoundedButton = 2131231015;
+			public const int notify_panel_notification_icon_bg = 2131231015;
 			
 			// aapt resource value: 0x7F080128
-			public const int roundedbg = 2131231016;
+			public const int NYX = 2131231016;
 			
 			// aapt resource value: 0x7F080129
-			public const int roundedbgdark = 2131231017;
+			public const int RightArrow__black = 2131231017;
 			
 			// aapt resource value: 0x7F08012A
-			public const int Scan = 2131231018;
+			public const int RightArrow__blue = 2131231018;
 			
 			// aapt resource value: 0x7F08012B
-			public const int Send = 2131231019;
+			public const int RightArrow__gray = 2131231019;
 			
 			// aapt resource value: 0x7F08012C
-			public const int Share = 2131231020;
+			public const int RightArrow__white = 2131231020;
 			
 			// aapt resource value: 0x7F08012D
-			public const int SplashScreen = 2131231021;
+			public const int RightRoundedButton = 2131231021;
 			
 			// aapt resource value: 0x7F08012E
-			public const int StartPageBackground = 2131231022;
+			public const int roundedbg = 2131231022;
 			
 			// aapt resource value: 0x7F08012F
-			public const int SwapArrows = 2131231023;
+			public const int roundedbgdark = 2131231023;
 			
 			// aapt resource value: 0x7F080130
-			public const int SwapPayment = 2131231024;
+			public const int Scan = 2131231024;
 			
 			// aapt resource value: 0x7F080131
-			public const int SwapRedeem = 2131231025;
+			public const int SplashScreen = 2131231025;
 			
 			// aapt resource value: 0x7F080132
-			public const int SwapRefund = 2131231026;
+			public const int SwapArrows = 2131231026;
 			
 			// aapt resource value: 0x7F080133
 			public const int TBTC = 2131231027;
@@ -13552,19 +13472,19 @@ namespace atomex.Droid
 			public const int tooltip_frame_light = 2131231030;
 			
 			// aapt resource value: 0x7F080137
-			public const int TxApprove = 2131231031;
+			public const int TZBTC = 2131231031;
 			
 			// aapt resource value: 0x7F080138
-			public const int TZBTC = 2131231032;
+			public const int USDT = 2131231032;
 			
 			// aapt resource value: 0x7F080139
-			public const int USDT = 2131231033;
+			public const int Wallet__blue = 2131231033;
 			
 			// aapt resource value: 0x7F08013A
-			public const int Wallet__blue = 2131231034;
+			public const int Wallet__white = 2131231034;
 			
 			// aapt resource value: 0x7F08013B
-			public const int Wallet__white = 2131231035;
+			public const int Warning = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
 			public const int WBTC = 2131231036;
@@ -13943,460 +13863,457 @@ namespace atomex.Droid
 			public const int flyoutcontent_appbar = 2131296378;
 			
 			// aapt resource value: 0x7F09007B
-			public const int flyoutcontent_recycler = 2131296379;
+			public const int forever = 2131296379;
 			
 			// aapt resource value: 0x7F09007C
-			public const int forever = 2131296380;
-			
-			// aapt resource value: 0x7F09007D
-			public const int fragment_container_view_tag = 2131296381;
+			public const int fragment_container_view_tag = 2131296380;
 			
 			// aapt resource value: 0x7F090002
 			public const int FUNCTION = 2131296258;
 			
+			// aapt resource value: 0x7F09007D
+			public const int ghost_view = 2131296381;
+			
 			// aapt resource value: 0x7F09007E
-			public const int ghost_view = 2131296382;
+			public const int ghost_view_holder = 2131296382;
 			
 			// aapt resource value: 0x7F09007F
-			public const int ghost_view_holder = 2131296383;
+			public const int group_divider = 2131296383;
 			
 			// aapt resource value: 0x7F090080
-			public const int group_divider = 2131296384;
+			public const int home = 2131296384;
 			
 			// aapt resource value: 0x7F090081
-			public const int home = 2131296385;
+			public const int homeAsUp = 2131296385;
 			
 			// aapt resource value: 0x7F090082
-			public const int homeAsUp = 2131296386;
+			public const int icon = 2131296386;
 			
 			// aapt resource value: 0x7F090083
-			public const int icon = 2131296387;
+			public const int icon_group = 2131296387;
 			
 			// aapt resource value: 0x7F090084
-			public const int icon_group = 2131296388;
+			public const int icon_only = 2131296388;
 			
 			// aapt resource value: 0x7F090085
-			public const int icon_only = 2131296389;
+			public const int ifRoom = 2131296389;
 			
 			// aapt resource value: 0x7F090086
-			public const int ifRoom = 2131296390;
+			public const int image = 2131296390;
 			
 			// aapt resource value: 0x7F090087
-			public const int image = 2131296391;
+			public const int info = 2131296391;
 			
 			// aapt resource value: 0x7F090088
-			public const int info = 2131296392;
+			public const int italic = 2131296392;
 			
 			// aapt resource value: 0x7F090089
-			public const int italic = 2131296393;
+			public const int item_touch_helper_previous_elevation = 2131296393;
 			
 			// aapt resource value: 0x7F09008A
-			public const int item_touch_helper_previous_elevation = 2131296394;
+			public const int labeled = 2131296394;
 			
 			// aapt resource value: 0x7F09008B
-			public const int labeled = 2131296395;
+			public const int largeLabel = 2131296395;
 			
 			// aapt resource value: 0x7F09008C
-			public const int largeLabel = 2131296396;
+			public const int left = 2131296396;
 			
 			// aapt resource value: 0x7F09008D
-			public const int left = 2131296397;
+			public const int light = 2131296397;
 			
 			// aapt resource value: 0x7F09008E
-			public const int light = 2131296398;
+			public const int line1 = 2131296398;
 			
 			// aapt resource value: 0x7F09008F
-			public const int line1 = 2131296399;
+			public const int line3 = 2131296399;
 			
 			// aapt resource value: 0x7F090090
-			public const int line3 = 2131296400;
+			public const int listMode = 2131296400;
 			
 			// aapt resource value: 0x7F090091
-			public const int listMode = 2131296401;
+			public const int list_item = 2131296401;
 			
 			// aapt resource value: 0x7F090092
-			public const int list_item = 2131296402;
+			public const int loadingImage = 2131296402;
 			
 			// aapt resource value: 0x7F090093
-			public const int loadingImage = 2131296403;
+			public const int loadingProgressBar = 2131296403;
 			
 			// aapt resource value: 0x7F090094
-			public const int loadingProgressBar = 2131296404;
+			public const int loadingProgressWheel = 2131296404;
 			
 			// aapt resource value: 0x7F090095
-			public const int loadingProgressWheel = 2131296405;
+			public const int logTokenButton = 2131296405;
 			
 			// aapt resource value: 0x7F090096
-			public const int logTokenButton = 2131296406;
+			public const int main_appbar = 2131296406;
 			
 			// aapt resource value: 0x7F090097
-			public const int main_appbar = 2131296407;
+			public const int main_tablayout = 2131296407;
 			
 			// aapt resource value: 0x7F090098
-			public const int main_tablayout = 2131296408;
+			public const int main_toolbar = 2131296408;
 			
 			// aapt resource value: 0x7F090099
-			public const int main_toolbar = 2131296409;
+			public const int main_viewpager = 2131296409;
 			
 			// aapt resource value: 0x7F09009A
-			public const int main_viewpager = 2131296410;
+			public const int masked = 2131296410;
 			
 			// aapt resource value: 0x7F09009B
-			public const int masked = 2131296411;
+			public const int media_actions = 2131296411;
 			
 			// aapt resource value: 0x7F09009C
-			public const int media_actions = 2131296412;
-			
-			// aapt resource value: 0x7F09009D
-			public const int message = 2131296413;
+			public const int message = 2131296412;
 			
 			// aapt resource value: 0x7F090003
 			public const int META = 2131296259;
 			
+			// aapt resource value: 0x7F09009D
+			public const int middle = 2131296413;
+			
 			// aapt resource value: 0x7F09009E
-			public const int middle = 2131296414;
+			public const int mini = 2131296414;
 			
 			// aapt resource value: 0x7F09009F
-			public const int mini = 2131296415;
+			public const int msgText = 2131296415;
 			
 			// aapt resource value: 0x7F0900A0
-			public const int msgText = 2131296416;
+			public const int mtrl_child_content_container = 2131296416;
 			
 			// aapt resource value: 0x7F0900A1
-			public const int mtrl_child_content_container = 2131296417;
+			public const int mtrl_internal_children_alpha_tag = 2131296417;
 			
 			// aapt resource value: 0x7F0900A2
-			public const int mtrl_internal_children_alpha_tag = 2131296418;
+			public const int multiply = 2131296418;
 			
 			// aapt resource value: 0x7F0900A3
-			public const int multiply = 2131296419;
+			public const int navigation_header_container = 2131296419;
 			
 			// aapt resource value: 0x7F0900A4
-			public const int navigation_header_container = 2131296420;
+			public const int never = 2131296420;
 			
 			// aapt resource value: 0x7F0900A5
-			public const int never = 2131296421;
+			public const int none = 2131296421;
 			
 			// aapt resource value: 0x7F0900A6
-			public const int none = 2131296422;
+			public const int normal = 2131296422;
 			
 			// aapt resource value: 0x7F0900A7
-			public const int normal = 2131296423;
+			public const int notification_background = 2131296423;
 			
 			// aapt resource value: 0x7F0900A8
-			public const int notification_background = 2131296424;
+			public const int notification_main_column = 2131296424;
 			
 			// aapt resource value: 0x7F0900A9
-			public const int notification_main_column = 2131296425;
+			public const int notification_main_column_container = 2131296425;
 			
 			// aapt resource value: 0x7F0900AA
-			public const int notification_main_column_container = 2131296426;
+			public const int off = 2131296426;
 			
 			// aapt resource value: 0x7F0900AB
-			public const int off = 2131296427;
+			public const int on = 2131296427;
 			
 			// aapt resource value: 0x7F0900AC
-			public const int on = 2131296428;
+			public const int outline = 2131296428;
 			
 			// aapt resource value: 0x7F0900AD
-			public const int outline = 2131296429;
+			public const int parallax = 2131296429;
 			
 			// aapt resource value: 0x7F0900AE
-			public const int parallax = 2131296430;
+			public const int parentPanel = 2131296430;
 			
 			// aapt resource value: 0x7F0900AF
-			public const int parentPanel = 2131296431;
+			public const int parent_matrix = 2131296431;
 			
 			// aapt resource value: 0x7F0900B0
-			public const int parent_matrix = 2131296432;
+			public const int pin = 2131296432;
 			
 			// aapt resource value: 0x7F0900B1
-			public const int pin = 2131296433;
+			public const int progress_circular = 2131296433;
 			
 			// aapt resource value: 0x7F0900B2
-			public const int progress_circular = 2131296434;
+			public const int progress_horizontal = 2131296434;
 			
 			// aapt resource value: 0x7F0900B3
-			public const int progress_horizontal = 2131296435;
+			public const int radio = 2131296435;
 			
 			// aapt resource value: 0x7F0900B4
-			public const int radio = 2131296436;
+			public const int right = 2131296436;
 			
 			// aapt resource value: 0x7F0900B5
-			public const int right = 2131296437;
+			public const int right_icon = 2131296437;
 			
 			// aapt resource value: 0x7F0900B6
-			public const int right_icon = 2131296438;
+			public const int right_side = 2131296438;
 			
 			// aapt resource value: 0x7F0900B7
-			public const int right_side = 2131296439;
+			public const int save_non_transition_alpha = 2131296439;
 			
 			// aapt resource value: 0x7F0900B8
-			public const int save_non_transition_alpha = 2131296440;
+			public const int save_overlay_view = 2131296440;
 			
 			// aapt resource value: 0x7F0900B9
-			public const int save_overlay_view = 2131296441;
+			public const int screen = 2131296441;
 			
 			// aapt resource value: 0x7F0900BA
-			public const int screen = 2131296442;
-			
-			// aapt resource value: 0x7F0900BB
-			public const int scroll = 2131296443;
-			
-			// aapt resource value: 0x7F0900BF
-			public const int scrollable = 2131296447;
-			
-			// aapt resource value: 0x7F0900BC
-			public const int scrollIndicatorDown = 2131296444;
-			
-			// aapt resource value: 0x7F0900BD
-			public const int scrollIndicatorUp = 2131296445;
+			public const int scroll = 2131296442;
 			
 			// aapt resource value: 0x7F0900BE
-			public const int scrollView = 2131296446;
+			public const int scrollable = 2131296446;
+			
+			// aapt resource value: 0x7F0900BB
+			public const int scrollIndicatorDown = 2131296443;
+			
+			// aapt resource value: 0x7F0900BC
+			public const int scrollIndicatorUp = 2131296444;
+			
+			// aapt resource value: 0x7F0900BD
+			public const int scrollView = 2131296445;
+			
+			// aapt resource value: 0x7F0900BF
+			public const int search_badge = 2131296447;
 			
 			// aapt resource value: 0x7F0900C0
-			public const int search_badge = 2131296448;
+			public const int search_bar = 2131296448;
 			
 			// aapt resource value: 0x7F0900C1
-			public const int search_bar = 2131296449;
+			public const int search_button = 2131296449;
 			
 			// aapt resource value: 0x7F0900C2
-			public const int search_button = 2131296450;
+			public const int search_close_btn = 2131296450;
 			
 			// aapt resource value: 0x7F0900C3
-			public const int search_close_btn = 2131296451;
+			public const int search_edit_frame = 2131296451;
 			
 			// aapt resource value: 0x7F0900C4
-			public const int search_edit_frame = 2131296452;
+			public const int search_go_btn = 2131296452;
 			
 			// aapt resource value: 0x7F0900C5
-			public const int search_go_btn = 2131296453;
+			public const int search_mag_icon = 2131296453;
 			
 			// aapt resource value: 0x7F0900C6
-			public const int search_mag_icon = 2131296454;
+			public const int search_plate = 2131296454;
 			
 			// aapt resource value: 0x7F0900C7
-			public const int search_plate = 2131296455;
+			public const int search_src_text = 2131296455;
 			
 			// aapt resource value: 0x7F0900C8
-			public const int search_src_text = 2131296456;
-			
-			// aapt resource value: 0x7F0900C9
-			public const int search_voice_btn = 2131296457;
-			
-			// aapt resource value: 0x7F0900CB
-			public const int selected = 2131296459;
+			public const int search_voice_btn = 2131296456;
 			
 			// aapt resource value: 0x7F0900CA
-			public const int select_dialog_listview = 2131296458;
+			public const int selected = 2131296458;
+			
+			// aapt resource value: 0x7F0900C9
+			public const int select_dialog_listview = 2131296457;
+			
+			// aapt resource value: 0x7F0900CB
+			public const int shellcontent_appbar = 2131296459;
 			
 			// aapt resource value: 0x7F0900CC
-			public const int shellcontent_appbar = 2131296460;
-			
-			// aapt resource value: 0x7F0900CD
-			public const int shellcontent_toolbar = 2131296461;
+			public const int shellcontent_toolbar = 2131296460;
 			
 			// aapt resource value: 0x7F090004
 			public const int SHIFT = 2131296260;
 			
+			// aapt resource value: 0x7F0900CD
+			public const int shortcut = 2131296461;
+			
 			// aapt resource value: 0x7F0900CE
-			public const int shortcut = 2131296462;
+			public const int showCustom = 2131296462;
 			
 			// aapt resource value: 0x7F0900CF
-			public const int showCustom = 2131296463;
+			public const int showHome = 2131296463;
 			
 			// aapt resource value: 0x7F0900D0
-			public const int showHome = 2131296464;
+			public const int showTitle = 2131296464;
 			
 			// aapt resource value: 0x7F0900D1
-			public const int showTitle = 2131296465;
+			public const int sliding_tabs = 2131296465;
 			
 			// aapt resource value: 0x7F0900D2
-			public const int sliding_tabs = 2131296466;
+			public const int smallLabel = 2131296466;
 			
 			// aapt resource value: 0x7F0900D3
-			public const int smallLabel = 2131296467;
+			public const int snackbar_action = 2131296467;
 			
 			// aapt resource value: 0x7F0900D4
-			public const int snackbar_action = 2131296468;
+			public const int snackbar_text = 2131296468;
 			
 			// aapt resource value: 0x7F0900D5
-			public const int snackbar_text = 2131296469;
+			public const int snap = 2131296469;
 			
 			// aapt resource value: 0x7F0900D6
-			public const int snap = 2131296470;
+			public const int snapMargins = 2131296470;
 			
 			// aapt resource value: 0x7F0900D7
-			public const int snapMargins = 2131296471;
+			public const int spacer = 2131296471;
 			
 			// aapt resource value: 0x7F0900D8
-			public const int spacer = 2131296472;
+			public const int split_action_bar = 2131296472;
 			
 			// aapt resource value: 0x7F0900D9
-			public const int split_action_bar = 2131296473;
+			public const int src_atop = 2131296473;
 			
 			// aapt resource value: 0x7F0900DA
-			public const int src_atop = 2131296474;
+			public const int src_in = 2131296474;
 			
 			// aapt resource value: 0x7F0900DB
-			public const int src_in = 2131296475;
+			public const int src_over = 2131296475;
 			
 			// aapt resource value: 0x7F0900DC
-			public const int src_over = 2131296476;
+			public const int standard = 2131296476;
 			
 			// aapt resource value: 0x7F0900DD
-			public const int standard = 2131296477;
+			public const int start = 2131296477;
 			
 			// aapt resource value: 0x7F0900DE
-			public const int start = 2131296478;
+			public const int status_bar_latest_event_content = 2131296478;
 			
 			// aapt resource value: 0x7F0900DF
-			public const int status_bar_latest_event_content = 2131296479;
+			public const int stretch = 2131296479;
 			
 			// aapt resource value: 0x7F0900E0
-			public const int stretch = 2131296480;
+			public const int submenuarrow = 2131296480;
 			
 			// aapt resource value: 0x7F0900E1
-			public const int submenuarrow = 2131296481;
-			
-			// aapt resource value: 0x7F0900E2
-			public const int submit_area = 2131296482;
+			public const int submit_area = 2131296481;
 			
 			// aapt resource value: 0x7F090005
 			public const int SYM = 2131296261;
 			
+			// aapt resource value: 0x7F0900E2
+			public const int tabMode = 2131296482;
+			
 			// aapt resource value: 0x7F0900E3
-			public const int tabMode = 2131296483;
+			public const int tag_accessibility_actions = 2131296483;
 			
 			// aapt resource value: 0x7F0900E4
-			public const int tag_accessibility_actions = 2131296484;
+			public const int tag_accessibility_clickable_spans = 2131296484;
 			
 			// aapt resource value: 0x7F0900E5
-			public const int tag_accessibility_clickable_spans = 2131296485;
+			public const int tag_accessibility_heading = 2131296485;
 			
 			// aapt resource value: 0x7F0900E6
-			public const int tag_accessibility_heading = 2131296486;
+			public const int tag_accessibility_pane_title = 2131296486;
 			
 			// aapt resource value: 0x7F0900E7
-			public const int tag_accessibility_pane_title = 2131296487;
+			public const int tag_screen_reader_focusable = 2131296487;
 			
 			// aapt resource value: 0x7F0900E8
-			public const int tag_screen_reader_focusable = 2131296488;
+			public const int tag_transition_group = 2131296488;
 			
 			// aapt resource value: 0x7F0900E9
-			public const int tag_transition_group = 2131296489;
+			public const int tag_unhandled_key_event_manager = 2131296489;
 			
 			// aapt resource value: 0x7F0900EA
-			public const int tag_unhandled_key_event_manager = 2131296490;
+			public const int tag_unhandled_key_listeners = 2131296490;
 			
 			// aapt resource value: 0x7F0900EB
-			public const int tag_unhandled_key_listeners = 2131296491;
+			public const int text = 2131296491;
 			
 			// aapt resource value: 0x7F0900EC
-			public const int text = 2131296492;
-			
-			// aapt resource value: 0x7F0900ED
-			public const int text2 = 2131296493;
-			
-			// aapt resource value: 0x7F0900F3
-			public const int textinput_counter = 2131296499;
-			
-			// aapt resource value: 0x7F0900F4
-			public const int textinput_error = 2131296500;
-			
-			// aapt resource value: 0x7F0900F5
-			public const int textinput_helper_text = 2131296501;
-			
-			// aapt resource value: 0x7F0900EE
-			public const int textSpacerNoButtons = 2131296494;
-			
-			// aapt resource value: 0x7F0900EF
-			public const int textSpacerNoTitle = 2131296495;
-			
-			// aapt resource value: 0x7F0900F0
-			public const int textStart = 2131296496;
-			
-			// aapt resource value: 0x7F0900F1
-			public const int textViewStatus = 2131296497;
+			public const int text2 = 2131296492;
 			
 			// aapt resource value: 0x7F0900F2
-			public const int text_input_password_toggle = 2131296498;
+			public const int textinput_counter = 2131296498;
+			
+			// aapt resource value: 0x7F0900F3
+			public const int textinput_error = 2131296499;
+			
+			// aapt resource value: 0x7F0900F4
+			public const int textinput_helper_text = 2131296500;
+			
+			// aapt resource value: 0x7F0900ED
+			public const int textSpacerNoButtons = 2131296493;
+			
+			// aapt resource value: 0x7F0900EE
+			public const int textSpacerNoTitle = 2131296494;
+			
+			// aapt resource value: 0x7F0900EF
+			public const int textStart = 2131296495;
+			
+			// aapt resource value: 0x7F0900F0
+			public const int textViewStatus = 2131296496;
+			
+			// aapt resource value: 0x7F0900F1
+			public const int text_input_password_toggle = 2131296497;
+			
+			// aapt resource value: 0x7F0900F5
+			public const int time = 2131296501;
 			
 			// aapt resource value: 0x7F0900F6
-			public const int time = 2131296502;
+			public const int title = 2131296502;
 			
 			// aapt resource value: 0x7F0900F7
-			public const int title = 2131296503;
+			public const int titleDividerNoCustom = 2131296503;
 			
 			// aapt resource value: 0x7F0900F8
-			public const int titleDividerNoCustom = 2131296504;
+			public const int title_template = 2131296504;
 			
 			// aapt resource value: 0x7F0900F9
-			public const int title_template = 2131296505;
+			public const int toolbar = 2131296505;
 			
 			// aapt resource value: 0x7F0900FA
-			public const int toolbar = 2131296506;
+			public const int top = 2131296506;
 			
 			// aapt resource value: 0x7F0900FB
-			public const int top = 2131296507;
+			public const int topPanel = 2131296507;
 			
 			// aapt resource value: 0x7F0900FC
-			public const int topPanel = 2131296508;
+			public const int touch_outside = 2131296508;
 			
 			// aapt resource value: 0x7F0900FD
-			public const int touch_outside = 2131296509;
+			public const int transition_current_scene = 2131296509;
 			
 			// aapt resource value: 0x7F0900FE
-			public const int transition_current_scene = 2131296510;
+			public const int transition_layout_save = 2131296510;
 			
 			// aapt resource value: 0x7F0900FF
-			public const int transition_layout_save = 2131296511;
+			public const int transition_position = 2131296511;
 			
 			// aapt resource value: 0x7F090100
-			public const int transition_position = 2131296512;
+			public const int transition_scene_layoutid_cache = 2131296512;
 			
 			// aapt resource value: 0x7F090101
-			public const int transition_scene_layoutid_cache = 2131296513;
+			public const int transition_transform = 2131296513;
 			
 			// aapt resource value: 0x7F090102
-			public const int transition_transform = 2131296514;
+			public const int @unchecked = 2131296514;
 			
 			// aapt resource value: 0x7F090103
-			public const int @unchecked = 2131296515;
+			public const int uniform = 2131296515;
 			
 			// aapt resource value: 0x7F090104
-			public const int uniform = 2131296516;
+			public const int unlabeled = 2131296516;
 			
 			// aapt resource value: 0x7F090105
-			public const int unlabeled = 2131296517;
+			public const int up = 2131296517;
 			
 			// aapt resource value: 0x7F090106
-			public const int up = 2131296518;
+			public const int useLogo = 2131296518;
 			
 			// aapt resource value: 0x7F090107
-			public const int useLogo = 2131296519;
+			public const int view_offset_helper = 2131296519;
 			
 			// aapt resource value: 0x7F090108
-			public const int view_offset_helper = 2131296520;
+			public const int view_tree_saved_state_registry_owner = 2131296520;
 			
 			// aapt resource value: 0x7F090109
-			public const int view_tree_saved_state_registry_owner = 2131296521;
+			public const int visible = 2131296521;
 			
 			// aapt resource value: 0x7F09010A
-			public const int visible = 2131296522;
+			public const int visible_removing_fragment_view_tag = 2131296522;
 			
 			// aapt resource value: 0x7F09010B
-			public const int visible_removing_fragment_view_tag = 2131296523;
+			public const int wide = 2131296523;
 			
 			// aapt resource value: 0x7F09010C
-			public const int wide = 2131296524;
+			public const int withText = 2131296524;
 			
 			// aapt resource value: 0x7F09010D
-			public const int withText = 2131296525;
-			
-			// aapt resource value: 0x7F09010E
-			public const int wrap_content = 2131296526;
+			public const int wrap_content = 2131296525;
 			
 			static Id()
 			{

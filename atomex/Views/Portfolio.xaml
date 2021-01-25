@@ -5,18 +5,18 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Portfolio"
              Title="{x:Static resources:AppResources.PortfolioPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding CurrencyViewModels}"
                         SelectionMode="Single"
                         SelectionChanged="ItemSelected"
-                        BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                         Footer="">
             <CollectionView.Header>
-                <StackLayout Spacing="0"
-                             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+                <StackLayout Spacing="0">
                     <RelativeLayout Style="{DynamicResource PortfolioChartStyle}">
                         <chart:ChartView x:Name="PortfolioChart"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
                         <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Height, Factor=1}"
@@ -34,7 +34,7 @@
                 <DataTemplate>
                     <Grid Padding="10,0"
                           RowSpacing="3"
-                          BackgroundColor="{DynamicResource MainBackgroundColor}">
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
@@ -47,10 +47,14 @@
                         </Grid.ColumnDefinitions>
                         <VisualStateManager.VisualStateGroups>
 					        <VisualStateGroup Name="CommonStates">
-						        <VisualState Name="Normal" />
+						        <VisualState Name="Normal">
+                                    <VisualState.Setters>
+								        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+							        </VisualState.Setters>
+                                </VisualState>
 						        <VisualState Name="Selected">
 							        <VisualState.Setters>
-								        <Setter Property="BackgroundColor" Value="{DynamicResource ListViewSelectedBackgroundColor}" />
+								        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}"/>
 							        </VisualState.Setters>
 						        </VisualState>
 					        </VisualStateGroup>
@@ -64,25 +68,25 @@
                         <Label Grid.Column="1"
                                Text="{Binding Currency.Description}"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{DynamicResource MainTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                FontSize="14"
                                VerticalTextAlignment="End"/>
                         <Label Grid.RowSpan="2"
                                Grid.Column="2"
                                Text="{Binding PortfolioPercent, StringFormat='{0:0.#} %'}"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{DynamicResource MainTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Center"
                                HorizontalTextAlignment="Center"
                                FontSize="12"/>
                         <Label Grid.Column="3"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{DynamicResource MainTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                HorizontalOptions="End"
                                VerticalTextAlignment="End">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"
+                                    <Span Text="{Binding TotalAmount, StringFormat='{0:0.####}'}"
                                           FontSize="14"/>
                                     <Span Text=" " /> 
                                     <Span Text="{Binding CurrencyCode}"
@@ -95,7 +99,7 @@
                                Text="{Binding Price, StringFormat='{0:f2} $'}"
                                VerticalOptions="Start"
                                FontFamily="{DynamicResource LightFont}"
-                               TextColor="{DynamicResource AdditionalTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="10"/>
                         <Label Grid.Row="1"
                                Grid.Column="3"
@@ -103,7 +107,7 @@
                                FontFamily="{DynamicResource LightFont}"
                                VerticalOptions="Start"
                                HorizontalOptions="End"
-                               TextColor="{DynamicResource AdditionalTextColor}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="10"/>
                     </Grid>
                 </DataTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_background">#FFFFFF</color>
+    <color name="splashBackground">#223a66</color>
+    <color name="navigationBarBackground">#203040</color>
+    <color name="buttonBackground">#2b5277</color>
+    <color name="colorAccent">#298ad4</color>
+    <color name="colorPrimary">#203040</color>
+    <color name="colorPrimaryDark">#203040</color>
+    <color name="toastBackground">#ddcad6e0</color>
+</resources>

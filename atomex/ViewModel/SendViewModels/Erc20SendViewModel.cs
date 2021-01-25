@@ -40,7 +40,7 @@ namespace atomex.ViewModel.SendViewModels
         public override decimal FeePrice
         {
             get => _feePrice;
-            set { UpdateFeePrice(value); }
+            set { _ = UpdateFeePrice(value); }
         }
 
         public Erc20SendViewModel(
@@ -49,7 +49,7 @@ namespace atomex.ViewModel.SendViewModels
         {
         }
 
-        protected virtual async void UpdateFeePrice(decimal value)
+        public override async Task UpdateFeePrice(decimal value)
         {
             Warning = string.Empty;
 
@@ -88,6 +88,7 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
+                OnPropertyChanged(nameof(FeePrice));
                 OnPropertyChanged(nameof(FeePriceString));
 
                 UpdateTotalFeeString();
@@ -128,6 +129,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 _feePrice = await Currency.GetDefaultFeePriceAsync();
                 OnPropertyChanged(nameof(FeePriceString));
+                OnPropertyChanged(nameof(FeePrice));
 
                 if (_amount > maxAmount)
                 {

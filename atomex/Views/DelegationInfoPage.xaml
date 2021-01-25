@@ -4,12 +4,12 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.DelegationInfoPage"
              Title="{x:Static resources:AppResources.DelegationInfoPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout>
             <TableView Intent="Form"
                        RowHeight="40"
-                       BackgroundColor="{DynamicResource MainBackgroundColor}">
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                 <TableRoot>
                     <TableSection Title="{x:Static resources:AppResources.AccountSection}">
                         <ViewCell>
@@ -48,7 +48,7 @@
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding Status}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"
-                                       TextColor="Green"/>
+                                       TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                             </StackLayout>
                         </ViewCell>
                     </TableSection>

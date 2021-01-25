@@ -34,14 +34,22 @@ namespace atomex.Views.CreateNewWallet
             EditorFrame.HasShadow = args.IsFocused;
             Error.IsVisible = false;
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+            if (args.IsFocused)
             {
-                if (args.IsFocused)
-                    ScrollView.ScrollToAsync(0, ScrollView.Height / 2 - (EditorFrame.Height + Labels.Height), true);
-                else
-                    ScrollView.ScrollToAsync(0, 0, true);
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, Editor.Height, true);
+                    return false;
+                });
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 0, true);
+                    return false;
+                });
+            }
         }
 
         private async void OnNextButtonClicked(object sender, EventArgs args)

@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SwapInfoPage"
              Title="{x:Static resources:AppResources.SwapInfoPageTitle}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -28,8 +28,8 @@
                     <StackLayout VerticalOptions="CenterAndExpand"
                                  Padding="10,0">
                         <Label Text="{Binding FromAmount}"
-                                VerticalTextAlignment="Center"
-                                TextColor="Red">
+                               VerticalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{Binding FromAmount, StringFormat='-{0:0.#########}'}"
@@ -44,7 +44,7 @@
                         </Label>
                         <Label Text="{Binding ToAmount}"
                                VerticalTextAlignment="Center"
-                               TextColor="Green">
+                               TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{Binding ToAmount, StringFormat='+{0:0.#########}'}"

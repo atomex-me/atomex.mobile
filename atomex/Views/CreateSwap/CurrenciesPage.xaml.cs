@@ -23,6 +23,8 @@ namespace atomex.Views.CreateSwap
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
+            _conversionViewModel.Amount = 0;
+            _conversionViewModel.Warning = string.Empty;
             await Navigation.PushAsync(new AmountPage(_conversionViewModel));
         }
 

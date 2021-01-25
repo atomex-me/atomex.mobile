@@ -183,8 +183,8 @@ namespace atomex.CustomElements
                     {
                         TextSize = textSize,
                         IsAntialias = true,
-                        //Color = labelColor,
-                        Color = LabelColor,
+                        Color = labelColor,
+                        //Color = LabelColor,
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
                         //Typeface = SKTypeface.FromFamilyName(FontFamily)
@@ -208,8 +208,8 @@ namespace atomex.CustomElements
                         TextSize = textSize,
                         IsAntialias = true,
                         FakeBoldText = true,
-                        //Color = valueColor,
-                        Color = LabelColor,
+                        Color = valueColor,
+                        //Color = LabelColor,
                         IsStroke = false,
                         TextAlign = horizontalAlignment,
                         //Typeface = SKTypeface.FromFamilyName(FontFamily)

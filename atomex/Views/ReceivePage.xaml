@@ -7,7 +7,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.ReceivePage"
              Title="{x:Static resources:AppResources.ReceivePageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView>
         <StackLayout HorizontalOptions="Center"
                      VerticalOptions="CenterAndExpand"
@@ -43,9 +43,7 @@
                                          Focused="OnPickerFocused"
                                          Unfocused="OnPickerFocused"
                                          TextColor="Transparent"
-                                         Style="{DynamicResource PickerStyle}"
-                                         VerticalTextAlignment="Start"
-                                         Margin="0,5,0,0"/>
+                                         Style="{DynamicResource PickerStyle}"/>
                     <Label Grid.ColumnSpan="3"
                            Text="{x:Static resources:AppResources.AddressLabel}"
                            Style="{DynamicResource PickerHintStyle}">
@@ -55,7 +53,7 @@
                     </Label>
                     <Label Grid.Row="1"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            Text="{Binding SelectedAddress.Address}"
                            FontSize="12"
                            Padding="20,5,0,11"
@@ -69,7 +67,7 @@
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Padding="0,0,10,10"
-                           TextColor="{DynamicResource MainTextColor}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="End">
                         <Label.FormattedText>
@@ -87,7 +85,7 @@
                             <TapGestureRecognizer Tapped="OnPickerClicked"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="DownArrowPicker"
+                    <Image Source="DownArrow"
                            Grid.RowSpan="2"
                            Grid.Column="2"
                            WidthRequest="10"
@@ -105,6 +103,34 @@
                    Style="{DynamicResource QrCodeFrameStyle}">
                 <StackLayout Spacing="0"
                              VerticalOptions="FillAndExpand">
+                    <StackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Padding="20,20,20,0"
+                                 Orientation="Horizontal">
+                        <Frame CornerRadius="12"
+                               BackgroundColor="{DynamicResource MainTextColor}"
+                               HeightRequest="50"
+                               WidthRequest="50"
+                               Padding="0"
+                               HasShadow="False">
+                            <Image Source="Logo"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   WidthRequest="40"
+                                   HeightRequest="40"/>
+                        </Frame>
+                        <StackLayout Spacing="0"
+                                     Orientation="Horizontal"
+                                     VerticalOptions="CenterAndExpand"
+                                     Padding="5,0">
+                            <Label Text="a" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="t" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="o" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="m" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="e" Style="{DynamicResource QrCodeLabelStyle}"/>
+                            <Label Text="x" Style="{DynamicResource QrCodeLabelStyle}"/>
+                        </StackLayout>
+                    </StackLayout>
                     <zxing:ZXingBarcodeImageView Style="{DynamicResource QrCodeStyle}"
                                                  BarcodeValue="{Binding SelectedAddress.Address}"
                                                  BarcodeFormat="QR_CODE">
@@ -134,22 +160,16 @@
                     <custom:RightRoundedButton Text="{x:Static resources:AppResources.ShareButton}"
                                                Style="{DynamicResource CurrencyActionButtonStyle}"
                                                Clicked="OnShareButtonClicked"
-                                               RelativeLayout.WidthConstraint="80"
-                                               RelativeLayout.HeightConstraint="40"
                                                x:Name="ShareButton"/>
                     <ActivityIndicator x:Name="Loader"
                                        RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                        RelativeLayout.WidthConstraint="20"
                                        RelativeLayout.HeightConstraint="20"
-                                       Color="Black"/>
+                                       Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                                       BackgroundColor="Transparent"/>
                 </RelativeLayout>
             </StackLayout>
-            <!--<zxing:ZXingBarcodeImageView WidthRequest="300" HeightRequest="100" BarcodeValue="1337133713378" BarcodeFormat="EAN_13">
-                <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                    <zxcm:EncodingOptions Width="300" Height="100" />
-                </zxing:ZXingBarcodeImageView.BarcodeOptions>
-            </zxing:ZXingBarcodeImageView>-->
         </StackLayout>
     </ScrollView>
 </ContentPage>

@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView>
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
@@ -34,7 +34,9 @@
                                     CornerRadius="20,20,0,0"
                                     Style="{DynamicResource EntryFrameStyle}"
                                     x:Name="LanguageFrame">
-                    
+                    <custom:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
+                    </custom:CustomFrame.GestureRecognizers>
                 </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="1"
                                      ItemsSource="{Binding Languages}"
@@ -44,7 +46,7 @@
                                      Focused="OnLanguagePickerFocused"
                                      Unfocused="OnLanguagePickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource MnemonicPickerStyle}"/>
+                                     Style="{DynamicResource CustomPickerStyle}"/>
                 <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
@@ -53,7 +55,7 @@
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -65,7 +67,11 @@
                                     Grid.ColumnSpan="2"
                                     CornerRadius="0,0,20,20"
                                     x:Name="WordCountFrame"
-                                    Style="{DynamicResource EntryFrameStyle}"/>
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
+                    </Frame.GestureRecognizers>
+                </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="4"
                                      ItemsSource="{Binding WordCountToEntropyLength}"
                                      ItemDisplayBinding="{Binding WordCount}"
@@ -74,7 +80,7 @@
                                      Focused="OnWordCountPickerFocused"
                                      Unfocused="OnWordCountPickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
-                                     Style="{DynamicResource MnemonicPickerStyle}"/>
+                                     Style="{DynamicResource CustomPickerStyle}"/>
                 <Label Grid.Row="3"
                        Text ="{x:Static resources:AppResources.WordCountLabel}"
                        Style="{DynamicResource PickerHintStyle}">
@@ -85,7 +91,7 @@
                 <Image Grid.RowSpan="2"
                        Grid.Row="3"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -97,25 +103,33 @@
                    CornerRadius="10"
                    x:Name="MnemonicPhraseFrame"
                    HorizontalOptions="CenterAndExpand"
-                   BackgroundColor="{DynamicResource ErrorFrameBackgroundColor}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource SuccessFrameBackgroundColorDark}, Light={StaticResource SuccessFrameBackgroundColor}}"
                    Padding="5">
                 <Label Text="{Binding Mnemonic}"
-                        Style="{DynamicResource ErrorTextStyle}"
-                        HorizontalTextAlignment="Center"
-                        LineBreakMode="WordWrap">
+                       Style="{DynamicResource SuccessTextStyle}"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
-                                        Binding="{Binding Mnemonic}"
-                                        Value="">
+                                     Binding="{Binding Mnemonic}"
+                                     Value="">
                             <Setter Property="IsVisible"
                                     Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
             </Frame>
-            <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
-                   x:Name="LoseMnemonicPhraseText"
-                   Style="{DynamicResource ErrorTextStyle}"/>
+            <StackLayout Orientation="Horizontal"
+                         x:Name="LoseMnemonicPhrase">
+                <Image Source="Warning"
+                       HeightRequest="32"
+                       WidthRequest="32"/>
+                <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Start"/>
+            </StackLayout>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"

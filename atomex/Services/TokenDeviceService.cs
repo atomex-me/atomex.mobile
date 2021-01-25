@@ -26,12 +26,13 @@ namespace atomex.Services
                 new KeyValuePair<string, IEnumerable<string>>("Authorization", new string[] {$"Bearer {token}"})
             };
 
-            var baseUri = "https://api.atomex.me/";
+            string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me/";
+
             var requestUri = $"v1/guard/push?token={deviceToken}&platform={fileSystem}";
 
             try
             {
-                var authResult = await HttpHelper.PostAsync(
+                var result = await HttpHelper.PostAsync(
                     baseUri: baseUri,
                     requestUri: requestUri,
                     headers: headers,
@@ -54,7 +55,7 @@ namespace atomex.Services
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-                return authResult;
+                return result;
             }
             catch (Exception e)
             {
@@ -79,7 +80,8 @@ namespace atomex.Services
 
             var signatureHex = Hex.ToHexString(signature);
 
-            var baseUri = "https://api.atomex.me/";
+            string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me/";
+
             var requestUri = "v1/token";
 
             var jsonRequest = JsonConvert.SerializeObject(new

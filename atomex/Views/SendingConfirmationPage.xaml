@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.SendingConfirmationPage"
              Title="{x:Static resources:AppResources.ConfirmationLabel}"
-             BackgroundColor="{DynamicResource MainBackgroundColor}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator x:Name="SendingLoader"
@@ -12,7 +12,8 @@
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
-                               Color="Black"/>
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
+                               BackgroundColor="Transparent"/>
             <StackLayout x:Name="Content"
                          VerticalOptions="FillAndExpand"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
@@ -23,11 +24,11 @@
                     <Image Margin="0,10"
                            WidthRequest="30"
                            HeightRequest="30"
-                           Source="Send"/>
+                           Source="ic_output"/>
                     <Label Text="{Binding Amount}"
                            VerticalTextAlignment="Center"
                            Padding="10,0"
-                           TextColor="Red">
+                           TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Amount, StringFormat='- {0:0.#########}'}"
@@ -36,7 +37,7 @@
                                 <Span Text="{Binding Currency.Name}"
                                       Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{DynamicResource AdditionalTextColor}"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
                                       FontSize="12"/>
                             </FormattedString>
@@ -63,7 +64,7 @@
                                 <Span Text=" "/>
                                 <Span Text="{Binding Currency.Name}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{DynamicResource HintTextColor}"
+                                      TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
                                       FontSize="12"/>
                             </FormattedString>
@@ -85,7 +86,7 @@
                                 <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
                                      />
                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{DynamicResource HintTextColor}"
+                                      TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
                                       FontSize="12"/>
                             </FormattedString>
@@ -107,7 +108,7 @@
                                 <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
                                       />
                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
-                                      TextColor="{DynamicResource HintTextColor}"
+                                      TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
                                       FontSize="12"/>
                             </FormattedString>

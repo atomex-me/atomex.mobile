@@ -41,7 +41,7 @@ namespace atomex
                 decimal amount;
                 try
                 {
-                    decimal.TryParse(Amount.Text?.Replace(",","."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
+                    decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
                 }
                 catch (FormatException)
                 {
@@ -198,6 +198,12 @@ namespace atomex
 
         private async void OnScanButtonClicked(object sender, EventArgs args)
         {
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
 
             var scanningQrPage = new ScanningQrPage(selected =>
             {

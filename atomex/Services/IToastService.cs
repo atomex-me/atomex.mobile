@@ -4,6 +4,6 @@
 
     public interface IToastService
     {
-        void Show(string message, ToastPosition toastPosition = ToastPosition.Bottom);
+        void Show(string message, ToastPosition toastPosition = ToastPosition.Bottom, string appTheme = "Light");
     }
 }

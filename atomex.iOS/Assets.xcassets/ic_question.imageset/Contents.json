@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "question.pdf",
+      "filename": "ic_question_2.pdf",
       "idiom": "universal"
     },
     {
@@ -17,7 +17,6 @@
       "idiom": "universal"
     },
     {
-      "filename": "question-1.pdf",
       "idiom": "iphone"
     },
     {
@@ -38,7 +37,6 @@
       "idiom": "iphone"
     },
     {
-      "filename": "question-2.pdf",
       "idiom": "ipad"
     },
     {
@@ -89,6 +87,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_question_dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -306,6 +305,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_question_2-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

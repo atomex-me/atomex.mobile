@@ -5,7 +5,7 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.MyWalletsPage"
              Title="{x:Static resources:AppResources.MyWalletsTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Padding="20,0">
             <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"
@@ -15,11 +15,11 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalScrollBarVisibility="Never"
-                      BackgroundColor="{DynamicResource AdditionalBackgroundColor}"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{DynamicResource ListViewSelectedBackgroundColor}">
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Frame Margin="2">
                                 <Frame.Triggers>
                                     <DataTrigger TargetType="Frame"
@@ -49,7 +49,7 @@
                                                          Binding="{Binding Network}"
                                                          Value="TestNet">
                                                 <Setter Property="Source"
-                                                        Value="Wallet__blue"/>
+                                                        Value="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
@@ -81,7 +81,7 @@
                                                          Binding="{Binding Network}"
                                                          Value="TestNet">
                                                 <Setter Property="Source"
-                                                        Value="RightArrow__blue"/>
+                                                        Value="{AppThemeBinding Light=RightArrow__blue, Dark=RightArrow__white}"/>
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>

@@ -4,7 +4,12 @@ namespace atomex.CustomElements
 {
     public class CustomFrame : Frame
     {
-        public static new readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CustomFrame), typeof(CornerRadius), typeof(CustomFrame));
+        public static new readonly BindableProperty CornerRadiusProperty =
+            BindableProperty.Create(
+                nameof(CustomFrame),
+                typeof(CornerRadius),
+                typeof(CustomFrame));
+
         public CustomFrame()
         {
             base.CornerRadius = 0;

@@ -89,7 +89,7 @@ namespace atomex.ViewModel.SendViewModels
         public decimal Fee
         {
             get => _fee;
-            set { UpdateFee(value); }
+            set { _ = UpdateFee(value); }
         }
 
         public virtual string FeeString
@@ -233,7 +233,7 @@ namespace atomex.ViewModel.SendViewModels
             SubscribeToServices();
         }
 
-        private async Task UpdateFeePrice()
+        public virtual async Task UpdateFeePrice()
         {
             FeePrice = await Currency.GetDefaultFeePriceAsync();
         }

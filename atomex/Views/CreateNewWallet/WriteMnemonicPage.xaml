@@ -5,13 +5,14 @@
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
                      Style="{DynamicResource CreateWalletStackLayoutStyle}"
+                     Padding="0,20"
                      Spacing="0">
-            <StackLayout x:Name="Labels">
+            <StackLayout>
                 <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
                 <Label Text="{x:Static resources:AppResources.EnterMnemonicPhraseLabel}"
@@ -33,14 +34,18 @@
                                     Grid.ColumnSpan="2"
                                     x:Name="PickerFrame"
                                     CornerRadius="20,20,0,0"
-                                    Style="{DynamicResource EntryFrameStyle}"/>
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <custom:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPickerClicked"/>
+                    </custom:CustomFrame.GestureRecognizers>
+                </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="1"
                                      ItemsSource="{Binding Languages}"
                                      ItemDisplayBinding="{Binding Name}"
                                      SelectedItem="{Binding Language}"
                                      x:Name="LanguagesPicker"
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                     Style="{DynamicResource MnemonicPickerStyle}"
+                                     Style="{DynamicResource CustomPickerStyle}"
                                      Focused="OnPickerFocused"
                                      Unfocused="OnPickerFocused"/>
                 <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
@@ -51,7 +56,7 @@
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="1"
-                       Source="DownArrowPicker"
+                       Source="DownArrow"
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
@@ -61,10 +66,9 @@
             </Grid>
             <StackLayout HeightRequest="1"
                          Spacing="0"/>
-            <custom:CustomFrame HasShadow="False"
-                                CornerRadius="0,0,20,20"
+            <custom:CustomFrame CornerRadius="0,0,20,20"
                                 x:Name="EditorFrame"
-                                BackgroundColor="{DynamicResource MainBackgroundColor}">
+                                Style="{DynamicResource EntryFrameStyle}">
                 <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"

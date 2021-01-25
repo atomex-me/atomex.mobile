@@ -164,7 +164,11 @@
         <value>Step 5: Storage password</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>This password is used to protect the stored secret keys and will be needed every time you start your wallet application.</value>
+        <value>This password is used to protect the stored secret keys and will be needed every time you start your wallet application. Password must be at least 8 characters long and contains at least:
+    - 1 lowercase character, 
+    - 1 uppercase character, 
+    - 1 number,
+    - 1 special character in (!@#$%^*).</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>
@@ -392,6 +396,9 @@
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Est. price</value>
     </data>
+    <data name="EstimatedNetworkFeeLabel" xml:space="preserve">
+        <value>Est. network fees</value>
+    </data>
     <data name="EnterAmountLabel" xml:space="preserve">
         <value>Enter amount</value>
     </data>
@@ -401,12 +408,16 @@
     <data name="NoLiquidityLabel" xml:space="preserve">
         <value>No liquidity</value>
     </data>
-    <data name="EstimatedPaymentFeeLabel" xml:space="preserve">
-        <value>Est. payment fee</value>
+    <data name="PaymentFeeLabel" xml:space="preserve">
+        <value>Payment fee</value>
     </data>
-    <data name="EstimatedRedeemFeeLabel" xml:space="preserve">
-        <value>Est. redeem fee</value>
+    <data name="RedeemFeeLabel" xml:space="preserve">
+        <value>Redeem fee</value>
     </data>
+    <data name="MakerFeeLabel" xml:space="preserve">
+        <value>Maker fee</value>
+    </data>
+
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
@@ -527,8 +538,26 @@
     <data name="InsufficientChainFunds" xml:space="preserve">
         <value>Insufficient {0} to cover token transfer fee</value>
     </data>
+    <data name="SufficientNetworkFee" xml:space="preserve">
+        <value>Sufficient network fee for this amount ({0} is {1})</value>
+    </data>
+    <data name="TooHighNetworkFee" xml:space="preserve">
+         <value>Too high network fee for this amount ({0} is {1})</value>
+    </data>
+    <data name="TotalNetworkFeeDetail" xml:space="preserve">
+        <value>
+Payment fee: {0} {1}
+Redeem fee: {2} {3}
+Maker fee: {4} {5}
+            
+Total network fee: {6}
+        </value>
+    </data>
     <data name="LowFees" xml:space="preserve">
         <value>Too low fees</value>
+    </data>
+    <data name="NetworkFee" xml:space="preserve">
+        <value>Network fee for atomic swap</value>
     </data>
     <data name="FailedToSend" xml:space="preserve">
         <value>Failed to send</value>

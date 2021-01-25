@@ -5,11 +5,12 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
-             BackgroundColor="{DynamicResource AdditionalBackgroundColor}">
-    <ScrollView x:Name="ScrollView">
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
-            <StackLayout x:Name="Labels">
+                     VerticalOptions="CenterAndExpand"
+                     Padding="0,20">
+            <StackLayout>
                 <Label Text="{x:Static resources:AppResources.WalletNameStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
                 <Label Text="{x:Static resources:AppResources.EnterNameLabel}"
@@ -19,19 +20,26 @@
                    Style="{DynamicResource EntryFrameStyle}"
                    Margin="0,10,0,0"
                    CornerRadius="10">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                </Frame.GestureRecognizers>
                 <StackLayout HeightRequest="60">
                     <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
                         <Label x:Name="NameHint"
                                Style="{DynamicResource EntryHintStyle}"
                                VerticalTextAlignment="Center"
                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
-                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <controls:CustomEntry x:Name="Entry"
                                               Placeholder="{x:Static resources:AppResources.WalletNameEntryPlaceholder}"
                                               Keyboard="Text"
                                               Focused="EntryFocused"
                                               Unfocused="EntryFocused"
-                                              Style="{DynamicResource EntryStyle}"
+                                              Style="{DynamicResource CustomEntryStyle}"
                                               TextChanged="OnTextChanged"
                                               Text="{Binding WalletName}"
                                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
