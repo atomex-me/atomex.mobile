@@ -46,6 +46,7 @@
     <Style x:Key="EntryStyle" TargetType="Entry">
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="ReturnType" Value="Done"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="VerticalOptions" Value="FillAndExpand"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
