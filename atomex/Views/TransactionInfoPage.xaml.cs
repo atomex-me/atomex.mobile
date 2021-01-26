@@ -28,12 +28,38 @@ namespace atomex
             _toastService = DependencyService.Get<IToastService>();
         }
 
-        private async void OnCopyButtonClicked(object sender, EventArgs args)
+        private async void OnCopyIdButtonClicked(object sender, EventArgs args)
         {
             if (_transactionViewModel != null)
             {
                 await Clipboard.SetTextAsync(_transactionViewModel.Id);
                 _toastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private async void OnCopyToAddressButtonClicked(object sender, EventArgs args)
+        {
+            if (_transactionViewModel != null)
+            {
+                await Clipboard.SetTextAsync(_transactionViewModel.To);
+                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private async void OnCopyFromAddressButtonClicked(object sender, EventArgs args)
+        {
+            if (_transactionViewModel != null)
+            {
+                await Clipboard.SetTextAsync(_transactionViewModel.From);
+                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             else
             {

@@ -256,7 +256,7 @@
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <StackLayout Orientation="Horizontal">
-                    <StackLayout>
+                    <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{x:Static resources:AppResources.TransactionId}"
                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
                         <Label Text="{Binding Id}"
@@ -264,14 +264,8 @@
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
                     <ImageButton Source="Copy"
-                                 WidthRequest="32"
-                                 HeightRequest="32"
-                                 HorizontalOptions="End"
-                                 VerticalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                                 Padding="3"
-                                 Margin="20,0,0,5"
-                                 Clicked="OnCopyButtonClicked"/>
+                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Clicked="OnCopyIdButtonClicked"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
@@ -292,11 +286,18 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="From"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                <Label Text="{Binding From}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"
-                       LineBreakMode="MiddleTruncation"/>
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static resources:AppResources.FromLabel}"
+                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                        <Label Text="{Binding From}"
+                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               LineBreakMode="MiddleTruncation"/>
+                    </StackLayout>
+                    <ImageButton Source="Copy"
+                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Clicked="OnCopyFromAddressButtonClicked"/>
+                </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
@@ -309,11 +310,18 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="To"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                <Label Text="{Binding To}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"
-                       LineBreakMode="MiddleTruncation"/>
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static resources:AppResources.ToLabel}"
+                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                        <Label Text="{Binding To}"
+                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               LineBreakMode="MiddleTruncation"/>
+                    </StackLayout>
+                    <ImageButton Source="Copy"
+                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Clicked="OnCopyToAddressButtonClicked"/>
+                </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}"
