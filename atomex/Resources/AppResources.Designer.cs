@@ -65,6 +65,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
         internal static string MainNetButton {
             get {
                 return ResourceManager.GetString("MainNetButton", resourceCulture);
@@ -1244,6 +1256,18 @@ namespace atomex.Resources {
         internal static string RemoveTxWarning {
             get {
                 return ResourceManager.GetString("RemoveTxWarning", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        internal static string ToUpdateNow {
+            get {
+                return ResourceManager.GetString("ToUpdateNow", resourceCulture);
             }
         }
     }
