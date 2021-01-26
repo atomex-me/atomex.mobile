@@ -78,7 +78,7 @@ namespace atomex
 
             if (!isLatest)
             {
-                var update = await MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.ToUpdateNow, AppResources.Yes, AppResources.No);
+                var update = await MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
 
                 if (update)
                     await CrossLatestVersion.Current.OpenAppInStore();
