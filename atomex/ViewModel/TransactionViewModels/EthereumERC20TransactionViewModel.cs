@@ -6,8 +6,6 @@ namespace atomex.ViewModel.TransactionViewModels
 {
     public class EthereumERC20TransactionViewModel : TransactionViewModel
     {
-        public string From { get; set; }
-        public string To { get; set; }
         public decimal GasPrice { get; set; }
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }

@@ -6,8 +6,6 @@ namespace atomex.ViewModel.TransactionViewModels
 {
     public class TezosFA12TransactionViewModel : TransactionViewModel
     {
-        public string From { get; set; }
-        public string To { get; set; }
         public decimal GasLimit { get; set; }
         public bool IsInternal { get; set; }
         public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";

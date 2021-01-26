@@ -6,15 +6,12 @@ namespace atomex.ViewModel.TransactionViewModels
 {
     public class EthereumTransactionViewModel : TransactionViewModel
     {
-        public string From { get; set; }
-        public string To { get; set; }
         public decimal GasPrice { get; set; }
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
         public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
         public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
-
 
         public EthereumTransactionViewModel(EthereumTransaction tx)
              : base(tx, GetAmount(tx), GetFee(tx))

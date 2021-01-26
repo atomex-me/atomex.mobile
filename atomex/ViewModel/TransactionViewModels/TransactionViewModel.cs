@@ -25,7 +25,6 @@ namespace atomex.ViewModel.TransactionViewModels
         //public BlockchainTransactionType Type { get; set; }
         public TransactionType Type { get; set; }
 
-
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public string AmountFormat { get; set; }
@@ -34,6 +33,8 @@ namespace atomex.ViewModel.TransactionViewModels
         public DateTime Time { get; set; }
         public DateTime LocalTime => Time.ToLocalTime();
         public string TxExplorerUri => $"{Currency.TxExplorerUri}{Id}";
+        public string From { get; set; }
+        public string To { get; set; }
         public bool CanBeRemoved { get; set; }
 
         private bool _isExpanded;
