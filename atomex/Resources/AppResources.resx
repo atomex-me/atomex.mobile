@@ -23,7 +23,8 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
-     <data name="MainNetButton" xml:space="preserve">
+    <data name="Yes" xml:space="preserve">         <value>Yes</value>     </data>     <data name="No" xml:space="preserve">         <value>No</value>     </data>
+    <data name="MainNetButton" xml:space="preserve">
         <value>MainNet</value>
     </data>
     <data name="TestNetButton" xml:space="preserve">
@@ -682,4 +683,5 @@ Total network fee: {6}
     <data name="RemoveTxWarning" xml:space="preserve">
         <value>This action affects only the local database and does not affect the blockchain</value>
     </data>
+    <data name="UpdateAvailable" xml:space="preserve">         <value>Update available </value>     </data>     <data name="ToUpdateNow" xml:space="preserve">         <value>There is a new version of this app available. Would you like to update now?</value>     </data>
 </root>
