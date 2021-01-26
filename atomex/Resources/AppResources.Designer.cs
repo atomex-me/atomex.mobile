@@ -65,18 +65,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
-            }
-        }
-        
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
         internal static string MainNetButton {
             get {
                 return ResourceManager.GetString("MainNetButton", resourceCulture);
@@ -1259,15 +1247,27 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UpdateApp {
+            get {
+                return ResourceManager.GetString("UpdateApp", resourceCulture);
+            }
+        }
+        
         internal static string UpdateAvailable {
             get {
                 return ResourceManager.GetString("UpdateAvailable", resourceCulture);
             }
         }
         
-        internal static string ToUpdateNow {
+        internal static string Yes {
             get {
-                return ResourceManager.GetString("ToUpdateNow", resourceCulture);
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
     }
