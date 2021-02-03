@@ -21,6 +21,7 @@
     <PackageReference Include="Sentry" Version="2.1.6" />
     <PackageReference Include="Sentry.Serilog" Version="2.1.6" />
     <PackageReference Include="Xam.Plugin.LatestVersion" Version="1.1.2" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -39,6 +40,7 @@
     <Folder Include="Resources\" />
     <Folder Include="ViewModel\ReceiveViewModels\" />
     <Folder Include="Converters\" />
+    <Folder Include="Views\Popup\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

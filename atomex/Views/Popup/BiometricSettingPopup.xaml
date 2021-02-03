@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="http://rotorgames.com"
+              xmlns:controls="clr-namespace:atomex.CustomElements"
+              xmlns:resources="clr-namespace:atomex.Resources"
+              x:Class="atomex.Views.Popup.BiometricSettingPopup">
+    <rg:PopupPage.Animation>
+    <rg:ScaleAnimation PositionIn="Center"
+                       PositionOut="Center"
+                       ScaleIn="1.2"
+                       ScaleOut="0.8"
+                       DurationIn="400"
+                       DurationOut="300"
+                       EasingIn="SinOut"
+                       EasingOut="SinIn"
+                       HasBackgroundAnimation="True"/>
+    </rg:PopupPage.Animation>
+    <ScrollView x:Name="Popup">
+        <controls:CustomFrame CornerRadius="20"
+                              Padding="0"
+                              Margin="20,0"
+                              HasShadow="True"
+                              x:Name="Content"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="240"
+                              VerticalOptions="Center"
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+            <StackLayout>
+                <StackLayout Padding="20"
+                             VerticalOptions="Center"
+                             HorizontalOptions="FillAndExpand"
+                             Spacing="0">
+                    <Label Text="{x:Static resources:AppResources.EnableBiometricLabel}"
+                           Style="{DynamicResource EnableBiometricTextStyle}"/>
+                    <Frame x:Name="PasswordFrame"
+                           CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout VerticalOptions="CenterAndExpand"
+                                         HorizontalOptions="Start"
+                                         Padding="15,0,0,0">
+                                <Image WidthRequest="24"
+                                       HeightRequest="24"
+                                       HorizontalOptions="CenterAndExpand"
+                                       Source="Lock">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <RelativeLayout HorizontalOptions="FillAndExpand"
+                                            HeightRequest="60"
+                                            Margin="-10,0,0,0">
+                                <ActivityIndicator x:Name="Loader"
+                                                   RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                                                   RelativeLayout.WidthConstraint="50"
+                                                   RelativeLayout.HeightConstraint="50"
+                                                   Scale="1.5"
+                                                   Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
+                                                   BackgroundColor="Transparent"/>
+                                <controls:CustomEntry x:Name="PasswordEntry"
+                                                      Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                      Keyboard="Text"
+                                                      IsPassword="True"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                                                      Focused="PasswordEntryFocused"
+                                                      Unfocused="PasswordEntryFocused"
+                                                      TextChanged="OnPasswordTextChanged"/>
+                                <Label x:Name="PasswordHint"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                                       VerticalTextAlignment="Center"/>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Label x:Name="Error"
+                           Text="{x:Static resources:AppResources.InvalidPassword}"
+                           Style="{DynamicResource ErrorTextStyle}"
+                           Padding="0,5"
+                           Margin="0"
+                           IsVisible="False"/>
+                </StackLayout>
+                <Grid ColumnSpacing="0"
+                      RowSpacing="0"
+                      VerticalOptions="EndAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Text="{x:Static resources:AppResources.CancelButton}"
+                            Style="{DynamicResource PopupCancelButtonStyle}"
+                            Clicked="OnCloseButtonClicked"/>
+                    <Button Grid.Column="1"
+                            Text="{x:Static resources:AppResources.AcceptButton}"
+                            Style="{DynamicResource PopupAcceptButtonStyle}"
+                            x:Name="EnableButton"
+                            Clicked="OnEnableButtonClicked"/>
+                </Grid>
+            </StackLayout>
+        </controls:CustomFrame>
+    </ScrollView>
+</rg:PopupPage>

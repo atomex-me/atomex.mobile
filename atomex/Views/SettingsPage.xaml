@@ -11,6 +11,36 @@
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          Spacing="0">
+                <StackLayout Spacing="0"
+                             x:Name="BiometricSetting">
+                    <Label Text="{x:Static resources:AppResources.SecurityLabel}"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           VerticalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           Padding="20,25,20,5"/>
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="{x:Static resources:AppResources.UseBiometricLabel}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                            <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                    IsToggled="{Binding UseBiometric, Mode=TwoWay}"
+                                    Toggled="OnUseBiometricToggled"
+                                    HorizontalOptions="EndAndExpand"
+                                    VerticalOptions="Center"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
                 <Label Text="{x:Static resources:AppResources.CommunitySection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"

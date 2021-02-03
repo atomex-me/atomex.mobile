@@ -101,8 +101,8 @@
     <data name="UnlockButton" xml:space="preserve">
         <value>Unlock</value>
     </data>
-    <data name="UseFingerprint" xml:space="preserve">
-        <value>Use your fingerprint to sign in </value>
+    <data name="UseBiometric" xml:space="preserve">
+        <value>Use your biometric to sign in </value>
     </data>
     
     <!-- Create New Wallet Pages -->
@@ -444,6 +444,9 @@
     <data name="PeriodOfInactiveLabel" xml:space="preserve">
         <value>Period of inactive</value>
     </data>
+    <data name="UseBiometricLabel" xml:space="preserve">
+        <value>Use of biometric login</value>
+    </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
     </data>
@@ -475,6 +478,11 @@
     </data>
     <data name="SettingsTab" xml:space="preserve">
         <value>Settings</value>
+    </data>
+    
+    <!-- Biometric setting popup -->
+    <data name="EnableBiometricLabel" xml:space="preserve">
+        <value>Please, enter your password to confirm the use of biometric login</value>
     </data>
     
     <!-- Messages -->
@@ -693,5 +701,17 @@ Total network fee: {6}
     </data>
     <data name="No" xml:space="preserve">
         <value>No</value>
+    </data>
+    <data name="NotSupportSecureStorage" xml:space="preserve">
+        <value>Device doesn't support secure storage on device</value>
+    </data>
+    <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
+        <value>To use biometric for login, you need permissions</value>
+    </data>
+    <data name="NotAuthenticated" xml:space="preserve">
+        <value>You were not authenticated</value>
+    </data>
+    <data name="SorryLabel" xml:space="preserve">
+        <value>Sorry</value>
     </data>
 </root>

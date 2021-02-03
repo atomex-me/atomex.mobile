@@ -143,12 +143,11 @@ namespace atomex.Views.CreateNewWallet
                 {
                     try
                     {
-                        await SecureStorage.SetAsync(_createNewWalletViewModel.WalletName, PasswordEntry.Text);
+                        await SecureStorage.SetAsync("UseBiometric", false.ToString());
                     }
                     catch (Exception ex)
                     {
-                        // Possible that device doesn't support secure storage on device.
-                        Log.Error(ex, "Device doesn't support secure storage on device");
+                        Log.Error(ex, AppResources.NotSupportSecureStorage);
                     }
 
                     MainViewModel mainViewModel = null;
