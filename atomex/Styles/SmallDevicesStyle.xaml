@@ -512,4 +512,22 @@
         <Setter Property="RowHeight" Value="55"/>
         <Setter Property="HeightRequest" Value="220"/>
     </Style>
+
+    <!-- Popup -->
+    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBorderColorDark}, Light={StaticResource DisabledButtonBorderColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+    </Style>
+    <Style x:Key="EnableBiometricTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>
