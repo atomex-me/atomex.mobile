@@ -714,4 +714,7 @@ Total network fee: {6}
     <data name="SorryLabel" xml:space="preserve">
         <value>Sorry</value>
     </data>
+    <data name="ImpossibleEnableBiometric" xml:space="preserve">
+        <value>It is impossible to enable biometric login</value>
+    </data>
 </root>

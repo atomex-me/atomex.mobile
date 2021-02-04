@@ -1306,5 +1306,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("SorryLabel", resourceCulture);
             }
         }
+        
+        internal static string ImpossibleEnableBiometric {
+            get {
+                return ResourceManager.GetString("ImpossibleEnableBiometric", resourceCulture);
+            }
+        }
     }
 }

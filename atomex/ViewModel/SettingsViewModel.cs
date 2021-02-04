@@ -109,11 +109,17 @@ namespace atomex.ViewModel
                     {
                         await Application.Current.MainPage.Navigation.PushPopupAsync(new BiometricSettingPopup(this));
                     }
-                    if (availability == FingerprintAvailability.NoPermission ||
-                        availability == FingerprintAvailability.NoFingerprint)
+                    else if (availability == FingerprintAvailability.NoPermission ||
+                        availability == FingerprintAvailability.NoFingerprint ||
+                        availability == FingerprintAvailability.Denied)
                     {
                         _useBiometric = false;
                         await Application.Current.MainPage.DisplayAlert("", AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                    }
+                    else
+                    {
+                        _useBiometric = false;
+                        await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.ImpossibleEnableBiometric, AppResources.AcceptButton);
                     }
                 }
                 else

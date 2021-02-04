@@ -35,10 +35,7 @@ namespace atomex
         async Task CheckFingerprintSensor()
         {
             var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
-            BiometricSetting.IsVisible =
-                (availability != FingerprintAvailability.NoSensor) ||
-                (availability != FingerprintAvailability.NoApi) ||
-                (availability != FingerprintAvailability.Unknown);
+            BiometricSetting.IsVisible = availability != FingerprintAvailability.NoSensor;
         }
 
         async void OnPeriodOfInactiveSettingTapped(object sender, EventArgs args)
