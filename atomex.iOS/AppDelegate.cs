@@ -38,7 +38,7 @@ namespace atomex.iOS
             Forms.SetFlags("Brush_Experimental");
             Forms.Init();
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
-
+            Rg.Plugins.Popup.Popup.Init();
 
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
