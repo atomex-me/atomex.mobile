@@ -19,7 +19,7 @@
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="Center"
                            TextTransform="Uppercase"
-                           Padding="20,25,20,5"/>
+                           Padding="20,5"/>
                     <Frame CornerRadius="10"
                            HeightRequest="40"
                            Style="{DynamicResource EntryFrameStyle}"
@@ -35,7 +35,6 @@
                                    HorizontalTextAlignment="Center"/>
                             <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                     IsToggled="{Binding UseBiometric, Mode=TwoWay}"
-                                    Toggled="OnUseBiometricToggled"
                                     HorizontalOptions="EndAndExpand"
                                     VerticalOptions="Center"/>
                         </StackLayout>

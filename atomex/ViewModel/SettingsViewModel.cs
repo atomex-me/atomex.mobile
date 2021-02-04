@@ -2,11 +2,16 @@
 using System.Security;
 using System.Threading.Tasks;
 using atomex.Resources;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
+using Rg.Plugins.Popup.Extensions;
 using Serilog;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -33,14 +38,7 @@ namespace atomex.ViewModel
         public bool UseBiometric
         {
             get { return _useBiometric; }
-            set
-            {
-                if (_useBiometric != value)
-                {
-                    _useBiometric = value;
-                    OnPropertyChanged(nameof(UseBiometric));
-                }
-            }
+            set { _ = UpdateUseBiometric(value); }
         }
 
         public int PeriodOfInactivityInMin
@@ -94,6 +92,43 @@ namespace atomex.ViewModel
             {
                 UseBiometric = false;
                 Log.Error(ex, AppResources.NotSupportSecureStorage);
+            }
+        }
+
+        public async Task UpdateUseBiometric(bool value)
+        {
+            if (_useBiometric != value)
+            {
+                _useBiometric = value;
+
+                if (_useBiometric)
+                {
+                    var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+
+                    if (availability == FingerprintAvailability.Available)
+                    {
+                        await Application.Current.MainPage.Navigation.PushPopupAsync(new BiometricSettingPopup(this));
+                    }
+                    if (availability == FingerprintAvailability.NoPermission ||
+                        availability == FingerprintAvailability.NoFingerprint)
+                    {
+                        _useBiometric = false;
+                        await Application.Current.MainPage.DisplayAlert("", AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        await SecureStorage.SetAsync("UseBiometric", false.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
+                        Log.Error(ex, AppResources.NotSupportSecureStorage);
+                    }
+                }
+                OnPropertyChanged(nameof(UseBiometric));
             }
         }
 

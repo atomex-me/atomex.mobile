@@ -37,6 +37,7 @@
     <Color x:Key="WarningFrameBackgroundColor">#FFFBCE</Color>
     <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
     <Color x:Key="PopupFrameBackgroundColor">#f3f2f7</Color>
+    <Color x:Key="PopupFrameBorderColor">#3a6cb1</Color>
 
     <Color x:Key="LoaderColor">#3a6cb1</Color>
 
@@ -67,8 +68,8 @@
     <Color x:Key="AdditionalButtonBorderColorDark">#627A96</Color>
     <Color x:Key="AdditionalButtonTextColorDark">#f6f6f6</Color>
 
-    <Color x:Key="DisabledButtonBackgroundColorDark">#686868</Color>
-    <Color x:Key="DisabledButtonBorderColorDark">#686868</Color>
+    <Color x:Key="DisabledButtonBackgroundColorDark">#787878</Color>
+    <Color x:Key="DisabledButtonBorderColorDark">#787878</Color>
     <Color x:Key="DisabledButtonTextColorDark">#f6f6f6</Color>
 
     <Color x:Key="MainTextColorDark">#f6f6f6</Color>
@@ -83,6 +84,7 @@
     <Color x:Key="WarningFrameBackgroundColorDark">#747568</Color>
     <Color x:Key="SuccessFrameBackgroundColorDark">#383E38</Color>
     <Color x:Key="PopupFrameBackgroundColorDark">#354454</Color>
+    <Color x:Key="PopupFrameBorderColorDark">#2b5277</Color>
 
     <Color x:Key="LoaderColorDark">#f6f6f6</Color>
 

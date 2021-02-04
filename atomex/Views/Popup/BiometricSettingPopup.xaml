@@ -18,14 +18,15 @@
     </rg:PopupPage.Animation>
     <ScrollView x:Name="Popup">
         <controls:CustomFrame CornerRadius="20"
-                              Padding="0"
-                              Margin="20,0"
-                              HasShadow="True"
-                              x:Name="Content"
-                              HorizontalOptions="FillAndExpand"
-                              HeightRequest="240"
-                              VerticalOptions="Center"
-                              BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+                               Padding="0"
+                               Margin="20,0"
+                               HasShadow="True"
+                               x:Name="Content"
+                               HorizontalOptions="FillAndExpand"
+                               HeightRequest="240"
+                               VerticalOptions="Center"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}"
+                               BorderColor="{AppThemeBinding Dark={StaticResource PopupFrameBorderColorDark}, Light={StaticResource PopupFrameBorderColor}}">
             <StackLayout>
                 <StackLayout Padding="20"
                              VerticalOptions="Center"
