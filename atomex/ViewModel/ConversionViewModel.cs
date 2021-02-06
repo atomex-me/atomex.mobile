@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using Atomex.Swaps;
 using Atomex.Abstract;
 using atomex.Resources;
+using Atomex.Swaps.Helpers;
 
 namespace atomex.ViewModel
 {
@@ -27,7 +28,8 @@ namespace atomex.ViewModel
         {
             get
             {
-                return AtomexApp.Account.Symbols;
+                return AtomexApp.SymbolsProvider
+                     .GetSymbols(AtomexApp.Account.Network); ;
             }
         }
 
@@ -133,10 +135,12 @@ namespace atomex.ViewModel
 
                 TargetFeeCurrencyCode = _toCurrencyViewModel?.FeeCurrencyCode;
 
-                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
-                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-
-                //UpdateRedeemAndRewardFeesAsync();
+                _ = Task.Run(async () =>
+                {
+                    await UpdateRedeemAndRewardFeesAsync();
+                    OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+                    OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                });
             }
         }
 
@@ -279,32 +283,27 @@ namespace atomex.ViewModel
             set { _canConvert = value; OnPropertyChanged(nameof(CanConvert)); }
         }
 
-        //private decimal _rewardForRedeem;
-        //public decimal RewardForRedeem
-        //{
-        //    get => _rewardForRedeem;
-        //    set
-        //    {
-        //        _rewardForRedeem = value;
-        //        OnPropertyChanged(nameof(RewardForRedeem));
+        private decimal _rewardForRedeem;
+        public decimal RewardForRedeem
+        {
+            get => _rewardForRedeem;
+            set { _rewardForRedeem = value; OnPropertyChanged(nameof(RewardForRedeem)); }
+        }
 
-        //        HasRewardForRedeem = _rewardForRedeem != 0;
-        //    }
-        //}
+        private decimal _rewardForRedeemInBase;
+        public decimal RewardForRedeemInBase
+        {
+            get => _rewardForRedeemInBase;
+            set { _rewardForRedeemInBase = value; OnPropertyChanged(nameof(RewardForRedeemInBase)); }
+        }
 
-        //private decimal _rewardForRedeemInBase;
-        //public decimal RewardForRedeemInBase
-        //{
-        //    get => _rewardForRedeemInBase;
-        //    set { _rewardForRedeemInBase = value; OnPropertyChanged(nameof(RewardForRedeemInBase)); }
-        //}
+        private bool _hasRewardForRedeem;
+        public bool HasRewardForRedeem
+        {
+            get => _hasRewardForRedeem;
+            set { _hasRewardForRedeem = value; OnPropertyChanged(nameof(HasRewardForRedeem)); }
+        }
 
-        //private bool _hasRewardForRedeem;
-        //public bool HasRewardForRedeem
-        //{
-        //    get => _hasRewardForRedeem;
-        //    set { _hasRewardForRedeem = value; OnPropertyChanged(nameof(HasRewardForRedeem)); }
-        //}
         protected string _warning;
         public string Warning
         {
@@ -425,55 +424,71 @@ namespace atomex.ViewModel
             });
         }
 
-        protected void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
+        protected async void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (!(sender is ICurrencyQuotesProvider provider))
                 return;
 
-            if (CurrencyCode == null || TargetCurrencyCode == null || BaseCurrencyCode == null)
+            if (_currencyCode == null || _targetCurrencyCode == null || _baseCurrencyCode == null)
                 return;
 
-            var fromCurrencyPrice = provider.GetQuote(CurrencyCode, BaseCurrencyCode)?.Bid ?? 0m;
-            AmountInBase = _amount * fromCurrencyPrice;
+            var fromCurrencyPrice = provider.GetQuote(_currencyCode, _baseCurrencyCode)?.Bid ?? 0m;
+            _amountInBase = _amount * fromCurrencyPrice;
 
-            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel.Currency.FeeCurrencyName, BaseCurrencyCode)?.Bid ?? 0m;
-            EstimatedPaymentFeeInBase = _estimatedPaymentFee * fromCurrencyFeePrice;
+            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            _estimatedPaymentFeeInBase = _estimatedPaymentFee * fromCurrencyFeePrice;
 
-            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, BaseCurrencyCode)?.Bid ?? 0m;
-            EstimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
+            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            _estimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
-            EstimatedMakerNetworkFeeInBase = _estimatedMakerNetworkFee * fromCurrencyPrice;
+            var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, _baseCurrencyCode)?.Bid ?? 0m;
+            _rewardForRedeemInBase = _rewardForRedeem * toCurrencyPrice;
 
-            EstimatedTotalNetworkFeeInBase =
-                EstimatedPaymentFeeInBase +
-                EstimatedRedeemFeeInBase +
-                EstimatedMakerNetworkFeeInBase;
+            _estimatedMakerNetworkFeeInBase = _estimatedMakerNetworkFee * fromCurrencyPrice;
 
-            if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.3m)
+            _estimatedTotalNetworkFeeInBase =
+                _estimatedPaymentFeeInBase +
+                (!_hasRewardForRedeem ? _estimatedRedeemFeeInBase : 0) +
+                _estimatedMakerNetworkFeeInBase +
+                (_hasRewardForRedeem ? _rewardForRedeemInBase : 0);
+
+            if (_amountInBase != 0 && _estimatedTotalNetworkFeeInBase / _amountInBase > 0.3m)
             {
-                IsCriticalWarning = true;
-                Warning = string.Format(
+                _isCriticalWarning = true;
+                _warning = string.Format(
                     CultureInfo.InvariantCulture,
                     AppResources.TooHighNetworkFee,
-                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
-                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
+                    FormattableString.Invariant($"{_estimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{_estimatedTotalNetworkFeeInBase / _amountInBase:0.00%}"));
             }
-            else if (AmountInBase != 0 && EstimatedTotalNetworkFeeInBase / AmountInBase > 0.1m)
+            else if (_amountInBase != 0 && _estimatedTotalNetworkFeeInBase / _amountInBase > 0.1m)
             {
                 IsCriticalWarning = false;
                 Warning = string.Format(
                     CultureInfo.InvariantCulture,
                     AppResources.SufficientNetworkFee,
-                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"),
-                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase / AmountInBase:0.00%}"));
+                    FormattableString.Invariant($"{_estimatedTotalNetworkFeeInBase:0.00$}"),
+                    FormattableString.Invariant($"{_estimatedTotalNetworkFeeInBase / _amountInBase:0.00%}"));
             }
 
-            CanConvert = AmountInBase == 0 || EstimatedTotalNetworkFeeInBase / AmountInBase <= 0.75m;
+            _canConvert = _amountInBase == 0 || _estimatedTotalNetworkFeeInBase / _amountInBase <= 0.75m;
 
-            //var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, BaseCurrencyCode)?.Bid ?? 0m;
-            //RewardForRedeemInBase = _rewardForRedeem * toCurrencyPrice;
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                OnPropertyChanged(nameof(AmountInBase));
+                OnPropertyChanged(nameof(EstimatedPaymentFeeInBase));
+                OnPropertyChanged(nameof(EstimatedRedeemFeeInBase));
+                OnPropertyChanged(nameof(RewardForRedeemInBase));
 
-            UpdateTargetAmountInBase(provider);
+                OnPropertyChanged(nameof(EstimatedMakerNetworkFeeInBase));
+                OnPropertyChanged(nameof(EstimatedTotalNetworkFeeInBase));
+
+                OnPropertyChanged(nameof(IsCriticalWarning));
+                OnPropertyChanged(nameof(Warning));
+                OnPropertyChanged(nameof(CanConvert));
+
+                UpdateTargetAmountInBase(provider);
+            });
         }
 
         protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
@@ -485,7 +500,11 @@ namespace atomex.ViewModel
                      fromCurrency: FromCurrencyViewModel.Currency,
                      toCurrency: ToCurrencyViewModel.Currency,
                      account: AtomexApp.Account,
-                     atomexClient: AtomexApp.Terminal);
+                     atomexClient: AtomexApp.Terminal,
+                     symbolsProvider: AtomexApp.SymbolsProvider);
+
+                if (swapPriceEstimation == null)
+                    return;
 
                 _targetAmount = swapPriceEstimation.TargetAmount;
                 _estimatedPrice = swapPriceEstimation.Price;
@@ -499,9 +518,9 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(EstimatedMaxAmount));
                     OnPropertyChanged(nameof(TargetAmount));
                     OnPropertyChanged(nameof(IsNoLiquidity));
-                });
 
-                UpdateTargetAmountInBase(AtomexApp.QuotesProvider);
+                    UpdateTargetAmountInBase(AtomexApp.QuotesProvider);
+                });
             }
             catch (Exception e)
             {
@@ -548,7 +567,9 @@ namespace atomex.ViewModel
                 if (Amount > 0 && !fromWallets.Any())
                     return new Error(Errors.SwapError, AppResources.InsufficientFunds);
 
-                var symbol = AtomexApp.Account.Symbols.SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
+                var symbol = AtomexApp.SymbolsProvider.
+                    GetSymbols(AtomexApp.Account.Network).
+                    SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
                 var baseCurrency = AtomexApp.Account.Currencies.GetByName(symbol.Base);
                 var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
                 var terminal = AtomexApp.Terminal;
@@ -685,7 +706,8 @@ namespace atomex.ViewModel
                         fromCurrency: FromCurrencyViewModel.Currency,
                         toCurrency: ToCurrencyViewModel.Currency,
                         account: AtomexApp.Account,
-                        atomexClient: AtomexApp.Terminal);
+                        atomexClient: AtomexApp.Terminal,
+                        symbolsProvider: AtomexApp.SymbolsProvider);
 
                 IsCriticalWarning = false;
 
@@ -711,7 +733,7 @@ namespace atomex.ViewModel
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
                 OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
 
-                UpdateRedeemAndRewardFeesAsync();
+                await UpdateRedeemAndRewardFeesAsync();
 
                 OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
                 OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
@@ -722,17 +744,29 @@ namespace atomex.ViewModel
             }
         }
 
-        private async void UpdateRedeemAndRewardFeesAsync()
+        private async Task UpdateRedeemAndRewardFeesAsync()
         {
             var walletAddress = await AtomexApp.Account
-                     .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.FeeCurrencyName);
+                .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.Name);
 
-            EstimatedRedeemFee = await ToCurrencyViewModel.Currency.GetRedeemFeeAsync(walletAddress);
+            _estimatedRedeemFee = await ToCurrencyViewModel.Currency
+                .GetEstimatedRedeemFeeAsync(walletAddress, withRewardForRedeem: false);
 
-            //RewardForRedeem = walletAddress.AvailableBalance() < EstimatedRedeemFee && !(ToCurrencyViewModel.Currency is BitcoinBasedCurrency)
-            //         ? ToCurrencyViewModel.Currency.GetRewardForRedeem()
-            //         ? await ToCurrencyViewModel.Currency.GetRewardForRedeemAsync()
-            //         : 0;
+            _rewardForRedeem = await RewardForRedeemHelper
+                .EstimateAsync(
+                    account: AtomexApp.Account,
+                    quotesProvider: AtomexApp.QuotesProvider,
+                    feeCurrencyQuotesProvider: symbol => AtomexApp.Terminal?.GetOrderBook(symbol)?.TopOfBook(),
+                    walletAddress: walletAddress);
+
+            _hasRewardForRedeem = _rewardForRedeem != 0;
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                OnPropertyChanged(nameof(EstimatedRedeemFee));
+                OnPropertyChanged(nameof(RewardForRedeem));
+                OnPropertyChanged(nameof(HasRewardForRedeem));
+            });
         }
     }
 }

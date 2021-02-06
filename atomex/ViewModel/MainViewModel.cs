@@ -35,7 +35,13 @@ namespace atomex.ViewModel
 
             SubscribeToServices();
 
-            AtomexApp.UseTerminal(new WebSocketAtomexClient(configuration, account), restart: true);
+            var atomexClient = new WebSocketAtomexClient(
+                configuration: configuration,
+                account: account,
+                symbolsProvider: AtomexApp.SymbolsProvider,
+                quotesProvider: AtomexApp.QuotesProvider);
+
+            AtomexApp.UseTerminal(atomexClient, restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp);
