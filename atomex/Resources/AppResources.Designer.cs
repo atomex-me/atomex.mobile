@@ -767,6 +767,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string RewardForRedeemLabel {
+            get {
+                return ResourceManager.GetString("RewardForRedeemLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TotalNetworkFeeLabel {
+            get {
+                return ResourceManager.GetString("TotalNetworkFeeLabel", resourceCulture);
+            }
+        }
+        
         internal static string SettingsPageTitle {
             get {
                 return ResourceManager.GetString("SettingsPageTitle", resourceCulture);

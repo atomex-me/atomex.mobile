@@ -378,7 +378,6 @@ namespace atomex
                         wallet: Wallet,
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
-                        symbolsProvider: AtomexApp.SymbolsProvider,
                         clientType);
                     return account;
                 }

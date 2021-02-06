@@ -417,7 +417,12 @@
     <data name="MakerFeeLabel" xml:space="preserve">
         <value>Maker fee</value>
     </data>
-
+    <data name="RewardForRedeemLabel" xml:space="preserve">
+        <value>Reward for redeem</value>
+    </data>
+    <data name="TotalNetworkFeeLabel" xml:space="preserve">
+        <value>Total network fee</value>
+    </data>
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
@@ -554,11 +559,11 @@
     </data>
     <data name="TotalNetworkFeeDetail" xml:space="preserve">
         <value>
-Payment fee: {0} {1}
-Redeem fee: {2} {3}
-Maker fee: {4} {5}
+{0}: {1} {2}
+{3}: {4} {5}
+{6}: {7} {8}
             
-Total network fee: {6}
+{9}: {10}
         </value>
     </data>
     <data name="LowFees" xml:space="preserve">

@@ -85,7 +85,6 @@ namespace atomex
                     walletPath,
                     Password,
                     AtomexApp.CurrenciesProvider,
-                    AtomexApp.SymbolsProvider,
                     clientType);
             }
             catch (CryptographicException e)
