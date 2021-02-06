@@ -229,7 +229,9 @@ namespace atomex
             if (Clipboard.HasText)
             {
                 var text = await Clipboard.GetTextAsync();
-                Address.Text = text;
+                Address.TextColor = Color.Transparent;
+                _sendViewModel.To = text;
+                AddressLabel.IsVisible = true;
             }
             else
             {
