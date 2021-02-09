@@ -16,8 +16,8 @@ namespace atomex.Views.CreateNewWallet
         public WalletTypePage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-
             _createNewWalletViewModel = createNewWalletViewModel;
+            BindingContext = createNewWalletViewModel;
         }
 
         private async void OnMainNetButtonClicked(object sender, EventArgs args)

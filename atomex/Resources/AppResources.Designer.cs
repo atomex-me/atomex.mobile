@@ -221,6 +221,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string RestoreWalletPageTitle {
+            get {
+                return ResourceManager.GetString("RestoreWalletPageTitle", resourceCulture);
+            }
+        }
+        
         internal static string WalletTypeStepLabel {
             get {
                 return ResourceManager.GetString("WalletTypeStepLabel", resourceCulture);

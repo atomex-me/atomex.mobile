@@ -38,14 +38,34 @@ namespace atomex
             StoragePasswordConfirmation
         }
 
-        public Action CurrentAction { get; set; }
+        private Action _currentAction;
+        public Action CurrentAction
+        {
+            get => _currentAction;
+            set
+            {
+                _currentAction = value;
+                if (_currentAction == Action.Restore)
+                    _title = AppResources.RestoreWalletPageTitle;
+                else
+                    _title = AppResources.CreateNewWalletPageTitle;
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(CurrentAction));
+            }
+        }
+
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set { _title = value; OnPropertyChanged(nameof(Title)); }
+        }
 
         public List<Atomex.Core.Network> Networks { get; } = new List<Atomex.Core.Network>
         {
             Atomex.Core.Network.MainNet,
             Atomex.Core.Network.TestNet
         };
-
 
         public List<CustomWordlist> Languages { get; } = new List<CustomWordlist>
         {
@@ -133,7 +153,8 @@ namespace atomex
             {
                 _derivedPassword = value;
                 DerivedPasswordScore = (int)PasswordAdvisor.CheckStrength(DerivedPassword);
-                OnPropertyChanged(nameof(DerivedPassword)); }
+                OnPropertyChanged(nameof(DerivedPassword));
+            }
         }
 
         private SecureString _derivedPasswordConfirmation;
