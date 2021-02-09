@@ -107,7 +107,8 @@ namespace atomex.ViewModel
 
                     if (availability == FingerprintAvailability.Available)
                     {
-                        await Application.Current.MainPage.Navigation.PushPopupAsync(new BiometricSettingPopup(this));
+                        if (Application.Current.MainPage is MainPage)
+                            await Application.Current.MainPage.Navigation.PushPopupAsync(new BiometricSettingPopup(this));
                     }
                     else if (availability == FingerprintAvailability.NoPermission ||
                         availability == FingerprintAvailability.NoFingerprint ||

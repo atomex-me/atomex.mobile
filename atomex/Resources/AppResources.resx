@@ -102,7 +102,7 @@
         <value>Unlock</value>
     </data>
     <data name="UseBiometric" xml:space="preserve">
-        <value>Use your biometric to sign in </value>
+        <value>Use biometric authentication to login into </value>
     </data>
     
     <!-- Create New Wallet Pages -->
@@ -450,7 +450,7 @@
         <value>Period of inactive</value>
     </data>
     <data name="UseBiometricLabel" xml:space="preserve">
-        <value>Use biometric login</value>
+        <value>Biometric authentication</value>
     </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
@@ -487,7 +487,7 @@
     
     <!-- Biometric setting popup -->
     <data name="EnableBiometricLabel" xml:space="preserve">
-        <value>Please, enter your password to confirm the use of biometric login</value>
+        <value>Please, enter your password to enable biometric authentication</value>
     </data>
     
     <!-- Messages -->
@@ -711,7 +711,7 @@
         <value>Device doesn't support secure storage on device</value>
     </data>
     <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
-        <value>To use biometric for login, you need permissions. You can allow access in device settings</value>
+        <value>Please, enable biometric authentication in the device settings</value>
     </data>
     <data name="NotAuthenticated" xml:space="preserve">
         <value>You were not authenticated</value>
@@ -720,6 +720,6 @@
         <value>Sorry</value>
     </data>
     <data name="ImpossibleEnableBiometric" xml:space="preserve">
-        <value>It is impossible to enable biometric login</value>
+        <value>It is impossible to enable biometric authentication</value>
     </data>
 </root>

@@ -103,7 +103,7 @@ namespace atomex.Views.Popup
                 {
                     string walletName = Path.GetFileName(Path.GetDirectoryName(_settingsViewModel.AtomexApp.Account.Wallet.PathToWallet));
                     await SecureStorage.SetAsync("UseBiometric", true.ToString());
-                    await SecureStorage.SetAsync(_settingsViewModel.AtomexApp.Account.Wallet.PathToWallet, PasswordEntry.Text);
+                    await SecureStorage.SetAsync(walletName, PasswordEntry.Text);
                     OnCloseButtonClicked(this, EventArgs.Empty);
                 }
                 catch (Exception ex)
