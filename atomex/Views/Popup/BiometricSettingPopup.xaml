@@ -18,17 +18,16 @@
     </rg:PopupPage.Animation>
     <ScrollView x:Name="Popup">
         <controls:CustomFrame CornerRadius="20"
-                               Padding="0"
-                               Margin="20,0"
-                               HasShadow="True"
-                               x:Name="Content"
-                               HorizontalOptions="FillAndExpand"
-                               HeightRequest="240"
-                               VerticalOptions="Center"
-                               BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}"
-                               BorderColor="{AppThemeBinding Dark={StaticResource PopupFrameBorderColorDark}, Light={StaticResource PopupFrameBorderColor}}">
-            <StackLayout>
-                <StackLayout Padding="20"
+                              Padding="0"
+                              Margin="20,0"
+                              HasShadow="False"
+                              x:Name="Content"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="210"
+                              VerticalOptions="Center"
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <StackLayout Padding="20,10,20,0"
                              VerticalOptions="Center"
                              HorizontalOptions="FillAndExpand"
                              Spacing="0">
@@ -85,7 +84,7 @@
                     <Label x:Name="Error"
                            Text="{x:Static resources:AppResources.InvalidPassword}"
                            Style="{DynamicResource ErrorTextStyle}"
-                           Padding="0,5"
+                           Padding="5"
                            Margin="0"
                            IsVisible="False"/>
                 </StackLayout>
@@ -105,6 +104,7 @@
                     <Button Grid.Column="1"
                             Text="{x:Static resources:AppResources.AcceptButton}"
                             Style="{DynamicResource PopupAcceptButtonStyle}"
+                            VerticalOptions="FillAndExpand"
                             x:Name="EnableButton"
                             Clicked="OnEnableButtonClicked"/>
                 </Grid>
