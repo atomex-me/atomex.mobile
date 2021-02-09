@@ -109,6 +109,9 @@
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
         <value>Create new wallet</value>
     </data>
+    <data name="RestoreWalletPageTitle" xml:space="preserve">
+        <value>Restore wallet</value>
+    </data>
     <data name="WalletTypeStepLabel" xml:space="preserve">
         <value>Step 1: Wallet type</value>
     </data>
