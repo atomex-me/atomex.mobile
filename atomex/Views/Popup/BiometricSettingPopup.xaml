@@ -17,15 +17,15 @@
                        HasBackgroundAnimation="True"/>
     </rg:PopupPage.Animation>
     <ScrollView x:Name="Popup">
-        <controls:CustomFrame CornerRadius="20"
-                              Padding="0"
-                              Margin="20,0"
-                              HasShadow="False"
-                              x:Name="Content"
-                              HorizontalOptions="FillAndExpand"
-                              HeightRequest="210"
-                              VerticalOptions="Center"
-                              BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <Frame CornerRadius="20"
+               Padding="0"
+               Margin="20,0"
+               HasShadow="False"
+               x:Name="Content"
+               HorizontalOptions="FillAndExpand"
+               HeightRequest="210"
+               VerticalOptions="Center"
+               BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
             <StackLayout Spacing="0">
                 <StackLayout Padding="20,10,20,0"
                              VerticalOptions="Center"
@@ -109,6 +109,6 @@
                             Clicked="OnEnableButtonClicked"/>
                 </Grid>
             </StackLayout>
-        </controls:CustomFrame>
+        </Frame>
     </ScrollView>
 </rg:PopupPage>
