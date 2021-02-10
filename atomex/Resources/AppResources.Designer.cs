@@ -209,15 +209,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string UseFingerprint {
+        internal static string UseBiometric {
             get {
-                return ResourceManager.GetString("UseFingerprint", resourceCulture);
+                return ResourceManager.GetString("UseBiometric", resourceCulture);
             }
         }
         
         internal static string CreateNewWalletPageTitle {
             get {
                 return ResourceManager.GetString("CreateNewWalletPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string RestoreWalletPageTitle {
+            get {
+                return ResourceManager.GetString("RestoreWalletPageTitle", resourceCulture);
             }
         }
         
@@ -767,6 +773,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string RewardForRedeemLabel {
+            get {
+                return ResourceManager.GetString("RewardForRedeemLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TotalNetworkFeeLabel {
+            get {
+                return ResourceManager.GetString("TotalNetworkFeeLabel", resourceCulture);
+            }
+        }
+        
         internal static string SettingsPageTitle {
             get {
                 return ResourceManager.GetString("SettingsPageTitle", resourceCulture);
@@ -800,6 +818,12 @@ namespace atomex.Resources {
         internal static string PeriodOfInactiveLabel {
             get {
                 return ResourceManager.GetString("PeriodOfInactiveLabel", resourceCulture);
+            }
+        }
+        
+        internal static string UseBiometricLabel {
+            get {
+                return ResourceManager.GetString("UseBiometricLabel", resourceCulture);
             }
         }
         
@@ -854,6 +878,12 @@ namespace atomex.Resources {
         internal static string SettingsTab {
             get {
                 return ResourceManager.GetString("SettingsTab", resourceCulture);
+            }
+        }
+        
+        internal static string EnableBiometricLabel {
+            get {
+                return ResourceManager.GetString("EnableBiometricLabel", resourceCulture);
             }
         }
         
@@ -1244,6 +1274,60 @@ namespace atomex.Resources {
         internal static string RemoveTxWarning {
             get {
                 return ResourceManager.GetString("RemoveTxWarning", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateApp {
+            get {
+                return ResourceManager.GetString("UpdateApp", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        internal static string NotSupportSecureStorage {
+            get {
+                return ResourceManager.GetString("NotSupportSecureStorage", resourceCulture);
+            }
+        }
+        
+        internal static string NeedPermissionsForBiometricLogin {
+            get {
+                return ResourceManager.GetString("NeedPermissionsForBiometricLogin", resourceCulture);
+            }
+        }
+        
+        internal static string NotAuthenticated {
+            get {
+                return ResourceManager.GetString("NotAuthenticated", resourceCulture);
+            }
+        }
+        
+        internal static string SorryLabel {
+            get {
+                return ResourceManager.GetString("SorryLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ImpossibleEnableBiometric {
+            get {
+                return ResourceManager.GetString("ImpossibleEnableBiometric", resourceCulture);
             }
         }
     }

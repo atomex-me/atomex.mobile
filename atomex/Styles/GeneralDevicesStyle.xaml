@@ -46,6 +46,7 @@
     <Style x:Key="EntryStyle" TargetType="Entry">
         <Setter Property="IsSpellCheckEnabled" Value="False"/>
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="ReturnType" Value="Done"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="VerticalOptions" Value="FillAndExpand"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
@@ -393,6 +394,15 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="HeightRequest" Value="16"/>
     </Style>
+    <Style x:Key="TxInfoCopyButtonStyle" TargetType="ImageButton">
+        <Setter Property="WidthRequest" Value="32"/>
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="End"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Margin" Value="20,0,0,5"/>
+    </Style>
 
     <!-- Delegate Page -->
     <Style x:Key="DelegationLoaderStyle" TargetType="ActivityIndicator">
@@ -501,5 +511,23 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"/>
         <Setter Property="RowHeight" Value="70"/>
         <Setter Property="HeightRequest" Value="280"/>
+    </Style>
+
+    <!-- Popup -->
+    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+    </Style>
+    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBorderColorDark}, Light={StaticResource DisabledButtonBorderColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+    </Style>
+    <Style x:Key="EnableBiometricTextStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>

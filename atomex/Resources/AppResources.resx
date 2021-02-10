@@ -23,7 +23,7 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
-     <data name="MainNetButton" xml:space="preserve">
+    <data name="MainNetButton" xml:space="preserve">
         <value>MainNet</value>
     </data>
     <data name="TestNetButton" xml:space="preserve">
@@ -101,13 +101,16 @@
     <data name="UnlockButton" xml:space="preserve">
         <value>Unlock</value>
     </data>
-    <data name="UseFingerprint" xml:space="preserve">
-        <value>Use your fingerprint to sign in </value>
+    <data name="UseBiometric" xml:space="preserve">
+        <value>Use biometric authentication to login into </value>
     </data>
     
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
         <value>Create new wallet</value>
+    </data>
+    <data name="RestoreWalletPageTitle" xml:space="preserve">
+        <value>Restore wallet</value>
     </data>
     <data name="WalletTypeStepLabel" xml:space="preserve">
         <value>Step 1: Wallet type</value>
@@ -417,7 +420,12 @@
     <data name="MakerFeeLabel" xml:space="preserve">
         <value>Maker fee</value>
     </data>
-
+    <data name="RewardForRedeemLabel" xml:space="preserve">
+        <value>Reward for redeem</value>
+    </data>
+    <data name="TotalNetworkFeeLabel" xml:space="preserve">
+        <value>Total network fee</value>
+    </data>
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
@@ -443,6 +451,9 @@
     </data>
     <data name="PeriodOfInactiveLabel" xml:space="preserve">
         <value>Period of inactive</value>
+    </data>
+    <data name="UseBiometricLabel" xml:space="preserve">
+        <value>Biometric authentication</value>
     </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
@@ -475,6 +486,11 @@
     </data>
     <data name="SettingsTab" xml:space="preserve">
         <value>Settings</value>
+    </data>
+    
+    <!-- Biometric setting popup -->
+    <data name="EnableBiometricLabel" xml:space="preserve">
+        <value>Please, enter your password to enable biometric authentication</value>
     </data>
     
     <!-- Messages -->
@@ -546,11 +562,11 @@
     </data>
     <data name="TotalNetworkFeeDetail" xml:space="preserve">
         <value>
-Payment fee: {0} {1}
-Redeem fee: {2} {3}
-Maker fee: {4} {5}
+{0}: {1} {2}
+{3}: {4} {5}
+{6}: {7} {8}
             
-Total network fee: {6}
+{9}: {10}
         </value>
     </data>
     <data name="LowFees" xml:space="preserve">
@@ -681,5 +697,32 @@ Total network fee: {6}
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
         <value>This action affects only the local database and does not affect the blockchain</value>
+    </data>
+    <data name="UpdateApp" xml:space="preserve">
+        <value>There is a new version of this app available. Would you like to update now?</value>
+    </data>
+    <data name="UpdateAvailable" xml:space="preserve">
+        <value>Update available</value>
+    </data>
+    <data name="Yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="No" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="NotSupportSecureStorage" xml:space="preserve">
+        <value>Device doesn't support secure storage on device</value>
+    </data>
+    <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
+        <value>Please, enable biometric authentication in the device settings</value>
+    </data>
+    <data name="NotAuthenticated" xml:space="preserve">
+        <value>You were not authenticated</value>
+    </data>
+    <data name="SorryLabel" xml:space="preserve">
+        <value>Sorry</value>
+    </data>
+    <data name="ImpossibleEnableBiometric" xml:space="preserve">
+        <value>It is impossible to enable biometric authentication</value>
     </data>
 </root>

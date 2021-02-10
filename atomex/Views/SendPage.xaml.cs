@@ -77,6 +77,17 @@ namespace atomex
         private void AddressEntryFocused(object sender, FocusEventArgs args)
         {
             //AddressFrame.HasShadow = args.IsFocused;
+            AddressLabel.IsVisible = !args.IsFocused;
+            if (!args.IsFocused)
+                Address.TextColor = Color.Transparent;
+            else
+            {
+                string textColorName = "MainTextColor";
+                if (App.Current.RequestedTheme == OSAppTheme.Dark)
+                    textColorName = "MainTextColorDark";
+                App.Current.Resources.TryGetValue(textColorName, out var textColor);
+                Address.TextColor = (Color)textColor;
+            }
         }
 
         private void OnAddressEntryTapped(object sender, EventArgs args)
@@ -218,7 +229,9 @@ namespace atomex
             if (Clipboard.HasText)
             {
                 var text = await Clipboard.GetTextAsync();
-                Address.Text = text;
+                Address.TextColor = Color.Transparent;
+                _sendViewModel.To = text;
+                AddressLabel.IsVisible = true;
             }
             else
             {

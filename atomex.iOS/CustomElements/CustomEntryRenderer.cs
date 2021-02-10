@@ -32,16 +32,6 @@ namespace atomex.iOS
                     Control.LeftViewMode = UITextFieldViewMode.Always;
                 }
             }
-
-            //if (e.PropertyName == "IsFocused")
-            //{
-            //    if (Element.IsFocused)
-            //    {
-            //        Control.Layer.BorderColor = UIColor.Gray.CGColor;
-            //        Control.Layer.BorderWidth = 1;
-            //        Control.Layer.CornerRadius = 6;
-            //    }
-            //}
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
@@ -50,8 +40,8 @@ namespace atomex.iOS
             if (Element == null)
                 return;
             // Check only for Numeric keyboard
-            //if (this.Element.Keyboard == Keyboard.Numeric)
-            this.AddDoneButton();
+            if (this.Element.Keyboard == Keyboard.Numeric)
+                this.AddDoneButton();
         }
         /// <summary>
         /// <para>Add toolbar with Done button</para>

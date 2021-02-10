@@ -103,12 +103,22 @@ namespace atomex.Views.CreateSwap
             string message = string.Format(
                    CultureInfo.InvariantCulture,
                    AppResources.TotalNetworkFeeDetail,
+                   AppResources.PaymentFeeLabel,
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFeeInBase:(0.00$)}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
+                   _conversionViewModel.HasRewardForRedeem ?
+                       AppResources.RewardForRedeemLabel :
+                       AppResources.RedeemFeeLabel,
+                   _conversionViewModel.HasRewardForRedeem ? 
+                       FormattableString.Invariant($"{_conversionViewModel.RewardForRedeem} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}") :
+                       FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
+                   _conversionViewModel.HasRewardForRedeem ?
+                       FormattableString.Invariant($"{_conversionViewModel.RewardForRedeemInBase:(0.00$)}") :
+                       FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
+                   AppResources.MakerFeeLabel,
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                   AppResources.TotalNetworkFeeLabel,
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalNetworkFeeInBase:0.00$}"));
 
             await DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);

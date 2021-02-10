@@ -26,7 +26,7 @@ namespace atomex
             _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
 
-            //BiometricAuth(this, EventArgs.Empty);
+            BiometricAuth(this, EventArgs.Empty);
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
@@ -125,17 +125,27 @@ namespace atomex
 
         private async void BiometricAuth(object sender, EventArgs e)
         {
-            bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync(false);
+            try
+            {
+                bool.TryParse(await SecureStorage.GetAsync("UseBiometric"), out bool useBiometric);
+                if (!useBiometric)
+                    return;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                return;
+            }
+            bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync();
             if (isFingerprintAvailable)
             {
                 AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
                         "Authentication",
-                        AppResources.UseFingerprint + $"'{_unlockViewModel.WalletName}'");
+                        AppResources.UseBiometric + $"'{_unlockViewModel.WalletName}'");
 
                 var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);
                 if (authResult.Authenticated)
                 {
-                    //Success  
                     try
                     {
                         string pswd = await SecureStorage.GetAsync(_unlockViewModel.WalletName);
@@ -144,13 +154,12 @@ namespace atomex
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex, "Device doesn't support secure storage on device");
-                        // Possible that device doesn't support secure storage on device.
+                        Log.Error(ex, AppResources.NotSupportSecureStorage);
                     }
                 }
                 else
                 {
-                    await DisplayAlert("Sorry", "You were not authenticated", AppResources.AcceptButton);
+                    await DisplayAlert(AppResources.SorryLabel, AppResources.NotAuthenticated, AppResources.AcceptButton);
                 }
             }
         }

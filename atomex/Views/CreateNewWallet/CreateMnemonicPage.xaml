@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:atomex.Resources"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
-             Title="{x:Static resources:AppResources.CreateNewWalletPageTitle}"
+             Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView>
         <StackLayout HorizontalOptions="CenterAndExpand"
