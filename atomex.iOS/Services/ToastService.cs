@@ -26,6 +26,9 @@ namespace atomex.iOS.Services
         {
             UIWindow window = UIApplication.SharedApplication.KeyWindow;
 
+            if (window.GetType().Name != "UIWindow")
+                return;
+
             if (ToastView == null || !initAppTheme.Equals(appTheme))
             {
                 ToastView = new UIView();
@@ -79,8 +82,10 @@ namespace atomex.iOS.Services
                 topConstraint = ToastView.TopAnchor.ConstraintEqualTo(window.SafeAreaLayoutGuide.TopAnchor, 60);
                 centerConstraint = ToastView.CenterYAnchor.ConstraintEqualTo(window.SafeAreaLayoutGuide.CenterYAnchor, 0);
             }
-
-            window.AddSubview(ToastView);
+            else
+            {
+                window.AddSubview(ToastView);
+            }
 
             if (ToastView.Alpha == 1)
             {
