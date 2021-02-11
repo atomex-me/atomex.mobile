@@ -25,6 +25,7 @@ namespace atomex.Views.Popup
 
         public async void OnCloseButtonClicked(object sender, EventArgs args)
         {
+            _settingsViewModel.SetPassword(string.Empty);
             try
             {
                 bool.TryParse(await SecureStorage.GetAsync("UseBiometric"), out bool useBiometric);
