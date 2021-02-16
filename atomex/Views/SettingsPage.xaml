@@ -203,6 +203,44 @@
                             CornerRadius="10"
                             Clicked="OnSignOutButtonClicked"/>
                 </custom:CustomFrame>
+                <Label Text="{x:Static resources:AppResources.WalletsSection}"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="Center"
+                       TextTransform="Uppercase"
+                       Padding="20,25,20,5"/>
+                <Frame CornerRadius="10"
+                       Style="{DynamicResource EntryFrameStyle}"
+                       Padding="20,5">
+                    <StackLayout BindableLayout.ItemsSource="{Binding Wallets}"
+                                 BackgroundColor="Transparent"
+                                 Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             HeightRequest="40">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding Name}" Tapped="OnWalletTapped"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <Image WidthRequest="20"
+                                           HeightRequest="20"
+                                           Source="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
+                                    <Label Text="{Binding Description}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           Padding="6,0"
+                                           FontSize="12"
+                                           VerticalTextAlignment="Center"/>
+                                    <Image WidthRequest="16"
+                                           HeightRequest="16"
+                                           HorizontalOptions="EndAndExpand"
+                                           Source="ic_delete"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </Frame>
             <!--<TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>

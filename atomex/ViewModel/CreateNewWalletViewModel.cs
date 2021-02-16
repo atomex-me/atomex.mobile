@@ -195,7 +195,6 @@ namespace atomex
         public CreateNewWalletViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-
             Network = Atomex.Core.Network.MainNet;
             Language = Languages.FirstOrDefault();
             Entropy = WordCountToEntropyLength.FirstOrDefault();

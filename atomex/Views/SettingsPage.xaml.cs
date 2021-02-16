@@ -7,6 +7,9 @@ using Plugin.Fingerprint;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Plugin.Fingerprint.Abstractions;
+using System.Globalization;
+using atomex.Common;
+using System.Linq;
 
 namespace atomex
 {
@@ -75,6 +78,24 @@ namespace atomex
         private void OnTelegramTapped(object sender, EventArgs args)
         {
             Launcher.OpenAsync(new Uri("https://t.me/atomex_official"));
+        }
+
+        async void OnWalletTapped(object sender, EventArgs e)
+        {
+            var walletName = ((TappedEventArgs)e).Parameter.ToString();
+            WalletInfo selectedWallet = _settingsViewModel.Wallets.Where(w => w.Name == walletName).Single();
+
+            var confirm = await DisplayAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
+            if (confirm)
+            {
+                var confirm2 = await DisplayAlert(AppResources.DeletingWallet, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+                if (confirm2)
+                {
+                    _settingsViewModel.DeleteWallet(selectedWallet.Path);
+                    if (_settingsViewModel.AtomexApp.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
+                        _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
     }
 }

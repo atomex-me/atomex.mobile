@@ -48,6 +48,7 @@ namespace atomex.Common
             }
 
             var walletsDirectory = new DirectoryInfo(walletsFolder);
+            string s = walletsDirectory.FullName;
             foreach (var directory in walletsDirectory.GetDirectories())
             {
                 var walletFile = directory
@@ -67,10 +68,12 @@ namespace atomex.Common
                                 : Network.TestNet;
                         }
 
+                        string path = System.IO.Path.Combine(walletsFolder, directory.Name, walletFile.Name);
+
                         result.Add(new WalletInfo
                         {
                             Name = directory.Name,
-                            Path = walletFile.FullName,
+                            Path = path,
                             Network = type
                         });
                     }
