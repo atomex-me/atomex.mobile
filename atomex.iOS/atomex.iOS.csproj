@@ -231,6 +231,10 @@
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__white.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -369,6 +373,7 @@
     <Folder Include="Assets.xcassets\ic_refund.imageset\" />
     <Folder Include="Assets.xcassets\ic_support.imageset\" />
     <Folder Include="Assets.xcassets\ic_question.imageset\" />
+    <Folder Include="Assets.xcassets\ic_delete.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

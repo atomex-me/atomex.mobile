@@ -23,6 +23,12 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
+    <data name="UnderstandButton" xml:space="preserve">
+        <value>I understand</value>
+    </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Delete</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>MainNet</value>
     </data>
@@ -231,9 +237,6 @@
     </data>
     <data name="ShowInExplorerButton" xml:space="preserve">
         <value>Show in explorer</value>
-    </data>
-    <data name="DeleteButton" xml:space="preserve">
-        <value>Delete</value>
     </data>
     
     <!-- Send Page -->
@@ -455,11 +458,23 @@
     <data name="UseBiometricLabel" xml:space="preserve">
         <value>Biometric authentication</value>
     </data>
+    <data name="DeletingWallet" xml:space="preserve">
+        <value>Deleting Wallet</value>
+    </data>
+    <data name="DeletingWalletText" xml:space="preserve">
+        <value>Deleting wallet may result in the loss of your funds</value>
+    </data>
+    <data name="DeletingWalletConfirmationText" xml:space="preserve">
+        <value>Are you sure you want to delete the wallet "{0}"?</value>
+    </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
     </data>
     <data name="CommunitySection" xml:space="preserve">
         <value>Community</value>
+    </data>
+    <data name="WalletsSection" xml:space="preserve">
+        <value>Wallets</value>
     </data>
     <data name="Youtube" xml:space="preserve">
         <value>YouTube</value>

@@ -65,6 +65,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UnderstandButton {
+            get {
+                return ResourceManager.GetString("UnderstandButton", resourceCulture);
+            }
+        }
+        
+        internal static string DeleteButton {
+            get {
+                return ResourceManager.GetString("DeleteButton", resourceCulture);
+            }
+        }
+        
         internal static string MainNetButton {
             get {
                 return ResourceManager.GetString("MainNetButton", resourceCulture);
@@ -440,12 +452,6 @@ namespace atomex.Resources {
         internal static string ShowInExplorerButton {
             get {
                 return ResourceManager.GetString("ShowInExplorerButton", resourceCulture);
-            }
-        }
-        
-        internal static string DeleteButton {
-            get {
-                return ResourceManager.GetString("DeleteButton", resourceCulture);
             }
         }
         
@@ -827,9 +833,33 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string DeletingWallet {
+            get {
+                return ResourceManager.GetString("DeletingWallet", resourceCulture);
+            }
+        }
+        
+        internal static string DeletingWalletText {
+            get {
+                return ResourceManager.GetString("DeletingWalletText", resourceCulture);
+            }
+        }
+        
+        internal static string DeletingWalletConfirmationText {
+            get {
+                return ResourceManager.GetString("DeletingWalletConfirmationText", resourceCulture);
+            }
+        }
+        
         internal static string CommunitySection {
             get {
                 return ResourceManager.GetString("CommunitySection", resourceCulture);
+            }
+        }
+        
+        internal static string WalletsSection {
+            get {
+                return ResourceManager.GetString("WalletsSection", resourceCulture);
             }
         }
         
