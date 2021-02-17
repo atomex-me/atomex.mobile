@@ -6,9 +6,10 @@
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
-    <ScrollView>
+    <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
+                     Spacing="1"
                      Style="{DynamicResource CreateWalletStackLayoutStyle}">
             <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
                    Style="{DynamicResource CreateNewWalletTitleStyle}"/>
@@ -99,12 +100,87 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
+            <StackLayout Orientation="Horizontal"
+                         VerticalOptions="FillAndExpand"
+                         Padding="10">
+                <Label Text="{x:Static resources:AppResources.UseDerivedKeyPswd}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="14"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"/>
+                <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                        IsToggled="{Binding UseDerivedKeyPswd, Mode=TwoWay}"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"/>
+            </StackLayout>
+            <custom:CustomFrame x:Name="PasswordFrame"
+                                CornerRadius="20,20,0,0"
+                                Margin="0,10,0,0"
+                                Style="{DynamicResource EntryFrameStyle}"
+                                IsVisible="{Binding UseDerivedKeyPswd}">
+                <StackLayout HeightRequest="60">
+                    <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                        <Label x:Name="PasswordHint"
+                               Style="{DynamicResource EntryHintStyle}"
+                               VerticalTextAlignment="Center"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                        <custom:CustomEntry x:Name="PasswordEntry"
+                                              Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                              Keyboard="Text"
+                                              Focused="PasswordEntryFocused"
+                                              Unfocused="PasswordEntryFocused"
+                                              IsPassword="True"
+                                              Style="{DynamicResource CustomEntryStyle}"
+                                              TextChanged="OnPasswordTextChanged"
+                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                    </RelativeLayout>
+                </StackLayout>
+            </custom:CustomFrame>
+            <custom:CustomFrame x:Name="PasswordConfirmationFrame"
+                                CornerRadius="0,0,20,20"
+                                Style="{DynamicResource EntryFrameStyle}"
+                                IsVisible="{Binding UseDerivedKeyPswd}">
+                <StackLayout HeightRequest="60">
+                    <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                        <Label x:Name="PasswordConfirmationHint"
+                               Style="{DynamicResource EntryHintStyle}"
+                               VerticalTextAlignment="Center"
+                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                        <custom:CustomEntry x:Name="PasswordConfirmationEntry"
+                                              Placeholder="{x:Static resources:AppResources.PasswordConfirmationEntryPlaceholder}"
+                                              Keyboard="Text"
+                                              Focused="PasswordConfirmationEntryFocused"
+                                              Unfocused="PasswordConfirmationEntryFocused"
+                                              IsPassword="True"
+                                              Style="{DynamicResource CustomEntryStyle}"
+                                              TextChanged="OnPasswordConfirmationTextChanged"
+                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                    </RelativeLayout>
+                </StackLayout>
+            </custom:CustomFrame>
+            <Label Text="{Binding Warning}"
+                   Style="{DynamicResource ErrorTextStyle}">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding Warning}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
             <Frame Style="{DynamicResource EntryFrameStyle}"
                    CornerRadius="10"
                    x:Name="MnemonicPhraseFrame"
                    HorizontalOptions="CenterAndExpand"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource SuccessFrameBackgroundColorDark}, Light={StaticResource SuccessFrameBackgroundColor}}"
-                   Padding="5">
+                   Padding="5"
+                   Margin="0,5">
                 <Label Text="{Binding Mnemonic}"
                        Style="{DynamicResource SuccessTextStyle}"
                        HorizontalTextAlignment="Center"

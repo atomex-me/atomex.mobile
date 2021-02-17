@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -59,6 +60,13 @@ namespace atomex
         {
             get => _title;
             set { _title = value; OnPropertyChanged(nameof(Title)); }
+        }
+
+        private string _warning;
+        public string Warning
+        {
+            get => _warning;
+            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
         }
 
         public List<Atomex.Core.Network> Networks { get; } = new List<Atomex.Core.Network>
@@ -135,7 +143,104 @@ namespace atomex
         public string Mnemonic
         {
             get => _mnemonic;
-            set { _mnemonic = value; OnPropertyChanged(nameof(Mnemonic)); }
+            set
+            {
+                if (_mnemonic != value)
+                {
+                    _mnemonic = value;
+
+                    OnPropertyChanged(nameof(Mnemonic));
+
+                    ResetMnemonicCollections();
+                }
+            }
+        }
+
+        private ObservableCollection<string> _mnemonicSubstr;
+        public ObservableCollection<string> MnemonicSubstr
+        {
+            get => _mnemonicSubstr;
+            set { _mnemonicSubstr = value; OnPropertyChanged(nameof(MnemonicSubstr));}
+        }
+
+        private ObservableCollection<string> _typedMnemonicSubstr;
+        public ObservableCollection<string> TypedMnemonicSubstr
+        {
+            get => _typedMnemonicSubstr;
+            set { _typedMnemonicSubstr = value; OnPropertyChanged(nameof(TypedMnemonicSubstr)); }
+        }
+
+        private bool _mnemonicVeryfied;
+        public bool MnemonicVeryfied
+        {
+            get => _mnemonicVeryfied;
+            set { _mnemonicVeryfied = value; OnPropertyChanged(nameof(MnemonicVeryfied)); }
+        }
+
+        public void ResetMnemonicCollections()
+        {
+            Random rnd = new Random();
+
+            MnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' ').OrderBy(x => rnd.Next()));
+
+            TypedMnemonicSubstr = new ObservableCollection<string>();
+
+            MnemonicVeryfied = false;
+
+            Warning = string.Empty;
+        }
+
+        public void UpdateMnemonicCollections(string word, bool addition)
+        {
+            if (addition)
+            {
+                _typedMnemonicSubstr.Add(word);
+                _mnemonicSubstr.Remove(word);
+            }
+            else
+            {
+                _mnemonicSubstr.Add(word);
+                _typedMnemonicSubstr.Remove(word);
+            }
+            if (_mnemonicSubstr.Count == 0)
+            {
+                string delimiter = " ";
+                string typedMnemonic = _typedMnemonicSubstr.Aggregate((i, j) => i + delimiter + j);
+                if (typedMnemonic != _mnemonic)
+                {
+                    MnemonicVeryfied = false;
+                    Warning = AppResources.WrongWordOrder;
+                }
+                else
+                {
+                    MnemonicVeryfied = true;
+                }
+            }
+            else
+            {
+                MnemonicVeryfied = false;
+                Warning = string.Empty;
+            }
+            OnPropertyChanged(nameof(TypedMnemonicSubstr));
+            OnPropertyChanged(nameof(MnemonicSubstr));
+        }
+
+        private bool _useDerivedKeyPswd;
+        public bool UseDerivedKeyPswd
+        {
+            get => _useDerivedKeyPswd;
+            set
+            {
+                if (_useDerivedKeyPswd != value)
+                {
+                    _useDerivedKeyPswd = value;
+
+                    if (!_useDerivedKeyPswd)
+                        ClearDerivedPswd();
+
+                    OnPropertyChanged(nameof(UseDerivedKeyPswd));
+                }
+            }
         }
 
         private int _derivedPasswordScore;
@@ -299,60 +404,67 @@ namespace atomex
         public void SetPassword(PasswordType pswdType, string pswd)
         {
             SecureString secureString = GenerateSecureString(pswd);
-            if (pswdType == PasswordType.StoragePassword)
+            switch (pswdType)
             {
-                StoragePassword = secureString;
-                return;
-            }
-            if (pswdType == PasswordType.DerivedPassword)
-            {
-                DerivedPassword = secureString;
-                return;
-            }
-            if (pswdType == PasswordType.StoragePasswordConfirmation)
-            {
-                StoragePasswordConfirmation = secureString;
-                return;
-            }
-            if (pswdType == PasswordType.DerivedPasswordConfirmation)
-            {
-                DerivedPasswordConfirmation = secureString;
-                return;
-            }
+                case PasswordType.StoragePassword:
+                    StoragePassword = secureString;
+                    break;
+                case PasswordType.DerivedPassword:
+                    DerivedPassword = secureString;
+                    break;
+                case PasswordType.StoragePasswordConfirmation:
+                    StoragePasswordConfirmation = secureString;
+                    break;
+                case PasswordType.DerivedPasswordConfirmation:
+                    DerivedPasswordConfirmation = secureString;
+                    break;
+                default:
+                    break;
+            }    
         }
 
-        public string CheckDerivedPassword()
+        public void CheckDerivedPassword()
         {
             if (DerivedPassword != null && DerivedPassword.Length > 0)
             {
                 if (DerivedPasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
                 {
-                    return AppResources.PasswordHasInsufficientComplexity;
+                    Warning = AppResources.PasswordHasInsufficientComplexity;
+                    return;
                 }
 
                 if (DerivedPasswordConfirmation != null &&
                     !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
                 {
-                    return AppResources.PasswordsDoNotMatch;
+                    Warning = AppResources.PasswordsDoNotMatch;
+                    return;
                 }
+
+                Warning = string.Empty;
             }
-            return null;
+            else
+            {
+                Warning = AppResources.PasswordHasInsufficientComplexity;
+            }
         }
 
-        public string CheckStoragePassword()
+        public void CheckStoragePassword()
         {
             if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
             {
-                return AppResources.PasswordHasInsufficientComplexity;
+                Warning = AppResources.PasswordHasInsufficientComplexity;
+                return;
             }
 
             if (StoragePassword != null &&
                 StoragePasswordConfirmation != null &&
                 !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
             {
-                return AppResources.PasswordsDoNotMatch;
+                Warning = AppResources.PasswordsDoNotMatch;
+                return;
             }
-            return null;
+
+            Warning = string.Empty;
         }
 
         public void CreateHdWallet()
@@ -426,6 +538,7 @@ namespace atomex
 
         public void ClearDerivedPswd()
         {
+            Warning = string.Empty;
             DerivedPassword = null;
             DerivedPasswordConfirmation = null;
             DerivedPasswordScore = 0;
@@ -433,6 +546,7 @@ namespace atomex
 
         public void ClearStoragePswd()
         {
+            Warning = string.Empty;
             StoragePassword = null;
             StoragePasswordConfirmation = null;
             StoragePasswordScore = 0;

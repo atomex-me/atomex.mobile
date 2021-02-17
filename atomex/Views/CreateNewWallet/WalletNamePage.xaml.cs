@@ -79,6 +79,7 @@ namespace atomex.Views.CreateNewWallet
             var result = _createNewWalletViewModel.SaveWalletName();
             if (result == null)
             {
+                _createNewWalletViewModel.ClearDerivedPswd();
                 if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Create)
                 {
                     await Navigation.PushAsync(new CreateMnemonicPage(_createNewWalletViewModel));

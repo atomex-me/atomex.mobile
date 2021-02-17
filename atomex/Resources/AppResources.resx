@@ -166,6 +166,12 @@
     <data name="DerivedPasswordDescriptionText" xml:space="preserve">
         <value>This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and its password</value>
     </data>
+    <data name="MnemonicVerificationStepLabel" xml:space="preserve">
+        <value>Step 4: Mnemonic phrase verification</value>
+    </data>
+    <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
+        <value>Please, confirm your mnemonic phrase. Click on the words to place them in the correct order</value>
+    </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
         <value>If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
     </data>
@@ -181,6 +187,12 @@
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>
+    </data>
+    <data name="WrongWordOrder" xml:space="preserve">
+        <value>Wrong word order. Try again</value>
+    </data>
+    <data name="UseDerivedKeyPswd" xml:space="preserve">
+        <value>Use derived key password</value>
     </data>
     
     <!-- Portfolio Page -->
