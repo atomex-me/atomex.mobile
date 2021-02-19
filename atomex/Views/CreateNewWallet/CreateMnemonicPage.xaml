@@ -108,7 +108,18 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
                        VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"/>
+                       HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUseDerivedPswdRowTapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Image Source="ic_question"
+                       WidthRequest="16"
+                       HeightRequest="16">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUseDerivedPswdRowTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         IsToggled="{Binding UseDerivedKeyPswd, Mode=TwoWay}"
                         HorizontalOptions="EndAndExpand"
@@ -174,27 +185,33 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Frame Style="{DynamicResource EntryFrameStyle}"
-                   CornerRadius="10"
-                   x:Name="MnemonicPhraseFrame"
-                   HorizontalOptions="CenterAndExpand"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource SuccessFrameBackgroundColorDark}, Light={StaticResource SuccessFrameBackgroundColor}}"
-                   Padding="5"
-                   Margin="0,5">
-                <Label Text="{Binding Mnemonic}"
-                       Style="{DynamicResource SuccessTextStyle}"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="WordWrap">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Mnemonic}"
-                                     Value="">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-            </Frame>
+            <FlexLayout BindableLayout.ItemsSource="{Binding MnemonicSubstr}"
+                        x:Name="MnemonicPhraseFrame"
+                        BackgroundColor="Transparent"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        Padding="10"
+                        AlignItems="Center"
+                        JustifyContent="Center">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{DynamicResource EntryFrameStyle}"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                               CornerRadius="6"
+                               Padding="7"
+                               Margin="3">
+                            <Label Text="{Binding .}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   FontSize="16"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"
+                                   LineBreakMode="NoWrap"
+                                   Padding="6,0"/>
+                        </Frame>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
             <StackLayout Orientation="Horizontal"
                          x:Name="LoseMnemonicPhrase">
                 <Image Source="Warning"

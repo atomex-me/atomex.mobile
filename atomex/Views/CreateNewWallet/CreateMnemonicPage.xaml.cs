@@ -185,5 +185,16 @@ namespace atomex.Views.CreateNewWallet
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPasswordConfirmation, args.NewTextValue);
         }
+
+        private async void OnUseDerivedPswdRowTapped(object sender, EventArgs args)
+        {
+            await DisplayAlert("", AppResources.DerivedPasswordDescriptionText, AppResources.AcceptButton);
+        }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
+        }
     }
 }

@@ -149,7 +149,10 @@ namespace atomex
                 {
                     _mnemonic = value;
 
+                    _mnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' '));
+
                     OnPropertyChanged(nameof(Mnemonic));
+                    OnPropertyChanged(nameof(MnemonicSubstr));
 
                     ResetMnemonicCollections();
                 }
@@ -163,11 +166,18 @@ namespace atomex
             set { _mnemonicSubstr = value; OnPropertyChanged(nameof(MnemonicSubstr));}
         }
 
-        private ObservableCollection<string> _typedMnemonicSubstr;
-        public ObservableCollection<string> TypedMnemonicSubstr
+        private ObservableCollection<string> _sourceMnemonicSubstr;
+        public ObservableCollection<string> SourceMnemonicSubstr
         {
-            get => _typedMnemonicSubstr;
-            set { _typedMnemonicSubstr = value; OnPropertyChanged(nameof(TypedMnemonicSubstr)); }
+            get => _sourceMnemonicSubstr;
+            set { _sourceMnemonicSubstr = value; OnPropertyChanged(nameof(SourceMnemonicSubstr)); }
+        }
+
+        private ObservableCollection<string> _targetMnemonicSubstr;
+        public ObservableCollection<string> TargetMnemonicSubstr
+        {
+            get => _targetMnemonicSubstr;
+            set { _targetMnemonicSubstr = value; OnPropertyChanged(nameof(TargetMnemonicSubstr)); }
         }
 
         private bool _mnemonicVeryfied;
@@ -177,13 +187,20 @@ namespace atomex
             set { _mnemonicVeryfied = value; OnPropertyChanged(nameof(MnemonicVeryfied)); }
         }
 
+        private bool _derivedPswdVeryfied;
+        public bool DerivedPswdVeryfied
+        {
+            get => _derivedPswdVeryfied;
+            set { _derivedPswdVeryfied = value; OnPropertyChanged(nameof(DerivedPswdVeryfied)); }
+        }
+
         public void ResetMnemonicCollections()
         {
             Random rnd = new Random();
 
-            MnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' ').OrderBy(x => rnd.Next()));
+            SourceMnemonicSubstr = new ObservableCollection<string>(MnemonicSubstr.OrderBy(x => rnd.Next()));
 
-            TypedMnemonicSubstr = new ObservableCollection<string>();
+            TargetMnemonicSubstr = new ObservableCollection<string>();
 
             MnemonicVeryfied = false;
 
@@ -194,35 +211,47 @@ namespace atomex
         {
             if (addition)
             {
-                _typedMnemonicSubstr.Add(word);
-                _mnemonicSubstr.Remove(word);
+                _targetMnemonicSubstr.Add(word);
+                _sourceMnemonicSubstr.Remove(word);
             }
             else
             {
-                _mnemonicSubstr.Add(word);
-                _typedMnemonicSubstr.Remove(word);
+                _sourceMnemonicSubstr.Add(word);
+                _targetMnemonicSubstr.Remove(word);
             }
-            if (_mnemonicSubstr.Count == 0)
+            if (_sourceMnemonicSubstr.Count == 0)
             {
                 string delimiter = " ";
-                string typedMnemonic = _typedMnemonicSubstr.Aggregate((i, j) => i + delimiter + j);
-                if (typedMnemonic != _mnemonic)
+                string targetMnemonic = _targetMnemonicSubstr.Aggregate((i, j) => i + delimiter + j);
+  
+                if (targetMnemonic != _mnemonic)
                 {
-                    MnemonicVeryfied = false;
+                    _mnemonicVeryfied = false;
                     Warning = AppResources.WrongWordOrder;
                 }
                 else
                 {
-                    MnemonicVeryfied = true;
+                    _mnemonicVeryfied = true;
+                    if (!_useDerivedKeyPswd)
+                        _derivedPswdVeryfied = true;
+                    else
+                    {
+                        _derivedPswdVeryfied = false;
+                        _derivedPasswordConfirmation = null;
+                        OnPropertyChanged(nameof(DerivedPasswordConfirmation));
+                    }
+                    OnPropertyChanged(nameof(DerivedPswdVeryfied));
                 }
+                OnPropertyChanged(nameof(MnemonicVeryfied));
             }
             else
             {
-                MnemonicVeryfied = false;
+                _mnemonicVeryfied = false;
                 Warning = string.Empty;
+                OnPropertyChanged(nameof(MnemonicVeryfied));
             }
-            OnPropertyChanged(nameof(TypedMnemonicSubstr));
-            OnPropertyChanged(nameof(MnemonicSubstr));
+            OnPropertyChanged(nameof(TargetMnemonicSubstr));
+            OnPropertyChanged(nameof(SourceMnemonicSubstr));
         }
 
         private bool _useDerivedKeyPswd;
@@ -305,18 +334,18 @@ namespace atomex
             Entropy = WordCountToEntropyLength.FirstOrDefault();
         }
 
-        public string SaveWalletName()
+        public void SaveWalletName()
         {
             WalletName = WalletName.Trim();
             if (string.IsNullOrEmpty(WalletName))
             {
-                return AppResources.EmptyWalletName;
+                Warning = AppResources.EmptyWalletName;
             }
 
             if (WalletName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 ||
                 WalletName.IndexOf('.') != -1)
             {
-                return AppResources.InvalidWalletName;
+                Warning = AppResources.InvalidWalletName;
             }
 
             string walletsFolder = null;
@@ -346,45 +375,50 @@ namespace atomex
             }
             catch (Exception)
             {
-                return AppResources.InvalidWalletName;
+                Warning = AppResources.InvalidWalletName;
             }
 
             if (File.Exists(pathToWallet))
             {
-                return AppResources.WalletAlreadyExists;
+                Warning = AppResources.WalletAlreadyExists;
             }
 
             PathToWallet = pathToWallet;
-
-            return null;
-
         }
+
         public void GenerateMnemonic()
         {
             var entropy = Rand.SecureRandomBytes(Entropy.Length / 8);
             Mnemonic = new Mnemonic(Language.Wordlist, entropy).ToString();
         }
 
-        public string WriteMnemonic()
+        public void WriteMnemonic()
         {
             if (string.IsNullOrEmpty(Mnemonic))
             {
-                return AppResources.EmptyMnemonicError;
+                Warning = AppResources.EmptyMnemonicError;
             }
 
             try
             {
                 var unused = new Mnemonic(Mnemonic, Language.Wordlist);
-                return null;
+                return;
             }
             catch (Exception e)
             {
                 if (e.Message.Contains("Word count should be"))
-                    return AppResources.MnemonicWordCountError;
-                else if (e.Message.Contains("is not in the wordlist"))
-                    return AppResources.Word + " " + e.Message.Split(' ')[1] + " " + AppResources.isNotInWordlist;
-                else
-                    return AppResources.InvalidMnemonic;
+                {
+                    Warning = AppResources.MnemonicWordCountError;
+                    return;
+                }
+
+                if (e.Message.Contains("is not in the wordlist"))
+                {
+                    Warning = AppResources.Word + " " + e.Message.Split(' ')[1] + " " + AppResources.isNotInWordlist;
+                    return;
+                }
+
+                Warning = AppResources.InvalidMnemonic;
             }
         }
 
@@ -446,6 +480,24 @@ namespace atomex
             {
                 Warning = AppResources.PasswordHasInsufficientComplexity;
             }
+        }
+
+        public void VerificateDerivedPassword()
+        {
+            if (DerivedPasswordConfirmation != null &&
+                !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
+            {
+                Warning = "Incorrect password";
+                _derivedPswdVeryfied = false;
+                OnPropertyChanged(nameof(DerivedPswdVeryfied));
+                return;
+            }
+
+            _derivedPswdVeryfied = true;
+
+            OnPropertyChanged(nameof(DerivedPswdVeryfied));
+
+            Warning = string.Empty;
         }
 
         public void CheckStoragePassword()
