@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using atomex.Resources;
+using atomex.Services;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -7,6 +9,8 @@ namespace atomex.Views.CreateNewWallet
     public partial class VerificationMnemonicPage : ContentPage
     {
         private CreateNewWalletViewModel _createNewWalletViewModel;
+
+        private IToastService _toastService;
 
         public VerificationMnemonicPage()
         {
@@ -18,6 +22,7 @@ namespace atomex.Views.CreateNewWallet
             InitializeComponent();
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
+            _toastService = DependencyService.Get<IToastService>();
         }
 
         protected override void OnDisappearing()
@@ -30,6 +35,8 @@ namespace atomex.Views.CreateNewWallet
         {
             string word = ((TappedEventArgs)args).Parameter.ToString();
             _createNewWalletViewModel.UpdateMnemonicCollections(word, true);
+            if (_createNewWalletViewModel.DerivedPswdVeryfied)
+                _toastService?.Show(AppResources.Veryfied, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
         }
 
         void OnTargetWordTapped(object sender, EventArgs args)
@@ -59,6 +66,8 @@ namespace atomex.Views.CreateNewWallet
                     Page.ScrollToAsync(0, 0, true);
                     return false;
                 });
+                if (_createNewWalletViewModel.DerivedPswdVeryfied)
+                    _toastService?.Show(AppResources.Veryfied, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
             }
         }
 

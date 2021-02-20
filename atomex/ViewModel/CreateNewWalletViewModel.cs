@@ -187,7 +187,7 @@ namespace atomex
             set { _mnemonicVeryfied = value; OnPropertyChanged(nameof(MnemonicVeryfied)); }
         }
 
-        private bool _derivedPswdVeryfied;
+        private bool _derivedPswdVeryfied = false;
         public bool DerivedPswdVeryfied
         {
             get => _derivedPswdVeryfied;
@@ -487,7 +487,7 @@ namespace atomex
             if (DerivedPasswordConfirmation != null &&
                 !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
             {
-                Warning = "Incorrect password";
+                Warning = AppResources.InvalidPassword;
                 _derivedPswdVeryfied = false;
                 OnPropertyChanged(nameof(DerivedPswdVeryfied));
                 return;

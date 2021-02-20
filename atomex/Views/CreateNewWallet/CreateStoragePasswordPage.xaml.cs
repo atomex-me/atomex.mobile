@@ -174,5 +174,11 @@ namespace atomex.Views.CreateNewWallet
                 await DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
             }
         }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
+        }
     }
 }

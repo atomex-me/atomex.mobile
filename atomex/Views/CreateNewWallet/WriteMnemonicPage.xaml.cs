@@ -61,5 +61,11 @@ namespace atomex.Views.CreateNewWallet
 
             await Navigation.PushAsync(new WriteDerivedKeyPasswordPage(_createNewWalletViewModel));
         }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
+        }
     }
 }

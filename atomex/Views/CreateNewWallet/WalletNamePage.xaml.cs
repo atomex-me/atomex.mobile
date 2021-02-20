@@ -94,5 +94,11 @@ namespace atomex.Views.CreateNewWallet
                 return;
             }
         }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
+        }
     }
 }

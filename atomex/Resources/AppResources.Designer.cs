@@ -347,6 +347,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string DerivedVerificationDescriptionText {
+            get {
+                return ResourceManager.GetString("DerivedVerificationDescriptionText", resourceCulture);
+            }
+        }
+        
         internal static string EnterDerivedPasswordText {
             get {
                 return ResourceManager.GetString("EnterDerivedPasswordText", resourceCulture);
@@ -1382,6 +1388,12 @@ namespace atomex.Resources {
         internal static string ImpossibleEnableBiometric {
             get {
                 return ResourceManager.GetString("ImpossibleEnableBiometric", resourceCulture);
+            }
+        }
+        
+        internal static string Veryfied {
+            get {
+                return ResourceManager.GetString("Veryfied", resourceCulture);
             }
         }
     }

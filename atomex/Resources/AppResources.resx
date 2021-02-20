@@ -172,6 +172,9 @@
     <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
         <value>Please, confirm your mnemonic phrase. Click on the words to place them in the correct order</value>
     </data>
+    <data name="DerivedVerificationDescriptionText" xml:space="preserve">
+        <value>Please, enter your derived key password</value>
+    </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
         <value>If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
     </data>
@@ -751,5 +754,8 @@
     </data>
     <data name="ImpossibleEnableBiometric" xml:space="preserve">
         <value>It is impossible to enable biometric authentication</value>
+    </data>
+    <data name="Veryfied" xml:space="preserve">
+        <value>Veryfied!</value>
     </data>
 </root>

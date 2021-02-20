@@ -101,7 +101,6 @@
                 </Image>
             </Grid>
             <StackLayout Orientation="Horizontal"
-                         VerticalOptions="FillAndExpand"
                          Padding="10">
                 <Label Text="{x:Static resources:AppResources.UseDerivedKeyPswd}"
                        FontFamily="{DynamicResource RegularFont}"

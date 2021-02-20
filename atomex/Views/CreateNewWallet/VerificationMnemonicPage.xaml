@@ -30,7 +30,6 @@
                 </Grid.Triggers>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <FlexLayout BindableLayout.ItemsSource="{Binding TargetMnemonicSubstr}"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -61,21 +60,6 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-                <Label Text="{Binding Warning}"
-                       Grid.Row="1"
-                       Style="{DynamicResource ErrorTextStyle}"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                       Margin="0"
-                       Padding="20,0,20,10">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                 Binding="{Binding Warning}"
-                                 Value="">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
             </Grid>
             <FlexLayout BindableLayout.ItemsSource="{Binding SourceMnemonicSubstr}"
                         BackgroundColor="Transparent"
@@ -106,36 +90,53 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </FlexLayout>
-            <custom:CustomFrame x:Name="PasswordFrame"
-                                CornerRadius="10"
-                                Margin="30,0"
-                                Style="{DynamicResource EntryFrameStyle}">
-                <custom:CustomFrame.IsVisible>
+            <StackLayout Spacing="0"
+                         Margin="30,0">
+                <StackLayout.IsVisible>
                     <MultiBinding Converter="{StaticResource AllTrueConverter}">
                         <Binding Path="MnemonicVeryfied" Mode="OneWay" />
                         <Binding Path="UseDerivedKeyPswd" Mode="OneWay" />
                     </MultiBinding>
-                </custom:CustomFrame.IsVisible>
-                <StackLayout HeightRequest="60">
-                    <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
-                        <Label x:Name="PasswordHint"
-                               Style="{DynamicResource EntryHintStyle}"
-                               VerticalTextAlignment="Center"
-                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
-                        <custom:CustomEntry x:Name="PasswordEntry"
-                                              Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
-                                              Keyboard="Text"
-                                              Focused="PasswordEntryFocused"
-                                              Unfocused="PasswordEntryFocused"
-                                              IsPassword="True"
-                                              Style="{DynamicResource CustomEntryStyle}"
-                                              TextChanged="OnPasswordTextChanged"
-                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
-                    </RelativeLayout>
-                </StackLayout>
-            </custom:CustomFrame>
+                </StackLayout.IsVisible>
+                <Label Text="{x:Static resources:AppResources.DerivedVerificationDescriptionText}"
+                       Style="{DynamicResource CreateNewWalletTextStyle}"
+                       Margin="0,0,0,10"/>
+                <custom:CustomFrame x:Name="PasswordFrame"
+                                    CornerRadius="10"
+                                    Style="{DynamicResource EntryFrameStyle}">
+                    <StackLayout HeightRequest="60">
+                        <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                            <Label x:Name="PasswordHint"
+                                   Style="{DynamicResource EntryHintStyle}"
+                                   VerticalTextAlignment="Center"
+                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            <custom:CustomEntry x:Name="PasswordEntry"
+                                                Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                Keyboard="Text"
+                                                Focused="PasswordEntryFocused"
+                                                Unfocused="PasswordEntryFocused"
+                                                IsPassword="True"
+                                                Style="{DynamicResource CustomEntryStyle}"
+                                                TextChanged="OnPasswordTextChanged"
+                                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                        </RelativeLayout>
+                    </StackLayout>
+                </custom:CustomFrame>
+            </StackLayout>
+            <Label Text="{Binding Warning}"
+                   Style="{DynamicResource ErrorTextStyle}"
+                   Margin="0">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding Warning}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     IsEnabled="{Binding MnemonicVeryfied}"
                     Style="{DynamicResource MainButtonStyle}"
@@ -147,26 +148,6 @@
                         <Binding Path="DerivedPswdVeryfied" Mode="OneWay" />
                     </MultiBinding>
                 </Button.IsVisible>
-                <!--<Button.Triggers>
-                    <DataTrigger TargetType="Button"
-                                 Binding="{Binding MnemonicVeryfied}"
-                                 Value="True">
-                        <Setter Property="Opacity"
-                                Value="1"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Button"
-                                 Binding="{Binding MnemonicVeryfied}"
-                                 Value="False">
-                        <Setter Property="Opacity"
-                                Value="0.7"/>
-                        <Setter Property="BackgroundColor"
-                                Value="LightGray"/>
-                        <Setter Property="BorderColor"
-                                Value="LightGray"/>
-                        <Setter Property="TextColor"
-                                Value="Gray"/>
-                    </DataTrigger>
-                </Button.Triggers>-->
             </Button>
         </StackLayout>
     </ScrollView>
