@@ -188,32 +188,34 @@
             <StackLayout Spacing="0"
                          x:Name="MnemonicPhraseFrame"
                          Margin="0,10">
-                <FlexLayout BindableLayout.ItemsSource="{Binding MnemonicSubstr}"
-                        BackgroundColor="Transparent"
-                        Direction="Row"
-                        Wrap="Wrap"
-                        AlignItems="Center"
-                        JustifyContent="Center">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Style="{DynamicResource EntryFrameStyle}"
-                                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                   CornerRadius="6"
-                                   Padding="0"
-                                   Margin="3"
-                                   HeightRequest="36">
-                                <Label Text="{Binding .}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="16"
-                                       VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="Center"
-                                       LineBreakMode="WordWrap"
-                                       Padding="8,0"/>
-                            </Frame>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </FlexLayout>
+                <StackLayout>
+                    <FlexLayout BindableLayout.ItemsSource="{Binding MnemonicSubstr}"
+                            BackgroundColor="Transparent"
+                            Direction="Row"
+                            Wrap="Wrap"
+                            AlignItems="Center"
+                            JustifyContent="Center">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{DynamicResource EntryFrameStyle}"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                       CornerRadius="6"
+                                       Padding="0"
+                                       Margin="3"
+                                       HeightRequest="36">
+                                    <Label Text="{Binding .}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="16"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Center"
+                                           LineBreakMode="WordWrap"
+                                           Padding="8,0"/>
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </StackLayout>
             </StackLayout>
             <StackLayout Orientation="Horizontal"
                          x:Name="LoseMnemonicLabel">
