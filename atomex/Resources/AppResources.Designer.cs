@@ -335,6 +335,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MnemonicVerificationStepLabel {
+            get {
+                return ResourceManager.GetString("MnemonicVerificationStepLabel", resourceCulture);
+            }
+        }
+        
+        internal static string MnemonicVerificationDescriptionText {
+            get {
+                return ResourceManager.GetString("MnemonicVerificationDescriptionText", resourceCulture);
+            }
+        }
+        
+        internal static string DerivedVerificationDescriptionText {
+            get {
+                return ResourceManager.GetString("DerivedVerificationDescriptionText", resourceCulture);
+            }
+        }
+        
         internal static string EnterDerivedPasswordText {
             get {
                 return ResourceManager.GetString("EnterDerivedPasswordText", resourceCulture);
@@ -356,6 +374,18 @@ namespace atomex.Resources {
         internal static string CreateButton {
             get {
                 return ResourceManager.GetString("CreateButton", resourceCulture);
+            }
+        }
+        
+        internal static string WrongWordOrder {
+            get {
+                return ResourceManager.GetString("WrongWordOrder", resourceCulture);
+            }
+        }
+        
+        internal static string UseDerivedKeyPswd {
+            get {
+                return ResourceManager.GetString("UseDerivedKeyPswd", resourceCulture);
             }
         }
         
@@ -1358,6 +1388,12 @@ namespace atomex.Resources {
         internal static string ImpossibleEnableBiometric {
             get {
                 return ResourceManager.GetString("ImpossibleEnableBiometric", resourceCulture);
+            }
+        }
+        
+        internal static string Veryfied {
+            get {
+                return ResourceManager.GetString("Veryfied", resourceCulture);
             }
         }
     }

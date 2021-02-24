@@ -58,10 +58,6 @@
       <DependentUpon>WalletNamePage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\CreateDerivedKeyPasswordPage.xaml.cs">
-      <DependentUpon>CreateDerivedKeyPasswordPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\CreateNewWallet\CreateStoragePasswordPage.xaml.cs">
       <DependentUpon>CreateStoragePasswordPage.xaml</DependentUpon>
       <SubType>Code</SubType>
