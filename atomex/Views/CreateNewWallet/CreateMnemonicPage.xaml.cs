@@ -21,9 +21,9 @@ namespace atomex.Views.CreateNewWallet
             _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
             if (!string.IsNullOrEmpty(createNewWalletViewModel.Mnemonic))
-                LoseMnemonicPhrase.IsVisible = true;
+                LoseMnemonicLabel.IsVisible = true;
             else
-                LoseMnemonicPhrase.IsVisible = false;
+                LoseMnemonicLabel.IsVisible = false;
         }
 
         private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
@@ -46,18 +46,39 @@ namespace atomex.Views.CreateNewWallet
             WordCountPicker.Focus();
         }
 
+        private void OnUseDerivedPswdToggled(object sender, ToggledEventArgs args)
+        {
+            if (args.Value)
+            {
+                PasswordEntry.Focus();
+            }
+            else
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, 20, true);
+                    return false;
+                });
+            }
+        }
+
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
             {
                 _createNewWalletViewModel.GenerateMnemonic();
                 MnemonicPhraseFrame.Opacity = 0;
-                LoseMnemonicPhrase.IsVisible = true;
+                LoseMnemonicLabel.IsVisible = true;
                 MnemonicPhraseFrame.IsVisible = true;
                 await Task.WhenAll(
-                    MnemonicPhraseFrame.FadeTo(1, 500, Easing.Linear),
-                    LoseMnemonicPhrase.FadeTo(1, 500, Easing.Linear)
+                    MnemonicPhraseFrame.FadeTo(1, 250, Easing.Linear),
+                    LoseMnemonicLabel.FadeTo(1, 250, Easing.Linear)
                 );
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, MnemonicPhraseFrame.Height, true);
+                    return false;
+                });
                 return;
             }
             if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
@@ -82,9 +103,9 @@ namespace atomex.Views.CreateNewWallet
             {
                 MnemonicPhraseFrame.IsVisible = false;
                 await Task.WhenAll(
-                    LoseMnemonicPhrase.FadeTo(0, 500, Easing.Linear)
+                    LoseMnemonicLabel.FadeTo(0, 500, Easing.Linear)
                 );
-                LoseMnemonicPhrase.IsVisible = false;
+                LoseMnemonicLabel.IsVisible = false;
             }
         }
 
@@ -105,7 +126,7 @@ namespace atomex.Views.CreateNewWallet
             {
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
-                    Page.ScrollToAsync(0, 0, true);
+                    Page.ScrollToAsync(0, PasswordConfirmationFrame.Height, true);
                     return false;
                 });
             }
@@ -154,7 +175,7 @@ namespace atomex.Views.CreateNewWallet
             {
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
-                    Page.ScrollToAsync(0, 0, true);
+                    Page.ScrollToAsync(0, MnemonicPhraseFrame.Height + LoseMnemonicLabel.Height, true);
                     return false;
                 });
             }

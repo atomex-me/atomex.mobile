@@ -204,6 +204,8 @@ namespace atomex
 
             MnemonicVeryfied = false;
 
+            DerivedPswdVeryfied = false;
+
             Warning = string.Empty;
         }
 
