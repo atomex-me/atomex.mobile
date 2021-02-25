@@ -23,13 +23,19 @@
                        WidthRequest="48"
                        VerticalOptions="EndAndExpand"
                        HorizontalOptions="CenterAndExpand"/>
-                <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       VerticalOptions="StartAndExpand"
-                       FontSize="18"
-                       Margin="20"/>
+                <StackLayout VerticalOptions="StartAndExpand"
+                             Margin="20">
+                    <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="18"/>
+                    <Label Text="{x:Static resources:AppResources.SwapHistoryText}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
             </StackLayout>
         
             <ListView ItemsSource="{Binding GroupedSwaps}"
@@ -68,6 +74,20 @@
                          </ViewCell>
                     </DataTemplate>
                 </ListView.GroupHeaderTemplate>
+                <ListView.FooterTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{x:Static resources:AppResources.SwapHistoryText}"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   Padding="20,10"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </ListView.FooterTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">

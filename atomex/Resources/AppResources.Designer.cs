@@ -1396,5 +1396,13 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("Veryfied", resourceCulture);
             }
         }
+
+        internal static string SwapHistoryText
+        {
+            get
+            {
+                return ResourceManager.GetString("SwapHistoryText", resourceCulture);
+            }
+        }
     }
 }
