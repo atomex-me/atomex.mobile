@@ -25,7 +25,9 @@ namespace atomex.ViewModel.ReceiveViewModels
 
                 activeTokenAddresses.ForEach(a => a.Balance = activeAddresses.Find(b => b.Address == a.Address)?.Balance ?? 0m);
 
-                activeAddresses = activeAddresses.Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null).ToList();
+                activeAddresses = activeAddresses
+                         .Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null)
+                         .ToList();
 
                 var freeAddress = AtomexApp.Account
                     .GetFreeExternalAddressAsync(_currencyViewModel.CurrencyCode)
