@@ -16036,7 +16036,7 @@ namespace atomex.Droid
 			public const int ic_youtube = 2131230991;
 			
 			// aapt resource value: 0x7F080110
-			public const int KUSDT = 2131230992;
+			public const int KUSD = 2131230992;
 			
 			// aapt resource value: 0x7F080111
 			public const int LeftRoundedButton = 2131230993;

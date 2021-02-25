@@ -628,11 +628,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\KUSDT.png">
+    <AndroidResource Include="Resources\drawable-night\KUSD.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-night\KUSDT.png">
+    <AndroidResource Include="Resources\drawable\KUSD.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
