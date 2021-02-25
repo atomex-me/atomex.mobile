@@ -758,4 +758,7 @@
     <data name="Veryfied" xml:space="preserve">
         <value>Veryfied!</value>
     </data>
+    <data name="SwapHistoryText" xml:space="preserve">
+        <value>Swap history is stored locally on your device. This means that you do not see the swap operations that were performed with another device.</value>
+    </data>
 </root>
