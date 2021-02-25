@@ -235,6 +235,8 @@
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\KUSDT.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\KUSDT.imageset\kusd_90x90.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -374,6 +376,7 @@
     <Folder Include="Assets.xcassets\ic_support.imageset\" />
     <Folder Include="Assets.xcassets\ic_question.imageset\" />
     <Folder Include="Assets.xcassets\ic_delete.imageset\" />
+    <Folder Include="Assets.xcassets\KUSDT.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
