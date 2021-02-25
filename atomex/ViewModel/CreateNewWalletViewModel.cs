@@ -229,6 +229,7 @@ namespace atomex
                 if (targetMnemonic != _mnemonic)
                 {
                     _mnemonicVeryfied = false;
+                    _derivedPswdVeryfied = false;
                     Warning = AppResources.WrongWordOrder;
                 }
                 else
@@ -242,16 +243,16 @@ namespace atomex
                         _derivedPasswordConfirmation = null;
                         OnPropertyChanged(nameof(DerivedPasswordConfirmation));
                     }
-                    OnPropertyChanged(nameof(DerivedPswdVeryfied));
                 }
-                OnPropertyChanged(nameof(MnemonicVeryfied));
             }
             else
             {
                 _mnemonicVeryfied = false;
+                _derivedPswdVeryfied = false;
                 Warning = string.Empty;
-                OnPropertyChanged(nameof(MnemonicVeryfied));
             }
+            OnPropertyChanged(nameof(MnemonicVeryfied));
+            OnPropertyChanged(nameof(DerivedPswdVeryfied));
             OnPropertyChanged(nameof(TargetMnemonicSubstr));
             OnPropertyChanged(nameof(SourceMnemonicSubstr));
         }
