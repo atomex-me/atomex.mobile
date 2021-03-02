@@ -23,19 +23,10 @@ namespace atomex.Views.Popup
             _settingsViewModel = settingsViewModel;
         }
 
-        public async void OnCloseButtonClicked(object sender, EventArgs args)
+        public void OnCloseButtonClicked(object sender, EventArgs args)
         {
             _settingsViewModel.SetPassword(string.Empty);
-            try
-            {
-                bool.TryParse(await SecureStorage.GetAsync("UseBiometric"), out bool useBiometric);
-                _settingsViewModel.UseBiometric = useBiometric;
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
-                Log.Error(ex, AppResources.NotSupportSecureStorage);
-            }
+            _ = _settingsViewModel.SetUseBiometricSetting();
             _ = Navigation.PopPopupAsync();
         }
 
@@ -103,8 +94,7 @@ namespace atomex.Views.Popup
                 try
                 {
                     string walletName = Path.GetFileName(Path.GetDirectoryName(_settingsViewModel.AtomexApp.Account.Wallet.PathToWallet));
-                    await SecureStorage.SetAsync("UseBiometric", true.ToString());
-                    await SecureStorage.SetAsync(walletName, PasswordEntry.Text);
+                    await SecureStorage.SetAsync(_settingsViewModel.WalletName, PasswordEntry.Text);
                     OnCloseButtonClicked(this, EventArgs.Empty);
                 }
                 catch (Exception ex)

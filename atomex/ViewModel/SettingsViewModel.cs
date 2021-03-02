@@ -28,6 +28,12 @@ namespace atomex.ViewModel
         private IAccount _account;
 
         //private string _pathToUserSettings;
+        private string _walletName;
+        public string WalletName
+        {
+            get => _walletName;
+            set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
+        }
 
         private List<WalletInfo> _wallets;
         public List<WalletInfo> Wallets
@@ -83,22 +89,25 @@ namespace atomex.ViewModel
             }
         }
 
-        public SettingsViewModel(IAtomexApp app)
+        public SettingsViewModel(IAtomexApp app, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             _account = app.Account;
             Settings = app.Account.UserSettings;
-            _ = GetUseBiometricSetting();
+            WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
+            _ = SetUseBiometricSetting();
         }
 
-        private async Task GetUseBiometricSetting()
+        public async Task SetUseBiometricSetting()
         {
             try
             {
-                string value = await SecureStorage.GetAsync("UseBiometric");
-                bool.TryParse(value, out var useBiometric);
-                UseBiometric = useBiometric;
+                string value = await SecureStorage.GetAsync(WalletName);
+                if (string.IsNullOrEmpty(value))
+                    UseBiometric = false;
+                else
+                    UseBiometric = true;
             }
             catch (Exception ex)
             {
@@ -139,7 +148,7 @@ namespace atomex.ViewModel
                 {
                     try
                     {
-                        await SecureStorage.SetAsync("UseBiometric", false.ToString());
+                        await SecureStorage.SetAsync(WalletName, string.Empty);
                     }
                     catch (Exception ex)
                     {

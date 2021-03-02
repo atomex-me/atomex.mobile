@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using atomex.Resources;
-using atomex.ViewModel;
-using Atomex.Wallet;
-using Serilog;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
@@ -122,57 +117,6 @@ namespace atomex.Views.CreateNewWallet
                 PasswordConfirmationHint.IsVisible = false;
             }
             _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePasswordConfirmation, args.NewTextValue);
-        }
-
-        private async void OnCreateButtonClicked(object sender, EventArgs args)
-        {
-            _createNewWalletViewModel.CheckStoragePassword();
-
-            if (_createNewWalletViewModel.Warning != string.Empty)
-                return;
-
-            Content.Opacity = 0.3f;
-            Loader.IsRunning = true;
-
-            Account account = null;
-
-            await Task.Run(async () =>
-            {
-                account = await _createNewWalletViewModel.ConnectToWallet();
-            });
-
-            if (account != null)
-            {
-                try
-                {
-                    await SecureStorage.SetAsync("UseBiometric", false.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, AppResources.NotSupportSecureStorage);
-                }
-
-                MainViewModel mainViewModel = null;
-
-                await Task.Run(() =>
-                {
-                    mainViewModel = new MainViewModel(
-                        _createNewWalletViewModel.AtomexApp,
-                        account,
-                        _createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore ? true : false);
-                });
-
-                Application.Current.MainPage = new MainPage(mainViewModel);
-
-                Content.Opacity = 1f;
-                Loader.IsRunning = false;
-            }
-            else
-            {
-                Content.Opacity = 1f;
-                Loader.IsRunning = false;
-                await DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
-            }
         }
 
         protected override void OnDisappearing()

@@ -21,7 +21,7 @@ namespace atomex.ViewModel
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account, bool restore)
+        public MainViewModel(IAtomexApp app, IAccount account, string walletName, bool restore = false)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -44,7 +44,7 @@ namespace atomex.ViewModel
             AtomexApp.UseTerminal(atomexClient, restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
-            SettingsViewModel = new SettingsViewModel(AtomexApp);
+            SettingsViewModel = new SettingsViewModel(AtomexApp, walletName);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);

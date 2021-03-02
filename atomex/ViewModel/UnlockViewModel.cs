@@ -2,13 +2,19 @@
 using System.IO;
 using System.Security;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Resources;
 using atomex.ViewModel;
 using Atomex;
 using Atomex.Common;
 using Atomex.Wallet;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using FileSystem = Atomex.Common.FileSystem;
 
 namespace atomex
 {
@@ -28,6 +34,33 @@ namespace atomex
         {
             get => _password;
             set { _password = value; OnPropertyChanged(nameof(Password)); }
+        }
+
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet)
@@ -52,10 +85,22 @@ namespace atomex
             Password = secureString;
         }
 
-        public Account Unlock()
+        private Command _unlockCommand;
+        public Command UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
+
+        private async Task UnlockAsync()
         {
+            IsLoading = true;
+
+            Account account = null;
+
             if (Password == null || Password.Length == 0)
-                return null;
+            {
+                IsLoading = false;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                return;
+            }
+
             try
             {
                 var fileSystem = FileSystem.Current;
@@ -81,16 +126,69 @@ namespace atomex
                     WalletName,
                     WalletInfo.DefaultWalletFileName);
 
-                return Account.LoadFromFile(
+                account = Account.LoadFromFile(
                     walletPath,
                     Password,
                     AtomexApp.CurrenciesProvider,
                     clientType);
+
+                if (account != null)
+                {
+                    MainViewModel mainViewModel = null;
+
+                    await Task.Run(() =>
+                    {
+                        mainViewModel = new MainViewModel(AtomexApp, account, WalletName);
+                    });
+
+                    Application.Current.MainPage = new MainPage(mainViewModel);
+                }
+                else
+                {
+                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                }
             }
             catch (CryptographicException e)
             {
+                IsLoading = false;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
                 Log.Error(e, "Invalid password error");
-                return null;
+            }
+
+        }
+
+        public async void BiometricAuth()
+        {
+            try
+            {
+                string pswd = await SecureStorage.GetAsync(WalletName);
+                if (string.IsNullOrEmpty(pswd))
+                    return;
+
+                bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync();
+                if (isFingerprintAvailable)
+                {
+                    AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
+                            "Authentication",
+                            AppResources.UseBiometric + $"'{WalletName}'");
+
+                    var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);
+                    if (authResult.Authenticated)
+                    {
+                        SetPassword(pswd);
+                        _ = UnlockAsync();
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.NotAuthenticated, AppResources.AcceptButton);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                return;
             }
         }
     }
