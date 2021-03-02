@@ -13,13 +13,12 @@
         <Label Text="{x:Static resources:AppResources.SelectTypeLabel}"
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal" Margin="0,20" HorizontalOptions="Center">
-            <custom:LeftRoundedButton Text="{x:Static resources:AppResources.MainNetButton}"
-                Style="{DynamicResource WalletTypeButtonStyle}"
-                Clicked="OnMainNetButtonClicked"/>
-            <custom:RightRoundedButton Text="{x:Static resources:AppResources.TestNetButton}"
+            <custom:LeftRoundedButton Text="{x:Static resources:AppResources.TestNetButton}"
                 Style="{DynamicResource WalletTypeButtonStyle}"
                 Clicked="OnTestNetButtonClicked"/>
+            <custom:RightRoundedButton Text="{x:Static resources:AppResources.MainNetButton}"
+                Style="{DynamicResource WalletTypeButtonStyle}"
+                Clicked="OnMainNetButtonClicked"/>
         </StackLayout>
     </StackLayout> 
-   
 </ContentPage>

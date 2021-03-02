@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Views.Popup;
 using Atomex;
@@ -24,6 +28,13 @@ namespace atomex.ViewModel
         private IAccount _account;
 
         //private string _pathToUserSettings;
+
+        private List<WalletInfo> _wallets;
+        public List<WalletInfo> Wallets
+        {
+            get => _wallets;
+            set { _wallets = value; OnPropertyChanged(nameof(Wallets)); }
+        }
 
         private SecureString _password;
 
@@ -78,6 +89,7 @@ namespace atomex.ViewModel
             _account = app.Account;
             Settings = app.Account.UserSettings;
             _ = GetUseBiometricSetting();
+            Wallets = WalletInfo.AvailableWallets().ToList();
         }
 
         private async Task GetUseBiometricSetting()
@@ -169,6 +181,23 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "Enable biometric login error");
                 return false;
+            }
+        }
+
+        public void DeleteWallet(string path)
+        {
+            try
+            {
+                string directoryPath = Path.GetDirectoryName(path);
+                if (Directory.Exists(directoryPath))
+                {
+                    Directory.Delete(directoryPath, true);
+                    Wallets = WalletInfo.AvailableWallets().ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Delete wallet error");
             }
         }
 

@@ -29,7 +29,7 @@ namespace atomex.Views.CreateNewWallet
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
-            Error.IsVisible = false;
+            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -78,7 +78,7 @@ namespace atomex.Views.CreateNewWallet
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
-            Error.IsVisible = false;
+            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -126,57 +126,59 @@ namespace atomex.Views.CreateNewWallet
 
         private async void OnCreateButtonClicked(object sender, EventArgs args)
         {
-            var result = _createNewWalletViewModel.CheckStoragePassword();
-            if (result == null)
+            _createNewWalletViewModel.CheckStoragePassword();
+
+            if (_createNewWalletViewModel.Warning != string.Empty)
+                return;
+
+            Content.Opacity = 0.3f;
+            Loader.IsRunning = true;
+
+            Account account = null;
+
+            await Task.Run(async () =>
             {
-                Content.Opacity = 0.3f;
-                Loader.IsRunning = true;
+                account = await _createNewWalletViewModel.ConnectToWallet();
+            });
 
-                Account account = null;
-
-                await Task.Run(async () =>
+            if (account != null)
+            {
+                try
                 {
-                    account = await _createNewWalletViewModel.ConnectToWallet();
+                    await SecureStorage.SetAsync("UseBiometric", false.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, AppResources.NotSupportSecureStorage);
+                }
+
+                MainViewModel mainViewModel = null;
+
+                await Task.Run(() =>
+                {
+                    mainViewModel = new MainViewModel(
+                        _createNewWalletViewModel.AtomexApp,
+                        account,
+                        _createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore ? true : false);
                 });
 
-                if (account != null)
-                {
-                    try
-                    {
-                        await SecureStorage.SetAsync("UseBiometric", false.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, AppResources.NotSupportSecureStorage);
-                    }
+                Application.Current.MainPage = new MainPage(mainViewModel);
 
-                    MainViewModel mainViewModel = null;
-
-                    await Task.Run(() =>
-                    {
-                        mainViewModel = new MainViewModel(
-                            _createNewWalletViewModel.AtomexApp,
-                            account,
-                            _createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore ? true : false);
-                    });
-
-                    Application.Current.MainPage = new MainPage(mainViewModel);
-
-                    Content.Opacity = 1f;
-                    Loader.IsRunning = false;
-                }
-                else
-                {
-                    Content.Opacity = 1f;
-                    Loader.IsRunning = false;
-                    await DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
-                }
+                Content.Opacity = 1f;
+                Loader.IsRunning = false;
             }
             else
             {
-                Error.Text = result;
-                Error.IsVisible = true;
+                Content.Opacity = 1f;
+                Loader.IsRunning = false;
+                await DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
             }
+        }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
         }
     }
 }

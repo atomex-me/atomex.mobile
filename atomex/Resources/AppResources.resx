@@ -23,6 +23,12 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
+    <data name="UnderstandButton" xml:space="preserve">
+        <value>I understand</value>
+    </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Delete</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>MainNet</value>
     </data>
@@ -160,6 +166,15 @@
     <data name="DerivedPasswordDescriptionText" xml:space="preserve">
         <value>This password can be used for secret key additional protection. To restore a secret key you will need to enter a mnemonic phrase and its password</value>
     </data>
+    <data name="MnemonicVerificationStepLabel" xml:space="preserve">
+        <value>Step 4: Mnemonic phrase verification</value>
+    </data>
+    <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
+        <value>Please, confirm your mnemonic phrase. Click on the words to place them in the correct order</value>
+    </data>
+    <data name="DerivedVerificationDescriptionText" xml:space="preserve">
+        <value>Please, enter your derived key password</value>
+    </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
         <value>If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
     </data>
@@ -175,6 +190,12 @@
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>
+    </data>
+    <data name="WrongWordOrder" xml:space="preserve">
+        <value>Wrong word order. Try again</value>
+    </data>
+    <data name="UseDerivedKeyPswd" xml:space="preserve">
+        <value>Use derived key password</value>
     </data>
     
     <!-- Portfolio Page -->
@@ -231,9 +252,6 @@
     </data>
     <data name="ShowInExplorerButton" xml:space="preserve">
         <value>Show in explorer</value>
-    </data>
-    <data name="DeleteButton" xml:space="preserve">
-        <value>Delete</value>
     </data>
     
     <!-- Send Page -->
@@ -455,11 +473,23 @@
     <data name="UseBiometricLabel" xml:space="preserve">
         <value>Biometric authentication</value>
     </data>
+    <data name="DeletingWallet" xml:space="preserve">
+        <value>Deleting Wallet</value>
+    </data>
+    <data name="DeletingWalletText" xml:space="preserve">
+        <value>Deleting wallet may result in the loss of your funds</value>
+    </data>
+    <data name="DeletingWalletConfirmationText" xml:space="preserve">
+        <value>Are you sure you want to delete the wallet "{0}"?</value>
+    </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
     </data>
     <data name="CommunitySection" xml:space="preserve">
         <value>Community</value>
+    </data>
+    <data name="WalletsSection" xml:space="preserve">
+        <value>Wallets</value>
     </data>
     <data name="Youtube" xml:space="preserve">
         <value>YouTube</value>
@@ -724,5 +754,11 @@
     </data>
     <data name="ImpossibleEnableBiometric" xml:space="preserve">
         <value>It is impossible to enable biometric authentication</value>
+    </data>
+    <data name="Veryfied" xml:space="preserve">
+        <value>Veryfied!</value>
+    </data>
+    <data name="SwapHistoryText" xml:space="preserve">
+        <value>Swap history is stored locally on your device. This means that you do not see the swap operations that were performed with another device.</value>
     </data>
 </root>

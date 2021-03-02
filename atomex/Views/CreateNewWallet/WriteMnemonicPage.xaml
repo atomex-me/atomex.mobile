@@ -76,9 +76,17 @@
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused"/>
             </custom:CustomFrame>
-            <Label x:Name="Error"
-                   Style="{DynamicResource ErrorTextStyle}"
-                   IsVisible="False"/>
+            <Label Text="{Binding Warning}"
+                   Style="{DynamicResource ErrorTextStyle}">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding Warning}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
             <Button Text="{x:Static resources:AppResources.NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"

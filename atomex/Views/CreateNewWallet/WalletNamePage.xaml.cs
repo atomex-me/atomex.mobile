@@ -23,7 +23,7 @@ namespace atomex.Views.CreateNewWallet
         private void EntryFocused(object sender, FocusEventArgs args)
         {
             Frame.HasShadow = args.IsFocused;
-            Error.IsVisible = false;
+            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -76,25 +76,29 @@ namespace atomex.Views.CreateNewWallet
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            var result = _createNewWalletViewModel.SaveWalletName();
-            if (result == null)
+            _createNewWalletViewModel.SaveWalletName();
+
+            if (_createNewWalletViewModel.Warning != string.Empty)
+                return;
+
+            _createNewWalletViewModel.ClearDerivedPswd();
+            if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Create)
             {
-                if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Create)
-                {
-                    await Navigation.PushAsync(new CreateMnemonicPage(_createNewWalletViewModel));
-                    return;
-                }
-                if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore)
-                {
-                    await Navigation.PushAsync(new WriteMnemonicPage(_createNewWalletViewModel));
-                    return;
-                }
+                await Navigation.PushAsync(new CreateMnemonicPage(_createNewWalletViewModel));
+                return;
             }
-            else
+
+            if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore)
             {
-                Error.Text = result;
-                Error.IsVisible = true;
+                await Navigation.PushAsync(new WriteMnemonicPage(_createNewWalletViewModel));
+                return;
             }
+        }
+
+        protected override void OnDisappearing()
+        {
+            _createNewWalletViewModel.Warning = string.Empty;
+            base.OnDisappearing();
         }
     }
 }
