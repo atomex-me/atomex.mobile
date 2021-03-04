@@ -1,12 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
-using atomex.Resources;
 using atomex.ViewModel;
-using Rg.Plugins.Popup.Extensions;
 using Rg.Plugins.Popup.Pages;
-using Serilog;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.Views.Popup
@@ -23,18 +18,12 @@ namespace atomex.Views.Popup
             _settingsViewModel = settingsViewModel;
         }
 
-        public void OnCloseButtonClicked(object sender, EventArgs args)
-        {
-            _settingsViewModel.SetPassword(string.Empty);
-            _ = _settingsViewModel.SetUseBiometricSetting();
-            _ = Navigation.PopPopupAsync();
-        }
-
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
             {
-                Error.IsVisible = false;
+                _settingsViewModel.Warning = string.Empty;
+                
                 if (!PasswordHint.IsVisible)
                 {
                     PasswordHint.IsVisible = true;
@@ -82,46 +71,6 @@ namespace atomex.Views.Popup
         private void PasswordEntryClicked(object sender, EventArgs args)
         {
             PasswordEntry.Focus();
-        }
-
-        private async void OnEnableButtonClicked(object sender, EventArgs args)
-        {
-            BlockActions(true);
-            bool accountExist = _settingsViewModel.CheckAccountExist();
-            BlockActions(false);
-            if (accountExist)
-            {
-                try
-                {
-                    string walletName = Path.GetFileName(Path.GetDirectoryName(_settingsViewModel.AtomexApp.Account.Wallet.PathToWallet));
-                    await SecureStorage.SetAsync(_settingsViewModel.WalletName, PasswordEntry.Text);
-                    OnCloseButtonClicked(this, EventArgs.Empty);
-                }
-                catch (Exception ex)
-                {
-                    OnCloseButtonClicked(this, EventArgs.Empty);
-                    await DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
-                    Log.Error(ex, AppResources.NotSupportSecureStorage);
-                }
-            }
-            else
-            {
-                Error.IsVisible = true;
-            }
-        }
-
-        private void BlockActions(bool flag)
-        {
-            Loader.IsVisible = Loader.IsRunning = flag;
-            EnableButton.IsEnabled = !flag;
-            if (flag)
-            {
-                Content.Opacity = 0.5;
-            }
-            else
-            {
-                Content.Opacity = 1;
-            }
         }
     }
 }
