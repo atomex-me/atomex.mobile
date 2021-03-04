@@ -12,7 +12,7 @@
                          Padding="20"
                          Spacing="0">
                 <StackLayout Spacing="0"
-                             x:Name="BiometricSetting">
+                             IsVisible="{Binding BiometricSensorAvailibility}">
                     <Label Text="{x:Static resources:AppResources.SecurityLabel}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"

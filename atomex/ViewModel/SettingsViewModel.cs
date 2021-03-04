@@ -27,7 +27,55 @@ namespace atomex.ViewModel
 
         private IAccount _account;
 
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+
+        private string _warning;
+        public string Warning
+        {
+            get => _warning;
+            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
+        }
+
+        private bool _biometricSensorAvailibility;
+        public bool BiometricSensorAvailibility
+        {
+            get => _biometricSensorAvailibility;
+            set { _biometricSensorAvailibility = value; OnPropertyChanged(nameof(BiometricSensorAvailibility)); }
+        }
+
         //private string _pathToUserSettings;
+        private string _walletName;
+        public string WalletName
+        {
+            get => _walletName;
+            set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
+        }
 
         private List<WalletInfo> _wallets;
         public List<WalletInfo> Wallets
@@ -67,7 +115,6 @@ namespace atomex.ViewModel
             }
         }
 
-
         public bool AutoSignOut
         {
             get { return Settings.AutoSignOut; }
@@ -83,22 +130,26 @@ namespace atomex.ViewModel
             }
         }
 
-        public SettingsViewModel(IAtomexApp app)
+        public SettingsViewModel(IAtomexApp app, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             _account = app.Account;
             Settings = app.Account.UserSettings;
-            _ = GetUseBiometricSetting();
+            WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
+            _ = CheckBiometricSensor();
+            _ = ResetUseBiometricSetting();
         }
 
-        private async Task GetUseBiometricSetting()
+        public async Task ResetUseBiometricSetting()
         {
             try
             {
-                string value = await SecureStorage.GetAsync("UseBiometric");
-                bool.TryParse(value, out var useBiometric);
-                UseBiometric = useBiometric;
+                string value = await SecureStorage.GetAsync(WalletName);
+                if (string.IsNullOrEmpty(value))
+                    UseBiometric = false;
+                else
+                    UseBiometric = true;
             }
             catch (Exception ex)
             {
@@ -139,7 +190,7 @@ namespace atomex.ViewModel
                 {
                     try
                     {
-                        await SecureStorage.SetAsync("UseBiometric", false.ToString());
+                        await SecureStorage.SetAsync(WalletName, string.Empty);
                     }
                     catch (Exception ex)
                     {
@@ -199,6 +250,54 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "Delete wallet error");
             }
+        }
+
+        private Command _enableBiometricCommand;
+        public Command EnableBiometricCommand => _enableBiometricCommand ??= new Command<string>(async (value) => await EnableBiometric(value));
+
+        private async Task EnableBiometric(string pswd)
+        {
+            IsLoading = true;
+
+            bool accountExist = CheckAccountExist();
+
+            IsLoading = false;
+            if (accountExist)
+            {
+                try
+                {
+                    string walletName = Path.GetFileName(Path.GetDirectoryName(AtomexApp.Account.Wallet.PathToWallet));
+                    await SecureStorage.SetAsync(WalletName, pswd);
+                    ClosePopup();
+                }
+                catch (Exception ex)
+                {
+                    ClosePopup();
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
+                    Log.Error(ex, AppResources.NotSupportSecureStorage);
+                }
+            }
+            else
+            {
+                Warning = AppResources.InvalidPassword;
+            }
+        }
+
+        private Command _closePopupCommand;
+        public Command ClosePopupCommand => _closePopupCommand ??= new Command(() => ClosePopup());
+
+        public void ClosePopup()
+        {
+            SetPassword(string.Empty);
+            Warning = string.Empty;
+            _ = ResetUseBiometricSetting();
+            _ = Application.Current.MainPage.Navigation.PopPopupAsync();
+        }
+
+        async Task CheckBiometricSensor()
+        {
+            var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+            BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
         }
 
         //private void Apply()

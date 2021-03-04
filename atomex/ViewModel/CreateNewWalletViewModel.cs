@@ -16,6 +16,7 @@ using Atomex.Cryptography;
 using Atomex.Wallet;
 using NBitcoin;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -67,6 +68,33 @@ namespace atomex
         {
             get => _warning;
             set { _warning = value; OnPropertyChanged(nameof(Warning)); }
+        }
+
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
         public List<Atomex.Core.Network> Networks { get; } = new List<Atomex.Core.Network>
@@ -503,7 +531,7 @@ namespace atomex
             Warning = string.Empty;
         }
 
-        public void CheckStoragePassword()
+        private void CheckStoragePassword()
         {
             if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
             {
@@ -535,10 +563,24 @@ namespace atomex
             };
         }
 
-        public async Task<Account> ConnectToWallet()
+        private Command _createWalletCommand;
+        public Command CreateWalletCommand => _createWalletCommand ??= new Command(async () => await ConnectToWallet());
+
+        private async Task ConnectToWallet()
         {
             try
             {
+                IsLoading = true;
+
+                CheckStoragePassword();
+
+                if (Warning != string.Empty)
+                {
+                    IsLoading = false;
+                    return;
+                }
+
+                Account account = null;
 
                 await Wallet.EncryptAsync(StoragePassword);
 
@@ -561,23 +603,52 @@ namespace atomex
 
                 try
                 {
-                    var account = new Account(
+                    account = new Account(
                         wallet: Wallet,
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
                         clientType);
-                    return account;
+
+                    if (account != null)
+                    {
+                        try
+                        {
+                            await SecureStorage.SetAsync(WalletName, string.Empty);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, AppResources.NotSupportSecureStorage);
+                        }
+
+                        MainViewModel mainViewModel = null;
+
+                        await Task.Run(() =>
+                        {
+                            mainViewModel = new MainViewModel(
+                                AtomexApp,
+                                account,
+                                WalletName,
+                                CurrentAction == Action.Restore ? true : false);
+                        });
+
+                        Application.Current.MainPage = new MainPage(mainViewModel);
+                    }
+                    else
+                    {
+                        IsLoading = false;
+                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
+                    }
                 }
                 catch (CryptographicException e)
                 {
+                    IsLoading = false;
                     Log.Error(e, "Create wallet error");
-                    return null;
                 }
             }
             catch (Exception e)
             {
+                IsLoading = false;
                 Log.Error(e, "Create wallet error");
-                return null;
             }
         }
 

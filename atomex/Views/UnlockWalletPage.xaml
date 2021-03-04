@@ -3,13 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.UnlockWalletPage"
              Title="{x:Static resources:AppResources.UnlockTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView x:Name="Page">
         <RelativeLayout>
-            <StackLayout x:Name="Content"
-                         Padding="30"
+            <StackLayout Padding="30"
+                         Opacity="{Binding Opacity}"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
                 <Image WidthRequest="170"
@@ -17,8 +23,7 @@
                        Margin="10"
                        Source="AtomexLogo"/>
                 <Label Text="{x:Static resources:AppResources.UnlockLabel}"
-                       Style="{DynamicResource UnlockWalletTextStyle}"
-                       x:Name="Label"/>
+                       Style="{DynamicResource UnlockWalletTextStyle}"/>
                 <Frame x:Name="PasswordFrame"
                        CornerRadius="10"
                        Style="{DynamicResource EntryFrameStyle}">
@@ -61,19 +66,18 @@
                     </StackLayout>
                 </Frame>
                 <Button Text="{x:Static resources:AppResources.UnlockButton}"
-                        x:Name="UnlockButton"
                         Margin="0,20"
+                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                         Style="{DynamicResource MainButtonStyle}"
-                        Clicked="OnUnlockButtonClicked"/>
+                        Command="{Binding UnlockCommand}"/>
             </StackLayout>
-            <ActivityIndicator x:Name="Loader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                BackgroundColor="Transparent"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               IsRunning="False"/>
+                               IsRunning="{Binding IsLoading}"/>
         </RelativeLayout>
     </ScrollView>
 </ContentPage>

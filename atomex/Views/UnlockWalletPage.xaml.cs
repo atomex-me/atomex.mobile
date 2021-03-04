@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using atomex.Resources;
-using atomex.ViewModel;
-using Atomex.Wallet;
-using Plugin.Fingerprint;
-using Plugin.Fingerprint.Abstractions;
-using Serilog;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -26,7 +19,7 @@ namespace atomex
             _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
 
-            BiometricAuth(this, EventArgs.Empty);
+            unlockViewModel.BiometricAuth();
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
@@ -80,88 +73,6 @@ namespace atomex
                 PasswordHint.IsVisible = false;
             }
             _unlockViewModel.SetPassword(args.NewTextValue);
-        }
-
-        private async void OnUnlockButtonClicked(object sender, EventArgs args)
-        {
-            try
-            {
-                Content.Opacity = 0.3f;
-                Loader.IsRunning = true;
-                UnlockButton.IsEnabled = false;
-
-                Account account = null;
-
-                await Task.Run(() =>
-                {
-                    account = _unlockViewModel.Unlock();
-                });
-
-                if (account != null)
-                {
-                    MainViewModel mainViewModel = null;
-
-                    await Task.Run(() =>
-                    {
-                        mainViewModel = new MainViewModel(_unlockViewModel.AtomexApp, account, false);
-                    });
-
-                    Application.Current.MainPage = new MainPage(mainViewModel);
-                }
-                else
-                {
-                    Content.Opacity = 1f;
-                    Loader.IsRunning = false;
-                    UnlockButton.IsEnabled = true;
-
-                    await DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Unlock error");
-            }
-        }
-
-        private async void BiometricAuth(object sender, EventArgs e)
-        {
-            try
-            {
-                bool.TryParse(await SecureStorage.GetAsync("UseBiometric"), out bool useBiometric);
-                if (!useBiometric)
-                    return;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, AppResources.NotSupportSecureStorage);
-                return;
-            }
-            bool isFingerprintAvailable = await CrossFingerprint.Current.IsAvailableAsync();
-            if (isFingerprintAvailable)
-            {
-                AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
-                        "Authentication",
-                        AppResources.UseBiometric + $"'{_unlockViewModel.WalletName}'");
-
-                var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);
-                if (authResult.Authenticated)
-                {
-                    try
-                    {
-                        string pswd = await SecureStorage.GetAsync(_unlockViewModel.WalletName);
-                        _unlockViewModel.SetPassword(pswd);
-                        OnUnlockButtonClicked(this, EventArgs.Empty);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, AppResources.NotSupportSecureStorage);
-                    }
-                }
-                else
-                {
-                    await DisplayAlert(AppResources.SorryLabel, AppResources.NotAuthenticated, AppResources.AcceptButton);
-                }
-            }
         }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.SettingsOptions;
-using Plugin.Fingerprint;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Plugin.Fingerprint.Abstractions;
 using System.Globalization;
 using atomex.Common;
 using System.Linq;
@@ -31,14 +28,6 @@ namespace atomex
             _settingsViewModel = settingsViewModel;
             BindingContext = settingsViewModel;
             _mainPage = mainPage;
-
-            _ = CheckFingerprintSensor();
-        }
-
-        async Task CheckFingerprintSensor()
-        {
-            var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
-            BiometricSetting.IsVisible = availability != FingerprintAvailability.NoSensor;
         }
 
         async void OnPeriodOfInactiveSettingTapped(object sender, EventArgs args)

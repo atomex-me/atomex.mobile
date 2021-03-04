@@ -3,8 +3,15 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:controls="clr-namespace:atomex.CustomElements"
+              xmlns:converters="clr-namespace:atomex.Converters"
               xmlns:resources="clr-namespace:atomex.Resources"
               x:Class="atomex.Views.Popup.BiometricSettingPopup">
+    <rg:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
     <rg:ScaleAnimation PositionIn="Center"
                        PositionOut="Center"
@@ -21,10 +28,10 @@
                Padding="0"
                Margin="20,0"
                HasShadow="False"
-               x:Name="Content"
                HorizontalOptions="FillAndExpand"
                HeightRequest="210"
                VerticalOptions="Center"
+               Opacity="{Binding Opacity}"
                BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
             <StackLayout Spacing="0">
                 <StackLayout Padding="20,10,20,0"
@@ -55,14 +62,14 @@
                             <RelativeLayout HorizontalOptions="FillAndExpand"
                                             HeightRequest="60"
                                             Margin="-10,0,0,0">
-                                <ActivityIndicator x:Name="Loader"
-                                                   RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+                                <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                                    RelativeLayout.WidthConstraint="50"
                                                    RelativeLayout.HeightConstraint="50"
                                                    Scale="1.5"
                                                    Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                                                   BackgroundColor="Transparent"/>
+                                                   BackgroundColor="Transparent"
+                                                   IsRunning="{Binding IsLoading}"/>
                                 <controls:CustomEntry x:Name="PasswordEntry"
                                                       Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
                                                       Keyboard="Text"
@@ -81,12 +88,11 @@
                             </RelativeLayout>
                         </StackLayout>
                     </Frame>
-                    <Label x:Name="Error"
-                           Text="{x:Static resources:AppResources.InvalidPassword}"
+                    <Label Text="{Binding Warning}"
                            Style="{DynamicResource ErrorTextStyle}"
                            Padding="5"
                            Margin="0"
-                           IsVisible="False"/>
+                           IsVisible="{Binding Warning, Converter={StaticResource StringToBool}}"/>
                 </StackLayout>
                 <Grid ColumnSpacing="0"
                       RowSpacing="0"
@@ -100,13 +106,14 @@
                     </Grid.ColumnDefinitions>
                     <Button Text="{x:Static resources:AppResources.CancelButton}"
                             Style="{DynamicResource PopupCancelButtonStyle}"
-                            Clicked="OnCloseButtonClicked"/>
+                            Command="{Binding ClosePopupCommand}"/>
                     <Button Grid.Column="1"
                             Text="{x:Static resources:AppResources.AcceptButton}"
                             Style="{DynamicResource PopupAcceptButtonStyle}"
                             VerticalOptions="FillAndExpand"
-                            x:Name="EnableButton"
-                            Clicked="OnEnableButtonClicked"/>
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                            Command="{Binding EnableBiometricCommand}"
+                            CommandParameter="{Binding Source={x:Reference PasswordEntry}, Path=Text}"/>
                 </Grid>
             </StackLayout>
         </Frame>
