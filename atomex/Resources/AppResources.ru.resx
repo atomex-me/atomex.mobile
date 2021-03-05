@@ -80,13 +80,13 @@
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
-        <value>My wallets</value>
+        <value>Мои кошельки</value>
     </data>
     <data name="CreateNewWalletButton" xml:space="preserve">
-        <value>Create new wallet</value>
+        <value>Создать кошелек</value>
     </data>
     <data name="RestoreWalletButton" xml:space="preserve">
-        <value>Restore wallet</value>
+        <value>Восстановить кошелек</value>
     </data>
     
     <!-- My Wallets Page -->
@@ -490,9 +490,6 @@
     </data>
     <data name="WalletsSection" xml:space="preserve">
         <value>Wallets</value>
-    </data>
-    <data name="CommonSection" xml:space="preserve">
-        <value>Common</value>
     </data>
     <data name="Youtube" xml:space="preserve">
         <value>YouTube</value>

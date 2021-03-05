@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:atomex.Resources"
+             x:Class="atomex.Views.SettingsOptions.LanguagesPage"
+             Title="{x:Static resources:AppResources.SettingsPageTitle}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Padding="20"
+                         Spacing="0">
+                <Label Text="{x:Static resources:AppResources.LanguageLabel}"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="Center"
+                       TextTransform="Uppercase"
+                       Padding="20,5"/>
+                <Frame CornerRadius="10"
+                       Style="{DynamicResource EntryFrameStyle}">
+                    <StackLayout BindableLayout.ItemsSource="{Binding Languages}"
+                                 BackgroundColor="Transparent"
+                                 Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             HeightRequest="40">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="OnLanguageTapped"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <Label Text="{Binding Name}"
+                                           Style="{DynamicResource OptionLabelStyle}">
+                                    </Label>
+                                    <Image Source="Tick"
+                                           WidthRequest="16"
+                                           HeightRequest="16"
+                                           Margin="20,0"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="EndAndExpand"
+                                           IsVisible="False">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Code}"
+                                                         Value="ru">
+                                                <Setter Property="IsVisible"
+                                                        Value="True"/>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

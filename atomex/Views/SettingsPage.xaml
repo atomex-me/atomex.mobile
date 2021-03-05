@@ -13,7 +13,7 @@
                          Spacing="0">
                 <StackLayout Spacing="0"
                              IsVisible="{Binding BiometricSensorAvailibility}">
-                    <Label Text="{x:Static resources:AppResources.SecurityLabel}"
+                    <Label Text="{x:Static resources:AppResources.SecuritySection}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -40,6 +40,32 @@
                         </StackLayout>
                     </Frame>
                 </StackLayout>
+                <Label Text="{x:Static resources:AppResources.CommonSection}"
+                       FontFamily="{DynamicResource LightFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="Center"
+                       TextTransform="Uppercase"
+                       Padding="20,5"/>
+                <Frame CornerRadius="10"
+                       HeightRequest="40"
+                       Style="{DynamicResource EntryFrameStyle}"
+                       Margin="0,0,0,20">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLanguagesTapped"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Spacing="0"
+                                 Orientation="Horizontal">
+                        <Label Text="{x:Static resources:AppResources.LanguageLabel}"
+                               Style="{DynamicResource OptionLabelStyle}"/>
+                        <Label Text="{Binding Language.Name}"
+                               Style="{DynamicResource OptionValueLabelStyle}"/>
+                        <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                               Margin="20,15"
+                               HeightRequest="10"
+                               WidthRequest="10"/>
+                    </StackLayout>
+                </Frame>
                 <Label Text="{x:Static resources:AppResources.CommunitySection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
@@ -84,7 +110,7 @@
                             <TapGestureRecognizer Tapped="OnTelegramTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__gray"
+                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                            Grid.Column="2"
                            Margin="20,15"
                            HorizontalOptions="End"/>
@@ -116,7 +142,7 @@
                             <TapGestureRecognizer Tapped="OnTwitterTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__gray"
+                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                            Grid.Row="2"
                            Grid.Column="2"
                            Margin="20,15"
@@ -182,7 +208,7 @@
                             <TapGestureRecognizer Tapped="OnSupportTapped"/>
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="RightArrow__gray"
+                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                            Grid.Row="6"
                            Grid.Column="2"
                            Margin="20,15"

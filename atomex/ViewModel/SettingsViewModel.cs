@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Helpers;
+using atomex.Models;
 using atomex.Resources;
 using atomex.Views.Popup;
+using atomex.Views.SettingsOptions;
 using Atomex;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
@@ -26,6 +32,8 @@ namespace atomex.ViewModel
         public UserSettings Settings { get; }
 
         private IAccount _account;
+
+        private const string LanguageKey = nameof(LanguageKey);
 
         private float _opacity = 1f;
         public float Opacity
@@ -84,6 +92,19 @@ namespace atomex.ViewModel
             set { _wallets = value; OnPropertyChanged(nameof(Wallets)); }
         }
 
+        private Language _language;
+        public Language Language
+        {
+            get => _language;
+            set { _language = value; OnPropertyChanged(nameof(Language)); }
+        }
+
+        public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
+        {
+            new Language { Name = "English", Code = "en" },
+            new Language { Name = "Русский", Code = "ru" }
+        };
+
         private SecureString _password;
 
         public SecureString Password
@@ -130,10 +151,13 @@ namespace atomex.ViewModel
             }
         }
 
+        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
+
         public SettingsViewModel(IAtomexApp app, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             _account = app.Account;
+            SetUserLanguage();
             Settings = app.Account.UserSettings;
             WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
@@ -298,6 +322,40 @@ namespace atomex.ViewModel
         {
             var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
             BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
+        }
+
+        //private Command _showLanguagesCommand;
+        //public Command ShowLanguagesCommand => _showLanguagesCommand ??= new Command(() => ShowLanguages());
+
+        //private async void ShowLanguages()
+        //{
+        //    var optionsPage = new LanguagesPage(this, selected =>
+        //    {
+        //        Language = selected;
+        //    });
+
+        //    await Application.Current.MainPage. Navigation.PushAsync(optionsPage);
+        //}
+
+        private void SetUserLanguage()
+        {
+            try
+            {
+                Language = Languages.Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Set user language error");
+                Language = Languages.Where(l => l.Code == "en").Single();
+            }
+        }
+
+        private Command _changeLanguageCommand;
+        public Command ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>((value) => ChangeLanguage(value));
+
+        private void ChangeLanguage(Language language)
+        {
+            LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
         }
 
         //private void Apply()

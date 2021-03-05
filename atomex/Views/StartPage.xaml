@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.StartPage"
              NavigationPage.HasNavigationBar="False">
     <RelativeLayout VerticalOptions="StartAndExpand">
@@ -41,7 +41,7 @@
                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
                      Style="{DynamicResource StartPageButtonsStyle}">
-            <Button Text="{x:Static resources:AppResources.MyWalletsButton}"
+            <Button Text="{helpers:Translate MyWalletsButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     IsEnabled="{Binding HasWallets}"
                     Clicked="ShowMyWalletsButtonClicked">
@@ -66,10 +66,10 @@
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
-            <Button Text="{x:Static resources:AppResources.CreateNewWalletButton}"
+            <Button Text="{helpers:Translate CreateNewWalletButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="CreateNewWalletButtonClicked"/>
-            <Button Text="{x:Static resources:AppResources.RestoreWalletButton}"
+            <Button Text="{helpers:Translate RestoreWalletButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnRestoreWalletButtonClicked"/>
         </StackLayout>

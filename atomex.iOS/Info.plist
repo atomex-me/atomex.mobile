@@ -63,5 +63,10 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.6</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+	    <string>en</string>
+	    <string>ru</string>
+	</array>
 </dict>
 </plist>

@@ -49,6 +49,16 @@ namespace atomex
             }
         }
 
+        private async void OnLanguagesTapped(object sender, EventArgs args)
+        {
+            var optionsPage = new LanguagesPage(_settingsViewModel, selected =>
+            {
+                _settingsViewModel.Language = selected;
+            });
+
+            await Navigation.PushAsync(optionsPage);
+        }
+
         private void OnYoutubeTapped(object sender, EventArgs args)
         {
             Launcher.OpenAsync(new Uri("https://www.youtube.com/c/BakingBad"));
