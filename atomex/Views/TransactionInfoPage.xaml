@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.TransactionInfoPage"
-             Title="{x:Static resources:AppResources.TransactionInfoPageTitle}"
+             Title="{helpers:Translate TransactionInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ScrollView>
         <StackLayout>
@@ -248,7 +248,7 @@
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                <Label Text="{x:Static resources:AppResources.Description}"
+                <Label Text="{helpers:Translate Description}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding Description}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -257,7 +257,7 @@
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{x:Static resources:AppResources.TransactionId}"
+                        <Label Text="{helpers:Translate TransactionId}"
                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
                         <Label Text="{Binding Id}"
                                Style="{DynamicResource TxInfoRowTextStyle}"
@@ -270,7 +270,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                <Label Text="{x:Static resources:AppResources.TransactionTime}"
+                <Label Text="{helpers:Translate TransactionTime}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -288,7 +288,7 @@
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{x:Static resources:AppResources.FromLabel}"
+                        <Label Text="{helpers:Translate FromLabel}"
                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
                         <Label Text="{Binding From}"
                                Style="{DynamicResource TxInfoRowTextStyle}"
@@ -312,7 +312,7 @@
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{x:Static resources:AppResources.ToLabel}"
+                        <Label Text="{helpers:Translate ToLabel}"
                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
                         <Label Text="{Binding To}"
                                Style="{DynamicResource TxInfoRowTextStyle}"
@@ -334,7 +334,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
+                <Label Text="{helpers:Translate GasPriceLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasPrice}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -350,7 +350,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
+                <Label Text="{helpers:Translate GasLimitLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasLimit}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -366,7 +366,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="{x:Static resources:AppResources.GasUsedLabel}"
+                <Label Text="{helpers:Translate GasUsedLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding GasUsed}"
                        Style="{DynamicResource TxInfoRowTextStyle}"/>
@@ -382,7 +382,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                <Label Text="{helpers:Translate FeeLabel}"
                        Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding Fee}"
                        Style="{DynamicResource TxInfoRowTextStyle}">
@@ -406,7 +406,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
-                <Label Text="{x:Static resources:AppResources.IsInternalLabel}"
+                <Label Text="{helpers:Translate IsInternalLabel}"
                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
                 <Label Text="{Binding IsInternal}"
                        Style="{DynamicResource TxInfoRowTextStyle}">
@@ -415,23 +415,23 @@
                                      Binding="{Binding IsInternal}"
                                      Value="True">
                             <Setter Property="Text"
-                                    Value="Yes"/>
+                                    Value="{helpers:Translate Yes}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsInternal}"
                                      Value="False">
                             <Setter Property="Text"
-                                    Value="No"/>
+                                    Value="{helpers:Translate No}"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <Button Text="{x:Static resources:AppResources.ShowInExplorerButton}"
+            <Button Text="{helpers:Translate ShowInExplorerButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
                     Clicked="OnShowInExplorerClicked"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <Button Text="{x:Static resources:AppResources.DeleteButton}"
+            <Button Text="{helpers:Translate DeleteButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
                     TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
                     IsVisible="{Binding CanBeRemoved}"

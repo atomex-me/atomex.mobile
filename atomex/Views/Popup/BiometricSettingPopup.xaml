@@ -4,7 +4,7 @@
               xmlns:rg="http://rotorgames.com"
               xmlns:controls="clr-namespace:atomex.CustomElements"
               xmlns:converters="clr-namespace:atomex.Converters"
-              xmlns:resources="clr-namespace:atomex.Resources"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
               x:Class="atomex.Views.Popup.BiometricSettingPopup">
     <rg:PopupPage.Resources>
         <ResourceDictionary>
@@ -38,7 +38,7 @@
                              VerticalOptions="Center"
                              HorizontalOptions="FillAndExpand"
                              Spacing="0">
-                    <Label Text="{x:Static resources:AppResources.EnableBiometricLabel}"
+                    <Label Text="{helpers:Translate EnableBiometricLabel}"
                            Style="{DynamicResource EnableBiometricTextStyle}"/>
                     <Frame x:Name="PasswordFrame"
                            CornerRadius="10"
@@ -71,7 +71,7 @@
                                                    BackgroundColor="Transparent"
                                                    IsRunning="{Binding IsLoading}"/>
                                 <controls:CustomEntry x:Name="PasswordEntry"
-                                                      Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                      Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                       Keyboard="Text"
                                                       IsPassword="True"
                                                       Style="{DynamicResource CustomEntryStyle}"
@@ -104,11 +104,11 @@
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="5*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Text="{x:Static resources:AppResources.CancelButton}"
+                    <Button Text="{helpers:Translate CancelButton}"
                             Style="{DynamicResource PopupCancelButtonStyle}"
                             Command="{Binding ClosePopupCommand}"/>
                     <Button Grid.Column="1"
-                            Text="{x:Static resources:AppResources.AcceptButton}"
+                            Text="{helpers:Translate AcceptButton}"
                             Style="{DynamicResource PopupAcceptButtonStyle}"
                             VerticalOptions="FillAndExpand"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"

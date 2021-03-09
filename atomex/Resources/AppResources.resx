@@ -74,8 +74,14 @@
     <data name="Price" xml:space="preserve">
         <value>Price</value>
     </data>
+    <data name="MinLabel" xml:space="preserve">
+        <value>min.</value>
+    </data>
     <data name="MaxButton" xml:space="preserve">
         <value>Max</value>
+    </data>
+    <data name="IdLabel" xml:space="preserve">
+        <value>Id</value>
     </data>
     
     <!-- Start Page -->
@@ -253,10 +259,31 @@
     <data name="ShowInExplorerButton" xml:space="preserve">
         <value>Show in explorer</value>
     </data>
+    <data name="TxSent" xml:space="preserve">
+        <value>Sent</value>
+    </data>
+    <data name="TxReceived" xml:space="preserve">
+        <value>Received</value>
+    </data>
+    <data name="TxSwapPayment" xml:space="preserve">
+        <value>Swap payment</value>
+    </data>
+    <data name="TxSwapRedeem" xml:space="preserve">
+        <value>Swap redeem</value>
+    </data>
+    <data name="TxSwapRefund" xml:space="preserve">
+        <value>Swap refund</value>
+    </data>
+    <data name="TxUnknown" xml:space="preserve">
+        <value>Unknown</value>
+    </data>
     
     <!-- Send Page -->
     <data name="SendPageTitle" xml:space="preserve">
         <value>Send</value>
+    </data>
+    <data name="ScanningQrCodePageTitle" xml:space="preserve">
+        <value>Scanning QR code</value>
     </data>
     <data name="PasteButton" xml:space="preserve">
         <value>Paste</value>
@@ -332,6 +359,9 @@
     <data name="BakerAddressPlaceholder" xml:space="preserve">
         <value>Enter baker address...</value>
     </data>
+    <data name="CustomBaker" xml:space="preserve">
+        <value>Custom Baker</value>
+    </data>
     
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
@@ -379,21 +409,7 @@
         <value>More</value>
     </data>
     
-    <!-- Conversion list Page -->
-    <data name="ConversionsPageTitle" xml:space="preserve">
-        <value>Conversions</value>
-    </data>
-    <data name="NoSwapsLabel" xml:space="preserve">
-        <value>No swaps yet</value>
-    </data>
-    <data name="Convert" xml:space="preserve">
-        <value>Convert</value>
-    </data>
-    <data name="CreateSwapButton" xml:space="preserve">
-        <value>Create new swap</value>
-    </data>
-    
-    <!-- Swap Page -->
+    <!-- Swap Info Page -->
     <data name="SwapInfoPageTitle" xml:space="preserve">
         <value>Swap info</value>
     </data>
@@ -413,6 +429,12 @@
     </data>
     <data name="SelectCurrenciesLabel" xml:space="preserve">
         <value>Select currencies</value>
+    </data>
+    <data name="SwapFrom" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="SwapTo" xml:space="preserve">
+        <value>To</value>
     </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Est. price</value>
@@ -444,6 +466,15 @@
     <data name="TotalNetworkFeeLabel" xml:space="preserve">
         <value>Total network fee</value>
     </data>
+    <data name="NoSwapsLabel" xml:space="preserve">
+        <value>No swaps yet</value>
+    </data>
+    <data name="Convert" xml:space="preserve">
+        <value>Convert</value>
+    </data>
+    <data name="CreateSwapButton" xml:space="preserve">
+        <value>Create new swap</value>
+    </data>
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
@@ -454,12 +485,6 @@
     </data>
     <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
         <value>Balance update interval</value>
-    </data>
-    <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
-        <value>Balance update interval</value>
-    </data>
-    <data name="SettingsPageTitle" xml:space="preserve">
-        <value>Settings</value>
     </data>
     <data name="AutomaticSignOutLabel" xml:space="preserve">
         <value>Automatic sign out</value>
@@ -553,9 +578,6 @@
     </data>
     <data name="sentTo" xml:space="preserve">
         <value>sent to</value>
-    </data>
-    <data name="to" xml:space="preserve">
-        <value>to</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>is not in the wordlist for this language</value>
@@ -716,9 +738,6 @@
     <data name="MnemonicWordCountError" xml:space="preserve">
         <value>Word count should be 12,15,18,21 or 24</value>
     </data>
-    <data name="DontHaveNonEmptyAccountsError" xml:space="preserve">
-        <value>You don't have non-empty accounts</value>
-    </data>
     <data name="WrongDelegationAddressError" xml:space="preserve">
         <value>Wrong delegation address</value>
     </data>
@@ -758,8 +777,8 @@
     <data name="ImpossibleEnableBiometric" xml:space="preserve">
         <value>It is impossible to enable biometric authentication</value>
     </data>
-    <data name="Veryfied" xml:space="preserve">
-        <value>Veryfied!</value>
+    <data name="Verified" xml:space="preserve">
+        <value>Verified!</value>
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>Swap history is stored locally on your device. This means that you do not see the swap operations that were performed with another device.</value>

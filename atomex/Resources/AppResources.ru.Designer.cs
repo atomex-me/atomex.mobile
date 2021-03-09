@@ -167,9 +167,21 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MinLabel {
+            get {
+                return ResourceManager.GetString("MinLabel", resourceCulture);
+            }
+        }
+        
         internal static string MaxButton {
             get {
                 return ResourceManager.GetString("MaxButton", resourceCulture);
+            }
+        }
+        
+        internal static string IdLabel {
+            get {
+                return ResourceManager.GetString("IdLabel", resourceCulture);
             }
         }
         
@@ -485,9 +497,51 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string TxSent {
+            get {
+                return ResourceManager.GetString("TxSent", resourceCulture);
+            }
+        }
+        
+        internal static string TxReceived {
+            get {
+                return ResourceManager.GetString("TxReceived", resourceCulture);
+            }
+        }
+        
+        internal static string TxSwapPayment {
+            get {
+                return ResourceManager.GetString("TxSwapPayment", resourceCulture);
+            }
+        }
+        
+        internal static string TxSwapRedeem {
+            get {
+                return ResourceManager.GetString("TxSwapRedeem", resourceCulture);
+            }
+        }
+        
+        internal static string TxSwapRefund {
+            get {
+                return ResourceManager.GetString("TxSwapRefund", resourceCulture);
+            }
+        }
+        
+        internal static string TxUnknown {
+            get {
+                return ResourceManager.GetString("TxUnknown", resourceCulture);
+            }
+        }
+        
         internal static string SendPageTitle {
             get {
                 return ResourceManager.GetString("SendPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string ScanningQrCodePageTitle {
+            get {
+                return ResourceManager.GetString("ScanningQrCodePageTitle", resourceCulture);
             }
         }
         
@@ -623,6 +677,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string CustomBaker {
+            get {
+                return ResourceManager.GetString("CustomBaker", resourceCulture);
+            }
+        }
+        
         internal static string WantToDelegate {
             get {
                 return ResourceManager.GetString("WantToDelegate", resourceCulture);
@@ -701,30 +761,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ConversionsPageTitle {
-            get {
-                return ResourceManager.GetString("ConversionsPageTitle", resourceCulture);
-            }
-        }
-        
-        internal static string NoSwapsLabel {
-            get {
-                return ResourceManager.GetString("NoSwapsLabel", resourceCulture);
-            }
-        }
-        
-        internal static string Convert {
-            get {
-                return ResourceManager.GetString("Convert", resourceCulture);
-            }
-        }
-        
-        internal static string CreateSwapButton {
-            get {
-                return ResourceManager.GetString("CreateSwapButton", resourceCulture);
-            }
-        }
-        
         internal static string SwapInfoPageTitle {
             get {
                 return ResourceManager.GetString("SwapInfoPageTitle", resourceCulture);
@@ -758,6 +794,18 @@ namespace atomex.Resources {
         internal static string SelectCurrenciesLabel {
             get {
                 return ResourceManager.GetString("SelectCurrenciesLabel", resourceCulture);
+            }
+        }
+        
+        internal static string SwapFrom {
+            get {
+                return ResourceManager.GetString("SwapFrom", resourceCulture);
+            }
+        }
+        
+        internal static string SwapTo {
+            get {
+                return ResourceManager.GetString("SwapTo", resourceCulture);
             }
         }
         
@@ -818,6 +866,24 @@ namespace atomex.Resources {
         internal static string TotalNetworkFeeLabel {
             get {
                 return ResourceManager.GetString("TotalNetworkFeeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NoSwapsLabel {
+            get {
+                return ResourceManager.GetString("NoSwapsLabel", resourceCulture);
+            }
+        }
+        
+        internal static string Convert {
+            get {
+                return ResourceManager.GetString("Convert", resourceCulture);
+            }
+        }
+        
+        internal static string CreateSwapButton {
+            get {
+                return ResourceManager.GetString("CreateSwapButton", resourceCulture);
             }
         }
         
@@ -890,6 +956,12 @@ namespace atomex.Resources {
         internal static string WalletsSection {
             get {
                 return ResourceManager.GetString("WalletsSection", resourceCulture);
+            }
+        }
+        
+        internal static string CommonSection {
+            get {
+                return ResourceManager.GetString("CommonSection", resourceCulture);
             }
         }
         
@@ -998,12 +1070,6 @@ namespace atomex.Resources {
         internal static string sentTo {
             get {
                 return ResourceManager.GetString("sentTo", resourceCulture);
-            }
-        }
-        
-        internal static string to {
-            get {
-                return ResourceManager.GetString("to", resourceCulture);
             }
         }
         
@@ -1307,12 +1373,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string DontHaveNonEmptyAccountsError {
-            get {
-                return ResourceManager.GetString("DontHaveNonEmptyAccountsError", resourceCulture);
-            }
-        }
-        
         internal static string WrongDelegationAddressError {
             get {
                 return ResourceManager.GetString("WrongDelegationAddressError", resourceCulture);
@@ -1391,9 +1451,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string Veryfied {
+        internal static string Verified {
             get {
-                return ResourceManager.GetString("Veryfied", resourceCulture);
+                return ResourceManager.GetString("Verified", resourceCulture);
             }
         }
         

@@ -208,18 +208,18 @@ namespace atomex
             set { _targetMnemonicSubstr = value; OnPropertyChanged(nameof(TargetMnemonicSubstr)); }
         }
 
-        private bool _mnemonicVeryfied;
-        public bool MnemonicVeryfied
+        private bool _mnemonicVerified;
+        public bool MnemonicVerified
         {
-            get => _mnemonicVeryfied;
-            set { _mnemonicVeryfied = value; OnPropertyChanged(nameof(MnemonicVeryfied)); }
+            get => _mnemonicVerified;
+            set { _mnemonicVerified = value; OnPropertyChanged(nameof(MnemonicVerified)); }
         }
 
-        private bool _derivedPswdVeryfied = false;
-        public bool DerivedPswdVeryfied
+        private bool _derivedPswdVerified = false;
+        public bool DerivedPswdVerified
         {
-            get => _derivedPswdVeryfied;
-            set { _derivedPswdVeryfied = value; OnPropertyChanged(nameof(DerivedPswdVeryfied)); }
+            get => _derivedPswdVerified;
+            set { _derivedPswdVerified = value; OnPropertyChanged(nameof(DerivedPswdVerified)); }
         }
 
         public void ResetMnemonicCollections()
@@ -230,9 +230,9 @@ namespace atomex
 
             TargetMnemonicSubstr = new ObservableCollection<string>();
 
-            MnemonicVeryfied = false;
+            MnemonicVerified = false;
 
-            DerivedPswdVeryfied = false;
+            DerivedPswdVerified = false;
 
             Warning = string.Empty;
         }
@@ -256,18 +256,18 @@ namespace atomex
   
                 if (targetMnemonic != _mnemonic)
                 {
-                    _mnemonicVeryfied = false;
-                    _derivedPswdVeryfied = false;
+                    _mnemonicVerified = false;
+                    _derivedPswdVerified = false;
                     Warning = AppResources.WrongWordOrder;
                 }
                 else
                 {
-                    _mnemonicVeryfied = true;
+                    _mnemonicVerified = true;
                     if (!_useDerivedKeyPswd)
-                        _derivedPswdVeryfied = true;
+                        _derivedPswdVerified = true;
                     else
                     {
-                        _derivedPswdVeryfied = false;
+                        _derivedPswdVerified = false;
                         _derivedPasswordConfirmation = null;
                         OnPropertyChanged(nameof(DerivedPasswordConfirmation));
                     }
@@ -275,12 +275,12 @@ namespace atomex
             }
             else
             {
-                _mnemonicVeryfied = false;
-                _derivedPswdVeryfied = false;
+                _mnemonicVerified = false;
+                _derivedPswdVerified = false;
                 Warning = string.Empty;
             }
-            OnPropertyChanged(nameof(MnemonicVeryfied));
-            OnPropertyChanged(nameof(DerivedPswdVeryfied));
+            OnPropertyChanged(nameof(MnemonicVerified));
+            OnPropertyChanged(nameof(DerivedPswdVerified));
             OnPropertyChanged(nameof(TargetMnemonicSubstr));
             OnPropertyChanged(nameof(SourceMnemonicSubstr));
         }
@@ -425,6 +425,7 @@ namespace atomex
 
         public void WriteMnemonic()
         {
+            Mnemonic = Mnemonic.ToLower();
             if (string.IsNullOrEmpty(Mnemonic))
             {
                 Warning = AppResources.EmptyMnemonicError;
@@ -519,14 +520,14 @@ namespace atomex
                 !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
             {
                 Warning = AppResources.InvalidPassword;
-                _derivedPswdVeryfied = false;
-                OnPropertyChanged(nameof(DerivedPswdVeryfied));
+                _derivedPswdVerified = false;
+                OnPropertyChanged(nameof(DerivedPswdVerified));
                 return;
             }
 
-            _derivedPswdVeryfied = true;
+            _derivedPswdVerified = true;
 
-            OnPropertyChanged(nameof(DerivedPswdVeryfied));
+            OnPropertyChanged(nameof(DerivedPswdVerified));
 
             Warning = string.Empty;
         }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.Views.CreateNewWallet.VerificationMnemonicPage"
@@ -13,10 +13,10 @@
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
-            <Label Text="{x:Static resources:AppResources.MnemonicVerificationStepLabel}"
+            <Label Text="{helpers:Translate MnemonicVerificationStepLabel}"
                    Style="{DynamicResource CreateNewWalletTitleStyle}"
                    Margin="20,0"/>
-            <Label Text="{x:Static resources:AppResources.MnemonicVerificationDescriptionText}"
+            <Label Text="{helpers:Translate MnemonicVerificationDescriptionText}"
                    Style="{DynamicResource CreateNewWalletTextStyle}"
                    Margin="20,0"/>
             <Grid Margin="0,10"
@@ -113,11 +113,11 @@
                          Margin="30,0">
                 <StackLayout.IsVisible>
                     <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                        <Binding Path="MnemonicVeryfied" Mode="OneWay" />
+                        <Binding Path="MnemonicVerified" Mode="OneWay" />
                         <Binding Path="UseDerivedKeyPswd" Mode="OneWay" />
                     </MultiBinding>
                 </StackLayout.IsVisible>
-                <Label Text="{x:Static resources:AppResources.DerivedVerificationDescriptionText}"
+                <Label Text="{helpers:Translate DerivedVerificationDescriptionText}"
                        Style="{DynamicResource CreateNewWalletTextStyle}"
                        Margin="0,10"/>
                 <custom:CustomFrame x:Name="PasswordFrame"
@@ -131,7 +131,7 @@
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                             <custom:CustomEntry x:Name="PasswordEntry"
-                                                Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                 Keyboard="Text"
                                                 Focused="PasswordEntryFocused"
                                                 Unfocused="PasswordEntryFocused"
@@ -156,15 +156,15 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Button Text="{x:Static resources:AppResources.NextButton}"
-                    IsEnabled="{Binding MnemonicVeryfied}"
+            <Button Text="{helpers:Translate NextButton}"
+                    IsEnabled="{Binding MnemonicVerified}"
                     Style="{DynamicResource MainButtonStyle}"
                     Margin="30"
                     Clicked="OnNextButtonClicked">
                 <Button.IsVisible>
                     <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                        <Binding Path="MnemonicVeryfied" Mode="OneWay" />
-                        <Binding Path="DerivedPswdVeryfied" Mode="OneWay" />
+                        <Binding Path="MnemonicVerified" Mode="OneWay" />
+                        <Binding Path="DerivedPswdVerified" Mode="OneWay" />
                     </MultiBinding>
                 </Button.IsVisible>
             </Button>

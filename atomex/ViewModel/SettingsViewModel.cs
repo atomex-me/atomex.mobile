@@ -96,13 +96,28 @@ namespace atomex.ViewModel
         public Language Language
         {
             get => _language;
-            set { _language = value; OnPropertyChanged(nameof(Language)); }
+            set
+            {
+                if (_language == value)
+                    return;
+
+                if (_language != null)
+                    _language.IsActive = false;
+
+                _language = value;
+
+                ChangeLanguage(_language);
+
+                _language.IsActive = true;
+
+                OnPropertyChanged(nameof(Language));
+            }
         }
 
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
-            new Language { Name = "English", Code = "en" },
-            new Language { Name = "Русский", Code = "ru" }
+            new Language { Name = "English", Code = "en", IsActive = false },
+            new Language { Name = "Русский", Code = "ru", IsActive = false }
         };
 
         private SecureString _password;
@@ -341,12 +356,12 @@ namespace atomex.ViewModel
         {
             try
             {
-                Language = Languages.Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
+                Language = Languages.Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single(); ;
             }
             catch(Exception e)
             {
                 Log.Error(e, "Set user language error");
-                Language = Languages.Where(l => l.Code == "en").Single();
+                Language = Languages.Where(l => l.Code == "en").Single(); ;
             }
         }
 
@@ -355,7 +370,14 @@ namespace atomex.ViewModel
 
         private void ChangeLanguage(Language language)
         {
-            LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
+            try
+            {
+                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
+            }
+            catch
+            {
+                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
+            }
         }
 
         //private void Apply()

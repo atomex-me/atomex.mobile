@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.CreateSwap.ConfirmationPage"
-             Title="{x:Static resources:AppResources.ConfirmationLabel}"
+             Title="{helpers:Translate ConfirmationLabel}"
              Icon="NavBar-conversion"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
@@ -106,7 +106,7 @@
                 </Grid>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
+                    <Label Text="{helpers:Translate EstimatedPriceLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding EstimatedPrice}"
                            Style="{DynamicResource TxInfoRowTextStyle}"
@@ -117,7 +117,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Text="{x:Static resources:AppResources.EstimatedNetworkFeeLabel}"
+                    <Label Text="{helpers:Translate EstimatedNetworkFeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat=' {0:0.##} $'}"
@@ -130,7 +130,7 @@
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
-                    <Button Text="{x:Static resources:AppResources.ConvertButton}"
+                    <Button Text="{helpers:Translate ConvertButton}"
                             x:Name="ConvertButton"
                             Style="{DynamicResource MainButtonStyle}"
                             Clicked="OnConvertButtonClicked"/>

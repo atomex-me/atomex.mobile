@@ -2,17 +2,17 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateSwap.CurrenciesPage"
-             Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
+             Title="{helpers:Translate CreateSwapPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
             <StackLayout Spacing="1"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-                <Label Text="{x:Static resources:AppResources.SelectCurrenciesLabel}"
+                <Label Text="{helpers:Translate SelectCurrenciesLabel}"
                        Style="{DynamicResource CreateSwapTitleStyle}"/>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
@@ -62,7 +62,7 @@
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.FromLabel}"
+                                <Span Text="{helpers:Translate SwapFrom}"
                                       FontFamily="{DynamicResource MediumFont}"
                                       FontSize="15"/>
                                 <Span Text=": "
@@ -85,7 +85,7 @@
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.Balance}"/>
+                                <Span Text="{helpers:Translate Balance}"/>
                                 <Span Text=": "/>
                                 <Span Text="{Binding FromCurrencyViewModel.AvailableAmount, StringFormat='{0:0.####### }'}"
                                       FontFamily="{DynamicResource BoldFont}"
@@ -155,7 +155,7 @@
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.ToLabel}"
+                                <Span Text="{helpers:Translate SwapTo}"
                                       FontFamily="{DynamicResource MediumFont}"
                                       FontSize="15"/>
                                 <Span Text=": "
@@ -182,7 +182,7 @@
                        HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
+                            <Span Text="{helpers:Translate EstimatedPriceLabel}"
                                   Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text=": "
                                   Style="{DynamicResource EstimatedLabelStyle}"/>
@@ -191,7 +191,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Button Text="{x:Static resources:AppResources.NextButton}"
+                <Button Text="{helpers:Translate NextButton}"
                         Margin="20"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"

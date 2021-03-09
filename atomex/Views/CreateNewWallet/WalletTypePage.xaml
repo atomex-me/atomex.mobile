@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WalletTypePage"
              Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
-        <Label Text="{x:Static resources:AppResources.WalletTypeStepLabel}"
+        <Label Text="{helpers:Translate WalletTypeStepLabel}"
                Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-        <Label Text="{x:Static resources:AppResources.SelectTypeLabel}"
+        <Label Text="{helpers:Translate SelectTypeLabel}"
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal" Margin="0,20" HorizontalOptions="Center">
-            <custom:LeftRoundedButton Text="{x:Static resources:AppResources.TestNetButton}"
+            <custom:LeftRoundedButton Text="{helpers:Translate TestNetButton}"
                 Style="{DynamicResource WalletTypeButtonStyle}"
                 Clicked="OnTestNetButtonClicked"/>
-            <custom:RightRoundedButton Text="{x:Static resources:AppResources.MainNetButton}"
+            <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
                 Style="{DynamicResource WalletTypeButtonStyle}"
                 Clicked="OnMainNetButtonClicked"/>
         </StackLayout>

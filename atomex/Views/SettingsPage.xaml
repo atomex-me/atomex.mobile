@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.SettingsPage"
-             Title="{x:Static resources:AppResources.SettingsPageTitle}"
+             Title="{helpers:Translate SettingsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
@@ -13,7 +13,7 @@
                          Spacing="0">
                 <StackLayout Spacing="0"
                              IsVisible="{Binding BiometricSensorAvailibility}">
-                    <Label Text="{x:Static resources:AppResources.SecuritySection}"
+                    <Label Text="{helpers:Translate SecuritySection}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -27,7 +27,7 @@
                            Margin="0,0,0,20">
                         <StackLayout Orientation="Horizontal"
                                      VerticalOptions="FillAndExpand">
-                            <Label Text="{x:Static resources:AppResources.UseBiometricLabel}"
+                            <Label Text="{helpers:Translate UseBiometricLabel}"
                                    FontFamily="{DynamicResource RegularFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    FontSize="14"
@@ -40,7 +40,7 @@
                         </StackLayout>
                     </Frame>
                 </StackLayout>
-                <Label Text="{x:Static resources:AppResources.CommonSection}"
+                <Label Text="{helpers:Translate CommonSection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -56,17 +56,17 @@
                     </Frame.GestureRecognizers>
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal">
-                        <Label Text="{x:Static resources:AppResources.LanguageLabel}"
+                        <Label Text="{helpers:Translate LanguageLabel}"
                                Style="{DynamicResource OptionLabelStyle}"/>
                         <Label Text="{Binding Language.Name}"
                                Style="{DynamicResource OptionValueLabelStyle}"/>
                         <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                               Margin="20,15"
+                               Margin="10,15,20,15"
                                HeightRequest="10"
                                WidthRequest="10"/>
                     </StackLayout>
                 </Frame>
-                <Label Text="{x:Static resources:AppResources.CommunitySection}"
+                <Label Text="{helpers:Translate CommunitySection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -99,7 +99,7 @@
                     </custom:CustomFrame>
                     <Image Source="ic_telegram"
                            Margin="6"/>
-                    <Label Text="{x:Static resources:AppResources.Telegram}"
+                    <Label Text="{helpers:Translate Telegram}"
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
@@ -130,7 +130,7 @@
                     <Image Grid.Row="2"
                            Source="ic_twitter"
                            Margin="6"/>
-                    <Label Text="{x:Static resources:AppResources.Twitter}"
+                    <Label Text="{helpers:Translate Twitter}"
                            Grid.Row="2"
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
@@ -163,7 +163,7 @@
                     <Image Grid.Row="4"
                            Source="ic_youtube"
                            Margin="6"/>
-                    <Label Text="{x:Static resources:AppResources.Youtube}"
+                    <Label Text="{helpers:Translate Youtube}"
                            Grid.Row="4"
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
@@ -196,7 +196,7 @@
                     <Image Grid.Row="6"
                            Source="ic_support"
                            Margin="6"/>
-                    <Label Text="{x:Static resources:AppResources.Support}"
+                    <Label Text="{helpers:Translate Support}"
                            Grid.Row="6"
                            Grid.Column="1"
                            FontFamily="{DynamicResource RegularFont}"
@@ -214,7 +214,7 @@
                            Margin="20,15"
                            HorizontalOptions="End"/>
                 </Grid>
-                <Label Text="{x:Static resources:AppResources.AccountSection}"
+                <Label Text="{helpers:Translate AccountSection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -224,12 +224,12 @@
                 <custom:CustomFrame CornerRadius="10"
                                     HeightRequest="40"
                                     Style="{DynamicResource EntryFrameStyle}">
-                    <Button Text="{x:Static resources:AppResources.SignOut}"
+                    <Button Text="{helpers:Translate SignOut}"
                             Style="{DynamicResource TransparentButtonStyle}"
                             CornerRadius="10"
                             Clicked="OnSignOutButtonClicked"/>
                 </custom:CustomFrame>
-                <Label Text="{x:Static resources:AppResources.WalletsSection}"
+                <Label Text="{helpers:Translate WalletsSection}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -270,9 +270,9 @@
             <!--<TableView Intent="Settings"
                        BackgroundColor="{DynamicResource MainBackgroundColor}">
                 <TableRoot>
-                    <TableSection Title="{x:Static resources:AppResources.SecurityLabel}"
+                    <TableSection Title="{helpers:Translate SecurityLabel}"
                                   TextColor="{DynamicResource HintTextColor}">
-                        <SwitchCell Text="{x:Static resources:AppResources.AutomaticSignOutLabel}"
+                        <SwitchCell Text="{helpers:Translate AutomaticSignOutLabel}"
                                     OnColor="{DynamicResource MainButtonBackgroundColor}"
                                     On="{Binding AutoSignOut, Mode=TwoWay}"/>
                         <ViewCell Tapped="OnPeriodOfInactiveSettingTapped"
@@ -298,7 +298,7 @@
                                         <ColumnDefinition Width="3*"/>
                                         <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{x:Static resources:AppResources.PeriodOfInactiveLabel}"
+                                    <Label Text="{helpers:Translate PeriodOfInactiveLabel}"
                                            Style="{DynamicResource OptionLabelStyle}"/>
                                     <Label Grid.Column="1"
                                            Text="{Binding PeriodOfInactivityInMin}"
@@ -317,11 +317,11 @@
                             </ViewCell.View>
                         </ViewCell>
                     </TableSection>
-                    <TableSection Title="{x:Static resources:AppResources.AccountLabel}"
+                    <TableSection Title="{helpers:Translate AccountLabel}"
                                   TextColor="{DynamicResource HintTextColor}">
                         <ViewCell>
                             <ViewCell.View>
-                                <Button Text="{x:Static resources:AppResources.SignOut}"
+                                <Button Text="{helpers:Translate SignOut}"
                                         Style="{DynamicResource TransparentButtonStyle}"
                                         Clicked="OnSignOutButtonClicked"/>
                         </ViewCell.View>

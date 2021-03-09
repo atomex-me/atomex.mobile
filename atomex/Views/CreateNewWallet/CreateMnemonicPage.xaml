@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{Binding Title}"
@@ -11,9 +11,9 @@
                      VerticalOptions="CenterAndExpand"
                      Spacing="0"
                      Style="{DynamicResource CreateWalletStackLayoutStyle}">
-            <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
+            <Label Text="{helpers:Translate MnemonicPhraseStepLabel}"
                    Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-            <Label Text="{x:Static resources:AppResources.MnemonicDescriptionText}"
+            <Label Text="{helpers:Translate MnemonicDescriptionText}"
                    Style="{DynamicResource CreateNewWalletLeftAlignTextStyle}"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
@@ -48,7 +48,7 @@
                                      Unfocused="OnLanguagePickerFocused"
                                      SelectedIndexChanged="MnemonicPhraseChanged"
                                      Style="{DynamicResource CustomPickerStyle}"/>
-                <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
+                <Label Text ="{helpers:Translate LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
@@ -83,7 +83,7 @@
                                      SelectedIndexChanged="MnemonicPhraseChanged"
                                      Style="{DynamicResource CustomPickerStyle}"/>
                 <Label Grid.Row="3"
-                       Text ="{x:Static resources:AppResources.WordCountLabel}"
+                       Text ="{helpers:Translate WordCountLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
@@ -102,7 +102,7 @@
             </Grid>
             <StackLayout Orientation="Horizontal"
                          Padding="10">
-                <Label Text="{x:Static resources:AppResources.UseDerivedKeyPswd}"
+                <Label Text="{helpers:Translate UseDerivedKeyPswd}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
@@ -138,7 +138,7 @@
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                             <custom:CustomEntry x:Name="PasswordEntry"
-                                                  Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                  Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                   Keyboard="Text"
                                                   Focused="PasswordEntryFocused"
                                                   Unfocused="PasswordEntryFocused"
@@ -161,7 +161,7 @@
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                             <custom:CustomEntry x:Name="PasswordConfirmationEntry"
-                                                  Placeholder="{x:Static resources:AppResources.PasswordConfirmationEntryPlaceholder}"
+                                                  Placeholder="{helpers:Translate PasswordConfirmationEntryPlaceholder}"
                                                   Keyboard="Text"
                                                   Focused="PasswordConfirmationEntryFocused"
                                                   Unfocused="PasswordConfirmationEntryFocused"
@@ -224,13 +224,13 @@
                 <Image Source="Warning"
                        HeightRequest="32"
                        WidthRequest="32"/>
-                <Label Text="{x:Static resources:AppResources.LoseMnemonicPhraseText}"
+                <Label Text="{helpers:Translate LoseMnemonicPhraseText}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
                        HorizontalTextAlignment="Start"/>
             </StackLayout>
-            <Button Text="{x:Static resources:AppResources.NextButton}"
+            <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked">
@@ -239,7 +239,7 @@
                                  Binding="{Binding Mnemonic}"
                                  Value="">
                         <Setter Property="Text"
-                                Value="{x:Static resources:AppResources.GenerateButton}"/>
+                                Value="{helpers:Translate GenerateButton}"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

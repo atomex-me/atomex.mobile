@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.CustomElements;
+using atomex.Helpers;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Styles;
@@ -98,11 +99,11 @@ namespace atomex
         {
             try
             {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName));
+                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)));
             }
             catch
             {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
             }
         }
 

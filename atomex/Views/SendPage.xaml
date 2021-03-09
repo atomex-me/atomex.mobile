@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
-             Title="{x:Static resources:AppResources.SendPageTitle}"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             Title="{helpers:Translate SendPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
@@ -27,7 +27,7 @@
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Address"  
                                                       Text="{Binding To}"
-                                                      Placeholder="{x:Static resources:AppResources.AddressEntryPlaceholder}"
+                                                      Placeholder="{helpers:Translate AddressEntryPlaceholder}"
                                                       Keyboard="Text"
                                                       Focused="AddressEntryFocused"
                                                       Unfocused="AddressEntryFocused"
@@ -54,7 +54,7 @@
                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                             </RelativeLayout>
                         </StackLayout>
-                        <Button Text="{x:Static resources:AppResources.PasteButton}"
+                        <Button Text="{helpers:Translate PasteButton}"
                                 Clicked="OnPasteButtonClicked"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 HorizontalOptions="End"/>
@@ -83,7 +83,7 @@
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Amount"
-                                                      Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
+                                                      Placeholder="{helpers:Translate AmountEntryPlaceholder}"
                                                       Keyboard="Numeric"
                                                       Focused="AmountEntryFocused"
                                                       Unfocused="AmountEntryFocused"
@@ -109,7 +109,7 @@
                                 </Label>
                             </RelativeLayout>
                         </StackLayout>
-                        <Button Text="{x:Static resources:AppResources.MaxButton}"
+                        <Button Text="{helpers:Translate MaxButton}"
                                 HorizontalOptions="End"
                                 VerticalOptions="FillAndExpand"
                                 Style="{DynamicResource TransparentButtonStyle}"
@@ -126,7 +126,7 @@
                              HorizontalOptions="FillAndExpand"
                              Opacity="0.7"
                              IsVisible="False">
-                    <Label Text="{x:Static resources:AppResources.FeeRateLabel}"
+                    <Label Text="{helpers:Translate FeeRateLabel}"
                            Style="{DynamicResource EntryHintStyle}"
                            IsVisible="True"/>
                     <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
@@ -173,7 +173,7 @@
                                     <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                           x:Name="Fee"
                                                           Keyboard="Numeric"
-                                                          Placeholder="{x:Static resources:AppResources.FeeLabel}"
+                                                          Placeholder="{helpers:Translate FeeLabel}"
                                                           Focused="FeeEntryFocused"
                                                           Unfocused="FeeEntryFocused"
                                                           TextChanged="OnFeeTextChanged"
@@ -238,12 +238,12 @@
                                                   Style="{DynamicResource EntryFrameStyle}"
                                                   x:Name="GasPriceFrame">
                                 <StackLayout Spacing="0">
-                                    <Label Text="{x:Static resources:AppResources.GasPriceLabel}"
+                                    <Label Text="{helpers:Translate GasPriceLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
                                            IsVisible="True">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{x:Static resources:AppResources.GasPriceLabel}"/>
+                                                <Span Text="{helpers:Translate GasPriceLabel}"/>
                                                 <Span Text=", GWEI"/>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -291,12 +291,12 @@
                             <controls:CustomFrame CornerRadius="0" 
                                                   Style="{DynamicResource EntryFrameStyle}">
                                 <StackLayout Spacing="0">
-                                    <Label Text="{x:Static resources:AppResources.GasLimitLabel}"
+                                    <Label Text="{helpers:Translate GasLimitLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
                                            IsVisible="True">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{x:Static resources:AppResources.GasLimitLabel}"/>
+                                                <Span Text="{helpers:Translate GasLimitLabel}"/>
                                                 <Span Text=", GAS"/>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -323,12 +323,12 @@
                             <controls:CustomFrame Style="{DynamicResource EntryFrameStyle}"
                                                   CornerRadius="0,0,20,20">
                                 <StackLayout Spacing="0">
-                                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                                    <Label Text="{helpers:Translate FeeLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
                                            IsVisible="True">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{x:Static resources:AppResources.FeeLabel}"/>
+                                                <Span Text="{helpers:Translate FeeLabel}"/>
                                                 <Span Text=", ETH"/>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -359,7 +359,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Padding="20">
-                    <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
+                    <Label Text="{helpers:Translate UseDefaultFeeLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"
@@ -383,7 +383,7 @@
                            Style="{DynamicResource ErrorTextStyle}"
                            HorizontalTextAlignment="Center"/>
                 </Frame>
-                <Button Text="{x:Static resources:AppResources.NextButton}"
+                <Button Text="{helpers:Translate NextButton}"
                         x:Name="NextButton"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"

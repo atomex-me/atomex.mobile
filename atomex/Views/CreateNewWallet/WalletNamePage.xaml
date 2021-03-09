@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
@@ -11,9 +11,9 @@
                      VerticalOptions="CenterAndExpand"
                      Padding="0,20">
             <StackLayout>
-                <Label Text="{x:Static resources:AppResources.WalletNameStepLabel}"
+                <Label Text="{helpers:Translate WalletNameStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-                <Label Text="{x:Static resources:AppResources.EnterNameLabel}"
+                <Label Text="{helpers:Translate EnterNameLabel}"
                        Style="{DynamicResource CreateNewWalletTextStyle}"/>
             </StackLayout>
             <Frame x:Name="Frame"
@@ -35,7 +35,7 @@
                             </Label.GestureRecognizers>
                         </Label>
                         <controls:CustomEntry x:Name="Entry"
-                                              Placeholder="{x:Static resources:AppResources.WalletNameEntryPlaceholder}"
+                                              Placeholder="{helpers:Translate WalletNameEntryPlaceholder}"
                                               Keyboard="Text"
                                               Focused="EntryFocused"
                                               Unfocused="EntryFocused"
@@ -58,7 +58,7 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Button Text="{x:Static resources:AppResources.NextButton}"
+            <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>

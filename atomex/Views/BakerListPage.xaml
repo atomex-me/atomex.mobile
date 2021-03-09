@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.BakerListPage"
-             Title="{x:Static resources:AppResources.BakerListPageTitle}"
+             Title="{helpers:Translate BakerListPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
-            <SearchBar Placeholder="{x:Static resources:AppResources.SearchBarPlaceholder}"
+            <SearchBar Placeholder="{helpers:Translate SearchBarPlaceholder}"
                        CancelButtonColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                        PlaceholderColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -69,8 +69,8 @@
                                            FontSize="12">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Name}"
-                                                     Value="Custom Baker">
+                                                         Binding="{Binding Name}"
+                                                         Value="Custom Baker">
                                                 <Setter Property="IsVisible"
                                                         Value="False"/>
                                         </DataTrigger>
@@ -79,7 +79,7 @@
                                             <FormattedString>
                                                 <Span Text="{Binding EstimatedRoi, StringFormat='{0:P}'}"
                                                       TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                                                <Span Text=" (min "/>
+                                                <Span Text="{helpers:Translate MinLabel, StringFormat=' ({0} '}"/>
                                                 <Span Text="{Binding MinDelegation}"/>
                                                 <Span Text=" XTZ)"/>
                                             </FormattedString>
@@ -99,7 +99,7 @@
                                                     Value="False"/>
                                         </DataTrigger>
                                 </StackLayout.Triggers>
-                                <Label Text="{x:Static resources:AppResources.Available}"
+                                <Label Text="{helpers:Translate Available}"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="End"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"

@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.SettingsOptions.LanguagesPage"
-             Title="{x:Static resources:AppResources.SettingsPageTitle}"
+             Title="{helpers:Translate SettingsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          Spacing="0">
-                <Label Text="{x:Static resources:AppResources.LanguageLabel}"
+                <Label Text="{helpers:Translate LanguageLabel}"
                        FontFamily="{DynamicResource LightFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -41,8 +41,8 @@
                                            IsVisible="False">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Code}"
-                                                         Value="ru">
+                                                         Binding="{Binding IsActive}"
+                                                         Value="True">
                                                 <Setter Property="IsVisible"
                                                         Value="True"/>
                                             </DataTrigger>

@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.ConversionsListPage"
-             Title="{x:Static resources:AppResources.SwapListPageTitle}">
+             Title="{helpers:Translate SwapListPageTitle}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout VerticalOptions="FillAndExpand"
@@ -25,12 +25,12 @@
                        HorizontalOptions="CenterAndExpand"/>
                 <StackLayout VerticalOptions="StartAndExpand"
                              Margin="20">
-                    <Label Text="{x:Static resources:AppResources.NoSwapsLabel}"
+                    <Label Text="{helpers:Translate NoSwapsLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Center"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="18"/>
-                    <Label Text="{x:Static resources:AppResources.SwapHistoryText}"
+                    <Label Text="{helpers:Translate SwapHistoryText}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
@@ -77,7 +77,7 @@
                 <ListView.FooterTemplate>
                     <DataTemplate>
                         <StackLayout>
-                            <Label Text="{x:Static resources:AppResources.SwapHistoryText}"
+                            <Label Text="{helpers:Translate SwapHistoryText}"
                                    BackgroundColor="Transparent"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontFamily="{DynamicResource RegularFont}"
@@ -183,7 +183,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="{x:Static resources:AppResources.CreateSwapButton}"
+            <Button Text="{helpers:Translate CreateSwapButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     VerticalOptions="End"
                     Margin="20"
