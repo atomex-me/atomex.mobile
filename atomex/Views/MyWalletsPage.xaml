@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.MyWalletsPage"
-             Title="{x:Static resources:AppResources.MyWalletsTitle}"
+             Title="{helpers:Translate MyWalletsTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Padding="20,0">
-            <Label Text="{x:Static resources:AppResources.SelectWalletLabel}"
+            <Label Text="{helpers:Translate SelectWalletLabel}"
                    Style="{DynamicResource SelectWalletTextStyle}"/>
             <ListView ItemsSource="{Binding Wallets}"
                       ItemTapped="OnWalletTapped"

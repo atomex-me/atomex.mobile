@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.DelegationInfoPage"
-             Title="{x:Static resources:AppResources.DelegationInfoPageTitle}"
+             Title="{helpers:Translate DelegationInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout>
@@ -11,11 +11,11 @@
                        RowHeight="40"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                 <TableRoot>
-                    <TableSection Title="{x:Static resources:AppResources.AccountSection}">
+                    <TableSection Title="{helpers:Translate AccountSection}">
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.AddressLabel}"
+                                <Label Text="{helpers:Translate AddressLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"
                                        WidthRequest="150"/>
                                 <Label Text="{Binding Address}"
@@ -26,7 +26,7 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.AmountLabel}"
+                                <Label Text="{helpers:Translate AmountLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding Balance, StringFormat='{0:0.##} XTZ'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
@@ -35,7 +35,7 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.DelegationTime}"
+                                <Label Text="{helpers:Translate DelegationTime}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding DelegationTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
@@ -44,7 +44,7 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.DelegationStatus}"
+                                <Label Text="{helpers:Translate DelegationStatus}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding Status}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"
@@ -52,11 +52,11 @@
                             </StackLayout>
                         </ViewCell>
                     </TableSection>
-                    <TableSection Title="{x:Static resources:AppResources.BakerSection}">
+                    <TableSection Title="{helpers:Translate BakerSection}">
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.DelegateLabel}"
+                                <Label Text="{helpers:Translate DelegateLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Image Source="{Binding Baker.Logo}"
                                        HeightRequest="32"
@@ -88,7 +88,7 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.MinimumAmountLabel}"
+                                <Label Text="{helpers:Translate MinimumAmountLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding Baker.MinDelegation, StringFormat='{0:0.##} XTZ'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
@@ -97,22 +97,22 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{x:Static resources:AppResources.Roi}"
+                                <Label Text="{helpers:Translate Roi}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Label Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
                                        Style="{DynamicResource DelegationPropertyValueStyle}"/>
                             </StackLayout>
                         </ViewCell>
                         <ViewCell>
-                            <Button Text="{x:Static resources:AppResources.ChangeBakerButton}"
+                            <Button Text="{helpers:Translate ChangeBakerButton}"
                                     Style="{DynamicResource TransparentButtonStyle}"
                                     Clicked="OnChangeBakerButtonClicked">
                             </Button>
                         </ViewCell>
                     </TableSection>
-                    <TableSection Title="{x:Static resources:AppResources.MoreSection}">
+                    <TableSection Title="{helpers:Translate MoreSection}">
                         <ViewCell>
-                            <Button Text="{x:Static resources:AppResources.CheckRewardsButton}"
+                            <Button Text="{helpers:Translate CheckRewardsButton}"
                                     Style="{DynamicResource TransparentButtonStyle}"
                                     Clicked="OnCheckRewardsButtonClicked">
                                 <Button.Triggers>

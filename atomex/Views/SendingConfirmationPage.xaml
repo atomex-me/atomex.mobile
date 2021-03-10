@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.SendingConfirmationPage"
-             Title="{x:Static resources:AppResources.ConfirmationLabel}"
+             Title="{helpers:Translate ConfirmationLabel}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
@@ -46,7 +46,7 @@
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.ToLabel}"
+                    <Label Text="{helpers:Translate ToLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding To}"
                            Style="{DynamicResource TxInfoRowTextStyle}"
@@ -54,7 +54,7 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.AmountLabel}"
+                    <Label Text="{helpers:Translate AmountLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding Amount}"
                            Style="{DynamicResource TxInfoRowTextStyle}">
@@ -74,7 +74,7 @@
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                              x:Name="FeeValue">
-                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                    <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding Fee}"
                            Style="{DynamicResource TxInfoRowTextStyle}">
@@ -97,7 +97,7 @@
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
                              x:Name="EthereumFeeValue"
                              IsVisible="False">
-                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                    <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Style="{DynamicResource TxInfoRowTextStyle}">
                         <Label.FormattedText>
@@ -118,7 +118,7 @@
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
-                    <Button Text="{x:Static resources:AppResources.SendButton}"
+                    <Button Text="{helpers:Translate SendButton}"
                             x:Name="SendButton"
                             Style="{DynamicResource MainButtonStyle}"
                             Clicked="OnSendButtonClicked"/>

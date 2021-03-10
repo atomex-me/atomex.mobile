@@ -30,16 +30,6 @@ namespace atomex
             _mainPage = mainPage;
         }
 
-        async void OnPeriodOfInactiveSettingTapped(object sender, EventArgs args)
-        {
-            var optionsPage = new PeriodOfInactiveListPage(_settingsViewModel, selected =>
-            {
-                _settingsViewModel.PeriodOfInactivityInMin = selected;
-            });
-
-            await Navigation.PushAsync(optionsPage);
-        }
-
         private async void OnSignOutButtonClicked(object sender, EventArgs args)
         {
             var res = await DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
@@ -47,6 +37,16 @@ namespace atomex
             {
                 _mainPage._mainViewModel.Locked.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        private async void OnLanguagesTapped(object sender, EventArgs args)
+        {
+            var optionsPage = new LanguagesPage(_settingsViewModel, selected =>
+            {
+                _settingsViewModel.Language = selected;
+            });
+
+            await Navigation.PushAsync(optionsPage);
         }
 
         private void OnYoutubeTapped(object sender, EventArgs args)

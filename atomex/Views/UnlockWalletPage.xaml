@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.UnlockWalletPage"
-             Title="{x:Static resources:AppResources.UnlockTitle}"
+             Title="{helpers:Translate UnlockTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -22,7 +22,7 @@
                        HeightRequest="156"
                        Margin="10"
                        Source="AtomexLogo"/>
-                <Label Text="{x:Static resources:AppResources.UnlockLabel}"
+                <Label Text="{helpers:Translate UnlockLabel}"
                        Style="{DynamicResource UnlockWalletTextStyle}"/>
                 <Frame x:Name="PasswordFrame"
                        CornerRadius="10"
@@ -48,7 +48,7 @@
                                         HeightRequest="60"
                                         Margin="-10,0,0,0">
                             <controls:CustomEntry x:Name="PasswordEntry"
-                                                  Placeholder="{x:Static resources:AppResources.PasswordEntryPlaceholder}"
+                                                  Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                   Keyboard="Text"
                                                   Focused="PasswordEntryFocused"
                                                   Unfocused="PasswordEntryFocused"
@@ -65,7 +65,7 @@
                         </RelativeLayout>
                     </StackLayout>
                 </Frame>
-                <Button Text="{x:Static resources:AppResources.UnlockButton}"
+                <Button Text="{helpers:Translate UnlockButton}"
                         Margin="0,20"
                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                         Style="{DynamicResource MainButtonStyle}"

@@ -318,7 +318,7 @@ namespace atomex.ViewModel
             CancellationToken cancellationToken = default)
         {
             if (_walletAddressViewModel.WalletAddress == null)
-                return new Error(Errors.InvalidWallets, AppResources.DontHaveNonEmptyAccountsError);
+                return new Error(Errors.InvalidWallets, AppResources.DelegationValidationError);
 
             var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
@@ -342,7 +342,7 @@ namespace atomex.ViewModel
             var delegators = delegateData["delegated_contracts"]?.Values<string>();
 
             if (delegators.Contains(WalletAddressViewModel.WalletAddress.Address))
-                return new Error(Errors.AlreadyDelegated, $"{AppResources.AlreadyDelegatedFrom} {WalletAddressViewModel.WalletAddress.Address} {AppResources.to} {_address}");
+                return new Error(Errors.AlreadyDelegated, $"{AppResources.AlreadyDelegatedFrom} {WalletAddressViewModel.WalletAddress.Address} {AppResources.ToLabel} {_address}");
 
             var tx = new TezosTransaction
             {

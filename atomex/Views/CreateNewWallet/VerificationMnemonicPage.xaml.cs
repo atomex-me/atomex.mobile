@@ -35,8 +35,8 @@ namespace atomex.Views.CreateNewWallet
         {
             string word = ((TappedEventArgs)args).Parameter.ToString();
             _createNewWalletViewModel.UpdateMnemonicCollections(word, true);
-            if (_createNewWalletViewModel.DerivedPswdVeryfied)
-                _toastService?.Show(AppResources.Veryfied, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
+            if (_createNewWalletViewModel.DerivedPswdVerified)
+                _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
         }
 
         void OnTargetWordTapped(object sender, EventArgs args)
@@ -66,8 +66,8 @@ namespace atomex.Views.CreateNewWallet
                     Page.ScrollToAsync(0, 0, true);
                     return false;
                 });
-                if (_createNewWalletViewModel.DerivedPswdVeryfied)
-                    _toastService?.Show(AppResources.Veryfied, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
+                if (_createNewWalletViewModel.DerivedPswdVerified)
+                    _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
             }
         }
 

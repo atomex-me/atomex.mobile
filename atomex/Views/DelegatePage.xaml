@@ -2,16 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.DelegatePage"
-             Title="{x:Static resources:AppResources.DelegatePageTitle}"
+             Title="{helpers:Translate DelegatePageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView x:Name="Page">
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
                      Margin="20"
                      Spacing="0">
-            <Label Text="{x:Static resources:AppResources.DelegateToBakeryLabel}"
+            <Label Text="{helpers:Translate DelegateToBakeryLabel}"
                    FontFamily="{DynamicResource BoldFont}"
                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    FontSize="18"
@@ -36,14 +36,6 @@
                                       x:Name="BakerFrame"
                                       CornerRadius="20,20,0,0"
                                       Style="{DynamicResource EntryFrameStyle}">
-                    <!--<controls:CustomPicker x:Name="BakerPicker"
-                                           ItemsSource="{Binding FromBakersList}"
-                                           ItemDisplayBinding="{Binding Name}"
-                                           SelectedItem="{Binding BakerViewModel}"
-                                           VerticalOptions="FillAndExpand"
-                                           Focused="OnBakerPickerFocused"
-                                           Unfocused="OnBakerPickerFocused"
-                                           TextColor="Transparent"/>-->
                     <controls:CustomFrame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBakerPickerClicked"/>
                     </controls:CustomFrame.GestureRecognizers>
@@ -117,7 +109,7 @@
                     <RowDefinition Height="40" />
                     <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
-                <Label Text="{x:Static resources:AppResources.ToAddressLabel}"
+                <Label Text="{helpers:Translate ToAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
                        Padding="20,5,20,0"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"
@@ -128,7 +120,7 @@
                        x:Name="ToAddressFrame">
                     <controls:CustomEntry x:Name="ToAddressEntry"
                                           Keyboard="Text"
-                                          Placeholder="{x:Static resources:AppResources.BakerAddressPlaceholder}"
+                                          Placeholder="{helpers:Translate BakerAddressPlaceholder}"
                                           PlaceholderColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                           Focused="OnToAddressEntryFocused"
                                           Unfocused="OnToAddressEntryFocused"
@@ -167,7 +159,7 @@
                                            TextColor="Transparent"
                                            Style="{DynamicResource CustomEntryStyle}"/>
                 </controls:CustomFrame>
-                <Label Text="{x:Static resources:AppResources.FromAddressLabel}"
+                <Label Text="{helpers:Translate FromAddressLabel}"
                        Style="{DynamicResource EntryHintStyle}"
                        Padding="20,5,20,0"
                        IsVisible="True"/>
@@ -190,7 +182,7 @@
                     </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.Balance}"/>
+                            <Span Text="{helpers:Translate Balance}"/>
                             <Span Text=": "/>
                             <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"
                                   FontFamily="{DynamicResource BoldFont}"
@@ -236,12 +228,12 @@
                     </DataTrigger>
                 </controls:CustomFrame.Triggers>
                 <StackLayout>
-                    <Label Text="{x:Static resources:AppResources.FeeLabel}"
+                    <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource EntryHintStyle}"
                            IsVisible="True">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.FeeLabel}"/>
+                                <Span Text="{helpers:Translate FeeLabel}"/>
                                 <Span Text=", XTZ"/>
                             </FormattedString>
                         </Label.FormattedText>
@@ -286,7 +278,7 @@
             </controls:CustomFrame>
             <StackLayout Orientation="Horizontal"
                          Padding="20">
-                <Label Text="{x:Static resources:AppResources.UseDefaultFeeLabel}"
+                <Label Text="{helpers:Translate UseDefaultFeeLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
@@ -298,7 +290,7 @@
                         HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <RelativeLayout>
-                <Button Text="{x:Static resources:AppResources.NextButton}"
+                <Button Text="{helpers:Translate NextButton}"
                         x:Name="NextButton"
                         Style="{DynamicResource MainButtonStyle}"
                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

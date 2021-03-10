@@ -237,6 +237,8 @@
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSDT.png" />
+    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick__white.pdf" />
+    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

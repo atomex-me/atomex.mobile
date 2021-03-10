@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.DelegationsListPage"
-             Title="{x:Static resources:AppResources.DelegationListPageTitle}"
+             Title="{helpers:Translate DelegationListPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand"
@@ -15,7 +15,7 @@
                     <ActivityIndicator Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                                        BackgroundColor="Transparent"
                                        IsRunning="True"/>
-                    <Label Text="{x:Static resources:AppResources.LoadingLabel}"
+                    <Label Text="{helpers:Translate LoadingLabel}"
                            TextColor="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                            FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
@@ -40,7 +40,7 @@
                        WidthRequest="48"
                        VerticalOptions="EndAndExpand"
                        HorizontalOptions="CenterAndExpand"/>
-                <Label Text="{x:Static resources:AppResources.NoDelegationsLabel}"
+                <Label Text="{helpers:Translate NoDelegationsLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        HorizontalTextAlignment="Center"
@@ -176,7 +176,7 @@
                                 <Label Grid.RowSpan="2"
                                        Grid.Column="2"
                                        Grid.ColumnSpan="2"
-                                       Text="{x:Static resources:AppResources.NotDelegated}"
+                                       Text="{helpers:Translate NotDelegated}"
                                        TextTransform="Uppercase"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.SwapInfoPage"
-             Title="{x:Static resources:AppResources.SwapInfoPageTitle}"
+             Title="{helpers:Translate SwapInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
@@ -61,21 +61,21 @@
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.Price}"
+                    <Label Text="{helpers:Translate Price}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding Price}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.TransactionTime}"
+                    <Label Text="{helpers:Translate TransactionTime}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <Label Text="{x:Static resources:AppResources.State}"
+                    <Label Text="{helpers:Translate State}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding State}"
                            Style="{DynamicResource TxInfoRowTextStyle}"/>

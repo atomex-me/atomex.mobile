@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{Binding Title}"
@@ -13,9 +13,9 @@
                      Padding="0,20"
                      Spacing="0">
             <StackLayout>
-                <Label Text="{x:Static resources:AppResources.MnemonicPhraseStepLabel}"
+                <Label Text="{helpers:Translate MnemonicPhraseStepLabel}"
                        Style="{DynamicResource CreateNewWalletTitleStyle}"/>
-                <Label Text="{x:Static resources:AppResources.EnterMnemonicPhraseLabel}"
+                <Label Text="{helpers:Translate EnterMnemonicPhraseLabel}"
                        Style="{DynamicResource CreateNewWalletTextStyle}"/>
             </StackLayout>
             <Grid HorizontalOptions="Fill"
@@ -48,7 +48,7 @@
                                      Style="{DynamicResource CustomPickerStyle}"
                                      Focused="OnPickerFocused"
                                      Unfocused="OnPickerFocused"/>
-                <Label Text ="{x:Static resources:AppResources.LanguageLabel}"
+                <Label Text ="{helpers:Translate LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnPickerClicked"/>
@@ -69,7 +69,7 @@
             <custom:CustomFrame CornerRadius="0,0,20,20"
                                 x:Name="EditorFrame"
                                 Style="{DynamicResource EntryFrameStyle}">
-                <Editor Placeholder="{x:Static resources:AppResources.EnterMnemonicPhraseEditorPlaceholder}"
+                <Editor Placeholder="{helpers:Translate EnterMnemonicPhraseEditorPlaceholder}"
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
                         Style="{DynamicResource MnemonicPhraseEditorStyle}"
@@ -87,7 +87,7 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Button Text="{x:Static resources:AppResources.NextButton}"
+            <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
                     Clicked="OnNextButtonClicked"/>

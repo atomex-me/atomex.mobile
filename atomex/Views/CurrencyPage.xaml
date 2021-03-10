@@ -4,7 +4,7 @@
              x:Class="atomex.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              Title="{Binding Currency.Description}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -55,21 +55,21 @@
                         </Label.FormattedText>
                     </Label>
                     <Label x:Name="RefreshLabel"
-                           Text="{x:Static resources:AppResources.BalanceUpdatingLabel}"
+                           Text="{helpers:Translate BalanceUpdatingLabel}"
                            Style="{DynamicResource RefreshLabelStyle}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
-                        <controls:LeftRoundedButton Text="{x:Static resources:AppResources.SendButton}"
+                        <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
                                                     Clicked="ShowSendPage"/>
-                        <Button Text="{x:Static resources:AppResources.ReceiveButton}"
+                        <Button Text="{helpers:Translate ReceiveButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Clicked="ShowReceivePage"/>
-                        <Button Text="{x:Static resources:AppResources.DelegateButton}"
+                        <Button Text="{helpers:Translate DelegateButton}"
                                 x:Name="DelegateButton"
                                 IsVisible="false"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Clicked="ShowDelegationPage"/>
-                        <controls:RightRoundedButton Text="{x:Static resources:AppResources.ConvertButton}"
+                        <controls:RightRoundedButton Text="{helpers:Translate ConvertButton}"
                                                         Style="{DynamicResource CurrencyActionButtonStyle}"
                                                         Clicked="ShowConversionPage"/>
                     </StackLayout>
@@ -92,7 +92,7 @@
                            HeightRequest="45"
                            Margin="20,40,20,10"
                            VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{x:Static resources:AppResources.NoTransactionsLabel}"
+                    <Label Text="{helpers:Translate NoTransactionsLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontSize="18"
@@ -100,7 +100,7 @@
                            VerticalTextAlignment="Start"/>
                     <RelativeLayout HorizontalOptions="Center"
                                     Margin="20">
-                        <Button Text="{x:Static resources:AppResources.UpdateButton}"
+                        <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 x:Name="UpdateButton"
                                 CornerRadius="20"
@@ -148,10 +148,10 @@
                             <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="4.5*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
@@ -243,55 +243,56 @@
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                FontSize="14"
-                               VerticalTextAlignment="End">
+                               VerticalTextAlignment="End"
+                               HorizontalTextAlignment="Start">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Output">
                                     <Setter Property="Text"
-                                            Value="Sent"/>
+                                            Value="{helpers:Translate TxSent}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Input">
                                     <Setter Property="Text"
-                                            Value="Received"/>
+                                            Value="{helpers:Translate TxReceived}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapPayment">
                                     <Setter Property="Text"
-                                            Value="Swap payment"/>
+                                            Value="{helpers:Translate TxSwapPayment}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRedeem">
                                     <Setter Property="Text"
-                                            Value="Swap redeem"/>
+                                            Value="{helpers:Translate TxSwapRedeem}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRefund">
                                     <Setter Property="Text"
-                                            Value="Swap refund"/>
+                                            Value="{helpers:Translate TxSwapRefund}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapCall">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxSwapCall}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenCall">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxTokenCall}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenApprove">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxTokenApprove}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -458,6 +459,7 @@
                         <Label Grid.Row="1"
                                Grid.Column="1"
                                VerticalTextAlignment="Start"
+                               HorizontalTextAlignment="Start"
                                FontFamily="{DynamicResource LightFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="12">
@@ -465,52 +467,52 @@
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Output">
-                                    <Setter Property="Text" Value="To: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Input">
-                                    <Setter Property="Text" Value="From: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapPayment">
-                                    <Setter Property="Text" Value="To: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRedeem">
-                                    <Setter Property="Text" Value="From: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRefund">
-                                    <Setter Property="Text" Value="From: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapCall">
-                                    <Setter Property="Text" Value="To: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenCall">
-                                    <Setter Property="Text" Value="To: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenApprove">
-                                    <Setter Property="Text" Value="To: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Currency.Name}"
                                              Value="BTC">
-                                    <Setter Property="Text" Value="Id: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Currency.Name}"
                                              Value="LTC">
-                                    <Setter Property="Text" Value="Id: "/>
+                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -520,6 +522,7 @@
                                FontFamily="{DynamicResource LightFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="12"
+                               Padding="3,0"
                                LineBreakMode="MiddleTruncation"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                             <Label.Triggers>
@@ -579,10 +582,12 @@
                                Grid.Column="2"
                                Text="{Binding Alias}"
                                VerticalTextAlignment="Start"
+                               HorizontalTextAlignment="Start"
                                LineBreakMode="TailTruncation"
                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="12"
+                               Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </controls:CustomViewCell>

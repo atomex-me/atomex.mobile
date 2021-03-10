@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             xmlns:resources="clr-namespace:atomex.Resources"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.CreateSwap.AmountPage"
-             Title="{x:Static resources:AppResources.CreateSwapPageTitle}"
+             Title="{helpers:Translate CreateSwapPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <RelativeLayout>
@@ -20,7 +20,7 @@
                          Spacing="0"
                          RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-                <Label Text="{x:Static resources:AppResources.EnterAmountLabel}"
+                <Label Text="{helpers:Translate EnterAmountLabel}"
                        Style="{DynamicResource CreateSwapTitleStyle}"/>
                 <Grid ColumnSpacing="0">
                     <Grid.RowDefinitions>
@@ -43,7 +43,7 @@
                                 <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                     <custom:CustomEntry Keyboard="Numeric"
                                                         x:Name="Amount"
-                                                        Placeholder="{x:Static resources:AppResources.AmountEntryPlaceholder}"
+                                                        Placeholder="{helpers:Translate AmountEntryPlaceholder}"
                                                         Style="{DynamicResource CustomEntryStyle}"
                                                         Focused="AmountEntryFocused"
                                                         Unfocused="AmountEntryFocused"
@@ -60,7 +60,7 @@
                             <StackLayout Grid.Column="1"
                                          Orientation="Horizontal">
                                 <RelativeLayout WidthRequest="80">
-                                    <Button Text="{x:Static resources:AppResources.MaxButton}"
+                                    <Button Text="{helpers:Translate MaxButton}"
                                             Style="{DynamicResource TransparentButtonStyle}"
                                             x:Name="MaxButton"
                                             Clicked="OnMaxAmountButtonClicked"
@@ -83,7 +83,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.AvailableMarketVolumeLabel}"
+                            <Span Text="{helpers:Translate AvailableMarketVolumeLabel}"
                                   Style="{DynamicResource MarketVolumeLabelStyle}"/>
                             <Span Text=": "
                                   Style="{DynamicResource MarketVolumeLabelStyle}"/>
@@ -133,7 +133,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label Text="{x:Static resources:AppResources.NoLiquidityLabel}"
+                    <Label Text="{helpers:Translate NoLiquidityLabel}"
                            Grid.Row="1"
                            Grid.Column="2"
                            FontFamily="{DynamicResource RegularFont}"
@@ -185,7 +185,7 @@
                     </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{x:Static resources:AppResources.EstimatedPriceLabel}"
+                            <Span Text="{helpers:Translate EstimatedPriceLabel}"
                                   Style="{DynamicResource EstimatedLabelStyle}"/>
                             <Span Text=": "
                                   Style="{DynamicResource EstimatedLabelStyle}"/>
@@ -203,7 +203,7 @@
                     <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{x:Static resources:AppResources.EstimatedNetworkFeeLabel}"
+                                <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}"
                                       Style="{DynamicResource EstimatedLabelStyle}"/>
                                 <Span Text=": "
                                       Style="{DynamicResource EstimatedLabelStyle}"/>
@@ -264,7 +264,7 @@
                         </Label>
                     </StackLayout>
                 </Frame>
-                <Button Text="{x:Static resources:AppResources.NextButton}"
+                <Button Text="{helpers:Translate NextButton}"
                         Margin="16"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
