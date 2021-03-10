@@ -86,7 +86,7 @@ namespace atomex
 
             if (!isLatest)
             {
-                var update = await MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
+                var update = await Application.Current.MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
 
                 if (update)
                     await CrossLatestVersion.Current.OpenAppInStore();
@@ -101,9 +101,9 @@ namespace atomex
             {
                 LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)));
             }
-            catch
+            catch (Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
+                Log.Error(e, "Set culture error");
             }
         }
 

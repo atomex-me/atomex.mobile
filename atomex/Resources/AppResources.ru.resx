@@ -274,6 +274,15 @@
     <data name="TxSwapRefund" xml:space="preserve">
         <value>Операция возврат</value>
     </data>
+        <data name="TxTokenCall" xml:space="preserve">
+        <value>Вызов контракта токена</value>
+    </data>
+    <data name="TxSwapCall" xml:space="preserve">
+        <value>Вызов своп контракта токена</value>
+    </data>
+    <data name="TxTokenApprove" xml:space="preserve">
+        <value>Одобрение на перевод токенов</value>
+    </data>
     <data name="TxUnknown" xml:space="preserve">
         <value>Неизвестно</value>
     </data>

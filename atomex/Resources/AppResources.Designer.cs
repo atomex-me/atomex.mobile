@@ -527,6 +527,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string TxTokenCall {
+            get {
+                return ResourceManager.GetString("TxTokenCall", resourceCulture);
+            }
+        }
+        
+        internal static string TxSwapCall {
+            get {
+                return ResourceManager.GetString("TxSwapCall", resourceCulture);
+            }
+        }
+        
+        internal static string TxTokenApprove {
+            get {
+                return ResourceManager.GetString("TxTokenApprove", resourceCulture);
+            }
+        }
+        
         internal static string TxUnknown {
             get {
                 return ResourceManager.GetString("TxUnknown", resourceCulture);

@@ -140,7 +140,7 @@
             <DataTemplate>
                 <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid RowSpacing="0"
-                          ColumnSpacing="3"
+                          ColumnSpacing="0"
                           VerticalOptions="Center"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
@@ -148,10 +148,10 @@
                             <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="4.5*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
@@ -243,7 +243,8 @@
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                FontSize="14"
-                               VerticalTextAlignment="End">
+                               VerticalTextAlignment="End"
+                               HorizontalTextAlignment="Start">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
@@ -279,19 +280,19 @@
                                              Binding="{Binding Type}"
                                              Value="SwapCall">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxSwapCall}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenCall">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxTokenCall}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenApprove">
                                     <Setter Property="Text"
-                                            Value="{Binding Description}"/>
+                                            Value="{helpers:Translate TxTokenApprove}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -458,6 +459,7 @@
                         <Label Grid.Row="1"
                                Grid.Column="1"
                                VerticalTextAlignment="Start"
+                               HorizontalTextAlignment="Start"
                                FontFamily="{DynamicResource LightFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="12">
@@ -465,52 +467,52 @@
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Output">
-                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="Input">
-                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapPayment">
-                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRedeem">
-                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapRefund">
-                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate FromLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="SwapCall">
-                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenCall">
-                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
                                              Value="TokenApprove">
-                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Currency.Name}"
                                              Value="BTC">
-                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Currency.Name}"
                                              Value="LTC">
-                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}: '} "/>
+                                    <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -520,6 +522,7 @@
                                FontFamily="{DynamicResource LightFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="12"
+                               Padding="3,0"
                                LineBreakMode="MiddleTruncation"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                             <Label.Triggers>
@@ -579,10 +582,12 @@
                                Grid.Column="2"
                                Text="{Binding Alias}"
                                VerticalTextAlignment="Start"
+                               HorizontalTextAlignment="Start"
                                LineBreakMode="TailTruncation"
                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                FontFamily="{DynamicResource LightFont}"
                                FontSize="12"
+                               Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </controls:CustomViewCell>

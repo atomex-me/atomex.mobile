@@ -186,7 +186,7 @@
             <Button Text="{helpers:Translate CreateSwapButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     VerticalOptions="End"
-                    Margin="20"
+                    Margin="20,0,20,20"
                     Clicked="OnCreateSwapButtonClicked"/>
         </StackLayout>
     </ContentPage.Content>

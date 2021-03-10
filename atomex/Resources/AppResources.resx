@@ -274,6 +274,15 @@
     <data name="TxSwapRefund" xml:space="preserve">
         <value>Swap refund</value>
     </data>
+    <data name="TxTokenCall" xml:space="preserve">
+        <value>Token call</value>
+    </data>
+    <data name="TxSwapCall" xml:space="preserve">
+        <value>Token swap call</value>
+    </data>
+    <data name="TxTokenApprove" xml:space="preserve">
+        <value>Token approve</value>
+    </data>
     <data name="TxUnknown" xml:space="preserve">
         <value>Unknown</value>
     </data>

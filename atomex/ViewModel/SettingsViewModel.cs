@@ -12,10 +12,8 @@ using atomex.Helpers;
 using atomex.Models;
 using atomex.Resources;
 using atomex.Views.Popup;
-using atomex.Views.SettingsOptions;
 using Atomex;
 using Atomex.Wallet;
-using Atomex.Wallet.Abstract;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
 using Rg.Plugins.Popup.Extensions;
@@ -30,8 +28,6 @@ namespace atomex.ViewModel
         public IAtomexApp AtomexApp { get; private set; }
 
         public UserSettings Settings { get; }
-
-        private IAccount _account;
 
         private const string LanguageKey = nameof(LanguageKey);
 
@@ -77,7 +73,6 @@ namespace atomex.ViewModel
             set { _biometricSensorAvailibility = value; OnPropertyChanged(nameof(BiometricSensorAvailibility)); }
         }
 
-        //private string _pathToUserSettings;
         private string _walletName;
         public string WalletName
         {
@@ -136,42 +131,11 @@ namespace atomex.ViewModel
             set { _ = UpdateUseBiometric(value); }
         }
 
-        public int PeriodOfInactivityInMin
-        {
-            get { return Settings.PeriodOfInactivityInMin; }
-            set
-            {
-                if (Settings.PeriodOfInactivityInMin != value)
-                {
-                    Settings.PeriodOfInactivityInMin = value;
-                    _account.UseUserSettings(Settings);
-                    //Apply();
-                    OnPropertyChanged(nameof(PeriodOfInactivityInMin));
-                }
-            }
-        }
-
-        public bool AutoSignOut
-        {
-            get { return Settings.AutoSignOut; }
-            set
-            {
-                if (Settings.AutoSignOut != value)
-                {
-                    Settings.AutoSignOut = value;
-                    _account.UseUserSettings(Settings);
-                    //Apply();
-                    OnPropertyChanged(nameof(AutoSignOut));
-                }
-            }
-        }
-
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
         public SettingsViewModel(IAtomexApp app, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            _account = app.Account;
             SetUserLanguage();
             Settings = app.Account.UserSettings;
             WalletName = walletName;
@@ -379,11 +343,6 @@ namespace atomex.ViewModel
                 LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
             }
         }
-
-        //private void Apply()
-        //{  
-        //    _account.UserSettings.SaveToFile(_pathToUserSettings);
-        //}
     }
 }
 
