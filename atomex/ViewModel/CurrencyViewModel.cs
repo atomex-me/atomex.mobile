@@ -122,20 +122,28 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task UpdateBalanceAsync() {
-            var balance = await AtomexApp.Account
-                .GetBalanceAsync(Currency.Name)
-                .ConfigureAwait(false);
+        public async Task UpdateBalanceAsync()
+        {
+            try
+            {
+                var balance = await AtomexApp.Account
+                    .GetBalanceAsync(Currency.Name)
+                    .ConfigureAwait(false);
 
-            TotalAmount = balance.Confirmed;
+                TotalAmount = balance.Confirmed;
 
-            AvailableAmount = balance.Available;
+                AvailableAmount = balance.Available;
 
-            UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
+                UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
 
-            var quote = AtomexApp.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-            Price = quote.Bid;
-            AmountInBase = AvailableAmount * quote.Bid;
+                var quote = AtomexApp.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                Price = quote.Bid;
+                AmountInBase = AvailableAmount * quote.Bid;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "UpdateBalanceAsync error for {@currency}", Currency?.Name);
+            }
         }
 
         private void UnconfirmedTransactionAdded(
@@ -147,7 +155,7 @@ namespace atomex.ViewModel
                 if (e.Transaction.Currency.Name != Currency?.Name)
                     return;
 
-                LoadTransactionsAsync().FireAndForget();
+                _ = LoadTransactionsAsync();
             }
             catch (Exception ex)
             {
@@ -202,7 +210,7 @@ namespace atomex.ViewModel
             }
             catch(Exception e)
             {
-                Log.Error(e, "HdWalletScanner error");
+                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
             }
         }
 

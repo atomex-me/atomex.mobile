@@ -351,7 +351,7 @@ namespace atomex.ViewModel
             _toCurrencies = new List<CurrencyViewModel>();
             _currencyViewModels = new List<CurrencyViewModel>();
 
-            FillCurrenciesAsync().FireAndForget();
+            _ = FillCurrenciesAsync();
             SubscribeToServices();
         }
 
@@ -387,21 +387,28 @@ namespace atomex.ViewModel
 
         private async Task FillCurrenciesAsync()
         {
-            await Task.WhenAll(Currencies.Select(async c =>
+            try
             {
-                var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
-
-                _currencyViewModels.Add(new CurrencyViewModel(AtomexApp)
+                await Task.WhenAll(Currencies.Select(async c =>
                 {
-                    Currency = c,
-                    TotalAmount = balance.Confirmed,
-                    AvailableAmount = balance.Available,
-                    UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
-                });
-            }));
+                    var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
 
-            FromCurrencies = _currencyViewModels.ToList();
-            FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
+                    _currencyViewModels.Add(new CurrencyViewModel(AtomexApp)
+                    {
+                        Currency = c,
+                        TotalAmount = balance.Confirmed,
+                        AvailableAmount = balance.Available,
+                        UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
+                    });
+                }));
+
+                FromCurrencies = _currencyViewModels.ToList();
+                FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "FillCurrenciesAsync error");
+            }
         }
 
         private async Task UpdateSwaps()

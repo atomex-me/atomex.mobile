@@ -7,8 +7,27 @@
              Title="{helpers:Translate DelegatePageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ScrollView x:Name="Page">
+        <RelativeLayout>
+        <ActivityIndicator x:Name="Loader"
+                           RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                           RelativeLayout.WidthConstraint="50"
+                           RelativeLayout.HeightConstraint="50"
+                           Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                           BackgroundColor="Transparent"/>
+        <StackLayout x:Name="LoaderHint"
+                     RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-50}"
+	                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=25}"
+                     IsVisible="False">
+            <Label Text="{helpers:Translate FeeCalculationLabel}"
+                   FontFamily="{DynamicResource BoldFont}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                   FontSize="14"/>
+        </StackLayout>
         <StackLayout x:Name="Content"
                      VerticalOptions="FillAndExpand"
+                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                      Margin="20"
                      Spacing="0">
             <Label Text="{helpers:Translate DelegateToBakeryLabel}"
@@ -287,7 +306,9 @@
                 <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         IsToggled="{Binding UseDefaultFee}"
                         Toggled="OnUseDefaultFeeToggled"
-                        HorizontalOptions="EndAndExpand"/>
+                        HorizontalOptions="EndAndExpand"
+                        IsEnabled="False"
+                        Opacity="0.5"/>
             </StackLayout>
             <RelativeLayout>
                 <Button Text="{helpers:Translate NextButton}"
@@ -302,5 +323,6 @@
                                    BackgroundColor="Transparent"/>
             </RelativeLayout>
         </StackLayout>
+        </RelativeLayout>
     </ScrollView>
 </ContentPage>

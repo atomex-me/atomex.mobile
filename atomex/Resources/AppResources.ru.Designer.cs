@@ -707,6 +707,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string FeeCalculationLabel {
+            get {
+                return ResourceManager.GetString("FeeCalculationLabel", resourceCulture);
+            }
+        }
+        
         internal static string WantToDelegate {
             get {
                 return ResourceManager.GetString("WantToDelegate", resourceCulture);

@@ -12,6 +12,7 @@ using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
+using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
 using Serilog;
 using Xamarin.Forms;
@@ -106,8 +107,6 @@ namespace atomex.ViewModel
             }
         }
 
-        private decimal _minFee;
-
         private decimal _fee;
         public decimal Fee
         {
@@ -125,9 +124,6 @@ namespace atomex.ViewModel
                         feeAmount = (decimal)_walletAddressViewModel?.WalletAddress?.Balance;
                         _fee = feeAmount;
                     }
-
-                    if (feeAmount < _minFee)
-                        _fee = _minFee;
                 }
 
                 OnPropertyChanged(nameof(Fee));
@@ -170,9 +166,6 @@ namespace atomex.ViewModel
             set
             {
                 _useDefaultFee = value;
-                if (_useDefaultFee)
-                    Fee = _minFee;
-                OnPropertyChanged(nameof(Fee));
                 OnPropertyChanged(nameof(UseDefaultFee));
             }
         }
@@ -223,7 +216,7 @@ namespace atomex.ViewModel
                 return AppResources.InvalidAddressError;
             }
 
-            if (Fee < _minFee)
+            if (Fee <= 0)
             {
                 return AppResources.CommissionLessThanZeroError;
             }
@@ -246,14 +239,13 @@ namespace atomex.ViewModel
             FeeCurrencyCode = _tezos.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
-            _minFee = 0.001258M;
             UseDefaultFee = true;
             IsLoadingDelegations = true;
             CanDelegate = false;
 
             SubscribeToServices();
-            LoadDelegationInfoAsync().FireAndForget();
-            LoadBakerList().FireAndForget();
+            _ = LoadDelegationInfoAsync();
+            _ = LoadBakerList();
             PrepareWallet().WaitForResult();
         }
 
@@ -314,19 +306,18 @@ namespace atomex.ViewModel
             WalletAddressViewModel = FromAddressList.FirstOrDefault();
         }
 
-        private async Task<Result<string>> GetDelegate(
+        public async Task<Result<string>> GetDelegate(
             CancellationToken cancellationToken = default)
         {
             if (_walletAddressViewModel.WalletAddress == null)
-                return new Error(Errors.InvalidWallets, AppResources.DelegationValidationError);
-
-            var wallet = (HdWallet)AtomexApp.Account.Wallet;
-            var keyStorage = wallet.KeyStorage;
-            var rpc = new Rpc(_tezos.RpcNodeUri);
+                return new Error(Errors.InvalidWallets, "You don't have non-empty accounts");
 
             JObject delegateData;
+
             try
             {
+                var rpc = new Rpc(_tezos.RpcNodeUri);
+
                 delegateData = await rpc
                     .GetDelegate(_address)
                     .ConfigureAwait(false);
@@ -344,33 +335,42 @@ namespace atomex.ViewModel
             if (delegators.Contains(WalletAddressViewModel.WalletAddress.Address))
                 return new Error(Errors.AlreadyDelegated, $"{AppResources.AlreadyDelegatedFrom} {WalletAddressViewModel.WalletAddress.Address} {AppResources.ToLabel} {_address}");
 
-            var tx = new TezosTransaction
-            {
-                StorageLimit = _tezos.StorageLimit,
-                GasLimit = _tezos.GasLimit,
-                From = WalletAddressViewModel.WalletAddress.Address,
-                To = _address,
-                Fee = Fee.ToMicroTez(),
-                Currency = _tezos,
-                CreationTime = DateTime.UtcNow,
-            };
-
             try
             {
-                var calculatedFee = await tx.AutoFillAsync(keyStorage, WalletAddressViewModel.WalletAddress, UseDefaultFee);
-                if (!calculatedFee)
+                var tx = new TezosTransaction
+                {
+                    StorageLimit = _tezos.StorageLimit,
+                    GasLimit = _tezos.GasLimit,
+                    From = WalletAddressViewModel.WalletAddress.Address,
+                    To = _address,
+                    Fee = Fee.ToMicroTez(),
+                    Currency = _tezos,
+                    CreationTime = DateTime.UtcNow,
+
+                    UseRun = true,
+                    UseOfflineCounter = false,
+                    OperationType = OperationType.Delegation
+                };
+
+                using var securePublicKey = AtomexApp.Account.Wallet
+                    .GetPublicKey(_tezos, WalletAddressViewModel.WalletAddress.KeyIndex);
+
+                var isSuccess = await tx.FillOperationsAsync(
+                    securePublicKey: securePublicKey,
+                    headOffset: Tezos.HeadOffset,
+                    cancellationToken: cancellationToken);
+
+                if (!isSuccess)
                     return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
 
                 Fee = tx.Fee;
-                _tx = tx;
-
             }
             catch (Exception e)
             {
                 Log.Error(e, "Autofill delegation error");
+
                 return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
             }
-
             return AppResources.SuccessfulCheck;
         }
 
@@ -378,22 +378,60 @@ namespace atomex.ViewModel
         {
             var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
+            var tezos = _tezos;
+
+            var tezosAccount = AtomexApp.Account
+                .GetCurrencyAccount<TezosAccount>("XTZ");
 
             try
             {
-                var signResult = await _tx.SignDelegationOperationAsync(keyStorage, WalletAddressViewModel.WalletAddress, default);
+                await tezosAccount.AddressLocker
+                    .LockAsync(WalletAddressViewModel.WalletAddress.Address);
+
+                var tx = new TezosTransaction
+                {
+                    StorageLimit = _tezos.StorageLimit,
+                    GasLimit = _tezos.GasLimit,
+                    From = WalletAddressViewModel.WalletAddress.Address,
+                    To = _address,
+                    Fee = Fee.ToMicroTez(),
+                    Currency = _tezos,
+                    CreationTime = DateTime.UtcNow,
+
+                    UseRun = true,
+                    UseOfflineCounter = true,
+                    OperationType = OperationType.Delegation
+                };
+
+                using var securePublicKey = AtomexApp.Account.Wallet
+                    .GetPublicKey(_tezos, WalletAddressViewModel.WalletAddress.KeyIndex);
+
+                await tx.FillOperationsAsync(
+                    securePublicKey: securePublicKey,
+                    headOffset: Tezos.HeadOffset);
+
+                var signResult = await tx
+                    .SignAsync(keyStorage, WalletAddressViewModel.WalletAddress, default);
 
                 if (!signResult)
                 {
                     Log.Error("Transaction signing error");
+                    return new Error(Errors.TransactionSigningError, "Transaction signing error");
                 }
-                var result = await _tezos.BlockchainApi.TryBroadcastAsync(_tx);
+
+                var result = await tezos.BlockchainApi
+                    .TryBroadcastAsync(tx);
+
                 return result;
             }
             catch (Exception e)
             {
-                Log.Error(e, "delegation send error.");
+                Log.Error(e, "Delegation send error");
                 return AppResources.DelegationError;
+            }
+            finally
+            {
+                tezosAccount.AddressLocker.Unlock(WalletAddressViewModel.WalletAddress.Address);
             }
         }
 
@@ -455,24 +493,6 @@ namespace atomex.ViewModel
                             "Active"
                     });
                 }
-
-                //BakerData test = new BakerData()
-                //{
-                //    Logo = "https://api.baking-bad.org/logos/tezoshodl.png",
-                //    Name = "TezosHODL",
-                //    Address = "tz1sdfldjsflksjdlkf123sfa",
-                //    Fee = 5,
-                //    MinDelegation = 10,
-                //    StakingAvailable = 10000.000000m
-                //};
-                //delegations.Add(new Delegation
-                //{
-                //    Baker = test,
-                //    Address = "KT1Db2f2vWPQKFk6jbh4dCZJ1CkWWBvM6YMX",
-                //    Balance = 67.7m,
-                //    BbUri = "https://baking-bad.org/",
-                //    Status = "Active"
-                //});
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
