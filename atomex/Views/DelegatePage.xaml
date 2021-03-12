@@ -79,7 +79,7 @@
                             <FormattedString>
                                 <Span Text="{Binding BakerViewModel.EstimatedRoi, StringFormat='{0:P}'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                                <Span Text=" (min "/>
+                                <Span Text="{helpers:Translate MinLabel, StringFormat=' ({0} '}"/>
                                 <Span Text="{Binding BakerViewModel.MinDelegation}"/>
                                 <Span Text=" XTZ)"/>
                             </FormattedString>

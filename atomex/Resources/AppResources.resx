@@ -23,6 +23,9 @@
     <data name="NextButton" xml:space="preserve">
         <value>Next</value>
     </data>
+    <data name="ConfirmButton" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>I understand</value>
     </data>
@@ -396,8 +399,8 @@
     <data name="ChangeBakerButton" xml:space="preserve">
         <value>Change baker</value>
     </data>
-    <data name="DelegateLabel" xml:space="preserve">
-        <value>Delegate</value>
+    <data name="BakerLabel" xml:space="preserve">
+        <value>Baker</value>
     </data>
     <data name="Roi" xml:space="preserve">
         <value>ROI</value>

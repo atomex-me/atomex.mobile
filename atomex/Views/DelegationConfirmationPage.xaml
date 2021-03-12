@@ -53,34 +53,43 @@
                     </Label>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{helpers:Translate ToLabel}"
-                                VerticalTextAlignment="Center"
-                                WidthRequest="30"
-                                Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                        <Image Source="{Binding BakerViewModel.Logo}"
-                                WidthRequest="30"
-                                HeightRequest="30"
-                                VerticalOptions="Center"
-                                Margin="0"/>
-                        <StackLayout VerticalOptions="Center"
-                                        HorizontalOptions="Start">
-                            <Label Text="{Binding BakerViewModel.Name}"
-                                    LineBreakMode="TailTruncation"
-                                    VerticalTextAlignment="End"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                    FontSize="14"/>
-                            <Label Text="{Binding Address}"
-                                    VerticalTextAlignment="Start"
-                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                    FontSize="12"
-                                    LineBreakMode="MiddleTruncation"/>
-                        </StackLayout>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="5"
+                      HeightRequest="40"
+                      Padding="20,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="{helpers:Translate ToLabel}"
+                           VerticalTextAlignment="Center"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="14"/>
+                    <Image Source="{Binding BakerViewModel.Logo}"
+                           Grid.Column="1"
+                           WidthRequest="30"
+                           HeightRequest="30"
+                           VerticalOptions="Center"
+                           Margin="20,0,0,0"/>
+                    <StackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Start"
+                                 Grid.Column="2">
+                        <Label Text="{Binding BakerViewModel.Name}"
+                               LineBreakMode="TailTruncation"
+                               VerticalTextAlignment="End"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"/>
+                        <Label Text="{Binding Address}"
+                               VerticalTextAlignment="Start"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                               FontSize="12"
+                               LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
+                </Grid>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}">
                     <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
@@ -102,7 +111,7 @@
                 </StackLayout>
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
-                    <Button Text="{helpers:Translate DelegateButton}"
+                    <Button Text="{helpers:Translate ConfirmButton}"
                             x:Name="DelegateButton"
                             Style="{DynamicResource MainButtonStyle}"
                             Clicked="OnDelegateButtonClicked"/>

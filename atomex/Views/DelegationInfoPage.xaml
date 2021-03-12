@@ -56,7 +56,7 @@
                         <ViewCell>
                             <StackLayout Margin="20,0"
                                          Orientation="Horizontal">
-                                <Label Text="{helpers:Translate DelegateLabel}"
+                                <Label Text="{helpers:Translate BakerLabel}"
                                        Style="{DynamicResource DelegationPropertyLabelStyle}"/>
                                 <Image Source="{Binding Baker.Logo}"
                                        HeightRequest="32"
