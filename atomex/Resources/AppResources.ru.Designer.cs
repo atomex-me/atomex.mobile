@@ -65,6 +65,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ConfirmButton {
+            get {
+                return ResourceManager.GetString("ConfirmButton", resourceCulture);
+            }
+        }
+        
         internal static string UnderstandButton {
             get {
                 return ResourceManager.GetString("UnderstandButton", resourceCulture);
@@ -737,9 +743,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string DelegateLabel {
+        internal static string BakerLabel {
             get {
-                return ResourceManager.GetString("DelegateLabel", resourceCulture);
+                return ResourceManager.GetString("BakerLabel", resourceCulture);
             }
         }
         

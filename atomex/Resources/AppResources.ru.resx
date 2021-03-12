@@ -23,6 +23,9 @@
     <data name="NextButton" xml:space="preserve">
         <value>Далее</value>
     </data>
+    <data name="ConfirmButton" xml:space="preserve">
+        <value>Подтвердить</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>Я понимаю</value>
     </data>
@@ -75,7 +78,7 @@
         <value>Цена</value>
     </data>
     <data name="MinLabel" xml:space="preserve">
-        <value>Макс.</value>
+        <value>мин.</value>
     </data>
     <data name="MaxButton" xml:space="preserve">
         <value>Max</value>
@@ -396,8 +399,8 @@
     <data name="ChangeBakerButton" xml:space="preserve">
         <value>Сменить бейкера</value>
     </data>
-    <data name="DelegateLabel" xml:space="preserve">
-        <value>Делегировать</value>
+    <data name="BakerLabel" xml:space="preserve">
+        <value>Бейкер</value>
     </data>
     <data name="Roi" xml:space="preserve">
         <value>ROI</value>
