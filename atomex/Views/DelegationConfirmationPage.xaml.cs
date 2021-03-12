@@ -11,7 +11,7 @@ namespace atomex
     {
         private DelegateViewModel _delegateViewModel;
 
-        private const int BACK_COUNT = 2;
+        private const int BACK_COUNT = 3;
 
         public DelegationConfirmationPage()
         {

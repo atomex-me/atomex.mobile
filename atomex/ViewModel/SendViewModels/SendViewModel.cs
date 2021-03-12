@@ -228,14 +228,21 @@ namespace atomex.ViewModel.SendViewModels
 
             UseDefaultFee = true; // use default fee by default
 
-            UpdateFeePrice().FireAndForget();
+            _ = UpdateFeePrice();
 
             SubscribeToServices();
         }
 
         public virtual async Task UpdateFeePrice()
         {
-            FeePrice = await Currency.GetDefaultFeePriceAsync();
+            try
+            {
+                FeePrice = await Currency.GetDefaultFeePriceAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update fee price error");
+            }
         }
 
         private void SubscribeToServices()

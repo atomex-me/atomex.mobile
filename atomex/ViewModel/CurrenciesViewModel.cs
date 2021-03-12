@@ -37,7 +37,7 @@ namespace atomex.ViewModel
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             CurrencyViewModels = new List<CurrencyViewModel>();
-            FillCurrenciesAsync(restore).FireAndForget();
+            _ = FillCurrenciesAsync(restore);
             SubscribeToServices();
         }
 
@@ -64,11 +64,11 @@ namespace atomex.ViewModel
                 currency.CurrencyUpdated += CurrencyUpdatedEventHandler;
 
                 if (restore)
-                    currency.UpdateCurrencyAsync().FireAndForget();
+                    _ = currency.UpdateCurrencyAsync();
                 else
                 {
-                    currency.UpdateBalanceAsync().FireAndForget();
-                    currency.LoadTransactionsAsync().FireAndForget();
+                    _ = currency.UpdateBalanceAsync();
+                    _ = currency.LoadTransactionsAsync();
                 }
             }));
         }

@@ -39,10 +39,16 @@ namespace atomex
 
         private async void OnBakerPickerClicked(object sender, EventArgs args)
         {
-            var bakersListPage = new BakerListPage(_delegateViewModel, selected =>
+            var bakersListPage = new BakerListPage(_delegateViewModel, async (selected) =>
             {
                 _delegateViewModel.BakerViewModel = selected;
                 ToAddressEntry.Text = selected.Address;
+                Content.Opacity = 0.5f;
+                Loader.IsRunning = LoaderHint.IsVisible = true;
+                await _delegateViewModel.GetDelegate();
+                Fee.Text = _delegateViewModel.Fee.ToString();
+                Loader.IsRunning = LoaderHint.IsVisible = false;
+                Content.Opacity = 1f;
             });
             await Navigation.PushAsync(bakersListPage);
         }
@@ -57,12 +63,18 @@ namespace atomex
             AddressPicker.Focus();
         }
 
-        private void OnToAddressEntryFocused(object sender, FocusEventArgs args)
+        private async void OnToAddressEntryFocused(object sender, FocusEventArgs args)
         {
             //ToAddressFrame.HasShadow = args.IsFocused;
             if (!args.IsFocused)
             {
                 _delegateViewModel.Address = ToAddressEntry.Text;
+                Content.Opacity = 0.5f;
+                Loader.IsRunning = LoaderHint.IsVisible = true;
+                await _delegateViewModel.GetDelegate();
+                Fee.Text = _delegateViewModel.Fee.ToString();
+                Loader.IsRunning = LoaderHint.IsVisible = false;
+                Content.Opacity = 1f;
             }
         }
 

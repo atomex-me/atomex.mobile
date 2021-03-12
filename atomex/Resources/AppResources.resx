@@ -374,6 +374,9 @@
     <data name="CustomBaker" xml:space="preserve">
         <value>Custom Baker</value>
     </data>
+    <data name="FeeCalculationLabel" xml:space="preserve">
+        <value>Fee calculation</value>
+    </data>
     
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
