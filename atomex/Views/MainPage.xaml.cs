@@ -9,6 +9,7 @@ using atomex.CustomElements;
 using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.CreateSwap;
+using atomex.Helpers;
 
 namespace atomex
 {
@@ -70,6 +71,19 @@ namespace atomex
             {
                 SignOut();
             };
+
+            LocalizationResourceManager.Instance.LanguageChanged += (s, a) =>
+            {
+                Device.BeginInvokeOnMainThread(LocalizeNavTabs);
+            };
+        }
+
+        public void LocalizeNavTabs()
+        {
+            navigationPortfolioPage.Title = AppResources.PortfolioTab;
+            navigationWalletsListPage.Title = AppResources.WalletsTab;
+            navigationConversionPage.Title = AppResources.ConversionTab;
+            navigationSettingsPage.Title = AppResources.SettingsTab;
         }
 
         public void SetAppTheme()
