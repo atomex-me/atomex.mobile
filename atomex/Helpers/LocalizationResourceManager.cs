@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
@@ -13,6 +14,8 @@ namespace atomex.Helpers
         private const string LanguageKey = nameof(LanguageKey);
 
         public static LocalizationResourceManager Instance { get; } = new LocalizationResourceManager();
+
+        public event EventHandler LanguageChanged;
 
         private LocalizationResourceManager()
         {
@@ -49,6 +52,8 @@ namespace atomex.Helpers
         public void Invalidate()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+
+            LanguageChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
