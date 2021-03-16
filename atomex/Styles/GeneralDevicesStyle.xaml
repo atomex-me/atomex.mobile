@@ -309,7 +309,7 @@
     <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
         <Setter Property="FontSize">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="x:Double" iOS="12" Android="11"/>
+                <OnPlatform x:TypeArguments="x:Double" iOS="11" Android="10"/>
             </Setter.Value>
         </Setter>
         <Setter Property="TextTransform" Value="Uppercase"/>
@@ -443,6 +443,10 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="Margin" Value="-2,0,0,0"/>
+    </Style>
+    <Style x:Key="ReceiveActionButtonStyle" TargetType="Button" BasedOn="{StaticResource CurrencyActionButtonStyle}">
+        <Setter Property="WidthRequest" Value="90"/>
+        <Setter Property="RelativeLayout.WidthConstraint" Value="90"/>
     </Style>
 
     <!-- Delegation info Page -->
