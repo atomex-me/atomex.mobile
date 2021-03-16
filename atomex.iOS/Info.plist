@@ -18,7 +18,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>11.0</string>
+	<string>10.0</string>
 	<key>CFBundleDisplayName</key>
 	<string>Atomex</string>
 	<key>CFBundleIdentifier</key>
@@ -65,8 +65,8 @@
 	<string>1.6</string>
 	<key>CFBundleLocalizations</key>
 	<array>
-	    <string>en</string>
-	    <string>ru</string>
+		<string>en</string>
+		<string>ru</string>
 	</array>
 </dict>
 </plist>
