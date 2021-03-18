@@ -63,5 +63,16 @@ namespace atomex.Droid.Services
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(AndroidNotificationManager.NOTIFICATION_ID, notificationBuilder.Build());
         }
+
+        public override void OnNewToken(string token)
+        {
+            base.OnNewToken(token);
+            SendRegistrationTokenToServer(token);
+        }
+
+        public void SendRegistrationTokenToServer(string token)
+        {
+            App.DeviceToken = token;
+        }
     }
 }
