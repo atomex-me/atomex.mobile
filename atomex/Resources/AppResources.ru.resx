@@ -694,7 +694,7 @@
         <value>был обновлен</value>
     </data>
     <data name="AddressCopied" xml:space="preserve">
-        <value>Адресс скопирован</value>
+        <value>Адрес скопирован</value>
     </data>
     <data name="CopyError" xml:space="preserve">
         <value>Ошибка копирования</value>
