@@ -11,7 +11,6 @@ using atomex.Services;
 using Serilog.Debugging;
 using Serilog;
 using Serilog.Events;
-using Sentry;
 
 namespace atomex.iOS
 {
