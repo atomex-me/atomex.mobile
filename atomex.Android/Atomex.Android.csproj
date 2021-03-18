@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
 <AndroidPackageFormat>apk</AndroidPackageFormat>
+<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -44,6 +45,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
 <AndroidPackageFormat>apk</AndroidPackageFormat>
 <AndroidLinkMode>None</AndroidLinkMode>
+<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -82,12 +84,6 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.1.0.446</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.GooglePlayServices.Base">
-      <Version>60.1142.1</Version>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Firebase.Messaging">
-      <Version>60.1142.1</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Build.Download">
       <Version>0.7.0</Version>
     </PackageReference>
@@ -109,6 +105,12 @@
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.10</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.Messaging">
+      <Version>121.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Google.Dagger">
+      <Version>2.27.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -120,7 +122,6 @@
     <Compile Include="CustomElements\RightRoundedButtonRenderer.cs" />
     <Compile Include="Common\AndroidFileSystem.cs" />
     <Compile Include="Services\AndroidNotificationManager.cs" />
-    <Compile Include="Services\FirebaseIIdService.cs" />
     <Compile Include="Services\FirebaseMessService.cs" />
     <Compile Include="Services\ToastService.cs" />
     <Compile Include="CustomElements\CustomFrameRenderer.cs" />

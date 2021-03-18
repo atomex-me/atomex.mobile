@@ -5,7 +5,6 @@ using Android.OS;
 using Atomex.Common;
 using atomex.Common.FileSystem;
 using Plugin.Fingerprint;
-using Firebase.Iid;
 using Serilog.Debugging;
 using Serilog;
 using Serilog.Events;
@@ -13,6 +12,9 @@ using Sentry;
 using Log = Serilog.Log;
 using Android.Views;
 using Xamarin.Forms;
+using Firebase.Messaging;
+using Android.Gms.Extensions;
+using System.Threading.Tasks;
 
 namespace atomex.Droid
 {
@@ -44,9 +46,8 @@ namespace atomex.Droid
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
 
             App.FileSystem = Device.Android;
-            App.DeviceToken = FirebaseInstanceId.Instance.Token;
-
-            StartSentry();
+            _ = GetDeviceToken();
+            
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidUnhandledExceptionRaiser;
 
             LoadApplication(new App());
@@ -102,6 +103,13 @@ namespace atomex.Droid
         //    }
         //}
 
+        private async Task GetDeviceToken()
+        {
+            string token = (await FirebaseMessaging.Instance.GetToken()).ToString();
+            App.DeviceToken = token;
+            StartSentry();
+        }
+
         private void StartSentry()
         {
             SelfLog.Enable(m => Log.Error(m));
@@ -116,7 +124,7 @@ namespace atomex.Droid
                   o.MinimumBreadcrumbLevel = LogEventLevel.Error;
                   o.AttachStacktrace = true;
                   o.SendDefaultPii = true;
-                  o.Environment = "Android: " + FirebaseInstanceId.Instance.Token;
+                  o.Environment = "Android: " + App.DeviceToken;
               })
               .CreateLogger();
         }

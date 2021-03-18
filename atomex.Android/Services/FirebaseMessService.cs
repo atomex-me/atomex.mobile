@@ -29,23 +29,6 @@ namespace atomex.Droid.Services
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
-            //intent.PutExtra("SomeSpecialKey", "some special value");
-            //foreach (var key in data.Keys)
-            //{
-            //    intent.PutExtra(key, data[key]);
-            //}
-
-            //if (intent.Extras != null)
-            //{
-            //    if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
-            //    {
-            //        if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
-            //            intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
-            //        {
-            //            messageBody = string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey));
-            //        }
-            //    }
-            //}
 
             var pendingIntent = PendingIntent.GetActivity(this,
                 AndroidNotificationManager.NOTIFICATION_ID,
@@ -62,6 +45,17 @@ namespace atomex.Droid.Services
 
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(AndroidNotificationManager.NOTIFICATION_ID, notificationBuilder.Build());
+        }
+
+        public override void OnNewToken(string token)
+        {
+            base.OnNewToken(token);
+            SendRegistrationTokenToServer(token);
+        }
+
+        public void SendRegistrationTokenToServer(string token)
+        {
+            App.DeviceToken = token;
         }
     }
 }
