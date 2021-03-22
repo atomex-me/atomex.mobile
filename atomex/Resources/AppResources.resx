@@ -154,9 +154,6 @@
     <data name="WordCountLabel" xml:space="preserve">
         <value>Word count</value>
     </data>
-    <data name="MnemonicPhraseLabel" xml:space="preserve">
-        <value>Mnemonic phrase</value>
-    </data>
     <data name="GenerateButton" xml:space="preserve">
         <value>Generate</value>
     </data>

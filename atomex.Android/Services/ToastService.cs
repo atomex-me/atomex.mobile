@@ -12,15 +12,14 @@ namespace atomex.Droid.Services
         {
             Context context = Android.App.Application.Context;
             Toast toast = Toast.MakeText(context, message, ToastLength.Short);
-
             toast.View.SetBackgroundResource(Resource.Drawable.CustomToast);
+            toast.SetGravity(Android.Views.GravityFlags.Center, 0, 0);
             TextView tv = toast.View.FindViewById<TextView>(Android.Resource.Id.Message);
-            tv.SetHeight(100);
-            tv.Gravity = Android.Views.GravityFlags.Center;
+            tv.Gravity = Android.Views.GravityFlags.CenterVertical | Android.Views.GravityFlags.CenterHorizontal;
+            tv.SetPadding(20, 0, 20, 0);
 
             if (appTheme == "Dark")
                 tv.SetTextColor(Android.Graphics.Color.Black);
-
             else
                 tv.SetTextColor(Android.Graphics.Color.White);
 
