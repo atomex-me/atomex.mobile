@@ -7,5 +7,5 @@
     <color name="colorAccent">#298ad4</color>
     <color name="colorPrimary">#2B5286</color>
     <color name="colorPrimaryDark">#2B5286</color>
-    <color name="toastBackground">#dd1f1f1f</color>
+    <color name="toastBackground">#dd353535</color>
 </resources>

@@ -311,12 +311,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string MnemonicPhraseLabel {
-            get {
-                return ResourceManager.GetString("MnemonicPhraseLabel", resourceCulture);
-            }
-        }
-        
         internal static string GenerateButton {
             get {
                 return ResourceManager.GetString("GenerateButton", resourceCulture);

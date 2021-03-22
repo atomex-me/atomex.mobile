@@ -154,9 +154,6 @@
     <data name="WordCountLabel" xml:space="preserve">
         <value>Кол-во слов</value>
     </data>
-    <data name="MnemonicPhraseLabel" xml:space="preserve">
-        <value>Количество слов</value>
-    </data>
     <data name="GenerateButton" xml:space="preserve">
         <value>Сгенерировать</value>
     </data>
