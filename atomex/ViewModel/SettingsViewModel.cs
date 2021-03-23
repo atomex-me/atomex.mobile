@@ -112,7 +112,8 @@ namespace atomex.ViewModel
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
             new Language { Name = "English", Code = "en", IsActive = false },
-            new Language { Name = "Русский", Code = "ru", IsActive = false }
+            new Language { Name = "Русский", Code = "ru", IsActive = false },
+            new Language { Name = "Türk", Code = "tr", IsActive = false }
         };
 
         private SecureString _password;

@@ -1,0 +1,798 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    
+    <!-- Main -->
+    <data name="AcceptButton" xml:space="preserve">
+        <value>Ok</value>
+    </data>
+    <data name="CancelButton" xml:space="preserve">
+        <value>Iptal</value>
+    </data>
+    <data name="NextButton" xml:space="preserve">
+        <value>Daha ileri</value>
+    </data>
+    <data name="ConfirmButton" xml:space="preserve">
+        <value>Onaylamak</value>
+    </data>
+    <data name="UnderstandButton" xml:space="preserve">
+        <value>Anlıyorum</value>
+    </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Sil</value>
+    </data>
+    <data name="MainNetButton" xml:space="preserve">
+        <value>Ana ağ</value>
+    </data>
+    <data name="TestNetButton" xml:space="preserve">
+        <value>Test ağı</value>
+    </data>
+    <data name="PasswordEntryPlaceholder" xml:space="preserve">
+        <value>Parola</value>
+    </data>
+    <data name="PasswordConfirmationEntryPlaceholder" xml:space="preserve">
+        <value>Şifre onayı</value>
+    </data>
+    <data name="AddressEntryPlaceholder" xml:space="preserve">
+        <value>Adres</value>
+    </data>
+    <data name="AmountEntryPlaceholder" xml:space="preserve">
+        <value>Miktar</value>
+    </data>
+    <data name="UseDefaultFeeLabel" xml:space="preserve">
+        <value>Standart komisyonlar</value>
+    </data>
+    <data name="FeeLabel" xml:space="preserve">
+        <value>Komisyon</value>
+    </data>
+    <data name="FeeRateLabel" xml:space="preserve">
+        <value>Bayt başına komisyon</value>
+    </data>
+    <data name="ConfirmationLabel" xml:space="preserve">
+        <value>Doğrulama</value>
+    </data>
+    <data name="AmountLabel" xml:space="preserve">
+        <value>Miktar</value>
+    </data>
+    <data name="MinimumAmountLabel" xml:space="preserve">
+        <value>Minimum miktar</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>Adrese</value>
+    </data>
+    <data name="TransactionTime" xml:space="preserve">
+        <value>İşlem süresi</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>Fiyat</value>
+    </data>
+    <data name="MinLabel" xml:space="preserve">
+        <value>min.</value>
+    </data>
+    <data name="MaxButton" xml:space="preserve">
+        <value>Maks</value>
+    </data>
+    <data name="IdLabel" xml:space="preserve">
+        <value>ID</value>
+    </data>
+    
+    <!-- Start Page -->
+    <data name="MyWalletsButton" xml:space="preserve">
+        <value>Cüzdanlarım</value>
+    </data>
+    <data name="CreateNewWalletButton" xml:space="preserve">
+        <value>Yeni bir cüzdan oluştur</value>
+    </data>
+    <data name="RestoreWalletButton" xml:space="preserve">
+        <value>Cüzdanı geri yükle</value>
+    </data>
+    
+    <!-- My Wallets Page -->
+    <data name="SelectWalletLabel" xml:space="preserve">
+        <value>Lütfen bir cüzdan seçin</value>
+    </data>
+    <data name="MyWalletsTitle" xml:space="preserve">
+        <value>Cüzdanlarım</value>
+    </data>
+    
+    <!-- Unlock Page -->
+    <data name="UnlockTitle" xml:space="preserve">
+        <value>Cüzdanın engelini kaldır</value>
+    </data>
+    <data name="UnlockLabel" xml:space="preserve">
+        <value>Lütfen şifrenızı yazınız</value>
+    </data>
+    <data name="UnlockButton" xml:space="preserve">
+        <value>Engeli kaldırmak</value>
+    </data>
+    <data name="UseBiometric" xml:space="preserve">
+        <value>Oturum açmak için biyometrik kimlik doğrulama kullanın</value>
+    </data>
+    
+    <!-- Create New Wallet Pages -->
+    <data name="CreateNewWalletPageTitle" xml:space="preserve">
+        <value>Cüzdan oluşturmak</value>
+    </data>
+    <data name="RestoreWalletPageTitle" xml:space="preserve">
+        <value>Cüzdan kurtarma</value>
+    </data>
+    <data name="WalletTypeStepLabel" xml:space="preserve">
+        <value>Adım 1: Cüzdan türü</value>
+    </data>
+    <data name="SelectTypeLabel" xml:space="preserve">
+        <value>Lütfen bir tıpı cüzdanı seçin</value>
+    </data>
+    <data name="WalletNameStepLabel" xml:space="preserve">
+        <value>Adım 2: Cüzdan adı</value>
+    </data>
+    <data name="EnterNameLabel" xml:space="preserve">
+        <value>Lütfen cüzdanınız için bir isim girin</value>
+    </data>
+    <data name="WalletNameEntryPlaceholder" xml:space="preserve">
+        <value>Cüzdan adı</value>
+    </data>
+    <data name="MnemonicPhraseStepLabel" xml:space="preserve">
+        <value>Adım 3: Anımsatıcı ifade</value>
+    </data>
+    <data name="MnemonicDescriptionText" xml:space="preserve">
+        <value>Hatırlatma kelime, cihazınızda veri kaybı olması durumunda cüzdanınızı geri yüklemek için kullanılır. Bir yere yazın ve güvenli bir yerde saklayın.</value>
+    </data>
+    <data name="LanguageLabel" xml:space="preserve">
+        <value>Dil</value>
+    </data>
+    <data name="WordCountLabel" xml:space="preserve">
+        <value>Sözcük sayısı</value>
+    </data>
+    <data name="GenerateButton" xml:space="preserve">
+        <value>Oluştur</value>
+    </data>
+    <data name="LoseMnemonicPhraseText" xml:space="preserve">
+        <value>Anımsatıcı kelimeni kaybederseniz, cüzdanınız kurtarılamaz.</value>
+    </data>
+    <data name="EnterMnemonicPhraseLabel" xml:space="preserve">
+        <value>Lütfen anımsatıci kelimeni kullanarag cüzdanınıza girin</value>
+    </data>
+    <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
+        <value>Anımsatıcı kelimeni buraya yazin...</value>
+    </data>
+    <data name="DerivedPasswordStepLabel" xml:space="preserve">
+        <value>Adım 4: Anımsatıcı kelime için şifre (isteğe bağlı)</value>
+    </data>
+    <data name="DerivedPasswordDescriptionText" xml:space="preserve">
+        <value>Bu parola, özel anahtarı daha fazla korumak için kullanılabilir. Gizli anahtarı kurtarmak için anımsatıcı ifadeyi ve bu şifreyi girmeniz gerekecektir.</value>
+    </data>
+    <data name="MnemonicVerificationStepLabel" xml:space="preserve">
+        <value>Adım 4: Anımsatıcı kelimeni  kontrol etme</value>
+    </data>
+    <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
+        <value>Lütfen anımsatıcı kelimeni zi onaylayın. Doğru sıraya yerleştirmek için kelimelere tıklayın</value>
+    </data>
+    <data name="DerivedVerificationDescriptionText" xml:space="preserve">
+        <value>Lütfen anımsatıcı kelimeniz için şifrenizi girin</value>
+    </data>
+    <data name="EnterDerivedPasswordText" xml:space="preserve">
+        <value>Özel anahtarınızı daha fazla korumak için bir parola kullandıysanız, lütfen aşağıdaki alana girin. Yanlış şifre girerseniz, özel anahtarınıza ve cüzdanınıza erişemezsiniz.</value>
+    </data>
+    <data name="StoragePasswordStepLabel" xml:space="preserve">
+        <value>Adım 5: Oturum Açma Parolası</value>
+    </data>
+    <data name="StoragePasswordDescriptionText" xml:space="preserve">
+        <value>Bu şifre, cihazdaki gizli anahtarları korumak için kullanılır ve M-cüzdan uygulamasını her başlattığınızda kullanılır. Parola en az 8 karakter uzunluğunda olmalı ve en az şunları içermelidir:
+    - 1 küçük harf karakteri,
+    - 1 büyük harf,
+    - 1 hane,
+    - (! @ # $% ^ *) İçinde 1 özel karakter.</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>Oluşturmak</value>
+    </data>
+    <data name="WrongWordOrder" xml:space="preserve">
+        <value>Yanlış kelime sıralaması. Tekrar deneyin</value>
+    </data>
+    <data name="UseDerivedKeyPswd" xml:space="preserve">
+        <value>Anımsatıcı kelimenin şifresi</value>
+    </data>
+    
+    <!-- Portfolio Page -->
+    <data name="PortfolioPageTitle" xml:space="preserve">
+        <value>Portföy</value>
+    </data>
+    <data name="MainWalletLabel" xml:space="preserve">
+        <value>Ana cüzdan</value>
+    </data>
+    
+    <!-- Wallets Page -->
+    <data name="WalletsPageTitle" xml:space="preserve">
+        <value>Cüzdanlar</value>
+    </data>
+    
+    <!-- Currency Page -->
+    <data name="SendButton" xml:space="preserve">
+        <value>Gönder</value>
+    </data>
+    <data name="ReceiveButton" xml:space="preserve">
+        <value>Teslim almak</value>
+    </data>
+    <data name="ConvertButton" xml:space="preserve">
+        <value>Değiş tokuş</value>
+    </data>
+    <data name="DelegateButton" xml:space="preserve">
+        <value>Staking</value>
+    </data>
+    <data name="UpdateButton" xml:space="preserve">
+        <value>Yenile</value>
+    </data>
+    <data name="BalanceUpdatingLabel" xml:space="preserve">
+        <value>Bakiye güncellemesi...</value>
+    </data>
+    <data name="LoadingLabel" xml:space="preserve">
+        <value>Yükleniyor...</value>
+    </data>
+    <data name="NoTransactionsLabel" xml:space="preserve">
+        <value>Henüz işlem yok</value>
+    </data>
+    
+    <!-- Transaction Page -->
+    <data name="TransactionInfoPageTitle" xml:space="preserve">
+        <value>İşlem Bilgileri</value>
+    </data>
+    <data name="TransactionInfo" xml:space="preserve">
+        <value>İşlem Bilgileri</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Açıklama</value>
+    </data>
+    <data name="TransactionId" xml:space="preserve">
+        <value>ID İşlem </value>
+    </data>
+    <data name="ShowInExplorerButton" xml:space="preserve">
+        <value>Explorer'da göster</value>
+    </data>
+    <data name="TxSent" xml:space="preserve">
+        <value>Gönderildi</value>
+    </data>
+    <data name="TxReceived" xml:space="preserve">
+        <value>Alınan</value>
+    </data>
+    <data name="TxSwapPayment" xml:space="preserve">
+        <value>Swap başlatma</value>
+    </data>
+    <data name="TxSwapRedeem" xml:space="preserve">
+        <value>Fidye operasyonu</value>
+    </data>
+    <data name="TxSwapRefund" xml:space="preserve">
+        <value>Dönüş işlemi</value>
+    </data>
+        <data name="TxTokenCall" xml:space="preserve">
+        <value>Tokenın sözleşmesını çağırmak</value>
+    </data>
+    <data name="TxSwapCall" xml:space="preserve">
+        <value>Token swap sözleşmesi çağırmak</value>
+    </data>
+    <data name="TxTokenApprove" xml:space="preserve">
+        <value>Token çeviri için onayı</value>
+    </data>
+    <data name="TxUnknown" xml:space="preserve">
+        <value>Bilinmeyen</value>
+    </data>
+    
+    <!-- Send Page -->
+    <data name="SendPageTitle" xml:space="preserve">
+        <value>Gönder</value>
+    </data>
+    <data name="ScanningQrCodePageTitle" xml:space="preserve">
+        <value>QR kodunu tara</value>
+    </data>
+    <data name="PasteButton" xml:space="preserve">
+        <value>Ekle</value>
+    </data>
+    <data name="GasPriceLabel" xml:space="preserve">
+        <value>Gaz fiyatı</value>
+    </data>
+    <data name="GasLimitLabel" xml:space="preserve">
+        <value>Gaz limiti</value>
+    </data>
+    <data name="GasUsedLabel" xml:space="preserve">
+        <value>Kullanılan gaz</value>
+    </data>
+    <data name="IsInternalLabel" xml:space="preserve">
+        <value>İç</value>
+    </data>
+    <data name="ConfirmTransactionLabel" xml:space="preserve">
+        <value>İşlemi onaylayın</value>
+    </data>
+    
+    <!-- Receive Page -->
+    <data name="ReceivePageTitle" xml:space="preserve">
+        <value>Teslim almak</value>
+    </data>
+    <data name="AddressLabel" xml:space="preserve">
+        <value>Adres</value>
+    </data>
+    <data name="CopyButton" xml:space="preserve">
+        <value>Kopyala</value>
+    </data>
+    <data name="ShareButton" xml:space="preserve">
+        <value>Paylaş</value>
+    </data>
+    
+    <!-- Delegation list Page -->
+    <data name="DelegationListPageTitle" xml:space="preserve">
+        <value>Yetki listesi</value>
+    </data>
+    <data name="NoDelegationsLabel" xml:space="preserve">
+        <value>Henüz delegasyon yok</value>
+    </data>
+    <data name="NotDelegated" xml:space="preserve">
+        <value>Yetki verilmedi</value>
+    </data>
+    
+    <!-- Baker list Page -->
+    <data name="BakerListPageTitle" xml:space="preserve">
+        <value>Baker listesi</value>
+    </data>
+    <data name="SearchBarPlaceholder" xml:space="preserve">
+        <value>Bakerı bul</value>
+    </data>
+    
+    <!-- Delegate Page -->
+    <data name="DelegatePageTitle" xml:space="preserve">
+        <value>Temsilci</value>
+    </data>
+    <data name="DelegateToBakeryLabel" xml:space="preserve">
+        <value>Bekera yetki verme</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Mevcut</value>
+    </data>
+    <data name="Balance" xml:space="preserve">
+        <value>Denge</value>
+    </data>
+    <data name="ToAddressLabel" xml:space="preserve">
+        <value>Adrese</value>
+    </data>
+    <data name="FromAddressLabel" xml:space="preserve">
+        <value>Adresten</value>
+    </data>
+    <data name="BakerAddressPlaceholder" xml:space="preserve">
+        <value>bakerin adresini girin</value>
+    </data>
+    <data name="CustomBaker" xml:space="preserve">
+        <value>Başka bir beker</value>
+    </data>
+    <data name="FeeCalculationLabel" xml:space="preserve">
+        <value>Komisyon hesaplama</value>
+    </data>
+    
+    <!-- Delegation Confirmation Page -->
+    <data name="WantToDelegate" xml:space="preserve">
+        <value>Yetki vermek istediğinizden emin misiniz?</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>Kimden</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>Adrese</value>
+    </data>
+    <data name="CopyAndExitButton" xml:space="preserve">
+        <value>URI'yi Kopyala ve Kapat</value>
+    </data>
+    
+    <!-- Delegation Info Page -->
+    <data name="DelegationInfoPageTitle" xml:space="preserve">
+        <value>Yetki bilgileri</value>
+    </data>
+    <data name="CheckRewardsButton" xml:space="preserve">
+        <value>Çek ödemeleri</value>
+    </data>
+    <data name="ChangeBakerButton" xml:space="preserve">
+        <value>Bakeri değiştir</value>
+    </data>
+    <data name="BakerLabel" xml:space="preserve">
+        <value>Baker</value>
+    </data>
+    <data name="Roi" xml:space="preserve">
+        <value>ROI</value>
+    </data>
+    <data name="DelegationStatus" xml:space="preserve">
+        <value>Yetki durumu</value>
+    </data>
+    <data name="DelegationTime" xml:space="preserve">
+        <value>Yetki süresi</value>
+    </data>
+    <data name="AccountSection" xml:space="preserve">
+        <value>Hesap</value>
+    </data>
+    <data name="BakerSection" xml:space="preserve">
+        <value>Şu anki Baker</value>
+    </data>
+    <data name="MoreSection" xml:space="preserve">
+        <value>Daha fazla detay</value>
+    </data>
+    
+    <!-- Swap Info Page -->
+    <data name="SwapInfoPageTitle" xml:space="preserve">
+        <value>Swap bilgileri</value>
+    </data>
+    <data name="SwapInfoLabel" xml:space="preserve">
+        <value>Swap bilgileri</value>
+    </data>
+    <data name="State" xml:space="preserve">
+        <value>Durum</value>
+    </data>
+    
+    <!-- Create Swap Pages -->
+    <data name="SwapListPageTitle" xml:space="preserve">
+        <value>Swap Listesi</value>
+    </data>
+    <data name="CreateSwapPageTitle" xml:space="preserve">
+        <value>Swap oluştur</value>
+    </data>
+    <data name="SelectCurrenciesLabel" xml:space="preserve">
+        <value>Para birimini seçin</value>
+    </data>
+    <data name="SwapFrom" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="SwapTo" xml:space="preserve">
+        <value>To</value>
+    </data>
+    <data name="EstimatedPriceLabel" xml:space="preserve">
+        <value>Tahmin edilen fiyat</value>
+    </data>
+    <data name="EstimatedNetworkFeeLabel" xml:space="preserve">
+        <value>Ağın yerleşim komisyonu</value>
+    </data>
+    <data name="EnterAmountLabel" xml:space="preserve">
+        <value>Miktarı girin</value>
+    </data>
+    <data name="AvailableMarketVolumeLabel" xml:space="preserve">
+        <value>Kullanılabilir hacim</value>
+    </data>
+    <data name="NoLiquidityLabel" xml:space="preserve">
+        <value>Likidite yok</value>
+    </data>
+    <data name="PaymentFeeLabel" xml:space="preserve">
+        <value>Ödeme komisyonu</value>
+    </data>
+    <data name="RedeemFeeLabel" xml:space="preserve">
+        <value>Yeniden satın alma ücreti</value>
+    </data>
+    <data name="MakerFeeLabel" xml:space="preserve">
+        <value>Maker komisyonu</value>
+    </data>
+    <data name="RewardForRedeemLabel" xml:space="preserve">
+        <value>Fidye ödemesi</value>
+    </data>
+    <data name="TotalNetworkFeeLabel" xml:space="preserve">
+        <value>Toplam ağ komisyonu</value>
+    </data>
+    <data name="NoSwapsLabel" xml:space="preserve">
+        <value>Swaps yok</value>
+    </data>
+    <data name="Convert" xml:space="preserve">
+        <value>Para değişimi</value>
+    </data>
+    <data name="CreateSwapButton" xml:space="preserve">
+        <value>Yeni swap oluştur</value>
+    </data>
+    
+    <!-- Settings Page -->
+    <data name="SettingsPageTitle" xml:space="preserve">
+        <value>Ayarlar</value>
+    </data>
+    <data name="PeriodInactivePageTitle" xml:space="preserve">
+        <value>Hareketsizlik süresi</value>
+    </data>
+    <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
+        <value>Bakiye güncelleme dönemi</value>
+    </data>
+    <data name="AutomaticSignOutLabel" xml:space="preserve">
+        <value>Otomatik kapatma</value>
+    </data>
+    <data name="PeriodOfInactiveLabel" xml:space="preserve">
+        <value>Hareketsizlik süresi</value>
+    </data>
+    <data name="UseBiometricLabel" xml:space="preserve">
+        <value>Biyometrik yetkilendirme</value>
+    </data>
+    <data name="DeletingWallet" xml:space="preserve">
+        <value>Bir cüzdanı silme</value>
+    </data>
+    <data name="DeletingWalletText" xml:space="preserve">
+        <value>Bir cüzdanı silmek, paranızın kaybedilmesine neden olabilir</value>
+    </data>
+    <data name="DeletingWalletConfirmationText" xml:space="preserve">
+        <value>"{0}" cüzdanını silmek istediğinizden emin misiniz?</value>
+    </data>
+    <data name="AccountSection" xml:space="preserve">
+        <value>Hesap</value>
+    </data>
+    <data name="SecuritySection" xml:space="preserve">
+        <value>Güvenlik</value>
+    </data>
+    <data name="CommunitySection" xml:space="preserve">
+        <value>Topluluk</value>
+    </data>
+    <data name="WalletsSection" xml:space="preserve">
+        <value>Cüzdanlar</value>
+    </data>
+    <data name="CommonSection" xml:space="preserve">
+        <value>Ana</value>
+    </data>
+    <data name="Youtube" xml:space="preserve">
+        <value>YouTube</value>
+    </data>
+    <data name="Telegram" xml:space="preserve">
+        <value>Telegram</value>
+    </data>
+    <data name="Twitter" xml:space="preserve">
+        <value>Twitter</value>
+    </data>
+    <data name="Support" xml:space="preserve">
+        <value>Destek</value>
+    </data>
+    
+    <!-- Tab bar -->
+    <data name="PortfolioTab" xml:space="preserve">
+        <value>Portföy</value>
+    </data>
+    <data name="WalletsTab" xml:space="preserve">
+        <value>Cüzdanlar</value>
+    </data>
+    <data name="ConversionTab" xml:space="preserve">
+        <value>Değiş tokuş</value>
+    </data>
+    <data name="SettingsTab" xml:space="preserve">
+        <value>Ayarlar</value>
+    </data>
+    
+    <!-- Biometric setting popup -->
+    <data name="EnableBiometricLabel" xml:space="preserve">
+        <value>Biyometrik kimlik doğrulamayı etkinleştirmek için lütfen şifrenizi girin</value>
+    </data>
+    
+    <!-- Messages -->
+    <data name="Error" xml:space="preserve">
+        <value>Hata</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Dikkat</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Başarı</value>
+    </data>
+    <data name="SignOut" xml:space="preserve">
+        <value>Çıkış</value>
+    </data>
+    <data name="AreYouSure" xml:space="preserve">
+        <value>Emin misiniz?</value>
+    </data>
+    <data name="SuccessDelegation" xml:space="preserve">
+        <value>Yetki başarılı</value>
+    </data>
+    <data name="DelegationListWillBeUpdated" xml:space="preserve">
+        <value>Yetki listesi, işlem bloğa dahil edildikten sonra güncellenecektir.</value>
+    </data>
+    <data name="ExplorerUri" xml:space="preserve">
+        <value>Uri'yi Görüntüle</value>
+    </data>
+    <data name="sentTo" xml:space="preserve">
+        <value>Gönderildi</value>
+    </data>
+    <data name="isNotInWordlist" xml:space="preserve">
+        <value>bu kelime seçilen dilin listesinde yok</value>
+    </data>
+    <data name="Word" xml:space="preserve">
+        <value>Kelime</value>
+    </data>
+    <data name="TransactionIdCopied" xml:space="preserve">
+        <value>İşlem ID kopyalandı</value>
+    </data>
+    <data name="InvalidPassword" xml:space="preserve">
+        <value>Geçersiz şifre</value>
+    </data>
+    <data name="PasswordsDoNotMatch" xml:space="preserve">
+        <value>Şifre eşleşmiyor</value>
+    </data>
+    <data name="PasswordHasInsufficientComplexity" xml:space="preserve">
+        <value>Yetersiz şifre</value>
+    </data>
+    <data name="InvalidAmount" xml:space="preserve">
+        <value>Geçersiz miktar</value>
+    </data>
+    <data name="InvalidMnemonic" xml:space="preserve">
+        <value>Geçersiz anımsatıcı ifade</value>
+    </data>
+    <data name="InsufficientFunds" xml:space="preserve">
+        <value>Yetersiz bakiye</value>
+    </data>
+    <data name="InsufficientChainFunds" xml:space="preserve">
+        <value>Jeton aktarım ücretini karşılamak için yeterli {0} değil</value>
+    </data>
+    <data name="SufficientNetworkFee" xml:space="preserve">
+        <value>Bu hacim için gerekli ağ komisyonu ({0} eşittir {1})</value>
+    </data>
+    <data name="TooHighNetworkFee" xml:space="preserve">
+         <value>Bu hacim için ağ komisyonu çok yüksek ({0} eşittir {1})</value>
+    </data>
+    <data name="TotalNetworkFeeDetail" xml:space="preserve">
+        <value>
+{0}: {1} {2}
+{3}: {4} {5}
+{6}: {7} {8}
+            
+{9}: {10}
+        </value>
+    </data>
+    <data name="LowFees" xml:space="preserve">
+        <value>Çok düşük ücretler</value>
+    </data>
+    <data name="NetworkFee" xml:space="preserve">
+        <value>Atomik Swap Ağı Ücreti</value>
+    </data>
+    <data name="FailedToSend" xml:space="preserve">
+        <value>Gönderilemedi</value>
+    </data>
+    <data name="FailedToConvert" xml:space="preserve">
+        <value>Değiştirilemedi</value>
+    </data>
+    <data name="PriceChanged" xml:space="preserve">
+        <value>Fiyat değişti</value>
+    </data>
+    <data name="SwapCreated" xml:space="preserve">
+        <value>Swap başarıyla oluşturuldu</value>
+    </data>
+    <data name="GenerateMnemonic" xml:space="preserve">
+        <value>Anımsatıcı ifade oluşturun</value>
+    </data>
+    <data name="EmptyClipboard" xml:space="preserve">
+        <value>Pano boş</value>
+    </data>
+    <data name="EmptyWalletName" xml:space="preserve">
+        <value>Cüzdan adı boş olamaz</value>
+    </data>
+    <data name="InvalidWalletName" xml:space="preserve">
+        <value>Geçersiz cüzdan adı</value>
+    </data>
+    <data name="WalletAlreadyExists" xml:space="preserve">
+        <value>Aynı isimde bir cüzdan var</value>
+    </data>
+    <data name="BakerIsDeactivated" xml:space="preserve">
+        <value>Baker faal değil. Başka birini seç</value>
+    </data>
+    <data name="AlreadyDelegatedFrom" xml:space="preserve">
+        <value>Yetki verilmiş</value>
+    </data>
+    <data name="AutofillTransactionFailed" xml:space="preserve">
+        <value>Otomatik tamamlama işlemi başarısız oldu</value>
+    </data>
+    <data name="SuccessfulCheck" xml:space="preserve">
+        <value>Başarılı kontrol</value>
+    </data>
+    <data name="AddressSharing" xml:space="preserve">
+        <value>Adresi paylaş</value>
+    </data>
+    <data name="MyPublicAddress" xml:space="preserve">
+        <value>Almak için açık adresim</value>
+    </data>
+    <data name="HasBeenUpdated" xml:space="preserve">
+        <value>güncellendi</value>
+    </data>
+    <data name="AddressCopied" xml:space="preserve">
+        <value>Adres kopyalandı</value>
+    </data>
+    <data name="CopyError" xml:space="preserve">
+        <value>Kopyalama hatası</value>
+    </data>
+    <data name="CreateWalletError" xml:space="preserve">
+        <value>Cüzdan oluşturulurken hata meydana geldi</value>
+    </data>
+    <data name="EmptyAddressError" xml:space="preserve">
+        <value>Adres boş olamaz</value>
+    </data>
+    <data name="InvalidAddressError" xml:space="preserve">
+        <value>Yanlış adres</value>
+    </data>
+    <data name="CommissionLessThanZeroError" xml:space="preserve">
+        <value>Komisyon sıfırdan üstün olmalıdır</value>
+    </data>
+    <data name="SendingTransactionError" xml:space="preserve">
+        <value>İşlem gönderilirken hata oluştu</value>
+    </data>
+    <data name="DelegationError" xml:space="preserve">
+        <value>Yetki hatası</value>
+    </data>
+    <data name="DelegationValidationError" xml:space="preserve">
+        <value>Yetki kontrol edilirken hata oluştu</value>
+    </data>
+    <data name="NoTezosError" xml:space="preserve">
+        <value>0'dan fazla XTZ'ye sahip olmalısınız</value>
+    </data>
+    <data name="AmountLessThanZeroError" xml:space="preserve">
+        <value>Miktar sıfırdan büyük olmalıdır</value>
+    </data>
+    <data name="NoLiquidityError" xml:space="preserve">
+        <value>Bu hacmi değiştirmek için yeterli likidite yok</value>
+    </data>
+    <data name="PriceChangedError" xml:space="preserve">
+        <value>Oh, talep sırasında fiyat değişti. Lütfen tekrar deneyin</value>
+    </data>
+    <data name="OrderRejectedError" xml:space="preserve">
+        <value>İstek reddedildi</value>
+    </data>
+    <data name="TimeoutReachedError" xml:space="preserve">
+        <value>Atomex uzun süre yanıt vermiyor</value>
+    </data>
+    <data name="ConversionError" xml:space="preserve">
+        <value>Değişim hatası. Lütfen teknik desteğe başvurun</value>
+    </data>
+    <data name="AvailableFundsError" xml:space="preserve">
+        <value>Transfer tutarı (komisyon dahil) ücretsiz fon miktarını aşıyor</value>
+    </data>
+    <data name="CommissionLessThanZeroError" xml:space="preserve">
+        <value>Komisyon sıfırdan yüksek olmalıdır</value>
+    </data>
+    <data name="EmptyMnemonicError" xml:space="preserve">
+        <value>Anımsatıcı kelime boş olamaz</value>
+    </data>
+    <data name="MnemonicWordCountError" xml:space="preserve">
+        <value>Kelime sayısı 12,15,18,21 veya 24 olmalıdır</value>
+    </data>
+    <data name="WrongDelegationAddressError" xml:space="preserve">
+        <value>Geçersiz yetki adresi</value>
+    </data>
+    <data name="DelegationLimitWarning" xml:space="preserve">
+        <value>Seçilen beker’in, seçtiğiniz cüzdanın bakiyesini aşan bir minimum yetki limiti vardır</value>
+    </data>
+    <data name="BakerIsOverdelegatedWarning" xml:space="preserve">
+        <value>Baker yeniden yetki verdi, başka birini seçsen iyi olur</value>
+    </data>
+    <data name="RemoveTxWarning" xml:space="preserve">
+        <value>Bu işlem yalnızca local verileri etkiler ve blockchain etkilemez.</value>
+    </data>
+    <data name="UpdateApp" xml:space="preserve">
+        <value>Yeni bir versiyon mevcut. Uygulama şimdi güncellensin mi?</value>
+    </data>
+    <data name="UpdateAvailable" xml:space="preserve">
+        <value>Güncelleme uygun</value>
+    </data>
+    <data name="Yes" xml:space="preserve">
+        <value>Evet</value>
+    </data>
+    <data name="No" xml:space="preserve">
+        <value>Değil</value>
+    </data>
+    <data name="NotSupportSecureStorage" xml:space="preserve">
+        <value>Cihaz, cihazda secure storage desteklemiyor</value>
+    </data>
+    <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
+        <value>Lütfen cihaz ayarlarında biyometrik yetkilendirmeyi etkinleştirin</value>
+    </data>
+    <data name="NotAuthenticated" xml:space="preserve">
+        <value>Tanımlanmadın</value>
+    </data>
+    <data name="SorryLabel" xml:space="preserve">
+        <value>Afedersiniz</value>
+    </data>
+    <data name="ImpossibleEnableBiometric" xml:space="preserve">
+        <value>Biyometrik kimlik doğrulaması etkinleştirilemedi</value>
+    </data>
+    <data name="Verified" xml:space="preserve">
+        <value>Kontrol!</value>
+    </data>
+    <data name="SwapHistoryText" xml:space="preserve">
+        <value>Swap geçmişi, cihazınızda yerel olarak depolanır. Bu, başka bir cihazda gerçekleştirilen işlemleri görmeyeceğiniz anlamına gelir.</value>
+    </data>
+</root>
