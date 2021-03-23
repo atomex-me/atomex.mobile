@@ -310,17 +310,19 @@
     <Style x:Key="CurrencyActionButtonStyle" TargetType="Button">
         <Setter Property="FontSize">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="x:Double" iOS="11" Android="8"/>
+                <OnPlatform x:TypeArguments="x:Double" iOS="11" Android="9"/>
             </Setter.Value>
         </Setter>
         <Setter Property="TextTransform" Value="Uppercase"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="WidthRequest" Value="72"/>
+        <Setter Property="HeightRequest" Value="40"/>
         <Setter Property="RelativeLayout.WidthConstraint" Value="72"/>
         <Setter Property="RelativeLayout.HeightConstraint" Value="40"/>
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="Padding" Value="1,0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
     </Style>
     <Style x:Key="TxListViewStyle" TargetType="ListView">
