@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.CustomElements;
-using atomex.Helpers;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Styles;
@@ -15,7 +14,6 @@ using Atomex.MarketData.Bitfinex;
 using Atomex.Subsystems;
 using Microsoft.Extensions.Configuration;
 using Plugin.LatestVersion;
-using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -30,8 +28,6 @@ namespace atomex
 
         const int smallWightResolution = 768;
         const int smallHeightResolution = 1280;
-
-        private const string LanguageKey = nameof(LanguageKey);
 
         public App()
         {
@@ -66,8 +62,6 @@ namespace atomex
 
             AtomexApp.Start();
 
-            SetUserLanguage();
-
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
             MainPage = new NavigationPage(new StartPage(startViewModel));
 
@@ -94,18 +88,6 @@ namespace atomex
         }
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
-
-        private void SetUserLanguage()
-        {
-            try
-            {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)));
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Set culture error");
-            }
-        }
 
         public void SetAppTheme()
         {

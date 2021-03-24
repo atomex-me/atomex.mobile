@@ -25,17 +25,21 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout Orientation="Horizontal"
-                                             HeightRequest="40">
+                                             HeightRequest="40"
+                                             Padding="20,0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="OnLanguageTapped"/>
                                     </StackLayout.GestureRecognizers>
+                                    <Image Source="{Binding Code}"
+                                           VerticalOptions="Center"
+                                           WidthRequest="24"/>
                                     <Label Text="{Binding Name}"
-                                           Style="{DynamicResource OptionLabelStyle}">
+                                           Style="{DynamicResource OptionLabelStyle}"
+                                           Margin="5,0">
                                     </Label>
                                     <Image Source="Tick"
                                            WidthRequest="16"
                                            HeightRequest="16"
-                                           Margin="20,0"
                                            VerticalOptions="Center"
                                            HorizontalOptions="EndAndExpand"
                                            IsVisible="False">
