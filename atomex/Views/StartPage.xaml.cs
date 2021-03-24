@@ -1,5 +1,6 @@
 ﻿using System;
 using atomex.Views.CreateNewWallet;
+using atomex.Views.SettingsOptions;
 using Xamarin.Forms;
 
 namespace atomex
@@ -32,6 +33,15 @@ namespace atomex
             _createNewWalletViewModel.Clear();
             _createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
             await Navigation.PushAsync(new WalletTypePage(_createNewWalletViewModel));
+        }
+        private async void OnLanguagesTapped(object sender, EventArgs args)
+        {
+            var optionsPage = new LanguagesPage(_startViewModel, selected =>
+            {
+                _startViewModel.Language = selected;
+            });
+
+            await Navigation.PushAsync(optionsPage);
         }
     }
 }

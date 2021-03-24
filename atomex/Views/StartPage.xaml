@@ -28,7 +28,7 @@
                          Spacing="0">
                 <Image Style="{DynamicResource LogoImageStyle}"/>
                 <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Spacing="0">
-                    <Label Text="a" Style="{DynamicResource LogoLabelStyle}"/>
+                    <Label Text="a" Style="{DynamicResource LogoCompressedLabelStyle}"/>
                     <Label Text="t" Style="{DynamicResource LogoCompressedLabelStyle}"/>
                     <Label Text="o" Style="{DynamicResource LogoCompressedLabelStyle}"/>
                     <Label Text="m" Style="{DynamicResource LogoCompressedLabelStyle}"/>
@@ -36,6 +36,19 @@
                     <Label Text="x" Style="{DynamicResource LogoCompressedLabelStyle}"/>
                 </StackLayout>
             </StackLayout>
+        </StackLayout>
+        <StackLayout Style="{DynamicResource StartPageLanguageSwitcherStyle}">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLanguagesTapped"/>
+            </StackLayout.GestureRecognizers>
+            <Image Source="{Binding Language.Code}"
+                   VerticalOptions="Center"
+                   WidthRequest="24"/>
+            <Label Text="{Binding Language.ShortName}"
+                   Style="{DynamicResource StartPageLanguageNameStyle}"/>
+            <Image Source="RightArrow__white"
+                   HeightRequest="10"
+                   VerticalOptions="Center"/>
         </StackLayout>
         <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
                      RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"

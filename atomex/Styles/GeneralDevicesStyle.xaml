@@ -220,6 +220,32 @@
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="VerticalOptions" Value="End"/>
     </Style>
+    <Style x:Key="StartPageButtonsStyle" TargetType="StackLayout">
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style x:Key="StartPageLanguageSwitcherStyle" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="0"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalOptions" Value="End"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="RelativeLayout.WidthConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.3}"/>
+        <Setter Property="RelativeLayout.HeightConstraint" Value="40"/>
+        <Setter Property="RelativeLayout.XConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"/>
+        <Setter Property="RelativeLayout.YConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant={OnPlatform Android=10, iOS=30}}"/>
+    </Style>
+    <Style x:Key="StartPageLanguageNameStyle" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextTransform" Value="Uppercase"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextColor" Value="{DynamicResource MainTextColorDark}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="6,13" Android="6,0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- My Wallets Page -->
     <Style x:Key="SelectWalletTextStyle" TargetType="Label">
@@ -466,11 +492,6 @@
         <Setter Property="HorizontalTextAlignment" Value="End"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="14"/>
-    </Style>
-
-    <!-- Start Page -->
-    <Style x:Key="StartPageButtonsStyle" TargetType="StackLayout">
-        <Setter Property="Margin" Value="0"/>
     </Style>
 
     <!-- Create swap Page -->

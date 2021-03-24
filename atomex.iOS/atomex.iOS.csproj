@@ -55,8 +55,9 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchLink>None</MtouchLink>
 <LangVersion>8.0</LangVersion>
+<MtouchInterpreter>-all</MtouchInterpreter>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -239,6 +240,12 @@
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSDT.png" />
     <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\en.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\en.imageset\en.pdf" />
+    <ImageAsset Include="Assets.xcassets\ru.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf" />
+    <ImageAsset Include="Assets.xcassets\tr.imageset\tr.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -380,6 +387,9 @@
     <Folder Include="Assets.xcassets\ic_delete.imageset\" />
     <Folder Include="Assets.xcassets\KUSD.imageset\" />
     <Folder Include="Assets.xcassets\KUSD.imageset\" />
+    <Folder Include="Assets.xcassets\en.imageset\" />
+    <Folder Include="Assets.xcassets\ru.imageset\" />
+    <Folder Include="Assets.xcassets\tr.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

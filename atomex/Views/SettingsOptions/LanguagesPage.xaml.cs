@@ -16,6 +16,13 @@ namespace atomex.Views.SettingsOptions
             BindingContext = settingsViewModel;
         }
 
+        public LanguagesPage(StartViewModel startViewModel, Action<Language> onOptionSelected)
+        {
+            InitializeComponent();
+            OnOptionSelected = onOptionSelected;
+            BindingContext = startViewModel;
+        }
+
         async void OnLanguageTapped(object sender, EventArgs args)
         {
             Language language = (Language)((TappedEventArgs)args).Parameter;
