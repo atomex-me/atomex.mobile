@@ -7,11 +7,13 @@ using System.Linq;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Helpers;
 using atomex.Models;
 using atomex.Resources;
 using atomex.Views.Popup;
+using atomex.Views.SettingsOptions;
 using Atomex;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
@@ -27,9 +29,19 @@ namespace atomex.ViewModel
     {
         public IAtomexApp AtomexApp { get; private set; }
 
+        public INavigation Navigation { get; set; }
+
         public UserSettings Settings { get; }
 
         private const string LanguageKey = nameof(LanguageKey);
+
+        private string YoutubeUrl = "https://www.youtube.com/c/BakingBad";
+
+        private string TwitterUrl = "https://twitter.com/atomex_official";
+
+        private string TelegramUrl = "https://t.me/atomex_official";
+
+        private string SupportUrl = "mailto:support@atomex.me";
 
         private float _opacity = 1f;
         public float Opacity
@@ -101,7 +113,7 @@ namespace atomex.ViewModel
 
                 _language = value;
 
-                ChangeLanguage(_language);
+                SetCulture(_language);
 
                 _language.IsActive = true;
 
@@ -295,7 +307,7 @@ namespace atomex.ViewModel
             SetPassword(string.Empty);
             Warning = string.Empty;
             _ = ResetUseBiometricSetting();
-            _ = Application.Current.MainPage.Navigation.PopPopupAsync();
+            _ = Navigation.PopPopupAsync();
         }
 
         async Task CheckBiometricSensor()
@@ -304,18 +316,22 @@ namespace atomex.ViewModel
             BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
         }
 
-        //private Command _showLanguagesCommand;
-        //public Command ShowLanguagesCommand => _showLanguagesCommand ??= new Command(() => ShowLanguages());
+        private ICommand _showLanguagesCommand;
+        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());
 
-        //private async void ShowLanguages()
-        //{
-        //    var optionsPage = new LanguagesPage(this, selected =>
-        //    {
-        //        Language = selected;
-        //    });
+        private ICommand _changeLanguageCommand;
+        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
 
-        //    await Application.Current.MainPage. Navigation.PushAsync(optionsPage);
-        //}
+        async Task ShowLanguages()
+        {
+            await Navigation.PushAsync(new LanguagesPage(this));
+        }
+
+        async Task ChangeLanguage(Language value)
+        {
+            Language = value;
+            await Navigation.PopAsync();
+        }
 
         private void SetUserLanguage()
         {
@@ -330,10 +346,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private Command _changeLanguageCommand;
-        public Command ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>((value) => ChangeLanguage(value));
-
-        private void ChangeLanguage(Language language)
+        private void SetCulture(Language language)
         {
             try
             {
@@ -343,6 +356,39 @@ namespace atomex.ViewModel
             {
                 LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
             }
+        }
+
+
+        private ICommand _youtubeCommand;
+        public ICommand YoutubeCommand => _youtubeCommand ??= new Command( () => OnYoutubeTapped());
+
+        private ICommand _telegramCommand;
+        public ICommand TelegramCommand => _telegramCommand ??= new Command(() => OnTelegramTapped());
+
+        private ICommand _twitterCommand;
+        public ICommand TwitterCommand => _twitterCommand ??= new Command(() => OnTwitterTapped());
+
+        private ICommand _supportCommand;
+        public ICommand SupportCommand => _supportCommand ??= new Command(() => OnSupportTapped());
+
+        private void OnYoutubeTapped()
+        {
+            Launcher.OpenAsync(new Uri(YoutubeUrl));
+        }
+
+        private void OnTwitterTapped()
+        {
+            Launcher.OpenAsync(new Uri(TwitterUrl));
+        }
+
+        private void OnSupportTapped()
+        {
+            Launcher.OpenAsync(new Uri(SupportUrl));
+        }
+
+        private void OnTelegramTapped()
+        {
+            Launcher.OpenAsync(new Uri(TelegramUrl));
         }
     }
 }

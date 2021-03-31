@@ -39,36 +39,6 @@ namespace atomex
             }
         }
 
-        private async void OnLanguagesTapped(object sender, EventArgs args)
-        {
-            var optionsPage = new LanguagesPage(_settingsViewModel, selected =>
-            {
-                _settingsViewModel.Language = selected;
-            });
-
-            await Navigation.PushAsync(optionsPage);
-        }
-
-        private void OnYoutubeTapped(object sender, EventArgs args)
-        {
-            Launcher.OpenAsync(new Uri("https://www.youtube.com/c/BakingBad"));
-        }
-
-        private void OnTwitterTapped(object sender, EventArgs args)
-        {
-            Launcher.OpenAsync(new Uri("https://twitter.com/atomex_official"));
-        }
-
-        private void OnSupportTapped(object sender, EventArgs args)
-        {
-            Launcher.OpenAsync(new Uri("mailto:support@atomex.me"));
-        }
-
-        private void OnTelegramTapped(object sender, EventArgs args)
-        {
-            Launcher.OpenAsync(new Uri("https://t.me/atomex_official"));
-        }
-
         async void OnWalletTapped(object sender, EventArgs e)
         {
             var walletName = ((TappedEventArgs)e).Parameter.ToString();

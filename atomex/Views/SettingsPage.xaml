@@ -52,7 +52,7 @@
                        Style="{DynamicResource EntryFrameStyle}"
                        Margin="0,0,0,20">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLanguagesTapped"/>
+                        <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal">
@@ -94,7 +94,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Source="ic_telegram"
@@ -107,7 +107,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -124,7 +124,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="2"
@@ -139,7 +139,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -157,7 +157,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="4"
@@ -172,7 +172,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -190,7 +190,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="6"
@@ -205,7 +205,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"

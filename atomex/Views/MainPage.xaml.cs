@@ -59,6 +59,7 @@ namespace atomex
                 IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
+            _mainViewModel.SettingsViewModel.Navigation = navigationSettingsPage.Navigation;
 
             SetAppTheme();
 
@@ -126,6 +127,7 @@ namespace atomex
             _mainViewModel.SignOut();
             StartViewModel startViewModel = new StartViewModel(_mainViewModel.AtomexApp);
             Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
+            startViewModel.Navigation = Application.Current.MainPage.Navigation;
 
             string navBarBackgroundColorName = "NavigationBarBackgroundColor";
             string navBarTextColorName = "NavigationBarTextColor";

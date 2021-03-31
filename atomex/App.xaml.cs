@@ -64,6 +64,7 @@ namespace atomex
 
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
             MainPage = new NavigationPage(new StartPage(startViewModel));
+            startViewModel.Navigation = MainPage.Navigation;
 
             Current.RequestedThemeChanged += (s, a) =>
             {
