@@ -1,5 +1,4 @@
 ﻿using System;
-using atomex.Resources;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 
@@ -7,9 +6,6 @@ namespace atomex.Views.CreateNewWallet
 {
     public partial class CreateMnemonicPage : ContentPage
     {
-
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-
         public CreateMnemonicPage()
         {
             InitializeComponent();
@@ -18,12 +14,7 @@ namespace atomex.Views.CreateNewWallet
         public CreateMnemonicPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
-            if (!string.IsNullOrEmpty(createNewWalletViewModel.Mnemonic))
-                LoseMnemonicLabel.IsVisible = true;
-            else
-                LoseMnemonicLabel.IsVisible = false;
         }
 
         private void OnLanguagePickerFocused(object sender, FocusEventArgs args)
@@ -50,13 +41,18 @@ namespace atomex.Views.CreateNewWallet
         {
             if (args.Value)
             {
+                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
+                {
+                    Page.ScrollToAsync(0, PasswordEntry.Height, true);
+                    return false;
+                });
                 PasswordEntry.Focus();
             }
             else
             {
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
-                    Page.ScrollToAsync(0, 20, true);
+                    Page.ScrollToAsync(0, -PasswordEntry.Height, true);
                     return false;
                 });
             }
@@ -64,55 +60,21 @@ namespace atomex.Views.CreateNewWallet
 
         private async void OnNextButtonClicked(object sender, EventArgs args)
         {
-            if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
-            {
-                _createNewWalletViewModel.GenerateMnemonic();
-                MnemonicPhraseFrame.Opacity = 0;
-                LoseMnemonicLabel.IsVisible = true;
-                MnemonicPhraseFrame.IsVisible = true;
-                await Task.WhenAll(
-                    MnemonicPhraseFrame.FadeTo(1, 250, Easing.Linear),
-                    LoseMnemonicLabel.FadeTo(1, 250, Easing.Linear)
-                );
-                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-                {
-                    Page.ScrollToAsync(0, MnemonicPhraseFrame.Height, true);
-                    return false;
-                });
-                return;
-            }
-            if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
-            {
-                await DisplayAlert(AppResources.Warning, AppResources.GenerateMnemonic, AppResources.AcceptButton);
-                return;
-            }
-            if (_createNewWalletViewModel.UseDerivedKeyPswd)
-            {
-                _createNewWalletViewModel.CheckDerivedPassword();
+            await Task.WhenAll(
+                MnemonicPhraseFrame.FadeTo(1, 250, Easing.Linear),
+                LoseMnemonicLabel.FadeTo(1, 250, Easing.Linear)
+            );
 
-                if (_createNewWalletViewModel.Warning != string.Empty)
-                    return;
-            }
-            _createNewWalletViewModel.ResetMnemonicCollections();
-            await Navigation.PushAsync(new VerificationMnemonicPage(_createNewWalletViewModel));
-        }
-
-        private async void MnemonicPhraseChanged(object sender, EventArgs args)
-        {
-            if (string.IsNullOrEmpty(_createNewWalletViewModel.Mnemonic))
+            Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
             {
-                MnemonicPhraseFrame.IsVisible = false;
-                await Task.WhenAll(
-                    LoseMnemonicLabel.FadeTo(0, 500, Easing.Linear)
-                );
-                LoseMnemonicLabel.IsVisible = false;
-            }
+                Page.ScrollToAsync(0, NextButton.Y, true);
+                return false;
+            });
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -155,13 +117,11 @@ namespace atomex.Views.CreateNewWallet
                 );
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -175,7 +135,7 @@ namespace atomex.Views.CreateNewWallet
             {
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
-                    Page.ScrollToAsync(0, MnemonicPhraseFrame.Height + LoseMnemonicLabel.Height, true);
+                    Page.ScrollToAsync(0, NextButton.Y, true);
                     return false;
                 });
             }
@@ -204,17 +164,15 @@ namespace atomex.Views.CreateNewWallet
                 );
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPasswordConfirmation, args.NewTextValue);
-        }
-
-        private async void OnUseDerivedPswdRowTapped(object sender, EventArgs args)
-        {
-            await DisplayAlert("", AppResources.DerivedPasswordDescriptionText, AppResources.AcceptButton);
         }
 
         protected override void OnDisappearing()
         {
-            _createNewWalletViewModel.Warning = string.Empty;
+            var vm = (CreateNewWalletViewModel)BindingContext;
+            if (vm.ClearWarningCommand.CanExecute(null))
+            {
+                vm.ClearWarningCommand.Execute(null);
+            }
             base.OnDisappearing();
         }
     }

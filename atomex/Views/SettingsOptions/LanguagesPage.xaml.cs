@@ -1,6 +1,4 @@
-﻿using System;
-using atomex.Models;
-using atomex.ViewModel;
+﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
 namespace atomex.Views.SettingsOptions

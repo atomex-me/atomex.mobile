@@ -14,11 +14,11 @@
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
         <StackLayout Orientation="Horizontal" Margin="0,20" HorizontalOptions="Center">
             <custom:LeftRoundedButton Text="{helpers:Translate TestNetButton}"
-                Style="{DynamicResource WalletTypeButtonStyle}"
-                Clicked="OnTestNetButtonClicked"/>
+                                      Style="{DynamicResource WalletTypeButtonStyle}"
+                                      Command="{Binding SetTestNetTypeCommand}"/>
             <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
-                Style="{DynamicResource WalletTypeButtonStyle}"
-                Clicked="OnMainNetButtonClicked"/>
+                                       Style="{DynamicResource WalletTypeButtonStyle}"
+                                       Command="{Binding SetMainNetTypeCommand}"/>
         </StackLayout>
     </StackLayout> 
 </ContentPage>

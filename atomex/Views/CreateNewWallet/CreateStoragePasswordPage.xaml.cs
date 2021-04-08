@@ -7,8 +7,6 @@ namespace atomex.Views.CreateNewWallet
     public partial class CreateStoragePasswordPage : ContentPage
     {
 
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-
         public CreateStoragePasswordPage()
         {
             InitializeComponent();
@@ -17,14 +15,22 @@ namespace atomex.Views.CreateNewWallet
         public CreateStoragePasswordPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
+        }
+
+        protected override void OnDisappearing()
+        {
+            var vm = (CreateNewWalletViewModel)BindingContext;
+            if (vm.ClearWarningCommand.CanExecute(null))
+            {
+                vm.ClearWarningCommand.Execute(null);
+            }
+            base.OnDisappearing();
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -67,13 +73,11 @@ namespace atomex.Views.CreateNewWallet
                 );
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePassword, args.NewTextValue);
         }
 
         private void PasswordConfirmationEntryFocused(object sender, FocusEventArgs args)
         {
             PasswordConfirmationFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -116,13 +120,6 @@ namespace atomex.Views.CreateNewWallet
                 );
                 PasswordConfirmationHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.StoragePasswordConfirmation, args.NewTextValue);
-        }
-
-        protected override void OnDisappearing()
-        {
-            _createNewWalletViewModel.Warning = string.Empty;
-            base.OnDisappearing();
         }
     }
 }

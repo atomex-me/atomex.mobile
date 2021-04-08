@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
@@ -43,7 +44,12 @@
                                               TextChanged="OnTextChanged"
                                               Text="{Binding WalletName}"
                                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
-                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                            <controls:CustomEntry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="Focused"
+                                                                  Command="{Binding ClearWarningCommand}"/>
+                            </controls:CustomEntry.Behaviors>
+                        </controls:CustomEntry>
                     </RelativeLayout>
                 </StackLayout>
             </Frame>
@@ -61,7 +67,7 @@
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnNextButtonClicked"/>
+                    Command="{Binding MnemonicPageCommand}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

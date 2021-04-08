@@ -6,8 +6,6 @@ namespace atomex
 {
     public partial class UnlockWalletPage : ContentPage
     {
-
-        private UnlockViewModel _unlockViewModel;
         public UnlockWalletPage()
         {
             InitializeComponent();
@@ -16,10 +14,7 @@ namespace atomex
         public UnlockWalletPage(UnlockViewModel unlockViewModel)
         {
             InitializeComponent();
-            _unlockViewModel = unlockViewModel;
             BindingContext = unlockViewModel;
-
-            unlockViewModel.BiometricAuth();
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
@@ -72,7 +67,6 @@ namespace atomex
                 );
                 PasswordHint.IsVisible = false;
             }
-            _unlockViewModel.SetPassword(args.NewTextValue);
         }
     }
 }

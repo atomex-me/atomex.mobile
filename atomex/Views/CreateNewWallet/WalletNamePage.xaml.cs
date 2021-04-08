@@ -6,8 +6,6 @@ namespace atomex.Views.CreateNewWallet
 {
     public partial class WalletNamePage : ContentPage
     {
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-
         public WalletNamePage()
         {
             InitializeComponent();
@@ -16,14 +14,12 @@ namespace atomex.Views.CreateNewWallet
         public WalletNamePage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
         }
 
         private void EntryFocused(object sender, FocusEventArgs args)
         {
             Frame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -74,30 +70,13 @@ namespace atomex.Views.CreateNewWallet
             }
         }
 
-        private async void OnNextButtonClicked(object sender, EventArgs args)
-        {
-            _createNewWalletViewModel.SaveWalletName();
-
-            if (_createNewWalletViewModel.Warning != string.Empty)
-                return;
-
-            _createNewWalletViewModel.ClearDerivedPswd();
-            if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Create)
-            {
-                await Navigation.PushAsync(new CreateMnemonicPage(_createNewWalletViewModel));
-                return;
-            }
-
-            if (_createNewWalletViewModel.CurrentAction == CreateNewWalletViewModel.Action.Restore)
-            {
-                await Navigation.PushAsync(new WriteMnemonicPage(_createNewWalletViewModel));
-                return;
-            }
-        }
-
         protected override void OnDisappearing()
         {
-            _createNewWalletViewModel.Warning = string.Empty;
+            var vm = (CreateNewWalletViewModel)BindingContext;
+            if (vm.ClearWarningCommand.CanExecute(null))
+            {
+                vm.ClearWarningCommand.Execute(null);
+            }
             base.OnDisappearing();
         }
     }

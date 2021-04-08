@@ -7,8 +7,6 @@ namespace atomex.Views.CreateNewWallet
     public partial class WriteDerivedKeyPasswordPage : ContentPage
     {
 
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-
         public WriteDerivedKeyPasswordPage()
         {
             InitializeComponent();
@@ -17,7 +15,6 @@ namespace atomex.Views.CreateNewWallet
         public WriteDerivedKeyPasswordPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
         }
 
@@ -67,13 +64,6 @@ namespace atomex.Views.CreateNewWallet
 
                 PasswordHint.IsVisible = false;
             }
-            _createNewWalletViewModel.SetPassword(CreateNewWalletViewModel.PasswordType.DerivedPassword, PasswordEntry.Text);
-        }
-
-        private async void OnNextButtonClicked(object sender, EventArgs args)
-        {
-            _createNewWalletViewModel.CreateHdWallet();
-            await Navigation.PushAsync(new CreateStoragePasswordPage(_createNewWalletViewModel));
         }
     }
 }

@@ -59,6 +59,7 @@ namespace atomex
                 IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
+
             _mainViewModel.SettingsViewModel.Navigation = navigationSettingsPage.Navigation;
 
             SetAppTheme();

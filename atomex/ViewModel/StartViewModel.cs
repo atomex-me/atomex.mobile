@@ -115,33 +115,31 @@ namespace atomex
         private ICommand _changeLanguageCommand;
         public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
 
-        async Task CreateNewWallet()
+        private async Task CreateNewWallet()
         {
-            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp);
-            createNewWalletViewModel.Clear();
+            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
             createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
             await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
         }
 
-        async Task RestoreWallet()
+        private async Task RestoreWallet()
         {
-            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp);
-            createNewWalletViewModel.Clear();
+            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
             createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
             await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
         }
 
-        async Task ShowMyWallets()
+        private async Task ShowMyWallets()
         {
-            await Navigation.PushAsync(new MyWalletsPage(new MyWalletsViewModel(AtomexApp)));
+            await Navigation.PushAsync(new MyWalletsPage(new MyWalletsViewModel(AtomexApp, Navigation)));
         }
 
-        async Task ShowLanguages()
+        private async Task ShowLanguages()
         {
             await Navigation.PushAsync(new LanguagesPage(this));
         }
 
-        async Task ChangeLanguage(Language value)
+        private async Task ChangeLanguage(Language value)
         {
             Language = value;
             await Navigation.PopAsync();

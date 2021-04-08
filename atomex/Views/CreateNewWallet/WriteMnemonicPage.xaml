@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{Binding Title}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
@@ -47,7 +48,12 @@
                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                      Style="{DynamicResource CustomPickerStyle}"
                                      Focused="OnPickerFocused"
-                                     Unfocused="OnPickerFocused"/>
+                                     Unfocused="OnPickerFocused">
+                    <custom:CustomPicker.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="Focused"
+                                                          Command="{Binding ClearWarningCommand}"/>
+                    </custom:CustomPicker.Behaviors>
+                </custom:CustomPicker>
                 <Label Text ="{helpers:Translate LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
@@ -74,7 +80,12 @@
                         Text="{Binding Mnemonic}"
                         Style="{DynamicResource MnemonicPhraseEditorStyle}"
                         Focused="OnEditorFocused"
-                        Unfocused="OnEditorFocused"/>
+                        Unfocused="OnEditorFocused">
+                    <Editor.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="Focused"
+                                                          Command="{Binding ClearWarningCommand}"/>
+                    </Editor.Behaviors>
+                </Editor>
             </custom:CustomFrame>
             <Label Text="{Binding Warning}"
                    Style="{DynamicResource ErrorTextStyle}">
@@ -90,7 +101,7 @@
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnNextButtonClicked"/>
+                    Command="{Binding WriteDerivedPasswordPageCommand}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
