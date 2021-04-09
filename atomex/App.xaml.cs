@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using atomex.CustomElements;
 using atomex.Resources;
 using atomex.Services;
@@ -13,7 +12,6 @@ using Atomex.Core;
 using Atomex.MarketData.Bitfinex;
 using Atomex.Subsystems;
 using Microsoft.Extensions.Configuration;
-using Plugin.LatestVersion;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -28,6 +26,8 @@ namespace atomex
 
         const int smallWightResolution = 768;
         const int smallHeightResolution = 1280;
+
+        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
         public App()
         {
@@ -71,24 +71,7 @@ namespace atomex
                 Device.BeginInvokeOnMainThread(SetAppTheme);
             };
             SetAppTheme();
-
-            _ = CheckLatestVersion();
         }
-
-        private async Task CheckLatestVersion()
-        {
-            var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
-
-            if (!isLatest)
-            {
-                var update = await Application.Current.MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
-
-                if (update)
-                    await CrossLatestVersion.Current.OpenAppInStore();
-            }
-        }
-
-        public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
         public void SetAppTheme()
         {

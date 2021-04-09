@@ -54,13 +54,15 @@ namespace atomex
                 Title = AppResources.ConversionTab
             };
 
-            navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
+            navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel))
             {
                 IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
 
             _mainViewModel.SettingsViewModel.Navigation = navigationSettingsPage.Navigation;
+            //_mainViewModel.CurrenciesViewModel.Navigation = navigationWalletsListPage.Navigation;
+            //_mainViewModel.ConversionViewModel.Navigation = navigationConversionPage.Navigation;
 
             SetAppTheme();
 

@@ -4,6 +4,7 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.SettingsPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate SettingsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
@@ -227,7 +228,7 @@
                     <Button Text="{helpers:Translate SignOut}"
                             Style="{DynamicResource TransparentButtonStyle}"
                             CornerRadius="10"
-                            Clicked="OnSignOutButtonClicked"/>
+                            Command="{Binding SignOutCommand}"/>
                 </custom:CustomFrame>
                 <Label Text="{helpers:Translate WalletsSection}"
                        FontFamily="{DynamicResource LightFont}"
@@ -247,7 +248,7 @@
                                 <StackLayout Orientation="Horizontal"
                                              HeightRequest="40">
                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding Name}" Tapped="OnWalletTapped"/>
+                                        <TapGestureRecognizer CommandParameter="{Binding Name}" Command="{Binding BindingContext.DeleteWalletCommand, Source={x:Reference BindingContextPage}}"/>
                                     </StackLayout.GestureRecognizers>
                                     <Image WidthRequest="20"
                                            HeightRequest="20"

@@ -31,6 +31,8 @@ namespace atomex.ViewModel
 
         public INavigation Navigation { get; set; }
 
+        public MainViewModel MainViewModel { get; }
+
         public UserSettings Settings { get; }
 
         private const string LanguageKey = nameof(LanguageKey);
@@ -146,13 +148,14 @@ namespace atomex.ViewModel
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
-        public SettingsViewModel(IAtomexApp app, string walletName)
+        public SettingsViewModel(IAtomexApp app, MainViewModel mainViewModel, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             SetUserLanguage();
             Settings = app.Account.UserSettings;
             WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
+            MainViewModel = mainViewModel;
             _ = CheckBiometricSensor();
             _ = ResetUseBiometricSetting();
         }
@@ -370,6 +373,36 @@ namespace atomex.ViewModel
 
         private ICommand _supportCommand;
         public ICommand SupportCommand => _supportCommand ??= new Command(() => OnSupportTapped());
+
+        private ICommand _signOutCommand;
+        public ICommand SignOutCommand => _signOutCommand ??= new Command(() => SignOut());
+
+        private ICommand _deleteWalletCommand;
+        public ICommand DeleteWalletCommand => _deleteWalletCommand ??= new Command<string>((name) => OnWalletTapped(name));
+
+        private async void SignOut()
+        {
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
+            if (res)
+                MainViewModel.Locked.Invoke(this, EventArgs.Empty);
+        }
+
+        private async void OnWalletTapped(string name)
+        {
+            WalletInfo selectedWallet = Wallets.Where(w => w.Name == name).Single();
+
+            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
+            if (confirm)
+            {
+                var confirm2 = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+                if (confirm2)
+                {
+                    DeleteWallet(selectedWallet.Path);
+                    if (AtomexApp.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
+                        MainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         private void OnYoutubeTapped()
         {

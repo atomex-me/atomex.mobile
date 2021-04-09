@@ -13,6 +13,7 @@ using atomex.ViewModel;
 using atomex.Views.CreateNewWallet;
 using atomex.Views.SettingsOptions;
 using Atomex;
+using Plugin.LatestVersion;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -82,6 +83,7 @@ namespace atomex
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             HasWallets = WalletInfo.AvailableWallets().Count() > 0;
             SetUserLanguage();
+            _ = CheckLatestVersion();
         }
 
         private void SetUserLanguage()
@@ -143,6 +145,19 @@ namespace atomex
         {
             Language = value;
             await Navigation.PopAsync();
+        }
+
+        private async Task CheckLatestVersion()
+        {
+            var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
+
+            if (!isLatest)
+            {
+                var update = await Application.Current.MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
+
+                if (update)
+                    await CrossLatestVersion.Current.OpenAppInStore();
+            }
         }
     }
 }

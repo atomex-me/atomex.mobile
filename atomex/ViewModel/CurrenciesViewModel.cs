@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Atomex;
 using Atomex.Abstract;
-using Atomex.Common;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -14,6 +14,8 @@ namespace atomex.ViewModel
         public event EventHandler QuotesUpdated;
 
         private IAtomexApp AtomexApp { get; }
+
+        public INavigation Navigation { get; set; }
 
         private decimal _totalAmountInBase;
         public decimal TotalAmountInBase
