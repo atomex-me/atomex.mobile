@@ -10,6 +10,7 @@ using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.CreateSwap;
 using atomex.Helpers;
+using System.Threading.Tasks;
 
 namespace atomex
 {
@@ -42,7 +43,7 @@ namespace atomex
                 Title = AppResources.PortfolioTab
             };
 
-            navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
+            navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel))
             {
                 IconImageSource = "NavBarWallets",
                 Title = AppResources.WalletsTab
@@ -61,7 +62,8 @@ namespace atomex
             };
 
             _mainViewModel.SettingsViewModel.Navigation = navigationSettingsPage.Navigation;
-            //_mainViewModel.CurrenciesViewModel.Navigation = navigationWalletsListPage.Navigation;
+            _mainViewModel.CurrenciesViewModel.SetNavigation(navigationWalletsListPage.Navigation, this);
+            
             //_mainViewModel.ConversionViewModel.Navigation = navigationConversionPage.Navigation;
 
             SetAppTheme();
@@ -149,13 +151,13 @@ namespace atomex
             ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
-        public void ConvertCurrency(string currencyCode)
+        public async Task ConvertCurrency(string currencyCode)
         {
             if (navigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
-                navigationConversionPage.Navigation.PopToRootAsync(false);
-                navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
+                _ = navigationConversionPage.Navigation.PopToRootAsync(false);
+                await navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
 
                 CurrentPage = navigationConversionPage;
             }
@@ -164,7 +166,7 @@ namespace atomex
         public void ShowCurrency(CurrencyViewModel currencyViewModel)
         {
             navigationWalletsListPage.Navigation.PopToRootAsync(false);
-            navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
+            navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
 
             CurrentPage = navigationWalletsListPage;
         }

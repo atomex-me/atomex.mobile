@@ -69,7 +69,8 @@ namespace atomex
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            WalletName = wallet.Name;
+            Navigation = navigation;
+            WalletName = wallet?.Name;
             _ = BiometricAuth();
         }
 
@@ -133,11 +134,14 @@ namespace atomex
                     WalletName,
                     WalletInfo.DefaultWalletFileName);
 
-                account = Account.LoadFromFile(
-                    walletPath,
-                    Password,
-                    AtomexApp.CurrenciesProvider,
-                    clientType);
+                account = await Task.Run(() =>
+                {
+                    return Account.LoadFromFile(
+                        walletPath,
+                        Password,
+                        AtomexApp.CurrenciesProvider,
+                        clientType);
+                });
 
                 if (account != null)
                 {

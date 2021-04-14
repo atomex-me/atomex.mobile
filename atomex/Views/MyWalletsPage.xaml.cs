@@ -4,7 +4,6 @@ namespace atomex
 {
     public partial class MyWalletsPage : ContentPage
     {
-
         public MyWalletsPage()
         {
             InitializeComponent();

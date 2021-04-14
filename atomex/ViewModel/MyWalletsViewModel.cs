@@ -30,7 +30,6 @@ namespace atomex
 
         private async Task OnWalletTapped(WalletInfo wallet)
         {
-            //VisualStateManager.GoToState() ??
             await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
         }
     }

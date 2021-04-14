@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Atomex;
 using Atomex.Abstract;
 using Serilog;
@@ -35,6 +36,8 @@ namespace atomex.ViewModel
 
         public List<CurrencyViewModel> CurrencyViewModels { get; set; }
 
+        public CurrencyViewModel SelectedCurrency { get; set; }
+
         public CurrenciesViewModel(IAtomexApp app, bool restore)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
@@ -47,6 +50,16 @@ namespace atomex.ViewModel
         {
             AtomexApp.QuotesProvider.QuotesUpdated += CurrencyUpdatedEventHandler;
             CurrencyUpdatedEventHandler(this, EventArgs.Empty);
+        }
+
+        public void SetNavigation(INavigation navigation, INavigationService navigationService = null)
+        {
+            Navigation = navigation;
+            foreach (var c in CurrencyViewModels)
+            {
+                c.Navigation = navigation;
+                c.NavigationService = navigationService;
+            }
         }
 
         private async Task FillCurrenciesAsync(bool restore)
@@ -104,6 +117,15 @@ namespace atomex.ViewModel
             {
                 Log.Error(ex, "CurrencyUpdatedEventHandler error");
             }
+        }
+
+        private ICommand _selectCurrencyCommand;
+        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<CurrencyViewModel>(async (value) => await OnCurrencyTapped(value));
+
+        private async Task OnCurrencyTapped(CurrencyViewModel currency)
+        {
+            if (currency != null)
+                await Navigation.PushAsync(new CurrencyPage(currency));
         }
     }
 }

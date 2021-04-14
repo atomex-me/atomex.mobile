@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using atomex.Resources;
+using atomex.Services;
+using atomex.ViewModel.ReceiveViewModels;
+using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
 using Atomex.Blockchain;
@@ -20,6 +23,12 @@ namespace atomex.ViewModel
     {
         private IAtomexApp AtomexApp { get; set; }
 
+        public INavigation Navigation { get; set; }
+
+        public INavigationService NavigationService { get; set; }
+
+        private IToastService ToastService;
+
         public Currency Currency { get; set; }
 
         public event EventHandler CurrencyUpdated;
@@ -27,6 +36,7 @@ namespace atomex.ViewModel
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
+        public bool IsStakingAvailable => CurrencyCode == "XTZ";
 
         private decimal _totalAmount;
         public decimal TotalAmount
@@ -70,6 +80,33 @@ namespace atomex.ViewModel
             set { _portfolioPercent = value; OnPropertyChanged(nameof(PortfolioPercent)); }
         }
 
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
         private ObservableCollection<TransactionViewModel> _transactions;
         public ObservableCollection<TransactionViewModel> Transactions
         {
@@ -97,6 +134,7 @@ namespace atomex.ViewModel
         public CurrencyViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            ToastService = DependencyService.Get<IToastService>();
             SubscibeToServices();
         }
 
@@ -232,6 +270,64 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Transaction remove error");
+            }
+        }
+
+        private ICommand _sendPageCommand;
+        public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
+
+        private ICommand _receivePageCommand;
+        public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+
+        private ICommand _stakingPageCommand;
+        public ICommand StakingPageCommand => _stakingPageCommand ??= new Command(async () => await OnStakingButtonClicked());
+
+        private ICommand _convertPageCommand;
+        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
+
+        private async Task OnSendButtonClicked()
+        {
+            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(this)));
+        }
+
+        private async Task OnReceiveButtonClicked()
+        {
+            await Navigation.PushAsync(new ReceivePage(ReceiveViewModelCreator.CreateViewModel(this)));
+        }
+
+        private async Task OnStakingButtonClicked()
+        {
+            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp)));
+        }
+
+        private async Task OnConvertButtonClicked()
+        {
+            await NavigationService.ConvertCurrency(CurrencyCode);
+        }
+
+        private ICommand _selectTransactionCommand;
+        public ICommand SelectTransactionCommand => _selectTransactionCommand ??= new Command<TransactionViewModel>(async (tx) => await OnTxItemTapped(tx));
+
+        async Task OnTxItemTapped(TransactionViewModel tx)
+        {
+            await Navigation.PushAsync(new TransactionInfoPage(tx, this));
+        }
+
+        private ICommand _updateCurrencyCommand;
+        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrency());
+
+        private async Task UpdateCurrency()
+        {
+            try
+            {
+                IsLoading = true;
+                await UpdateCurrencyAsync();
+                IsLoading = false;
+                ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "UpdateCurrencyAsync error");
             }
         }
     }

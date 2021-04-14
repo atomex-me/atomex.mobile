@@ -3,130 +3,155 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.MyWalletsPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate MyWalletsTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
-        <StackLayout Padding="20,0">
-            <Label Text="{helpers:Translate SelectWalletLabel}"
-                   Style="{DynamicResource SelectWalletTextStyle}"/>
-            <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding Wallets}"
-                            SelectionChangedCommand="{Binding SelectWalletCommand}"
-                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference WalletsCollectionView}}"
-                            x:Name="WalletsCollectionView"
-                            VerticalScrollBarVisibility="Never"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                            Footer="">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame>
-                        <VisualStateManager.VisualStateGroups>
-					        <VisualStateGroup Name="CommonStates">
-						        <VisualState Name="Normal"/>
-                                <VisualState Name="Selected">
-							        <VisualState.Setters>
-								        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
-							        </VisualState.Setters>
-						        </VisualState>
-					        </VisualStateGroup>
-				        </VisualStateManager.VisualStateGroups>
-                        <Frame.Triggers>
-                            <DataTrigger TargetType="Frame"
-                                            Binding="{Binding Network}"
-                                            Value="MainNet">
-                                <Setter Property="Style"
-                                        Value="{DynamicResource MainNetWalletFrameStyle}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame"
-                                            Binding="{Binding Network}"
-                                            Value="TestNet">
-                                <Setter Property="Style"
-                                        Value="{DynamicResource TestNetWalletFrameStyle}"/>
-                            </DataTrigger>
-                        </Frame.Triggers>
-                        <StackLayout Orientation="Horizontal">
-                            <Image WidthRequest="30"
-                                    HeightRequest="30">
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Network}"
-                                                 Value="MainNet">
-                                        <Setter Property="Source"
-                                                Value="Wallet__white"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Network}"
-                                                 Value="TestNet">
-                                        <Setter Property="Source"
-                                                Value="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                            <Label Text="{Binding Description}">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Network}"
-                                                 Value="MainNet">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource MainNetWalletlButtonTextStyle}"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Network}"
-                                                 Value="TestNet">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource TestNetWalletlButtonTextStyle}"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Image HeightRequest="10">
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image"
+            <StackLayout Padding="20,0">
+                <Label Text="{helpers:Translate SelectWalletLabel}"
+                       Style="{DynamicResource SelectWalletTextStyle}"/>
+                <ListView ItemsSource="{Binding Wallets}"
+                          SelectionMode="None"
+                          SeparatorVisibility="None"
+                          HasUnevenRows="True"
+                          VerticalScrollBarVisibility="Never"
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
+                          Footer="">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Margin="0,2">
+                                    <!--<VisualStateManager.VisualStateGroups>
+					                    <VisualStateGroup Name="CommonStates">
+						                    <VisualState Name="Normal"/>
+                                            <VisualState Name="Selected">
+							                    <VisualState.Setters>
+								                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
+							                    </VisualState.Setters>
+						                    </VisualState>
+					                    </VisualStateGroup>
+				                    </VisualStateManager.VisualStateGroups>-->
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.SelectWalletCommand, Source={x:Reference BindingContextPage}}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Frame.Triggers>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding Network}"
+                                                     Value="MainNet">
+                                            <Setter Property="Style"
+                                                    Value="{DynamicResource MainNetWalletFrameStyle}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame"
+                                                     Binding="{Binding Network}"
+                                                     Value="TestNet">
+                                            <Setter Property="Style"
+                                                    Value="{DynamicResource TestNetWalletFrameStyle}"/>
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image WidthRequest="30"
+                                               HeightRequest="30">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Network}"
+                                                             Value="MainNet">
+                                                    <Setter Property="Source"
+                                                            Value="Wallet__white"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Network}"
+                                                             Value="TestNet">
+                                                    <Setter Property="Source"
+                                                            Value="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                        <Label Text="{Binding Description}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Network}"
+                                                             Value="MainNet">
+                                                    <Setter Property="Style"
+                                                            Value="{DynamicResource MainNetWalletlButtonTextStyle}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Network}"
+                                                             Value="TestNet">
+                                                    <Setter Property="Style"
+                                                            Value="{DynamicResource TestNetWalletlButtonTextStyle}"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Image HeightRequest="10">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Network}"
+                                                             Value="MainNet">
+                                                    <Setter Property="Source"
+                                                            Value="RightArrow__white"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Network}"
+                                                             Value="TestNet">
+                                                    <Setter Property="Source"
+                                                            Value="{AppThemeBinding Light=RightArrow__blue, Dark=RightArrow__white}"/>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!--<CollectionView SelectionMode="Single"
+                                ItemsSource="{Binding Wallets}"
+                                SelectionChangedCommand="{Binding SelectWalletCommand}"
+                                SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference WalletsCollectionView}}"
+                                x:Name="WalletsCollectionView"
+                                VerticalScrollBarVisibility="Never"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
+                                Footer="">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                           ItemSpacing="5"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame>
+                                <VisualStateManager.VisualStateGroups>
+					                <VisualStateGroup Name="CommonStates">
+						                <VisualState Name="Normal">
+                                            <VisualState.Setters>
+								                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewItemBackgroundColorDark}, Light={StaticResource ListViewItemBackgroundColor}}" />
+							                </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+							                <VisualState.Setters>
+								                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
+							                </VisualState.Setters>
+						                </VisualState>
+					                </VisualStateGroup>
+				                </VisualStateManager.VisualStateGroups>
+                                <Frame.Triggers>
+                                    <DataTrigger TargetType="Frame"
                                                     Binding="{Binding Network}"
                                                     Value="MainNet">
-                                        <Setter Property="Source"
-                                                Value="RightArrow__white"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding Network}"
-                                                 Value="TestNet">
-                                        <Setter Property="Source"
-                                                Value="{AppThemeBinding Light=RightArrow__blue, Dark=RightArrow__white}"/>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            </CollectionView>
-            <!--<CollectionView ItemsSource="{Binding Wallets}"
-                            VerticalScrollBarVisibility="Never"
-                            SelectionChangedCommand="{Binding SelectWalletCommand}"
-                            SelectionChangedCommandParameter="{Binding .}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                            Footer="">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        
-                            <Frame Margin="2">
-                                <Frame.Triggers>
-                                    <DataTrigger TargetType="Frame"
-                                                 Binding="{Binding Network}"
-                                                 Value="MainNet">
                                         <Setter Property="Style"
                                                 Value="{DynamicResource MainNetWalletFrameStyle}"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Frame"
-                                                 Binding="{Binding Network}"
-                                                 Value="TestNet">
+                                                    Binding="{Binding Network}"
+                                                    Value="TestNet">
                                         <Setter Property="Style"
                                                 Value="{DynamicResource TestNetWalletFrameStyle}"/>
                                     </DataTrigger>
                                 </Frame.Triggers>
                                 <StackLayout Orientation="Horizontal">
                                     <Image WidthRequest="30"
-                                           HeightRequest="30">
+                                            HeightRequest="30">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
                                                          Binding="{Binding Network}"
@@ -161,8 +186,8 @@
                                     <Image HeightRequest="10">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Network}"
-                                                         Value="MainNet">
+                                                            Binding="{Binding Network}"
+                                                            Value="MainNet">
                                                 <Setter Property="Source"
                                                         Value="RightArrow__white"/>
                                             </DataTrigger>
@@ -176,91 +201,10 @@
                                     </Image>
                                 </StackLayout>
                             </Frame>
-                        
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>-->
-            <!--<ListView ItemsSource="{Binding Wallets}"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None"
-                      VerticalScrollBarVisibility="Never"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                      Footer="">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                            <Frame Margin="2">
-                                <Frame.Triggers>
-                                    <DataTrigger TargetType="Frame"
-                                                 Binding="{Binding Network}"
-                                                 Value="MainNet">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource MainNetWalletFrameStyle}"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Frame"
-                                                 Binding="{Binding Network}"
-                                                 Value="TestNet">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource TestNetWalletFrameStyle}"/>
-                                    </DataTrigger>
-                                </Frame.Triggers>
-                                <StackLayout Orientation="Horizontal">
-                                    <Image WidthRequest="30"
-                                           HeightRequest="30">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Network}"
-                                                         Value="MainNet">
-                                                <Setter Property="Source"
-                                                        Value="Wallet__white"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Network}"
-                                                         Value="TestNet">
-                                                <Setter Property="Source"
-                                                        Value="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
-                                    <Label Text="{Binding Description}">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Network}"
-                                                         Value="MainNet">
-                                                <Setter Property="Style"
-                                                        Value="{DynamicResource MainNetWalletlButtonTextStyle}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Network}"
-                                                         Value="TestNet">
-                                                <Setter Property="Style"
-                                                        Value="{DynamicResource TestNetWalletlButtonTextStyle}"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Image HeightRequest="10">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Network}"
-                                                         Value="MainNet">
-                                                <Setter Property="Source"
-                                                        Value="RightArrow__white"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Network}"
-                                                         Value="TestNet">
-                                                <Setter Property="Source"
-                                                        Value="{AppThemeBinding Light=RightArrow__blue, Dark=RightArrow__white}"/>
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
-                                </StackLayout>
-                            </Frame>
-                        </custom:CustomViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
-        </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>-->
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>
