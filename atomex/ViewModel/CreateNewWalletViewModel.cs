@@ -604,11 +604,15 @@ namespace atomex
 
                 try
                 {
-                    account = new Account(
+
+                    account = await Task.Run(() =>
+                    {
+                        return account = new Account(
                         wallet: Wallet,
                         password: StoragePassword,
                         currenciesProvider: AtomexApp.CurrenciesProvider,
                         clientType);
+                    });
 
                     if (account != null)
                     {
@@ -621,6 +625,8 @@ namespace atomex
                             Log.Error(ex, AppResources.NotSupportSecureStorage);
                         }
 
+                        string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
+
                         MainViewModel mainViewModel = null;
 
                         await Task.Run(() =>
@@ -629,6 +635,7 @@ namespace atomex
                                 AtomexApp,
                                 account,
                                 WalletName,
+                                appTheme,
                                 CurrentAction == Action.Restore ? true : false);
                         });
 

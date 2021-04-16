@@ -557,6 +557,9 @@
     <data name="SettingsTab" xml:space="preserve">
         <value>Settings</value>
     </data>
+    <data name="BuyTab" xml:space="preserve">
+        <value>Buy</value>
+    </data>
     
     <!-- Biometric setting popup -->
     <data name="EnableBiometricLabel" xml:space="preserve">

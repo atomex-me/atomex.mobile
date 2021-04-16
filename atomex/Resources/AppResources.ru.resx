@@ -557,6 +557,9 @@
     <data name="SettingsTab" xml:space="preserve">
         <value>Настройки</value>
     </data>
+    <data name="BuyTab" xml:space="preserve">
+        <value>Купить</value>
+    </data>
     
     <!-- Biometric setting popup -->
     <data name="EnableBiometricLabel" xml:space="preserve">
@@ -622,10 +625,10 @@
         <value>Недостаточно {0} чтобы покрыть комиссию за перевод токена</value>
     </data>
     <data name="SufficientNetworkFee" xml:space="preserve">
-        <value>Необходимая комиссия сети за этот объем ({0} равна {1})</value>
+        <value>Комиссия сети ({0}) составляет {1} от объема сделки</value>
     </data>
     <data name="TooHighNetworkFee" xml:space="preserve">
-         <value>Слишком высокая комиссия сети за этот объем ({0} равно {1})</value>
+         <value>Слишком высокая комиссия сети. {0} составляет {1} от объема сделки</value>
     </data>
     <data name="TotalNetworkFeeDetail" xml:space="preserve">
         <value>

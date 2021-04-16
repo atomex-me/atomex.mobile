@@ -246,6 +246,8 @@
     <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf" />
     <ImageAsset Include="Assets.xcassets\tr.imageset\tr.pdf" />
+    <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\NavBarBuy.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -390,6 +392,7 @@
     <Folder Include="Assets.xcassets\en.imageset\" />
     <Folder Include="Assets.xcassets\ru.imageset\" />
     <Folder Include="Assets.xcassets\tr.imageset\" />
+    <Folder Include="Assets.xcassets\NavBarBuy.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

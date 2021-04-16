@@ -24,6 +24,8 @@ namespace atomex
 
         private readonly NavigationPage navigationPortfolioPage;
 
+        private readonly NavigationPage navigationBuyPage;
+
         private readonly NavigationPage navigationSettingsPage;
 
         public MainViewModel _mainViewModel { get; }
@@ -54,6 +56,12 @@ namespace atomex
                 Title = AppResources.ConversionTab
             };
 
+            navigationBuyPage = new NavigationPage(new BuyPage(_mainViewModel.BuyViewModel))
+            {
+                IconImageSource = "NavBarBuy",
+                Title = AppResources.BuyTab
+            };
+
             navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
             {
                 IconImageSource = "NavBarSettings",
@@ -65,6 +73,7 @@ namespace atomex
             Children.Add(navigationPortfolioPage);
             Children.Add(navigationWalletsListPage);
             Children.Add(navigationConversionPage);
+            Children.Add(navigationBuyPage);
             Children.Add(navigationSettingsPage);
 
             mainViewModel.Locked += (s, a) =>
@@ -84,6 +93,7 @@ namespace atomex
             navigationWalletsListPage.Title = AppResources.WalletsTab;
             navigationConversionPage.Title = AppResources.ConversionTab;
             navigationSettingsPage.Title = AppResources.SettingsTab;
+            navigationBuyPage.Title = AppResources.BuyTab;
         }
 
         public void SetAppTheme()
@@ -103,6 +113,7 @@ namespace atomex
                 navigationWalletsListPage.BarBackgroundColor =
                 navigationPortfolioPage.BarBackgroundColor =
                 navigationConversionPage.BarBackgroundColor =
+                navigationBuyPage.BarBackgroundColor =
                 navigationSettingsPage.BarBackgroundColor =
                 (Color)navBarColor;
 
@@ -110,6 +121,7 @@ namespace atomex
                 navigationWalletsListPage.BarTextColor =
                 navigationPortfolioPage.BarTextColor =
                 navigationConversionPage.BarTextColor =
+                navigationBuyPage.BarTextColor =
                 navigationSettingsPage.BarTextColor =
                 (Color)navBarTextColor;
 
@@ -117,6 +129,7 @@ namespace atomex
                 navigationWalletsListPage.BackgroundColor =
                 navigationPortfolioPage.BackgroundColor =
                 navigationConversionPage.BackgroundColor =
+                navigationBuyPage.BackgroundColor =
                 navigationSettingsPage.BackgroundColor =
                 (Color)tabBarBackgroundColor;
         }

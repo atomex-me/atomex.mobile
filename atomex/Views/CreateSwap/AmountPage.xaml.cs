@@ -116,7 +116,7 @@ namespace atomex.Views.CreateSwap
                        FormattableString.Invariant($"{_conversionViewModel.RewardForRedeemInBase:(0.00$)}") :
                        FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
                    AppResources.MakerFeeLabel,
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.CurrencyCode}"),
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFeeInBase:(0.00$)}"),
                    AppResources.TotalNetworkFeeLabel,
                    FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalNetworkFeeInBase:0.00$}"));

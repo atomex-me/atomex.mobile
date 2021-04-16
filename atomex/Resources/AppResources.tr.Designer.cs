@@ -1037,6 +1037,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string BuyTab {
+            get {
+                return ResourceManager.GetString("BuyTab", resourceCulture);
+            }
+        }
+        
         internal static string EnableBiometricLabel {
             get {
                 return ResourceManager.GetString("EnableBiometricLabel", resourceCulture);

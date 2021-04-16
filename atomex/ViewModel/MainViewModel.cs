@@ -16,12 +16,13 @@ namespace atomex.ViewModel
         public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
+        public BuyViewModel BuyViewModel { get; set; }
 
         public IAtomexApp AtomexApp { get; private set; }
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account, string walletName, bool restore = false)
+        public MainViewModel(IAtomexApp app, IAccount account, string walletName, string appTheme = "light", bool restore = false)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -46,6 +47,7 @@ namespace atomex.ViewModel
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp, walletName);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
+            BuyViewModel = new BuyViewModel(AtomexApp, appTheme);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }
