@@ -31,8 +31,12 @@
 	<string>atomex</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Atomex needs access to the photo gallery for picking photos and videos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Atomex needs access to photos gallery for picking photos and videos</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Can i have camera?</string>
+	<string>Atomex needs access to the camera</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Authenticate with Face ID</string>
 	<key>NSAppTransportSecurity</key>
