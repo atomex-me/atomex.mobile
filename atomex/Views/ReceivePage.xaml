@@ -5,9 +5,15 @@
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.ReceivePage"
              Title="{helpers:Translate ReceivePageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+    <ResourceDictionary>
+        <converters:InverseBoolConverter x:Key="InverseBool"/>
+    </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <StackLayout HorizontalOptions="Center"
                      VerticalOptions="CenterAndExpand"
@@ -154,19 +160,20 @@
                          Spacing="0">
                 <custom:LeftRoundedButton Text="{helpers:Translate CopyButton}"
                                           Style="{DynamicResource ReceiveActionButtonStyle}"
-                                          Clicked="OnCopyButtonClicked"/>
+                                          Command="{Binding CopyCommand}"/>
                 <RelativeLayout>
                     <custom:RightRoundedButton Text="{helpers:Translate ShareButton}"
                                                Style="{DynamicResource ReceiveActionButtonStyle}"
-                                               Clicked="OnShareButtonClicked"
-                                               x:Name="ShareButton"/>
-                    <ActivityIndicator x:Name="Loader"
-                                       RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
+                                               Command="{Binding ShareCommand}"
+                                               IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                                               Opacity="{Binding Opacity}"/>
+                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                        RelativeLayout.WidthConstraint="20"
                                        RelativeLayout.HeightConstraint="20"
                                        Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                                       BackgroundColor="Transparent"/>
+                                       BackgroundColor="Transparent"
+                                       IsRunning="{Binding IsLoading}"/>
                 </RelativeLayout>
             </StackLayout>
         </StackLayout>

@@ -181,7 +181,7 @@ namespace atomex
                 if (isFingerprintAvailable)
                 {
                     AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
-                            "Authentication",
+                            AppResources.Authentication,
                             AppResources.UseBiometric + $"'{WalletName}'");
 
                     var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);

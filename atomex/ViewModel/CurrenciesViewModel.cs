@@ -36,8 +36,6 @@ namespace atomex.ViewModel
 
         public List<CurrencyViewModel> CurrencyViewModels { get; set; }
 
-        public CurrencyViewModel SelectedCurrency { get; set; }
-
         public CurrenciesViewModel(IAtomexApp app, bool restore)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));

@@ -239,6 +239,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string Authentication {
+            get {
+                return ResourceManager.GetString("Authentication", resourceCulture);
+            }
+        }
+        
         internal static string UseBiometric {
             get {
                 return ResourceManager.GetString("UseBiometric", resourceCulture);

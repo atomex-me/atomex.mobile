@@ -116,6 +116,9 @@
     <data name="UnlockButton" xml:space="preserve">
         <value>Разблокировать</value>
     </data>
+    <data name="Authentication" xml:space="preserve">
+        <value>Аутентификация</value>
+    </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Используйте аутентификацию по биометрии для входа в </value>
     </data>
