@@ -271,6 +271,8 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "Transaction remove error");
             }
+
+            await Navigation.PopAsync();
         }
 
         private ICommand _sendPageCommand;
@@ -310,7 +312,11 @@ namespace atomex.ViewModel
 
         async Task OnTxItemTapped(TransactionViewModel tx)
         {
-            await Navigation.PushAsync(new TransactionInfoPage(tx, this));
+            if (tx != null)
+            {
+                tx.CurrencyViewModel = this;
+                await Navigation.PushAsync(new TransactionInfoPage(tx, this));
+            }
         }
 
         private ICommand _updateCurrencyCommand;

@@ -1,6 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using atomex.Resources;
+using atomex.Services;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
@@ -44,6 +50,10 @@ namespace atomex.ViewModel.TransactionViewModels
             set { _isExpanded = value; OnPropertyChanged(nameof(IsExpanded)); }
         }
 
+        private IToastService ToastService;
+
+        public CurrencyViewModel CurrencyViewModel;
+
         public TransactionViewModel()
         {
         }
@@ -57,6 +67,8 @@ namespace atomex.ViewModel.TransactionViewModels
             Type = GetType(Transaction.Type);
             //Type = Transaction.Type;
             Amount = amount;
+
+            ToastService = DependencyService.Get<IToastService>();
 
             var netAmount = amount + fee;
 
@@ -135,6 +147,75 @@ namespace atomex.ViewModel.TransactionViewModels
 
             //if (type.HasFlag(BlockchainTransactionType.Output))
             return TransactionType.Output;
+        }
+
+        private ICommand _copyTxIdCommand;
+        public ICommand CopyTxIdCommand => _copyTxIdCommand ??= new Command(async () => await OnCopyIdButtonClicked());
+
+        private ICommand _copyFromAddressCommand;
+        public ICommand CopyFromAddressCommand => _copyFromAddressCommand ??= new Command(async () => await OnCopyFromAddressButtonClicked());
+
+        private ICommand _copyToAddressCommand;
+        public ICommand CopyToAddressCommand => _copyToAddressCommand ??= new Command(async () => await OnCopyToAddressButtonClicked());
+
+        private ICommand _showInExplorerCommand;
+        public ICommand ShowInExplorerCommand => _showInExplorerCommand ??= new Command(() => OnShowInExplorerClicked());
+
+        private ICommand _deleteTxCommand;
+        public ICommand DeleteTxCommand => _deleteTxCommand ??= new Command(async () => await OnDeleteTxButtonClicked());
+
+        private async Task OnDeleteTxButtonClicked()
+        {
+            if (CurrencyViewModel != null)
+            {
+                var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                if (!res) return;
+                CurrencyViewModel.RemoveTransactonAsync(Id);
+            }
+        }
+
+        private void OnShowInExplorerClicked()
+        {
+            Launcher.OpenAsync(new Uri(TxExplorerUri));
+        }
+
+        private async Task OnCopyIdButtonClicked()
+        {
+            try
+            { 
+                await Clipboard.SetTextAsync(Id);
+                ToastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            catch(Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private async Task OnCopyFromAddressButtonClicked()
+        {
+            try
+            {
+                await Clipboard.SetTextAsync(From);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private async Task OnCopyToAddressButtonClicked()
+        {
+            try
+            {
+                await Clipboard.SetTextAsync(To);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
         }
     }
 }

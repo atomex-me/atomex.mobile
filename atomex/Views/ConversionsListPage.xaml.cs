@@ -1,14 +1,12 @@
 ﻿using System;
 using atomex.ViewModel;
-using atomex.Views.CreateSwap;
 using Xamarin.Forms;
 
 namespace atomex
 {
     public partial class ConversionsListPage : ContentPage
     {
-
-        private ConversionViewModel _conversionViewModel;
+        Color selectedItemBackgroundColor;
 
         public ConversionsListPage()
         {
@@ -18,25 +16,21 @@ namespace atomex
         public ConversionsListPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            if (conversionViewModel != null)
-            {
-                _conversionViewModel = conversionViewModel;
-                BindingContext = conversionViewModel;
-            }
+            BindingContext = conversionViewModel;
         }
-        private async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
-            if (e.Item != null)
-            {
-                await Navigation.PushAsync(new SwapInfoPage(e.Item as SwapViewModel));
-                var listView = sender as ListView;
-                if (listView != null)
-                    listView.SelectedItem = null;
-            }
-        }
-        private async void OnCreateSwapButtonClicked(object sender, EventArgs args)
-        {
-            await Navigation.PushAsync(new CurrenciesPage(_conversionViewModel));
+            Grid selectedItem = (Grid)sender;
+            selectedItem.IsEnabled = false;
+            Color initColor = selectedItem.BackgroundColor;
+
+            selectedItem.BackgroundColor = selectedItemBackgroundColor;
+
+            await selectedItem.ScaleTo(1.01, 50);
+            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+
+            selectedItem.BackgroundColor = initColor;
+            selectedItem.IsEnabled = true;
         }
     }
 }

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Serilog;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
     public class SendViewModel : BaseViewModel
     {
         protected IAtomexApp AtomexApp { get; set; }
+
+        protected INavigation Navigation { get; set; }
 
         protected Currency _currency;
         public virtual Currency Currency
@@ -41,6 +45,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 _currencyViewModel = value;
                 CurrencyCode = _currencyViewModel?.CurrencyCode;
+                FeeCurrencyCode = _currencyViewModel?.FeeCurrencyCode;
             }
         }
 
@@ -78,10 +83,11 @@ namespace atomex.ViewModel.SendViewModels
             get => Amount.ToString(CurrencyFormat, CultureInfo.InvariantCulture);
             set
             {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
                     return;
 
-                Amount = amount;
+                _ = UpdateAmount(amount, raiseOnPropertyChanged: false);
             }
         }
 
@@ -97,7 +103,8 @@ namespace atomex.ViewModel.SendViewModels
             get => Fee.ToString(FeeCurrencyFormat, CultureInfo.InvariantCulture);
             set
             {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
                     return;
 
                 Fee = fee;
@@ -123,7 +130,8 @@ namespace atomex.ViewModel.SendViewModels
                 if (_useDefaultFee)
                 {
                     Warning = string.Empty;
-                    Amount = _amount; // recalculate amount and fee using default fee
+                    _ = UpdateAmount(_amount);
+                    
                 }
             }
         }
@@ -170,35 +178,124 @@ namespace atomex.ViewModel.SendViewModels
             set { _baseCurrencyCode = value; OnPropertyChanged(nameof(BaseCurrencyCode)); }
         }
 
-        public virtual string OnNextCommand()
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
+        public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
+
+        private ICommand _pasteCommand;
+        public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
+
+        private ICommand _scanCommand;
+        public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
+
+        private ICommand _nextCommand;
+        public ICommand NextCommand => _nextCommand ??= new Command(async () => await OnNextButtonClicked());
+
+        private async Task OnScanButtonClicked()
+        {
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
+
+            var scanningQrPage = new ScanningQrPage(selected =>
+            {
+                To = selected;
+            });
+
+            await Navigation.PushAsync(scanningQrPage);
+        }
+
+        async Task OnPasteButtonClicked()
+        {
+            if (Clipboard.HasText)
+            {
+                var text = await Clipboard.GetTextAsync();                
+                To = text;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
+            }
+        }
+
+        protected virtual async Task OnNextButtonClicked()
         {
             if (string.IsNullOrEmpty(To))
-                return AppResources.EmptyAddressError;
+            {
+                Warning = AppResources.EmptyAddressError;
+                return;
+            }
 
             if (!Currency.IsValidAddress(To))
-                return AppResources.InvalidAddressError;
+            {
+                Warning = AppResources.InvalidAddressError;
+                return;
+            }
 
             if (Amount <= 0)
-                return AppResources.AmountLessThanZeroError;
+            {
+                Warning = AppResources.AmountLessThanZeroError;
+                return;
+            }
 
             if (Fee <= 0)
-                return AppResources.CommissionLessThanZeroError;
+            {
+                Warning = AppResources.CommissionLessThanZeroError;
+                return;
+            }
 
             var isToken = Currency.FeeCurrencyName != Currency.Name;
 
             var feeAmount = !isToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
-                return AppResources.AvailableFundsError;
+            {
+                Warning = AppResources.AvailableFundsError;
+                return;
+            }
 
-            if (!string.IsNullOrEmpty(Warning))
-                return AppResources.FailedToSend;
-
-            return null;
+            if (string.IsNullOrEmpty(Warning))
+                await Navigation.PushAsync(new SendingConfirmationPage(this));
+            else
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
-        public async Task<string> Send()
+        private ICommand _sendCommand;
+        public ICommand SendCommand => _sendCommand ??= new Command(async () => await Send());
+
+        private async Task Send()
         {
+            IsLoading = true;
+
             var account = AtomexApp.Account;
 
             try
@@ -207,14 +304,26 @@ namespace atomex.ViewModel.SendViewModels
                     .SendAsync(Currency.Name, To, Amount, Fee, FeePrice, UseDefaultFee);
 
                 if (error != null)
-                    return error.Description;
-
-                return null;
+                {
+                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                }
             }
             catch (Exception e)
             {
                 Log.Error(e, "Transaction send error.");
-                return AppResources.SendingTransactionError;
+                IsLoading = false;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+            }
+
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To, null, AppResources.AcceptButton);
+            if (!res)
+            {
+                for (var i = 1; i < 2; i++)
+                {
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                }
+                await Navigation.PopAsync();
             }
         }
 
@@ -226,7 +335,9 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel = currencyViewModel;
             Currency = currencyViewModel.Currency;
 
-            UseDefaultFee = true; // use default fee by default
+            Navigation = currencyViewModel.Navigation;
+
+            UseDefaultFee = true;
 
             _ = UpdateFeePrice();
 
@@ -251,7 +362,7 @@ namespace atomex.ViewModel.SendViewModels
                 AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        public virtual async Task UpdateAmount(decimal amount)
+        public virtual async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
 
@@ -274,7 +385,8 @@ namespace atomex.ViewModel.SendViewModels
                         ? await AtomexApp.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
                         : 0;
 
-                OnPropertyChanged(nameof(AmountString));
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
 
                 _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), defaultFeePrice);
                 OnPropertyChanged(nameof(FeeString));
@@ -296,7 +408,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                OnPropertyChanged(nameof(AmountString));
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
 
                 Fee = _fee;
             }
@@ -354,7 +467,10 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
-        public virtual async Task OnMaxClick()
+        private ICommand _maxAmountCommand;
+        public virtual ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
+        protected virtual async Task OnMaxClick()
         {
             Warning = string.Empty;
 

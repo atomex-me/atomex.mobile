@@ -3,21 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.Views.CreateSwap.AmountPage"
              Title="{helpers:Translate CreateSwapPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <ActivityIndicator x:Name="FeeCalculationLoader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                BackgroundColor="Transparent"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
-            <StackLayout x:Name="Content"
-                         Padding="20,0"
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                               IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"/>
+            <StackLayout Padding="20,0"
                          Spacing="0"
+                         Opacity="{Binding Opacity}"
                          RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
                 <Label Text="{helpers:Translate EnterAmountLabel}"
@@ -43,7 +50,8 @@
                                 <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                     <custom:CustomEntry Keyboard="Numeric"
                                                         x:Name="Amount"
-                                                        Placeholder="{helpers:Translate AmountEntryPlaceholder}"
+                                                        Text="{Binding AmountString, Mode=TwoWay}"
+                                                        Placeholder="{Binding AmountEntryPlaceholderString}"
                                                         Style="{DynamicResource CustomEntryStyle}"
                                                         Focused="AmountEntryFocused"
                                                         Unfocused="AmountEntryFocused"
@@ -51,6 +59,7 @@
                                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                     <Label x:Name="AmountHint"
+                                           Text="{Binding AmountEntryPlaceholderString}"
                                            Style="{DynamicResource EntryHintStyle}"
                                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"
@@ -62,17 +71,17 @@
                                 <RelativeLayout WidthRequest="80">
                                     <Button Text="{helpers:Translate MaxButton}"
                                             Style="{DynamicResource TransparentButtonStyle}"
-                                            x:Name="MaxButton"
-                                            Clicked="OnMaxAmountButtonClicked"
+                                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                                            Command="{Binding MaxAmountCommand}"
                                             RelativeLayout.HeightConstraint="60"/>
-                                     <ActivityIndicator x:Name="Loader"
-                                                        RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-10}"
+                                     <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-10}"
 	             	                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-10}"
                                                         RelativeLayout.WidthConstraint="20"
                                                         RelativeLayout.HeightConstraint="20"
                                                         BackgroundColor="Transparent"
                                                         Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                                                        IsVisible="False"/>
+                                                        IsRunning="{Binding IsLoading}"
+                                                        IsVisible="{Binding IsLoading}"/>
                                 </RelativeLayout>
                             </StackLayout>
                          </StackLayout>
@@ -181,7 +190,7 @@
                 </Grid>
                 <Label HorizontalTextAlignment="Center">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
+                        <TapGestureRecognizer Command="{Binding TotalFeeCommand}"/>
                     </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
@@ -198,7 +207,7 @@
                              HorizontalOptions="Center"
                              Padding="0,2">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnTotalFeeTapped"/>
+                        <TapGestureRecognizer Command="{Binding TotalFeeCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
@@ -269,7 +278,7 @@
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
                         IsEnabled="{Binding CanConvert}"
-                        Clicked="OnNextButtonClicked" >
+                        Command="{Binding ConfirmationPageCommand}" >
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding CanConvert}"

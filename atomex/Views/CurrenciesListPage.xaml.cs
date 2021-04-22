@@ -6,7 +6,7 @@ namespace atomex
 {
     public partial class CurrenciesListPage : ContentPage
     {
-        Color selectedCurrencyBackgroundColor;
+        Color selectedItemBackgroundColor;
 
         public CurrenciesListPage()
         {
@@ -24,22 +24,22 @@ namespace atomex
                 selectedColorName = "ListViewSelectedBackgroundColorDark";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
-            selectedCurrencyBackgroundColor = (Color)selectedColor;
+            selectedItemBackgroundColor = (Color)selectedColor;
         }
 
-        private async void OnCurrencyItemTapped(object sender, EventArgs args)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
-            Grid selectedCurrency = (Grid)sender;
-            selectedCurrency.IsEnabled = false;
-            Color initColor = selectedCurrency.BackgroundColor;
+            Grid selectedItem = (Grid)sender;
+            selectedItem.IsEnabled = false;
+            Color initColor = selectedItem.BackgroundColor;
 
-            selectedCurrency.BackgroundColor = selectedCurrencyBackgroundColor;
+            selectedItem.BackgroundColor = selectedItemBackgroundColor;
 
-            await selectedCurrency.ScaleTo(1.01, 50);
-            await selectedCurrency.ScaleTo(1, 50, Easing.SpringOut);
+            await selectedItem.ScaleTo(1.01, 50);
+            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
 
-            selectedCurrency.BackgroundColor = initColor;
-            selectedCurrency.IsEnabled = true;
+            selectedItem.BackgroundColor = initColor;
+            selectedItem.IsEnabled = true;
         }
     }
 }

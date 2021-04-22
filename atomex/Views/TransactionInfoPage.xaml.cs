@@ -3,7 +3,6 @@ using atomex.Resources;
 using atomex.ViewModel.TransactionViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using atomex.Services;
 using atomex.ViewModel;
 
 namespace atomex
@@ -14,8 +13,6 @@ namespace atomex
 
         private CurrencyViewModel _currencyViewModel;
 
-        private IToastService _toastService;
-
         public TransactionInfoPage(TransactionViewModel transactionViewModel, CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
@@ -25,65 +22,6 @@ namespace atomex
                 BindingContext = transactionViewModel;
             }
             _currencyViewModel = currencyViewModel;
-            _toastService = DependencyService.Get<IToastService>();
-        }
-
-        private async void OnCopyIdButtonClicked(object sender, EventArgs args)
-        {
-            if (_transactionViewModel != null)
-            {
-                await Clipboard.SetTextAsync(_transactionViewModel.Id);
-                _toastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            else
-            {
-                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private async void OnCopyToAddressButtonClicked(object sender, EventArgs args)
-        {
-            if (_transactionViewModel != null)
-            {
-                await Clipboard.SetTextAsync(_transactionViewModel.To);
-                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            else
-            {
-                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private async void OnCopyFromAddressButtonClicked(object sender, EventArgs args)
-        {
-            if (_transactionViewModel != null)
-            {
-                await Clipboard.SetTextAsync(_transactionViewModel.From);
-                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            else
-            {
-                await DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private void OnShowInExplorerClicked(object sender, EventArgs args)
-        {
-            if (_transactionViewModel != null)
-            {
-                Launcher.OpenAsync(new Uri(_transactionViewModel.TxExplorerUri));
-            }
-        }
-
-        private async void OnDeleteTxButtonClicked(object sender, EventArgs args)
-        {
-            if (_currencyViewModel != null)
-            {
-                var res = await DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
-                if (!res) return;
-                _currencyViewModel.RemoveTransactonAsync(_transactionViewModel.Id);
-                await Navigation.PopAsync();
-            }
         }
     }
 }

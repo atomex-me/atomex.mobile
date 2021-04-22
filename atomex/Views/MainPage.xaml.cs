@@ -63,8 +63,7 @@ namespace atomex
 
             _mainViewModel.SettingsViewModel.Navigation = navigationSettingsPage.Navigation;
             _mainViewModel.CurrenciesViewModel.SetNavigation(navigationWalletsListPage.Navigation, this);
-            
-            //_mainViewModel.ConversionViewModel.Navigation = navigationConversionPage.Navigation;
+            _mainViewModel.ConversionViewModel.Navigation = navigationConversionPage.Navigation;
 
             SetAppTheme();
 

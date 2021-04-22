@@ -265,7 +265,7 @@
                     </StackLayout>
                     <ImageButton Source="Copy"
                                  Style="{DynamicResource TxInfoCopyButtonStyle}"
-                                 Clicked="OnCopyIdButtonClicked"/>
+                                 Command="{Binding CopyTxIdCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
@@ -296,7 +296,7 @@
                     </StackLayout>
                     <ImageButton Source="Copy"
                                  Style="{DynamicResource TxInfoCopyButtonStyle}"
-                                 Clicked="OnCopyFromAddressButtonClicked"/>
+                                 Command="{Binding CopyFromAddressCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
@@ -320,7 +320,7 @@
                     </StackLayout>
                     <ImageButton Source="Copy"
                                  Style="{DynamicResource TxInfoCopyButtonStyle}"
-                                 Clicked="OnCopyToAddressButtonClicked"/>
+                                 Command="{Binding CopyToAddressCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
@@ -429,13 +429,13 @@
             </StackLayout>
             <Button Text="{helpers:Translate ShowInExplorerButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
-                    Clicked="OnShowInExplorerClicked"/>
+                    Command="{Binding ShowInExplorerCommand}"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <Button Text="{helpers:Translate DeleteButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
                     TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
                     IsVisible="{Binding CanBeRemoved}"
-                    Clicked="OnDeleteTxButtonClicked"/>
+                    Command="{Binding DeleteTxCommand}"/>
             <StackLayout Style="{DynamicResource SeparatorStyle}"
                          IsVisible="{Binding CanBeRemoved}"/>
         </StackLayout>

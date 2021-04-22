@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading.Tasks;
-using atomex.Resources;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -10,8 +8,6 @@ namespace atomex.Views.CreateSwap
     public partial class AmountPage : ContentPage
     {
 
-        private ConversionViewModel _conversionViewModel;
-
         public AmountPage()
         {
             InitializeComponent();
@@ -19,35 +15,33 @@ namespace atomex.Views.CreateSwap
         public AmountPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
-            _conversionViewModel = conversionViewModel;
-            Amount.Placeholder = AppResources.AmountEntryPlaceholder + ", " + conversionViewModel.FromCurrencyViewModel.CurrencyCode;
-            BindingContext = _conversionViewModel;
+            BindingContext = conversionViewModel;
         }
-        private async void AmountEntryFocused(object sender, FocusEventArgs args)
+        private void AmountEntryFocused(object sender, FocusEventArgs args)
         {
             AmountFrame.HasShadow = args.IsFocused;
-            if (!args.IsFocused)
-            {
-                try
-                {
-                    decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
-                    BlockActions(true);
-                    await _conversionViewModel.UpdateAmountAsync(amount);
-                    BlockActions(false);
-                    Amount.Text = _conversionViewModel.Amount.ToString();
-                }
-                catch (FormatException)
-                {
-                    _conversionViewModel.Amount = 0;
-                    Amount.Text = "0";
-                }
-            }
+            //if (!args.IsFocused)
+            //{
+            //    try
+            //    {
+            //        decimal.TryParse(Amount.Text?.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal amount);
+            //        //BlockActions(true);
+            //        await _conversionViewModel.UpdateAmountAsync(amount);
+            //        //BlockActions(false);
+            //        Amount.Text = _conversionViewModel.Amount.ToString();
+            //    }
+            //    catch (FormatException)
+            //    {
+            //        _conversionViewModel.Amount = 0;
+            //        Amount.Text = "0";
+            //    }
+            //}
         }
 
         private void AmountEntryTapped(object sender, EventArgs args)
         {
             Amount.Focus();
-            Amount.CursorPosition = _conversionViewModel.Amount.ToString().Length;
+            //Amount.CursorPosition = _conversionViewModel.Amount.ToString().Length;
         }
 
         private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -57,7 +51,7 @@ namespace atomex.Views.CreateSwap
                 if (!AmountHint.IsVisible)
                 {
                     AmountHint.IsVisible = true;
-                    AmountHint.Text = Amount.Placeholder;
+                    //AmountHint.Text = Amount.Placeholder;
 
                     _ = AmountHint.FadeTo(1, 500, Easing.Linear);
                     _ = Amount.TranslateTo(0, 10, 500, Easing.CubicOut);
@@ -76,75 +70,26 @@ namespace atomex.Views.CreateSwap
             }
         }
 
-        private async void OnMaxAmountButtonClicked(object sender, EventArgs args)
-        {
-            MaxButton.IsVisible = MaxButton.IsEnabled = false;
-            Loader.IsRunning = Loader.IsVisible = true;
-            BlockActions(true);
-            await _conversionViewModel.OnMaxClick();
-            BlockActions(false);
-            Amount.Text = _conversionViewModel.Amount.ToString();
-            Loader.IsRunning = Loader.IsVisible = false;
-            MaxButton.IsVisible = MaxButton.IsEnabled = true;
-        }
+        //private async void OnMaxAmountButtonClicked(object sender, EventArgs args)
+        //{
+        //    MaxButton.IsVisible = MaxButton.IsEnabled = false;
+        //    Loader.IsRunning = Loader.IsVisible = true;
+        //    BlockActions(true);
+        //    await _conversionViewModel.OnMaxClick();
+        //    BlockActions(false);
+        //    Amount.Text = _conversionViewModel.Amount.ToString();
+        //    Loader.IsRunning = Loader.IsVisible = false;
+        //    MaxButton.IsVisible = MaxButton.IsEnabled = true;
+        //}
 
-        private void BlockActions(bool flag)
-        {
-            FeeCalculationLoader.IsVisible = FeeCalculationLoader.IsRunning = flag;
+        //private void BlockActions(bool flag)
+        //{
+        //    FeeCalculationLoader.IsVisible = FeeCalculationLoader.IsRunning = flag;
             
-            if (flag)
-                Content.Opacity = 0.5;
-            else
-                Content.Opacity = 1;
-        }
-
-        private async void OnTotalFeeTapped(object sender, EventArgs args)
-        {
-            string message = string.Format(
-                   CultureInfo.InvariantCulture,
-                   AppResources.TotalNetworkFeeDetail,
-                   AppResources.PaymentFeeLabel,
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedPaymentFeeInBase:(0.00$)}"),
-                   _conversionViewModel.HasRewardForRedeem ?
-                       AppResources.RewardForRedeemLabel :
-                       AppResources.RedeemFeeLabel,
-                   _conversionViewModel.HasRewardForRedeem ? 
-                       FormattableString.Invariant($"{_conversionViewModel.RewardForRedeem} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}") :
-                       FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFee} {_conversionViewModel.ToCurrencyViewModel.FeeCurrencyCode}"),
-                   _conversionViewModel.HasRewardForRedeem ?
-                       FormattableString.Invariant($"{_conversionViewModel.RewardForRedeemInBase:(0.00$)}") :
-                       FormattableString.Invariant($"{_conversionViewModel.EstimatedRedeemFeeInBase:(0.00$)}"),
-                   AppResources.MakerFeeLabel,
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFee} {_conversionViewModel.FromCurrencyViewModel.FeeCurrencyCode}"),
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedMakerNetworkFeeInBase:(0.00$)}"),
-                   AppResources.TotalNetworkFeeLabel,
-                   FormattableString.Invariant($"{_conversionViewModel.EstimatedTotalNetworkFeeInBase:0.00$}"));
-
-            await DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
-        }
-
-        private async void OnNextButtonClicked(object sender, EventArgs args)
-        {
-            if (String.IsNullOrWhiteSpace(Amount.Text))
-            {
-                await DisplayAlert(AppResources.Warning, AppResources.EnterAmountLabel, AppResources.AcceptButton);
-                return;
-            }
-
-            if (_conversionViewModel.IsNoLiquidity)
-            {
-                await DisplayAlert(AppResources.Error, AppResources.NoLiquidityError, AppResources.AcceptButton);
-                return;
-            }
-
-            if (_conversionViewModel.Amount <= 0)
-            {
-                await DisplayAlert(AppResources.Error, AppResources.AmountLessThanZeroError, AppResources.AcceptButton);
-                return;
-            }
-
-            await Navigation.PushAsync(new ConfirmationPage(_conversionViewModel));
-        }
+        //    if (flag)
+        //        Content.Opacity = 0.5;
+        //    else
+        //        Content.Opacity = 1;
+        //}
     }
 }

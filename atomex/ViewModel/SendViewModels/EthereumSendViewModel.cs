@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Resources;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
-
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -16,7 +17,6 @@ namespace atomex.ViewModel.SendViewModels
             get => _currency;
             set
             {
-
                 _currency = value;
                 OnPropertyChanged(nameof(Currency));
 
@@ -48,16 +48,14 @@ namespace atomex.ViewModel.SendViewModels
             get => Fee.ToString(GasFormat, CultureInfo.InvariantCulture);
             set
             {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
                     return;
 
-                //Fee = fee.TruncateByFormat(GasFormat);
                 Fee = fee;
             }
         }
 
-
-        //protected decimal _feePrice;
         public override decimal FeePrice
         {
             get => _feePrice;
@@ -70,10 +68,10 @@ namespace atomex.ViewModel.SendViewModels
             get => FeePrice.ToString(FeePriceFormat, CultureInfo.InvariantCulture);
             set
             {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var gasPrice))
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var gasPrice))
                     return;
 
-                //FeePrice = gasPrice.TruncateByFormat(FeePriceFormat);
                 FeePrice = gasPrice;
             }
         }
@@ -105,7 +103,7 @@ namespace atomex.ViewModel.SendViewModels
                 OnPropertyChanged(nameof(UseDefaultFee));
 
                 if (_useDefaultFee)
-                    Amount = _amount; // recalculate amount and fee using default fee
+                    _ = UpdateAmount(_amount);
             }
         }
 
@@ -121,7 +119,7 @@ namespace atomex.ViewModel.SendViewModels
         {
         }
 
-        public override async Task UpdateAmount(decimal amount)
+        public override async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
 
@@ -144,6 +142,9 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
+
                 UpdateTotalFeeString();
                 OnPropertyChanged(nameof(TotalFeeString));
             }
@@ -158,7 +159,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                OnPropertyChanged(nameof(AmountString));
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
 
                 if (_fee < Currency.GetDefaultFee() || _feePrice == 0)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
@@ -273,7 +275,10 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        public override async Task OnMaxClick()
+        private ICommand _maxAmountCommand;
+        public override ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
+        protected override async Task OnMaxClick()
         {
             Warning = string.Empty;
 
@@ -296,6 +301,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 _feePrice = await Currency.GetDefaultFeePriceAsync();
                 OnPropertyChanged(nameof(FeePriceString));
+                OnPropertyChanged(nameof(FeePrice));
 
                 UpdateTotalFeeString(maxFeeAmount);
                 OnPropertyChanged(nameof(TotalFeeString));
@@ -329,31 +335,52 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
-        public override string OnNextCommand()
+        protected async override Task OnNextButtonClicked()
         {
             if (string.IsNullOrEmpty(To))
-                return AppResources.EmptyAddressError;
+            {
+                Warning = AppResources.EmptyAddressError;
+                return;
+            }
 
             if (!Currency.IsValidAddress(To))
-                return AppResources.InvalidAddressError;
+            {
+                Warning = AppResources.InvalidAddressError;
+                return;
+            }
 
             if (Amount <= 0)
-                return AppResources.AmountLessThanZeroError;
+            {
+                Warning = AppResources.AmountLessThanZeroError;
+                return;
+            }
 
             if (Fee <= 0)
-                return AppResources.CommissionLessThanZeroError;
+            {
+                Warning = AppResources.CommissionLessThanZeroError;
+                return;
+            }
 
             var isToken = Currency.FeeCurrencyName != Currency.Name;
 
             var feeAmount = !isToken ? Currency.GetFeeAmount(Fee, FeePrice) : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
-                return AppResources.AvailableFundsError;
+            {
+                Warning = AppResources.AvailableFundsError;
+                return;
+            }
 
-            if (!string.IsNullOrEmpty(Warning))
-                return AppResources.FailedToSend;
+            if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
+            {
+                Warning = AppResources.AvailableFundsError;
+                return;
+            }
 
-            return null;
+            if (string.IsNullOrEmpty(Warning))
+                await Navigation.PushAsync(new SendingConfirmationPage(this));
+            else
+                await App.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
