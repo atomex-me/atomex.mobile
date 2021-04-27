@@ -118,6 +118,12 @@ namespace atomex.ViewModel.SendViewModels
         {
             Warning = string.Empty;
 
+            if (amount == 0)
+            {
+                ResetSendValues(raiseOnPropertyChanged);
+                return;
+            }
+
             var availableAmount = CurrencyViewModel.AvailableAmount;
             _amount = amount;
 

@@ -162,9 +162,12 @@ namespace atomex.ViewModel
             {
                 string temp = value.Replace(",", ".");
                 if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
+                {
+                    ResetSwapValues(raiseOnPropertyChanged: false);
                     return;
+                }
 
-                Amount = amount;
+                _ = UpdateAmountAsync(amount, raiseOnPropertyChanged: false);
             }
         }
 
@@ -848,41 +851,49 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            await UpdateAmountAsync(decimal.MaxValue);
+            await UpdateAmountAsync(decimal.MaxValue, onMaxClick: true);
         }
 
-        public virtual async Task UpdateAmountAsync(decimal value)
+        private void ResetSwapValues(bool raiseOnPropertyChanged = true)
+        {
+            _amount = 0;
+            OnPropertyChanged(nameof(Amount));
+
+            if (raiseOnPropertyChanged)
+                OnPropertyChanged(nameof(AmountString));
+
+            AmountInBase = 0;
+
+            TargetAmount = 0;
+
+            TargetAmountInBase = 0;
+
+            EstimatedTotalNetworkFeeInBase = 0;
+
+            EstimatedPaymentFee = 0;
+
+            EstimatedPaymentFeeInBase = 0;
+
+            EstimatedRedeemFee = 0;
+
+            EstimatedRedeemFeeInBase = 0;
+
+            EstimatedMakerNetworkFee = 0;
+
+            EstimatedMakerNetworkFeeInBase = 0;
+        }
+
+        public virtual async Task UpdateAmountAsync(decimal value, bool raiseOnPropertyChanged = true, bool onMaxClick = false)
         {
             Warning = string.Empty;
+
+            CanConvert = true;
 
             try
             {
                 if (value == 0)
                 {
-                    _amount = 0;
-                    OnPropertyChanged(nameof(Amount));
-                    OnPropertyChanged(nameof(AmountString));
-
-                    AmountInBase = 0;
-
-                    TargetAmount = 0;
-
-                    TargetAmountInBase = 0;
-
-                    EstimatedTotalNetworkFeeInBase = 0;
-
-                    EstimatedPaymentFee = 0;
-
-                    EstimatedPaymentFeeInBase = 0;
-
-                    EstimatedRedeemFee = 0;
-
-                    EstimatedRedeemFeeInBase = 0;
-
-                    EstimatedMakerNetworkFee = 0;
-
-                    EstimatedMakerNetworkFeeInBase = 0;
-
+                    ResetSwapValues(raiseOnPropertyChanged);
                     return;
                 }
 
@@ -911,12 +922,23 @@ namespace atomex.ViewModel
                     Warning = string.Empty;
                 }
 
+                if (value > swapParams.Amount && !onMaxClick)
+                {
+                    Warning = AppResources.InsufficientFunds;
+                    ResetSwapValues(raiseOnPropertyChanged : false);
+                    CanConvert = false;
+                    return;
+                }
+
                 _amount = swapParams.Amount;
                 _estimatedPaymentFee = swapParams.PaymentFee;
                 _estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
 
                 OnPropertyChanged(nameof(Amount));
-                OnPropertyChanged(nameof(AmountString));
+
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
+
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
                 OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
 

@@ -85,7 +85,10 @@ namespace atomex.ViewModel.SendViewModels
             {
                 string temp = value.Replace(",", ".");
                 if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
+                {
+                    ResetSendValues(raiseOnPropertyChanged: false);
                     return;
+                }
 
                 _ = UpdateAmount(amount, raiseOnPropertyChanged: false);
             }
@@ -362,9 +365,32 @@ namespace atomex.ViewModel.SendViewModels
                 AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
+        protected virtual void ResetSendValues(bool raiseOnPropertyChanged = true)
+        {
+            _amount = 0;
+            OnPropertyChanged(nameof(Amount));
+
+            if (raiseOnPropertyChanged)
+                OnPropertyChanged(nameof(AmountString));
+
+            AmountInBase = 0;
+
+            Fee = 0;
+
+            OnPropertyChanged(nameof(FeeString));
+
+            FeeInBase = 0;
+        }
+
         public virtual async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
+
+            if (amount == 0)
+            {
+                ResetSendValues(raiseOnPropertyChanged);
+                return;
+            }
 
             _amount = amount;
 

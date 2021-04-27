@@ -32,23 +32,34 @@
                                         Grid.ColumnSpan="3"
                                         CornerRadius="20,20,0,0"
                                         Style="{DynamicResource EntryFrameStyle}">
+                        <custom:CustomFrame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </custom:CustomFrame.GestureRecognizers>
                         <custom:CustomPicker ItemsSource="{Binding FromCurrencies}"
                                              ItemDisplayBinding="{Binding Currency.Description}"
                                              SelectedItem="{Binding FromCurrencyViewModel, Mode=TwoWay}"
                                              VerticalOptions="FillAndExpand"
                                              HorizontalOptions="FillAndExpand"
-                                             TextColor="Transparent"/>
+                                             TextColor="Transparent"
+                                             x:Name="PickerFrom"/>
                     </custom:CustomFrame>
                     <Image Grid.Row="0"
                            Grid.RowSpan="3"
                            Source="{Binding FromCurrencyViewModel.CurrencyCode}"
                            HorizontalOptions="Center"
-                           Margin="10,10,10,10"/>
+                           Margin="10,10,10,10">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{helpers:Translate SwapFrom}"
@@ -69,6 +80,9 @@
                            VerticalTextAlignment="Start"
                            HorizontalTextAlignment="Start"
                            Padding="0,0,0,10">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{helpers:Translate Balance}"/>
@@ -86,7 +100,11 @@
                            Grid.RowSpan="3"
                            Grid.Column="2"
                            HorizontalOptions="Start"
-                           Margin="0,30,20,30"/>
+                           Margin="0,30,20,30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
@@ -106,24 +124,35 @@
                                         Grid.ColumnSpan="3"
                                         CornerRadius="0,0,20,20"
                                         Style="{DynamicResource EntryFrameStyle}">
+                        <custom:CustomFrame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
+                        </custom:CustomFrame.GestureRecognizers>
                         <custom:CustomPicker ItemsSource="{Binding ToCurrencies}"
                                              ItemDisplayBinding="{Binding Currency.Description}"
                                              SelectedItem="{Binding ToCurrencyViewModel, Mode=TwoWay}"
                                              VerticalOptions="FillAndExpand"
                                              HorizontalOptions="FillAndExpand"
-                                             TextColor="Transparent"/>
+                                             TextColor="Transparent"
+                                             x:Name="PickerTo"/>
                     </custom:CustomFrame>
                     <Image Grid.Row="0"
                            Grid.RowSpan="3"
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"
                            HorizontalOptions="Center"
-                           Margin="10,10,10,10"/>
+                           Margin="10,10,10,10">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                     <Label Grid.Row="0"
                            Grid.Column="1"
                            Grid.RowSpan="3"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
+                        </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{helpers:Translate SwapTo}"
@@ -142,7 +171,11 @@
                            Grid.RowSpan="3"
                            Grid.Column="2"
                            HorizontalOptions="Start"
-                           Margin="0,30,20,30"/>
+                           Margin="0,30,20,30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
                 <Label Margin="20,10"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"

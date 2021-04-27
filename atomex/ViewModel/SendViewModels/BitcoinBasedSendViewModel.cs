@@ -34,6 +34,12 @@ namespace atomex.ViewModel.SendViewModels
         {
             Warning = string.Empty;
 
+            if (amount == 0)
+            {
+                ResetSendValues(raiseOnPropertyChanged);
+                return;
+            }
+
             _amount = amount;
 
             try
