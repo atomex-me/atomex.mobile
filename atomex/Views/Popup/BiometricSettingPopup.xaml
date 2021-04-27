@@ -5,6 +5,7 @@
               xmlns:controls="clr-namespace:atomex.CustomElements"
               xmlns:converters="clr-namespace:atomex.Converters"
               xmlns:helpers="clr-namespace:atomex.Helpers"
+              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
               x:Class="atomex.Views.Popup.BiometricSettingPopup">
     <rg:PopupPage.Resources>
         <ResourceDictionary>
@@ -79,7 +80,15 @@
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                                                       Focused="PasswordEntryFocused"
                                                       Unfocused="PasswordEntryFocused"
-                                                      TextChanged="OnPasswordTextChanged"/>
+                                                      TextChanged="OnPasswordTextChanged">
+                                    <controls:CustomEntry.Behaviors>
+                                        <behaviors:EventToCommandBehavior EventName="Focused"
+                                                                          Command="{Binding ClearWarningCommand}"/>
+                                        <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                                          Command="{Binding PswdChangedCommand}"
+                                                                          CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                    </controls:CustomEntry.Behaviors>
+                                </controls:CustomEntry>
                                 <Label x:Name="PasswordHint"
                                        Style="{DynamicResource EntryHintStyle}"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

@@ -271,8 +271,16 @@ namespace atomex.ViewModel
             }
         }
 
-        private Command _enableBiometricCommand;
-        public Command EnableBiometricCommand => _enableBiometricCommand ??= new Command<string>(async (value) => await EnableBiometric(value));
+        private void ClearWarning()
+        {
+            Warning = string.Empty;
+        }
+
+        private ICommand _pswdChangedCommand;
+        public ICommand PswdChangedCommand => _pswdChangedCommand ??= new Command<string>((value) => SetPassword(value));
+
+        private ICommand _enableBiometricCommand;
+        public ICommand EnableBiometricCommand => _enableBiometricCommand ??= new Command<string>(async (value) => await EnableBiometric(value));
 
         private async Task EnableBiometric(string pswd)
         {
@@ -318,6 +326,9 @@ namespace atomex.ViewModel
             var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
             BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
         }
+
+        private ICommand _clearWarningCommand;
+        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => ClearWarning());
 
         private ICommand _showLanguagesCommand;
         public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());

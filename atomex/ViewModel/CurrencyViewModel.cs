@@ -315,7 +315,7 @@ namespace atomex.ViewModel
             if (tx != null)
             {
                 tx.CurrencyViewModel = this;
-                await Navigation.PushAsync(new TransactionInfoPage(tx, this));
+                await Navigation.PushAsync(new TransactionInfoPage(tx));
             }
         }
 

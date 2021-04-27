@@ -8,22 +8,17 @@ namespace atomex.Views.Popup
 {
     public partial class BiometricSettingPopup : PopupPage
     {
-        private SettingsViewModel _settingsViewModel;
 
         public BiometricSettingPopup(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
-
             BindingContext = settingsViewModel;
-            _settingsViewModel = settingsViewModel;
         }
 
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
-            {
-                _settingsViewModel.Warning = string.Empty;
-                
+            {   
                 if (!PasswordHint.IsVisible)
                 {
                     PasswordHint.IsVisible = true;
@@ -43,7 +38,6 @@ namespace atomex.Views.Popup
                 );
                 PasswordHint.IsVisible = false;
             }
-            _settingsViewModel.SetPassword(args.NewTextValue);
         }
 
         private void PasswordEntryFocused(object sender, FocusEventArgs args)
