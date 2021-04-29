@@ -5,7 +5,6 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
-             xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              Title="{helpers:Translate SendPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Resources>

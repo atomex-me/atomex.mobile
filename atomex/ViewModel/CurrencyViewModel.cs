@@ -299,7 +299,7 @@ namespace atomex.ViewModel
 
         private async Task OnStakingButtonClicked()
         {
-            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp)));
+            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp, Navigation)));
         }
 
         private async Task OnConvertButtonClicked()

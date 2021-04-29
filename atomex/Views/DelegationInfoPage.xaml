@@ -106,7 +106,7 @@
                         <ViewCell>
                             <Button Text="{helpers:Translate ChangeBakerButton}"
                                     Style="{DynamicResource TransparentButtonStyle}"
-                                    Clicked="OnChangeBakerButtonClicked">
+                                    Command="{Binding ChangeBakerCommand}">
                             </Button>
                         </ViewCell>
                     </TableSection>
@@ -114,7 +114,7 @@
                         <ViewCell>
                             <Button Text="{helpers:Translate CheckRewardsButton}"
                                     Style="{DynamicResource TransparentButtonStyle}"
-                                    Clicked="OnCheckRewardsButtonClicked">
+                                    Command="{Binding CheckRewardsCommand}">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
                                                  Binding="{Binding BbUri, TargetNullValue=''}"

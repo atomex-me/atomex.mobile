@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
+             x:Name="BindingContextPage"
              x:Class="atomex.DelegationsListPage"
              Title="{helpers:Translate DelegationListPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
@@ -49,9 +49,10 @@
                        Margin="20"/>
             </StackLayout>
             <ListView ItemsSource="{Binding Delegations}"
-                      ItemTapped="OnDelegationTapped"
+                      SelectionMode="None"
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
+                      CachingStrategy="RetainElement"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                       Margin="0,2"
                       Footer=""
@@ -66,7 +67,7 @@
                 </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                        <ViewCell>
                             <Grid Margin="2"
                                   ColumnSpacing="0"
                                   RowSpacing="0">
@@ -85,7 +86,13 @@
                                        Padding="0"
                                        HasShadow="False"
                                        CornerRadius="10"
-                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ListViewItemBackgroundColorDark}, Light={StaticResource ListViewItemBackgroundColor}}"/>
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ListViewItemBackgroundColorDark}, Light={StaticResource ListViewItemBackgroundColor}}">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.SelectDelegationCommand, Source={x:Reference BindingContextPage}}"
+                                                              Tapped="OnItemTapped"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
                                 <Label Text="{Binding Balance, StringFormat='{0:0.##} XTZ'}"
                                        VerticalTextAlignment="End"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -195,7 +202,7 @@
                                     </Label.Triggers>
                                 </Label>
                             </Grid>
-                        </custom:CustomViewCell>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

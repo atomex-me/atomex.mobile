@@ -139,7 +139,7 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                <ViewCell>
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
                           VerticalOptions="Center"
@@ -596,7 +596,7 @@
                                Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
-                </controls:CustomViewCell>
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
