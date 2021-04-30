@@ -16,6 +16,7 @@ using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
@@ -538,7 +539,7 @@ namespace atomex.ViewModel
             return AppResources.SuccessfulCheck;
         }
 
-        public async Task<Result<string>> Delegate()
+        private async Task<Result<string>> Delegate()
         {
             var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
@@ -599,7 +600,43 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task LoadDelegationInfoAsync()
+        private ICommand _delegateCommand;
+        public ICommand DelegateCommand => _delegateCommand ??= new Command(async () => await OnDelegateButtonClicked());
+
+        private async Task OnDelegateButtonClicked()
+        {
+            try
+            {
+                IsLoading = true;
+                var result = await Delegate();
+                if (result.Error != null)
+                {
+                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
+                    return;
+                }
+                await LoadDelegationInfoAsync();
+                var res = await Application.Current.MainPage.DisplayAlert(AppResources.SuccessDelegation, AppResources.DelegationListWillBeUpdated + "\r\n" + AppResources.ExplorerUri + ": " + result.Value, null, AppResources.CopyAndExitButton);
+                if (!res)
+                {
+                    await Clipboard.SetTextAsync(result.Value);
+                    for (var i = 1; i < 3; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
+                    await Navigation.PopAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                IsLoading = false;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.DelegationError, AppResources.AcceptButton);
+                Log.Error(e, "Delegation error");
+            }
+        }
+
+
+        private async Task LoadDelegationInfoAsync()
         {
             try
             {
