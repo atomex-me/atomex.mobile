@@ -76,7 +76,7 @@
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Row="1"
                                    Grid.Column="2"
-                                   Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
+                                   Text="{Binding AvailableAmountInBase, StringFormat='{0:f2} $'}"
                                    FontFamily="{DynamicResource LightFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontSize="10"

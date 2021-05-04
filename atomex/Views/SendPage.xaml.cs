@@ -41,7 +41,8 @@ namespace atomex
         private void OnFeeEntryTapped(object sender, EventArgs args)
         {
             Fee.Focus();
-            Fee.CursorPosition = Fee.Text.Length;
+            if (!string.IsNullOrEmpty(Fee.Text))
+                Fee.CursorPosition = Fee.Text.Length;
         }
 
         private async void OnAmountTextChanged(object sender, TextChangedEventArgs args)
@@ -121,7 +122,8 @@ namespace atomex
 
         private void OnSetMaxAmountButtonClicked(object sender, EventArgs args)
         {
-            Amount.CursorPosition =  Amount.Text.Length;
+            if (!string.IsNullOrEmpty(Amount.Text))
+                Amount.CursorPosition = Amount.Text.Length;
             Amount.Unfocus();
         }
 
@@ -129,7 +131,8 @@ namespace atomex
         {
             Address.TextColor = Color.Transparent;
             AddressLabel.IsVisible = true;
-            Address.CursorPosition = Address.Text.Length;
+            if (!string.IsNullOrEmpty(Address.Text))
+                Address.CursorPosition = Address.Text.Length;
             Address.Unfocus();
         }
     }

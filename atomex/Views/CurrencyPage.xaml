@@ -51,7 +51,7 @@
                            IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding AmountInBase, StringFormat='{0:0.##}'}"/>
+                                <Span Text="{Binding AvailableAmountInBase, StringFormat='{0:0.##}'}"/>
                                 <Span Text=" $"/>
                             </FormattedString>
                         </Label.FormattedText>

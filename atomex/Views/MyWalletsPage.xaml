@@ -21,19 +21,10 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame Margin="0,2">
-                                    <!--<VisualStateManager.VisualStateGroups>
-					                    <VisualStateGroup Name="CommonStates">
-						                    <VisualState Name="Normal"/>
-                                            <VisualState Name="Selected">
-							                    <VisualState.Setters>
-								                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
-							                    </VisualState.Setters>
-						                    </VisualState>
-					                    </VisualStateGroup>
-				                    </VisualStateManager.VisualStateGroups>-->
+                                <Frame Margin="0,5">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.SelectWalletCommand, Source={x:Reference BindingContextPage}}"
+                                                              Tapped="OnItemTapped"
                                                               CommandParameter="{Binding .}"/>
                                     </Frame.GestureRecognizers>
                                     <Frame.Triggers>

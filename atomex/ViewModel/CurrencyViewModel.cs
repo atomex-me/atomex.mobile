@@ -13,7 +13,9 @@ using Atomex;
 using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
+using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
+using Atomex.Wallet.Abstract;
 using Serilog;
 using Xamarin.Forms;
 
@@ -23,6 +25,8 @@ namespace atomex.ViewModel
     {
         private IAtomexApp AtomexApp { get; set; }
 
+        private IAccount Account { get; set; }
+
         public INavigation Navigation { get; set; }
 
         public INavigationService NavigationService { get; set; }
@@ -31,7 +35,9 @@ namespace atomex.ViewModel
 
         public Currency Currency { get; set; }
 
-        public event EventHandler CurrencyUpdated;
+        public event EventHandler AmountUpdated;
+
+        private ICurrencyQuotesProvider QuotesProvider { get; set; }
 
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
@@ -45,11 +51,25 @@ namespace atomex.ViewModel
             set { _totalAmount = value; OnPropertyChanged(nameof(TotalAmount)); }
         }
 
+        private decimal _totalAmountInBase;
+        public decimal TotalAmountInBase
+        {
+            get => _totalAmountInBase;
+            set { _totalAmountInBase = value; OnPropertyChanged(nameof(TotalAmountInBase)); }
+        }
+
         private decimal _availableAmount;
         public decimal AvailableAmount
         {
             get => _availableAmount;
             set { _availableAmount = value; OnPropertyChanged(nameof(AvailableAmount)); }
+        }
+
+        private decimal _availableAmountInBase;
+        public decimal AvailableAmountInBase
+        {
+            get => _availableAmountInBase;
+            set { _availableAmountInBase = value; OnPropertyChanged(nameof(AvailableAmountInBase)); }
         }
 
         private decimal _unconfirmedAmount;
@@ -59,6 +79,13 @@ namespace atomex.ViewModel
             set { _unconfirmedAmount = value; OnPropertyChanged(nameof(UnconfirmedAmount)); }
         }
 
+        private decimal _unconfirmedAmountInBase;
+        public decimal UnconfirmedAmountInBase
+        {
+            get => _unconfirmedAmountInBase;
+            set { _unconfirmedAmountInBase = value; OnPropertyChanged(nameof(UnconfirmedAmountInBase)); }
+        }
+
         private decimal _price;
         public decimal Price
         {
@@ -66,15 +93,8 @@ namespace atomex.ViewModel
             set { _price = value; OnPropertyChanged(nameof(Price)); }
         }
 
-        private decimal _amountInBase;
-        public decimal AmountInBase
-        {
-            get => _amountInBase;
-            set { _amountInBase = value; OnPropertyChanged(nameof(AmountInBase)); }
-        }
-
-        private float _portfolioPercent;
-        public float PortfolioPercent
+        private decimal _portfolioPercent;
+        public decimal PortfolioPercent
         {
             get => _portfolioPercent;
             set { _portfolioPercent = value; OnPropertyChanged(nameof(PortfolioPercent)); }
@@ -135,23 +155,31 @@ namespace atomex.ViewModel
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             ToastService = DependencyService.Get<IToastService>();
-            SubscibeToServices();
+            SubscribeToUpdates(AtomexApp.Account);
+            SubscribeToRatesProvider(AtomexApp.QuotesProvider);
         }
 
-        private void SubscibeToServices()
+        public void SubscribeToUpdates(IAccount account)
         {
-            AtomexApp.Account.UnconfirmedTransactionAdded += UnconfirmedTransactionAdded;
-            AtomexApp.Account.BalanceUpdated += BalanceUpdated;
+            Account = account;
+            Account.BalanceUpdated += OnBalanceChangedEventHandler;
+            Account.UnconfirmedTransactionAdded += UnconfirmedTxAddedEventHandler;
         }
 
-        private async void BalanceUpdated(object sender, CurrencyEventArgs args)
+        public void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
+        {
+            QuotesProvider = quotesProvider;
+            QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+        }
+
+        private async void OnBalanceChangedEventHandler(object sender, CurrencyEventArgs args)
         {
             try
             {
                 if (Currency.Name.Equals(args.Currency))
                 {
                     await UpdateBalanceAsync().ConfigureAwait(false);
-                    await LoadTransactionsAsync().ConfigureAwait(false);
+                    await UpdateTransactionsAsync().ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -169,14 +197,15 @@ namespace atomex.ViewModel
                     .ConfigureAwait(false);
 
                 TotalAmount = balance.Confirmed;
+                OnPropertyChanged(nameof(TotalAmount));
 
                 AvailableAmount = balance.Available;
+                OnPropertyChanged(nameof(AvailableAmount));
 
                 UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
+                OnPropertyChanged(nameof(UnconfirmedAmount));
 
-                var quote = AtomexApp.QuotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-                Price = quote.Bid;
-                AmountInBase = AvailableAmount * quote.Bid;
+                UpdateQuotesInBaseCurrency(QuotesProvider);
             }
             catch (Exception e)
             {
@@ -184,16 +213,41 @@ namespace atomex.ViewModel
             }
         }
 
-        private void UnconfirmedTransactionAdded(
-           object sender,
-           TransactionEventArgs e)
+        private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        {
+            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+                return;
+
+            UpdateQuotesInBaseCurrency(quotesProvider);
+        }
+
+        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        {
+            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+
+            Price = quote.Bid;
+            OnPropertyChanged(nameof(Price));
+
+            TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
+            OnPropertyChanged(nameof(TotalAmountInBase));
+
+            AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
+            OnPropertyChanged(nameof(AvailableAmountInBase));
+
+            UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
+            OnPropertyChanged(nameof(UnconfirmedAmountInBase));
+
+            AmountUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
         {
             try
             {
                 if (e.Transaction.Currency.Name != Currency?.Name)
                     return;
 
-                _ = LoadTransactionsAsync();
+                _ = UpdateTransactionsAsync();
             }
             catch (Exception ex)
             {
@@ -201,9 +255,9 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task LoadTransactionsAsync()
+        public async Task UpdateTransactionsAsync()
         {
-            Log.Debug("LoadTransactionsAsync for {@currency}", Currency.Name);
+            Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
 
             try
             {
@@ -227,7 +281,7 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
 
-                CurrencyUpdated?.Invoke(this, EventArgs.Empty);
+                //CurrencyUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
@@ -265,7 +319,7 @@ namespace atomex.ViewModel
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)
-                    await LoadTransactionsAsync();
+                    await UpdateTransactionsAsync();
             }
             catch (Exception e)
             {
@@ -336,6 +390,44 @@ namespace atomex.ViewModel
                 Log.Error(e, "UpdateCurrencyAsync error");
             }
         }
+
+        #region IDisposable Support
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (Account != null)
+                    {
+                        Account.BalanceUpdated -= OnBalanceChangedEventHandler;
+                        Account.UnconfirmedTransactionAdded -= UnconfirmedTxAddedEventHandler;
+                    }
+
+                    if (QuotesProvider != null)
+                        QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+                }
+
+                Account = null;
+                Currency = null;
+
+                _disposedValue = true;
+            }
+        }
+
+        ~CurrencyViewModel()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
 

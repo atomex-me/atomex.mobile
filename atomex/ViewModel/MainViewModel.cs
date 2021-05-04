@@ -16,6 +16,7 @@ namespace atomex.ViewModel
         public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
+        public PortfolioViewModel PortfolioViewModel { get; set; }
 
         public IAtomexApp AtomexApp { get; private set; }
 
@@ -46,6 +47,7 @@ namespace atomex.ViewModel
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
+            PortfolioViewModel = new PortfolioViewModel(CurrenciesViewModel);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }
@@ -69,11 +71,6 @@ namespace atomex.ViewModel
 
             terminal.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
             terminal.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
-
-            //var account = terminal.Account;
-            //account.Locked += OnAccountLockChangedEventHandler;
-            //account.Unlocked += OnAccountLockChangedEventHandler;
-            //IsLocked = account.IsLocked;
         }
 
         private void OnTerminalServiceStateChangedEventHandler(object sender, TerminalServiceEventArgs args)

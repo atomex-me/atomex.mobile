@@ -6,6 +6,6 @@ namespace atomex
     public interface INavigationService
     {
         Task ConvertCurrency(string currencyCode);
-        void ShowCurrency(CurrencyViewModel currencyViewModel);
+        Task ShowCurrency(CurrencyViewModel currencyViewModel);
     }
 }
