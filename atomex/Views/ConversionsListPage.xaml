@@ -187,11 +187,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="{helpers:Translate CreateSwapButton}"
-                    Style="{DynamicResource MainButtonStyle}"
-                    VerticalOptions="End"
-                    Margin="20,0,20,20"
-                    Command="{Binding CreateNewSwapCommand}"/>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Spacing="0"
+                         Margin="20,0,20,20">
+                <Button Text="{helpers:Translate CreateSwapButton}"
+                        Style="{DynamicResource MainButtonStyle}"
+                        Command="{Binding CreateNewSwapCommand}"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

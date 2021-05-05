@@ -26,12 +26,14 @@ namespace atomex.ViewModel
             "#eb8b35",
             "#cdbba3",
             "#B8B6B9",
-            "#161f21",
             "#492b22",
+            "#972633",
             "#af7e68",
-            "#bcc1b7",
-            "#acaead",
-            "#5F4FA1"
+            "#213D68",
+            "#5F4FA1",
+            "#196457",
+            "#9E7327",
+            "#895700"
         };
 
         private decimal _portfolioValue;

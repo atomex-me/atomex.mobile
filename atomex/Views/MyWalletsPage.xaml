@@ -21,7 +21,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame Margin="0,5">
+                                <Frame Margin="0,3">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.SelectWalletCommand, Source={x:Reference BindingContextPage}}"
                                                               Tapped="OnItemTapped"
