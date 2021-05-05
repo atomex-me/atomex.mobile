@@ -4,15 +4,21 @@
              x:Class="atomex.SendPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
              Title="{helpers:Translate SendPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
                          Spacing="0">
                 <controls:CustomFrame CornerRadius="20,20,0,0"
-                                      x:Name="AddressFrame"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomFrame.GestureRecognizers>
@@ -48,6 +54,7 @@
                                        Padding="20,20,0,0"
                                        IsVisible="False"/>
                                 <Label x:Name="AddressHint"
+                                       Text="{helpers:Translate AddressEntryPlaceholder}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
@@ -56,6 +63,7 @@
                         </StackLayout>
                         <Button Text="{helpers:Translate PasteButton}"
                                 Clicked="OnPasteButtonClicked"
+                                Command="{Binding PasteCommand}"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 HorizontalOptions="End"/>
                         <ImageButton Source="Scan"
@@ -65,13 +73,12 @@
                                      VerticalOptions="Fill"
                                      Margin="0,10,20,10"
                                      BackgroundColor="Transparent"
-                                     Clicked="OnScanButtonClicked"/>
+                                     Command="{Binding ScanCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                              Margin="20,0,0,0"/>
-                <controls:CustomFrame x:Name="AmountFrame"
-                                      CornerRadius="0"
+                <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomFrame.GestureRecognizers>
@@ -83,16 +90,16 @@
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Amount"
-                                                      Placeholder="{helpers:Translate AmountEntryPlaceholder}"
+                                                      Placeholder="{Binding AmountEntryPlaceholderString}"
+                                                      Text="{Binding AmountString}"
                                                       Keyboard="Numeric"
-                                                      Focused="AmountEntryFocused"
-                                                      Unfocused="AmountEntryFocused"
                                                       TextChanged="OnAmountTextChanged"
                                                       Style="{DynamicResource CustomEntryStyle}"
                                                       Padding="20,0,0,0"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label x:Name="AmountHint"
+                                       Text="{Binding AmountEntryPlaceholderString}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
@@ -113,19 +120,19 @@
                                 HorizontalOptions="End"
                                 VerticalOptions="FillAndExpand"
                                 Style="{DynamicResource TransparentButtonStyle}"
-                                Clicked="OnSetMaxAmountButtonClicked"/>
+                                Clicked="OnSetMaxAmountButtonClicked"
+                                Command="{Binding MaxAmountCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                              Margin="20,0,0,0"/>
-                <StackLayout x:Name="FeeRateLayout"
-                             HeightRequest="60"
+                <StackLayout HeightRequest="60"
                              Padding="0"
                              Spacing="8"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"
                              HorizontalOptions="FillAndExpand"
                              Opacity="0.7"
-                             IsVisible="False">
+                             IsVisible="{Binding FeeRate, Mode=OneWay, FallbackValue=False, TargetNullValue=False}">
                     <Label Text="{helpers:Translate FeeRateLabel}"
                            Style="{DynamicResource EntryHintStyle}"
                            IsVisible="True"/>
@@ -139,7 +146,8 @@
                 <StackLayout Orientation="Horizontal"
                              x:Name="FeeLayout"
                              HeightRequest="60"
-                             Spacing="0">
+                             Spacing="0"
+                             IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFeeEntryTapped"/>
                     </StackLayout.GestureRecognizers>
@@ -158,7 +166,6 @@
                         </DataTrigger>
                     </StackLayout.Triggers>
                     <controls:CustomFrame HasShadow="False"
-                                          x:Name="FeeFrame"
                                           CornerRadius="0,0,20,20"
                                           Style="{DynamicResource EntryFrameStyle}">
                         <StackLayout Orientation="Horizontal"
@@ -166,16 +173,16 @@
                             <StackLayout HorizontalOptions="FillAndExpand">
                                 <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                     <Label x:Name="FeeHint"
+                                           Text="{Binding FeeEntryPlaceholderString}"
                                            Style="{DynamicResource EntryHintStyle}"
                                            VerticalTextAlignment="Center"
                                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                     <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                           x:Name="Fee"
+                                                          Text="{Binding FeeString}"
                                                           Keyboard="Numeric"
-                                                          Placeholder="{helpers:Translate FeeLabel}"
-                                                          Focused="FeeEntryFocused"
-                                                          Unfocused="FeeEntryFocused"
+                                                          Placeholder="{Binding FeeEntryPlaceholderString}"
                                                           TextChanged="OnFeeTextChanged"
                                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
@@ -213,9 +220,8 @@
                         </StackLayout>
                     </controls:CustomFrame>
                 </StackLayout>
-                <StackLayout x:Name="GasLayout"
-                             Padding="0"
-                             IsVisible="False">
+                <StackLayout Padding="0"
+                             IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                     <StackLayout Spacing="0">
                         <StackLayout Orientation="Horizontal"
                                      HeightRequest="60"
@@ -235,8 +241,7 @@
                                 </DataTrigger>
                             </StackLayout.Triggers>
                             <controls:CustomFrame CornerRadius="0"
-                                                  Style="{DynamicResource EntryFrameStyle}"
-                                                  x:Name="GasPriceFrame">
+                                                  Style="{DynamicResource EntryFrameStyle}">
                                 <StackLayout Spacing="0">
                                     <Label Text="{helpers:Translate GasPriceLabel}"
                                            Style="{DynamicResource EntryHintStyle}"
@@ -253,12 +258,9 @@
                                                  VerticalOptions="FillAndExpand">
                                         <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
                                                               Keyboard="Numeric"
-                                                              x:Name="GasPrice"
                                                               Text="{Binding FeePrice, StringFormat='{0:0.######}', Mode=TwoWay}"
                                                               HorizontalTextAlignment="Start"
-                                                              VerticalTextAlignment="Center"
-                                                              Focused="GasPriceEntryFocused"
-                                                              Unfocused="GasPriceEntryFocused">
+                                                              VerticalTextAlignment="Center">
                                             <controls:CustomEntry.Triggers>
                                                 <DataTrigger TargetType="controls:CustomEntry"
                                                              Binding="{Binding UseDefaultFee}"
@@ -367,7 +369,6 @@
                            HorizontalTextAlignment="Center"/>
                     <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                             IsToggled="{Binding UseDefaultFee}"
-                            Toggled="OnUseDefaultFeeToggled"
                             HorizontalOptions="EndAndExpand"/>
                 </StackLayout>
                 <Frame Style="{DynamicResource ErrorFrameStyle}">
@@ -384,10 +385,9 @@
                            HorizontalTextAlignment="Center"/>
                 </Frame>
                 <Button Text="{helpers:Translate NextButton}"
-                        x:Name="NextButton"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
-                        Clicked="OnNextButtonClicked"/>
+                        Command="{Binding NextCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

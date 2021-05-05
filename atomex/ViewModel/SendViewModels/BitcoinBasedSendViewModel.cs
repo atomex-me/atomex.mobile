@@ -2,11 +2,13 @@
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.Wallet.BitcoinBased;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -28,9 +30,15 @@ namespace atomex.ViewModel.SendViewModels
         {
         }
 
-        public override async Task UpdateAmount(decimal amount)
+        public override async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
+
+            if (amount == 0)
+            {
+                ResetSendValues(raiseOnPropertyChanged);
+                return;
+            }
 
             _amount = amount;
 
@@ -51,7 +59,8 @@ namespace atomex.ViewModel.SendViewModels
                         ? await AtomexApp.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
                         : 0;
 
-                    OnPropertyChanged(nameof(AmountString));
+                    if (raiseOnPropertyChanged)
+                        OnPropertyChanged(nameof(AmountString));
 
                     _fee = estimatedFeeAmount ?? Currency.GetDefaultFee();
                     OnPropertyChanged(nameof(FeeString));
@@ -68,7 +77,8 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
 
-                    OnPropertyChanged(nameof(AmountString));
+                    if (raiseOnPropertyChanged)
+                        OnPropertyChanged(nameof(AmountString));
 
                     Fee = _fee;
                 }
@@ -129,7 +139,10 @@ namespace atomex.ViewModel.SendViewModels
             catch { }
         }
 
-        public override async Task OnMaxClick()
+        private ICommand _maxAmountCommand;
+        public override ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
+        protected override async Task OnMaxClick()
         {
             Warning = string.Empty;
 
@@ -138,7 +151,7 @@ namespace atomex.ViewModel.SendViewModels
                 if (CurrencyViewModel.AvailableAmount == 0)
                     return;
 
-                if (UseDefaultFee) // auto fee
+                if (UseDefaultFee)
                 {
                     var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
                         .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output);
@@ -155,7 +168,7 @@ namespace atomex.ViewModel.SendViewModels
 
                     FeeRate = await BtcBased.GetFeeRateAsync();
                 }
-                else // manual fee
+                else
                 {
                     var availableAmount = CurrencyViewModel.AvailableAmount;
 

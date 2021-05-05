@@ -3,6 +3,7 @@ using System.IO;
 using System.Security;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel;
@@ -21,6 +22,8 @@ namespace atomex
     public class UnlockViewModel : BaseViewModel
     {
         public IAtomexApp AtomexApp { get; }
+
+        public INavigation Navigation { get; set; }
 
         private string _walletName;
         public string WalletName
@@ -63,10 +66,12 @@ namespace atomex
             }
         }
 
-        public UnlockViewModel(IAtomexApp app, WalletInfo wallet)
+        public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            WalletName = wallet.Name;
+            Navigation = navigation;
+            WalletName = wallet?.Name;
+            _ = BiometricAuth();
         }
 
         private SecureString GenerateSecureString(string str)
@@ -79,14 +84,17 @@ namespace atomex
             return secureString;
         }
 
-        public void SetPassword(string pswd)
+        private void SetPassword(string pswd)
         {
             SecureString secureString = GenerateSecureString(pswd);
             Password = secureString;
         }
 
-        private Command _unlockCommand;
-        public Command UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
+        private ICommand _unlockCommand;
+        public ICommand UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
+
+        private ICommand _textChangedCommand;
+        public ICommand TextChangedCommand => _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
 
         private async Task UnlockAsync()
         {
@@ -126,11 +134,14 @@ namespace atomex
                     WalletName,
                     WalletInfo.DefaultWalletFileName);
 
-                account = Account.LoadFromFile(
-                    walletPath,
-                    Password,
-                    AtomexApp.CurrenciesProvider,
-                    clientType);
+                account = await Task.Run(() =>
+                {
+                    return Account.LoadFromFile(
+                        walletPath,
+                        Password,
+                        AtomexApp.CurrenciesProvider,
+                        clientType);
+                });
 
                 if (account != null)
                 {
@@ -158,7 +169,7 @@ namespace atomex
 
         }
 
-        public async void BiometricAuth()
+        public async Task BiometricAuth()
         {
             try
             {
@@ -170,7 +181,7 @@ namespace atomex
                 if (isFingerprintAvailable)
                 {
                     AuthenticationRequestConfiguration conf = new AuthenticationRequestConfiguration(
-                            "Authentication",
+                            AppResources.Authentication,
                             AppResources.UseBiometric + $"'{WalletName}'");
 
                     var authResult = await CrossFingerprint.Current.AuthenticateAsync(conf);

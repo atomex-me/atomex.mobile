@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:converters="clr-namespace:atomex.Converters" xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.UnlockWalletPage"
              Title="{helpers:Translate UnlockTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
@@ -56,7 +56,13 @@
                                                   Style="{DynamicResource CustomEntryStyle}"
                                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                                                  TextChanged="OnPasswordTextChanged"/>
+                                                  TextChanged="OnPasswordTextChanged">
+                                <controls:CustomEntry.Behaviors>
+                                    <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                                      Command="{Binding TextChangedCommand}"
+                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                </controls:CustomEntry.Behaviors>
+                            </controls:CustomEntry>
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

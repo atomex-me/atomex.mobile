@@ -14,11 +14,9 @@
     <Color x:Key="UnselectedTabColor">Gray</Color>
 
     <Color x:Key="MainButtonBackgroundColor">#3a6cb1</Color>
-    <Color x:Key="MainButtonBorderColor">#3a6cb1</Color>
     <Color x:Key="MainButtonTextColor">#ffffff</Color>
 
     <Color x:Key="AdditionalButtonBackgroundColor">#ffffff</Color>
-    <Color x:Key="AdditionalButtonBorderColor">#909CB2</Color>
     <Color x:Key="AdditionalButtonTextColor">#223a66</Color>
 
     <Color x:Key="DisabledButtonBackgroundColor">LightGray</Color>
@@ -60,11 +58,9 @@
     <Color x:Key="UnselectedTabColorDark">#9dafbe</Color>
 
     <Color x:Key="MainButtonBackgroundColorDark">#2b5277</Color>
-    <Color x:Key="MainButtonBorderColorDark">#2b5277</Color>
     <Color x:Key="MainButtonTextColorDark">#f6f6f6</Color>
 
     <Color x:Key="AdditionalButtonBackgroundColorDark">#627A96</Color>
-    <Color x:Key="AdditionalButtonBorderColorDark">#627A96</Color>
     <Color x:Key="AdditionalButtonTextColorDark">#f6f6f6</Color>
 
     <Color x:Key="DisabledButtonBackgroundColorDark">#787878</Color>

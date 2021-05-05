@@ -31,15 +31,15 @@
                     <custom:CustomFrame Grid.RowSpan="3"
                                         Grid.ColumnSpan="3"
                                         CornerRadius="20,20,0,0"
-                                        Style="{DynamicResource EntryFrameStyle}"
-                                        x:Name="FromCurrencyFrame">
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <custom:CustomFrame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFromCurrencyPickerClicked"/>
+                        </custom:CustomFrame.GestureRecognizers>
                         <custom:CustomPicker ItemsSource="{Binding FromCurrencies}"
                                              ItemDisplayBinding="{Binding Currency.Description}"
                                              SelectedItem="{Binding FromCurrencyViewModel, Mode=TwoWay}"
                                              VerticalOptions="FillAndExpand"
                                              HorizontalOptions="FillAndExpand"
-                                             Focused="OnFromCurrencyPickerFocused"
-                                             Unfocused="OnFromCurrencyPickerFocused"
                                              TextColor="Transparent"
                                              x:Name="PickerFrom"/>
                     </custom:CustomFrame>
@@ -123,17 +123,17 @@
                     <custom:CustomFrame Grid.RowSpan="3"
                                         Grid.ColumnSpan="3"
                                         CornerRadius="0,0,20,20"
-                                        Style="{DynamicResource EntryFrameStyle}"
-                                        x:Name="ToCurrencyFrame">
-                        <custom:CustomPicker x:Name="PickerTo"
-                                             ItemsSource="{Binding ToCurrencies}"
+                                        Style="{DynamicResource EntryFrameStyle}">
+                        <custom:CustomFrame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnToCurrencyPickerClicked"/>
+                        </custom:CustomFrame.GestureRecognizers>
+                        <custom:CustomPicker ItemsSource="{Binding ToCurrencies}"
                                              ItemDisplayBinding="{Binding Currency.Description}"
                                              SelectedItem="{Binding ToCurrencyViewModel, Mode=TwoWay}"
                                              VerticalOptions="FillAndExpand"
                                              HorizontalOptions="FillAndExpand"
-                                             Focused="OnToCurrencyPickerFocused"
-                                             Unfocused="OnToCurrencyPickerFocused"
-                                             TextColor="Transparent"/>
+                                             TextColor="Transparent"
+                                             x:Name="PickerTo"/>
                     </custom:CustomFrame>
                     <Image Grid.Row="0"
                            Grid.RowSpan="3"
@@ -195,7 +195,7 @@
                         Margin="20"
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
-                        Clicked="OnNextButtonClicked"/>
+                        Command="{Binding AmoutPageCommand}"/>
             </StackLayout>
             <ImageButton Source="SwapArrows"
                          WidthRequest="40"
@@ -208,7 +208,7 @@
                          BorderColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0,Constant=110}"
                          RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=50}"
-                         Clicked="OnSwapCurrenciesClicked"/>
+                         Command="{Binding SwapCurrenciesCommand}"/>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

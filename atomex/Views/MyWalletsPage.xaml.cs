@@ -1,12 +1,11 @@
-﻿using atomex.Common;
+﻿using System;
 using Xamarin.Forms;
 
 namespace atomex
 {
     public partial class MyWalletsPage : ContentPage
     {
-
-        private MyWalletsViewModel _myWalletsViewModel;
+        Color selectedItemBackgroundColor;
 
         public MyWalletsPage()
         {
@@ -16,19 +15,31 @@ namespace atomex
         public MyWalletsPage(MyWalletsViewModel myWalletsViewModel)
         {
             InitializeComponent();
-            _myWalletsViewModel = myWalletsViewModel;
+
+            string selectedColorName = "ListViewSelectedBackgroundColor";
+
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+                selectedColorName = "ListViewSelectedBackgroundColorDark";
+
+            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
+            selectedItemBackgroundColor = (Color)selectedColor;
+
             BindingContext = myWalletsViewModel;
         }
 
-        private async void OnWalletTapped(object sender, ItemTappedEventArgs args)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
-            if (args.Item != null)
-            {
-                await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(_myWalletsViewModel.AtomexApp, args.Item as WalletInfo)));
-                var listView = sender as ListView;
-                if (listView != null)
-                    listView.SelectedItem = null;
-            }
+            Frame selectedItem = (Frame)sender;
+            selectedItem.IsEnabled = false;
+            Color initColor = selectedItem.BackgroundColor;
+
+            selectedItem.BackgroundColor = selectedItemBackgroundColor;
+
+            await selectedItem.ScaleTo(1.01, 50);
+            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+
+            selectedItem.BackgroundColor = initColor;
+            selectedItem.IsEnabled = true;
         }
     }
 }

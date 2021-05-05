@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.ConversionsListPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate SwapListPageTitle}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -37,11 +37,10 @@
                            HorizontalTextAlignment="Center"/>
                 </StackLayout>
             </StackLayout>
-        
             <ListView ItemsSource="{Binding GroupedSwaps}"
-                      ItemTapped="OnListViewItemTapped"
                       CachingStrategy="RetainElement"
                       IsGroupingEnabled="True"
+                      SelectionMode="None"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
@@ -90,7 +89,7 @@
                 </ListView.FooterTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                        <ViewCell>
                             <Grid Padding="8"
                                   RowSpacing="0"
                                   ColumnSpacing="0">
@@ -101,7 +100,12 @@
                                     <ColumnDefinition Width="1.5*" />
                                     <ColumnDefinition Width="6*" />
                                     <ColumnDefinition Width="2.5*" />
-                                </Grid.ColumnDefinitions> 
+                                </Grid.ColumnDefinitions>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectSwapCommand, Source={x:Reference BindingContextPage}}"
+                                                          Tapped="OnItemTapped"
+                                                          CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
                                 <RelativeLayout VerticalOptions="CenterAndExpand">
                                     <Image Source="{Binding FromCurrencyCode}"
                                            x:Name="FromCurrencyIcon"
@@ -179,15 +183,17 @@
                                            Text="{Binding State}"/>
                                 </Frame>  
                             </Grid>
-                        </custom:CustomViewCell>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="{helpers:Translate CreateSwapButton}"
-                    Style="{DynamicResource MainButtonStyle}"
-                    VerticalOptions="End"
-                    Margin="20,0,20,20"
-                    Clicked="OnCreateSwapButtonClicked"/>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Spacing="0"
+                         Margin="20,0,20,20">
+                <Button Text="{helpers:Translate CreateSwapButton}"
+                        Style="{DynamicResource MainButtonStyle}"
+                        Command="{Binding CreateNewSwapCommand}"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

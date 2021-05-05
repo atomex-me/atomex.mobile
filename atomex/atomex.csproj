@@ -41,6 +41,7 @@
     <Folder Include="ViewModel\ReceiveViewModels\" />
     <Folder Include="Converters\" />
     <Folder Include="Views\Popup\" />
+    <Folder Include="Behaviors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

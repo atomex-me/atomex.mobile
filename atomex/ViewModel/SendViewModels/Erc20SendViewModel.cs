@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Resources;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -108,13 +110,19 @@ namespace atomex.ViewModel.SendViewModels
                 _useDefaultFee = value;
                 OnPropertyChanged(nameof(UseDefaultFee));
 
-                Amount = _amount; // recalculate amount
+                _ = UpdateAmount(_amount);
             }
         }
 
-        public override async Task UpdateAmount(decimal amount)
+        public override async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
+
+            if (amount == 0)
+            {
+                ResetSendValues(raiseOnPropertyChanged);
+                return;
+            }
 
             var availableAmount = CurrencyViewModel.AvailableAmount;
             _amount = amount;
@@ -142,7 +150,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                OnPropertyChanged(nameof(AmountString));
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
 
                 UpdateTotalFeeString();
 
@@ -163,7 +172,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                OnPropertyChanged(nameof(AmountString));
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
 
                 if (_fee < Currency.GetDefaultFee() || _feePrice == 0)
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
@@ -221,7 +231,10 @@ namespace atomex.ViewModel.SendViewModels
             OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
         }
 
-        public override async Task OnMaxClick()
+        private ICommand _maxAmountCommand;
+        public override ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
+        protected override async Task OnMaxClick()
         {
             Warning = string.Empty;
 

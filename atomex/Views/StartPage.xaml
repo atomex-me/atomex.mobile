@@ -39,7 +39,7 @@
         </StackLayout>
         <StackLayout Style="{DynamicResource StartPageLanguageSwitcherStyle}">
             <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnLanguagesTapped"/>
+                <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}"/>
             </StackLayout.GestureRecognizers>
             <Image Source="{Binding Language.Code}"
                    VerticalOptions="Center"
@@ -57,7 +57,7 @@
             <Button Text="{helpers:Translate MyWalletsButton}"
                     Style="{DynamicResource MainButtonStyle}"
                     IsEnabled="{Binding HasWallets}"
-                    Clicked="ShowMyWalletsButtonClicked">
+                    Command="{Binding ShowMyWalletsCommand}">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button"
                                  Binding="{Binding HasWallets}"
@@ -81,10 +81,10 @@
             </Button>
             <Button Text="{helpers:Translate CreateNewWalletButton}"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="CreateNewWalletButtonClicked"/>
+                    Command="{Binding CreateNewWalletCommand}"/>
             <Button Text="{helpers:Translate RestoreWalletButton}"
                     Style="{DynamicResource MainButtonStyle}"
-                    Clicked="OnRestoreWalletButtonClicked"/>
+                    Command="{Binding RestoreWalletCommand}"/>
         </StackLayout>
     </RelativeLayout>
     

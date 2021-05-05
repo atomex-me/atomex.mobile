@@ -10,6 +10,7 @@ using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views.CreateSwap;
 using atomex.Helpers;
+using System.Threading.Tasks;
 
 namespace atomex
 {
@@ -18,15 +19,15 @@ namespace atomex
     [DesignTimeVisible(false)]
     public partial class MainPage : CustomTabbedPage, INavigationService
     {
-        private readonly NavigationPage navigationConversionPage;
+        private readonly NavigationPage NavigationConversionPage;
 
-        private readonly NavigationPage navigationWalletsListPage;
+        private readonly NavigationPage NavigationWalletsListPage;
 
-        private readonly NavigationPage navigationPortfolioPage;
+        private readonly NavigationPage NavigationPortfolioPage;
 
-        private readonly NavigationPage navigationSettingsPage;
+        private readonly NavigationPage NavigationSettingsPage;
 
-        public MainViewModel _mainViewModel { get; }
+        public MainViewModel MainViewModel { get; }
 
         public MainPage(MainViewModel mainViewModel)
         {
@@ -34,38 +35,43 @@ namespace atomex
 
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
 
-            _mainViewModel = mainViewModel;
+            MainViewModel = mainViewModel;
 
-            navigationPortfolioPage = new NavigationPage(new Portfolio(_mainViewModel.CurrenciesViewModel, this))
+            NavigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
             {
                 IconImageSource = "NavBarPortfolio",
                 Title = AppResources.PortfolioTab
             };
 
-            navigationWalletsListPage = new NavigationPage(new CurrenciesListPage(_mainViewModel.CurrenciesViewModel, _mainViewModel.AtomexApp, this))
+            NavigationWalletsListPage = new NavigationPage(new CurrenciesListPage(MainViewModel.CurrenciesViewModel))
             {
                 IconImageSource = "NavBarWallets",
                 Title = AppResources.WalletsTab
             };
 
-            navigationConversionPage = new NavigationPage(new ConversionsListPage(_mainViewModel.ConversionViewModel))
+            NavigationConversionPage = new NavigationPage(new ConversionsListPage(MainViewModel.ConversionViewModel))
             {
                 IconImageSource = "NavBarConversion",
                 Title = AppResources.ConversionTab
             };
 
-            navigationSettingsPage = new NavigationPage(new SettingsPage(_mainViewModel.SettingsViewModel, this))
+            NavigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
             {
                 IconImageSource = "NavBarSettings",
                 Title = AppResources.SettingsTab
             };
 
+            MainViewModel.SettingsViewModel.Navigation = NavigationSettingsPage.Navigation;
+            MainViewModel.CurrenciesViewModel.SetNavigation(NavigationWalletsListPage.Navigation, this);
+            MainViewModel.ConversionViewModel.Navigation = NavigationConversionPage.Navigation;
+            MainViewModel.PortfolioViewModel.NavigationService = this;
+
             SetAppTheme();
 
-            Children.Add(navigationPortfolioPage);
-            Children.Add(navigationWalletsListPage);
-            Children.Add(navigationConversionPage);
-            Children.Add(navigationSettingsPage);
+            Children.Add(NavigationPortfolioPage);
+            Children.Add(NavigationWalletsListPage);
+            Children.Add(NavigationConversionPage);
+            Children.Add(NavigationSettingsPage);
 
             mainViewModel.Locked += (s, a) =>
             {
@@ -80,10 +86,10 @@ namespace atomex
 
         public void LocalizeNavTabs()
         {
-            navigationPortfolioPage.Title = AppResources.PortfolioTab;
-            navigationWalletsListPage.Title = AppResources.WalletsTab;
-            navigationConversionPage.Title = AppResources.ConversionTab;
-            navigationSettingsPage.Title = AppResources.SettingsTab;
+            NavigationPortfolioPage.Title = AppResources.PortfolioTab;
+            NavigationWalletsListPage.Title = AppResources.WalletsTab;
+            NavigationConversionPage.Title = AppResources.ConversionTab;
+            NavigationSettingsPage.Title = AppResources.SettingsTab;
         }
 
         public void SetAppTheme()
@@ -100,32 +106,33 @@ namespace atomex
             }
 
             if (Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor))
-                navigationWalletsListPage.BarBackgroundColor =
-                navigationPortfolioPage.BarBackgroundColor =
-                navigationConversionPage.BarBackgroundColor =
-                navigationSettingsPage.BarBackgroundColor =
+                NavigationWalletsListPage.BarBackgroundColor =
+                NavigationPortfolioPage.BarBackgroundColor =
+                NavigationConversionPage.BarBackgroundColor =
+                NavigationSettingsPage.BarBackgroundColor =
                 (Color)navBarColor;
 
             if (Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor))
-                navigationWalletsListPage.BarTextColor =
-                navigationPortfolioPage.BarTextColor =
-                navigationConversionPage.BarTextColor =
-                navigationSettingsPage.BarTextColor =
+                NavigationWalletsListPage.BarTextColor =
+                NavigationPortfolioPage.BarTextColor =
+                NavigationConversionPage.BarTextColor =
+                NavigationSettingsPage.BarTextColor =
                 (Color)navBarTextColor;
 
             if (Application.Current.Resources.TryGetValue(tabBarBackgroundColorName, out var tabBarBackgroundColor))
-                navigationWalletsListPage.BackgroundColor =
-                navigationPortfolioPage.BackgroundColor =
-                navigationConversionPage.BackgroundColor =
-                navigationSettingsPage.BackgroundColor =
+                NavigationWalletsListPage.BackgroundColor =
+                NavigationPortfolioPage.BackgroundColor =
+                NavigationConversionPage.BackgroundColor =
+                NavigationSettingsPage.BackgroundColor =
                 (Color)tabBarBackgroundColor;
         }
 
         private void SignOut()
         {
-            _mainViewModel.SignOut();
-            StartViewModel startViewModel = new StartViewModel(_mainViewModel.AtomexApp);
+            MainViewModel.SignOut();
+            StartViewModel startViewModel = new StartViewModel(MainViewModel.AtomexApp);
             Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
+            startViewModel.Navigation = Application.Current.MainPage.Navigation;
 
             string navBarBackgroundColorName = "NavigationBarBackgroundColor";
             string navBarTextColorName = "NavigationBarTextColor";
@@ -144,24 +151,27 @@ namespace atomex
             ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
-        public void ConvertCurrency(string currencyCode)
+        public async Task ConvertCurrency(string currencyCode)
         {
-            if (navigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
+            if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
-                navigationConversionPage.Navigation.PopToRootAsync(false);
-                navigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
+                _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
+                await NavigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
 
-                CurrentPage = navigationConversionPage;
+                CurrentPage = NavigationConversionPage;
             }
         }
 
-        public void ShowCurrency(CurrencyViewModel currencyViewModel)
+        public async Task ShowCurrency(CurrencyViewModel currencyViewModel)
         {
-            navigationWalletsListPage.Navigation.PopToRootAsync(false);
-            navigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel, _mainViewModel.AtomexApp, this));
+            if (currencyViewModel != null)
+            {
+                _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
+                await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
 
-            CurrentPage = navigationWalletsListPage;
+                CurrentPage = NavigationWalletsListPage;
+            }
         }
     }
 }

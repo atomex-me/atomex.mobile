@@ -2,22 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.DelegationConfirmationPage"
              Title="{helpers:Translate ConfirmationLabel}"
              Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <ActivityIndicator x:Name="SendingLoader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                               BackgroundColor="Transparent"/>
-            <StackLayout x:Name="Content"
-                         VerticalOptions="FillAndExpand"
+                               BackgroundColor="Transparent"
+                               IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"/>
+            <StackLayout VerticalOptions="FillAndExpand"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                         Opacity="{Binding Opacity}">
                 <Label Text="{helpers:Translate WantToDelegate}"
                        FontFamily="{DynamicResource BlackFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -112,9 +119,9 @@
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
                     <Button Text="{helpers:Translate ConfirmButton}"
-                            x:Name="DelegateButton"
                             Style="{DynamicResource MainButtonStyle}"
-                            Clicked="OnDelegateButtonClicked"/>
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                            Command="{Binding DelegateCommand}"/>
                 </StackLayout>
             </StackLayout>
         </RelativeLayout>

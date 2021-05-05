@@ -2,26 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Atomex;
 using Atomex.Abstract;
-using Atomex.Common;
-using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class CurrenciesViewModel : BaseViewModel
     {
-        public event EventHandler QuotesUpdated;
-
         private IAtomexApp AtomexApp { get; }
 
-        private decimal _totalAmountInBase;
-        public decimal TotalAmountInBase
-        {
-            get => _totalAmountInBase;
-            set { _totalAmountInBase = value; OnPropertyChanged(nameof(TotalAmountInBase)); }
-        }
-
+        public INavigation Navigation { get; set; }
 
         private ICurrencies Currencies
         {
@@ -38,13 +30,16 @@ namespace atomex.ViewModel
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             CurrencyViewModels = new List<CurrencyViewModel>();
             _ = FillCurrenciesAsync(restore);
-            SubscribeToServices();
         }
 
-        private void SubscribeToServices()
+        public void SetNavigation(INavigation navigation, INavigationService navigationService = null)
         {
-            AtomexApp.QuotesProvider.QuotesUpdated += CurrencyUpdatedEventHandler;
-            CurrencyUpdatedEventHandler(this, EventArgs.Empty);
+            Navigation = navigation;
+            foreach (var c in CurrencyViewModels)
+            {
+                c.Navigation = navigation;
+                c.NavigationService = navigationService;
+            }
         }
 
         private async Task FillCurrenciesAsync(bool restore)
@@ -61,47 +56,24 @@ namespace atomex.ViewModel
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
                 };
                 CurrencyViewModels.Add(currency);
-                currency.CurrencyUpdated += CurrencyUpdatedEventHandler;
 
                 if (restore)
                     _ = currency.UpdateCurrencyAsync();
                 else
                 {
                     _ = currency.UpdateBalanceAsync();
-                    _ = currency.LoadTransactionsAsync();
+                    _ = currency.UpdateTransactionsAsync();
                 }
             }));
         }
 
-        private void CurrencyUpdatedEventHandler(object sender, EventArgs e)
+        private ICommand _selectCurrencyCommand;
+        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<CurrencyViewModel>(async (value) => await OnCurrencyTapped(value));
+
+        private async Task OnCurrencyTapped(CurrencyViewModel currency)
         {
-            try
-            {
-                decimal totalAmount = 0;
-                foreach (var c in CurrencyViewModels)
-                {
-                    var quote = AtomexApp.QuotesProvider.GetQuote(c.CurrencyCode, c.BaseCurrencyCode);
-                    c.Price = quote.Bid;
-                    c.AmountInBase = c.TotalAmount * quote.Bid;
-                    totalAmount += c.AmountInBase;
-                }
-
-                TotalAmountInBase = totalAmount;
-
-                if (TotalAmountInBase != 0)
-                {
-                    foreach (var c in CurrencyViewModels)
-                    {
-                        c.PortfolioPercent = (float)(c.AmountInBase / TotalAmountInBase * 100);
-                    }
-                }
-
-                QuotesUpdated?.Invoke(this, EventArgs.Empty);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "CurrencyUpdatedEventHandler error");
-            }
+            if (currency != null)
+                await Navigation.PushAsync(new CurrencyPage(currency));
         }
     }
 }

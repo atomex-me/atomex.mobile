@@ -5,19 +5,21 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             x:Name="BindingContextPage"
              Title="{Binding Currency.Description}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ListView ItemsSource="{Binding GroupedTransactions}"
-              ItemTapped="OnListViewItemTapped"
               Style="{DynamicResource TxListViewStyle}"
+              SelectionMode="None"
               CachingStrategy="RetainElement"
-              Refreshing="UpdateCurrency"
-              x:Name="TxListView"
+              RefreshCommand="{Binding UpdateCurrencyCommand}"
+              IsRefreshing="{Binding IsLoading}"
               Footer="">
         <ListView.Header>
             <StackLayout Spacing="0"
@@ -26,9 +28,9 @@
                     <Image Style="{DynamicResource CurrencyIconStyle}"
                            Source="{Binding CurrencyCode}"/>
                     <Label Text="{Binding AvailableAmount}"
-                           x:Name="AvailableAmountLabel"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           HorizontalOptions="Center">
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"
@@ -41,42 +43,40 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label x:Name="AvailableAmountInBaseLabel"
-                           FontFamily="{DynamicResource RegularFont}"
+                    <Label FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="Start"
-                           HorizontalOptions="Center">
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding AmountInBase, StringFormat='{0:0.##}'}"/>
+                                <Span Text="{Binding AvailableAmountInBase, StringFormat='{0:0.##}'}"/>
                                 <Span Text=" $"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label x:Name="RefreshLabel"
-                           Text="{helpers:Translate BalanceUpdatingLabel}"
-                           Style="{DynamicResource RefreshLabelStyle}"/>
+                    <Label Text="{helpers:Translate BalanceUpdatingLabel}"
+                           Style="{DynamicResource RefreshLabelStyle}"
+                           IsVisible="{Binding IsLoading}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
                         <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Clicked="ShowSendPage"/>
+                                                    Command="{Binding SendPageCommand}"/>
                         <Button Text="{helpers:Translate ReceiveButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Clicked="ShowReceivePage"/>
+                                Command="{Binding ReceivePageCommand}"/>
                         <Button Text="{helpers:Translate DelegateButton}"
-                                x:Name="DelegateButton"
-                                IsVisible="false"
+                                IsVisible="{Binding IsStakingAvailable}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Clicked="ShowDelegationPage"/>
+                                Command="{Binding StakingPageCommand}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ConvertButton}"
                                                         Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                        Clicked="ShowConversionPage"/>
+                                                        Command="{Binding ConvertPageCommand}"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <StackLayout IsVisible="False"
-                             x:Name="NoTxsLayout"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                              VerticalOptions="FillAndExpand">
                     <StackLayout.Triggers>
@@ -102,18 +102,19 @@
                                     Margin="20">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                x:Name="UpdateButton"
+                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="80"
                                 RelativeLayout.HeightConstraint="40"
-                                Clicked="UpdateCurrency"/>
-                        <ActivityIndicator x:Name="Loader"
-                                            RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
-	             	                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
-                                            RelativeLayout.WidthConstraint="20"
-                                            RelativeLayout.HeightConstraint="20"
-                                            BackgroundColor="Transparent"
-                                            Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
+                                Command="{Binding UpdateCurrencyCommand}"/>
+                        <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                           RelativeLayout.WidthConstraint="20"
+                                           RelativeLayout.HeightConstraint="20"
+                                           BackgroundColor="Transparent"
+                                           IsVisible="{Binding IsLoading}"
+                                           IsRunning="{Binding IsLoading}"
+                                           Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
                     </RelativeLayout>
                 </StackLayout>
             </StackLayout>
@@ -138,11 +139,16 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                <ViewCell>
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
                           VerticalOptions="Center"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.SelectTransactionCommand, Source={x:Reference BindingContextPage}}"
+                                                  Tapped="OnTxItemTapped"
+                                                  CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -590,7 +596,7 @@
                                Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
-                </controls:CustomViewCell>
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

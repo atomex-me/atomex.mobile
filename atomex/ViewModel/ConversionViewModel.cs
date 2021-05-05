@@ -18,6 +18,8 @@ using Atomex.Swaps;
 using Atomex.Abstract;
 using atomex.Resources;
 using Atomex.Swaps.Helpers;
+using System.Windows.Input;
+using atomex.Views.CreateSwap;
 
 namespace atomex.ViewModel
 {
@@ -43,6 +45,8 @@ namespace atomex.ViewModel
 
         protected IAtomexApp AtomexApp { get; }
         private IAtomexClient Terminal { get; set;  }
+
+        public INavigation Navigation { get; set; }
 
         private static TimeSpan SWAP_TIMEOUT = TimeSpan.FromSeconds(60);
 
@@ -149,6 +153,22 @@ namespace atomex.ViewModel
         {
             get => _amount;
             set { _ = UpdateAmountAsync(value); }
+        }
+
+        public string AmountString
+        {
+            get => Amount.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
+                {
+                    ResetSwapValues(raiseOnPropertyChanged: false);
+                    return;
+                }
+
+                _ = UpdateAmountAsync(amount, raiseOnPropertyChanged: false);
+            }
         }
 
         private decimal _amountInBase;
@@ -336,13 +356,49 @@ namespace atomex.ViewModel
             }
         }
 
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
         public void SetFromCurrency(string currencyCode)
         {
-            FromCurrencyViewModel = _currencyViewModels.
-                Where(c => c.CurrencyCode == currencyCode).First();
+            try
+            {
+                FromCurrencyViewModel = _currencyViewModels.
+                    Where(c => c.CurrencyCode == currencyCode).Single();
+            }
+            catch
+            {
+                FromCurrencyViewModel = _currencyViewModels.First();
+            }
         }
 
         public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
+
+        public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
 
         public ConversionViewModel(IAtomexApp app)
         {
@@ -409,6 +465,104 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "FillCurrenciesAsync error");
             }
+        }
+
+        private ICommand _selectSwapCommand;
+        public ICommand SelectSwapCommand => _selectSwapCommand ??= new Command<SwapViewModel>(async (value) => await OnSwapTapped(value));
+
+        private ICommand _createNewSwapCommand;
+        public ICommand CreateNewSwapCommand => _createNewSwapCommand ??= new Command(async () => await OnCreateSwapButtonClicked());
+
+        private ICommand _amoutPageCommand;
+        public ICommand AmoutPageCommand => _amoutPageCommand ??= new Command(async () => await ShowAmountPage());
+
+        private ICommand _swapCurrenciesCommand;
+        public ICommand SwapCurrenciesCommand => _swapCurrenciesCommand ??= new Command(() => SwapCurrencies());
+
+        private ICommand _confirmationPageCommand;
+        public ICommand ConfirmationPageCommand => _confirmationPageCommand ??= new Command(async () => await ShowConfirmationPage());
+
+        private ICommand _maxAmountCommand;
+        public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
+        private ICommand _totalFeeCommand;
+        public ICommand TotalFeeCommand => _totalFeeCommand ??= new Command(async () => await OnTotalFeeTapped());
+
+        private ICommand _convertCommand;
+        public ICommand ConvertCommand => _convertCommand ??= new Command(async () => await OnConvertButtonClicked());
+        
+        private async Task OnTotalFeeTapped()
+        {
+            string message = string.Format(
+                   CultureInfo.InvariantCulture,
+                   AppResources.TotalNetworkFeeDetail,
+                   AppResources.PaymentFeeLabel,
+                   FormattableString.Invariant($"{EstimatedPaymentFee} {FromCurrencyViewModel.FeeCurrencyCode}"),
+                   FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
+                   HasRewardForRedeem ?
+                       AppResources.RewardForRedeemLabel :
+                       AppResources.RedeemFeeLabel,
+                   HasRewardForRedeem ?
+                       FormattableString.Invariant($"{RewardForRedeem} {ToCurrencyViewModel.FeeCurrencyCode}") :
+                       FormattableString.Invariant($"{EstimatedRedeemFee} {ToCurrencyViewModel.FeeCurrencyCode}"),
+                   HasRewardForRedeem ?
+                       FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}") :
+                       FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
+                   AppResources.MakerFeeLabel,
+                   FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromCurrencyViewModel.CurrencyCode}"),
+                   FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                   AppResources.TotalNetworkFeeLabel,
+                   FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
+
+            await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
+        }
+
+        private async Task ShowConfirmationPage()
+        {
+            if (String.IsNullOrWhiteSpace(Amount.ToString()))
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.EnterAmountLabel, AppResources.AcceptButton);
+                return;
+            }
+
+            if (IsNoLiquidity)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NoLiquidityError, AppResources.AcceptButton);
+                return;
+            }
+
+            if (Amount <= 0)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.AmountLessThanZeroError, AppResources.AcceptButton);
+                return;
+            }
+
+            await Navigation.PushAsync(new ConfirmationPage(this));
+        }
+
+        private void SwapCurrencies()
+        {
+            CurrencyViewModel temp = FromCurrencyViewModel;
+            FromCurrencyViewModel = ToCurrencyViewModel;
+            ToCurrencyViewModel = temp;
+        }
+
+        private async Task ShowAmountPage()
+        {
+            Amount = 0;
+            Warning = string.Empty;
+            await Navigation.PushAsync(new AmountPage(this));
+        }
+
+        private async Task OnCreateSwapButtonClicked()
+        {
+            await Navigation.PushAsync(new CurrenciesPage(this));
+        }
+
+        private async Task OnSwapTapped(SwapViewModel swap)
+        {
+            if (swap != null)
+                await Navigation.PushAsync(new SwapInfoPage(swap));
         }
 
         private async Task UpdateSwaps()
@@ -550,7 +704,34 @@ namespace atomex.ViewModel
             TargetAmountInBase = _targetAmount * (quote?.Bid ?? 0m);
         }
 
-        public async Task<Error> ConvertAsync()
+        private async Task OnConvertButtonClicked()
+        {
+            IsLoading = true;
+            var error = await ConvertAsync();
+
+            if (error != null)
+            {
+                IsLoading = false;
+                if (error.Code == Errors.PriceHasChanged)
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.PriceChanged, error.Description, AppResources.AcceptButton);
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                }
+                return;
+            }
+            IsLoading = false;
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, AppResources.SwapCreated, null, AppResources.AcceptButton);
+            if (!res)
+            {
+                Amount = 0;
+                await Navigation.PopToRootAsync();
+            }
+        }
+
+        private async Task<Error> ConvertAsync()
         {
             try
             {
@@ -670,40 +851,49 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            await UpdateAmountAsync(decimal.MaxValue);
+            await UpdateAmountAsync(decimal.MaxValue, onMaxClick: true);
         }
 
-        public virtual async Task UpdateAmountAsync(decimal value)
+        private void ResetSwapValues(bool raiseOnPropertyChanged = true)
+        {
+            _amount = 0;
+            OnPropertyChanged(nameof(Amount));
+
+            if (raiseOnPropertyChanged)
+                OnPropertyChanged(nameof(AmountString));
+
+            AmountInBase = 0;
+
+            TargetAmount = 0;
+
+            TargetAmountInBase = 0;
+
+            EstimatedTotalNetworkFeeInBase = 0;
+
+            EstimatedPaymentFee = 0;
+
+            EstimatedPaymentFeeInBase = 0;
+
+            EstimatedRedeemFee = 0;
+
+            EstimatedRedeemFeeInBase = 0;
+
+            EstimatedMakerNetworkFee = 0;
+
+            EstimatedMakerNetworkFeeInBase = 0;
+        }
+
+        public virtual async Task UpdateAmountAsync(decimal value, bool raiseOnPropertyChanged = true, bool onMaxClick = false)
         {
             Warning = string.Empty;
+
+            CanConvert = true;
 
             try
             {
                 if (value == 0)
                 {
-                    _amount = 0;
-                    OnPropertyChanged(nameof(Amount));
-
-                    AmountInBase = 0;
-
-                    TargetAmount = 0;
-
-                    TargetAmountInBase = 0;
-
-                    EstimatedTotalNetworkFeeInBase = 0;
-
-                    EstimatedPaymentFee = 0;
-
-                    EstimatedPaymentFeeInBase = 0;
-
-                    EstimatedRedeemFee = 0;
-
-                    EstimatedRedeemFeeInBase = 0;
-
-                    EstimatedMakerNetworkFee = 0;
-
-                    EstimatedMakerNetworkFeeInBase = 0;
-
+                    ResetSwapValues(raiseOnPropertyChanged);
                     return;
                 }
 
@@ -732,11 +922,23 @@ namespace atomex.ViewModel
                     Warning = string.Empty;
                 }
 
+                if (value > swapParams.Amount && !onMaxClick)
+                {
+                    Warning = AppResources.InsufficientFunds;
+                    ResetSwapValues(raiseOnPropertyChanged : false);
+                    CanConvert = false;
+                    return;
+                }
+
                 _amount = swapParams.Amount;
                 _estimatedPaymentFee = swapParams.PaymentFee;
                 _estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
 
                 OnPropertyChanged(nameof(Amount));
+
+                if (raiseOnPropertyChanged)
+                    OnPropertyChanged(nameof(AmountString));
+
                 OnPropertyChanged(nameof(EstimatedPaymentFee));
                 OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
 

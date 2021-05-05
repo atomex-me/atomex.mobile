@@ -1,4 +1,4 @@
-﻿using atomex.Models;
+﻿using System;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -6,8 +6,7 @@ namespace atomex
 {
     public partial class DelegationsListPage : ContentPage
     {
-
-        private DelegateViewModel _delegateViewModel;
+        Color selectedItemBackgroundColor;
 
         public DelegationsListPage()
         {
@@ -17,21 +16,30 @@ namespace atomex
         public DelegationsListPage(DelegateViewModel delegateViewModel)
         {
             InitializeComponent();
-            _delegateViewModel = delegateViewModel;
             BindingContext = delegateViewModel;
+
+            string selectedColorName = "ListViewSelectedBackgroundColor";
+
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+                selectedColorName = "ListViewSelectedBackgroundColorDark";
+
+            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
+            selectedItemBackgroundColor = (Color)selectedColor;
         }
 
-        private async void OnDelegationTapped(object sender, ItemTappedEventArgs args)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
-            var delegation = args.Item as Delegation;
-            if (delegation.Baker == null)
-                await Navigation.PushAsync(new DelegatePage(_delegateViewModel, delegation.Address));
-            else
-                await Navigation.PushAsync(new DelegationInfoPage(_delegateViewModel, delegation));
+            Frame selectedItem = (Frame)sender;
+            selectedItem.IsEnabled = false;
+            Color initColor = selectedItem.BackgroundColor;
 
-            var listView = sender as ListView;
-            if (listView != null)
-                listView.SelectedItem = null;
+            selectedItem.BackgroundColor = selectedItemBackgroundColor;
+
+            await selectedItem.ScaleTo(1.01, 50);
+            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+
+            selectedItem.BackgroundColor = initColor;
+            selectedItem.IsEnabled = true;
         }
     }
 }

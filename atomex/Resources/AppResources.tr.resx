@@ -116,6 +116,9 @@
     <data name="UnlockButton" xml:space="preserve">
         <value>Engeli kaldırmak</value>
     </data>
+    <data name="Authentication" xml:space="preserve">
+        <value>Doğrulama</value>
+    </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Oturum açmak için biyometrik kimlik doğrulama kullanın</value>
     </data>

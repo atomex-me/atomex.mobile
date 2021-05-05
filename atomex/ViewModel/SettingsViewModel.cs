@@ -7,11 +7,13 @@ using System.Linq;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Helpers;
 using atomex.Models;
 using atomex.Resources;
 using atomex.Views.Popup;
+using atomex.Views.SettingsOptions;
 using Atomex;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
@@ -27,9 +29,21 @@ namespace atomex.ViewModel
     {
         public IAtomexApp AtomexApp { get; private set; }
 
+        public INavigation Navigation { get; set; }
+
+        public MainViewModel MainViewModel { get; }
+
         public UserSettings Settings { get; }
 
         private const string LanguageKey = nameof(LanguageKey);
+
+        private string YoutubeUrl = "https://www.youtube.com/c/BakingBad";
+
+        private string TwitterUrl = "https://twitter.com/atomex_official";
+
+        private string TelegramUrl = "https://t.me/atomex_official";
+
+        private string SupportUrl = "mailto:support@atomex.me";
 
         private float _opacity = 1f;
         public float Opacity
@@ -101,7 +115,7 @@ namespace atomex.ViewModel
 
                 _language = value;
 
-                ChangeLanguage(_language);
+                SetCulture(_language);
 
                 _language.IsActive = true;
 
@@ -134,13 +148,14 @@ namespace atomex.ViewModel
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
-        public SettingsViewModel(IAtomexApp app, string walletName)
+        public SettingsViewModel(IAtomexApp app, MainViewModel mainViewModel, string walletName)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             SetUserLanguage();
             Settings = app.Account.UserSettings;
             WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
+            MainViewModel = mainViewModel;
             _ = CheckBiometricSensor();
             _ = ResetUseBiometricSetting();
         }
@@ -256,8 +271,16 @@ namespace atomex.ViewModel
             }
         }
 
-        private Command _enableBiometricCommand;
-        public Command EnableBiometricCommand => _enableBiometricCommand ??= new Command<string>(async (value) => await EnableBiometric(value));
+        private void ClearWarning()
+        {
+            Warning = string.Empty;
+        }
+
+        private ICommand _pswdChangedCommand;
+        public ICommand PswdChangedCommand => _pswdChangedCommand ??= new Command<string>((value) => SetPassword(value));
+
+        private ICommand _enableBiometricCommand;
+        public ICommand EnableBiometricCommand => _enableBiometricCommand ??= new Command<string>(async (value) => await EnableBiometric(value));
 
         private async Task EnableBiometric(string pswd)
         {
@@ -295,7 +318,7 @@ namespace atomex.ViewModel
             SetPassword(string.Empty);
             Warning = string.Empty;
             _ = ResetUseBiometricSetting();
-            _ = Application.Current.MainPage.Navigation.PopPopupAsync();
+            _ = Navigation.PopPopupAsync();
         }
 
         async Task CheckBiometricSensor()
@@ -304,18 +327,25 @@ namespace atomex.ViewModel
             BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
         }
 
-        //private Command _showLanguagesCommand;
-        //public Command ShowLanguagesCommand => _showLanguagesCommand ??= new Command(() => ShowLanguages());
+        private ICommand _clearWarningCommand;
+        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => ClearWarning());
 
-        //private async void ShowLanguages()
-        //{
-        //    var optionsPage = new LanguagesPage(this, selected =>
-        //    {
-        //        Language = selected;
-        //    });
+        private ICommand _showLanguagesCommand;
+        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());
 
-        //    await Application.Current.MainPage. Navigation.PushAsync(optionsPage);
-        //}
+        private ICommand _changeLanguageCommand;
+        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
+
+        async Task ShowLanguages()
+        {
+            await Navigation.PushAsync(new LanguagesPage(this));
+        }
+
+        async Task ChangeLanguage(Language value)
+        {
+            Language = value;
+            await Navigation.PopAsync();
+        }
 
         private void SetUserLanguage()
         {
@@ -330,10 +360,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private Command _changeLanguageCommand;
-        public Command ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>((value) => ChangeLanguage(value));
-
-        private void ChangeLanguage(Language language)
+        private void SetCulture(Language language)
         {
             try
             {
@@ -343,6 +370,69 @@ namespace atomex.ViewModel
             {
                 LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
             }
+        }
+
+
+        private ICommand _youtubeCommand;
+        public ICommand YoutubeCommand => _youtubeCommand ??= new Command( () => OnYoutubeTapped());
+
+        private ICommand _telegramCommand;
+        public ICommand TelegramCommand => _telegramCommand ??= new Command(() => OnTelegramTapped());
+
+        private ICommand _twitterCommand;
+        public ICommand TwitterCommand => _twitterCommand ??= new Command(() => OnTwitterTapped());
+
+        private ICommand _supportCommand;
+        public ICommand SupportCommand => _supportCommand ??= new Command(() => OnSupportTapped());
+
+        private ICommand _signOutCommand;
+        public ICommand SignOutCommand => _signOutCommand ??= new Command(() => SignOut());
+
+        private ICommand _deleteWalletCommand;
+        public ICommand DeleteWalletCommand => _deleteWalletCommand ??= new Command<string>((name) => OnWalletTapped(name));
+
+        private async void SignOut()
+        {
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
+            if (res)
+                MainViewModel.Locked.Invoke(this, EventArgs.Empty);
+        }
+
+        private async void OnWalletTapped(string name)
+        {
+            WalletInfo selectedWallet = Wallets.Where(w => w.Name == name).Single();
+
+            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
+            if (confirm)
+            {
+                var confirm2 = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+                if (confirm2)
+                {
+                    DeleteWallet(selectedWallet.Path);
+                    if (AtomexApp.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
+                        MainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        private void OnYoutubeTapped()
+        {
+            Launcher.OpenAsync(new Uri(YoutubeUrl));
+        }
+
+        private void OnTwitterTapped()
+        {
+            Launcher.OpenAsync(new Uri(TwitterUrl));
+        }
+
+        private void OnSupportTapped()
+        {
+            Launcher.OpenAsync(new Uri(SupportUrl));
+        }
+
+        private void OnTelegramTapped()
+        {
+            Launcher.OpenAsync(new Uri(TelegramUrl));
         }
     }
 }

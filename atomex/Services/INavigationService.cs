@@ -1,10 +1,11 @@
-﻿using atomex.ViewModel;
+﻿using System.Threading.Tasks;
+using atomex.ViewModel;
 
 namespace atomex
 {
     public interface INavigationService
     {
-        void ConvertCurrency(string currencyCode);
-        void ShowCurrency(CurrencyViewModel currencyViewModel);
+        Task ConvertCurrency(string currencyCode);
+        Task ShowCurrency(CurrencyViewModel currencyViewModel);
     }
 }

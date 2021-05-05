@@ -4,6 +4,7 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.SettingsPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate SettingsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
@@ -52,7 +53,7 @@
                        Style="{DynamicResource EntryFrameStyle}"
                        Margin="0,0,0,20">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLanguagesTapped"/>
+                        <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}"/>
                     </Frame.GestureRecognizers>
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal">
@@ -94,7 +95,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Source="ic_telegram"
@@ -107,7 +108,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTelegramTapped"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -124,7 +125,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="2"
@@ -139,7 +140,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTwitterTapped"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -157,7 +158,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="4"
@@ -172,7 +173,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnYoutubeTapped"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -190,7 +191,7 @@
                                         Grid.ColumnSpan="3"
                                         Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}"/>
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
                     <Image Grid.Row="6"
@@ -205,7 +206,7 @@
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnSupportTapped"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
@@ -227,7 +228,7 @@
                     <Button Text="{helpers:Translate SignOut}"
                             Style="{DynamicResource TransparentButtonStyle}"
                             CornerRadius="10"
-                            Clicked="OnSignOutButtonClicked"/>
+                            Command="{Binding SignOutCommand}"/>
                 </custom:CustomFrame>
                 <Label Text="{helpers:Translate WalletsSection}"
                        FontFamily="{DynamicResource LightFont}"
@@ -247,7 +248,7 @@
                                 <StackLayout Orientation="Horizontal"
                                              HeightRequest="40">
                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding Name}" Tapped="OnWalletTapped"/>
+                                        <TapGestureRecognizer CommandParameter="{Binding Name}" Command="{Binding BindingContext.DeleteWalletCommand, Source={x:Reference BindingContextPage}}"/>
                                     </StackLayout.GestureRecognizers>
                                     <Image WidthRequest="20"
                                            HeightRequest="20"

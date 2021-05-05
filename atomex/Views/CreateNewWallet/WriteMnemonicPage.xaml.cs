@@ -5,8 +5,6 @@ namespace atomex.Views.CreateNewWallet
 {
     public partial class WriteMnemonicPage : ContentPage
     {
-        private CreateNewWalletViewModel _createNewWalletViewModel;
-
         public WriteMnemonicPage()
         {
             InitializeComponent();
@@ -14,14 +12,12 @@ namespace atomex.Views.CreateNewWallet
         public WriteMnemonicPage(CreateNewWalletViewModel createNewWalletViewModel)
         {
             InitializeComponent();
-            _createNewWalletViewModel = createNewWalletViewModel;
             BindingContext = createNewWalletViewModel;
         }
 
         private void OnPickerFocused(object sender, FocusEventArgs args)
         {
             PickerFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
         }
 
         private void OnPickerClicked(object sender, EventArgs args)
@@ -32,7 +28,6 @@ namespace atomex.Views.CreateNewWallet
         private void OnEditorFocused(object sender, FocusEventArgs args)
         {
             EditorFrame.HasShadow = args.IsFocused;
-            _createNewWalletViewModel.Warning = string.Empty;
 
             if (args.IsFocused)
             {
@@ -52,19 +47,13 @@ namespace atomex.Views.CreateNewWallet
             }
         }
 
-        private async void OnNextButtonClicked(object sender, EventArgs args)
-        {
-            _createNewWalletViewModel.WriteMnemonic();
-
-            if (_createNewWalletViewModel.Warning != string.Empty)
-                return;
-
-            await Navigation.PushAsync(new WriteDerivedKeyPasswordPage(_createNewWalletViewModel));
-        }
-
         protected override void OnDisappearing()
         {
-            _createNewWalletViewModel.Warning = string.Empty;
+            var vm = (CreateNewWalletViewModel)BindingContext;
+            if (vm.ClearWarningCommand.CanExecute(null))
+            {
+                vm.ClearWarningCommand.Execute(null);
+            }
             base.OnDisappearing();
         }
     }

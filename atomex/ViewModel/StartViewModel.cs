@@ -3,20 +3,28 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Helpers;
 using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel;
+using atomex.Views.CreateNewWallet;
+using atomex.Views.SettingsOptions;
 using Atomex;
+using Plugin.LatestVersion;
 using Serilog;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex
 {
     public class StartViewModel : BaseViewModel
     {
         public IAtomexApp AtomexApp { get; private set; }
+
+        public INavigation Navigation { get; set; }
 
         private const string LanguageKey = nameof(LanguageKey);
 
@@ -41,7 +49,7 @@ namespace atomex
 
                 _language = value;
 
-                ChangeLanguage(_language);
+                SetCulture(_language);
 
                 _language.IsActive = true;
 
@@ -56,7 +64,7 @@ namespace atomex
             new Language { Name = "Türk", Code = "tr", ShortName = "Tur", IsActive = false }
         };
 
-        private void ChangeLanguage(Language language)
+        private void SetCulture(Language language)
         {
             try
             {
@@ -75,6 +83,7 @@ namespace atomex
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             HasWallets = WalletInfo.AvailableWallets().Count() > 0;
             SetUserLanguage();
+            _ = CheckLatestVersion();
         }
 
         private void SetUserLanguage()
@@ -90,6 +99,64 @@ namespace atomex
                 LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
                 Language = Languages.Where(l => l.Code == "en").Single();
                 Log.Error(e, "Not found user language error");
+            }
+        }
+
+        private ICommand _createNewWalletCommand;
+        public ICommand CreateNewWalletCommand => _createNewWalletCommand ??= new Command(async () => await CreateNewWallet());
+
+        private ICommand _restoreWalletCommand;
+        public ICommand RestoreWalletCommand => _restoreWalletCommand ??= new Command(async () => await RestoreWallet());
+
+        private ICommand _showMyWalletsCommand;
+        public ICommand ShowMyWalletsCommand => _showMyWalletsCommand ??= new Command(async () => await ShowMyWallets());
+
+        private ICommand _showLanguagesCommand;
+        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());
+
+        private ICommand _changeLanguageCommand;
+        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
+
+        private async Task CreateNewWallet()
+        {
+            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
+            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
+            await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
+        }
+
+        private async Task RestoreWallet()
+        {
+            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
+            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
+            await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
+        }
+
+        private async Task ShowMyWallets()
+        {
+            await Navigation.PushAsync(new MyWalletsPage(new MyWalletsViewModel(AtomexApp, Navigation)));
+        }
+
+        private async Task ShowLanguages()
+        {
+            await Navigation.PushAsync(new LanguagesPage(this));
+        }
+
+        private async Task ChangeLanguage(Language value)
+        {
+            Language = value;
+            await Navigation.PopAsync();
+        }
+
+        private async Task CheckLatestVersion()
+        {
+            var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
+
+            if (!isLatest)
+            {
+                var update = await Application.Current.MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
+
+                if (update)
+                    await CrossLatestVersion.Current.OpenAppInStore();
             }
         }
     }

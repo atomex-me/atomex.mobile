@@ -2,15 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.CurrenciesListPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate WalletsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding CurrencyViewModels}"
+                  SelectionMode="None"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
-                  ItemTapped="OnListViewItemTapped"
                   SeparatorVisibility="Default"
                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
@@ -18,7 +18,7 @@
                   Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                    <ViewCell>
                         <Grid ColumnSpacing="0"
                               RowSpacing="0">
                             <Grid.RowDefinitions>
@@ -30,6 +30,11 @@
                                 <ColumnDefinition Width="4*" />
                                 <ColumnDefinition Width="4*" />
                             </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.SelectCurrencyCommand, Source={x:Reference BindingContextPage}}"
+                                                      Tapped="OnItemTapped"
+                                                      CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
                             <Image Grid.RowSpan="2"
                                    WidthRequest="40"
                                    HeightRequest="40"
@@ -71,7 +76,7 @@
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Row="1"
                                    Grid.Column="2"
-                                   Text="{Binding AmountInBase, StringFormat='{0:f2} $'}"
+                                   Text="{Binding AvailableAmountInBase, StringFormat='{0:f2} $'}"
                                    FontFamily="{DynamicResource LightFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontSize="10"
@@ -79,7 +84,7 @@
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="End" />
                         </Grid>
-                    </custom:CustomViewCell>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>            

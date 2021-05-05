@@ -6,10 +6,13 @@ using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
+using atomex.Services;
 using atomex.ViewModel;
+using atomex.Views.CreateNewWallet;
 using Atomex;
 using Atomex.Common;
 using Atomex.Cryptography;
@@ -18,13 +21,17 @@ using NBitcoin;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Network = Atomex.Core.Network;
 
 namespace atomex
 {
     public class CreateNewWalletViewModel : BaseViewModel
     {
-
         public IAtomexApp AtomexApp { get; private set; }
+
+        public INavigation Navigation { get; set; }
+
+        private IToastService _toastService;
 
         public enum Action
         {
@@ -97,10 +104,10 @@ namespace atomex
             }
         }
 
-        public List<Atomex.Core.Network> Networks { get; } = new List<Atomex.Core.Network>
+        public List<Network> Networks { get; } = new List<Network>
         {
-            Atomex.Core.Network.MainNet,
-            Atomex.Core.Network.TestNet
+            Network.MainNet,
+            Network.TestNet
         };
 
         public List<CustomWordlist> Languages { get; } = new List<CustomWordlist>
@@ -123,8 +130,8 @@ namespace atomex
             new CustomEntropy { WordCount = "24", Length = 256 }
         };
 
-        private Atomex.Core.Network _network;
-        public Atomex.Core.Network Network
+        private Network _network;
+        public Network Network
         {
             get => _network;
             set { _network = value; OnPropertyChanged(nameof(Network)); }
@@ -177,7 +184,10 @@ namespace atomex
                 {
                     _mnemonic = value;
 
-                    _mnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' '));
+                    if (!string.IsNullOrEmpty(_mnemonic))
+                        _mnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' '));
+                    else
+                        _mnemonicSubstr = new ObservableCollection<string>();
 
                     OnPropertyChanged(nameof(Mnemonic));
                     OnPropertyChanged(nameof(MnemonicSubstr));
@@ -357,15 +367,19 @@ namespace atomex
 
         private HdWallet Wallet { get; set; }
 
-        public CreateNewWalletViewModel(IAtomexApp app)
+        public CreateNewWalletViewModel(IAtomexApp app, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Network = Atomex.Core.Network.MainNet;
+            Navigation = navigation;
+            _toastService = DependencyService.Get<IToastService>();
+            Network = Network.MainNet;
             Language = Languages.FirstOrDefault();
             Entropy = WordCountToEntropyLength.FirstOrDefault();
+            WalletName = string.Empty;
+            Mnemonic = string.Empty;
         }
 
-        public void SaveWalletName()
+        private void SaveWalletName()
         {
             WalletName = WalletName.Trim();
             if (string.IsNullOrEmpty(WalletName))
@@ -417,13 +431,13 @@ namespace atomex
             PathToWallet = pathToWallet;
         }
 
-        public void GenerateMnemonic()
+        private void GenerateMnemonic()
         {
             var entropy = Rand.SecureRandomBytes(Entropy.Length / 8);
             Mnemonic = new Mnemonic(Language.Wordlist, entropy).ToString();
         }
 
-        public void WriteMnemonic()
+        private void WriteMnemonic()
         {
             Mnemonic = Mnemonic.ToLower();
             if (string.IsNullOrEmpty(Mnemonic))
@@ -467,7 +481,7 @@ namespace atomex
             return secureString;
         }
 
-        public void SetPassword(PasswordType pswdType, string pswd)
+        private void SetPassword(PasswordType pswdType, string pswd)
         {
             SecureString secureString = GenerateSecureString(pswd);
             switch (pswdType)
@@ -489,7 +503,7 @@ namespace atomex
             }    
         }
 
-        public void CheckDerivedPassword()
+        private void CheckDerivedPassword()
         {
             if (DerivedPassword != null && DerivedPassword.Length > 0)
             {
@@ -514,7 +528,7 @@ namespace atomex
             }
         }
 
-        public void VerificateDerivedPassword()
+        private void VerificateDerivedPassword()
         {
             if (DerivedPasswordConfirmation != null &&
                 !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
@@ -528,6 +542,8 @@ namespace atomex
             _derivedPswdVerified = true;
 
             OnPropertyChanged(nameof(DerivedPswdVerified));
+
+            _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
 
             Warning = string.Empty;
         }
@@ -551,7 +567,7 @@ namespace atomex
             Warning = string.Empty;
         }
 
-        public void CreateHdWallet()
+        private void CreateHdWallet()
         {
             Wallet = new HdWallet(
                 mnemonic: Mnemonic,
@@ -563,9 +579,6 @@ namespace atomex
                 PathToWallet = PathToWallet
             };
         }
-
-        private Command _createWalletCommand;
-        public Command CreateWalletCommand => _createWalletCommand ??= new Command(async () => await ConnectToWallet());
 
         private async Task ConnectToWallet()
         {
@@ -653,17 +666,146 @@ namespace atomex
             }
         }
 
-        public void Clear()
+        private ICommand _setTestNetTypeCommand;
+        public ICommand SetTestNetTypeCommand => _setTestNetTypeCommand ??= new Command(async () => await SetTestNetType());
+
+        private ICommand _setMainNetTypeCommand;
+        public ICommand SetMainNetTypeCommand => _setMainNetTypeCommand ??= new Command(async () => await SetMainNetType());
+
+        private ICommand _mnemonicPageCommand;
+        public ICommand MnemonicPageCommand => _mnemonicPageCommand ??= new Command(async () => await MnemonicPage());
+
+        private ICommand _setMnemonicCommand;
+        public ICommand SetMnemonicCommand => _setMnemonicCommand ??= new Command(async () => await SetMnemonic());
+
+        private ICommand _writeDerivedPasswordPageCommand;
+        public ICommand WriteDerivedPasswordPageCommand => _writeDerivedPasswordPageCommand ??= new Command(async () => await WriteDerivedPasswordPage());
+
+        private ICommand _createStoragePasswordPageCommand;
+        public ICommand CreateStoragePasswordPageCommand => _createStoragePasswordPageCommand ??= new Command(async () => await CreateStoragePasswordPage());
+
+        private ICommand _derivedPswdChangedCommand;
+        public ICommand DerivedPswdChangedCommand => _derivedPswdChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.DerivedPassword, value));
+
+        private ICommand _derivedPswdConfirmationChangedCommand;
+        public ICommand DerivedPswdConfirmationChangedCommand => _derivedPswdConfirmationChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.DerivedPasswordConfirmation, value));
+
+        private ICommand _storagePswdChangedCommand;
+        public ICommand StoragePswdChangedCommand => _storagePswdChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.StoragePassword, value));
+
+        private ICommand _storagePswdConfirmationChangedCommand;
+        public ICommand StoragePswdConfirmationChangedCommand => _storagePswdConfirmationChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.StoragePasswordConfirmation, value));
+
+        private ICommand _useDerivedPswdInfoCommand;
+        public ICommand UseDerivedPswdInfoCommand => _useDerivedPswdInfoCommand ??= new Command(() => OnUseDerivedPswdRowTapped());
+
+        private ICommand _addWordToVerificationCommand;
+        public ICommand AddWordToVerificationCommand => _addWordToVerificationCommand ??= new Command<string>((value) => OnSourceWordTapped(value));
+
+        private ICommand _deleteWordFromVerificationCommand;
+        public ICommand DeleteWordFromVerificationCommand => _deleteWordFromVerificationCommand ??= new Command<string>((value) => OnTargetWordTapped(value));
+
+        private ICommand _verificateDerivedPswdCommand;
+        public ICommand VerificateDerivedPswdCommand => _verificateDerivedPswdCommand ??= new Command(() => VerificateDerivedPassword());
+
+        private ICommand _clearWarningCommand;
+        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => ClearWarning());
+
+        private ICommand _clearMnemonicCommand;
+        public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= new Command(() => ClearMnemonic());
+
+        private ICommand _createWalletCommand;
+        public ICommand CreateWalletCommand => _createWalletCommand ??= new Command(async () => await ConnectToWallet());
+
+        private async Task SetMainNetType()
         {
-            WalletName = string.Empty;
-            Language = Languages.FirstOrDefault();
-            Entropy = WordCountToEntropyLength.FirstOrDefault();
-            Mnemonic = string.Empty;
-            ClearDerivedPswd();
-            ClearStoragePswd();
+            Network = Network.MainNet;
+            await Navigation.PushAsync(new WalletNamePage(this));
         }
 
-        public void ClearDerivedPswd()
+        private async Task SetTestNetType()
+        {
+            Network = Network.TestNet;
+            await Navigation.PushAsync(new WalletNamePage(this));
+        }
+
+        private async Task MnemonicPage()
+        {
+            SaveWalletName();
+            if (Warning != string.Empty)
+                return;
+            ClearDerivedPswd();
+            if (CurrentAction == Action.Restore)
+                await Navigation.PushAsync(new WriteMnemonicPage(this));
+            else
+                await Navigation.PushAsync(new CreateMnemonicPage(this));
+        }
+
+        async Task SetMnemonic()
+        {
+            if (string.IsNullOrEmpty(Mnemonic))
+            {
+                GenerateMnemonic();
+            }
+            else
+            {
+                if (UseDerivedKeyPswd)
+                {
+                    CheckDerivedPassword();
+
+                    if (Warning != string.Empty)
+                        return;
+                }
+                ResetMnemonicCollections();
+                await Navigation.PushAsync(new VerificationMnemonicPage(this));
+            }
+        }
+
+        private async void OnUseDerivedPswdRowTapped()
+        {
+            await Application.Current.MainPage.DisplayAlert("", AppResources.DerivedPasswordDescriptionText, AppResources.AcceptButton);
+        }
+
+        private void OnSourceWordTapped(string word)
+        {
+            UpdateMnemonicCollections(word, true);
+            if (DerivedPswdVerified)
+                _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
+        }
+
+        private void OnTargetWordTapped(string word)
+        {
+            UpdateMnemonicCollections(word, false);
+        }
+
+        private async Task WriteDerivedPasswordPage()
+        {
+            WriteMnemonic();
+
+            if (Warning != string.Empty)
+                return;
+
+            await Navigation.PushAsync(new WriteDerivedKeyPasswordPage(this));
+        }
+
+        private async Task CreateStoragePasswordPage()
+        {
+            CreateHdWallet();
+            ClearStoragePswd();
+            await Navigation.PushAsync(new CreateStoragePasswordPage(this));
+        }
+
+        private void ClearWarning()
+        {
+            Warning = string.Empty;
+        }
+
+        private void ClearMnemonic()
+        {
+            Mnemonic = string.Empty;
+        }
+
+        private void ClearDerivedPswd()
         {
             Warning = string.Empty;
             DerivedPassword = null;
@@ -671,7 +813,7 @@ namespace atomex
             DerivedPasswordScore = 0;
         }
 
-        public void ClearStoragePswd()
+        private void ClearStoragePswd()
         {
             Warning = string.Empty;
             StoragePassword = null;

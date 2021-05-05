@@ -1,34 +1,21 @@
-﻿using System;
-using atomex.Models;
-using atomex.ViewModel;
+﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
 namespace atomex.Views.SettingsOptions
 {
     public partial class LanguagesPage : ContentPage
     {
-        public Action<Language> OnOptionSelected;
 
-        public LanguagesPage(SettingsViewModel settingsViewModel, Action<Language> onOptionSelected)
+        public LanguagesPage(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
-            OnOptionSelected = onOptionSelected;
             BindingContext = settingsViewModel;
         }
 
-        public LanguagesPage(StartViewModel startViewModel, Action<Language> onOptionSelected)
+        public LanguagesPage(StartViewModel startViewModel)
         {
             InitializeComponent();
-            OnOptionSelected = onOptionSelected;
             BindingContext = startViewModel;
-        }
-
-        async void OnLanguageTapped(object sender, EventArgs args)
-        {
-            Language language = (Language)((TappedEventArgs)args).Parameter;
-            OnOptionSelected?.Invoke(language);
-
-            await Navigation.PopAsync();
         }
     }
 }

@@ -1,23 +1,31 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:helpers="clr-namespace:atomex.Helpers" xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.SendingConfirmationPage"
              Title="{helpers:Translate ConfirmationLabel}"
              Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <ActivityIndicator x:Name="SendingLoader"
-                               RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                               BackgroundColor="Transparent"/>
-            <StackLayout x:Name="Content"
-                         VerticalOptions="FillAndExpand"
+                               BackgroundColor="Transparent"
+                               IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"/>
+            <StackLayout VerticalOptions="FillAndExpand"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                         Opacity="{Binding Opacity}">
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="Center"
                              Margin="20,10,20,0">
@@ -73,7 +81,7 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
-                             x:Name="FeeValue">
+                             IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                     <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Text="{Binding Fee}"
@@ -95,8 +103,7 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource TxInfoRowStyle}"
-                             x:Name="EthereumFeeValue"
-                             IsVisible="False">
+                             IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                     <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource TxInfoRowTitleStyle}"/>
                     <Label Style="{DynamicResource TxInfoRowTextStyle}">
@@ -119,9 +126,9 @@
                 <StackLayout VerticalOptions="EndAndExpand"
                              Margin="20">
                     <Button Text="{helpers:Translate SendButton}"
-                            x:Name="SendButton"
                             Style="{DynamicResource MainButtonStyle}"
-                            Clicked="OnSendButtonClicked"/>
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                            Command="{Binding SendCommand}"/>
                 </StackLayout>
             </StackLayout>
         </RelativeLayout>

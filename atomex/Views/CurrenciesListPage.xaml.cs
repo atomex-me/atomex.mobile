@@ -1,38 +1,45 @@
 ﻿using Xamarin.Forms;
 using atomex.ViewModel;
-using Atomex;
 using System;
 
 namespace atomex
 {
     public partial class CurrenciesListPage : ContentPage
     {
-        private INavigationService _navigationService { get; }
-
-        private IAtomexApp AtomexApp { get; }
+        Color selectedItemBackgroundColor;
 
         public CurrenciesListPage()
         {
             InitializeComponent();
         }
 
-        public CurrenciesListPage(CurrenciesViewModel currenciesViewModel, IAtomexApp atomexApp, INavigationService navigationService)
+        public CurrenciesListPage(CurrenciesViewModel currenciesViewModel)
         {
             InitializeComponent();
-            AtomexApp = atomexApp ?? throw new ArgumentNullException(nameof(AtomexApp));
-            _navigationService = navigationService;
             BindingContext = currenciesViewModel;
+
+            string selectedColorName = "ListViewSelectedBackgroundColor";
+
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+                selectedColorName = "ListViewSelectedBackgroundColorDark";
+
+            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
+            selectedItemBackgroundColor = (Color)selectedColor;
         }
 
-        async void OnListViewItemTapped(object sender, ItemTappedEventArgs e)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
-            if (e.Item != null)
-            {
-                await Navigation.PushAsync(new CurrencyPage(e.Item as CurrencyViewModel, AtomexApp, _navigationService));
-                var listView = sender as ListView;
-                if (listView != null)
-                    listView.SelectedItem = null;
-            }
+            Grid selectedItem = (Grid)sender;
+            selectedItem.IsEnabled = false;
+            Color initColor = selectedItem.BackgroundColor;
+
+            selectedItem.BackgroundColor = selectedItemBackgroundColor;
+
+            await selectedItem.ScaleTo(1.01, 50);
+            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+
+            selectedItem.BackgroundColor = initColor;
+            selectedItem.IsEnabled = true;
         }
     }
 }

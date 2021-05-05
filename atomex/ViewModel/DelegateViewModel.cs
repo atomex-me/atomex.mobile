@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using atomex.Models;
+using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -15,6 +16,7 @@ using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
@@ -23,10 +25,10 @@ namespace atomex.ViewModel
     {
         private IAtomexApp AtomexApp { get; }
 
+        public INavigation Navigation { get; set; }
+
         private readonly Tezos _tezos;
         private WalletAddressViewModel _walletAddressViewModel;
-        private TezosTransaction _tx;
-
 
         private bool _canDelegate;
         public bool CanDelegate
@@ -35,8 +37,8 @@ namespace atomex.ViewModel
             set { _canDelegate = value; OnPropertyChanged(nameof(CanDelegate)); }
         }
 
-        private List<Delegation> _delegations;
-        public List<Delegation> Delegations
+        private List<DelegationViewModel> _delegations;
+        public List<DelegationViewModel> Delegations
         {
             get => _delegations;
             set { _delegations = value; OnPropertyChanged(nameof(Delegations)); }
@@ -47,6 +49,40 @@ namespace atomex.ViewModel
         {
             get => _isLoadingDelegations;
             set { _isLoadingDelegations = value; OnPropertyChanged(nameof(IsLoadingDelegations)); }
+        }
+
+        private bool _isFeeCalculation = false;
+        public bool IsFeeCalculation
+        {
+            get => _isFeeCalculation;
+            set { _isFeeCalculation = value; OnPropertyChanged(nameof(IsFeeCalculation)); }
+        }
+
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
         public WalletAddressViewModel WalletAddressViewModel
@@ -68,7 +104,20 @@ namespace atomex.ViewModel
                 _fromBakersList = value;
                 OnPropertyChanged(nameof(FromBakersList));
 
+                FoundBakersList = FromBakersList;
                 BakerViewModel = FromBakersList.FirstOrDefault();
+            }
+        }
+
+        
+        private List<BakerViewModel> _foundBakersList;
+        public List<BakerViewModel> FoundBakersList
+        {
+            get => _foundBakersList;
+            private set
+            {
+                _foundBakersList = value;
+                OnPropertyChanged(nameof(FoundBakersList));
             }
         }
 
@@ -127,7 +176,21 @@ namespace atomex.ViewModel
                 }
 
                 OnPropertyChanged(nameof(Fee));
+                OnPropertyChanged(nameof(FeeString));
                 OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+            }
+        }
+
+        public string FeeString
+        {
+            get => Fee.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                    return;
+
+                Fee = fee;
             }
         }
 
@@ -204,36 +267,62 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task<string> Validate()
+        private ICommand _validateCommand;
+        public ICommand ValidateCommand => _validateCommand ??= new Command(async () => await Validate());
+
+        private async Task Validate()
         {
-            if (string.IsNullOrEmpty(Address))
+            try
             {
-                return AppResources.EmptyAddressError;
-            }
+                if (string.IsNullOrEmpty(Address))
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyAddressError, AppResources.AcceptButton);
+                    return;
+                }
+                if (!_tezos.IsValidAddress(Address))
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidAddressError, AppResources.AcceptButton);
+                    return;
+                }
+                if (Fee <= 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CommissionLessThanZeroError, AppResources.AcceptButton);
+                    return;
+                }
 
-            if (!_tezos.IsValidAddress(Address))
+                var result = await GetDelegate();
+
+                if (result.HasError)
+                {
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
+                    return;
+                }
+
+                if (BakerViewModel.IsFull)
+                {
+                    var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if (!res) return;
+                }
+
+                if (BakerViewModel.MinDelegation > WalletAddressViewModel.AvailableBalance)
+                {
+                    var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    if (!res) return;
+                }
+
+                await Navigation.PushAsync(new DelegationConfirmationPage(this));
+            }
+            catch (Exception e)
             {
-                return AppResources.InvalidAddressError;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.DelegationValidationError, AppResources.AcceptButton);
+                Log.Error(e, "Delegation validation error");
             }
-
-            if (Fee <= 0)
-            {
-                return AppResources.CommissionLessThanZeroError;
-            }
-
-            var result = await GetDelegate();
-
-            if (result.HasError)
-            {
-                return result.Error.Description;
-            }
-
-            return null;
         }
 
-        public DelegateViewModel(IAtomexApp app)
+        public DelegateViewModel(IAtomexApp app, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            Navigation = navigation;
 
             _tezos = AtomexApp.Account.Currencies.Get<Tezos>("XTZ");
             FeeCurrencyCode = _tezos.FeeCode;
@@ -306,9 +395,71 @@ namespace atomex.ViewModel
             WalletAddressViewModel = FromAddressList.FirstOrDefault();
         }
 
-        public async Task<Result<string>> GetDelegate(
+        private ICommand _setBakerAddressCommand;
+        public ICommand SetBakerAddressCommand => _setBakerAddressCommand ??= new Command<string>((name) => SetBakerAddress(name));
+
+        private void SetBakerAddress(string address)
+        {
+            Address = address;
+        }
+
+        private ICommand _showBakersCommand;
+        public ICommand ShowBakersCommand => _showBakersCommand ??= new Command(async () => await ShowBakersList());
+
+        private async Task ShowBakersList()
+        {
+            var bakersListPage = new BakerListPage(this);
+
+            OnBakerSelected = async (selected) =>
+            {
+                BakerViewModel = selected;
+                Address = selected.Address;
+                await GetDelegate();
+            };
+
+
+            await Navigation.PushAsync(bakersListPage);
+        }
+
+        public Action<BakerViewModel> OnBakerSelected;
+
+        private ICommand _selectBakerCommand;
+        public ICommand SelectBakerCommand => _selectBakerCommand ??= new Command<BakerViewModel>(async (item) => await BakerSelected(item));
+
+        private async Task BakerSelected(BakerViewModel baker)
+        {
+            if (baker == null)
+                return;
+
+            OnBakerSelected.Invoke(baker);
+
+            await Navigation.PopAsync();
+        }
+        private ICommand _searchBakersCommand;
+        public ICommand SearchBakersCommand => _searchBakersCommand ??= new Command<string>((value) => OnSearchBarTextChanged(value));
+
+        private void OnSearchBarTextChanged(string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(value))
+                    FoundBakersList = FromBakersList;
+                else
+                    FoundBakersList = FromBakersList.Where(x => x.Name.ToLower().Contains(value.ToLower())).ToList();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+        }
+
+        private ICommand _getDelegateCommand;
+        public ICommand GetDelegateCommand => _getDelegateCommand ??= new Command(async () => await GetDelegate());
+
+        private async Task<Result<string>> GetDelegate(
             CancellationToken cancellationToken = default)
         {
+
             if (_walletAddressViewModel.WalletAddress == null)
                 return new Error(Errors.InvalidWallets, "You don't have non-empty accounts");
 
@@ -316,6 +467,8 @@ namespace atomex.ViewModel
 
             try
             {
+                IsLoading = true;
+
                 var rpc = new Rpc(_tezos.RpcNodeUri);
 
                 delegateData = await rpc
@@ -324,16 +477,23 @@ namespace atomex.ViewModel
             }
             catch
             {
+                IsLoading = false;
                 return new Error(Errors.WrongDelegationAddress, AppResources.WrongDelegationAddressError);
             }
 
             if (delegateData["deactivated"].Value<bool>())
+            {
+                IsLoading = false;
                 return new Error(Errors.WrongDelegationAddress, AppResources.BakerIsDeactivated);
+            }    
 
             var delegators = delegateData["delegated_contracts"]?.Values<string>();
 
             if (delegators.Contains(WalletAddressViewModel.WalletAddress.Address))
+            {
+                IsLoading = false;
                 return new Error(Errors.AlreadyDelegated, $"{AppResources.AlreadyDelegatedFrom} {WalletAddressViewModel.WalletAddress.Address} {AppResources.ToLabel} {_address}");
+            }
 
             try
             {
@@ -361,20 +521,25 @@ namespace atomex.ViewModel
                     cancellationToken: cancellationToken);
 
                 if (!isSuccess)
+                {
+                    IsLoading = false;
                     return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
+                }
 
+                IsLoading = false;
                 Fee = tx.Fee;
+                OnPropertyChanged(nameof(FeeString));
             }
             catch (Exception e)
             {
                 Log.Error(e, "Autofill delegation error");
-
+                IsLoading = false;
                 return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
             }
             return AppResources.SuccessfulCheck;
         }
 
-        public async Task<Result<string>> Delegate()
+        private async Task<Result<string>> Delegate()
         {
             var wallet = (HdWallet)AtomexApp.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
@@ -435,7 +600,43 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task LoadDelegationInfoAsync()
+        private ICommand _delegateCommand;
+        public ICommand DelegateCommand => _delegateCommand ??= new Command(async () => await OnDelegateButtonClicked());
+
+        private async Task OnDelegateButtonClicked()
+        {
+            try
+            {
+                IsLoading = true;
+                var result = await Delegate();
+                if (result.Error != null)
+                {
+                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
+                    return;
+                }
+                await LoadDelegationInfoAsync();
+                var res = await Application.Current.MainPage.DisplayAlert(AppResources.SuccessDelegation, AppResources.DelegationListWillBeUpdated + "\r\n" + AppResources.ExplorerUri + ": " + result.Value, null, AppResources.CopyAndExitButton);
+                if (!res)
+                {
+                    await Clipboard.SetTextAsync(result.Value);
+                    for (var i = 1; i < 3; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
+                    await Navigation.PopAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                IsLoading = false;
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.DelegationError, AppResources.AcceptButton);
+                Log.Error(e, "Delegation error");
+            }
+        }
+
+
+        private async Task LoadDelegationInfoAsync()
         {
             try
             {
@@ -447,7 +648,7 @@ namespace atomex.ViewModel
                     .GetUnspentAddressesAsync(_tezos.Name)
                     .ConfigureAwait(false);
 
-                var delegations = new List<Delegation>();
+                var delegations = new List<DelegationViewModel>();
 
                 var tzktApi = new TzktApi(_tezos);
 
@@ -465,7 +666,7 @@ namespace atomex.ViewModel
 
                     if (account == null || account.HasError)
                     {
-                        delegations.Add(new Delegation
+                        delegations.Add(new DelegationViewModel(this, Navigation)
                         {
                             Address = wa.Address,
                             Balance = wa.Balance
@@ -481,7 +682,7 @@ namespace atomex.ViewModel
                         Math.Floor((account.Value.DelegationLevel - 1) / 4096) :
                         Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
-                    delegations.Add(new Delegation
+                    delegations.Add(new DelegationViewModel(this, Navigation)
                     {
                         Baker = baker,
                         Address = wa.Address,
@@ -522,6 +723,17 @@ namespace atomex.ViewModel
 
             if (quote != null)
                 FeeInBase = Fee * quote.Bid;
+        }
+
+        private ICommand _selectDelegationCommand;
+        public ICommand SelectDelegationCommand => _selectDelegationCommand ??= new Command<DelegationViewModel>(async (value) => await OnDelegationTapped(value));
+
+        private async Task OnDelegationTapped(DelegationViewModel delegation)
+        {
+            if (delegation.Baker == null)
+                await Navigation.PushAsync(new DelegatePage(this));
+            else
+                await Navigation.PushAsync(new DelegationInfoPage(delegation));
         }
     }
 }
