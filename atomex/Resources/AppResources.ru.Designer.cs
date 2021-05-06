@@ -473,6 +473,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UnconfirmedAmountLabel {
+            get {
+                return ResourceManager.GetString("UnconfirmedAmountLabel", resourceCulture);
+            }
+        }
+        
         internal static string TransactionInfoPageTitle {
             get {
                 return ResourceManager.GetString("TransactionInfoPageTitle", resourceCulture);

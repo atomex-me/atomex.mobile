@@ -12,6 +12,7 @@
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ListView ItemsSource="{Binding GroupedTransactions}"
@@ -56,6 +57,41 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+                    <StackLayout Spacing="0"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="CenterAndExpand">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UnconfirmedAmountTappedCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                        <StackLayout.IsVisible>
+                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                <Binding Path="HasUnconfirmedAmount" Mode="OneWay" />
+                                <Binding Path="IsLoading" Mode="OneWay" Converter="{StaticResource InverseBool}"/>
+                            </MultiBinding>
+                        </StackLayout.IsVisible>
+                        <Image Source="ic_question"
+                               WidthRequest="16"
+                               HeightRequest="16"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               Text="{Binding UnconfirmedAmount, StringFormat='{0:0.#########}'}"
+                               FontSize="12"
+                               Padding="5,0"
+                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="Center"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding UnconfirmedAmountInBase, StringFormat='({0:0.##}'}"/>
+                                    <Span Text=" $)"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
                     <Label Text="{helpers:Translate BalanceUpdatingLabel}"
                            Style="{DynamicResource RefreshLabelStyle}"
                            IsVisible="{Binding IsLoading}"/>
