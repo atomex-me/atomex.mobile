@@ -245,6 +245,9 @@
     <data name="NoTransactionsLabel" xml:space="preserve">
         <value>No transactions yet</value>
     </data>
+    <data name="UnconfirmedAmountLabel" xml:space="preserve">
+        <value>Unconfirmed amount</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">

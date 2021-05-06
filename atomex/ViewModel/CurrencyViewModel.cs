@@ -86,6 +86,8 @@ namespace atomex.ViewModel
             set { _unconfirmedAmountInBase = value; OnPropertyChanged(nameof(UnconfirmedAmountInBase)); }
         }
 
+        public bool HasUnconfirmedAmount => UnconfirmedAmount != 0;
+
         private decimal _price;
         public decimal Price
         {
@@ -204,6 +206,7 @@ namespace atomex.ViewModel
 
                 UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
                 OnPropertyChanged(nameof(UnconfirmedAmount));
+                OnPropertyChanged(nameof(HasUnconfirmedAmount));
 
                 UpdateQuotesInBaseCurrency(QuotesProvider);
             }
@@ -389,6 +392,14 @@ namespace atomex.ViewModel
             {
                 Log.Error(e, "UpdateCurrencyAsync error");
             }
+        }
+
+        private ICommand _unconfirmedAmountTappedCommand;
+        public ICommand UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= new Command(() => UnconfirmedAmountTapped());
+
+        private void UnconfirmedAmountTapped()
+        {
+            ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
         }
 
         #region IDisposable Support

@@ -245,6 +245,9 @@
     <data name="NoTransactionsLabel" xml:space="preserve">
         <value>Транзакций пока нет</value>
     </data>
+    <data name="UnconfirmedAmountLabel" xml:space="preserve">
+        <value>Неподтвержденная сумма</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
