@@ -21,6 +21,8 @@ namespace atomex.Droid
     [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Locked)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public static MainActivity Instance { get; private set; }
+
         protected override void OnCreate(Bundle bundle)
         {
             Forms.SetFlags("Brush_Experimental");
@@ -42,6 +44,8 @@ namespace atomex.Droid
             Rg.Plugins.Popup.Popup.Init(this);
             Xamarin.Essentials.Platform.Init(this, bundle);
             Forms.Init(this, bundle);
+
+            Instance = this;
 
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
 

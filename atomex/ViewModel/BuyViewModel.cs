@@ -25,6 +25,7 @@ namespace atomex.ViewModel
             set
             {
                 _network = value;
+
                 if (_network == Network.MainNet)
                     Url = $"https://widget.wert.io?partner_id=atomex&theme={_appTheme}";
                 else

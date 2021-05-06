@@ -129,6 +129,8 @@
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <Compile Include="CustomElements\CustomTabbedPageRenderer.cs" />
     <Compile Include="CustomElements\CustomLabelRenderer.cs" />
+    <Compile Include="CustomElements\CustomWebView.cs" />
+    <Compile Include="CustomElements\CameraFormsWebChromeClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

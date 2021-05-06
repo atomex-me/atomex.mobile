@@ -552,7 +552,7 @@
         <value>Кошельки</value>
     </data>
     <data name="ConversionTab" xml:space="preserve">
-        <value>Обмен</value>
+        <value>DEX</value>
     </data>
     <data name="SettingsTab" xml:space="preserve">
         <value>Настройки</value>

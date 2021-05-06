@@ -7,6 +7,7 @@ namespace atomex.CustomElements
     {
         public static readonly BindableProperty NavigatingCommandProperty =
             BindableProperty.Create(nameof(NavigatingCommand), typeof(ICommand), typeof(CustomWebView), null);
+
         public ICommand NavigatingCommand
         {
             get { return (ICommand)GetValue(NavigatingCommandProperty); }
