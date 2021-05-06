@@ -555,10 +555,13 @@
         <value>Cüzdanlar</value>
     </data>
     <data name="ConversionTab" xml:space="preserve">
-        <value>Değiş tokuş</value>
+        <value>DEX</value>
     </data>
     <data name="SettingsTab" xml:space="preserve">
         <value>Ayarlar</value>
+    </data>
+    <data name="BuyTab" xml:space="preserve">
+        <value>Almak</value>
     </data>
     
     <!-- Biometric setting popup -->

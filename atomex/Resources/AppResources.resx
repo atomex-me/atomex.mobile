@@ -555,10 +555,13 @@
         <value>Wallets</value>
     </data>
     <data name="ConversionTab" xml:space="preserve">
-        <value>Conversion</value>
+        <value>DEX</value>
     </data>
     <data name="SettingsTab" xml:space="preserve">
         <value>Settings</value>
+    </data>
+    <data name="BuyTab" xml:space="preserve">
+        <value>Buy</value>
     </data>
     
     <!-- Biometric setting popup -->

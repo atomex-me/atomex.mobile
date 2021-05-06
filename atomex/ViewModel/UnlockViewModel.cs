@@ -145,11 +145,13 @@ namespace atomex
 
                 if (account != null)
                 {
+                    string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
+
                     MainViewModel mainViewModel = null;
 
                     await Task.Run(() =>
                     {
-                        mainViewModel = new MainViewModel(AtomexApp, account, WalletName);
+                        mainViewModel = new MainViewModel(AtomexApp, account, WalletName, appTheme);
                     });
 
                     Application.Current.MainPage = new MainPage(mainViewModel);

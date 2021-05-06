@@ -16084,127 +16084,130 @@ namespace atomex.Droid
 			public const int mtrl_tabs_default_indicator = 2131231001;
 			
 			// aapt resource value: 0x7F08011A
-			public const int NavBarConversion = 2131231002;
+			public const int NavBarBuy = 2131231002;
 			
 			// aapt resource value: 0x7F08011B
-			public const int NavBarPortfolio = 2131231003;
+			public const int NavBarConversion = 2131231003;
 			
 			// aapt resource value: 0x7F08011C
-			public const int NavBarSettings = 2131231004;
+			public const int NavBarPortfolio = 2131231004;
 			
 			// aapt resource value: 0x7F08011D
-			public const int NavBarWallets = 2131231005;
+			public const int NavBarSettings = 2131231005;
 			
 			// aapt resource value: 0x7F08011E
-			public const int navigation_empty_icon = 2131231006;
+			public const int NavBarWallets = 2131231006;
 			
 			// aapt resource value: 0x7F08011F
-			public const int notification_action_background = 2131231007;
+			public const int navigation_empty_icon = 2131231007;
 			
 			// aapt resource value: 0x7F080120
-			public const int notification_bg = 2131231008;
+			public const int notification_action_background = 2131231008;
 			
 			// aapt resource value: 0x7F080121
-			public const int notification_bg_low = 2131231009;
+			public const int notification_bg = 2131231009;
 			
 			// aapt resource value: 0x7F080122
-			public const int notification_bg_low_normal = 2131231010;
+			public const int notification_bg_low = 2131231010;
 			
 			// aapt resource value: 0x7F080123
-			public const int notification_bg_low_pressed = 2131231011;
+			public const int notification_bg_low_normal = 2131231011;
 			
 			// aapt resource value: 0x7F080124
-			public const int notification_bg_normal = 2131231012;
+			public const int notification_bg_low_pressed = 2131231012;
 			
 			// aapt resource value: 0x7F080125
-			public const int notification_bg_normal_pressed = 2131231013;
+			public const int notification_bg_normal = 2131231013;
 			
 			// aapt resource value: 0x7F080126
-			public const int notification_icon_background = 2131231014;
+			public const int notification_bg_normal_pressed = 2131231014;
 			
 			// aapt resource value: 0x7F080127
-			public const int notification_template_icon_bg = 2131231015;
+			public const int notification_icon_background = 2131231015;
 			
 			// aapt resource value: 0x7F080128
-			public const int notification_template_icon_low_bg = 2131231016;
+			public const int notification_template_icon_bg = 2131231016;
 			
 			// aapt resource value: 0x7F080129
-			public const int notification_tile_bg = 2131231017;
+			public const int notification_template_icon_low_bg = 2131231017;
 			
 			// aapt resource value: 0x7F08012A
-			public const int notify_panel_notification_icon_bg = 2131231018;
+			public const int notification_tile_bg = 2131231018;
 			
 			// aapt resource value: 0x7F08012B
-			public const int NYX = 2131231019;
+			public const int notify_panel_notification_icon_bg = 2131231019;
 			
 			// aapt resource value: 0x7F08012C
-			public const int RightArrow__black = 2131231020;
+			public const int NYX = 2131231020;
 			
 			// aapt resource value: 0x7F08012D
-			public const int RightArrow__blue = 2131231021;
+			public const int RightArrow__black = 2131231021;
 			
 			// aapt resource value: 0x7F08012E
-			public const int RightArrow__gray = 2131231022;
+			public const int RightArrow__blue = 2131231022;
 			
 			// aapt resource value: 0x7F08012F
-			public const int RightArrow__white = 2131231023;
+			public const int RightArrow__gray = 2131231023;
 			
 			// aapt resource value: 0x7F080130
-			public const int RightRoundedButton = 2131231024;
+			public const int RightArrow__white = 2131231024;
 			
 			// aapt resource value: 0x7F080131
-			public const int roundedbg = 2131231025;
+			public const int RightRoundedButton = 2131231025;
 			
 			// aapt resource value: 0x7F080132
-			public const int roundedbgdark = 2131231026;
+			public const int roundedbg = 2131231026;
 			
 			// aapt resource value: 0x7F080133
-			public const int ru = 2131231027;
+			public const int roundedbgdark = 2131231027;
 			
 			// aapt resource value: 0x7F080134
-			public const int Scan = 2131231028;
+			public const int ru = 2131231028;
 			
 			// aapt resource value: 0x7F080135
-			public const int SplashScreen = 2131231029;
+			public const int Scan = 2131231029;
 			
 			// aapt resource value: 0x7F080136
-			public const int SwapArrows = 2131231030;
+			public const int SplashScreen = 2131231030;
 			
 			// aapt resource value: 0x7F080137
-			public const int TBTC = 2131231031;
+			public const int SwapArrows = 2131231031;
 			
 			// aapt resource value: 0x7F080138
-			public const int Tick = 2131231032;
+			public const int TBTC = 2131231032;
 			
 			// aapt resource value: 0x7F080139
-			public const int tooltip_frame_dark = 2131231033;
+			public const int Tick = 2131231033;
 			
 			// aapt resource value: 0x7F08013A
-			public const int tooltip_frame_light = 2131231034;
+			public const int tooltip_frame_dark = 2131231034;
 			
 			// aapt resource value: 0x7F08013B
-			public const int tr = 2131231035;
+			public const int tooltip_frame_light = 2131231035;
 			
 			// aapt resource value: 0x7F08013C
-			public const int TZBTC = 2131231036;
+			public const int tr = 2131231036;
 			
 			// aapt resource value: 0x7F08013D
-			public const int USDT = 2131231037;
+			public const int TZBTC = 2131231037;
 			
 			// aapt resource value: 0x7F08013E
-			public const int Wallet__blue = 2131231038;
+			public const int USDT = 2131231038;
 			
 			// aapt resource value: 0x7F08013F
-			public const int Wallet__white = 2131231039;
+			public const int Wallet__blue = 2131231039;
 			
 			// aapt resource value: 0x7F080140
-			public const int Warning = 2131231040;
+			public const int Wallet__white = 2131231040;
 			
 			// aapt resource value: 0x7F080141
-			public const int WBTC = 2131231041;
+			public const int Warning = 2131231041;
 			
 			// aapt resource value: 0x7F080142
-			public const int XTZ = 2131231042;
+			public const int WBTC = 2131231042;
+			
+			// aapt resource value: 0x7F080143
+			public const int XTZ = 2131231043;
 			
 			static Drawable()
 			{
