@@ -159,8 +159,6 @@
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
@@ -246,9 +244,13 @@
     <ImageAsset Include="Assets.xcassets\ru.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf" />
-    <ImageAsset Include="Assets.xcassets\tr.imageset\tr.pdf" />
     <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\NavBarBuy.pdf" />
+    <ImageAsset Include="Assets.xcassets\tr.imageset\tr-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\fr.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\fr.imageset\fr.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -394,6 +396,8 @@
     <Folder Include="Assets.xcassets\ru.imageset\" />
     <Folder Include="Assets.xcassets\tr.imageset\" />
     <Folder Include="Assets.xcassets\NavBarBuy.imageset\" />
+    <Folder Include="Assets.xcassets\fr.imageset\" />
+    <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

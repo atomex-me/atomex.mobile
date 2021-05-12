@@ -18,67 +18,67 @@
         <value>Ok</value>
     </data>
     <data name="CancelButton" xml:space="preserve">
-        <value>Отмена</value>
+        <value>Annuler</value>
     </data>
     <data name="NextButton" xml:space="preserve">
-        <value>Далее</value>
+        <value>Suivant</value>
     </data>
     <data name="ConfirmButton" xml:space="preserve">
-        <value>Подтвердить</value>
+        <value>Confirmer</value>
     </data>
     <data name="UnderstandButton" xml:space="preserve">
-        <value>Я понимаю</value>
+        <value>je comprends</value>
     </data>
     <data name="DeleteButton" xml:space="preserve">
-        <value>Удалить</value>
+        <value>supprimer</value>
     </data>
     <data name="MainNetButton" xml:space="preserve">
-        <value>Основная сеть</value>
+        <value>Réseau principal</value>
     </data>
     <data name="TestNetButton" xml:space="preserve">
-        <value>Тестовая сеть</value>
+        <value>Réseau de test</value>
     </data>
     <data name="PasswordEntryPlaceholder" xml:space="preserve">
-        <value>Пароль</value>
+        <value>Mot de passe</value>
     </data>
     <data name="PasswordConfirmationEntryPlaceholder" xml:space="preserve">
-        <value>Подтверждение пароля</value>
+        <value>Confirmation mot de passe</value>
     </data>
     <data name="AddressEntryPlaceholder" xml:space="preserve">
-        <value>Адрес</value>
+        <value>Adresse</value>
     </data>
     <data name="AmountEntryPlaceholder" xml:space="preserve">
-        <value>Сумма</value>
+        <value>Montant</value>
     </data>
     <data name="UseDefaultFeeLabel" xml:space="preserve">
-        <value>Cтандартные комиссии</value>
+        <value>Commissions standard</value>
     </data>
     <data name="FeeLabel" xml:space="preserve">
-        <value>Комиссия</value>
+        <value>Commission</value>
     </data>
     <data name="FeeRateLabel" xml:space="preserve">
-        <value>Комиссия за байт</value>
+        <value>Commission par octet, Satoshi</value>
     </data>
     <data name="ConfirmationLabel" xml:space="preserve">
-        <value>Подтверждение</value>
+        <value>Confirmation</value>
     </data>
     <data name="AmountLabel" xml:space="preserve">
-        <value>Сумма</value>
+        <value>Montant</value>
     </data>
     <data name="MinimumAmountLabel" xml:space="preserve">
-        <value>Минимальная сумма</value>
+        <value>Montant minimal</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
-        <value>На адрес</value>
+        <value>À l'adresse</value>
     </data>
     <data name="TransactionTime" xml:space="preserve">
-        <value>Время транзакции</value>
+        <value>Temps de transaction</value>
     </data>
     <data name="Price" xml:space="preserve">
-        <value>Цена</value>
+        <value>Prix</value>
     </data>
     <data name="MinLabel" xml:space="preserve">
-        <value>мин.</value>
+        <value>min.</value>
     </data>
     <data name="MaxButton" xml:space="preserve">
         <value>Max</value>
@@ -89,453 +89,453 @@
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
-        <value>Мои кошельки</value>
+        <value>Mes portefeuilles</value>
     </data>
     <data name="CreateNewWalletButton" xml:space="preserve">
-        <value>Создать кошелек</value>
+        <value>Créer un nouveau portefeuille</value>
     </data>
     <data name="RestoreWalletButton" xml:space="preserve">
-        <value>Восстановить кошелек</value>
+        <value>Restaurer le portefeuille</value>
     </data>
     
     <!-- My Wallets Page -->
     <data name="SelectWalletLabel" xml:space="preserve">
-        <value>Пожалуйста, выберите кошелек</value>
+        <value>Veuillez sélectionner un portefeuille</value>
     </data>
     <data name="MyWalletsTitle" xml:space="preserve">
-        <value>Мои кошельки</value>
+        <value>Mes portefeuilles</value>
     </data>
     
     <!-- Unlock Page -->
     <data name="UnlockTitle" xml:space="preserve">
-        <value>Разблокировать кошелек</value>
+        <value>Débloquer le portefeuille</value>
     </data>
     <data name="UnlockLabel" xml:space="preserve">
-        <value>Пожалуйста, введите пароль</value>
+        <value>S'il vous plait entrez votre mot de passe</value>
     </data>
     <data name="UnlockButton" xml:space="preserve">
-        <value>Разблокировать</value>
+        <value>Débloquer</value>
     </data>
     <data name="Authentication" xml:space="preserve">
-        <value>Аутентификация</value>
+        <value>Authentication</value>
     </data>
     <data name="UseBiometric" xml:space="preserve">
-        <value>Используйте аутентификацию по биометрии для входа в </value>
+        <value>Utilisez l'authentification biométrique pour vous connecter</value>
     </data>
     
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
-        <value>Создание кошелька</value>
+        <value>Créer un portefeuille</value>
     </data>
     <data name="RestoreWalletPageTitle" xml:space="preserve">
-        <value>Восстановление кошелька</value>
+        <value>Restaurer le portefeuille</value>
     </data>
     <data name="WalletTypeStepLabel" xml:space="preserve">
-        <value>Шаг 1: Тип кошелька</value>
+        <value>Étape 1: Type de portefeuille</value>
     </data>
     <data name="SelectTypeLabel" xml:space="preserve">
-        <value>Пожалуйста, выберите тип кошелька</value>
+        <value>Veuillez sélectionner un type de portefeuille</value>
     </data>
     <data name="WalletNameStepLabel" xml:space="preserve">
-        <value>Шаг 2: Имя кошелька</value>
+        <value>Étape 2: Nom du portefeuille</value>
     </data>
     <data name="EnterNameLabel" xml:space="preserve">
-        <value>Пожалуйста, введите имя для вашего кошелька</value>
+        <value>Veuillez saisir un nom pour votre portefeuille</value>
     </data>
     <data name="WalletNameEntryPlaceholder" xml:space="preserve">
-        <value>Имя кошелька</value>
+        <value>Nom du portefeuille</value>
     </data>
     <data name="MnemonicPhraseStepLabel" xml:space="preserve">
-        <value>Шаг 3: Мнемоническая фраза</value>
+        <value>Étape 3: Phrase mnémotechnique</value>
     </data>
     <data name="MnemonicDescriptionText" xml:space="preserve">
-        <value>Мнемоническая фраза используется для восстановления вашего кошелька, если данные на вашем устройстве будут утеряны. Пожалуйста, запишите его и храните в надежном месте</value>
+        <value>La phrase mnémotechnique est utilisée pour restaurer votre portefeuille si les données de votre appareil sont perdues. Veuillez l'écrire et le conserver en lieu sûr.</value>
     </data>
     <data name="LanguageLabel" xml:space="preserve">
-        <value>Язык</value>
+        <value>Langue</value>
     </data>
     <data name="WordCountLabel" xml:space="preserve">
-        <value>Кол-во слов</value>
+        <value>Nombre de mots</value>
     </data>
     <data name="GenerateButton" xml:space="preserve">
-        <value>Сгенерировать</value>
+        <value>Générer</value>
     </data>
     <data name="LoseMnemonicPhraseText" xml:space="preserve">
-        <value>Если вы потеряете свою мнемоническую фразу, ваш кошелек нельзя будет восстановить</value>
+        <value>Si vous perdez votre phrase mnémotechnique, votre portefeuille ne pourra pas être récupéré</value>
     </data>
     <data name="EnterMnemonicPhraseLabel" xml:space="preserve">
-        <value>Пожалуйста, введите мнемоническую фразу для вашего кошелька</value>
+        <value>Veuillez saisir une phrase mnémotechnique pour votre portefeuille</value>
     </data>
     <data name="EnterMnemonicPhraseEditorPlaceholder" xml:space="preserve">
-        <value>Введите мнемоническую фразу сюда...</value>
+        <value>Entrez votre phrase mnémotechnique ici ...</value>
     </data>
     <data name="DerivedPasswordStepLabel" xml:space="preserve">
-        <value>Шаг 4: Пароль к мнемонической фразе (необязательно)</value>
+        <value>Étape 4: Mot de passe de la phrase mnémotechnique (facultatif)</value>
     </data>
     <data name="DerivedPasswordDescriptionText" xml:space="preserve">
-        <value>Этот пароль может быть использован для дополнительной защиты секретного ключа. Чтобы восстановить секретный ключ вам нужно будет ввести мнемоническую фразу и этот пароль</value>
+        <value>Ce mot de passe peut être utilisé pour protéger davantage la clé privée. Pour récupérer la clé secrète, il convient entrer la phrase mnémotechnique et ce mot de passe</value>
     </data>
     <data name="MnemonicVerificationStepLabel" xml:space="preserve">
-        <value>Шаг 4: Проверка мнемонической фразы</value>
+        <value>Étape 4: Vérification de la phrase mnémotechnique</value>
     </data>
     <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
-        <value>Пожалуйста, подтвердите свою мнемоническую фразу. Кликните на слова, чтобы разместить их в правильном порядке</value>
+        <value>Veuillez confirmer votre phrase mnémotechnique. Cliquez sur les mots pour les placer dans le bon ordre</value>
     </data>
     <data name="DerivedVerificationDescriptionText" xml:space="preserve">
-        <value>Пожалуйста, введите свой пароль к мнемонической фразе</value>
+        <value>Veuillez écrire votre mot de passe pour la phrase mnémotechnique</value>
     </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
-        <value>Если вы использовали пароль для дополнительной защиты секретного ключа, пожалуйста, введите его в поле ниже. Если вы введете неправильный пароль, вы не сможете получить доступ к своему секретному ключу и кошельку</value>
+        <value>Si vous avez utilisé un mot de passe pour protéger davantage votre clé privée, veuillez le saisir dans le champ ci-dessous. Si vous entrez un mauvais mot de passe, vous ne pourrez pas accéder à votre clé privée et à votre portefeuille</value>
     </data>
     <data name="StoragePasswordStepLabel" xml:space="preserve">
-        <value>Шаг 5: Пароль для входа</value>
+        <value>Étape 5: Mot de passe de connexion</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Этот пароль используется для защиты секретных ключей на устройстве и используется каждый раз, когда вы запускаете приложение кошелька. Пароль должен быть длиной не менее 8 символов и содержать не менее:
-    - 1 строчный символ, 
-    - 1 заглавный символ, 
-    - 1 цифру,
-    - 1 специальный символ в (!@#$%^*).</value>
+        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe doit comporter au moins 8 caractères et contenir au moins:
+    - 1 caractère minuscule,
+    - 1 caractère majuscule, 
+    - 1 chiffre,
+    1 caractère spécial dans (! @ # $% ^ *).</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
-        <value>Создать</value>
+        <value>Créer</value>
     </data>
     <data name="WrongWordOrder" xml:space="preserve">
-        <value>Неверный порядок слов. Попробуйте еще раз</value>
+        <value>Mauvais ordre des mots. Essayer à nouveau</value>
     </data>
     <data name="UseDerivedKeyPswd" xml:space="preserve">
-        <value>Пароль к мнемонической фразе</value>
+        <value>Mot de passe pour la phrase mnémotechnique</value>
     </data>
     
     <!-- Portfolio Page -->
     <data name="PortfolioPageTitle" xml:space="preserve">
-        <value>Портфель</value>
+        <value>Portefeuille</value>
     </data>
     <data name="MainWalletLabel" xml:space="preserve">
-        <value>Основной кошелек</value>
+        <value>Portefeuille principal</value>
     </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">
-        <value>Кошельки</value>
+        <value>Portefeuilles</value>
     </data>
     
     <!-- Currency Page -->
     <data name="SendButton" xml:space="preserve">
-        <value>Отправить</value>
+        <value>Envoyer</value>
     </data>
     <data name="ReceiveButton" xml:space="preserve">
-        <value>Получить</value>
+        <value>Recevoir</value>
     </data>
     <data name="ConvertButton" xml:space="preserve">
-        <value>Обменять</value>
+        <value>Échanger</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>Стейкинг</value>
+        <value>Staking</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
-        <value>Обновить</value>
+        <value>Rafraîchir</value>
     </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
-        <value>Обновление баланса...</value>
+        <value>Mise à jour du solde...</value>
     </data>
     <data name="LoadingLabel" xml:space="preserve">
-        <value>Загрузка...</value>
+        <value>Chargement...</value>
     </data>
     <data name="NoTransactionsLabel" xml:space="preserve">
-        <value>Транзакций пока нет</value>
+        <value>Aucune transaction pour le moment</value>
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
-        <value>Неподтвержденная сумма</value>
+        <value>Une somme non confirmée</value>
     </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
-        <value>Информация о транзакции</value>
+        <value>Informations sur la transaction</value>
     </data>
     <data name="TransactionInfo" xml:space="preserve">
-        <value>Информация о транзакции</value>
+        <value>Informations sur la transaction</value>
     </data>
     <data name="Description" xml:space="preserve">
-        <value>Описание</value>
+        <value>Description</value>
     </data>
     <data name="TransactionId" xml:space="preserve">
-        <value>ID транзакции</value>
+        <value>ID de transaction</value>
     </data>
     <data name="ShowInExplorerButton" xml:space="preserve">
-        <value>Показать в эксплорере</value>
+        <value>Afficher dans l'explorateur</value>
     </data>
     <data name="TxSent" xml:space="preserve">
-        <value>Отправлено</value>
+        <value>Envoyé</value>
     </data>
     <data name="TxReceived" xml:space="preserve">
-        <value>Получено</value>
+        <value>Reçu</value>
     </data>
     <data name="TxSwapPayment" xml:space="preserve">
-        <value>Инициализация свопа</value>
+        <value>Initialisation du swap</value>
     </data>
     <data name="TxSwapRedeem" xml:space="preserve">
-        <value>Операция выкуп</value>
+        <value>Opération de rançon</value>
     </data>
     <data name="TxSwapRefund" xml:space="preserve">
-        <value>Операция возврат</value>
+        <value>Opération de retour</value>
     </data>
         <data name="TxTokenCall" xml:space="preserve">
-        <value>Вызов контракта токена</value>
+        <value>Appel d'un contrat de jeton</value>
     </data>
     <data name="TxSwapCall" xml:space="preserve">
-        <value>Вызов своп контракта токена</value>
+        <value>Appel d'un contrat d'échange de jetons</value>
     </data>
     <data name="TxTokenApprove" xml:space="preserve">
-        <value>Одобрение на перевод токенов</value>
+        <value>Approbation du transfert de jetons</value>
     </data>
     <data name="TxUnknown" xml:space="preserve">
-        <value>Неизвестно</value>
+        <value>Inconnu</value>
     </data>
     
     <!-- Send Page -->
     <data name="SendPageTitle" xml:space="preserve">
-        <value>Отправить</value>
+        <value>Envoyer</value>
     </data>
     <data name="ScanningQrCodePageTitle" xml:space="preserve">
-        <value>Сканирование QR-кода</value>
+        <value>Scanner le code QR</value>
     </data>
     <data name="PasteButton" xml:space="preserve">
-        <value>Вставить</value>
+        <value>Pâter</value>
     </data>
     <data name="GasPriceLabel" xml:space="preserve">
-        <value>Цена газа</value>
+        <value>Prix ​​du gaz</value>
     </data>
     <data name="GasLimitLabel" xml:space="preserve">
-        <value>Лимит газа</value>
+        <value>Limite de gaz</value>
     </data>
     <data name="GasUsedLabel" xml:space="preserve">
-        <value>Газа использовано</value>
+        <value>Gaz utilisé</value>
     </data>
     <data name="IsInternalLabel" xml:space="preserve">
-        <value>Внутренняя</value>
+        <value>Interne</value>
     </data>
     <data name="ConfirmTransactionLabel" xml:space="preserve">
-        <value>Подтвердите транзакцию</value>
+        <value>Confirmer la transaction</value>
     </data>
     
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
-        <value>Получить</value>
+        <value>Recevoir</value>
     </data>
     <data name="AddressLabel" xml:space="preserve">
-        <value>Адрес</value>
+        <value>Adresse</value>
     </data>
     <data name="CopyButton" xml:space="preserve">
-        <value>Копировать</value>
+        <value>Copie</value>
     </data>
     <data name="ShareButton" xml:space="preserve">
-        <value>Поделиться</value>
+        <value>Partager</value>
     </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">
-        <value>Список делегирования</value>
+        <value>Liste des délégations</value>
     </data>
     <data name="NoDelegationsLabel" xml:space="preserve">
-        <value>Делегирований пока нет</value>
+        <value>Pas encore de délégations</value>
     </data>
     <data name="NotDelegated" xml:space="preserve">
-        <value>Не делегировано</value>
+        <value>Non délégué</value>
     </data>
     
     <!-- Baker list Page -->
     <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Список бейкеров</value>
+        <value>Liste des bakers</value>
     </data>
     <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Найти бейкера...</value>
+        <value>Trouver un baker...</value>
     </data>
     
     <!-- Delegate Page -->
     <data name="DelegatePageTitle" xml:space="preserve">
-        <value>Делегировать</value>
+        <value>Déléguer</value>
     </data>
     <data name="DelegateToBakeryLabel" xml:space="preserve">
-        <value>Делегируем бейкеру</value>
+        <value>Déléguer au baker</value>
     </data>
     <data name="Available" xml:space="preserve">
-        <value>Доступно</value>
+        <value>Disponible</value>
     </data>
     <data name="Balance" xml:space="preserve">
-        <value>Баланс</value>
+        <value>Solde</value>
     </data>
     <data name="ToAddressLabel" xml:space="preserve">
-        <value>На адрес</value>
+        <value>À l'adresse</value>
     </data>
     <data name="FromAddressLabel" xml:space="preserve">
-        <value>С адреса</value>
+        <value>De l'adresse</value>
     </data>
     <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>Введите адрес бейкера...</value>
+        <value>Entrez l'adresse du baker...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
-        <value>Другой бейкер</value>
+        <value>Autre baker</value>
     </data>
     <data name="FeeCalculationLabel" xml:space="preserve">
-        <value>Расчет комиссии</value>
+        <value>Calcul de la commission</value>
     </data>
     
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
-        <value>Вы уверены, что хотите делегировать?</value>
+        <value>Voulez-vous vraiment déléguer?</value>
     </data>
     <data name="FromLabel" xml:space="preserve">
-        <value>От</value>
+        <value>De</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
-        <value>На адрес</value>
+        <value>À l'adresse</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
-        <value>Копировать URI и закрыть</value>
+        <value>Copier l'URI et fermer</value>
     </data>
     
     <!-- Delegation Info Page -->
     <data name="DelegationInfoPageTitle" xml:space="preserve">
-        <value>Информация о делегировании</value>
+        <value>Informations sur la délégation</value>
     </data>
     <data name="CheckRewardsButton" xml:space="preserve">
-        <value>Проверить выплаты</value>
+        <value>Vérifier les paiements</value>
     </data>
     <data name="ChangeBakerButton" xml:space="preserve">
-        <value>Сменить бейкера</value>
+        <value>Changer de baker</value>
     </data>
     <data name="BakerLabel" xml:space="preserve">
-        <value>Бейкер</value>
+        <value>Baker</value>
     </data>
     <data name="Roi" xml:space="preserve">
         <value>ROI</value>
     </data>
     <data name="DelegationStatus" xml:space="preserve">
-        <value>Статус делегирования</value>
+        <value>Statut de la délégation</value>
     </data>
     <data name="DelegationTime" xml:space="preserve">
-        <value>Время делегирования</value>
+        <value>Temps de délégation</value>
     </data>
     <data name="AccountSection" xml:space="preserve">
-        <value>Аккаунт</value>
+        <value>Compte</value>
     </data>
     <data name="BakerSection" xml:space="preserve">
-        <value>Текущий бейкер</value>
+        <value>Baker actuel</value>
     </data>
     <data name="MoreSection" xml:space="preserve">
-        <value>Подробнее</value>
+        <value>Plus de détails</value>
     </data>
     
     <!-- Swap Info Page -->
     <data name="SwapInfoPageTitle" xml:space="preserve">
-        <value>Информация о свопе</value>
+        <value>Informations sur l'échange</value>
     </data>
     <data name="SwapInfoLabel" xml:space="preserve">
-        <value>Информация о свопе</value>
+        <value>Informations sur l'échange</value>
     </data>
     <data name="State" xml:space="preserve">
-        <value>Состояние</value>
+        <value>Etat</value>
     </data>
     
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">
-        <value>Список свопов</value>
+        <value>Liste de permutation</value>
     </data>
     <data name="CreateSwapPageTitle" xml:space="preserve">
-        <value>Создать своп</value>
+        <value>Créer un swap</value>
     </data>
     <data name="SelectCurrenciesLabel" xml:space="preserve">
-        <value>Выбрать валюту</value>
+        <value>Sélectionnez la devise</value>
     </data>
     <data name="SwapFrom" xml:space="preserve">
-        <value>Из</value>
+        <value>De</value>
     </data>
     <data name="SwapTo" xml:space="preserve">
-        <value>В</value>
+        <value>À</value>
     </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
-        <value>Расчетная цена</value>
+        <value>Prix ​​estimé</value>
     </data>
     <data name="EstimatedNetworkFeeLabel" xml:space="preserve">
-        <value>Расчетная комиссия сети</value>
+        <value>Commission de règlement du réseau</value>
     </data>
     <data name="EnterAmountLabel" xml:space="preserve">
-        <value>Введите сумму</value>
+        <value>Entrez le montant</value>
     </data>
     <data name="AvailableMarketVolumeLabel" xml:space="preserve">
-        <value>Доступный объем</value>
+        <value>Volume disponible</value>
     </data>
     <data name="NoLiquidityLabel" xml:space="preserve">
-        <value>Нет ликвидности</value>
+        <value>Pas de liquidité</value>
     </data>
     <data name="PaymentFeeLabel" xml:space="preserve">
-        <value>Комиссия платежа</value>
+        <value>Commission de paiement</value>
     </data>
     <data name="RedeemFeeLabel" xml:space="preserve">
-        <value>Комиссия выкупа</value>
+        <value>Frais de rachat</value>
     </data>
     <data name="MakerFeeLabel" xml:space="preserve">
-        <value>Комиссия мейкера</value>
+        <value>Commission de contractant</value>
     </data>
     <data name="RewardForRedeemLabel" xml:space="preserve">
-        <value>Выплата за выкуп</value>
+        <value>Paiement de la rançon</value>
     </data>
     <data name="TotalNetworkFeeLabel" xml:space="preserve">
-        <value>Общая комиссия сети</value>
+        <value>Commission réseau totale</value>
     </data>
     <data name="NoSwapsLabel" xml:space="preserve">
-        <value>Свопов пока нет</value>
+        <value>Pas encore de swaps</value>
     </data>
     <data name="Convert" xml:space="preserve">
-        <value>Обменять</value>
+        <value>Échanger</value>
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
-        <value>Создать новый своп</value>
+        <value>Créer un nouveau swap</value>
     </data>
     
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
-        <value>Настройки</value>
+        <value>Paramètres</value>
     </data>
     <data name="PeriodInactivePageTitle" xml:space="preserve">
-        <value>Период бездействия</value>
+        <value>Période d'inactivité</value>
     </data>
     <data name="BalanceUpdateIntervalPageTitle" xml:space="preserve">
-        <value>Период обновления баланса</value>
+        <value>Période de mise à jour du solde</value>
     </data>
     <data name="AutomaticSignOutLabel" xml:space="preserve">
-        <value>Автоматический выход</value>
+        <value>Déconnexion automatique</value>
     </data>
     <data name="PeriodOfInactiveLabel" xml:space="preserve">
-        <value>Период бездействия</value>
+        <value>Période d'inactivité</value>
     </data>
     <data name="UseBiometricLabel" xml:space="preserve">
-        <value>Авторизация по биометрии</value>
+        <value>Connexion biométrique</value>
     </data>
     <data name="DeletingWallet" xml:space="preserve">
-        <value>Удаление кошелька</value>
+        <value>Supprimer un portefeuille</value>
     </data>
     <data name="DeletingWalletText" xml:space="preserve">
-        <value>Удаление кошелька может привести к потере ваших средств</value>
+        <value>La suppression d'un portefeuille peut entraîner la perte de vos fonds</value>
     </data>
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
-        <value>Вы уверены, что хотите удалить кошелек "{0}"?</value>
+        <value>Voulez-vous vraiment supprimer le portefeuille "{0}"?</value>
     </data>
     <data name="AccountSection" xml:space="preserve">
-        <value>Аккаунт</value>
+        <value>Compte</value>
     </data>
     <data name="SecuritySection" xml:space="preserve">
-        <value>Безопасность</value>
+        <value>Sécurité</value>
     </data>
     <data name="CommunitySection" xml:space="preserve">
-        <value>Сообщество</value>
+        <value>Communauté</value>
     </data>
     <data name="WalletsSection" xml:space="preserve">
-        <value>Кошельки</value>
+        <value>Portefeuilles</value>
     </data>
     <data name="CommonSection" xml:space="preserve">
-        <value>Основные</value>
+        <value>Général</value>
     </data>
     <data name="Youtube" xml:space="preserve">
         <value>YouTube</value>
@@ -547,94 +547,94 @@
         <value>Twitter</value>
     </data>
     <data name="Support" xml:space="preserve">
-        <value>Поддержка</value>
+        <value>Support</value>
     </data>
     
     <!-- Tab bar -->
     <data name="PortfolioTab" xml:space="preserve">
-        <value>Портфель</value>
+        <value>Portefeuille</value>
     </data>
     <data name="WalletsTab" xml:space="preserve">
-        <value>Кошельки</value>
+        <value>Portefeuilles</value>
     </data>
     <data name="ConversionTab" xml:space="preserve">
         <value>DEX</value>
     </data>
     <data name="SettingsTab" xml:space="preserve">
-        <value>Настройки</value>
+        <value>Paramètres</value>
     </data>
     <data name="BuyTab" xml:space="preserve">
-        <value>Купить</value>
+        <value>Acheter</value>
     </data>
     
     <!-- Biometric setting popup -->
     <data name="EnableBiometricLabel" xml:space="preserve">
-        <value>Пожалуйста, введите свой пароль, чтобы включить аутентификацию по биометрии</value>
+        <value>Veuillez saisir votre mot de passe pour activer l'authentification biométrique</value>
     </data>
     
     <!-- Messages -->
     <data name="Error" xml:space="preserve">
-        <value>Ошибка</value>
+        <value>Erreur</value>
     </data>
     <data name="Warning" xml:space="preserve">
-        <value>Внимание</value>
+        <value>Attention</value>
     </data>
     <data name="Success" xml:space="preserve">
-        <value>Успех</value>
+        <value>Succès</value>
     </data>
     <data name="SignOut" xml:space="preserve">
-        <value>Выход</value>
+        <value>Sortir</value>
     </data>
     <data name="AreYouSure" xml:space="preserve">
-        <value>Вы уверены?</value>
+        <value>Etes-vous sûr?</value>
     </data>
     <data name="SuccessDelegation" xml:space="preserve">
-        <value>Делегирование успешно</value>
+        <value>Délégation réussie</value>
     </data>
     <data name="DelegationListWillBeUpdated" xml:space="preserve">
-        <value>Список делегирования будет обновлен после включения операции в блок</value>
+        <value>La liste de délégation sera mise à jour une fois l'opération incluse dans le bloc</value>
     </data>
     <data name="ExplorerUri" xml:space="preserve">
         <value>Explorer Uri</value>
     </data>
     <data name="sentTo" xml:space="preserve">
-        <value>отправить на</value>
+        <value>envoyer à</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
-        <value>этого слова нет в списке для выбранного языка</value>
+        <value>ce mot n'est pas dans la liste de la langue sélectionnée</value>
     </data>
     <data name="Word" xml:space="preserve">
-        <value>Слово</value>
+        <value>Mot</value>
     </data>
     <data name="TransactionIdCopied" xml:space="preserve">
-        <value>ID транзакции скопирован</value>
+        <value>ID de transaction copié</value>
     </data>
     <data name="InvalidPassword" xml:space="preserve">
-        <value>Неверный пароль</value>
+        <value>Mot de passe incorrect</value>
     </data>
     <data name="PasswordsDoNotMatch" xml:space="preserve">
-        <value>Пароли не совпадают</value>
+        <value>Non concordance des mots de passe</value>
     </data>
     <data name="PasswordHasInsufficientComplexity" xml:space="preserve">
-        <value>Пароль недостаточной сложности</value>
+        <value>Mot de passe insuffisant</value>
     </data>
     <data name="InvalidAmount" xml:space="preserve">
-        <value>Неверная сумма</value>
+        <value>Montant invalide</value>
     </data>
     <data name="InvalidMnemonic" xml:space="preserve">
-        <value>Неверная мнемоническая фраза</value>
+        <value>Phrase mnémotechnique non valide</value>
     </data>
     <data name="InsufficientFunds" xml:space="preserve">
-        <value>Недостаточно средств</value>
+        <value>Pas assez de fonds</value>
     </data>
     <data name="InsufficientChainFunds" xml:space="preserve">
-        <value>Недостаточно {0} чтобы покрыть комиссию за перевод токена</value>
+        <value>Pas assez de {0} pour couvrir les frais de transfert de jetons</value>
     </data>
     <data name="SufficientNetworkFee" xml:space="preserve">
-        <value>Комиссия сети ({0}) составляет {1} от объема сделки</value>
+        <value>La commission réseau requise pour ce volume ({0} est égal à {1})</value>
     </data>
     <data name="TooHighNetworkFee" xml:space="preserve">
-         <value>Слишком высокая комиссия сети. {0} составляет {1} от объема сделки</value>
+         <value>La commission réseau pour ce volume est trop élevée ({0} égale {1})</value>
     </data>
     <data name="TotalNetworkFeeDetail" xml:space="preserve">
         <value>
@@ -646,162 +646,162 @@
         </value>
     </data>
     <data name="LowFees" xml:space="preserve">
-        <value>Слишком низкие комиссии</value>
+        <value>Frais trop bas</value>
     </data>
     <data name="NetworkFee" xml:space="preserve">
-        <value>Комиссия сети за атомарный своп</value>
+        <value>Frais de réseau de atomic swap</value>
     </data>
     <data name="FailedToSend" xml:space="preserve">
-        <value>Не удалось отправить</value>
+        <value>Échec de l'envoi</value>
     </data>
     <data name="FailedToConvert" xml:space="preserve">
-        <value>Не удалось обменять</value>
+        <value>Échec de l'échange</value>
     </data>
     <data name="PriceChanged" xml:space="preserve">
-        <value>Цена изменилась</value>
+        <value>Le prix a changé</value>
     </data>
     <data name="SwapCreated" xml:space="preserve">
-        <value>Своп успешно создан</value>
+        <value>Le Swap est créé avec succès</value>
     </data>
     <data name="GenerateMnemonic" xml:space="preserve">
-        <value>Сгенерировать мнемоническую фразу</value>
+        <value>Générer une phrase mnémotechnique</value>
     </data>
     <data name="EmptyClipboard" xml:space="preserve">
-        <value>Буфер обмена пуст</value>
+        <value>Le presse-papiers est vide</value>
     </data>
     <data name="EmptyWalletName" xml:space="preserve">
-        <value>Имя кошелька не может быть пустым</value>
+        <value>Le nom du portefeuille ne peut pas être vide</value>
     </data>
     <data name="InvalidWalletName" xml:space="preserve">
-        <value>Неверное имя кошелька</value>
+        <value>Nom de portefeuille invalide</value>
     </data>
     <data name="WalletAlreadyExists" xml:space="preserve">
-        <value>Кошелек с таким именем уже есть</value>
+        <value>Il existe déjà un portefeuille du même nom</value>
     </data>
     <data name="BakerIsDeactivated" xml:space="preserve">
-        <value>Бейкер неактивен. Выберите другого</value>
+        <value>Ce baker est inactif. Choisissez un autre</value>
     </data>
     <data name="AlreadyDelegatedFrom" xml:space="preserve">
-        <value>Уже делегировано</value>
+        <value>Déjà délégué</value>
     </data>
     <data name="AutofillTransactionFailed" xml:space="preserve">
-        <value>Автозаполнение транзакции не удалось</value>
+        <value>La transaction de saisie semi-automatique a échoué</value>
     </data>
     <data name="SuccessfulCheck" xml:space="preserve">
-        <value>Успешная проверка</value>
+        <value>Vérification réussie</value>
     </data>
     <data name="AddressSharing" xml:space="preserve">
-        <value>Поделиться адресом</value>
+        <value>Partager l'adresse</value>
     </data>
     <data name="MyPublicAddress" xml:space="preserve">
-        <value>Мой публичный адрес для получения</value>
+        <value>Mon adresse publique pour recevoir</value>
     </data>
     <data name="HasBeenUpdated" xml:space="preserve">
-        <value>был обновлен</value>
+        <value>a été mis à jour</value>
     </data>
     <data name="AddressCopied" xml:space="preserve">
-        <value>Адрес скопирован</value>
+        <value>Adresse copiée</value>
     </data>
     <data name="CopyError" xml:space="preserve">
-        <value>Ошибка копирования</value>
+        <value>Erreur de copie</value>
     </data>
     <data name="CreateWalletError" xml:space="preserve">
-        <value>Ошибка при создании кошелька</value>
+        <value>Erreur lors de la création du portefeuille</value>
     </data>
     <data name="EmptyAddressError" xml:space="preserve">
-        <value>Адрес не может быть пустым</value>
+        <value>L'adresse ne peut pas être vide</value>
     </data>
     <data name="InvalidAddressError" xml:space="preserve">
-        <value>Неверный адрес</value>
+        <value>Mauvaise adresse</value>
     </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>Комиссия должна быть больше нуля</value>
+        <value>La commission doit être supérieure à zéro</value>
     </data>
     <data name="SendingTransactionError" xml:space="preserve">
-        <value>Ошибка при отправке транзакции</value>
+        <value>Erreur lors de l'envoi de la transaction</value>
     </data>
     <data name="DelegationError" xml:space="preserve">
-        <value>Ошибка при делегировании</value>
+        <value>Erreur de délégation</value>
     </data>
     <data name="DelegationValidationError" xml:space="preserve">
-        <value>Ошибка при проверке делегированияn</value>
+        <value>Erreur lors de la vérification de la délégation</value>
     </data>
     <data name="NoTezosError" xml:space="preserve">
-        <value>Вы должны иметь больше 0 XTZ</value>
+        <value>Vous devez avoir plus de 0 XTZ</value>
     </data>
     <data name="AmountLessThanZeroError" xml:space="preserve">
-        <value>Сумма должна быть больше нуля</value>
+        <value>Le montant doit être supérieur à zéro</value>
     </data>
     <data name="NoLiquidityError" xml:space="preserve">
-        <value>Недостаточно ликвидности для обмена этого объема</value>
+        <value>Pas assez de liquidités pour échanger ce volume</value>
     </data>
     <data name="PriceChangedError" xml:space="preserve">
-        <value>Ой, во время отправки запроса цена изменилась. Пожалуйста, попробуйте еще раз</value>
+        <value>Oh, le prix a changé lors de la demande. Veuillez réessayer</value>
     </data>
     <data name="OrderRejectedError" xml:space="preserve">
-        <value>Запрос отклонен</value>
+        <value>Demande rejetée</value>
     </data>
     <data name="TimeoutReachedError" xml:space="preserve">
-        <value>Atomex долго не отвечает</value>
+        <value>Atomex ne répond pas depuis longtemps</value>
     </data>
     <data name="ConversionError" xml:space="preserve">
-        <value>Ошибка при обмене. Пожалуйста, обратитесь в службу технической поддержки</value>
+        <value>Erreur d'échange. Veuillez contacter le support technique</value>
     </data>
     <data name="AvailableFundsError" xml:space="preserve">
-        <value>Сумма перевода (включая комиссию) превышает сумму свободных средств</value>
+        <value>Le montant du transfert (y compris la commission) dépasse le montant des fonds gratuits</value>
     </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>Комиссия должна быть больше нуля</value>
+        <value>La commission doit être supérieure à zéro</value>
     </data>
     <data name="EmptyMnemonicError" xml:space="preserve">
-        <value>Мнемоническая фраза не может быть пустой</value>
+        <value>La phrase mnémonique ne peut pas être vide</value>
     </data>
     <data name="MnemonicWordCountError" xml:space="preserve">
-        <value>Количество слов должно быть 12,15,18,21 или 24</value>
+        <value>Le nombre de mots doit être 12, 15, 18, 21 ou 24</value>
     </data>
     <data name="WrongDelegationAddressError" xml:space="preserve">
-        <value>Неверный адрес делегирования</value>
+        <value>Adresse de délégation invalide</value>
     </data>
     <data name="DelegationLimitWarning" xml:space="preserve">
-        <value>Выбранный бейкер имеет минимальный лимит делегирования, который превышает баланс выбранного вами кошелька</value>
+        <value>Le baker sélectionné a une limite de délégation minimale qui dépasse le solde de votre portefeuille choisi</value>
     </data>
     <data name="BakerIsOverdelegatedWarning" xml:space="preserve">
-        <value>Бейкер переделегирован, лучше выбрать другого</value>
+        <value>Le baker est redélégué, mieux vaut en choisir un autre</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>Это действие влияет только на локальные данные и не влияет на блокчейн</value>
+        <value>Cette action n'affecte que les données locales et n'affecte pas la blockchain.</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
-        <value>Доступна новая версия. Обновить приложение сейчас?</value>
+        <value>Une nouvelle version est disponible. Mettre à jour l'application maintenant?</value>
     </data>
     <data name="UpdateAvailable" xml:space="preserve">
-        <value>Доступно обновление</value>
+        <value>Mise à jour disponible</value>
     </data>
     <data name="Yes" xml:space="preserve">
-        <value>Да</value>
+        <value>Oui</value>
     </data>
     <data name="No" xml:space="preserve">
-        <value>Нет</value>
+        <value>Non</value>
     </data>
     <data name="NotSupportSecureStorage" xml:space="preserve">
-        <value>Устройство не поддерживает secure storage на устройстве</value>
+        <value>L'appareil ne prend pas en charge le stockage sécurisé sur l'appareil</value>
     </data>
     <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
-        <value>Пожалуйста, включите авторизацию по биометрии в настройках устройства</value>
+        <value>Veuillez activer la connexion biométrique dans les paramètres de l'appareil</value>
     </data>
     <data name="NotAuthenticated" xml:space="preserve">
-        <value>Вы не были опознаны</value>
+        <value>Tu n'as pas été identifié</value>
     </data>
     <data name="SorryLabel" xml:space="preserve">
-        <value>Извините</value>
+        <value>Pardonnez</value>
     </data>
     <data name="ImpossibleEnableBiometric" xml:space="preserve">
-        <value>Не удалось включить аутентификацию по биометрии</value>
+        <value>Échec de l'activation de l'authentification biométrique</value>
     </data>
     <data name="Verified" xml:space="preserve">
-        <value>Проверено!</value>
+        <value>Vérifié!</value>
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
-        <value>История свопов хранится локально на вашем устройстве. Это значит, что вы не увидите операции, сделанные на другом устройстве.</value>
+        <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
     </data>
 </root>

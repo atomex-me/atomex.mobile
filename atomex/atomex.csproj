@@ -75,6 +75,9 @@
     <Compile Update="Resources\AppResources.tr.Designer.cs">
       <DependentUpon>AppResources.tr.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\AppResources.fr.Designer.cs">
+      <DependentUpon>AppResources.fr.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="configuration.json">
@@ -106,5 +109,11 @@
   <ItemGroup>
     <Content Remove="configuration.json" />
     <Content Remove="obj\Debug\netstandard2.0\atomex.csprojAssemblyReference.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Resources\AppResources.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.fr.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
 </Project>
