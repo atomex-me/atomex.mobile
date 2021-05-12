@@ -52,7 +52,7 @@ namespace atomex.Views.CreateNewWallet
             {
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
-                    Page.ScrollToAsync(0, -PasswordEntry.Height, true);
+                    Page.ScrollToAsync(0, 0, true);
                     return false;
                 });
             }
@@ -64,10 +64,9 @@ namespace atomex.Views.CreateNewWallet
                 MnemonicPhraseFrame.FadeTo(1, 250, Easing.Linear),
                 LoseMnemonicLabel.FadeTo(1, 250, Easing.Linear)
             );
-
             Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
             {
-                Page.ScrollToAsync(0, NextButton.Y, true);
+                Page.ScrollToAsync(0, MnemonicPhraseFrame.Height + LoseMnemonicLabel.Height + NextButton.Height, true);
                 return false;
             });
         }
@@ -81,14 +80,6 @@ namespace atomex.Views.CreateNewWallet
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
                     Page.ScrollToAsync(0, PasswordEntry.Height, true);
-                    return false;
-                });
-            }
-            else
-            {
-                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-                {
-                    Page.ScrollToAsync(0, PasswordConfirmationFrame.Height, true);
                     return false;
                 });
             }
@@ -128,14 +119,6 @@ namespace atomex.Views.CreateNewWallet
                 Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
                 {
                     Page.ScrollToAsync(0, PasswordConfirmationEntry.Height, true);
-                    return false;
-                });
-            }
-            else
-            {
-                Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
-                {
-                    Page.ScrollToAsync(0, NextButton.Y, true);
                     return false;
                 });
             }

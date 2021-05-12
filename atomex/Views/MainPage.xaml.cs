@@ -170,9 +170,9 @@ namespace atomex
             {
                 conversionViewModel.SetFromCurrency(currencyCode);
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
-                await NavigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
-
                 CurrentPage = NavigationConversionPage;
+
+                await NavigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
             }
         }
 
@@ -181,9 +181,9 @@ namespace atomex
             if (currencyViewModel != null)
             {
                 _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-                await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
-
                 CurrentPage = NavigationWalletsListPage;
+
+                await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
             }
         }
     }

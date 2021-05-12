@@ -48,7 +48,7 @@ namespace atomex.ViewModel
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
-            PortfolioViewModel = new PortfolioViewModel(CurrenciesViewModel);
+            PortfolioViewModel = new PortfolioViewModel(CurrenciesViewModel, appTheme);
             BuyViewModel = new BuyViewModel(AtomexApp, appTheme);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);

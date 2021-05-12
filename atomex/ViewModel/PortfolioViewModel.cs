@@ -50,12 +50,12 @@ namespace atomex.ViewModel
             set { _currenciesViewModel = value; OnPropertyChanged(nameof(CurrenciesViewModel)); }
         }
 
-        public PortfolioViewModel(CurrenciesViewModel currenciesViewModel)
+        public PortfolioViewModel(CurrenciesViewModel currenciesViewModel, string appTheme)
         {
             CurrenciesViewModel = currenciesViewModel;
 
             string bgColorName = "AdditionalBackgroundColor";
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+            if (appTheme == OSAppTheme.Dark.ToString())
                 bgColorName = "AdditionalBackgroundColorDark";
 
             if (Application.Current.Resources.TryGetValue(bgColorName, out var bgColor))

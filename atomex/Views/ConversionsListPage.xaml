@@ -7,7 +7,7 @@
              Title="{helpers:Translate SwapListPageTitle}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-            <StackLayout VerticalOptions="FillAndExpand"
+            <StackLayout VerticalOptions="Fill"
                          Padding="20"
                          IsVisible="False">
                 <StackLayout.Triggers>
