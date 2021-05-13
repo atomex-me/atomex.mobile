@@ -84,7 +84,7 @@
         <value>Maks</value>
     </data>
     <data name="IdLabel" xml:space="preserve">
-        <value>ID</value>
+        <value>Id</value>
     </data>
     
     <!-- Start Page -->
@@ -595,7 +595,7 @@
         <value>Yetki listesi, işlem bloğa dahil edildikten sonra güncellenecektir.</value>
     </data>
     <data name="ExplorerUri" xml:space="preserve">
-        <value>Uri'yi Görüntüle</value>
+        <value>Explorer Uri</value>
     </data>
     <data name="sentTo" xml:space="preserve">
         <value>Gönderildi</value>
