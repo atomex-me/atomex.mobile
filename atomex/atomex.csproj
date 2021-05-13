@@ -110,10 +110,4 @@
     <Content Remove="configuration.json" />
     <Content Remove="obj\Debug\netstandard2.0\atomex.csprojAssemblyReference.cache" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Update="Resources\AppResources.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResources.fr.Designer.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
 </Project>
