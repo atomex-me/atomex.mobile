@@ -98,7 +98,8 @@
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontFamily="{DynamicResource BoldFont}"
                                        FontSize="14"
-                                       Padding="10,0,0,0"/>
+                                       Padding="10,0,0,0"
+                                       IsEnabled="False"/>
                                 <Label Grid.Row="1"
                                        Text="{Binding Address}"
                                        Padding="10,0,0,0"
@@ -106,12 +107,14 @@
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="12"
                                        LineBreakMode="MiddleTruncation"
-                                       VerticalTextAlignment="Start"/>
+                                       VerticalTextAlignment="Start"
+                                       IsEnabled="False"/>
                                 <Image Source="ConvertArrow"
                                        Grid.Column="1"
                                        Grid.RowSpan="2"
                                        WidthRequest="20"
-                                       VerticalOptions="Center">
+                                       VerticalOptions="Center"
+                                       IsEnabled="False">
                                     <Image.Triggers>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Baker, TargetNullValue=''}"
@@ -123,7 +126,8 @@
                                 </Image>
                                 <Image Source="{Binding Baker.Logo}"
                                        Grid.RowSpan="2"
-                                       Grid.Column="2">
+                                       Grid.Column="2"
+                                       IsEnabled="False">
                                     <Image.Triggers>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Baker, TargetNullValue=''}"
@@ -146,7 +150,8 @@
                                        FontSize="14"
                                        Padding="5,0"
                                        MaxLines="1"
-                                       VerticalTextAlignment="End">
+                                       VerticalTextAlignment="End"
+                                       IsEnabled="False">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Baker, TargetNullValue=''}"
@@ -170,7 +175,8 @@
                                        FontSize="12"
                                        Padding="5,0"
                                        VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start">
+                                       HorizontalTextAlignment="Start"
+                                       IsEnabled="False">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Baker, TargetNullValue=''}"
@@ -191,7 +197,8 @@
                                        TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                        FontSize="12"
                                        Padding="10,0"
-                                       IsVisible="False">
+                                       IsVisible="False"
+                                       IsEnabled="False">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                      Binding="{Binding Baker, TargetNullValue=''}"
