@@ -66,7 +66,7 @@ namespace atomex.Views.CreateNewWallet
             );
             Device.StartTimer(TimeSpan.FromSeconds(0.25), () =>
             {
-                Page.ScrollToAsync(0, MnemonicPhraseFrame.Height + LoseMnemonicLabel.Height + NextButton.Height, true);
+                Page.ScrollToAsync(0, NextButton.Height, true);
                 return false;
             });
         }
