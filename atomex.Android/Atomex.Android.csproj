@@ -31,7 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-<AndroidPackageFormat>apk</AndroidPackageFormat>
+<AndroidPackageFormat>aab</AndroidPackageFormat>
 <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.7" package="com.atomex.android" android:versionCode="12">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.8" package="com.atomex.android" android:versionCode="13">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="29" />
 	<application android:label="Atomex" android:allowBackup="false" android:icon="@drawable/ic_launcher">
 		<meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_notification" />
