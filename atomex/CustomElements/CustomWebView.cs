@@ -21,8 +21,9 @@ namespace atomex.CustomElements
                 WebViewClass _WebViewClass = new WebViewClass();
                 _WebViewClass.sender = s;
                 _WebViewClass.e = e;
-                if (NavigatingCommand?.CanExecute(e) ?? false)
-                    NavigatingCommand.Execute(_WebViewClass);
+
+                //if (NavigatingCommand?.CanExecute(e) ?? false)
+                NavigatingCommand?.Execute(e);
             };
         }
     }

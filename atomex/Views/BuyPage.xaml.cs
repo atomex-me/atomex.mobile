@@ -13,6 +13,7 @@ namespace atomex
         public BuyPage(BuyViewModel buyViewModel)
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = buyViewModel;
         }
     }

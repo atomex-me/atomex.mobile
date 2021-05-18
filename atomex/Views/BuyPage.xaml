@@ -28,8 +28,7 @@
                            Padding="10"/>
                 </StackLayout>
             </StackLayout>
-            <custom:CustomWebView x:Name="WebView"
-                                  IsVisible="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+            <custom:CustomWebView IsVisible="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                                   Source="{Binding Url}"
                                   HorizontalOptions="FillAndExpand"
                                   VerticalOptions="FillAndExpand"

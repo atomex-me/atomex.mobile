@@ -44,7 +44,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                      VerticalOptions="Fill"
+                      VerticalOptions="FillAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
                 <ListView.Triggers>
@@ -187,7 +187,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackLayout VerticalOptions="EndAndExpand"
+            <StackLayout VerticalOptions="End"
                          Spacing="0"
                          Margin="20,0,20,20">
                 <Button Text="{helpers:Translate CreateSwapButton}"
