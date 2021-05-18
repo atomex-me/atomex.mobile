@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Windows.Input;
 using Atomex;
+using Atomex.Common;
 using Atomex.Core;
+using Atomex.Cryptography;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -29,9 +31,9 @@ namespace atomex.ViewModel
                 _network = value;
 
                 if (_network == Network.MainNet)
-                    Url = $"https://widget.wert.io/?partner_id=atomex&theme={_appTheme}";
+                    Url = $"https://widget.wert.io/atomex/widget?click_id=user:{_userId}/network:{_network}&theme={_appTheme}";
                 else
-                    Url = $"https://sandbox.wert.io/?partner_id=01F298K3HP4DY326AH1NS3MM3M&theme={_appTheme}";
+                    Url = $"https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M/widget?click_id=user:{_userId}/network:{_network}&theme={_appTheme}";
 
                 OnPropertyChanged(nameof(Network));
             }
@@ -43,6 +45,8 @@ namespace atomex.ViewModel
             get => _url;
             set { _url = value; OnPropertyChanged(nameof(Url)); }
         }
+
+        private string _userId;
 
         private string _appTheme;
 
@@ -56,6 +60,7 @@ namespace atomex.ViewModel
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             IsLoading = true;
+            _userId = GetUserId();
             _appTheme = appTheme;
             Network = app.Account.Network;
         }
@@ -72,6 +77,13 @@ namespace atomex.ViewModel
                 Launcher.OpenAsync(new Uri(args.Url));
                 args.Cancel = true;
             }
+        }
+
+        private string GetUserId()
+        {
+            using var servicePublicKey = AtomexApp.Account.Wallet.GetServicePublicKey(AtomexApp.Account.UserSettings.AuthenticationKeyIndex);
+            using var publicKey = servicePublicKey.ToUnsecuredBytes();
+            return Sha256.Compute(Sha256.Compute(publicKey)).ToHexString();
         }
     }
 }
