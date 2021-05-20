@@ -42,6 +42,7 @@
     <Folder Include="Converters\" />
     <Folder Include="Views\Popup\" />
     <Folder Include="Behaviors\" />
+    <Folder Include="Views\BuyCurrency\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

@@ -426,6 +426,14 @@
     <data name="MoreSection" xml:space="preserve">
         <value>More</value>
     </data>
+
+    <!-- Buy with card Page -->
+    <data name="BuyWithCardPageTitle" xml:space="preserve">
+        <value>Buy with card</value>
+    </data>
+    <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
+        <value>Select the currency to buy</value>
+    </data>
     
     <!-- Swap Info Page -->
     <data name="SwapInfoPageTitle" xml:space="preserve">

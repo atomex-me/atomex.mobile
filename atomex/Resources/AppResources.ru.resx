@@ -427,6 +427,14 @@
         <value>Подробнее</value>
     </data>
     
+    <!-- Buy with card Page -->
+    <data name="BuyWithCardPageTitle" xml:space="preserve">
+        <value>Покупка по карте</value>
+    </data>
+    <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
+        <value>Выберите валюту для покупки</value>
+    </data>
+
     <!-- Swap Info Page -->
     <data name="SwapInfoPageTitle" xml:space="preserve">
         <value>Информация о свопе</value>
