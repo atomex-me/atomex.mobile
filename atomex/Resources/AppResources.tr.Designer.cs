@@ -797,6 +797,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string BuyWithCardPageTitle {
+            get {
+                return ResourceManager.GetString("BuyWithCardPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string SelectCurrencyToBuyLabel {
+            get {
+                return ResourceManager.GetString("SelectCurrencyToBuyLabel", resourceCulture);
+            }
+        }
+        
         internal static string SwapInfoPageTitle {
             get {
                 return ResourceManager.GetString("SwapInfoPageTitle", resourceCulture);

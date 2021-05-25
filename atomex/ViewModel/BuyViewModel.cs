@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Views.BuyCurrency;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
@@ -14,6 +18,8 @@ namespace atomex.ViewModel
     public class BuyViewModel : BaseViewModel
     {
         private IAtomexApp AtomexApp { get; }
+
+        public INavigation Navigation { get; set; }
 
         private bool _isLoading;
         public bool IsLoading
@@ -29,12 +35,6 @@ namespace atomex.ViewModel
             set
             {
                 _network = value;
-
-                if (_network == Network.MainNet)
-                    Url = $"https://widget.wert.io/atomex/widget?click_id=user:{_userId}/network:{_network}&theme={_appTheme}";
-                else
-                    Url = $"https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M/widget?click_id=user:{_userId}/network:{_network}&theme={_appTheme}";
-
                 OnPropertyChanged(nameof(Network));
             }
         }
@@ -48,21 +48,44 @@ namespace atomex.ViewModel
 
         private string _userId;
 
-        private string _appTheme;
-
         private string[] _redirectedUrls = { "https://widget.wert.io/terms-and-conditions",
                                              "https://widget.wert.io/privacy-policy",
                                              "https://support.wert.io/",
                                              "https://sandbox.wert.io/terms-and-conditions",
                                              "https://sandbox.wert.io/privacy-policy" };
 
-        public BuyViewModel(IAtomexApp app, string appTheme)
+        public ObservableCollection<string> Currencies { get; } = new ObservableCollection<string> { "BTC", "ETH", "XTZ" };
+
+        public BuyViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             IsLoading = true;
             _userId = GetUserId();
-            _appTheme = appTheme;
             Network = app.Account.Network;
+        }
+
+
+        private ICommand _selectCurrencyCommand;
+        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<string>(async (value) => await LoadWebView(value));
+
+        private async Task LoadWebView(string currency)
+        {
+            string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
+            string address = GetDefaultAddress(currency);
+
+            var baseUri = _network == Network.MainNet
+                ? "https://widget.wert.io/atomex"
+                : "https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M";
+
+            Url = $"{baseUri}/widget" +
+                $"?commodity={currency}" +
+                $"&address={address}" +
+                $"&click_id=user:{_userId}/network:{_network}" +
+                $"&theme={appTheme}";
+
+            OnPropertyChanged(nameof(Url));
+
+            await Navigation.PushAsync(new BuyPage(this));
         }
 
         private ICommand _canExecuteCommand;
@@ -84,6 +107,44 @@ namespace atomex.ViewModel
             using var servicePublicKey = AtomexApp.Account.Wallet.GetServicePublicKey(AtomexApp.Account.UserSettings.AuthenticationKeyIndex);
             using var publicKey = servicePublicKey.ToUnsecuredBytes();
             return Sha256.Compute(Sha256.Compute(publicKey)).ToHexString();
+        }
+
+        public string GetDefaultAddress(string currency)
+        {
+            if (currency == "ETH" || currency == "XTZ")
+            {
+                var activeTokenAddresses = AtomexApp.Account
+                    .GetUnspentTokenAddressesAsync(currency)
+                    .WaitForResult()
+                    .ToList();
+
+                var activeAddresses = AtomexApp.Account
+                    .GetUnspentAddressesAsync(currency)
+                    .WaitForResult()
+                    .ToList();
+
+                activeTokenAddresses
+                    .ForEach(a => a.Balance = activeAddresses
+                    .Find(b => b.Address == a.Address)?.Balance ?? 0m);
+
+                activeAddresses = activeAddresses
+                    .Where(a => activeTokenAddresses
+                    .FirstOrDefault(b => b.Address == a.Address) == null)
+                    .ToList();
+
+                var receiveAddress = activeTokenAddresses
+                    .Concat(activeAddresses)
+                    .OrderByDescending(w => w.AvailableBalance())
+                    .FirstOrDefault(w => w.HasActivity);
+
+                if (receiveAddress != null)
+                    return receiveAddress.Address;
+            }
+
+            return AtomexApp.Account
+                .GetFreeExternalAddressAsync(currency)
+                .WaitForResult()
+                .Address;
         }
     }
 }

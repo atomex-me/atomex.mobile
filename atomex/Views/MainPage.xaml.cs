@@ -8,9 +8,9 @@ using Application = Xamarin.Forms.Application;
 using atomex.CustomElements;
 using atomex.Resources;
 using atomex.ViewModel;
-using atomex.Views.CreateSwap;
 using atomex.Helpers;
 using System.Threading.Tasks;
+using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 
 namespace atomex
 {
@@ -63,7 +63,7 @@ namespace atomex
                 Title = AppResources.SettingsTab
             };
 
-            NavigationBuyPage = new NavigationPage(new BuyPage(MainViewModel.BuyViewModel))
+            NavigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
             {
                 IconImageSource = "NavBarBuy",
                 Title = AppResources.BuyTab
@@ -73,6 +73,7 @@ namespace atomex
             MainViewModel.CurrenciesViewModel.SetNavigation(NavigationWalletsListPage.Navigation, this);
             MainViewModel.ConversionViewModel.Navigation = NavigationConversionPage.Navigation;
             MainViewModel.PortfolioViewModel.NavigationService = this;
+            MainViewModel.BuyViewModel.Navigation = NavigationBuyPage.Navigation;
 
             SetAppTheme();
 
@@ -172,7 +173,7 @@ namespace atomex
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
                 CurrentPage = NavigationConversionPage;
 
-                await NavigationConversionPage.PushAsync(new CurrenciesPage(conversionViewModel));
+                await NavigationConversionPage.PushAsync(new Views.CreateSwap.CurrenciesPage(conversionViewModel));
             }
         }
 

@@ -49,7 +49,7 @@ namespace atomex.ViewModel
             SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             PortfolioViewModel = new PortfolioViewModel(CurrenciesViewModel, appTheme);
-            BuyViewModel = new BuyViewModel(AtomexApp, appTheme);
+            BuyViewModel = new BuyViewModel(AtomexApp);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }

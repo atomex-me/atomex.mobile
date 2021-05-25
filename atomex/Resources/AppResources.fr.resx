@@ -427,6 +427,14 @@
         <value>Plus de détails</value>
     </data>
     
+    <!-- Buy with card Page -->
+    <data name="BuyWithCardPageTitle" xml:space="preserve">
+        <value>Buy with card</value>
+    </data>
+    <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
+        <value>Select the currency to buy</value>
+    </data>
+
     <!-- Swap Info Page -->
     <data name="SwapInfoPageTitle" xml:space="preserve">
         <value>Informations sur l'échange</value>

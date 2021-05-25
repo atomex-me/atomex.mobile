@@ -30,7 +30,7 @@ namespace atomex.Resources {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("", typeof(AppResources_fr).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("atomex.Resources.AppResources.fr", typeof(AppResources_fr).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -794,6 +794,18 @@ namespace atomex.Resources {
         internal static string MoreSection {
             get {
                 return ResourceManager.GetString("MoreSection", resourceCulture);
+            }
+        }
+        
+        internal static string BuyWithCardPageTitle {
+            get {
+                return ResourceManager.GetString("BuyWithCardPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string SelectCurrencyToBuyLabel {
+            get {
+                return ResourceManager.GetString("SelectCurrencyToBuyLabel", resourceCulture);
             }
         }
         

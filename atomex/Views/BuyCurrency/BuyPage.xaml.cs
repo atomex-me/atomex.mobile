@@ -1,7 +1,7 @@
 ﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views.BuyCurrency
 {
     public partial class BuyPage : ContentPage
     {
@@ -13,7 +13,6 @@ namespace atomex
         public BuyPage(BuyViewModel buyViewModel)
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = buyViewModel;
         }
     }
