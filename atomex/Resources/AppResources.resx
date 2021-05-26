@@ -248,7 +248,24 @@
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Unconfirmed amount</value>
     </data>
-    
+
+    <!-- Addresses info Page -->
+    <data name="AddressInfoPageTitle" xml:space="preserve">
+        <value>Address info</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>Addresses</value>
+    </data>
+    <data name="Path" xml:space="preserve">
+        <value>Path</value>
+    </data>
+    <data name="Key" xml:space="preserve">
+        <value>Key</value>
+    </data>
+    <data name="ExportKeyButton" xml:space="preserve">
+        <value>Export private key</value>
+    </data>
+
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
         <value>Transaction info</value>
@@ -811,5 +828,11 @@
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>Swap history is stored locally on your device. This means that you do not see the swap operations that were performed with another device.</value>
+    </data>
+    <data name="CopyingPrivateKeyWarning" xml:space="preserve">
+        <value>Copying the private key to the clipboard may result in the loss of all your coins in the wallet. Are you sure you want to copy the private key for {0}</value>
+    </data>
+    <data name="PrivateKeyCopied" xml:space="preserve">
+        <value>Private key copied</value>
     </data>
 </root>

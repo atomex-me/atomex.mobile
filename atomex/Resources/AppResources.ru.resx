@@ -248,6 +248,23 @@
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Неподтвержденная сумма</value>
     </data>
+
+    <!-- Addresses info Page -->
+    <data name="AddressInfoPageTitle" xml:space="preserve">
+        <value>Информация об адресе</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>Адреса</value>
+    </data>
+    <data name="Path" xml:space="preserve">
+        <value>Путь</value>
+    </data>
+    <data name="Key" xml:space="preserve">
+        <value>Ключ</value>
+    </data>
+    <data name="ExportKeyButton" xml:space="preserve">
+        <value>Экспорт приватного ключа</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
@@ -811,5 +828,11 @@
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>История свопов хранится локально на вашем устройстве. Это значит, что вы не увидите операции, сделанные на другом устройстве.</value>
+    </data>
+    <data name="CopyingPrivateKeyWarning" xml:space="preserve">
+        <value>Копирование приватного ключа в буфер обмена может привести к потере всех ваших средств. Вы уверены, что хотите скопировать приватный ключ для {0}?</value>
+    </data>
+    <data name="PrivateKeyCopied" xml:space="preserve">
+        <value>Приватный ключ скопирован</value>
     </data>
 </root>

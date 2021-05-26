@@ -112,23 +112,23 @@
                     </Label>
                 </Grid>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate EstimatedPriceLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding EstimatedPrice}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           Style="{DynamicResource InfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TotalFeeCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate EstimatedNetworkFeeLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat=' {0:0.##} $'}"
-                               Style="{DynamicResource TxInfoRowTextStyle}"/>
+                               Style="{DynamicResource InfoRowTextStyle}"/>
                         <Image Source="ic_question"
                                WidthRequest="16"
                                HeightRequest="16"/>

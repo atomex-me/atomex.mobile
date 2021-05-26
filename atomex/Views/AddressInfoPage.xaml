@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Class="atomex.AddressInfoPage"
+    Title="{helpers:Translate AddressInfoPageTitle}"
+    Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                               RelativeLayout.WidthConstraint="50"
+                               RelativeLayout.HeightConstraint="50"
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                               BackgroundColor="Transparent"
+                               IsRunning="{Binding SelectedAddress.IsUpdating}"
+                               IsVisible="{Binding SelectedAddress.IsUpdating}"/>
+            <StackLayout Padding="0,10"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                         Opacity="{Binding SelectedAddress.Opacity}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{helpers:Translate AddressLabel}"
+                                   Style="{DynamicResource InfoRowTitleStyle}"/>
+                            <Label Text="{Binding SelectedAddress.Address}"
+                                   Style="{DynamicResource InfoRowTextStyle}"
+                                   LineBreakMode="MiddleTruncation"/>
+                        </StackLayout>
+                        <ImageButton Source="Copy"
+                                     Style="{DynamicResource InfoImageButtonStyle}"
+                                     Command="{Binding SelectedAddress.CopyCommand}"/>
+                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
+                    <Label Text="{helpers:Translate Path}"
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
+                    <Label Text="{Binding SelectedAddress.Path}"
+                           Style="{DynamicResource InfoRowTextStyle}"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{helpers:Translate Balance}"
+                                   Style="{DynamicResource InfoRowTitleStyle}"/>
+                            <Label Text="{Binding SelectedAddress.Balance}"
+                                   Style="{DynamicResource InfoRowTextStyle}"/>
+                        </StackLayout>
+                        <ImageButton Source="ic_redeem"
+                                     Style="{DynamicResource InfoImageButtonStyle}"
+                                     Command="{Binding SelectedAddress.UpdateAddressCommand}"/>
+                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                </StackLayout>
+                <Button Text="{helpers:Translate ExportKeyButton}"
+                        Style="{DynamicResource TransparentButtonStyle}"
+                        TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
+                        Command="{Binding SelectedAddress.ExportKeyCommand}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

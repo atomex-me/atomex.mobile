@@ -247,36 +247,36 @@
                 </Frame>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
                 <Label Text="{helpers:Translate Description}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding Description}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                       Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{helpers:Translate TransactionId}"
-                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                               Style="{DynamicResource InfoRowTitleStyle}"/>
                         <Label Text="{Binding Id}"
-                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               Style="{DynamicResource InfoRowTextStyle}"
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
                     <ImageButton Source="Copy"
-                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Style="{DynamicResource InfoImageButtonStyle}"
                                  Command="{Binding CopyTxIdCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
                 <Label Text="{helpers:Translate TransactionTime}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                       Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -289,18 +289,18 @@
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{helpers:Translate FromLabel}"
-                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                               Style="{DynamicResource InfoRowTitleStyle}"/>
                         <Label Text="{Binding From}"
-                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               Style="{DynamicResource InfoRowTextStyle}"
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
                     <ImageButton Source="Copy"
-                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Style="{DynamicResource InfoImageButtonStyle}"
                                  Command="{Binding CopyFromAddressCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -313,18 +313,18 @@
                 <StackLayout Orientation="Horizontal">
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{helpers:Translate ToLabel}"
-                               Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                               Style="{DynamicResource InfoRowTitleStyle}"/>
                         <Label Text="{Binding To}"
-                               Style="{DynamicResource TxInfoRowTextStyle}"
+                               Style="{DynamicResource InfoRowTextStyle}"
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
                     <ImageButton Source="Copy"
-                                 Style="{DynamicResource TxInfoCopyButtonStyle}"
+                                 Style="{DynamicResource InfoImageButtonStyle}"
                                  Command="{Binding CopyToAddressCommand}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -335,12 +335,12 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="{helpers:Translate GasPriceLabel}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding GasPrice}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                       Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -351,12 +351,12 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="{helpers:Translate GasLimitLabel}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding GasLimit}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                       Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -367,12 +367,12 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="{helpers:Translate GasUsedLabel}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding GasUsed}"
-                       Style="{DynamicResource TxInfoRowTextStyle}"/>
+                       Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -383,9 +383,9 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="{helpers:Translate FeeLabel}"
-                       Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding Fee}"
-                       Style="{DynamicResource TxInfoRowTextStyle}">
+                       Style="{DynamicResource InfoRowTextStyle}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding Fee} "/>
@@ -396,7 +396,7 @@
                 </Label>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -407,9 +407,9 @@
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Label Text="{helpers:Translate IsInternalLabel}"
-                      Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                      Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding IsInternal}"
-                       Style="{DynamicResource TxInfoRowTextStyle}">
+                       Style="{DynamicResource InfoRowTextStyle}">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding IsInternal}"

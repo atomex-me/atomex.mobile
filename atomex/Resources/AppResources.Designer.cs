@@ -479,6 +479,36 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string AddressInfoPageTitle {
+            get {
+                return ResourceManager.GetString("AddressInfoPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string Addresses {
+            get {
+                return ResourceManager.GetString("Addresses", resourceCulture);
+            }
+        }
+        
+        internal static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
+            }
+        }
+        
+        internal static string Key {
+            get {
+                return ResourceManager.GetString("Key", resourceCulture);
+            }
+        }
+        
+        internal static string ExportKeyButton {
+            get {
+                return ResourceManager.GetString("ExportKeyButton", resourceCulture);
+            }
+        }
+        
         internal static string TransactionInfoPageTitle {
             get {
                 return ResourceManager.GetString("TransactionInfoPageTitle", resourceCulture);
@@ -1514,6 +1544,18 @@ namespace atomex.Resources {
         internal static string SwapHistoryText {
             get {
                 return ResourceManager.GetString("SwapHistoryText", resourceCulture);
+            }
+        }
+        
+        internal static string CopyingPrivateKeyWarning {
+            get {
+                return ResourceManager.GetString("CopyingPrivateKeyWarning", resourceCulture);
+            }
+        }
+        
+        internal static string PrivateKeyCopied {
+            get {
+                return ResourceManager.GetString("PrivateKeyCopied", resourceCulture);
             }
         }
     }
