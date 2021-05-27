@@ -251,19 +251,19 @@
 
     <!-- Addresses info Page -->
     <data name="AddressInfoPageTitle" xml:space="preserve">
-        <value>Address info</value>
+        <value>Adresse info</value>
     </data>
     <data name="Addresses" xml:space="preserve">
-        <value>Addresses</value>
+        <value>Adresses</value>
     </data>
     <data name="Path" xml:space="preserve">
-        <value>Path</value>
+        <value>Chemin d'accès</value>
     </data>
     <data name="Key" xml:space="preserve">
-        <value>Key</value>
+        <value>Clé</value>
     </data>
     <data name="ExportKeyButton" xml:space="preserve">
-        <value>Export private key</value>
+        <value>Exportat de la clé privée</value>
     </data>
     
     <!-- Transaction Page -->
@@ -446,10 +446,10 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Buy with card</value>
+        <value>Acheter avec une carte</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
-        <value>Select the currency to buy</value>
+        <value>Sélectionnez la devise à acheter</value>
     </data>
 
     <!-- Swap Info Page -->
@@ -830,9 +830,9 @@
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Copying the private key to the clipboard may result in the loss of all your coins in the wallet. Are you sure you want to copy the private key for {0}</value>
+        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans le portefeuille. Êtes-vous sûr de vouloir copier la clé privée de {0}?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
-        <value>Private key copied</value>
+        <value>Clé privée copiée</value>
     </data>
 </root>

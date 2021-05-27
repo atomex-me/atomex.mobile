@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -29,8 +30,7 @@ namespace atomex
             Color initColor = selectedTx.BackgroundColor;
             selectedTx.BackgroundColor = selectedTxBackgroundColor;
 
-            await selectedTx.ScaleTo(1.01, 50);
-            await selectedTx.ScaleTo(1, 50, Easing.SpringOut);
+            await Task.Delay(500);
 
             selectedTx.BackgroundColor = initColor;
             selectedTx.IsEnabled = true;

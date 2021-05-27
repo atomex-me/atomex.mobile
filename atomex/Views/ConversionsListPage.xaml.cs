@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -16,8 +17,18 @@ namespace atomex
         public ConversionsListPage(ConversionViewModel conversionViewModel)
         {
             InitializeComponent();
+
+            string selectedColorName = "ListViewSelectedBackgroundColor";
+
+            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
+                selectedColorName = "ListViewSelectedBackgroundColorDark";
+
+            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
+            selectedItemBackgroundColor = (Color)selectedColor;
+
             BindingContext = conversionViewModel;
         }
+
         private async void OnItemTapped(object sender, EventArgs args)
         {
             Grid selectedItem = (Grid)sender;
@@ -26,8 +37,7 @@ namespace atomex
 
             selectedItem.BackgroundColor = selectedItemBackgroundColor;
 
-            await selectedItem.ScaleTo(1.01, 50);
-            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+            await Task.Delay(500);
 
             selectedItem.BackgroundColor = initColor;
             selectedItem.IsEnabled = true;

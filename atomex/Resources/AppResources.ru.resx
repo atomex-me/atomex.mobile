@@ -446,7 +446,7 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Покупка по карте</value>
+        <value>Купить по карте</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
         <value>Выберите валюту для покупки</value>
@@ -830,7 +830,7 @@
         <value>История свопов хранится локально на вашем устройстве. Это значит, что вы не увидите операции, сделанные на другом устройстве.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Копирование приватного ключа в буфер обмена может привести к потере всех ваших средств. Вы уверены, что хотите скопировать приватный ключ для {0}?</value>
+        <value>Копирование приватного ключа в буфер обмена может привести к потере всех ваших средств в кошельке. Вы уверены, что хотите скопировать приватный ключ для {0}?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Приватный ключ скопирован</value>

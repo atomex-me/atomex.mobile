@@ -251,19 +251,19 @@
 
     <!-- Addresses info Page -->
     <data name="AddressInfoPageTitle" xml:space="preserve">
-        <value>Address info</value>
+        <value>Adres bilgisi</value>
     </data>
     <data name="Addresses" xml:space="preserve">
-        <value>Addresses</value>
+        <value>Adresler</value>
     </data>
     <data name="Path" xml:space="preserve">
-        <value>Path</value>
+        <value>Yol</value>
     </data>
     <data name="Key" xml:space="preserve">
-        <value>Key</value>
+        <value>Anahtar</value>
     </data>
     <data name="ExportKeyButton" xml:space="preserve">
-        <value>Export private key</value>
+        <value>Özel bir anahtarı exportu</value>
     </data>
     
     <!-- Transaction Page -->
@@ -446,10 +446,10 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Buy with card</value>
+        <value>Kartla satın al</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
-        <value>Select the currency to buy</value>
+        <value>Satın alınacak para birimini seçin</value>
     </data>
 
     <!-- Swap Info Page -->
@@ -830,9 +830,9 @@
         <value>Swap geçmişi, cihazınızda yerel olarak depolanır. Bu, başka bir cihazda gerçekleştirilen işlemleri görmeyeceğiniz anlamına gelir.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Copying the private key to the clipboard may result in the loss of all your coins in the wallet. Are you sure you want to copy the private key for {0}</value>
+        <value>Özel anahtarı panoya kopyalamak, cüzdandaki tüm paranızın kaybedilmesine neden olabilir. {0} için özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
-        <value>Private key copied</value>
+        <value>Özel anahtar kopyalandı</value>
     </data>
 </root>
