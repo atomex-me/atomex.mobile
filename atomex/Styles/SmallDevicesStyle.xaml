@@ -387,7 +387,7 @@
         <Setter Property="Spacing" Value="0"/>
     </Style>
 
-    <!-- TxInfo / SwapInfo / Confirmations Pages  -->
+    <!-- TxInfo / SwapInfo / AddressInfo / Confirmations Pages  -->
     <Style x:Key="TxAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
@@ -400,24 +400,24 @@
         <Setter Property="Margin" Value="0,15"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
-    <Style x:Key="TxInfoRowStyle" TargetType="StackLayout">
+    <Style x:Key="InfoRowStyle" TargetType="StackLayout">
         <Setter Property="Padding" Value="20,5"/>
         <Setter Property="HeightRequest" Value="40"/>
     </Style>
-    <Style x:Key="TxInfoRowTitleStyle" TargetType="Label">
+    <Style x:Key="InfoRowTitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="HeightRequest" Value="16"/>
         <Setter Property="VerticalTextAlignment" Value="End"/>
     </Style>
-    <Style x:Key="TxInfoRowTextStyle" TargetType="Label">
+    <Style x:Key="InfoRowTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="HeightRequest" Value="16"/>
     </Style>
-    <Style x:Key="TxInfoCopyButtonStyle" TargetType="ImageButton">
+    <Style x:Key="InfoImageButtonStyle" TargetType="ImageButton">
         <Setter Property="WidthRequest" Value="32"/>
         <Setter Property="HeightRequest" Value="32"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>

@@ -248,6 +248,23 @@
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Doğrulanmamış miktar</value>
     </data>
+
+    <!-- Addresses info Page -->
+    <data name="AddressInfoPageTitle" xml:space="preserve">
+        <value>Adres bilgisi</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>Adresler</value>
+    </data>
+    <data name="Path" xml:space="preserve">
+        <value>Yol</value>
+    </data>
+    <data name="Key" xml:space="preserve">
+        <value>Anahtar</value>
+    </data>
+    <data name="ExportKeyButton" xml:space="preserve">
+        <value>Özel bir anahtarı exportu</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
@@ -429,10 +446,10 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Buy with card</value>
+        <value>Kartla satın al</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
-        <value>Select the currency to buy</value>
+        <value>Satın alınacak para birimini seçin</value>
     </data>
 
     <!-- Swap Info Page -->
@@ -811,5 +828,11 @@
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>Swap geçmişi, cihazınızda yerel olarak depolanır. Bu, başka bir cihazda gerçekleştirilen işlemleri görmeyeceğiniz anlamına gelir.</value>
+    </data>
+    <data name="CopyingPrivateKeyWarning" xml:space="preserve">
+        <value>Özel anahtarı panoya kopyalamak, cüzdandaki tüm paranızın kaybedilmesine neden olabilir. {0} için özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
+    </data>
+    <data name="PrivateKeyCopied" xml:space="preserve">
+        <value>Özel anahtar kopyalandı</value>
     </data>
 </root>

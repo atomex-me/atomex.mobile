@@ -248,6 +248,23 @@
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Une somme non confirmée</value>
     </data>
+
+    <!-- Addresses info Page -->
+    <data name="AddressInfoPageTitle" xml:space="preserve">
+        <value>Adresse info</value>
+    </data>
+    <data name="Addresses" xml:space="preserve">
+        <value>Adresses</value>
+    </data>
+    <data name="Path" xml:space="preserve">
+        <value>Chemin d'accès</value>
+    </data>
+    <data name="Key" xml:space="preserve">
+        <value>Clé</value>
+    </data>
+    <data name="ExportKeyButton" xml:space="preserve">
+        <value>Exportat de la clé privée</value>
+    </data>
     
     <!-- Transaction Page -->
     <data name="TransactionInfoPageTitle" xml:space="preserve">
@@ -429,10 +446,10 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Buy with card</value>
+        <value>Acheter avec une carte</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
-        <value>Select the currency to buy</value>
+        <value>Sélectionnez la devise à acheter</value>
     </data>
 
     <!-- Swap Info Page -->
@@ -811,5 +828,11 @@
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
+    </data>
+    <data name="CopyingPrivateKeyWarning" xml:space="preserve">
+        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans le portefeuille. Êtes-vous sûr de vouloir copier la clé privée de {0}?</value>
+    </data>
+    <data name="PrivateKeyCopied" xml:space="preserve">
+        <value>Clé privée copiée</value>
     </data>
 </root>

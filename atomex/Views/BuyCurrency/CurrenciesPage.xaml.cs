@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using atomex.ViewModel;
 using Xamarin.Forms;
 
@@ -31,8 +32,7 @@ namespace atomex.Views.BuyCurrency
 
             selectedItem.BackgroundColor = selectedItemBackgroundColor;
 
-            await selectedItem.ScaleTo(1.01, 50);
-            await selectedItem.ScaleTo(1, 50, Easing.SpringOut);
+            await Task.Delay(500);
 
             selectedItem.BackgroundColor = initColor;
             selectedItem.IsEnabled = true;

@@ -15,6 +15,12 @@
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{helpers:Translate Addresses}"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding AddressesPageCommand}"/>
+    </ContentPage.ToolbarItems>
     <ListView ItemsSource="{Binding GroupedTransactions}"
               Style="{DynamicResource TxListViewStyle}"
               SelectionMode="None"

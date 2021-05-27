@@ -1,22 +1,18 @@
-﻿using Xamarin.Forms;
-using atomex.ViewModel;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using atomex.ViewModel;
+using Xamarin.Forms;
 
 namespace atomex
 {
-    public partial class CurrencyPage : ContentPage
+    public partial class AddressesPage : ContentPage
     {
         Color selectedTxBackgroundColor;
 
-        public CurrencyPage()
+        public AddressesPage(AddressesViewModel addressesViewModel)
         {
             InitializeComponent();
-        }
-        public CurrencyPage(CurrencyViewModel currencyViewModel)
-        {
-            InitializeComponent();
-            BindingContext = currencyViewModel;
+            BindingContext = addressesViewModel;
 
             string selectedColorName = "ListViewSelectedBackgroundColor";
 
@@ -27,7 +23,7 @@ namespace atomex
             selectedTxBackgroundColor = (Color)selectedColor;
         }
 
-        private async void OnTxItemTapped(object sender, EventArgs args)
+        private async void OnItemTapped(object sender, EventArgs args)
         {
             Grid selectedTx = (Grid)sender;
             selectedTx.IsEnabled = false;

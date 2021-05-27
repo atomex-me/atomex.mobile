@@ -60,25 +60,25 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate Price}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding Price}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                           Style="{DynamicResource InfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate TransactionTime}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                           Style="{DynamicResource InfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate State}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding State}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"/>
+                           Style="{DynamicResource InfoRowTextStyle}"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
             </StackLayout>

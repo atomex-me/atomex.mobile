@@ -53,19 +53,19 @@
                     </Label>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate ToLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding To}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           Style="{DynamicResource InfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate AmountLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding Amount}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
+                           Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
@@ -80,19 +80,18 @@
                     </Label>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                <StackLayout Style="{DynamicResource InfoRowStyle}"
                              IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                     <Label Text="{helpers:Translate FeeLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding Fee}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
+                           Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Fee}"
                                       />
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
-                                     />
+                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
@@ -102,11 +101,11 @@
                     </Label>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}"
+                <StackLayout Style="{DynamicResource InfoRowStyle}"
                              IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                     <Label Text="{helpers:Translate FeeLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
-                    <Label Style="{DynamicResource TxInfoRowTextStyle}">
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
+                    <Label Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding TotalFeeString}"

@@ -33,19 +33,19 @@
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate FromLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
-                           Style="{DynamicResource TxInfoRowTextStyle}"
+                           Style="{DynamicResource InfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate AmountLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding Amount}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
+                           Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#########}'}"
@@ -97,11 +97,11 @@
                     </StackLayout>
                 </Grid>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                <StackLayout Style="{DynamicResource TxInfoRowStyle}">
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate FeeLabel}"
-                           Style="{DynamicResource TxInfoRowTitleStyle}"/>
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding Fee}"
-                           Style="{DynamicResource TxInfoRowTextStyle}">
+                           Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"
