@@ -27,7 +27,7 @@ namespace atomex.ViewModel
 
         public INavigation Navigation { get; set; }
 
-        private readonly Tezos _tezos;
+        private readonly TezosConfig _tezos;
         private WalletAddressViewModel _walletAddressViewModel;
 
         private bool _canDelegate;
@@ -324,7 +324,7 @@ namespace atomex.ViewModel
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             Navigation = navigation;
 
-            _tezos = AtomexApp.Account.Currencies.Get<Tezos>("XTZ");
+            _tezos = AtomexApp.Account.Currencies.Get<TezosConfig>("XTZ");
             FeeCurrencyCode = _tezos.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
@@ -504,7 +504,7 @@ namespace atomex.ViewModel
                     From = WalletAddressViewModel.WalletAddress.Address,
                     To = _address,
                     Fee = Fee.ToMicroTez(),
-                    Currency = _tezos,
+                    Currency = _tezos.Name,
                     CreationTime = DateTime.UtcNow,
 
                     UseRun = true,
@@ -517,7 +517,8 @@ namespace atomex.ViewModel
 
                 var isSuccess = await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,
-                    headOffset: Tezos.HeadOffset,
+                    tezosConfig: _tezos,
+                    headOffset: TezosConfig.HeadOffset,
                     cancellationToken: cancellationToken);
 
                 if (!isSuccess)
@@ -560,7 +561,7 @@ namespace atomex.ViewModel
                     From = WalletAddressViewModel.WalletAddress.Address,
                     To = _address,
                     Fee = Fee.ToMicroTez(),
-                    Currency = _tezos,
+                    Currency = _tezos.Name,
                     CreationTime = DateTime.UtcNow,
 
                     UseRun = true,
@@ -573,7 +574,8 @@ namespace atomex.ViewModel
 
                 await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,
-                    headOffset: Tezos.HeadOffset);
+                    tezosConfig: _tezos,
+                    headOffset: TezosConfig.HeadOffset);
 
                 var signResult = await tx
                     .SignAsync(keyStorage, WalletAddressViewModel.WalletAddress, default);

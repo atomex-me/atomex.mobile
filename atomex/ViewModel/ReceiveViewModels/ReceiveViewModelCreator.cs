@@ -1,4 +1,5 @@
-﻿using Atomex;
+﻿using System;
+using Atomex;
 using Atomex.EthereumTokens;
 using Atomex.TezosTokens;
 
@@ -9,26 +10,16 @@ namespace atomex.ViewModel.ReceiveViewModels
         public static ReceiveViewModel CreateViewModel(
             CurrencyViewModel currencyViewModel)
         {
-            switch (currencyViewModel.Currency)
+            return currencyViewModel.Currency switch
             {
-
-                case BitcoinBasedCurrency _:
-                    return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
-                case ERC20 _:
-                    return (ReceiveViewModel)new EthereumReceiveViewModel(currencyViewModel);
-                case Ethereum _:
-                    return (ReceiveViewModel)new EthereumReceiveViewModel(currencyViewModel);
-                case NYX _:
-                    return (ReceiveViewModel)new ReceiveViewModel(currencyViewModel);
-                case FA2 _:
-                    return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
-                case FA12 _:
-                    return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
-                case Tezos _:
-                    return (ReceiveViewModel)new TezosReceiveViewModel(currencyViewModel);
-            }
-
-            return null;
+                BitcoinBasedConfig _ => new ReceiveViewModel(currencyViewModel),
+                Erc20Config _ => new ReceiveViewModel(currencyViewModel),
+                EthereumConfig _ => new EthereumReceiveViewModel(currencyViewModel),
+                Fa2Config _ => new ReceiveViewModel(currencyViewModel),
+                Fa12Config _ => new ReceiveViewModel(currencyViewModel),
+                TezosConfig _ => new TezosReceiveViewModel(currencyViewModel),
+                _ => throw new NotSupportedException($"Can't create receive view model for {currencyViewModel.Currency.Name}. This currency is not supported."),
+            };
         }
     }
 }

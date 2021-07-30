@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
+             x:Name="BindingContextPage"
+             Title="{helpers:Translate WalletsPageTitle}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding TokensContracts}"
+                  SelectionMode="None"
+                  CachingStrategy="RetainElement"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="Default"
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                  VerticalOptions="FillAndExpand"
+                  Footer="">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid ColumnSpacing="0"
+                              RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.SelectTokenContractCommand, Source={x:Reference BindingContextPage}}"
+                                                      Tapped="OnItemTapped"
+                                                      CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+                            <Image Grid.RowSpan="2"
+                                   WidthRequest="40"
+                                   HeightRequest="40"
+                                   Margin="10,0"
+                                   VerticalOptions="CenterAndExpand"
+                                   Source="{Binding IconUrl}"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Contract.Name}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="End"
+                                   HorizontalTextAlignment="Start"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding Contract.Address}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   FontFamily="{DynamicResource LightFont}"
+                                   FontSize="10"
+                                   Margin="0,3"
+                                   VerticalTextAlignment="Start"
+                                   HorizontalTextAlignment="Start"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Class="atomex.Views.TezosTokens.TokenInfoPage"
+    Title="Token info"
+    Style="{DynamicResource MainBackgroundStyle}">
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         HeightRequest="60"
+                         Margin="20,5,0,0">
+                <Frame Padding="0"
+                       CornerRadius="25"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="Start"
+                       IsClippedToBounds="True">
+                    <Image Source="{Binding TokenPreview}"
+                           WidthRequest="50"
+                           HeightRequest="50"/>
+                </Frame>
+                <Label Text="{Binding Balance}"
+                       VerticalTextAlignment="Center"
+                       Padding="10,0"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
+                <Label Text="Name"
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
+                <Label Text="{Binding TokenBalance.Name}"
+                       Style="{DynamicResource InfoRowTextStyle}"
+                       LineBreakMode="TailTruncation"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
+                <Label Text="{helpers:Translate Description}"
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
+                <Label Text="{Binding TokenBalance.Description}"
+                       Style="{DynamicResource InfoRowTextStyle}"
+                       LineBreakMode="TailTruncation"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
+                <Label Text="Token ID"
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
+                <Label Text="{Binding TokenBalance.TokenId}"
+                       Style="{DynamicResource InfoRowTextStyle}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            </StackLayout>
+            <Button Text="Show"
+                    Style="{DynamicResource TransparentButtonStyle}"
+                    Command="{Binding OpenInBrowser}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding AssetUrl}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <StackLayout Style="{DynamicResource SeparatorStyle}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding AssetUrl}"
+                                 Value="">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

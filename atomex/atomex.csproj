@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
@@ -43,6 +43,7 @@
     <Folder Include="Views\Popup\" />
     <Folder Include="Behaviors\" />
     <Folder Include="Views\BuyCurrency\" />
+    <Folder Include="Views\TezosTokens\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />

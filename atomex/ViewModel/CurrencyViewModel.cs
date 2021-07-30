@@ -31,9 +31,9 @@ namespace atomex.ViewModel
 
         public INavigationService NavigationService { get; set; }
 
-        private IToastService ToastService;
+        private IToastService ToastService { get; set; }
 
-        public Currency Currency { get; set; }
+        public CurrencyConfig Currency { get; set; }
 
         public event EventHandler AmountUpdated;
 
@@ -247,7 +247,7 @@ namespace atomex.ViewModel
         {
             try
             {
-                if (e.Transaction.Currency.Name != Currency?.Name)
+                if (e.Transaction.Currency != Currency?.Name)
                     return;
 
                 _ = UpdateTransactionsAsync();
@@ -275,11 +275,16 @@ namespace atomex.ViewModel
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                        transactions.Select(t => TransactionViewModelCreator
-                           .CreateViewModel(t))
+                           .CreateViewModel(t, Currency))
                            .ToList()
-                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
+                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
+                           .ForEachDo(t =>
+                            {
+                                t.RemoveClicked += RemoveTransactonEventHandler;
+                            }));
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
@@ -309,14 +314,14 @@ namespace atomex.ViewModel
             }
         }
 
-        public async void RemoveTransactonAsync(string id)
+        public async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
             if (AtomexApp.Account == null)
                 return;
 
             try
             {
-                var txId = $"{id}:{Currency.Name}";
+                var txId = $"{args.Transaction.Id}:{Currency.Name}";
 
                 var isRemoved = await AtomexApp.Account
                     .RemoveTransactionAsync(txId);
@@ -378,10 +383,7 @@ namespace atomex.ViewModel
         async Task OnTxItemTapped(TransactionViewModel tx)
         {
             if (tx != null)
-            {
-                tx.CurrencyViewModel = this;
                 await Navigation.PushAsync(new TransactionInfoPage(tx));
-            }
         }
 
         private ICommand _updateCurrencyCommand;

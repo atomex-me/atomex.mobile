@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using atomex.Common;
 using Atomex.Common;
+using Atomex.Wallet.Abstract;
 
 namespace atomex.ViewModel.ReceiveViewModels
 {
@@ -15,9 +16,10 @@ namespace atomex.ViewModel.ReceiveViewModels
                 OnPropertyChanged(nameof(CurrencyViewModel));
 
                 var activeTokenAddresses = AtomexApp.Account
-                        .GetUnspentTokenAddressesAsync(_currencyViewModel.CurrencyCode)
-                        .WaitForResult()
-                        .ToList();
+                    .GetCurrencyAccount<ILegacyCurrencyAccount>(_currencyViewModel.Currency.Name)
+                    .GetUnspentTokenAddressesAsync()
+                    .WaitForResult()
+                    .ToList();
 
                 var activeAddresses = AtomexApp.Account
                     .GetUnspentAddressesAsync(_currencyViewModel.CurrencyCode)
@@ -27,8 +29,8 @@ namespace atomex.ViewModel.ReceiveViewModels
                 activeTokenAddresses.ForEach(a => a.Balance = activeAddresses.Find(b => b.Address == a.Address)?.Balance ?? 0m);
 
                 activeAddresses = activeAddresses
-                         .Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null)
-                         .ToList();
+                    .Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null)
+                    .ToList();
 
                 var freeAddress = AtomexApp.Account
                     .GetFreeExternalAddressAsync(_currencyViewModel.CurrencyCode)
@@ -42,12 +44,6 @@ namespace atomex.ViewModel.ReceiveViewModels
 
                 if (receiveAddresses.FirstOrDefault(w => w.Address == freeAddress.Address) == null)
                     receiveAddresses.AddEx(new WalletAddressViewModel(freeAddress, _currencyViewModel.Currency.Format, isFreeAddress: true));
-
-                receiveAddresses = receiveAddresses.Select(wa =>
-                {
-                    wa.WalletAddress.Currency = CurrencyViewModel.CurrencyCode;
-                    return wa;
-                }).ToList();
 
                 FromAddressList = receiveAddresses;
             }

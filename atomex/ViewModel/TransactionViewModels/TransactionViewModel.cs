@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
+using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Xamarin.Essentials;
@@ -24,9 +25,11 @@ namespace atomex.ViewModel.TransactionViewModels
 
     public class TransactionViewModel : BaseViewModel
     {
-        public IBlockchainTransaction Transaction { get; }
+        public event EventHandler<TransactionEventArgs> RemoveClicked;
+
+        public IBlockchainTransaction Transaction { get; set; }
         public string Id { get; set; }
-        public Currency Currency { get; set; }
+        public CurrencyConfig Currency { get; set; }
         public BlockchainTransactionState State { get; set; }
         //public BlockchainTransactionType Type { get; set; }
         public TransactionType Type { get; set; }
@@ -38,87 +41,96 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal Fee { get; set; }
         public DateTime Time { get; set; }
         public DateTime LocalTime => Time.ToLocalTime();
-        public string TxExplorerUri => $"{Currency.TxExplorerUri}{Id}";
+        public string TxExplorerUri { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public bool CanBeRemoved { get; set; }
 
-        private bool _isExpanded;
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set { _isExpanded = value; OnPropertyChanged(nameof(IsExpanded)); }
-        }
 
         private IToastService ToastService;
-
-        public CurrencyViewModel CurrencyViewModel;
 
         public TransactionViewModel()
         {
         }
 
-        public TransactionViewModel(IBlockchainTransaction tx, decimal amount, decimal fee)
+        public TransactionViewModel(IBlockchainTransaction tx, CurrencyConfig currencyConfig, decimal amount, decimal fee)
         {
             Transaction = tx ?? throw new ArgumentNullException(nameof(tx));
             Id = Transaction.Id;
-            Currency = Transaction.Currency;
+            Currency = currencyConfig;
             State = Transaction.State;
             Type = GetType(Transaction.Type);
             //Type = Transaction.Type;
             Amount = amount;
 
+            TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
+
             ToastService = DependencyService.Get<IToastService>();
 
             var netAmount = amount + fee;
-
-            AmountFormat = tx.Currency.Format;
-            CurrencyCode = tx.Currency.Name;
+        
+            AmountFormat = currencyConfig.Format;
+            CurrencyCode = currencyConfig.Name;
             Time = tx.CreationTime ?? DateTime.UtcNow;
             CanBeRemoved = tx.State == BlockchainTransactionState.Failed ||
                            tx.State == BlockchainTransactionState.Pending ||
                            tx.State == BlockchainTransactionState.Unknown ||
                            tx.State == BlockchainTransactionState.Unconfirmed;
 
-            if (tx.Type.HasFlag(BlockchainTransactionType.SwapPayment))
+            Description = GetDescription(
+                type: tx.Type,
+                amount: Amount,
+                netAmount: netAmount,
+                amountDigits: currencyConfig.Digits,
+                currencyCode: currencyConfig.Name);
+        }
+
+        public static string GetDescription(
+            BlockchainTransactionType type,
+            decimal amount,
+            decimal netAmount,
+            int amountDigits,
+            string currencyCode)
+        {
+            if (type.HasFlag(BlockchainTransactionType.SwapPayment))
             {
-                Description = $"Swap payment {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
+                 return $"Swap payment {Math.Abs(amount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (tx.Type.HasFlag(BlockchainTransactionType.SwapRefund))
+            else if (type.HasFlag(BlockchainTransactionType.SwapRefund))
             {
-                Description = $"Swap refund {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
+                return $"Swap refund {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem))
+            else if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
             {
-                Description = $"Swap redeem {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
+                return $"Swap redeem {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (tx.Type.HasFlag(BlockchainTransactionType.TokenApprove))
+            else if (type.HasFlag(BlockchainTransactionType.TokenApprove))
             {
-                Description = $"Token approve";
+                return $"Token approve";
             }
-            else if (tx.Type.HasFlag(BlockchainTransactionType.TokenCall))
+            else if (type.HasFlag(BlockchainTransactionType.TokenCall))
             {
-                Description = $"Token call";
+                return $"Token call";
             }
-            else if (tx.Type.HasFlag(BlockchainTransactionType.SwapCall))
+            else if (type.HasFlag(BlockchainTransactionType.SwapCall))
             {
-                Description = $"Token swap call";
+                return $"Token swap call";
             }
-            else if (Amount <= 0) //tx.Type.HasFlag(BlockchainTransactionType.Output))
+            else if (amount <= 0)
             {
-                Description = $"Sent {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
+                return $"Sent {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (Amount > 0) //tx.Type.HasFlag(BlockchainTransactionType.Input)) // has outputs
+            else if (amount > 0)
             {
-                Description = $"Received {Math.Abs(netAmount).ToString("0." + new String('#', tx.Currency.Digits))} {tx.Currency.Name}";
+                return $"Received {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else
             {
-                Description = "Unknown transaction";
+                return "Unknown transaction";
             }
         }
 
-        public TransactionType GetType(BlockchainTransactionType type)
+        public static TransactionType GetType(BlockchainTransactionType type)
         {
             if (type.HasFlag(BlockchainTransactionType.SwapPayment))
                 return TransactionType.SwapPayment;
@@ -145,7 +157,6 @@ namespace atomex.ViewModel.TransactionViewModels
             if (type.HasFlag(BlockchainTransactionType.Input))
                 return TransactionType.Input;
 
-            //if (type.HasFlag(BlockchainTransactionType.Output))
             return TransactionType.Output;
         }
 
@@ -166,12 +177,10 @@ namespace atomex.ViewModel.TransactionViewModels
 
         private async Task OnDeleteTxButtonClicked()
         {
-            if (CurrencyViewModel != null)
-            {
-                var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
-                if (!res) return;
-                CurrencyViewModel.RemoveTransactonAsync(Id);
-            }
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
+
+            if (!res) return;
+                RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));
         }
 
         private void OnShowInExplorerClicked()
@@ -184,6 +193,10 @@ namespace atomex.ViewModel.TransactionViewModels
             try
             { 
                 await Clipboard.SetTextAsync(Id);
+
+                if (ToastService == null)
+                    ToastService = DependencyService.Get<IToastService>();
+
                 ToastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch(Exception)
@@ -197,6 +210,10 @@ namespace atomex.ViewModel.TransactionViewModels
             try
             {
                 await Clipboard.SetTextAsync(From);
+
+                if (ToastService == null)
+                    ToastService = DependencyService.Get<IToastService>();
+
                 ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception)
@@ -210,6 +227,10 @@ namespace atomex.ViewModel.TransactionViewModels
             try
             {
                 await Clipboard.SetTextAsync(To);
+
+                if (ToastService == null)
+                    ToastService = DependencyService.Get<IToastService>();
+
                 ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception)

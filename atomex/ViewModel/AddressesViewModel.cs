@@ -83,7 +83,7 @@ namespace atomex.ViewModel
     {
         private readonly IAtomexApp _app;
 
-        public Currency Currency {get; set;}
+        public CurrencyConfig Currency {get; set;}
 
         public List<AddressInfo> Addresses { get; set; }
 
@@ -93,7 +93,7 @@ namespace atomex.ViewModel
 
         public AddressInfo SelectedAddress { get; set; }
 
-        public AddressesViewModel(IAtomexApp app, Currency currency, INavigation navigation)
+        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));

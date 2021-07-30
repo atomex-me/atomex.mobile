@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Abstract;
 using Xamarin.Forms;
@@ -25,9 +26,12 @@ namespace atomex.ViewModel
 
         public List<CurrencyViewModel> CurrencyViewModels { get; set; }
 
+        public TezosTokensViewModel TezosTokensViewModel { get; set; }
+
         public CurrenciesViewModel(IAtomexApp app, bool restore)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            TezosTokensViewModel = new TezosTokensViewModel(app);
             CurrencyViewModels = new List<CurrencyViewModel>();
             _ = FillCurrenciesAsync(restore);
         }
@@ -40,6 +44,8 @@ namespace atomex.ViewModel
                 c.Navigation = navigation;
                 c.NavigationService = navigationService;
             }
+
+            TezosTokensViewModel.Navigation = navigation;
         }
 
         private async Task FillCurrenciesAsync(bool restore)
@@ -72,8 +78,18 @@ namespace atomex.ViewModel
 
         private async Task OnCurrencyTapped(CurrencyViewModel currency)
         {
-            if (currency != null)
-                await Navigation.PushAsync(new CurrencyPage(currency));
+            if (currency == null)
+                return;
+
+            await Navigation.PushAsync(new CurrencyPage(currency));
+        }
+
+        private ICommand _showTezosTokensCommand;
+        public ICommand ShowTezosTokensCommand => _showTezosTokensCommand ??= new Command<CurrencyViewModel>(async (value) => await ShowTezosTokens());
+
+        private async Task ShowTezosTokens()
+        {
+            await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
         }
     }
 }

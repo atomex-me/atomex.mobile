@@ -7,6 +7,7 @@ using atomex.Resources;
 using atomex.Services;
 using Atomex;
 using Atomex.Common;
+using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -28,19 +29,32 @@ namespace atomex.ViewModel
                 _currencyViewModel = value;
                 OnPropertyChanged(nameof(CurrencyViewModel));
 
-                var activeAddresses = AtomexApp.Account
-                    .GetUnspentAddressesAsync(_currencyViewModel.CurrencyCode)
-                    .WaitForResult();
-
-                var freeAddress = AtomexApp.Account
-                    .GetFreeExternalAddressAsync(_currencyViewModel.CurrencyCode)
-                    .WaitForResult();
-
-                var receiveAddresses = activeAddresses
-                    .Select(wa => new WalletAddressViewModel(wa, _currencyViewModel.Currency.Format))
+                var activeTokenAddresses = AtomexApp.Account
+                    .GetCurrencyAccount<ILegacyCurrencyAccount>(_currencyViewModel.Currency.Name)
+                    .GetUnspentTokenAddressesAsync()
+                    .WaitForResult()
                     .ToList();
 
-                if (activeAddresses.FirstOrDefault(w => w.Address == freeAddress.Address) == null)
+                var activeAddresses = AtomexApp.Account
+                    .GetUnspentAddressesAsync(_currencyViewModel.Currency.Name)
+                    .WaitForResult()
+                    .ToList();
+
+                activeTokenAddresses.ForEach(a => a.Balance = activeAddresses.Find(b => b.Address == a.Address)?.Balance ?? 0m);
+
+                activeAddresses = activeAddresses
+                    .Where(a => activeTokenAddresses.FirstOrDefault(b => b.Address == a.Address) == null)
+                    .ToList();
+
+                var freeAddress = AtomexApp.Account
+                    .GetFreeExternalAddressAsync(_currencyViewModel.Currency.Name)
+                    .WaitForResult();
+
+                var receiveAddresses = activeTokenAddresses.Select(w => new WalletAddressViewModel(w, _currencyViewModel.Currency.Format))
+                    .Concat(activeAddresses.Select(w => new WalletAddressViewModel(w, _currencyViewModel.Currency.Format)))
+                    .ToList();
+
+                if (receiveAddresses.FirstOrDefault(w => w.Address == freeAddress.Address) == null)
                     receiveAddresses.AddEx(new WalletAddressViewModel(freeAddress, _currencyViewModel.Currency.Format, isFreeAddress: true));
 
                 FromAddressList = receiveAddresses;
@@ -107,6 +121,17 @@ namespace atomex.ViewModel
 
         protected virtual WalletAddressViewModel GetDefaultAddress()
         {
+            //return FromAddressList.First(vm => vm.IsFreeAddress);
+
+            if (CurrencyViewModel.Currency is TezosConfig || CurrencyViewModel.Currency is EthereumConfig)
+            {
+                var activeAddressViewModel = FromAddressList
+                    .FirstOrDefault(vm => vm.WalletAddress.HasActivity && vm.WalletAddress.AvailableBalance() > 0);
+
+                if (activeAddressViewModel != null)
+                    return activeAddressViewModel;
+            }
+
             return FromAddressList.First(vm => vm.IsFreeAddress);
         }
 

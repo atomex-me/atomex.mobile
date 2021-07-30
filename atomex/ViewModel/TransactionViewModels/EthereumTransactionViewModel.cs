@@ -10,18 +10,16 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
-        public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
-        public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
 
-        public EthereumTransactionViewModel(EthereumTransaction tx)
-             : base(tx, GetAmount(tx), GetFee(tx))
+        public EthereumTransactionViewModel(EthereumTransaction tx, EthereumConfig ethereumConfig)
+            : base(tx, ethereumConfig, GetAmount(tx), GetFee(tx))
         {
             From = tx.From;
             To = tx.To;
-            GasPrice = Ethereum.WeiToGwei((decimal)tx.GasPrice);
+            GasPrice = EthereumConfig.WeiToGwei((decimal)tx.GasPrice);
             GasLimit = (decimal)tx.GasLimit;
             GasUsed = (decimal)tx.GasUsed;
-            Fee = Ethereum.WeiToEth(tx.GasUsed * tx.GasPrice);
+            Fee = EthereumConfig.WeiToEth(tx.GasUsed * tx.GasPrice);
             IsInternal = tx.IsInternal;
         }
 
@@ -30,10 +28,10 @@ namespace atomex.ViewModel.TransactionViewModels
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Input))
-                result += Ethereum.WeiToEth(tx.Amount);
+                result += EthereumConfig.WeiToEth(tx.Amount);
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -Ethereum.WeiToEth(tx.Amount + tx.GasUsed * tx.GasPrice);
+                result += -EthereumConfig.WeiToEth(tx.Amount + tx.GasUsed * tx.GasPrice);
 
             tx.InternalTxs?.ForEach(t => result += GetAmount(t));
 
@@ -45,7 +43,7 @@ namespace atomex.ViewModel.TransactionViewModels
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += Ethereum.WeiToEth(tx.GasUsed * tx.GasPrice);
+                result += EthereumConfig.WeiToEth(tx.GasUsed * tx.GasPrice);
 
             tx.InternalTxs?.ForEach(t => result += GetFee(t));
 

@@ -77,7 +77,7 @@
                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -94,7 +94,7 @@
                                         <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -111,7 +111,7 @@
                                         <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -128,7 +128,7 @@
                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -145,7 +145,7 @@
                                         <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -162,7 +162,7 @@
                                         <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -179,7 +179,7 @@
                                         <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>
@@ -196,7 +196,7 @@
                                         <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
                                               Style="{DynamicResource TxAmountLabelStyle}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding Currency.Name}"
+                                        <Span Text="{Binding CurrencyCode}"
                                               Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                     </FormattedString>
                                 </Setter.Value>

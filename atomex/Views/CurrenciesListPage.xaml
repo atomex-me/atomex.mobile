@@ -14,8 +14,7 @@
                   SeparatorVisibility="Default"
                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand"
-                  Footer="">
+                  VerticalOptions="FillAndExpand">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -87,6 +86,40 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Grid ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.ShowTezosTokensCommand, Source={x:Reference BindingContextPage}}"
+                                              Tapped="OnItemTapped"/>
+                    </Grid.GestureRecognizers>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.ColumnSpan="2"
+                                 Margin="20,0,0,0"/>
+                    <Image Grid.Row="1"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           Margin="10,0"
+                           VerticalOptions="CenterAndExpand"
+                           Source="XTZ"/>
+                    <Label Grid.Column="1"
+                           Grid.Row="1"
+                           Text="Tezos Tokens"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="14"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                </Grid>
+            </ListView.Footer>
         </ListView>            
     </ContentPage.Content>
 </ContentPage>

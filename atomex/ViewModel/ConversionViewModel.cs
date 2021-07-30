@@ -7,11 +7,9 @@ using Atomex.Common;
 using System;
 using Atomex.Blockchain.Abstract;
 using Atomex.MarketData;
-using Atomex.Subsystems.Abstract;
 using Serilog;
 using Xamarin.Forms;
 using Atomex.MarketData.Abstract;
-using Atomex.Subsystems;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using Atomex.Swaps;
@@ -20,6 +18,9 @@ using atomex.Resources;
 using Atomex.Swaps.Helpers;
 using System.Windows.Input;
 using atomex.Views.CreateSwap;
+using Atomex.Services;
+using Atomex.Services.Abstract;
+using Atomex.Wallet.Abstract;
 
 namespace atomex.ViewModel
 {
@@ -413,16 +414,16 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            AtomexApp.TerminalChanged += OnTerminalChangedEventHandler;
-            OnTerminalChangedEventHandler(this, new TerminalChangedEventArgs(AtomexApp.Terminal));
+            AtomexApp.AtomexClientChanged += OnTerminalChangedEventHandler;
+            OnTerminalChangedEventHandler(this, new AtomexClientChangedEventArgs(AtomexApp.Terminal));
 
             if (AtomexApp.HasQuotesProvider)
                 AtomexApp.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
         }
 
-        private void OnTerminalChangedEventHandler(object sender, TerminalChangedEventArgs args)
+        private void OnTerminalChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var terminal = args.Terminal;
+            var terminal = args.AtomexClient;
 
             if (Terminal != terminal && Terminal != null)
             {
@@ -737,10 +738,12 @@ namespace atomex.ViewModel
             {
                 var account = AtomexApp.Account;
 
-                var fromWallets = (await account
+                var currencyAccount = account
+                    .GetCurrencyAccount<ILegacyCurrencyAccount>(FromCurrencyViewModel.Currency.Name);
+
+                var fromWallets = (await currencyAccount
                     .GetUnspentAddressesAsync(
                         toAddress: null,
-                        currency: FromCurrencyViewModel.Currency.Name,
                         amount: Amount,
                         fee: 0,
                         feePrice: await FromCurrencyViewModel.Currency.GetDefaultFeePriceAsync(),
@@ -956,7 +959,8 @@ namespace atomex.ViewModel
         private async Task UpdateRedeemAndRewardFeesAsync()
         {
             var walletAddress = await AtomexApp.Account
-                .GetRedeemAddressAsync(ToCurrencyViewModel.Currency.Name);
+                .GetCurrencyAccount<ILegacyCurrencyAccount>(ToCurrencyViewModel.Currency.Name)
+                .GetRedeemAddressAsync();
 
             _estimatedRedeemFee = await ToCurrencyViewModel.Currency
                 .GetEstimatedRedeemFeeAsync(walletAddress, withRewardForRedeem: false);

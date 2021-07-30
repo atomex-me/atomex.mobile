@@ -1,6 +1,7 @@
 ﻿using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.Ethereum;
+using Atomex.EthereumTokens;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
@@ -10,38 +11,38 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
-        public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
-        public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
 
-        public EthereumERC20TransactionViewModel(EthereumTransaction tx)
-             : base(tx, GetAmount(tx), 0)
+        public EthereumERC20TransactionViewModel(
+            EthereumTransaction tx,
+            Erc20Config erc20Config)
+            : base(tx, erc20Config, GetAmount(tx, erc20Config), 0)
         {
             From = tx.From;
             To = tx.To;
-            GasPrice = Ethereum.WeiToGwei((decimal)tx.GasPrice);
+            GasPrice = EthereumConfig.WeiToGwei((decimal)tx.GasPrice);
             GasLimit = (decimal)tx.GasLimit;
             GasUsed = (decimal)tx.GasUsed;
             IsInternal = tx.IsInternal;
         }
 
-        public static decimal GetAmount(EthereumTransaction tx)
+        public static decimal GetAmount(
+            EthereumTransaction tx,
+            Erc20Config erc20Config)
         {
-            var Erc20 = tx.Currency as Atomex.EthereumTokens.ERC20;
-
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.SwapRedeem) ||
                 tx.Type.HasFlag(BlockchainTransactionType.SwapRefund))
-                result += Erc20.TokenDigitsToTokens(tx.Amount);
+                result += erc20Config.TokenDigitsToTokens(tx.Amount);
             else
             {
                 if (tx.Type.HasFlag(BlockchainTransactionType.Input))
-                    result += Erc20.TokenDigitsToTokens(tx.Amount);
+                    result += erc20Config.TokenDigitsToTokens(tx.Amount);
                 if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                    result += -Erc20.TokenDigitsToTokens(tx.Amount);
+                    result += -erc20Config.TokenDigitsToTokens(tx.Amount);
             }
 
-            tx.InternalTxs?.ForEach(t => result += GetAmount(t));
+            tx.InternalTxs?.ForEach(t => result += GetAmount(t, erc20Config));
 
             return result;
         }
