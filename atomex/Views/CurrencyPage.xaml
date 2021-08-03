@@ -109,7 +109,7 @@
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ReceivePageCommand}"/>
                         <Button Text="{helpers:Translate DelegateButton}"
-                                IsVisible="{Binding IsStakingAvailable}"
+                                IsVisible="{Binding IsStakingAvailable, FallbackValue=False, TargetNullValue=False}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding StakingPageCommand}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ConvertButton}"
@@ -362,7 +362,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -381,7 +381,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -400,7 +400,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -419,7 +419,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -438,7 +438,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -457,7 +457,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -476,7 +476,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -495,7 +495,7 @@
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Currency.Name}"
+                                                <Span Text="{Binding CurrencyCode}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="12"/>
                                             </FormattedString>
@@ -553,12 +553,12 @@
                                     <Setter Property="Text" Value="{helpers:Translate ToLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Currency.Name}"
+                                             Binding="{Binding CurrencyCode}"
                                              Value="BTC">
                                     <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Currency.Name}"
+                                             Binding="{Binding CurrencyCode}"
                                              Value="LTC">
                                     <Setter Property="Text" Value="{helpers:Translate IdLabel, StringFormat='{0}:'}"/>
                                 </DataTrigger>
@@ -615,12 +615,12 @@
                                     <Setter Property="Text" Value="{Binding To, FallbackValue='Unknown'}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Currency.Name}"
+                                             Binding="{Binding CurrencyCode}"
                                              Value="BTC">
                                     <Setter Property="Text" Value="{Binding Id}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Currency.Name}"
+                                             Binding="{Binding CurrencyCode}"
                                              Value="LTC">
                                     <Setter Property="Text" Value="{Binding Id}"/>
                                 </DataTrigger>

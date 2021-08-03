@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using atomex.Common;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex.Common;
 using Atomex.Wallet.Abstract;
 

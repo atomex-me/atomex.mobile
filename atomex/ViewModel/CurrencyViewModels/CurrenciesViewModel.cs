@@ -8,7 +8,7 @@ using Atomex;
 using Atomex.Abstract;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.CurrencyViewModels
 {
     public class CurrenciesViewModel : BaseViewModel
     {
@@ -52,15 +52,8 @@ namespace atomex.ViewModel
         {
             await Task.WhenAll(Currencies.Select(async c =>
             {
-                var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
+                var currency = CurrencyViewModelCreator.CreateViewModel(AtomexApp, c);
 
-                CurrencyViewModel currency = new CurrencyViewModel(AtomexApp)
-                {
-                    Currency = c,
-                    TotalAmount = balance.Confirmed,
-                    AvailableAmount = balance.Available,
-                    UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
-                };
                 CurrencyViewModels.Add(currency);
 
                 if (restore)

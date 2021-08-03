@@ -19,7 +19,7 @@ using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokensViewModel : BaseViewModel
     {
@@ -117,7 +117,7 @@ namespace atomex.ViewModel
 
             _ = LoadAsync();
 
-            DesignerMode();
+            //DesignerMode();
         }
 
         private void SubscribeToUpdates()
@@ -260,11 +260,11 @@ namespace atomex.ViewModel
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
                     Transfers = new ObservableCollection<TezosTokenTransferViewModel>((await tokenAccount
-                    .DataRepository
-                    .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
-                    .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
-                    .ToList()
-                    .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
+                        .DataRepository
+                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
+                        .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
+                        .ToList()
+                        .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
 
                     var groups = Transfers.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TezosTokenTransferViewModel>(g.Key, g));
                     GroupedTransfers = new ObservableCollection<Grouping<DateTime, TezosTokenTransferViewModel>>(groups);
@@ -282,25 +282,22 @@ namespace atomex.ViewModel
                     .DataRepository
                     .GetTezosTokenAddressesByContractAsync(tokenContract.Contract.Address);
 
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    Transfers = new ObservableCollection<TezosTokenTransferViewModel>((await tezosAccount
+                        .DataRepository
+                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
+                        .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
+                        .ToList()
+                        .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
 
-                // !! uncomment
-                //await Device.InvokeOnMainThreadAsync(async () =>
-                //{
-                //    Transfers = new ObservableCollection<TezosTokenTransferViewModel>((await tezosAccount
-                //        .DataRepository
-                //        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
-                //        .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
-                //        .ToList()
-                //        .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
+                    var groups = Transfers.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TezosTokenTransferViewModel>(g.Key, g));
+                    GroupedTransfers = new ObservableCollection<Grouping<DateTime, TezosTokenTransferViewModel>>(groups);
+                    OnPropertyChanged(nameof(GroupedTransfers));
+                });
 
-                //    var groups = Transfers.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TezosTokenTransferViewModel>(g.Key, g));
-                //    GroupedTransfers = new ObservableCollection<Grouping<DateTime, TezosTokenTransferViewModel>>(groups);
-                //    OnPropertyChanged(nameof(GroupedTransfers));
-                //});
-
-                // !! uncomment
-                //Tokens = new ObservableCollection<TezosTokenViewModel>(tokenAddresses
-                //    .Select(a => new TezosTokenViewModel { TokenBalance = a.TokenBalance }));
+                Tokens = new ObservableCollection<TezosTokenViewModel>(tokenAddresses
+                    .Select(a => new TezosTokenViewModel { TokenBalance = a.TokenBalance }));
             }
 
             OnPropertyChanged(nameof(Tokens));

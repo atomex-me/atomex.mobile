@@ -11,6 +11,7 @@ using atomex.ViewModel;
 using atomex.Helpers;
 using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex
 {

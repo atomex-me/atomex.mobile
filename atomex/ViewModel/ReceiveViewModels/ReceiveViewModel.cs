@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
 using Atomex.Common;
 using Atomex.Wallet.Abstract;

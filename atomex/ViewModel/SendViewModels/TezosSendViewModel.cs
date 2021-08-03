@@ -1,4 +1,6 @@
 ﻿
+using atomex.ViewModel.CurrencyViewModels;
+
 namespace atomex.ViewModel.SendViewModels
 {
     public class TezosSendViewModel : SendViewModel

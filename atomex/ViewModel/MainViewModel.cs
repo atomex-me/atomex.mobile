@@ -8,6 +8,7 @@ using System.Linq;
 using atomex.Services;
 using Atomex.Services;
 using Atomex.Services.Abstract;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {

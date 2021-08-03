@@ -1,4 +1,5 @@
 ﻿using System;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
 using Atomex.EthereumTokens;
 using Atomex.TezosTokens;

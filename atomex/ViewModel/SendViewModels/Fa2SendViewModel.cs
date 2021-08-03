@@ -1,4 +1,6 @@
-﻿namespace atomex.ViewModel.SendViewModels
+﻿using atomex.ViewModel.CurrencyViewModels;
+
+namespace atomex.ViewModel.SendViewModels
 {
     public class Fa2SendViewModel : Fa12SendViewModel
     {

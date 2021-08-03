@@ -49,7 +49,7 @@
                        Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <Button Text="Show"
+            <Button Text="Show in ipfs"
                     Style="{DynamicResource TransparentButtonStyle}"
                     Command="{Binding OpenInBrowser}">
                 <Button.Triggers>

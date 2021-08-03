@@ -21,6 +21,7 @@ using atomex.Views.CreateSwap;
 using Atomex.Services;
 using Atomex.Services.Abstract;
 using Atomex.Wallet.Abstract;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {
@@ -448,15 +449,7 @@ namespace atomex.ViewModel
             {
                 await Task.WhenAll(Currencies.Select(async c =>
                 {
-                    var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
-
-                    _currencyViewModels.Add(new CurrencyViewModel(AtomexApp)
-                    {
-                        Currency = c,
-                        TotalAmount = balance.Confirmed,
-                        AvailableAmount = balance.Available,
-                        UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
-                    });
+                    _currencyViewModels.Add(CurrencyViewModelCreator.CreateViewModel(AtomexApp, c));
                 }));
 
                 FromCurrencies = _currencyViewModels.ToList();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.CustomElements;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex.Common;
 using Microcharts;
 using Serilog;

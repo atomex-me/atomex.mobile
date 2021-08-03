@@ -8,7 +8,7 @@ using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {

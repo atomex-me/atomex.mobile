@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex.Blockchain.Abstract;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Abstract;

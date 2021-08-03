@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
-using atomex.ViewModel;
 using System;
 using System.Threading.Tasks;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex
 {

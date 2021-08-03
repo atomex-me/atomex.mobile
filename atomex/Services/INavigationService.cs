@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using atomex.ViewModel;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex
 {
