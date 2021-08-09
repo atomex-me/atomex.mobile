@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
@@ -10,6 +11,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Wallet;
+using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -20,7 +22,8 @@ namespace atomex.ViewModel
     {
         public string Address { get; set; }
         public string Path { get; set; }
-        public decimal Balance { get; set; }
+        public string Balance { get; set; }
+        public string TokenBalance { get; set; }
         public Action<string> CopyToClipboard { get; set; }
         public Action<string> ExportKey { get; set; }
         public Action<string> UpdateAddress { get; set; }
@@ -72,7 +75,7 @@ namespace atomex.ViewModel
         });
 
         private ICommand _addressUpdatedCommand;
-        public ICommand AddressUpdatedCommand => _addressUpdatedCommand ??= new Command<decimal>((value) =>
+        public ICommand AddressUpdatedCommand => _addressUpdatedCommand ??= new Command<string>((value) =>
         {
             Balance = value;
             IsUpdating = false;
@@ -85,7 +88,13 @@ namespace atomex.ViewModel
 
         public CurrencyConfig Currency {get; set;}
 
-        public List<AddressInfo> Addresses { get; set; }
+        private CancellationTokenSource _cancellation;
+
+        private string _tokenContract;
+
+        public ObservableCollection<AddressInfo> Addresses { get; set; }
+
+        public bool HasTokens { get; set; }
 
         private IToastService ToastService;
 
@@ -93,23 +102,26 @@ namespace atomex.ViewModel
 
         public AddressInfo SelectedAddress { get; set; }
 
-        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation)
+        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            Currency = currency ?? throw new ArgumentNullException(nameof(currency));
+            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
             ToastService = DependencyService.Get<IToastService>();
+            _tokenContract = tokenContract;
 
-            _ = Load();
+            ReloadAddresses();
         }
 
-        public async Task Load()
+        public async void ReloadAddresses()
         {
             try
             {
-                var account = _app.Account.GetCurrencyAccount(Currency.Name);
+                var account = _app.Account
+                    .GetCurrencyAccount(Currency.Name);
 
-                var addresses = (await account.GetAddressesAsync())
+                var addresses = (await account
+                    .GetAddressesAsync())
                     .ToList();
 
                 addresses.Sort((a1, a2) =>
@@ -121,21 +133,60 @@ namespace atomex.ViewModel
                         : chainResult;
                 });
 
-                Addresses = addresses.Select(a => new AddressInfo
+                Addresses = new ObservableCollection<AddressInfo>(
+                    addresses.Select(a => new AddressInfo
+                    {
+                        Address = a.Address,
+                        Path = $"m/44'/{Currency.Bip44Code}/0'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}",
+                        Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
+                        CopyToClipboard = OnCopyAddressButtonClicked,
+                        ExportKey = OnExportKeyButtonClicked,
+                        UpdateAddress = OnUpdateButtonClicked
+                    }));
+
+                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
-                    Address = a.Address,
-                    Path = $"m/44'/{Currency.Bip44Code}/0'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}",
-                    Balance = a.Balance,
-                    CopyToClipboard = OnCopyAddressButtonClicked,
-                    ExportKey = OnExportKeyButtonClicked,
-                    UpdateAddress = OnUpdateButtonClicked
-                }).ToList();
+                    HasTokens = true;
+
+                    var tezosAccount = account as TezosAccount;
+
+                    var addressesWithTokens = (await tezosAccount
+                        .DataRepository
+                        .GetTezosTokenAddressesByContractAsync(_tokenContract))
+                        .Where(w => w.Balance != 0)
+                        .GroupBy(w => w.Address);
+
+                    foreach (var addressWithTokens in addressesWithTokens)
+                    {
+                        var addressInfo = Addresses.FirstOrDefault(a => a.Address == addressWithTokens.Key);
+
+                        if (addressInfo == null)
+                            continue;
+
+                        if (addressWithTokens.Count() == 1)
+                        {
+                            var tokenAddress = addressWithTokens.First();
+
+                            addressInfo.TokenBalance = tokenAddress.Balance.ToString("F8", CultureInfo.InvariantCulture);
+
+                            var tokenCode = tokenAddress?.TokenBalance?.Symbol;
+
+                            if (tokenCode != null)
+                                addressInfo.TokenBalance += $" {tokenCode}";
+                        }
+                        else
+                        {
+                            addressInfo.TokenBalance = $"{addressWithTokens.Count()} TOKENS";
+                        }
+                    }
+                }
 
                 OnPropertyChanged(nameof(Addresses));
+                OnPropertyChanged(nameof(HasTokens));
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error while load addresses.");
+                Log.Error(e, "Error while reload addresses list.");
             }
         }
 
@@ -195,7 +246,7 @@ namespace atomex.ViewModel
 
                     await Clipboard.SetTextAsync(hex);
 
-                    MainThread.BeginInvokeOnMainThread(() =>
+                    await Device.InvokeOnMainThreadAsync(() =>
                     {
                         ToastService?.Show(AppResources.PrivateKeyCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
                     });
@@ -210,27 +261,46 @@ namespace atomex.ViewModel
 
         private async void OnUpdateButtonClicked(string address)
         {
+
+            _cancellation = new CancellationTokenSource();
+
             try
             {
                 await new HdWalletScanner(_app.Account)
-                    .ScanAddressAsync(Currency.Name, address)
-                    .ConfigureAwait(false);
+                    .ScanAddressAsync(Currency.Name, address, _cancellation.Token);
 
-                var balance = await _app.Account
-                    .GetAddressBalanceAsync(Currency.Name, address)
-                    .ConfigureAwait(false);
-
-                var currentAddress = Addresses.FirstOrDefault(a => a.Address == address);
-                currentAddress!.AddressUpdatedCommand.Execute(balance.Available);
-
-                MainThread.BeginInvokeOnMainThread(() =>
+                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
+                    // update tezos token balance
+                    var tezosAccount = _app.Account
+                        .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                    await new TezosTokensScanner(tezosAccount)
+                        .ScanContractAsync(address, _tokenContract);
+
+                    // reload balances for all tezos tokens account
+                    foreach (var currency in _app.Account.Currencies)
+                        if (Currencies.IsTezosToken(currency.Name))
+                            _app.Account
+                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                                .ReloadBalances();
+                }
+
+                ReloadAddresses();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                { 
                     ToastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
                 });
             }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Address balance update operation canceled");
+            }
             catch (Exception e)
             {
-                Log.Error(e, "Update address error");
+                Log.Error(e, "AddressesViewModel.OnUpdateButtonClicked");
+                // todo: message to user!?
             }
         }
     }

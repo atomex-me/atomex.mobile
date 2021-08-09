@@ -9,10 +9,18 @@
              Title="{Binding TokenContract.Contract.Name}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{helpers:Translate Addresses}"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding AddressesPageCommand}"/>
+    </ContentPage.ToolbarItems>
     <StackLayout Spacing="0">
         <ListView ItemsSource="{Binding GroupedTransfers}"
                   Style="{DynamicResource TxListViewStyle}"
@@ -87,7 +95,7 @@
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
-                                IsVisible="{Binding TokenContract.IsFa12}"/>
+                                IsVisible="{Binding IsConvertable}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
                                                      Command="{Binding ReceivePageCommand}"/>
@@ -359,7 +367,8 @@
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="12"
                                Padding="3,0"
-                               LineBreakMode="MiddleTruncation">
+                               LineBreakMode="MiddleTruncation"
+                               IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Type}"
@@ -373,6 +382,17 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{Binding Alias}"
+                               VerticalTextAlignment="Start"
+                               HorizontalTextAlignment="Start"
+                               LineBreakMode="TailTruncation"
+                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                               FontFamily="{DynamicResource LightFont}"
+                               FontSize="12"
+                               Padding="3,0"
+                               IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </ViewCell>
             </DataTemplate>
@@ -421,7 +441,7 @@
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
-                                IsVisible="{Binding TokenContract.IsFa12}"/>
+                                IsVisible="{Binding IsConvertable}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
                                                      Command="{Binding ReceivePageCommand}"/>

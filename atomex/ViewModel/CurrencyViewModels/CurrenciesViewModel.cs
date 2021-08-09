@@ -46,13 +46,17 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
 
             TezosTokensViewModel.Navigation = navigation;
+            TezosTokensViewModel.NavigationService = navigationService;
         }
 
         private async Task FillCurrenciesAsync(bool restore)
         {
-            await Task.WhenAll(Currencies.Select(async c =>
+            await Task.WhenAll(Currencies.Select(c =>
             {
                 var currency = CurrencyViewModelCreator.CreateViewModel(AtomexApp, c);
+
+                if (currency.CurrencyCode == "XTZ")
+                    TezosTokensViewModel.TezosViewModel = currency;
 
                 CurrencyViewModels.Add(currency);
 
@@ -63,6 +67,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                     _ = currency.UpdateBalanceAsync();
                     _ = currency.UpdateTransactionsAsync();
                 }
+
+                return Task.CompletedTask;
             }));
         }
 
@@ -74,6 +80,12 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (currency == null)
                 return;
 
+            if (currency.CurrencyCode == "XTZ")
+            {
+                await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
+                return;
+            }
+            
             await Navigation.PushAsync(new CurrencyPage(currency));
         }
 

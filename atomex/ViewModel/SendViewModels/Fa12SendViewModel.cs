@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Abstract;
@@ -16,8 +17,9 @@ namespace atomex.ViewModel.SendViewModels
     {
 
         public Fa12SendViewModel(
+            IAtomexApp app,
             CurrencyViewModel currencyViewModel)
-            : base(currencyViewModel)
+            : base(app, currencyViewModel)
         {
         }
 

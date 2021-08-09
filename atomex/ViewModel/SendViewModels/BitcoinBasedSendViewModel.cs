@@ -27,8 +27,9 @@ namespace atomex.ViewModel.SendViewModels
         private BitcoinBasedConfig BtcBased => Currency as BitcoinBasedConfig;
 
         public BitcoinBasedSendViewModel(
+            IAtomexApp app,
             CurrencyViewModel currencyViewModel)
-            : base(currencyViewModel)
+            : base(app, currencyViewModel)
         {
         }
 

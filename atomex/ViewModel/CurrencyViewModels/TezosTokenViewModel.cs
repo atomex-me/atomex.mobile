@@ -14,6 +14,7 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
 
         public TokenBalance TokenBalance { get; set; }
+        public string Address { get; set; }
 
         public UriImageSource TokenPreview
         {

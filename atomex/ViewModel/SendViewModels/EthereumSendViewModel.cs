@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
@@ -118,7 +119,10 @@ namespace atomex.ViewModel.SendViewModels
         }
 
 
-        public EthereumSendViewModel(CurrencyViewModel currencyViewModel) : base(currencyViewModel)
+        public EthereumSendViewModel(
+            IAtomexApp app,
+            CurrencyViewModel currencyViewModel)
+            : base(app, currencyViewModel)
         {
         }
 

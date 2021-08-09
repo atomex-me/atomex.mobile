@@ -334,9 +334,9 @@ namespace atomex.ViewModel.SendViewModels
         }
 
 
-        public SendViewModel(CurrencyViewModel currencyViewModel)
+        public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
         {
-            AtomexApp = currencyViewModel.GetAtomexApp() ?? throw new ArgumentNullException(nameof(AtomexApp));
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
             CurrencyViewModel = currencyViewModel;
             Currency = currencyViewModel.Currency;

@@ -19,91 +19,109 @@
                      VerticalOptions="CenterAndExpand"
                      Padding="30,5"
                      Spacing="0">
-            <StackLayout Orientation="Horizontal"
-                         Spacing="0"
-                         HeightRequest="60"
-                         Padding="0,5,0,10">
-                <Grid VerticalOptions="Fill"
-                      HorizontalOptions="Fill"
-                      RowSpacing="3"
-                      ColumnSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="5*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.RowSpan="2"
-                           Grid.ColumnSpan="3"
-                           CornerRadius="10"
-                           x:Name="AddressFrame"
-                           Style="{DynamicResource EntryFrameStyle}"/>
-                    <custom:CustomPicker Grid.Row="1"
-                                         ItemsSource="{Binding FromAddressList}"
-                                         ItemDisplayBinding="{Binding DisplayAddressWithBalance}"
-                                         SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
-                                         x:Name="AddressPicker"
-                                         Focused="OnPickerFocused"
-                                         Unfocused="OnPickerFocused"
-                                         TextColor="Transparent"
-                                         Style="{DynamicResource PickerStyle}"/>
-                    <Label Grid.ColumnSpan="3"
-                           Text="{helpers:Translate AddressLabel}"
-                           Style="{DynamicResource PickerHintStyle}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Grid.Row="1"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           Text="{Binding SelectedAddress.Address}"
-                           FontSize="12"
-                           Padding="20,5,0,11"
-                           LineBreakMode="MiddleTruncation"
-                           HorizontalTextAlignment="Start"
-                           VerticalTextAlignment="End">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Padding="0,0,10,10"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           HorizontalTextAlignment="Start"
-                           VerticalTextAlignment="End">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='- {0:0.#########}'}"
-                                      FontSize="14"
-                                      FontFamily="{DynamicResource BoldFont}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding SelectedAddress.WalletAddress.Currency}"
-                                      FontSize="12"
-                                      FontFamily="{DynamicResource BoldFont}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Image Source="DownArrow"
-                           Grid.RowSpan="2"
-                           Grid.Column="2"
-                           WidthRequest="10"
-                           HeightRequest="10"
-                           Margin="0,25,15,25">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPickerClicked"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                </Grid>
-            </StackLayout>
+            <Grid VerticalOptions="Fill"
+                  HorizontalOptions="Fill"
+                  RowSpacing="0"
+                  ColumnSpacing="0"
+                  HeightRequest="54">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <Frame Grid.RowSpan="3"
+                       Grid.ColumnSpan="3"
+                       CornerRadius="10"
+                       x:Name="AddressFrame"
+                       Style="{DynamicResource EntryFrameStyle}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Frame.GestureRecognizers>
+                    </Frame>   
+                <Label Text="{helpers:Translate AddressLabel}"
+                       Style="{DynamicResource PickerHintStyle}"
+                       IsEnabled="False"/>
+                <Label Grid.Row="1"
+                       Grid.RowSpan="2"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       Text="{Binding SelectedAddress.Address}"
+                       Padding="20,5,0,0"
+                       FontSize="12"
+                       LineBreakMode="MiddleTruncation"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       IsEnabled="False"/>
+                <Label Grid.Row="1"
+                       Grid.Column="1"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       IsEnabled="False">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding SelectedAddress.ShowTokenBalance}"
+                                     Value="True">
+                            <Setter Property="Grid.RowSpan"
+                                    Value="2"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='- {0:0.#########}'}"
+                                  FontSize="12"
+                                  FontFamily="{DynamicResource BoldFont}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding SelectedAddress.CurrencyCode}"
+                                  FontSize="10"
+                                  FontFamily="{DynamicResource BoldFont}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Row="2"
+                       Grid.Column="1"
+                       Text="{Binding SelectedAddress.TokenBalance}"
+                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                       HeightRequest="22"
+                       VerticalTextAlignment="Start"
+                       HorizontalTextAlignment="End"
+                       IsVisible="False"
+                       IsEnabled="False">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding SelectedAddress.ShowTokenBalance}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding SelectedAddress.TokenBalance, StringFormat='+ {0:0.#########}'}"
+                                  FontSize="12"
+                                  FontFamily="{DynamicResource BoldFont}"/>
+                            <Span Text=" " /> 
+                            <Span Text="{Binding SelectedAddress.TokenCode}"
+                                  FontSize="10"
+                                  FontFamily="{DynamicResource BoldFont}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Image Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
+                       Grid.RowSpan="3"
+                       Grid.Column="2"
+                       WidthRequest="10"
+                       HeightRequest="10"
+                       Margin="20"
+                       IsEnabled="False"/>
+            </Grid>
             <Frame Padding="0"
+                   Margin="0,10"
                    CornerRadius="10"
                    HasShadow="False"
                    Style="{DynamicResource QrCodeFrameStyle}">

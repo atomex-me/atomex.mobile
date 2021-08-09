@@ -10,11 +10,11 @@ namespace atomex.Views.TezosTokens
 
         Color selectedItemBackgroundColor;
 
-        public TezosTokensListPage(TezosTokensViewModel currenciesViewModel)
+        public TezosTokensListPage(TezosTokensViewModel tezosTokensViewModel)
         {
             InitializeComponent();
 
-            BindingContext = currenciesViewModel;
+            BindingContext = tezosTokensViewModel;
 
             string selectedColorName = "ListViewSelectedBackgroundColor";
 

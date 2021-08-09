@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
-using atomex.ViewModel.ReceiveViewModels;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
 using Atomex.Blockchain;
-using Atomex.Blockchain.Abstract;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
-using Atomex.TezosTokens;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
-using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
 
@@ -46,7 +42,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
-        //public bool IsStakingAvailable => CurrencyCode == "XTZ";
 
         private decimal _totalAmount;
         public decimal TotalAmount
@@ -296,18 +291,11 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
-
-                //CurrencyUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
                 Log.Error(e, "LoadTransactionAsync error for {@currency}", Currency?.Name);
             }
-        }
-
-        public IAtomexApp GetAtomexApp()
-        {
-            return AtomexApp;
         }
 
         public async Task UpdateCurrencyAsync()
@@ -354,26 +342,26 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PopAsync();
         }
 
-        private ICommand _sendPageCommand;
+        protected ICommand _sendPageCommand;
         public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
 
-        private ICommand _receivePageCommand;
-        public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+        protected ICommand _receivePageCommand;
+        public virtual ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
-        private ICommand _convertPageCommand;
+        protected ICommand _convertPageCommand;
         public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
 
-        private ICommand _addressesPageCommand;
+        protected ICommand _addressesPageCommand;
         public ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private async Task OnSendButtonClicked()
         {
-            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(this)));
+            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(AtomexApp, this)));
         }
 
         private async Task OnReceiveButtonClicked()
         {
-            await Navigation.PushAsync(new ReceivePage(ReceiveViewModelCreator.CreateViewModel(this)));
+            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, Currency, Navigation)));
         }
 
         private async Task OnConvertButtonClicked()

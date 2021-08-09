@@ -50,37 +50,61 @@
                                                       CommandParameter="{Binding .}"/>
                             </Grid.GestureRecognizers>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*" />
-                                <ColumnDefinition Width="3.5*" />
-                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Address}"
+                            <Label Grid.RowSpan="2"
+                                   Text="{Binding Address}"
                                    FontFamily="{DynamicResource RegularFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                   FontSize="14"
+                                   FontSize="12"
+                                   HeightRequest="50"
                                    LineBreakMode="MiddleTruncation"
                                    VerticalTextAlignment="Center"
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="1"
                                    FontFamily="{DynamicResource BoldFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"
+                                   Text="{Binding Balance, StringFormat='{0:0.######}'}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Center">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding Balance, StringFormat='{0:0.#####}'}"
-                                              FontSize="14"/>
-                                        <Span Text=" " /> 
-                                        <Span Text="{Binding BindingContext.Currency.Name, Source={x:Reference BindingContextPage}}"
-                                              FontSize="12"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
+                                   HorizontalTextAlignment="End">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding BindingContext.HasTokens, Source={x:Reference BindingContextPage}}"
+                                                 Value="True">
+                                        <Setter Property="Grid.RowSpan"
+                                                Value="2"/>
+                                    </DataTrigger>
+                                </Label.Triggers> 
                             </Label>
-                            <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                            <Label Grid.Column="1"
+                                   Grid.Row="1"
+                                   FontFamily="{DynamicResource BoldFont}"
+                                   Text="{Binding TokenBalance, StringFormat='+ {0:0.######}', TargetNullValue=''}"
+                                   HeightRequest="18"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                                   VerticalTextAlignment="Start"
+                                   HorizontalTextAlignment="End"
+                                   IsVisible="False">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding BindingContext.HasTokens, Source={x:Reference BindingContextPage}}"
+                                                 Value="True">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                </Label.Triggers>     
+                            </Label>
+                            <Image Grid.RowSpan="2"
                                    Grid.Column="2"
+                                   Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                                    HeightRequest="10"
                                    WidthRequest="10"
                                    HorizontalOptions="End"/>

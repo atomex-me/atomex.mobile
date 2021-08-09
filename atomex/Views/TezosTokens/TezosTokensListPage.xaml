@@ -4,7 +4,7 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
              x:Name="BindingContextPage"
-             Title="{helpers:Translate WalletsPageTitle}"
+             Title="Tezos tokens"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding TokensContracts}"
@@ -12,10 +12,45 @@
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding UpdateTokensCommand}"
+                  IsRefreshing="{Binding IsLoading}"
                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand"
-                  Footer="">
+                  VerticalOptions="FillAndExpand">
+            <ListView.Header>
+                <Grid ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"
+                                              Tapped="OnItemTapped"/>
+                    </Grid.GestureRecognizers>
+                    <Image WidthRequest="40"
+                           HeightRequest="40"
+                           Margin="10,0"
+                           VerticalOptions="CenterAndExpand"
+                           Source="XTZ"/>
+                    <Label Grid.Column="1"
+                           Text="Tezos"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="14"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="2"
+                                 Margin="20,0,0,0"/>
+                </Grid>
+            </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -60,6 +95,50 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                             VerticalOptions="FillAndExpand">
+                    <StackLayout IsVisible="False">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TokensContracts.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Image Source="Magnifier"
+                               WidthRequest="45"
+                               HeightRequest="45"
+                               Margin="20,40,20,10"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Label Text="No XTZ tokens yet"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                               FontSize="18"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Start"/>
+                    </StackLayout>
+                    <RelativeLayout HorizontalOptions="Center"
+                                    Margin="20">
+                        <Button Text="Update tokens"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Opacity="{Binding Opacity}"
+                                CornerRadius="20"
+                                RelativeLayout.WidthConstraint="120"
+                                RelativeLayout.HeightConstraint="40"
+                                Command="{Binding UpdateTokensCommand}"/>
+                        <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                           RelativeLayout.WidthConstraint="20"
+                                           RelativeLayout.HeightConstraint="20"
+                                           BackgroundColor="Transparent"
+                                           IsVisible="{Binding IsLoading}"
+                                           IsRunning="{Binding IsLoading}"
+                                           Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
+                    </RelativeLayout>
+                </StackLayout>
+            </ListView.Footer>
         </ListView>
     </ContentPage.Content>
 </ContentPage>

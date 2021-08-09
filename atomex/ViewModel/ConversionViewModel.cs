@@ -447,9 +447,10 @@ namespace atomex.ViewModel
         {
             try
             {
-                await Task.WhenAll(Currencies.Select(async c =>
+                await Task.WhenAll(Currencies.Select(c =>
                 {
                     _currencyViewModels.Add(CurrencyViewModelCreator.CreateViewModel(AtomexApp, c));
+                    return Task.CompletedTask;
                 }));
 
                 FromCurrencies = _currencyViewModels.ToList();

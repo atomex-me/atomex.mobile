@@ -16,15 +16,5 @@ namespace atomex
             InitializeComponent();
             BindingContext = receiveViewModel;
         }
-
-        private void OnPickerFocused(object sender, FocusEventArgs args)
-        {
-            AddressFrame.HasShadow = args.IsFocused;
-        }
-
-        private void OnPickerClicked(object sender, EventArgs args)
-        {
-            AddressPicker.Focus();
-        }
     }
 }

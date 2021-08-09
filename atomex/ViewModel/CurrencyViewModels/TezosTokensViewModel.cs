@@ -28,11 +28,15 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public INavigation Navigation { get; set; }
 
+        public INavigationService NavigationService { get; set; }
+
         private IToastService ToastService { get; set; }
 
         public ObservableCollection<TezosTokenContractViewModel> TokensContracts { get; set; }
         public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
         public ObservableCollection<TezosTokenTransferViewModel> Transfers { get; set; }
+
+        public CurrencyViewModel TezosViewModel { get; set; }
 
         public class Grouping<K, T> : ObservableCollection<T>
         {
@@ -61,6 +65,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 OnPropertyChanged(nameof(TokenContractAddress));
                 OnPropertyChanged(nameof(TokenContractName));
                 OnPropertyChanged(nameof(TokenContractIconUrl));
+                OnPropertyChanged(nameof(IsConvertable));
 
                 TokenContractChanged(TokenContract);
             }
@@ -72,6 +77,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string TokenContractAddress => TokenContract?.Contract?.Address ?? "";
         public string TokenContractName => TokenContract?.Contract?.Name ?? "";
         public string TokenContractIconUrl => TokenContract?.IconUrl;
+        public bool IsConvertable => _app.Account.Currencies
+            .Any(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress);
 
         public decimal Balance { get; set; }
         public string BalanceFormat { get; set; }
@@ -174,9 +181,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     foreach (var newTokenContract in newTokenContracts)
                         TokensContracts.Add(newTokenContract);
-
-                    if (TokenContract == null)
-                        TokenContract = TokensContracts.FirstOrDefault();
                 }
                 else
                 {
@@ -245,13 +249,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .GetBalance()
                     .Available;
 
-                BalanceFormat = tokenAddress?.TokenBalance != null
+                BalanceFormat = tokenAddress?.TokenBalance != null && tokenAddress.TokenBalance.Decimals != 0
                     ? $"F{Math.Min(tokenAddress.TokenBalance.Decimals, MaxAmountDecimals)}"
                     : $"F{MaxAmountDecimals}";
 
-                BalanceCurrencyCode = tokenAddress?.TokenBalance != null
+                BalanceCurrencyCode = tokenAddress?.TokenBalance != null && tokenAddress.TokenBalance.Symbol != null
                     ? tokenAddress.TokenBalance.Symbol
-                    : tezosTokenConfig?.Name ?? "";
+                    : tezosTokenConfig?.Name ?? "TOKENS";
 
                 OnPropertyChanged(nameof(Balance));
                 OnPropertyChanged(nameof(BalanceFormat));
@@ -297,12 +301,37 @@ namespace atomex.ViewModel.CurrencyViewModels
                 });
 
                 Tokens = new ObservableCollection<TezosTokenViewModel>(tokenAddresses
-                    .Select(a => new TezosTokenViewModel { TokenBalance = a.TokenBalance }));
+                    .Select(a => new TezosTokenViewModel
+                        {
+                            TokenBalance = a.TokenBalance,
+                            Address = a.Address
+                    }));
             }
 
             OnPropertyChanged(nameof(Tokens));
             OnPropertyChanged(nameof(Transfers));
         }
+
+        private ICommand _selectTezosCurrencyCommand;
+        public ICommand SelectTezosCurrencyCommand => _selectTezosCurrencyCommand ??= new Command(async (value) => await OnTezosTapped());
+
+        private ICommand _selectTransferCommand;
+        public ICommand SelectTransferCommand => _selectTransferCommand ??= new Command<TezosTokenTransferViewModel>(async (value) => await OnTransferTapped(value));
+
+        private ICommand _selectTokenContractCommand;
+        public ICommand SelectTokenContractCommand => _selectTokenContractCommand ??= new Command<TezosTokenContractViewModel>((value) => OnTokenContractTapped(value));
+
+        private ICommand _sendPageCommand;
+        public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
+
+        private ICommand _receivePageCommand;
+        public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+
+        private ICommand _convertPageCommand;
+        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
+
+        protected ICommand _addressesPageCommand;
+        public ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private ICommand _updateTokensCommand;
         public ICommand UpdateTokensCommand => _updateTokensCommand ??= new Command(async () => await UpdateTokens());
@@ -347,6 +376,26 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
+        private async Task OnAddressesButtonClicked()
+        {
+            var tezosConfig = _app.Account
+                .Currencies
+                .Get<TezosConfig>(TezosConfig.Xtz);
+
+            var addressesViewModel = new AddressesViewModel(
+                app: _app,
+                currency: tezosConfig,
+                navigation: Navigation,
+                tokenContract: TokenContract?.Contract?.Address);
+
+            await Navigation.PushAsync(new AddressesPage(addressesViewModel));
+        }
+
+        private async Task OnTezosTapped()
+        {
+            await Navigation.PushAsync(new CurrencyPage(TezosViewModel));
+        }
+
         private ICommand _selectTokenCommand;
         public ICommand SelectTokenCommand => _selectTokenCommand ??= new Command<TezosTokenViewModel>(async (value) => await OnTokenTapped(value));
 
@@ -358,9 +407,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PushAsync(new TokenInfoPage(token));
         }
 
-        private ICommand _selectTransferCommand;
-        public ICommand SelectTransferCommand => _selectTransferCommand ??= new Command<TezosTokenTransferViewModel>(async (value) => await OnTransferTapped(value));
-
         private async Task OnTransferTapped(TezosTokenTransferViewModel transfer)
         {
             if (transfer == null)
@@ -369,29 +415,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PushAsync(new TransactionInfoPage(transfer));
         }
 
-        private ICommand _selectTokenContractCommand;
-        public ICommand SelectTokenContractCommand => _selectTokenContractCommand ??= new Command<TezosTokenContractViewModel>(async (value) => await OnTokenContractTapped(value));
-
-        private async Task OnTokenContractTapped(TezosTokenContractViewModel token)
+        private async void OnTokenContractTapped(TezosTokenContractViewModel token)
         {
             if (token == null)
                 return;
 
-            _tokenContract = token;
-
-            TokenContractChanged(token);
+            TokenContract = token;
 
             await Navigation.PushAsync(new TokenPage(this));
         }
-
-        private ICommand _sendPageCommand;
-        public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
-
-        private ICommand _receivePageCommand;
-        public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
-
-        private ICommand _convertPageCommand;
-        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
 
         private async Task OnSendButtonClicked()
         {
@@ -400,12 +432,22 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnReceiveButtonClicked()
         {
-            
+            var tezosConfig = _app.Account
+                .Currencies
+                .GetByName(TezosConfig.Xtz);
+
+            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, Navigation, TokenContract?.Contract?.Address)));
         }
 
         private async Task OnConvertButtonClicked()
         {
-            
+            var currencyCode = _app.Account.Currencies
+               .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress)?.Name;
+
+            if (currencyCode == null)
+                return; // msg to user
+
+            await NavigationService.ConvertCurrency(currencyCode);
         }
 
         protected void DesignerMode()

@@ -12,6 +12,8 @@ namespace atomex.ViewModel.TransactionViewModels
 
         private readonly TezosConfig _tezosConfig;
 
+        public string Alias { get; set; }
+
         public TezosTokenTransferViewModel(TokenTransfer tx, TezosConfig tezosConfig)
         {
             _tezosConfig = tezosConfig;
@@ -26,6 +28,7 @@ namespace atomex.ViewModel.TransactionViewModels
             AmountFormat = $"F{Math.Min(tx.Token.Decimals, MaxAmountDecimals)}";
             CurrencyCode = tx.Token.Symbol;
             Time = tx.CreationTime ?? DateTime.UtcNow;
+            Alias = tx.Alias;
 
             TxExplorerUri = $"{_tezosConfig.TxExplorerUri}{Id}";
 

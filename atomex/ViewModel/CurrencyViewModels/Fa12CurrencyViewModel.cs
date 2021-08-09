@@ -10,19 +10,12 @@ using atomex.ViewModel.TransactionViewModels;
 using System.Collections.ObjectModel;
 using Atomex.Common;
 using Atomex.Core;
-using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public class Fa12CurrencyViewModel : CurrencyViewModel
     {
-
-        //private ObservableCollection<TezosTokenTransferViewModel> _transactions;
-        //public ObservableCollection<TezosTokenTransferViewModel> Transactions
-        //{
-        //    get => _transactions;
-        //    set { _transactions = value; OnPropertyChanged(nameof(Transactions)); }
-        //}
 
         public Fa12CurrencyViewModel(
            IAtomexApp app, CurrencyConfig currency)
@@ -69,8 +62,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
-
-                //CurrencyUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (OperationCanceledException)
             {
@@ -82,6 +73,16 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
+
+        public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+
+        private async Task OnReceiveButtonClicked()
+        {
+            var fa12currency = Currency as Fa12Config;
+            var tezosConfig = AtomexApp.Account.Currencies.GetByName(TezosConfig.Xtz);
+
+            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+        }
 
     }
 }

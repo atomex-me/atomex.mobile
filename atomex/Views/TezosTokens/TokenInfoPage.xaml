@@ -43,6 +43,14 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
+                <Label Text="Address"
+                       Style="{DynamicResource InfoRowTitleStyle}"/>
+                <Label Text="{Binding Address}"
+                       Style="{DynamicResource InfoRowTextStyle}"
+                       LineBreakMode="MiddleTruncation"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource InfoRowStyle}">
                 <Label Text="Token ID"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.TokenId}"
