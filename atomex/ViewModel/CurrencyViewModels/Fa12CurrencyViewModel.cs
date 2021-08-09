@@ -76,12 +76,26 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
+        public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
+
         private async Task OnReceiveButtonClicked()
         {
             var fa12currency = Currency as Fa12Config;
-            var tezosConfig = AtomexApp.Account.Currencies.GetByName(TezosConfig.Xtz);
+            var tezosConfig = AtomexApp.Account
+                .Currencies
+                .GetByName(TezosConfig.Xtz);
 
             await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+        }
+
+        private async Task OnAddressesButtonClicked()
+        {
+            var fa12currency = Currency as Fa12Config;
+            var tezosConfig = AtomexApp.Account
+                .Currencies
+                .Get<TezosConfig>(TezosConfig.Xtz);
+
+            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
         }
 
     }

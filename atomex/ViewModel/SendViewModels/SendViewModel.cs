@@ -46,8 +46,10 @@ namespace atomex.ViewModel.SendViewModels
             set
             {
                 _currencyViewModel = value;
+
                 CurrencyCode = _currencyViewModel?.CurrencyCode;
                 FeeCurrencyCode = _currencyViewModel?.FeeCurrencyCode;
+                BaseCurrencyCode = _currencyViewModel?.BaseCurrencyCode;
             }
         }
 
@@ -338,10 +340,10 @@ namespace atomex.ViewModel.SendViewModels
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
-            CurrencyViewModel = currencyViewModel;
-            Currency = currencyViewModel.Currency;
+            CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel)); ;
+            Currency = currencyViewModel?.Currency;
 
-            Navigation = currencyViewModel.Navigation;
+            Navigation = currencyViewModel?.Navigation;
 
             UseDefaultFee = true;
 
