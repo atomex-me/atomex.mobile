@@ -14,12 +14,12 @@
                                RelativeLayout.HeightConstraint="50"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
                                BackgroundColor="Transparent"
-                               IsRunning="{Binding SelectedAddress.IsUpdating}"
-                               IsVisible="{Binding SelectedAddress.IsUpdating}"/>
+                               IsRunning="{Binding IsUpdating}"
+                               IsVisible="{Binding IsUpdating}"/>
             <StackLayout Padding="0,10"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                         Opacity="{Binding SelectedAddress.Opacity}">
+                         Opacity="{Binding Opacity}">
                 <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout HorizontalOptions="FillAndExpand">

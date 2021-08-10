@@ -157,11 +157,13 @@ namespace atomex.ViewModel.CurrencyViewModels
         public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency)); ;
+            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             ToastService = DependencyService.Get<IToastService>();
+
             SubscribeToUpdates(AtomexApp.Account);
             SubscribeToRatesProvider(AtomexApp.QuotesProvider);
-            _ = UpdateBalanceAsync();
+
+            _ = UpdateTransactionsAsync();
         }
 
         public void SubscribeToUpdates(IAccount account)
@@ -246,18 +248,18 @@ namespace atomex.ViewModel.CurrencyViewModels
             AmountUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        private void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
+        private async void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
         {
             try
             {
                 if (e.Transaction.Currency != Currency?.Name)
                     return;
 
-                _ = UpdateTransactionsAsync();
+                await UpdateTransactionsAsync();
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "LoadTransactionAsync error for {@currency}", Currency?.Name);
+                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@currency}", Currency?.Name);
             }
         }
 

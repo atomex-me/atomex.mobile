@@ -28,8 +28,34 @@ namespace atomex.ViewModel
         public Action<string> ExportKey { get; set; }
         public Action<string> UpdateAddress { get; set; }
 
-        private bool _isUpdating;
+        private ICommand _copyCommand;
+        public ICommand CopyCommand => _copyCommand ??= new Command<string>( (s) =>
+        {
+            CopyToClipboard?.Invoke(Address);
+        });
 
+        private ICommand _exportKeyCommand;
+        public ICommand ExportKeyCommand => _exportKeyCommand ??= new Command<string>((s) =>
+        {
+            ExportKey?.Invoke(Address);
+        });
+
+        private ICommand _updateAddressCommand;
+        public ICommand UpdateAddressCommand => _updateAddressCommand ??= new Command<string>((s) =>
+        {
+            UpdateAddress?.Invoke(Address);
+        });
+    }
+
+    public class AddressesViewModel : BaseViewModel
+    {
+        private readonly IAtomexApp _app;
+
+        public CurrencyConfig Currency {get; set;}
+
+        private CancellationTokenSource _cancellation;
+
+        private bool _isUpdating;
         public bool IsUpdating
         {
             get => _isUpdating;
@@ -52,43 +78,6 @@ namespace atomex.ViewModel
             get => _opacity;
             set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
         }
-
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??= new Command<string>( (s) =>
-        {
-            CopyToClipboard?.Invoke(Address);
-        });
-
-        private ICommand _exportKeyCommand;
-        public ICommand ExportKeyCommand => _exportKeyCommand ??= new Command<string>((s) =>
-        {
-            ExportKey?.Invoke(Address);
-        });
-
-
-        private ICommand _updateAddressCommand;
-        public ICommand UpdateAddressCommand => _updateAddressCommand ??= new Command<string>((s) =>
-        {
-            if (IsUpdating) return;
-            IsUpdating = true;
-            UpdateAddress?.Invoke(Address);
-        });
-
-        private ICommand _addressUpdatedCommand;
-        public ICommand AddressUpdatedCommand => _addressUpdatedCommand ??= new Command<string>((value) =>
-        {
-            Balance = value;
-            IsUpdating = false;
-        });
-    }
-
-    public class AddressesViewModel : BaseViewModel
-    {
-        private readonly IAtomexApp _app;
-
-        public CurrencyConfig Currency {get; set;}
-
-        private CancellationTokenSource _cancellation;
 
         private string _tokenContract;
 
@@ -261,6 +250,7 @@ namespace atomex.ViewModel
 
         private async void OnUpdateButtonClicked(string address)
         {
+            IsUpdating = true;
 
             _cancellation = new CancellationTokenSource();
 
@@ -302,6 +292,8 @@ namespace atomex.ViewModel
                 Log.Error(e, "AddressesViewModel.OnUpdateButtonClicked");
                 // todo: message to user!?
             }
+
+            IsUpdating = false;
         }
     }
 }

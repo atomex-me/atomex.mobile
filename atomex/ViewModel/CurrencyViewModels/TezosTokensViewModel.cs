@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
+using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views.TezosTokens;
 using Atomex;
@@ -427,7 +428,14 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnSendButtonClicked()
         {
-            
+            var sendViewModel = new TezosTokensSendViewModel(
+                app: _app,
+                navigation: Navigation,
+                from: null,
+                tokenContract: TokenContract?.Contract?.Address,
+                tokenId: 0);
+
+            //await Navigation.PushAsync(new SendPage(new ReceiveViewModel(_app, tezosConfig, Navigation, TokenContract?.Contract?.Address)));
         }
 
         private async Task OnReceiveButtonClicked()
