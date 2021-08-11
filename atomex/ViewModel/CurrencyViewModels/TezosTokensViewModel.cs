@@ -432,7 +432,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 app: _app,
                 navigation: Navigation,
                 from: null,
-                tokenContract: TokenContract?.Contract?.Address,
+                tokenContract: TokenContract,
                 tokenId: 0);
 
             await Navigation.PushAsync(new SendTokenPage(sendViewModel));

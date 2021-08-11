@@ -134,7 +134,7 @@
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="TokenContract"
                                                       Placeholder="Token contract"
-                                                      Text="{Binding TokenContract}"
+                                                      Text="{Binding TokenContract.Contract.Address}"
                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                       Keyboard="Text"
                                                       TextChanged="OnTokenContractTextChanged"
@@ -158,7 +158,8 @@
                              Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
-                                      Style="{DynamicResource EntryFrameStyle}">
+                                      Style="{DynamicResource EntryFrameStyle}"
+                                      IsVisible="{Binding TokenContract.IsFa2}">
                     <controls:CustomFrame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnTokenIdEntryTapped"/>
                     </controls:CustomFrame.GestureRecognizers>
