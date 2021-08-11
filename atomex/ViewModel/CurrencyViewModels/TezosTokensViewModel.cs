@@ -325,6 +325,9 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _sendPageCommand;
         public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
 
+        private ICommand _sendFa2PageCommand;
+        public ICommand SendFa2PageCommand => _sendFa2PageCommand ??= new Command(async (value) => await OnSendButtonClicked(value));
+
         private ICommand _receivePageCommand;
         public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
@@ -434,6 +437,20 @@ namespace atomex.ViewModel.CurrencyViewModels
                 from: null,
                 tokenContract: TokenContract,
                 tokenId: 0);
+
+            await Navigation.PushAsync(new SendTokenPage(sendViewModel));
+        }
+
+        private async Task OnSendButtonClicked(object obj)
+        {
+            var token = (TezosTokenViewModel)obj;
+            var tokenId = token.TokenBalance.TokenId;
+            var sendViewModel = new TezosTokensSendViewModel(
+                app: _app,
+                navigation: Navigation,
+                from: null,
+                tokenContract: TokenContract,
+                tokenId: tokenId);
 
             await Navigation.PushAsync(new SendTokenPage(sendViewModel));
         }

@@ -620,7 +620,8 @@
                                 CornerRadius="15"
                                 HeightRequest="20"
                                 Margin="0,15,10,15"
-                                Command="{Binding SendPageCommand}"/>
+                                Command="{Binding BindingContext.SendFa2PageCommand, Source={x:Reference BindingContextPage}}"
+                                CommandParameter="{Binding .}"/>
                     </Grid>
                 </ViewCell>
             </DataTemplate>
