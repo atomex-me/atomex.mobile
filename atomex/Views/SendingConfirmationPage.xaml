@@ -42,7 +42,7 @@
                                 <Span Text="{Binding Amount, StringFormat='- {0:0.#########}'}"
                                       Style="{DynamicResource TxAmountLabelStyle}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding Currency.Name}"
+                                <Span Text="{Binding CurrencyCode}"
                                       Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -70,7 +70,7 @@
                             <FormattedString>
                                 <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding Currency.Name}"/>
+                                <Span Text="{Binding CurrencyCode}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"

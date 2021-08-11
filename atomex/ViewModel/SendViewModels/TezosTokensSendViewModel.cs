@@ -16,6 +16,7 @@ using Atomex.TezosTokens;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
@@ -284,9 +285,6 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(OnNextButtonClicked);
 
-        protected ICommand _maxCommand;
-        public ICommand MaxCommand => _maxCommand ??= new Command(OnMaxClick);
-
         protected async virtual void OnNextButtonClicked()
         {
             var tezosConfig = _app.Account
@@ -358,10 +356,10 @@ namespace atomex.ViewModel.SendViewModels
                 return;
             }
 
-            //if (string.IsNullOrEmpty(Warning))
-            //    await Navigation.PushAsync(new SendingConfirmationPage(this));
-            //else
-            //    await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
+            if (string.IsNullOrEmpty(Warning))
+                await Navigation.PushAsync(new SendingConfirmationPage(this));
+            else
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
 
         }
 
@@ -491,7 +489,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected virtual async void OnMaxClick()
+        protected virtual async Task OnMaxClick()
         {
 
             Warning = string.Empty;
@@ -689,5 +687,44 @@ namespace atomex.ViewModel.SendViewModels
             
             await Navigation.PopAsync();
         }
+
+        private ICommand _pasteCommand;
+        public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
+
+        private ICommand _scanCommand;
+        public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
+
+        private async Task OnScanButtonClicked()
+        {
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
+
+            var scanningQrPage = new ScanningQrPage(selected =>
+            {
+                To = selected;
+            });
+
+            await Navigation.PushAsync(scanningQrPage);
+        }
+
+        async Task OnPasteButtonClicked()
+        {
+            if (Clipboard.HasText)
+            {
+                var text = await Clipboard.GetTextAsync();
+                To = text;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
+            }
+        }
+
+        private ICommand _maxAmountCommand;
+        public virtual ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
     }
 }

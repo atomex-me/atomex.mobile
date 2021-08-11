@@ -105,7 +105,7 @@
                                       FontSize="12"
                                       FontFamily="{DynamicResource BoldFont}"/>
                                 <Span Text=" " /> 
-                                <Span Text="{Binding SelectedAddress.TokenCode}"
+                                <Span Text="{Binding From.TokenCode}"
                                       FontSize="10"
                                       FontFamily="{DynamicResource BoldFont}"/>
                             </FormattedString>
