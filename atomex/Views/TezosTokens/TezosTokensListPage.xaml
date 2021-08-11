@@ -76,7 +76,7 @@
                                    VerticalOptions="CenterAndExpand"
                                    Source="{Binding IconUrl}"/>
                             <Label Grid.Column="1"
-                                   Text="{Binding Contract.Name}"
+                                   Text="{Binding Name}"
                                    FontFamily="{DynamicResource RegularFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    FontSize="14"
@@ -112,7 +112,7 @@
                                HeightRequest="45"
                                Margin="20,40,20,10"
                                VerticalOptions="CenterAndExpand"/>
-                        <Label Text="No XTZ tokens yet"
+                        <Label Text="No tezos tokens yet"
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="18"

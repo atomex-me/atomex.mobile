@@ -6,7 +6,7 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Name="BindingContextPage"
-             Title="{Binding TokenContract.Contract.Name}">
+             Title="{Binding TokenContractName}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
@@ -30,7 +30,7 @@
                   IsRefreshing="{Binding IsLoading}"
                   x:Name="TransfersListView"
                   Footer=""
-                  IsVisible="{Binding TokenContract.IsFa12}">
+                  IsVisible="{Binding IsFa12}">
         <ListView.Header> 
             <StackLayout Spacing="0"
                          BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}">
@@ -38,7 +38,7 @@
                              Margin="0,20">
                     <Frame Style="{DynamicResource TokenIconFrameStyle}">
                         <Image Style="{DynamicResource TokenIconStyle}"
-                               Source="{Binding TokenContract.IconUrl}"/>
+                               Source="{Binding TokenContractIconUrl}"/>
                     </Frame>
                     <Label Text="{Binding Balance}"
                            FontSize="20"
@@ -64,7 +64,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label Text="{Binding TokenContract.Contract.Name}"
+                    <Label Text="{Binding TokenContractName}"
                            FontSize="20"
                            FontFamily="{DynamicResource BoldFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -77,7 +77,7 @@
                             </MultiBinding>
                         </Label.IsVisible>
                     </Label>
-                    <Label Text="{Binding TokenContract.Contract.Address}"
+                    <Label Text="{Binding TokenContractAddress}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -109,7 +109,7 @@
                       ColumnSpacing="0"
                       RowSpacing="0"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                      IsVisible="{Binding TokenContract.IsFa2}">
+                      IsVisible="{Binding IsFa2}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="1" />
@@ -414,16 +414,16 @@
                 <StackLayout VerticalOptions="Center" Margin="0,20">
                     <Frame Style="{DynamicResource TokenIconFrameStyle}">
                         <Image Style="{DynamicResource TokenIconStyle}"
-                               Source="{Binding TokenContract.IconUrl}"/>
+                               Source="{Binding TokenContractIconUrl}"/>
                     </Frame>
-                    <Label Text="{Binding TokenContract.Contract.Name}"
+                    <Label Text="{Binding TokenContractName}"
                            FontSize="20"
                            FontFamily="{DynamicResource BoldFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            LineBreakMode="WordWrap"
                            HorizontalOptions="Center"
                            IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
-                    <Label Text="{Binding TokenContract.Contract.Address}"
+                    <Label Text="{Binding TokenContractAddress}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -455,7 +455,7 @@
                       ColumnSpacing="0"
                       RowSpacing="0"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                      IsVisible="{Binding TokenContract.IsFa2}">
+                      IsVisible="{Binding IsFa2}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="1" />
@@ -541,8 +541,7 @@
                                                   CommandParameter="{Binding .}"/>
                         </Grid.GestureRecognizers>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="60" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
@@ -566,22 +565,20 @@
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                FontSize="14"
                                LineBreakMode="TailTruncation"
-                               VerticalTextAlignment="End"
-                               HorizontalTextAlignment="Start"/>
-                        <Label Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding TokenBalance.Description}"
-                               LineBreakMode="TailTruncation"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               FontFamily="{DynamicResource LightFont}"
-                               FontSize="10"
-                               Margin="0,3,10,3"
-                               VerticalTextAlignment="Start"
-                               HorizontalTextAlignment="Start"/>
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Balance}"
+                                             Value="1">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
                         <Label Grid.Column="2"
-                               Grid.RowSpan="2"
-                               Text="{Binding TokenBalance.Description}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               Text="{Binding Balance}"
+                               TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="14"
                                Margin="10,0"
@@ -589,21 +586,12 @@
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding TokenBalance.Balance}"
+                                             Binding="{Binding Balance}"
                                              Value="1">
                                     <Setter Property="IsVisible"
                                             Value="False"/>
                             </DataTrigger>
                             </Label.Triggers>
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding TokenBalance.Balance}"
-                                          FontSize="14"/>
-                                    <Span Text=" " /> 
-                                    <Span Text="{Binding TokenBalance.Symbol}"
-                                          FontSize="12"/>
-                                </FormattedString>
-                            </Label.FormattedText>
                         </Label>
                     </Grid>
                 </ViewCell>

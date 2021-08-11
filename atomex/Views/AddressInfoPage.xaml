@@ -3,9 +3,15 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.AddressInfoPage"
     Title="{helpers:Translate AddressInfoPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
@@ -53,6 +59,18 @@
                         <ImageButton Source="ic_redeem"
                                      Style="{DynamicResource InfoImageButtonStyle}"
                                      Command="{Binding SelectedAddress.UpdateAddressCommand}"/>
+                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                </StackLayout>
+                 <StackLayout Style="{DynamicResource InfoRowStyle}"
+                              IsVisible="{Binding SelectedAddress.TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="Token balance"
+                                   Style="{DynamicResource InfoRowTitleStyle}"/>
+                            <Label Text="{Binding SelectedAddress.TokenBalance}"
+                                   Style="{DynamicResource InfoRowTextStyle}"/>
+                        </StackLayout>
                     </StackLayout>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>

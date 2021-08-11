@@ -76,7 +76,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsFa12 => TokenContract?.IsFa12 ?? false;
         public bool IsFa2 => TokenContract?.IsFa2 ?? false;
         public string TokenContractAddress => TokenContract?.Contract?.Address ?? "";
-        public string TokenContractName => TokenContract?.Contract?.Name ?? "";
+        public string TokenContractName => TokenContract?.Name ?? "";
         public string TokenContractIconUrl => TokenContract?.IconUrl;
         public bool IsConvertable => _app.Account.Currencies
             .Any(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress);

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -12,7 +16,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
-
         public TokenBalance TokenBalance { get; set; }
         public string Address { get; set; }
 
@@ -54,7 +57,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public string Balance => $"{TokenBalance.Balance} {TokenBalance.Symbol}";
+        public string Balance => TokenBalance.Balance != "1"
+            ? $"{TokenBalance.GetTokenBalance().ToString(CultureInfo.InvariantCulture)} {TokenBalance.Symbol}"
+            : "";
 
         private ICommand _openInBrowser;
         public ICommand OpenInBrowser => _openInBrowser ??= new Command(() =>
@@ -71,7 +76,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public string AssetUrl => IsIpfsAsset
             ? $"http://ipfs.io/ipfs/{RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
-            : "";
+            : null;
 
         public IEnumerable<string> GetTokenPreviewUrls()
         {
@@ -99,5 +104,53 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string IconUrl => $"https://services.tzkt.io/v1/avatars/{Contract.Address}";
         public bool IsFa12 => Contract.GetContractType() == "FA12";
         public bool IsFa2 => Contract.GetContractType() == "FA2";
+
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                if (_name != null)
+                    return _name;
+
+                _ = TryGetAliasAsync();
+
+                _name = Contract.Name;
+                return _name;
+            }
+        }
+
+        private async Task TryGetAliasAsync()
+        {
+            try
+            {
+                var response = await HttpHelper.HttpClient
+                    .GetAsync($"https://api.tzkt.io/v1/accounts/{Contract.Address}")
+                    .ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                    return;
+
+                var stringResponse = await response.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
+                var alias = JsonConvert.DeserializeObject<JObject>(stringResponse)
+                    ?["alias"]
+                    ?.Value<string>();
+
+                if (alias != null)
+                    _name = alias;
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    OnPropertyChanged(nameof(Name));
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Alias getting error.");
+            }
+        }
     }
 }

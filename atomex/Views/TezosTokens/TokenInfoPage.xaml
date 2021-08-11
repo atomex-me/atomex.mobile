@@ -3,9 +3,15 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.Views.TezosTokens.TokenInfoPage"
     Title="Token info"
     Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <StackLayout>
             <StackLayout Orientation="Horizontal"
@@ -23,7 +29,16 @@
                 </Frame>
                 <Label Text="{Binding Balance}"
                        VerticalTextAlignment="Center"
-                       Padding="10,0"/>
+                       Padding="10,0">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Balance}"
+                                     Value="">
+                            <Setter Property="Text"
+                                    Value="1 Token"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
@@ -34,7 +49,8 @@
                        LineBreakMode="TailTruncation"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}">
+            <StackLayout Style="{DynamicResource InfoRowStyle}"
+                         IsVisible="{Binding TokenBalance.Description, Mode=OneWay, Converter={StaticResource StringToBool}}">
                 <Label Text="{helpers:Translate Description}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.Description}"
@@ -59,26 +75,10 @@
             </StackLayout>
             <Button Text="Show in ipfs"
                     Style="{DynamicResource TransparentButtonStyle}"
-                    Command="{Binding OpenInBrowser}">
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button"
-                                 Binding="{Binding AssetUrl}"
-                                 Value="">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-            <StackLayout Style="{DynamicResource SeparatorStyle}">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding AssetUrl}"
-                                 Value="">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-            </StackLayout>
+                    Command="{Binding OpenInBrowser}"
+                    IsVisible="{Binding AssetUrl, Mode=OneWay, Converter={StaticResource StringToBool}}"/>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"
+                         IsVisible="{Binding AssetUrl, Mode=OneWay, Converter={StaticResource StringToBool}}"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
