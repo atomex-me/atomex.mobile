@@ -91,14 +91,24 @@
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
                         <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"/>
+                                                    Command="{Binding SendPageCommand}"
+                                                    IsVisible="{Binding IsFa12}"/>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                     Command="{Binding ReceivePageCommand}"/>
+                                                     Command="{Binding ReceivePageCommand}">
+                            <controls:RightRoundedButton.Triggers>
+                                <DataTrigger TargetType="controls:RightRoundedButton"
+                                             Binding="{Binding IsFa2}"
+                                             Value="True">
+                                    <Setter Property="CornerRadius"
+                                            Value="20"/>
+                                </DataTrigger>
+                            </controls:RightRoundedButton.Triggers>
+                        </controls:RightRoundedButton>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -437,14 +447,24 @@
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
                         <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"/>
+                                                    Command="{Binding SendPageCommand}"
+                                                    IsVisible="{Binding IsFa12}"/>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                     Command="{Binding ReceivePageCommand}"/>
+                                                     Command="{Binding ReceivePageCommand}">
+                            <controls:RightRoundedButton.Triggers>
+                                <DataTrigger TargetType="controls:RightRoundedButton"
+                                             Binding="{Binding IsFa2}"
+                                             Value="True">
+                                    <Setter Property="CornerRadius"
+                                            Value="20"/>
+                                </DataTrigger>
+                            </controls:RightRoundedButton.Triggers>
+                        </controls:RightRoundedButton>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -547,6 +567,7 @@
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="60" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.RowSpan="2"
                                Padding="0"
@@ -593,6 +614,13 @@
                             </DataTrigger>
                             </Label.Triggers>
                         </Label>
+                        <Button Grid.Column="3"
+                                Text="{helpers:Translate SendButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                CornerRadius="15"
+                                HeightRequest="20"
+                                Margin="0,15,10,15"
+                                Command="{Binding SendPageCommand}"/>
                     </Grid>
                 </ViewCell>
             </DataTemplate>

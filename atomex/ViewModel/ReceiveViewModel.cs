@@ -241,7 +241,7 @@ namespace atomex.ViewModel
 
         async Task OnShowReceiveAddressesClicked()
         {
-            await Navigation.PushAsync(new ReceiveAddressesListPage(this));
+            await Navigation.PushAsync(new AddressesListPage(this));
         }
     }
 }

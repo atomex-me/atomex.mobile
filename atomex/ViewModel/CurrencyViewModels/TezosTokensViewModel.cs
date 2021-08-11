@@ -435,7 +435,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 tokenContract: TokenContract?.Contract?.Address,
                 tokenId: 0);
 
-            //await Navigation.PushAsync(new SendPage(new ReceiveViewModel(_app, tezosConfig, Navigation, TokenContract?.Contract?.Address)));
+            await Navigation.PushAsync(new SendTokenPage(sendViewModel));
         }
 
         private async Task OnReceiveButtonClicked()

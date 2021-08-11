@@ -42,7 +42,7 @@
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
                     </Frame.GestureRecognizers>
-                    </Frame>   
+                </Frame>   
                 <Label Text="{helpers:Translate AddressLabel}"
                        Style="{DynamicResource PickerHintStyle}"
                        IsEnabled="False"/>
