@@ -49,6 +49,13 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource InfoRowStyle}">
+                    <Label Text="{helpers:Translate Type}"
+                           Style="{DynamicResource InfoRowTitleStyle}"/>
+                    <Label Text="{Binding SelectedAddress.Type}"
+                           Style="{DynamicResource InfoRowTextStyle}"/>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="{helpers:Translate Balance}"

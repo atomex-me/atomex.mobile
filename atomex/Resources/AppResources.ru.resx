@@ -259,6 +259,9 @@
     <data name="Path" xml:space="preserve">
         <value>Путь</value>
     </data>
+    <data name="Type" xml:space="preserve">
+        <value>Тип</value>
+    </data>
     <data name="Key" xml:space="preserve">
         <value>Ключ</value>
     </data>

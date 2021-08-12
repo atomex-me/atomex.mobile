@@ -259,6 +259,9 @@
     <data name="Path" xml:space="preserve">
         <value>Yol</value>
     </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
+    </data>
     <data name="Key" xml:space="preserve">
         <value>Anahtar</value>
     </data>

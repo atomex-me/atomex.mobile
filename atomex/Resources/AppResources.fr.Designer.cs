@@ -497,6 +497,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
         internal static string Key {
             get {
                 return ResourceManager.GetString("Key", resourceCulture);

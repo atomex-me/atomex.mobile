@@ -523,8 +523,10 @@ namespace atomex.ViewModel
                     .GetAddressAsync(WalletAddressViewModel.Address)
                     .WaitForResult();
 
-                using var securePublicKey = AtomexApp.Account.Wallet
-                    .GetPublicKey(_tezosConfig, walletAddress.KeyIndex);
+                using var securePublicKey = AtomexApp.Account.Wallet.GetPublicKey(
+                    currency: _tezosConfig,
+                    keyIndex: walletAddress.KeyIndex,
+                    keyType: walletAddress.KeyType);
 
                 var isSuccess = await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,
@@ -585,8 +587,10 @@ namespace atomex.ViewModel
                     .GetAddressAsync(WalletAddressViewModel.Address)
                     .WaitForResult();
 
-                using var securePublicKey = AtomexApp.Account.Wallet
-                    .GetPublicKey(_tezosConfig, walletAddress.KeyIndex);
+                using var securePublicKey = AtomexApp.Account.Wallet.GetPublicKey(
+                    currency: _tezosConfig,
+                    keyIndex: walletAddress.KeyIndex,
+                    keyType: walletAddress.KeyType);
 
                 await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,

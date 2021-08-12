@@ -673,13 +673,22 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _showAddressesCommand;
         public ICommand ShowAddressesCommand => _showAddressesCommand ??= new Command(async () => await OnShowAddressesClicked());
 
+        private ICommand _selectAddressCommand;
+        public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<WalletAddressViewModel>(async (address) => await OnAddressClicked(address));
+
+        private ICommand _pasteCommand;
+        public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
+
+        private ICommand _scanCommand;
+        public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
+
+        private ICommand _maxAmountCommand;
+        public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+
         async Task OnShowAddressesClicked()
         {
             await Navigation.PushAsync(new AddressesListPage(this));
         }
-
-        private ICommand _selectAddressCommand;
-        public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<WalletAddressViewModel>(async (address) => await OnAddressClicked(address));
 
         private async Task OnAddressClicked(WalletAddressViewModel address)
         {
@@ -687,12 +696,6 @@ namespace atomex.ViewModel.SendViewModels
             
             await Navigation.PopAsync();
         }
-
-        private ICommand _pasteCommand;
-        public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
-
-        private ICommand _scanCommand;
-        public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
 
         private async Task OnScanButtonClicked()
         {
@@ -723,8 +726,5 @@ namespace atomex.ViewModel.SendViewModels
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
             }
         }
-
-        private ICommand _maxAmountCommand;
-        public virtual ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
     }
 }

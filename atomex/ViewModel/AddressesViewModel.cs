@@ -8,8 +8,10 @@ using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
 using Atomex;
+using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
+using Atomex.Cryptography;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Serilog;
@@ -21,6 +23,7 @@ namespace atomex.ViewModel
     public class AddressInfo : BaseViewModel
     {
         public string Address { get; set; }
+        public string Type { get; set; }
         public string Path { get; set; }
         public string Balance { get; set; }
         public string TokenBalance { get; set; }
@@ -79,7 +82,7 @@ namespace atomex.ViewModel
             set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
         }
 
-        private string _tokenContract;
+        private readonly string _tokenContract;
 
         public ObservableCollection<AddressInfo> Addresses { get; set; }
 
@@ -115,22 +118,40 @@ namespace atomex.ViewModel
 
                 addresses.Sort((a1, a2) =>
                 {
+                    var typeResult = a1.KeyType.CompareTo(a2.KeyType);
+
+                    if (typeResult != 0)
+                        return typeResult;
+
+                    var accountResult = a1.KeyIndex.Account.CompareTo(a2.KeyIndex.Account);
+
+                    if (accountResult != 0)
+                        return accountResult;
+
                     var chainResult = a1.KeyIndex.Chain.CompareTo(a2.KeyIndex.Chain);
 
-                    return chainResult == 0
-                        ? a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index)
-                        : chainResult;
+                    return chainResult != 0
+                       ? chainResult
+                       : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
                 });
 
                 Addresses = new ObservableCollection<AddressInfo>(
-                    addresses.Select(a => new AddressInfo
+                    addresses.Select(a =>
                     {
-                        Address = a.Address,
-                        Path = $"m/44'/{Currency.Bip44Code}/0'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}",
-                        Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
-                        CopyToClipboard = OnCopyAddressButtonClicked,
-                        ExportKey = OnExportKeyButtonClicked,
-                        UpdateAddress = OnUpdateButtonClicked
+                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(Currency.Name)
+                            ? $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
+                            : $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+
+                        return new AddressInfo
+                        {
+                            Address = a.Address,
+                            Type = KeyTypeToString(a.KeyType),
+                            Path = path,
+                            Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
+                            CopyToClipboard = OnCopyAddressButtonClicked,
+                            ExportKey = OnExportKeyButtonClicked,
+                            UpdateAddress = OnUpdateButtonClicked
+                        };
                     }));
 
                 if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
@@ -179,6 +200,14 @@ namespace atomex.ViewModel
             }
         }
 
+        private string KeyTypeToString(int keyType) =>
+            keyType switch
+            {
+                CurrencyConfig.StandardKey => "Standard",
+                TezosConfig.Bip32Ed25519Key => "Atomex",
+                _ => throw new NotSupportedException($"Key type {keyType} not supported.")
+            };
+
         private ICommand _selectAddressCommand;
         public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<AddressInfo>(async (item) => await OnAddressItemTapped(item));
 
@@ -226,14 +255,37 @@ namespace atomex.ViewModel
 
                     var hdWallet = _app.Account.Wallet as HdWallet;
 
-                    using var privateKey = hdWallet.KeyStorage
-                        .GetPrivateKey(Currency, walletAddress.KeyIndex);
+                    using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
+                        currency: Currency,
+                        keyIndex: walletAddress.KeyIndex,
+                        keyType: walletAddress.KeyType);
 
                     using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
 
-                    var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
+                    if (Currencies.IsBitcoinBased(Currency.Name))
+                    {
+                        var btcBasedConfig = Currency as BitcoinBasedConfig;
 
-                    await Clipboard.SetTextAsync(hex);
+                        var wif = new NBitcoin.Key(unsecuredPrivateKey)
+                            .GetWif(btcBasedConfig.Network)
+                            .ToWif();
+
+                        await Clipboard.SetTextAsync(wif);
+                    }
+                    else if (Currencies.IsTezosBased(Currency.Name))
+                    {
+                        var base58 = unsecuredPrivateKey.Length == 32
+                            ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
+                            : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
+
+                        await Clipboard.SetTextAsync(base58);
+                    }
+                    else
+                    {
+                        var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
+
+                        await Clipboard.SetTextAsync(hex);
+                    }
 
                     await Device.InvokeOnMainThreadAsync(() =>
                     {
