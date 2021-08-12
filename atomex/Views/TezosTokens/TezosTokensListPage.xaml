@@ -136,29 +136,40 @@
             <ListView.Footer>
                 <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                              VerticalOptions="FillAndExpand">
-                    <StackLayout IsVisible="False"
-                                 HeightRequest="400"
+                    <StackLayout HeightRequest="400"
                                  VerticalOptions="FillAndExpand">
-                        <StackLayout.Triggers>
-                            <DataTrigger TargetType="StackLayout"
-                                         Binding="{Binding TokensContracts.Count}"
-                                         Value="0">
-                                <Setter Property="IsVisible"
-                                        Value="True"/>
-                            </DataTrigger>
-                        </StackLayout.Triggers>
                         <Image Source="Magnifier"
                                WidthRequest="45"
                                HeightRequest="45"
                                Margin="20,40,20,10"
-                               VerticalOptions="EndAndExpand"/>
+                               VerticalOptions="EndAndExpand"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding TokensContracts.Count}"
+                                             Value="0">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <Label Text="No tezos tokens yet"
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="18"
                                VerticalOptions="Start"
                                HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Start"/>
+                               VerticalTextAlignment="Start"
+                               IsVisible="False">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding TokensContracts.Count}"
+                                             Value="0">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
                     <RelativeLayout HorizontalOptions="Center"
                                     VerticalOptions="StartAndExpand"
                                     Margin="20">

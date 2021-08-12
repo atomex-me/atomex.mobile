@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
+        public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
         public string Address { get; set; }
 

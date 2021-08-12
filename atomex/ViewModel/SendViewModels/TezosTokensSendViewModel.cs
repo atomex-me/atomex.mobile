@@ -9,6 +9,7 @@ using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using Atomex;
+using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
@@ -97,7 +98,7 @@ namespace atomex.ViewModel.SendViewModels
         }
 
         protected string _to;
-        public virtual string To
+        public string To
         {
             get => _to;
             set
@@ -113,13 +114,13 @@ namespace atomex.ViewModel.SendViewModels
         public string FeeCurrencyFormat { get; set; }
 
         private string _baseCurrencyFormat;
-        public virtual string BaseCurrencyFormat
+        public string BaseCurrencyFormat
         {
             get => _baseCurrencyFormat;
             set { _baseCurrencyFormat = value; OnPropertyChanged(nameof(BaseCurrencyFormat)); }
         }
 
-        protected decimal _amount;
+        private decimal _amount;
         public decimal Amount
         {
             get => _amount;
@@ -142,14 +143,14 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected decimal _fee;
+        private decimal _fee;
         public decimal Fee
         {
             get => _fee;
             set { _ = UpdateFee(value); }
         }
 
-        public virtual string FeeString
+        public string FeeString
         {
             get => Fee.ToString(FeeCurrencyFormat, CultureInfo.InvariantCulture);
             set
@@ -162,8 +163,8 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected bool _useDefaultFee;
-        public virtual bool UseDefaultFee
+        private bool _useDefaultFee;
+        public bool UseDefaultFee
         {
             get => _useDefaultFee;
             set
@@ -180,46 +181,73 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected decimal _amountInBase;
+        private decimal _amountInBase;
         public decimal AmountInBase
         {
             get => _amountInBase;
             set { _amountInBase = value; OnPropertyChanged(nameof(AmountInBase)); }
         }
 
-        protected decimal _feeInBase;
+        private decimal _feeInBase;
         public decimal FeeInBase
         {
             get => _feeInBase;
             set { _feeInBase = value; OnPropertyChanged(nameof(FeeInBase)); }
         }
 
-        protected string _currencyCode;
+        private string _currencyCode;
         public string CurrencyCode
         {
             get => _currencyCode;
             set { _currencyCode = value; OnPropertyChanged(nameof(CurrencyCode)); }
         }
 
-        protected string _feeCurrencyCode;
+        private string _feeCurrencyCode;
         public string FeeCurrencyCode
         {
             get => _feeCurrencyCode;
             set { _feeCurrencyCode = value; OnPropertyChanged(nameof(FeeCurrencyCode)); }
         }
 
-        protected string _baseCurrencyCode;
+        private string _baseCurrencyCode;
         public string BaseCurrencyCode
         {
             get => _baseCurrencyCode;
             set { _baseCurrencyCode = value; OnPropertyChanged(nameof(BaseCurrencyCode)); }
         }
 
-        protected string _warning;
+        private string _warning;
         public string Warning
         {
             get => _warning;
             set { _warning = value; OnPropertyChanged(nameof(Warning)); }
+        }
+
+        private float _opacity = 1f;
+        public float Opacity
+        {
+            get => _opacity;
+            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value)
+                    return;
+
+                _isLoading = value;
+
+                if (_isLoading)
+                    Opacity = 0.3f;
+                else
+                    Opacity = 1f;
+
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
         public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
@@ -265,7 +293,7 @@ namespace atomex.ViewModel.SendViewModels
                 _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        protected virtual void ResetSendValues(bool raiseOnPropertyChanged = true)
+        private void ResetSendValues(bool raiseOnPropertyChanged = true)
         {
             _amount = 0;
             OnPropertyChanged(nameof(Amount));
@@ -285,7 +313,7 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(OnNextButtonClicked);
 
-        protected async virtual void OnNextButtonClicked()
+        private async void OnNextButtonClicked()
         {
             var tezosConfig = _app.Account
                 .Currencies
@@ -363,7 +391,7 @@ namespace atomex.ViewModel.SendViewModels
 
         }
 
-        protected virtual async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
+        private async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
         {
             Warning = string.Empty;
 
@@ -415,7 +443,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected virtual async Task UpdateFee(decimal fee)
+        private async Task UpdateFee(decimal fee)
         {
             try
             {
@@ -489,7 +517,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected virtual async Task OnMaxClick()
+        private async Task OnMaxClick()
         {
 
             Warning = string.Empty;
@@ -539,7 +567,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected virtual void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (!(sender is ICurrencyQuotesProvider quotesProvider))
                 return;
@@ -685,7 +713,7 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _maxAmountCommand;
         public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
 
-        async Task OnShowAddressesClicked()
+        private async Task OnShowAddressesClicked()
         {
             await Navigation.PushAsync(new AddressesListPage(this));
         }
@@ -714,7 +742,7 @@ namespace atomex.ViewModel.SendViewModels
             await Navigation.PushAsync(scanningQrPage);
         }
 
-        async Task OnPasteButtonClicked()
+        private async Task OnPasteButtonClicked()
         {
             if (Clipboard.HasText)
             {
@@ -725,6 +753,84 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
             }
+        }
+
+        private ICommand _sendCommand;
+        public ICommand SendCommand => _sendCommand ??= new Command(async () => await Send());
+
+        private async Task Send()
+        {
+            IsLoading = true;
+
+            try
+            {
+                IsLoading = true;
+
+                Error error;
+
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tokenAddress = await GetTokenAddressAsync(
+                    _app.Account,
+                    From.Address,
+                    TokenContract?.Contract?.Address,
+                    TokenId);
+
+                if (tokenAddress.Currency == "FA12")
+                {
+                    var currencyName = _app.Account.Currencies
+                        .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract?.Contract?.Address)
+                        ?.Name ?? "FA12";
+
+                    var tokenAccount = _app.Account
+                        .GetTezosTokenAccount<Fa12Account>(currencyName, TokenContract?.Contract?.Address, TokenId);
+
+                    error = await tokenAccount
+                        .SendAsync(new WalletAddress[] { tokenAddress }, To, Amount, Fee, 1, UseDefaultFee);
+                }
+                else
+                {
+                    var tokenAccount = _app.Account
+                        .GetTezosTokenAccount<Fa2Account>("FA2", TokenContract?.Contract?.Address, TokenId);
+
+                    var decimals = tokenAddress.TokenBalance.Decimals;
+                    var amount = Amount * (decimal)Math.Pow(10, decimals);
+                    var fee = (int)Fee.ToMicroTez();
+
+                    error = await tokenAccount.SendAsync(
+                        from: From.Address,
+                        to: To,
+                        amount: amount,
+                        tokenContract: TokenContract?.Contract?.Address,
+                        tokenId: (int)TokenId,
+                        fee: fee,
+                        useDefaultFee: UseDefaultFee);
+                }
+
+                if (error != null)
+                {
+                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                }
+
+                var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To, null, AppResources.AcceptButton);
+                if (!res)
+                {
+                    for (var i = 1; i < 2; i++)
+                    {
+                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    }
+                    await Navigation.PopAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+                Log.Error(e, "Transaction send error.");
+            }
+
+            IsLoading = false;
         }
     }
 }

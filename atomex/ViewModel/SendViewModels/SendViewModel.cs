@@ -315,6 +315,7 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     IsLoading = false;
                     await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                    return;
                 }
             }
             catch (Exception e)

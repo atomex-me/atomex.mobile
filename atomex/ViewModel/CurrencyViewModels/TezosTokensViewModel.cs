@@ -78,8 +78,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string TokenContractAddress => TokenContract?.Contract?.Address ?? "";
         public string TokenContractName => TokenContract?.Name ?? "";
         public string TokenContractIconUrl => TokenContract?.IconUrl;
-        public bool IsConvertable => _app.Account.Currencies
-            .Any(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress);
+        public bool IsConvertable => _app?.Account?.Currencies
+            .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == TokenContractAddress) ?? false;
 
         public decimal Balance { get; set; }
         public string BalanceFormat { get; set; }
@@ -302,8 +302,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 });
 
                 Tokens = new ObservableCollection<TezosTokenViewModel>(tokenAddresses
+                    .Where(a => a.Balance != 0)
                     .Select(a => new TezosTokenViewModel
                         {
+                            TezosConfig = tezosConfig,
                             TokenBalance = a.TokenBalance,
                             Address = a.Address
                     }));
@@ -530,26 +532,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                 }
             };
 
-            //TokenContract = TokensContracts.First();
-
-            //var bcdApi = new BcdApi(new BcdApiSettings
-            //{
-            //    MaxSize = 10,
-            //    Network = "mainnet",
-            //    Uri = "https://api.better-call.dev/v1/"
-            //});
-
-            //var tokensBalances = bcdApi
-            //    .GetTokenBalancesAsync(
-            //        address: "tz1YS2CmS5o24bDz9XNr84DSczBXuq4oGHxr",
-            //        count: 36)
-            //    .WaitForResult();
-
-            //Tokens = new ObservableCollection<TezosTokenViewModel>(
-            //    tokensBalances.Value.Select(tb => new TezosTokenViewModel { TokenBalance = tb }));
-
-
-            // test
             var bcdApi = new BcdApi(new BcdApiSettings
             {
                 MaxSize = 10,

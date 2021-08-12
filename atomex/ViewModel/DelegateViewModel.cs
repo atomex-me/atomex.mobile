@@ -27,8 +27,7 @@ namespace atomex.ViewModel
 
         public INavigation Navigation { get; set; }
 
-        private readonly TezosConfig _tezosConfig;
-        private WalletAddressViewModel _walletAddressViewModel;
+        private readonly TezosConfig _tezosConfig; 
 
         private bool _canDelegate;
         public bool CanDelegate
@@ -73,7 +72,7 @@ namespace atomex.ViewModel
             {
                 if (_isLoading == value)
                     return;
-
+                
                 _isLoading = value;
 
                 if (_isLoading)
@@ -85,6 +84,7 @@ namespace atomex.ViewModel
             }
         }
 
+        private WalletAddressViewModel _walletAddressViewModel;
         public WalletAddressViewModel WalletAddressViewModel
         {
             get => _walletAddressViewModel;
