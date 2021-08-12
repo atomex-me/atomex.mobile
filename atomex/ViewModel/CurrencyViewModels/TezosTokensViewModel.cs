@@ -443,7 +443,11 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnSendButtonClicked(object obj)
         {
-            var token = (TezosTokenViewModel)obj;
+            var token = obj as TezosTokenViewModel;
+
+            if (token == null)
+                return;
+
             var tokenId = token.TokenBalance.TokenId;
             var sendViewModel = new TezosTokensSendViewModel(
                 app: _app,

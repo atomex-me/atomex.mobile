@@ -55,7 +55,7 @@ namespace atomex.ViewModel.SendViewModels
                 Warning = string.Empty;
                 Amount = _amount;
                 Fee = _fee;
-
+                
                 UpdateCurrencyCode();
             }
         }

@@ -123,7 +123,8 @@
                              Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
-                                      Style="{DynamicResource EntryFrameStyle}">
+                                      Style="{DynamicResource EntryFrameStyle}"
+                                      Opacity="0.7">
                     <controls:CustomFrame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnTokenContractEntryTapped"/>
                     </controls:CustomFrame.GestureRecognizers>
@@ -139,7 +140,6 @@
                                                       Keyboard="Text"
                                                       TextChanged="OnTokenContractTextChanged"
                                                       Style="{DynamicResource CustomEntryStyle}"
-                                                      Opacity="0.5"
                                                       IsReadOnly="True"
                                                       Padding="20,0,0,0"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
@@ -159,7 +159,8 @@
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}"
-                                      IsVisible="{Binding TokenContract.IsFa2}">
+                                      IsVisible="{Binding TokenContract.IsFa2}"
+                                      Opacity="0.7">
                     <controls:CustomFrame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnTokenIdEntryTapped"/>
                     </controls:CustomFrame.GestureRecognizers>
@@ -176,7 +177,6 @@
                                                       TextChanged="OnTokenIdTextChanged"
                                                       Style="{DynamicResource CustomEntryStyle}"
                                                       IsReadOnly="True"
-                                                      Opacity="0.5"
                                                       Padding="20,0,0,0"
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
