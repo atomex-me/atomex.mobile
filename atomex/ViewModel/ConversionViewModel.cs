@@ -390,11 +390,11 @@ namespace atomex.ViewModel
             try
             {
                 FromCurrencyViewModel = _currencyViewModels.
-                    Where(c => c.CurrencyCode == currencyCode).Single();
+                    Where(c => c.CurrencyCode == currencyCode).Single() ?? _currencyViewModels.First();
             }
-            catch
+            catch(Exception e)
             {
-                FromCurrencyViewModel = _currencyViewModels.First();
+                Log.Error(e, "ConversionViewModel SetFromCurrency error.");
             }
         }
 
@@ -409,7 +409,6 @@ namespace atomex.ViewModel
             _toCurrencies = new List<CurrencyViewModel>();
             _currencyViewModels = new List<CurrencyViewModel>();
 
-            _ = FillCurrenciesAsync();
             SubscribeToServices();
         }
 
@@ -440,26 +439,17 @@ namespace atomex.ViewModel
             Terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
             Terminal.SwapUpdated += OnSwapEventHandler;
 
+            _currencyViewModels = terminal.Account.Currencies
+                .Where(c => c.IsSwapAvailable)
+                .Select(c =>
+                    CurrencyViewModelCreator.CreateViewModel(AtomexApp, c, false))
+                .ToList();
+
+            FromCurrencies = _currencyViewModels.ToList();
+
+            FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
+
             OnSwapEventHandler(this, null);
-        }
-
-        private async Task FillCurrenciesAsync()
-        {
-            try
-            {
-                await Task.WhenAll(Currencies.Select(c =>
-                {
-                    _currencyViewModels.Add(CurrencyViewModelCreator.CreateViewModel(AtomexApp, c));
-                    return Task.CompletedTask;
-                }));
-
-                FromCurrencies = _currencyViewModels.ToList();
-                FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "FillCurrenciesAsync error");
-            }
         }
 
         private ICommand _selectSwapCommand;
@@ -746,6 +736,10 @@ namespace atomex.ViewModel
                         transactionType: BlockchainTransactionType.SwapPayment))
                     .ToList();
 
+                foreach (var fromWallet in fromWallets)
+                    if (fromWallet.Currency != FromCurrencyViewModel.Currency.Name)
+                        fromWallet.Currency = FromCurrencyViewModel.Currency.Name;
+
                 if (Amount == 0)
                     return new Error(Errors.SwapError, AppResources.AmountLessThanZeroError);
 
@@ -755,6 +749,7 @@ namespace atomex.ViewModel
                 var symbol = AtomexApp.SymbolsProvider.
                     GetSymbols(AtomexApp.Account.Network).
                     SymbolByCurrencies(FromCurrencyViewModel.Currency, ToCurrencyViewModel.Currency);
+
                 var baseCurrency = AtomexApp.Account.Currencies.GetByName(symbol.Base);
                 var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
                 var terminal = AtomexApp.Terminal;
@@ -848,7 +843,14 @@ namespace atomex.ViewModel
 
         public virtual async Task OnMaxClick()
         {
-            await UpdateAmountAsync(decimal.MaxValue, onMaxClick: true);
+            try
+            {
+                await UpdateAmountAsync(decimal.MaxValue, onMaxClick: true);
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Max amount command error.");
+            }
         }
 
         private void ResetSwapValues(bool raiseOnPropertyChanged = true)
@@ -895,7 +897,8 @@ namespace atomex.ViewModel
                 }
 
                 // esitmate max payment amount and max fee
-                var swapParams = await Atomex.ViewModels.Helpers.EstimateSwapPaymentParamsAsync(
+                var swapParams = await Atomex.ViewModels.Helpers.
+                    EstimateSwapPaymentParamsAsync(
                         amount: value,
                         fromCurrency: FromCurrencyViewModel.Currency,
                         toCurrency: ToCurrencyViewModel.Currency,

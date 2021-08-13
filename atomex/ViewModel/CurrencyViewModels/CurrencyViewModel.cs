@@ -154,7 +154,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private CancellationTokenSource Cancellation { get; set; }
 
-        public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency)
+        public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
@@ -163,7 +163,10 @@ namespace atomex.ViewModel.CurrencyViewModels
             SubscribeToUpdates(AtomexApp.Account);
             SubscribeToRatesProvider(AtomexApp.QuotesProvider);
 
-            _ = UpdateTransactionsAsync();
+            if (loadTransaction)
+                _ = UpdateTransactionsAsync();
+
+            _ = UpdateBalanceAsync();
         }
 
         public void SubscribeToUpdates(IAccount account)

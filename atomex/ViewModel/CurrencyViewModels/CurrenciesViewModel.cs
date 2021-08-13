@@ -28,7 +28,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public TezosTokensViewModel TezosTokensViewModel { get; set; }
 
-        public CurrenciesViewModel(IAtomexApp app, bool restore)
+        public CurrenciesViewModel(IAtomexApp app, bool restore = false)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             TezosTokensViewModel = new TezosTokensViewModel(app);
@@ -62,11 +62,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 if (restore)
                     _ = currency.UpdateCurrencyAsync();
-                else
-                {
-                    _ = currency.UpdateBalanceAsync();
-                    _ = currency.UpdateTransactionsAsync();
-                }
 
                 return Task.CompletedTask;
             }));

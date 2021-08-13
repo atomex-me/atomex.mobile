@@ -10,13 +10,14 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
         public static CurrencyViewModel CreateViewModel(
             IAtomexApp app,
-            CurrencyConfig currency)
+            CurrencyConfig currency,
+            bool loadTransactions = true)
         {
             return currency switch
             {
                 BitcoinBasedConfig _ or
                 Erc20Config _ or
-                EthereumConfig _ => new CurrencyViewModel(app, currency),
+                EthereumConfig _ => new CurrencyViewModel(app, currency, loadTransactions),
 
                 Fa12Config _ => new Fa12CurrencyViewModel(app, currency),
 
