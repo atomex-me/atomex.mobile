@@ -69,13 +69,6 @@ namespace atomex.ViewModel.SendViewModels
             {
                 _tokenContract = value;
                 OnPropertyChanged(nameof(TokenContract));
-
-                Warning = string.Empty;
-                Amount = _amount;
-                Fee = _fee;
-
-                UpdateFromAddressList(_from, _tokenContract?.Contract?.Address, _tokenId);
-                UpdateCurrencyCode();
             }
         }
 
@@ -87,13 +80,6 @@ namespace atomex.ViewModel.SendViewModels
             {
                 _tokenId = value;
                 OnPropertyChanged(nameof(TokenId));
-
-                Warning = string.Empty;
-                Amount = _amount;
-                Fee = _fee;
-
-                UpdateFromAddressList(_from, _tokenContract?.Contract?.Address, _tokenId);
-                UpdateCurrencyCode();
             }
         }
 
@@ -279,7 +265,7 @@ namespace atomex.ViewModel.SendViewModels
             _tokenContract = tokenContract;
             _tokenId = tokenId;
 
-            UpdateFromAddressList(from, tokenContract?.Contract?.Address, tokenId);
+            UpdateFromAddressList(from);
             UpdateCurrencyCode();
 
             SubscribeToServices();
@@ -421,7 +407,11 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                var fromTokenAddress = await GetTokenAddressAsync(_app.Account, From.Address, TokenContract?.Contract?.Address, TokenId);
+                var fromTokenAddress = await GetTokenAddressAsync(
+                    account: _app.Account,
+                    address: From.Address,
+                    tokenContract: TokenContract?.Contract?.Address,
+                    tokenId: TokenId);
 
                 if (fromTokenAddress == null)
                 {
@@ -465,7 +455,11 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (UseDefaultFee)
                 {
-                    var fromTokenAddress = await GetTokenAddressAsync(_app.Account, From.Address, TokenContract?.Contract?.Address, TokenId);
+                    var fromTokenAddress = await GetTokenAddressAsync(
+                        account: _app.Account,
+                        address: From.Address,
+                        tokenContract: TokenContract?.Contract?.Address,
+                        tokenId: TokenId);
 
                     if (fromTokenAddress == null)
                     {
@@ -545,7 +539,11 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                var fromTokenAddress = await GetTokenAddressAsync(_app.Account, From.Address, TokenContract?.Contract?.Address, TokenId);
+                var fromTokenAddress = await GetTokenAddressAsync(
+                    account: _app.Account,
+                    address: From.Address,
+                    tokenContract: TokenContract?.Contract?.Address,
+                    tokenId: TokenId);
 
                 if (fromTokenAddress == null)
                 {
@@ -581,7 +579,7 @@ namespace atomex.ViewModel.SendViewModels
                 : 0;
         }
 
-        public static async Task<WalletAddress> GetTokenAddressAsync(
+        public async Task<WalletAddress> GetTokenAddressAsync(
             IAccount account,
             string address,
             string tokenContract,
@@ -590,23 +588,14 @@ namespace atomex.ViewModel.SendViewModels
             var tezosAccount = account
                 .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
-            var fa12Address = await tezosAccount
+            return await tezosAccount
                 .DataRepository
-                .GetTezosTokenAddressAsync("FA12", tokenContract, tokenId, address);
-
-            if (fa12Address != null)
-                return fa12Address;
-
-            var fa2Address = await tezosAccount
-                .DataRepository
-                .GetTezosTokenAddressAsync("FA2", tokenContract, tokenId, address);
-
-            return fa2Address;
+                .GetTezosTokenAddressAsync(TokenContract?.Contract?.GetContractType(), tokenContract, tokenId, address);
         }
 
-        private void UpdateFromAddressList(WalletAddressViewModel from, string tokenContract, decimal tokenId)
+        private void UpdateFromAddressList(WalletAddressViewModel from)
         {
-            _fromAddressList = new ObservableCollection<WalletAddressViewModel>(GetFromAddressList(TokenContract?.Contract?.Address, tokenId));
+            _fromAddressList = new ObservableCollection<WalletAddressViewModel>(GetFromAddressList(TokenContract?.Contract?.Address));
 
             var tempFrom = from;
 
@@ -629,7 +618,11 @@ namespace atomex.ViewModel.SendViewModels
             if (TokenContract == null || From == null)
                 return;
 
-            var tokenAddress = await GetTokenAddressAsync(_app.Account, From.Address, TokenContract?.Contract?.Address, TokenId);
+            var tokenAddress = await GetTokenAddressAsync(
+                account: _app.Account,
+                address: From.Address,
+                tokenContract: TokenContract?.Contract?.Address,
+                tokenId: TokenId);
 
             if (tokenAddress?.TokenBalance?.Symbol != null)
             {
@@ -647,8 +640,11 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        private IEnumerable<WalletAddressViewModel> GetFromAddressList(string tokenContract, decimal tokenId)
+        private IEnumerable<WalletAddressViewModel> GetFromAddressList(string tokenContract)
         {
+            if (tokenContract == null)
+                return Enumerable.Empty<WalletAddressViewModel>();
+
             var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
@@ -657,35 +653,32 @@ namespace atomex.ViewModel.SendViewModels
                 .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
             var tezosAddresses = tezosAccount
-                .GetAddressesAsync()
+                .GetUnspentAddressesAsync()
+                .WaitForResult()
+                .ToDictionary(w => w.Address, w => w);
+
+            var tokenAddresses = tezosAccount.DataRepository
+                .GetTezosTokenAddressesByContractAsync(tokenContract)
                 .WaitForResult();
 
-            var tokenAddresses = tokenContract != null
-                ? tezosAccount.DataRepository
-                    .GetTezosTokenAddressesByContractAsync(tokenContract)
-                    .WaitForResult()
-                : new List<WalletAddress>();
-
-            return tezosAddresses
-                .Concat(tokenAddresses)
-                .GroupBy(w => w.Address)
-                .Select(g =>
+            return tokenAddresses
+                .Where(w => w.Balance != 0)
+                .Select(w =>
                 {
-                    // main address
-                    var address = g.FirstOrDefault(w => w.Currency == tezosConfig.Name);
-
-                    var tokenAddress = g.FirstOrDefault(w => w.Currency != tezosConfig.Name && w.TokenBalance?.TokenId == TokenId);
-
-                    var tokenBalance = tokenAddress?.Balance ?? 0m;
+                    var tokenBalance = w.Balance;
 
                     var showTokenBalance = tokenBalance != 0;
 
-                    var tokenCode = tokenAddress?.TokenBalance?.Symbol ?? "TOKENS";
+                    var tokenCode = w.TokenBalance?.Symbol ?? "TOKENS";
+
+                    var tezosBalance = tezosAddresses.TryGetValue(w.Address, out var tezosAddress)
+                        ? tezosAddress.AvailableBalance()
+                        : 0m;
 
                     return new WalletAddressViewModel
                     {
-                        Address = g.Key,
-                        AvailableBalance = address?.AvailableBalance() ?? 0m,
+                        Address = w.Address,
+                        AvailableBalance = tezosBalance,
                         CurrencyFormat = tezosConfig.Format,
                         CurrencyCode = tezosConfig.Name,
                         IsFreeAddress = false,
