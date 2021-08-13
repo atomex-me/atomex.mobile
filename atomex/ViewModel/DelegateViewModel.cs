@@ -509,7 +509,7 @@ namespace atomex.ViewModel
                     GasLimit = _tezosConfig.GasLimit,
                     From = WalletAddressViewModel.Address,
                     To = _address,
-                    Fee = Fee.ToMicroTez(),
+                    Fee = 0, //Fee.ToMicroTez(),
                     Currency = _tezosConfig.Name,
                     CreationTime = DateTime.UtcNow,
 
@@ -528,7 +528,7 @@ namespace atomex.ViewModel
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
 
-                var isSuccess = await tx.FillOperationsAsync(
+                var (isSuccess, isRunSuccess) = await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,
                     tezosConfig: _tezosConfig,
                     headOffset: TezosConfig.HeadOffset,
@@ -541,8 +541,19 @@ namespace atomex.ViewModel
                 }
 
                 IsLoading = false;
-                Fee = tx.Fee;
-                OnPropertyChanged(nameof(FeeString));
+
+                if (isRunSuccess)
+                {
+                    Fee = tx.Fee;
+                    OnPropertyChanged(nameof(FeeString));
+
+                     if (Fee > WalletAddressViewModel.AvailableBalance)
+                        return new Error(Errors.InsufficientAmount, AppResources.InsufficientFunds);
+                }
+                else
+                {
+                    return new Error(Errors.TransactionCreationError, AppResources.AutofillTransactionFailed);
+                }
             }
             catch (Exception e)
             {
@@ -598,7 +609,7 @@ namespace atomex.ViewModel
                     headOffset: TezosConfig.HeadOffset);
 
                 var signResult = await tx
-                    .SignAsync(keyStorage, walletAddress, default);
+                    .SignAsync(keyStorage, walletAddress, _tezosConfig);
 
                 if (!signResult)
                 {
@@ -614,7 +625,7 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Delegation send error");
-                return AppResources.DelegationError;
+                return new Error(Errors.TransactionCreationError, AppResources.DelegationError);
             }
             finally
             {
