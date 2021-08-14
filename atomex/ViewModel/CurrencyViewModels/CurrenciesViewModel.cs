@@ -31,7 +31,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public CurrenciesViewModel(IAtomexApp app, bool restore = false)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            TezosTokensViewModel = new TezosTokensViewModel(app);
+            TezosTokensViewModel = new TezosTokensViewModel(app, restore);
             CurrencyViewModels = new List<CurrencyViewModel>();
             _ = FillCurrenciesAsync(restore);
         }

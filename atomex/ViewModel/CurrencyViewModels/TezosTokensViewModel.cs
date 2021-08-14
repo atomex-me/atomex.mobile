@@ -116,7 +116,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private readonly IAtomexApp _app;
 
-        public TezosTokensViewModel(IAtomexApp app)
+        public TezosTokensViewModel(IAtomexApp app, bool restore = false)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             ToastService = DependencyService.Get<IToastService>();
@@ -124,6 +124,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             SubscribeToUpdates();
 
             _ = LoadAsync();
+
+            if (restore)
+                _ = UpdateTokens();
 
             //DesignerMode();
         }
