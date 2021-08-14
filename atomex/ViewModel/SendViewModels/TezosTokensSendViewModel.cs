@@ -242,7 +242,7 @@ namespace atomex.ViewModel.SendViewModels
         public TezosTokensSendViewModel(
             IAtomexApp app,
             INavigation navigation,
-            WalletAddressViewModel from = null,
+            string from = null,
             TezosTokenContractViewModel tokenContract = null,
             decimal tokenId = 0)
         {
@@ -593,24 +593,25 @@ namespace atomex.ViewModel.SendViewModels
                 .GetTezosTokenAddressAsync(TokenContract?.Contract?.GetContractType(), tokenContract, tokenId, address);
         }
 
-        private void UpdateFromAddressList(WalletAddressViewModel from)
+        private void UpdateFromAddressList(string from)
         {
             _fromAddressList = new ObservableCollection<WalletAddressViewModel>(GetFromAddressList(TokenContract?.Contract?.Address));
 
-            var tempFrom = from;
-
-            if (tempFrom == null)
+            if (string.IsNullOrEmpty(from))
             {
                 var unspentAddresses = _fromAddressList.Where(w => w.AvailableBalance > 0);
                 var unspentTokenAddresses = _fromAddressList.Where(w => w.TokenBalance > 0);
 
-                tempFrom = unspentTokenAddresses.MaxByOrDefault(w => w.TokenBalance) ??
+                From = unspentTokenAddresses.MaxByOrDefault(w => w.TokenBalance) ??
                     unspentAddresses.MaxByOrDefault(w => w.AvailableBalance);
+            }
+            else
+            {
+                var fromAddressViewModel = _fromAddressList.Where(w => w.Address == from).Single();
+                From = fromAddressViewModel;
             }
 
             OnPropertyChanged(nameof(FromAddressList));
-
-            From = tempFrom;
         }
 
         private async void UpdateCurrencyCode()

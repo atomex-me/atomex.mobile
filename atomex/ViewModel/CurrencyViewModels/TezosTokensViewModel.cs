@@ -450,13 +450,12 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (token == null)
                 return;
 
-            var tokenId = token.TokenBalance.TokenId;
             var sendViewModel = new TezosTokensSendViewModel(
                 app: _app,
                 navigation: Navigation,
-                from: null,
+                from: token.Address,
                 tokenContract: TokenContract,
-                tokenId: tokenId);
+                tokenId: token.TokenBalance.TokenId);
 
             await Navigation.PushAsync(new SendTokenPage(sendViewModel));
         }
