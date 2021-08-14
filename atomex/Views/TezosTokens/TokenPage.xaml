@@ -85,7 +85,7 @@
                            VerticalTextAlignment="Start"
                            HorizontalOptions="Center"
                            IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
-                    <Label Text="Tokens balance updating..."
+                    <Label Text="{helpers:Translate TokenBalanceUpdatingLabel}"
                            Style="{DynamicResource RefreshLabelStyle}"
                            IsVisible="{Binding IsLoading}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
@@ -131,12 +131,12 @@
                     </Grid.ColumnDefinitions>
                     <Button Clicked="OnTokensButtonClicked"
                             CornerRadius="0"
-                            Text="Tokens"
+                            Text="{helpers:Translate Tokens}"
                             TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
                     <Button Clicked="OnTransfersButtonClicked"
                             Grid.Column="1"
                             CornerRadius="0"
-                            Text="Transfers"
+                            Text="{helpers:Translate Transfers}"
                             TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
                     <StackLayout Grid.Row="2"
                                  Style="{DynamicResource SeparatorStyle}"
@@ -166,7 +166,7 @@
                            HeightRequest="45"
                            Margin="20,40,20,10"
                            VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{helpers:Translate NoTransactionsLabel}"
+                    <Label Text="{helpers:Translate NoTransfersLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontSize="18"
@@ -441,7 +441,7 @@
                            VerticalTextAlignment="Start"
                            HorizontalOptions="Center"
                            IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
-                    <Label Text="Tokens balance updating..."
+                    <Label Text="{helpers:Translate TokenBalanceUpdatingLabel}"
                            Style="{DynamicResource RefreshLabelStyle}"
                            IsVisible="{Binding IsLoading}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
@@ -487,12 +487,12 @@
                     </Grid.ColumnDefinitions>
                     <Button Clicked="OnTokensButtonClicked"
                             CornerRadius="0"
-                            Text="Tokens"
+                            Text="{helpers:Translate Tokens}"
                             TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
                     <Button Clicked="OnTransfersButtonClicked"
                             Grid.Column="1"
                             CornerRadius="0"
-                            Text="Transfers"
+                            Text="{helpers:Translate Transfers}"
                             TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
                     <StackLayout Grid.Row="1"
                                  Style="{DynamicResource SeparatorStyle}"
@@ -521,7 +521,7 @@
                            HeightRequest="45"
                            Margin="20,40,20,10"
                            VerticalOptions="CenterAndExpand"/>
-                    <Label Text="No tokens yet"
+                    <Label Text="{helpers:Translate NoTokensLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontSize="18"
@@ -567,7 +567,7 @@
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="80" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.RowSpan="2"
                                Padding="0"

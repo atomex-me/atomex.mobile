@@ -134,7 +134,7 @@
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="TokenContract"
-                                                      Placeholder="Token contract"
+                                                      Placeholder="{helpers:Translate TokenContract}"
                                                       Text="{Binding TokenContract.Contract.Address}"
                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                       Keyboard="Text"
@@ -145,7 +145,7 @@
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label x:Name="TokenContractHint"
-                                       Text="Token contract"
+                                       Text="{helpers:Translate TokenContract}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
@@ -170,7 +170,7 @@
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="TokenId"
-                                                      Placeholder="Token ID"
+                                                      Placeholder="{helpers:Translate TokenId}"
                                                       Text="{Binding TokenId}"
                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                       Keyboard="Numeric"
@@ -181,7 +181,7 @@
                                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
                                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
                                 <Label x:Name="TokenIdHint"
-                                       Text="Token ID"
+                                       Text="{helpers:Translate TokenId}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"

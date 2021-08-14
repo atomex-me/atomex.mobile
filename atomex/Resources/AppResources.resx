@@ -253,6 +253,9 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Address info</value>
     </data>
+    <data name="SelectSourceAddress" xml:space="preserve">
+        <value>Select source address</value>
+    </data>
     <data name="Addresses" xml:space="preserve">
         <value>Addresses</value>
     </data>
@@ -521,7 +524,45 @@
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Create new swap</value>
     </data>
-    
+
+    <!-- Tezos tokens list, token info Pages -->
+    <data name="TezosTokensListPageTitle" xml:space="preserve">
+        <value>Tezos tokens</value>
+    </data>
+    <data name="TokenInfoPageTitle" xml:space="preserve">
+        <value>Token info</value>
+    </data>
+    <data name="NoTokensLabel" xml:space="preserve">
+        <value>No tokens yet</value>
+    </data>
+    <data name="NoTransfersLabel" xml:space="preserve">
+        <value>No transfers yet</value>
+    </data>
+    <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
+        <value>Token balance updating...</value>
+    </data>
+    <data name="UpdateTokenButton" xml:space="preserve">
+        <value>Update tokens</value>
+    </data>
+    <data name="Tokens" xml:space="preserve">
+        <value>Tokens</value>
+    </data>
+    <data name="Transfers" xml:space="preserve">
+        <value>Transfers</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="TokenId" xml:space="preserve">
+        <value>Token ID</value>
+    </data>
+    <data name="TokenContract" xml:space="preserve">
+        <value>Token contract</value>
+    </data>
+    <data name="ShowInIpfsButton" xml:space="preserve">
+        <value>Show in ipfs</value>
+    </data>
+
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
         <value>Settings</value>

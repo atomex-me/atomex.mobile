@@ -4,7 +4,7 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
              x:Name="BindingContextPage"
-             Title="Tezos tokens"
+             Title="{helpers:Translate TezosTokensListPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding TokensContracts}"
@@ -153,7 +153,7 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Label Text="No tezos tokens yet"
+                        <Label Text="{helpers:Translate NoTokensLabel}"
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="18"
@@ -173,7 +173,7 @@
                     <RelativeLayout HorizontalOptions="Center"
                                     VerticalOptions="StartAndExpand"
                                     Margin="20">
-                        <Button Text="Update tokens"
+                        <Button Text="{helpers:Translate UpdateTokenButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Opacity="{Binding Opacity}"
                                 CornerRadius="20"

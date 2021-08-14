@@ -485,6 +485,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SelectSourceAddress {
+            get {
+                return ResourceManager.GetString("SelectSourceAddress", resourceCulture);
+            }
+        }
+        
         internal static string Addresses {
             get {
                 return ResourceManager.GetString("Addresses", resourceCulture);
@@ -968,6 +974,78 @@ namespace atomex.Resources {
         internal static string CreateSwapButton {
             get {
                 return ResourceManager.GetString("CreateSwapButton", resourceCulture);
+            }
+        }
+        
+        internal static string TezosTokensListPageTitle {
+            get {
+                return ResourceManager.GetString("TezosTokensListPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string TokenInfoPageTitle {
+            get {
+                return ResourceManager.GetString("TokenInfoPageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string NoTokensLabel {
+            get {
+                return ResourceManager.GetString("NoTokensLabel", resourceCulture);
+            }
+        }
+        
+        internal static string NoTransfersLabel {
+            get {
+                return ResourceManager.GetString("NoTransfersLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TokenBalanceUpdatingLabel {
+            get {
+                return ResourceManager.GetString("TokenBalanceUpdatingLabel", resourceCulture);
+            }
+        }
+        
+        internal static string UpdateTokenButton {
+            get {
+                return ResourceManager.GetString("UpdateTokenButton", resourceCulture);
+            }
+        }
+        
+        internal static string Tokens {
+            get {
+                return ResourceManager.GetString("Tokens", resourceCulture);
+            }
+        }
+        
+        internal static string Transfers {
+            get {
+                return ResourceManager.GetString("Transfers", resourceCulture);
+            }
+        }
+        
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        internal static string TokenId {
+            get {
+                return ResourceManager.GetString("TokenId", resourceCulture);
+            }
+        }
+        
+        internal static string TokenContract {
+            get {
+                return ResourceManager.GetString("TokenContract", resourceCulture);
+            }
+        }
+        
+        internal static string ShowInIpfsButton {
+            get {
+                return ResourceManager.GetString("ShowInIpfsButton", resourceCulture);
             }
         }
         

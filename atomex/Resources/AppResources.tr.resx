@@ -253,6 +253,9 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Adres bilgisi</value>
     </data>
+    <data name="SelectSourceAddress" xml:space="preserve">
+        <value>Kaynak adresi seçin</value>
+    </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresler</value>
     </data>
@@ -260,7 +263,7 @@
         <value>Yol</value>
     </data>
     <data name="Type" xml:space="preserve">
-        <value>Type</value>
+        <value>Tip</value>
     </data>
     <data name="Key" xml:space="preserve">
         <value>Anahtar</value>
@@ -521,7 +524,45 @@
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Yeni swap oluştur</value>
     </data>
-    
+
+    <!-- Tezos tokens list, token info Pages -->
+    <data name="TezosTokensListPageTitle" xml:space="preserve">
+        <value>Tezos jetonları</value>
+    </data>
+    <data name="TokenInfoPageTitle" xml:space="preserve">
+        <value>Jeton bilgisi</value>
+    </data>
+    <data name="NoTokensLabel" xml:space="preserve">
+        <value>Henüz jeton yok</value>
+    </data>
+    <data name="NoTransfersLabel" xml:space="preserve">
+        <value>Henüz transfer yok</value>
+    </data>
+    <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
+        <value>Jeton bakiyesi güncellemesi...</value>
+    </data>
+    <data name="UpdateTokenButton" xml:space="preserve">
+        <value>Jetonları yenile</value>
+    </data>
+    <data name="Tokens" xml:space="preserve">
+        <value>Jetonlar</value>
+    </data>
+    <data name="Transfers" xml:space="preserve">
+        <value>Transferler</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Başlık</value>
+    </data>
+    <data name="TokenId" xml:space="preserve">
+        <value>Jeton ID</value>
+    </data>
+    <data name="TokenContract" xml:space="preserve">
+        <value>Jeton sözleşmesi</value>
+    </data>
+    <data name="ShowInIpfsButton" xml:space="preserve">
+        <value>Ipfs'de göster</value>
+    </data>
+
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
         <value>Ayarlar</value>

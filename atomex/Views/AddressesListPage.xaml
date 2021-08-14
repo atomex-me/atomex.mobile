@@ -9,7 +9,7 @@
     Style="{DynamicResource AdditionalBackgroundStyle}">
     <StackLayout VerticalOptions="FillAndExpand"
                  Padding="20">
-        <Label Text="Select source address"
+        <Label Text="{helpers:Translate SelectSourceAddress}"
                FontFamily="{DynamicResource BoldFont}"
                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                FontSize="18"

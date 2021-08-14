@@ -5,7 +5,7 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.Views.TezosTokens.TokenInfoPage"
-    Title="Token info"
+    Title="{helpers:Translate TokenInfoPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -42,7 +42,7 @@
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
-                <Label Text="Name"
+                <Label Text="{helpers:Translate Name}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.Name}"
                        Style="{DynamicResource InfoRowTextStyle}"
@@ -59,7 +59,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
-                <Label Text="Address"
+                <Label Text="{helpers:Translate AddressLabel}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding Address}"
                        Style="{DynamicResource InfoRowTextStyle}"
@@ -67,13 +67,13 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
-                <Label Text="Token ID"
+                <Label Text="{helpers:Translate TokenId}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.TokenId}"
                        Style="{DynamicResource InfoRowTextStyle}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <Button Text="Show in ipfs"
+            <Button Text="{helpers:Translate ShowInIpfsButton}"
                     Style="{DynamicResource TransparentButtonStyle}"
                     Command="{Binding OpenInBrowser}"
                     IsVisible="{Binding AssetUrl, Mode=OneWay, Converter={StaticResource StringToBool}}"/>
