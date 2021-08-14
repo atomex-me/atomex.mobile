@@ -7,5 +7,6 @@ namespace atomex
     {
         Task ConvertCurrency(string currencyCode);
         Task ShowCurrency(CurrencyViewModel currencyViewModel);
+        Task ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel);
     }
 }
