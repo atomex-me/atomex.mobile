@@ -307,10 +307,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Tokens = new ObservableCollection<TezosTokenViewModel>(tokenAddresses
                     .Where(a => a.Balance != 0)
                     .Select(a => new TezosTokenViewModel
-                        {
-                            TezosConfig = tezosConfig,
-                            TokenBalance = a.TokenBalance,
-                            Address = a.Address
+                    {
+                        TezosConfig = tezosConfig,
+                        TokenBalance = a.TokenBalance,
+                        Address = a.Address
                     }));
             }
 

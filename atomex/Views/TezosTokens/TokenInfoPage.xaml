@@ -41,21 +41,23 @@
                 </Label>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <StackLayout Style="{DynamicResource InfoRowStyle}">
+            <StackLayout Padding="20,5">
                 <Label Text="{helpers:Translate Name}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.Name}"
-                       Style="{DynamicResource InfoRowTextStyle}"
-                       LineBreakMode="TailTruncation"/>
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
+            <StackLayout Padding="20,5"
                          IsVisible="{Binding TokenBalance.Description, Mode=OneWay, Converter={StaticResource StringToBool}}">
                 <Label Text="{helpers:Translate Description}"
                        Style="{DynamicResource InfoRowTitleStyle}"/>
                 <Label Text="{Binding TokenBalance.Description}"
-                       Style="{DynamicResource InfoRowTextStyle}"
-                       LineBreakMode="TailTruncation"/>
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource InfoRowStyle}">
