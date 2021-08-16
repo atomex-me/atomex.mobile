@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -59,9 +58,13 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public string Balance => TokenBalance.Balance != "1"
-            ? $"{TokenBalance.GetTokenBalance().ToString(CultureInfo.InvariantCulture)} {TokenBalance.Symbol}"
-            : "";
+        public decimal Balance => TokenBalance.Balance != "1"
+            ? TokenBalance.GetTokenBalance()
+            : 1;
+
+        public string Symbol => TokenBalance.Symbol != ""
+            ? TokenBalance.Symbol
+            : "TOKEN";
 
         private ICommand _openInBrowser;
         public ICommand OpenInBrowser => _openInBrowser ??= new Command(() =>

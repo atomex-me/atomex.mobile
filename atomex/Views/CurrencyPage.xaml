@@ -31,7 +31,7 @@
         <ListView.Header>
             <StackLayout Spacing="0"
                          BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}">
-                <StackLayout VerticalOptions="Center" Margin="0,20">
+                <StackLayout Style="{DynamicResource CurrencyHeaderLayoutStyle}">
                     <Image Style="{DynamicResource CurrencyIconStyle}"
                            Source="{Binding CurrencyCode}"/>
                     <Label Text="{Binding AvailableAmount}"
@@ -140,8 +140,8 @@
                            FontSize="18"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Start"/>
-                    <RelativeLayout HorizontalOptions="Center"
-                                    Margin="20">
+                    <RelativeLayout Style="{DynamicResource UpdateButtonLayoutStyle}"
+                                    HorizontalOptions="Center">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Opacity="{Binding Opacity}"

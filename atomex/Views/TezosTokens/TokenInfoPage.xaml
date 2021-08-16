@@ -27,17 +27,19 @@
                            WidthRequest="50"
                            HeightRequest="50"/>
                 </Frame>
-                <Label Text="{Binding Balance}"
+                <Label Grid.Column="2"
+                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                        VerticalTextAlignment="Center"
                        Padding="10,0">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Balance}"
-                                     Value="">
-                            <Setter Property="Text"
-                                    Value="1 Token"/>
-                        </DataTrigger>
-                    </Label.Triggers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"
+                                  Style="{DynamicResource TxAmountLabelStyle}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding Symbol}"
+                                  Style="{DynamicResource TxAmountCodeLabelStyle}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
                 </Label>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>

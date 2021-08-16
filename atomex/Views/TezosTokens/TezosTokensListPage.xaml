@@ -107,12 +107,18 @@
                                                       Tapped="OnItemTapped"
                                                       CommandParameter="{Binding .}"/>
                             </Grid.GestureRecognizers>
-                            <Image Grid.RowSpan="2"
-                                   WidthRequest="40"
-                                   HeightRequest="40"
+                            <Frame Grid.RowSpan="2"
+                                   Padding="0"
                                    Margin="10,0"
+                                   CornerRadius="20"
+                                   HasShadow="False"
                                    VerticalOptions="CenterAndExpand"
-                                   Source="{Binding IconUrl}"/>
+                                   HorizontalOptions="CenterAndExpand"
+                                   IsClippedToBounds="True">
+                                <Image Source="{Binding IconUrl}"
+                                       WidthRequest="40"
+                                       HeightRequest="40"/>
+                            </Frame>
                             <Label Grid.Column="1"
                                    Text="{Binding Name}"
                                    FontFamily="{DynamicResource RegularFont}"
@@ -136,40 +142,30 @@
             <ListView.Footer>
                 <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                              VerticalOptions="FillAndExpand">
-                    <StackLayout HeightRequest="400"
-                                 VerticalOptions="FillAndExpand">
+                    <StackLayout HeightRequest="300"
+                                 VerticalOptions="FillAndExpand"
+                                 IsVisible="False">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TokensContracts.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
                         <Image Source="Magnifier"
                                WidthRequest="45"
                                HeightRequest="45"
                                Margin="20,40,20,10"
-                               VerticalOptions="EndAndExpand"
-                               IsVisible="False">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding TokensContracts.Count}"
-                                             Value="0">
-                                    <Setter Property="IsVisible"
-                                            Value="True"/>
-                                </DataTrigger>
-                            </Image.Triggers>
-                        </Image>
+                               VerticalOptions="EndAndExpand"/>
                         <Label Text="{helpers:Translate NoTokensLabel}"
                                FontFamily="{DynamicResource RegularFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="18"
                                VerticalOptions="Start"
                                HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Start"
-                               IsVisible="False">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding TokensContracts.Count}"
-                                             Value="0">
-                                    <Setter Property="IsVisible"
-                                            Value="True"/>
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                               VerticalTextAlignment="Start"/>
+                    </StackLayout>
                     <RelativeLayout HorizontalOptions="Center"
                                     VerticalOptions="StartAndExpand"
                                     Margin="20">
@@ -189,7 +185,6 @@
                                            IsRunning="{Binding IsLoading}"
                                            Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
                     </RelativeLayout>
-                    </StackLayout>
                 </StackLayout>
             </ListView.Footer>
         </ListView>

@@ -373,6 +373,10 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="CurrencyHeaderLayoutStyle" TargetType="StackLayout">
+        <Setter Property="Margin" Value="0,20"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
     <Style x:Key="CurrencyIconStyle" TargetType="Image">
         <Setter Property="WidthRequest" Value="96"/>
         <Setter Property="HeightRequest" Value="96"/>
@@ -384,6 +388,9 @@
         <Setter Property="HeightRequest" Value="40"/>
         <Setter Property="Margin" Value="10,20"/>
         <Setter Property="Spacing" Value="0"/>
+    </Style>
+    <Style x:Key="UpdateButtonLayoutStyle" TargetType="RelativeLayout">
+        <Setter Property="Margin" Value="20"/>
     </Style>
 
     <!-- Token Page  -->
@@ -400,6 +407,9 @@
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="IsClippedToBounds" Value="True"/>
     </Style>
+    <Style x:Key="TokenHeaderLayoutStyle" TargetType="StackLayout" BasedOn="{StaticResource CurrencyHeaderLayoutStyle}"></Style>
+    <Style x:Key="TokenActionButtonsLayoutStyle" TargetType="StackLayout" BasedOn="{StaticResource CurrencyActionButtonsLayoutStyle}"></Style>
+    <Style x:Key="TokenActionButtonStyle" TargetType="Button" BasedOn="{StaticResource CurrencyActionButtonStyle}"></Style>
 
     <!-- TxInfo / SwapInfo / AddressInfo / Confirmations Pages  -->
     <Style x:Key="TxAmountLabelStyle" TargetType="Label">
