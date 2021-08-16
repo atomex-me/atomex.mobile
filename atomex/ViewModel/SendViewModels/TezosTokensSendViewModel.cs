@@ -115,7 +115,8 @@ namespace atomex.ViewModel.SendViewModels
 
         public string AmountString
         {
-            get => Amount.ToString(CurrencyFormat, CultureInfo.InvariantCulture);
+            //get => Amount.ToString(CurrencyFormat, CultureInfo.InvariantCulture);
+            get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
                 string temp = value.Replace(",", ".");

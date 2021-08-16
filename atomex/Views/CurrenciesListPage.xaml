@@ -14,7 +14,8 @@
                   SeparatorVisibility="Default"
                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand">
+                  VerticalOptions="FillAndExpand"
+                  Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

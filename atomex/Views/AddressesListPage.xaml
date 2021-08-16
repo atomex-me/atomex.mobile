@@ -112,7 +112,7 @@
                                 </Label.Triggers>
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding TokenBalance, StringFormat='+ {0:0.#########}'}"
+                                        <Span Text="{Binding TokenBalance, StringFormat='{0:0.#########}'}"
                                               FontSize="12"
                                               FontFamily="{DynamicResource BoldFont}"/>
                                         <Span Text=" " /> 

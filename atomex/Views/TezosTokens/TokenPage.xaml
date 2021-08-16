@@ -89,26 +89,20 @@
                            Style="{DynamicResource RefreshLabelStyle}"
                            IsVisible="{Binding IsLoading}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
-                        <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
+                        <controls:LeftRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"
-                                                    IsVisible="{Binding IsFa12}"/>
+                                                    Command="{Binding ReceivePageCommand}"/>
+                        <Button Text="{helpers:Translate SendButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Command="{Binding SendPageCommand}"
+                                IsVisible="{Binding IsFa12}"/>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
-                        <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
+                        <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                     Command="{Binding ReceivePageCommand}">
-                            <controls:RightRoundedButton.Triggers>
-                                <DataTrigger TargetType="controls:RightRoundedButton"
-                                             Binding="{Binding IsFa2}"
-                                             Value="True">
-                                    <Setter Property="CornerRadius"
-                                            Value="20"/>
-                                </DataTrigger>
-                            </controls:RightRoundedButton.Triggers>
-                        </controls:RightRoundedButton>
+                                                     Command="{Binding UpdateTokensCommand}"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -445,26 +439,20 @@
                            Style="{DynamicResource RefreshLabelStyle}"
                            IsVisible="{Binding IsLoading}"/>
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
-                        <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
+                        <controls:LeftRoundedButton Text="{helpers:Translate ReceiveButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"
-                                                    IsVisible="{Binding IsFa12}"/>
+                                                    Command="{Binding ReceivePageCommand}"/>
+                        <Button Text="{helpers:Translate SendButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Command="{Binding SendPageCommand}"
+                                IsVisible="{Binding IsFa12}"/>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
-                        <controls:RightRoundedButton Text="{helpers:Translate ReceiveButton}"
+                        <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
                                                      Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                     Command="{Binding ReceivePageCommand}">
-                            <controls:RightRoundedButton.Triggers>
-                                <DataTrigger TargetType="controls:RightRoundedButton"
-                                             Binding="{Binding IsFa2}"
-                                             Value="True">
-                                    <Setter Property="CornerRadius"
-                                            Value="20"/>
-                                </DataTrigger>
-                            </controls:RightRoundedButton.Triggers>
-                        </controls:RightRoundedButton>
+                                                     Command="{Binding UpdateTokensCommand}"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -598,7 +586,7 @@
                             </Label.Triggers>
                         </Label>
                         <Label Grid.Column="2"
-                               Text="{Binding Balance}"
+                               Text="{Binding Balance, StringFormat='{0:0.######}'}"
                                TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="14"

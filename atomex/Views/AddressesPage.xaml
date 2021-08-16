@@ -86,7 +86,7 @@
                             <Label Grid.Column="1"
                                    Grid.Row="1"
                                    FontFamily="{DynamicResource BoldFont}"
-                                   Text="{Binding TokenBalance, StringFormat='+ {0:0.######}', TargetNullValue=''}"
+                                   Text="{Binding TokenBalance, StringFormat='{0:0.######}', TargetNullValue=''}"
                                    HeightRequest="18"
                                    FontSize="12"
                                    TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
