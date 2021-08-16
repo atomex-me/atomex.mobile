@@ -125,12 +125,14 @@
                     <Button Clicked="OnTokensButtonClicked"
                             CornerRadius="0"
                             Text="{helpers:Translate Tokens}"
-                            TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                            TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"
+                            BackgroundColor="Transparent"/>
                     <Button Clicked="OnTransfersButtonClicked"
                             Grid.Column="1"
                             CornerRadius="0"
                             Text="{helpers:Translate Transfers}"
-                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                            BackgroundColor="Transparent"/>
                     <StackLayout Grid.Row="2"
                                  Style="{DynamicResource SeparatorStyle}"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}"/>
@@ -475,12 +477,14 @@
                     <Button Clicked="OnTokensButtonClicked"
                             CornerRadius="0"
                             Text="{helpers:Translate Tokens}"
-                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                            BackgroundColor="Transparent"/>
                     <Button Clicked="OnTransfersButtonClicked"
                             Grid.Column="1"
                             CornerRadius="0"
                             Text="{helpers:Translate Transfers}"
-                            TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                            TextColor="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"
+                            BackgroundColor="Transparent"/>
                     <StackLayout Grid.Row="1"
                                  Style="{DynamicResource SeparatorStyle}"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>

@@ -306,6 +306,12 @@ namespace atomex.ViewModel.SendViewModels
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
+            if (FromAddressList == null)
+            {
+                Warning = $"Insufficient token funds on addresses! Please update your balance!";
+                return;
+            }
+
             if (string.IsNullOrEmpty(To))
             {
                 Warning = AppResources.EmptyAddressError;
@@ -395,6 +401,15 @@ namespace atomex.ViewModel.SendViewModels
                 var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
+
+                if (FromAddressList == null)
+                {
+                    _amount = 0;
+                    OnPropertyChanged(nameof(AmountString));
+
+                    Warning = $"Insufficient token funds on addresses! Please update your balance!";
+                    return;
+                }
 
                 if (TokenContract == null || From == null)
                 {

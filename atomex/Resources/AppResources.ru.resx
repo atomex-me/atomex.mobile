@@ -253,11 +253,14 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Информация об адресе</value>
     </data>
-    <data name="SelectSourceAddress" xml:space="preserve">
+    <data name="SelectAddress" xml:space="preserve">
         <value>Выберите адрес</value>
     </data>
     <data name="Addresses" xml:space="preserve">
         <value>Адреса</value>
+    </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>адреса</value>
     </data>
     <data name="Path" xml:space="preserve">
         <value>Путь</value>

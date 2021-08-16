@@ -44,25 +44,32 @@
                     </Frame.GestureRecognizers>
                 </Frame>   
                 <Label Text="{helpers:Translate AddressLabel}"
-                       Style="{DynamicResource PickerHintStyle}"
-                       IsEnabled="False"/>
+                       Style="{DynamicResource PickerHintStyle}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Grid.Row="1"
                        Grid.RowSpan="2"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        Text="{Binding SelectedAddress.Address}"
-                       Padding="20,5,0,0"
                        FontSize="12"
                        LineBreakMode="MiddleTruncation"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       IsEnabled="False"/>
+                       VerticalTextAlignment="Start">
+                    <Label.Padding>
+                        <OnPlatform x:TypeArguments="Thickness" iOS="20,5,0,0" Android="20,1,0,0"/>
+                    </Label.Padding>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       IsEnabled="False">
+                       VerticalTextAlignment="Start">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding SelectedAddress.ShowTokenBalance}"
@@ -82,6 +89,9 @@
                                   FontFamily="{DynamicResource BoldFont}"/>
                         </FormattedString>
                     </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Label.GestureRecognizers>
                 </Label>
                 <Label Grid.Row="2"
                        Grid.Column="1"
@@ -90,8 +100,7 @@
                        HeightRequest="22"
                        VerticalTextAlignment="Start"
                        HorizontalTextAlignment="End"
-                       IsVisible="False"
-                       IsEnabled="False">
+                       IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding SelectedAddress.ShowTokenBalance}"
@@ -111,14 +120,20 @@
                                   FontFamily="{DynamicResource BoldFont}"/>
                         </FormattedString>
                     </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Label.GestureRecognizers>
                 </Label>
                 <Image Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
                        Grid.RowSpan="3"
                        Grid.Column="2"
                        WidthRequest="10"
                        HeightRequest="10"
-                       Margin="20"
-                       IsEnabled="False"/>
+                       Margin="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowReceiveAddressesCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
             <Frame Padding="0"
                    Margin="0,10"

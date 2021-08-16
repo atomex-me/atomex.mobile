@@ -485,15 +485,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string SelectSourceAddress {
+        internal static string SelectAddress {
             get {
-                return ResourceManager.GetString("SelectSourceAddress", resourceCulture);
+                return ResourceManager.GetString("SelectAddress", resourceCulture);
             }
         }
         
         internal static string Addresses {
             get {
                 return ResourceManager.GetString("Addresses", resourceCulture);
+            }
+        }
+        
+        internal static string CurrencyAddresses {
+            get {
+                return ResourceManager.GetString("CurrencyAddresses", resourceCulture);
             }
         }
         

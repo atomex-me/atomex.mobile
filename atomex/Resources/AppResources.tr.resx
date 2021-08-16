@@ -253,11 +253,14 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Adres bilgisi</value>
     </data>
-    <data name="SelectSourceAddress" xml:space="preserve">
-        <value>Kaynak adresi seçin</value>
+    <data name="SelectAddress" xml:space="preserve">
+        <value>Adres seçin</value>
     </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresler</value>
+    </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>adresler</value>
     </data>
     <data name="Path" xml:space="preserve">
         <value>Yol</value>

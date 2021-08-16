@@ -9,12 +9,37 @@
     Style="{DynamicResource AdditionalBackgroundStyle}">
     <StackLayout VerticalOptions="FillAndExpand"
                  Padding="20">
-        <Label Text="{helpers:Translate SelectSourceAddress}"
+        <Label Text="{helpers:Translate SelectAddress}"
                FontFamily="{DynamicResource BoldFont}"
                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                FontSize="18"
                HorizontalTextAlignment="Center"
-               Padding="0,10"/>
+               Padding="0,10">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding FromAddressList.Count}"
+                             Value="0">
+                    <Setter Property="IsVisible"
+                            Value="False"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <Label Text="Insufficient token funds on addresses! Please, update your balance!"
+               FontFamily="{DynamicResource RegularFont}"
+               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+               FontSize="16"
+               HorizontalTextAlignment="Center"
+               Padding="0,20"
+               IsVisible="False">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding FromAddressList.Count}"
+                             Value="0">
+                    <Setter Property="IsVisible"
+                            Value="True"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
         <ListView ItemsSource="{Binding FromAddressList}"
                   SelectionMode="None"
                   SeparatorVisibility="None"

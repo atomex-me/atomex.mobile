@@ -23,7 +23,7 @@
                     <FormattedString>
                         <Span Text="{Binding Currency.Description}"/>
                         <Span Text=" "/>
-                        <Span Text="{helpers:Translate Addresses}"/>
+                        <Span Text="{helpers:Translate CurrencyAddresses}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

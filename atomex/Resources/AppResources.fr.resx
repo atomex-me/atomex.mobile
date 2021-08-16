@@ -253,11 +253,14 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Adresse info</value>
     </data>
-    <data name="SelectSourceAddress" xml:space="preserve">
-        <value>Sélectionnez l'adresse source</value>
+    <data name="SelectAddress" xml:space="preserve">
+        <value>Sélectionner l'adresse</value>
     </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresses</value>
+    </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>adresses</value>
     </data>
     <data name="Path" xml:space="preserve">
         <value>Chemin d'accès</value>
