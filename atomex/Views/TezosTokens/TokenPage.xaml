@@ -99,9 +99,20 @@
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
-                        <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
-                                                     Style="{DynamicResource TokenActionButtonStyle}"
-                                                     Command="{Binding UpdateTokensCommand}"/>
+                        <RelativeLayout>
+                            <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
+                                                         Style="{DynamicResource TokenActionButtonStyle}"
+                                                         Command="{Binding UpdateTokensCommand}"
+                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                                                         Opacity="{Binding Opacity}"/>
+                            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
+	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                               RelativeLayout.WidthConstraint="20"
+                                               RelativeLayout.HeightConstraint="20"
+                                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                                               BackgroundColor="Transparent"
+                                               IsRunning="{Binding IsLoading}"/>
+                        </RelativeLayout>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -451,9 +462,20 @@
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
                                 IsVisible="{Binding IsConvertable}"/>
-                        <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
-                                                     Style="{DynamicResource TokenActionButtonStyle}"
-                                                     Command="{Binding UpdateTokensCommand}"/>
+                        <RelativeLayout>
+                            <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
+                                                         Style="{DynamicResource TokenActionButtonStyle}"
+                                                         Command="{Binding UpdateTokensCommand}"
+                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
+                                                         Opacity="{Binding Opacity}"/>
+                            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
+	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                               RelativeLayout.WidthConstraint="20"
+                                               RelativeLayout.HeightConstraint="20"
+                                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                                               BackgroundColor="Transparent"
+                                               IsRunning="{Binding IsLoading}"/>
+                        </RelativeLayout>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"

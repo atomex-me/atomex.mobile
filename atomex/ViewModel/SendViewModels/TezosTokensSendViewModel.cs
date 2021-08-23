@@ -237,6 +237,13 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
+        private bool _fromAddressListDisabled = false;
+        public bool FromAddressListDisabled
+        {
+            get => _fromAddressListDisabled;
+            set { _fromAddressListDisabled = value; OnPropertyChanged(nameof(FromAddressListDisabled)); }
+        }
+
         public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
@@ -265,6 +272,8 @@ namespace atomex.ViewModel.SendViewModels
 
             _tokenContract = tokenContract;
             _tokenId = tokenId;
+
+            FromAddressListDisabled = tokenId == 0 ? false : true;
 
             UpdateFromAddressList(from);
             UpdateCurrencyCode();
@@ -623,7 +632,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                var fromAddressViewModel = _fromAddressList.Where(w => w.Address == from).Single();
+                var fromAddressViewModel = _fromAddressList.Where(w => w.Address == from).First();
                 From = fromAddressViewModel;
             }
 

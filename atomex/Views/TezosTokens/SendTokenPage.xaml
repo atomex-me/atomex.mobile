@@ -34,6 +34,16 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid"
+                                     Binding="{Binding FromAddressListDisabled}"
+                                     Value="True">
+                            <Setter Property="Opacity"
+                                    Value="0.7"/>
+                            <Setter Property="IsEnabled"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
                     <controls:CustomFrame  Grid.RowSpan="3"
                                            Grid.ColumnSpan="3"
                                            CornerRadius="20,20,0,0"
