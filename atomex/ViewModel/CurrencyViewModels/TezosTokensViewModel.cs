@@ -266,7 +266,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     Transfers = new ObservableCollection<TezosTokenTransferViewModel>((await tokenAccount
                         .DataRepository
-                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
+                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address, offset: 0, limit: int.MaxValue))
                         .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
                         .ToList()
                         .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
@@ -291,7 +291,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     Transfers = new ObservableCollection<TezosTokenTransferViewModel>((await tezosAccount
                         .DataRepository
-                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address))
+                        .GetTezosTokenTransfersAsync(tokenContract.Contract.Address, offset: 0, limit: int.MaxValue))
                         .Select(t => new TezosTokenTransferViewModel(t, tezosConfig))
                         .ToList()
                         .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
