@@ -195,6 +195,9 @@
                                           Style="{DynamicResource ReceiveActionButtonStyle}"
                                           Command="{Binding CopyCommand}"/>
                 <RelativeLayout>
+                    <RelativeLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShareCommand}"/>
+                    </RelativeLayout.GestureRecognizers>
                     <custom:RightRoundedButton Text="{helpers:Translate ShareButton}"
                                                Style="{DynamicResource ReceiveActionButtonStyle}"
                                                Command="{Binding ShareCommand}"

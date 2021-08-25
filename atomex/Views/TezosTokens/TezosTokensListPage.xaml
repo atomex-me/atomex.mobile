@@ -169,6 +169,9 @@
                     <RelativeLayout HorizontalOptions="Center"
                                     VerticalOptions="StartAndExpand"
                                     Margin="20">
+                        <RelativeLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UpdateTokensCommand}"/>
+                        </RelativeLayout.GestureRecognizers>
                         <Button Text="{helpers:Translate UpdateTokenButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Opacity="{Binding Opacity}"
