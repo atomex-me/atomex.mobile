@@ -23,10 +23,10 @@ namespace atomex.Views
             selectedItemBackgroundColor = (Color)selectedColor;
         }
 
-        public AddressesListPage(TezosTokensSendViewModel receiveViewModel)
+        public AddressesListPage(TezosTokensSendViewModel tezosTokensSendViewModel)
         {
             InitializeComponent();
-            BindingContext = receiveViewModel;
+            BindingContext = tezosTokensSendViewModel;
             string selectedColorName = "ListViewSelectedBackgroundColor";
 
             if (Application.Current.RequestedTheme == OSAppTheme.Dark)

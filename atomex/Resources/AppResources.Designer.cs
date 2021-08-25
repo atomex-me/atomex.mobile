@@ -1025,6 +1025,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string TokenBalance {
+            get {
+                return ResourceManager.GetString("TokenBalance", resourceCulture);
+            }
+        }
+        
         internal static string Transfers {
             get {
                 return ResourceManager.GetString("Transfers", resourceCulture);

@@ -70,10 +70,10 @@
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
                  <StackLayout Style="{DynamicResource InfoRowStyle}"
-                              IsVisible="{Binding SelectedAddress.TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
+                              IsVisible="{Binding SelectedAddress.TokenBalance,Mode=OneWay, Converter={StaticResource StringToBool}}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="Token balance"
+                            <Label Text="{helpers:Translate TokenBalance}"
                                    Style="{DynamicResource InfoRowTitleStyle}"/>
                             <Label Text="{Binding SelectedAddress.TokenBalance}"
                                    Style="{DynamicResource InfoRowTextStyle}"/>

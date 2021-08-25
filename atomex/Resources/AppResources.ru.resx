@@ -546,6 +546,9 @@
     <data name="Tokens" xml:space="preserve">
         <value>Токены</value>
     </data>
+    <data name="TokenBalance" xml:space="preserve">
+        <value>Токен баланс</value>
+    </data>
     <data name="Transfers" xml:space="preserve">
         <value>Трансферы</value>
     </data>

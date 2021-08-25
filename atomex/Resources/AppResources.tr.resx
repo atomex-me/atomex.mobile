@@ -546,6 +546,9 @@
     <data name="Tokens" xml:space="preserve">
         <value>Jetonlar</value>
     </data>
+    <data name="TokenBalance" xml:space="preserve">
+        <value>Jeton bakiyesi</value>
+    </data>
     <data name="Transfers" xml:space="preserve">
         <value>Transferler</value>
     </data>

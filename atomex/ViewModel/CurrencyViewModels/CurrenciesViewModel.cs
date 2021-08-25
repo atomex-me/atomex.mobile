@@ -55,7 +55,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 var currency = CurrencyViewModelCreator.CreateViewModel(AtomexApp, c);
 
-                if (currency.CurrencyCode == "XTZ")
+                if (currency.CurrencyCode == TezosConfig.Xtz)
                     TezosTokensViewModel.TezosViewModel = currency;
 
                 CurrencyViewModels.Add(currency);
@@ -75,7 +75,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (currency == null)
                 return;
 
-            if (currency.CurrencyCode == "XTZ")
+            if (currency.CurrencyCode == TezosConfig.Xtz)
             {
                 await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
                 return;
