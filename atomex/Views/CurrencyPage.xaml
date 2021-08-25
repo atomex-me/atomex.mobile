@@ -358,7 +358,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='+{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -377,7 +377,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -396,7 +396,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -415,7 +415,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='+{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -434,7 +434,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='+{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -453,7 +453,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -472,7 +472,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -491,7 +491,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>

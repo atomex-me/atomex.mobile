@@ -324,7 +324,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='+{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='+{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -343,7 +343,7 @@
                                     <Setter Property="FormattedText">
                                         <Setter.Value>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, StringFormat='{0:0.#####}'}"
+                                                <Span Text="{Binding Amount, StringFormat='{0:0.######}'}"
                                                       FontFamily="{DynamicResource RegularFont}"
                                                       FontSize="14"/>
                                                 <Span Text=" "/>
@@ -574,15 +574,16 @@
                                                   CommandParameter="{Binding .}"/>
                         </Grid.GestureRecognizers>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="60" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="80" />
                         </Grid.ColumnDefinitions>
-                        <Frame Padding="0"
+                        <Frame Grid.RowSpan="2"
+                               Padding="0"
                                CornerRadius="20"
                                HasShadow="False"
                                VerticalOptions="CenterAndExpand"
@@ -599,12 +600,24 @@
                                FontSize="14"
                                Margin="0,0,10,0"
                                LineBreakMode="TailTruncation"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Start"/>
-                        <Label Grid.Column="2"
+                               VerticalTextAlignment="End"
+                               HorizontalTextAlignment="Start">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Balance}"
+                                             Value="1">
+                                    <Setter Property="Grid.RowSpan"
+                                            Value="2"/>
+                                    <Setter Property="VerticalTextAlignment"
+                                            Value="Center"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
                                TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                Margin="0,0,10,0"
-                               VerticalTextAlignment="Center"
+                               VerticalTextAlignment="Start"
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
@@ -616,7 +629,7 @@
                             </Label.Triggers>
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding Balance, StringFormat='{0:0.#####}'}"
+                                    <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"
                                           FontFamily="{DynamicResource RegularFont}"
                                           FontSize="14"/>
                                     <Span Text=" "/>
@@ -626,7 +639,8 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Button Grid.Column="3"
+                        <Button Grid.Column="2"
+                                Grid.RowSpan="2"
                                 Text="{helpers:Translate SendButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 CornerRadius="15"

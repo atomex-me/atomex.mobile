@@ -308,7 +308,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                         TezosConfig = tezosConfig,
                         TokenBalance = a.TokenBalance,
                         Address = a.Address
-                    }));
+                    })
+                    .OrderBy(a => a.TokenBalance.TokenId));
             }
 
             OnPropertyChanged(nameof(Tokens));

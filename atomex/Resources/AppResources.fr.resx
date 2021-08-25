@@ -191,11 +191,7 @@
         <value>Étape 5: Mot de passe de connexion</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe doit comporter au moins 8 caractères et contenir au moins:
-    - 1 caractère minuscule,
-    - 1 caractère majuscule, 
-    - 1 chiffre,
-    1 caractère spécial dans (! @ # $% ^ *).</value>
+        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe ne doit pas être vide</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Créer</value>

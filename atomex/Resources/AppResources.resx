@@ -191,11 +191,7 @@
         <value>Step 5: Storage password</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>This password is used to protect the stored secret keys and will be needed every time you start your wallet application. Password must be at least 8 characters long and contains at least:
-    - 1 lowercase character, 
-    - 1 uppercase character, 
-    - 1 number,
-    - 1 special character in (!@#$%^*).</value>
+        <value>This password is used to protect the stored secret keys and will be needed every time you start your wallet application. Password must not be empty</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Create</value>

@@ -191,11 +191,7 @@
         <value>Adım 5: Oturum Açma Parolası</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Bu şifre, cihazdaki gizli anahtarları korumak için kullanılır ve M-cüzdan uygulamasını her başlattığınızda kullanılır. Parola en az 8 karakter uzunluğunda olmalı ve en az şunları içermelidir:
-    - 1 küçük harf karakteri,
-    - 1 büyük harf,
-    - 1 hane,
-    - (! @ # $% ^ *) İçinde 1 özel karakter.</value>
+        <value>Bu şifre, cihazdaki gizli anahtarları korumak için kullanılır ve M-cüzdan uygulamasını her başlattığınızda kullanılır. Şifre boş olmamalıdır</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Oluşturmak</value>
