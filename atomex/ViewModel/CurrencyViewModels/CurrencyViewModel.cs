@@ -303,27 +303,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public async Task UpdateCurrencyAsync()
-        {
-            Cancellation = new CancellationTokenSource();
-
-            try
-            {
-                var scanner = new HdWalletScanner(AtomexApp.Account);
-
-                await scanner.ScanAsync(
-                    currency: Currency.Name,
-                    skipUsed: true,
-                    cancellationToken: Cancellation.Token);
-
-                await UpdateTransactionsAsync();
-            }
-            catch(Exception e)
-            {
-                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
-            }
-        }
-
         public async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
             if (AtomexApp.Account == null)
@@ -389,20 +368,32 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
         private ICommand _updateCurrencyCommand;
-        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrency());
+        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrencyAsync());
 
-        private async Task UpdateCurrency()
+        public async Task UpdateCurrencyAsync()
         {
+            Cancellation = new CancellationTokenSource();
+
             try
             {
                 IsLoading = true;
-                await UpdateCurrencyAsync();
+
+                var scanner = new HdWalletScanner(AtomexApp.Account);
+
+                await scanner.ScanAsync(
+                    currency: Currency.Name,
+                    skipUsed: true,
+                    cancellationToken: Cancellation.Token);
+
+                await UpdateTransactionsAsync();
+
                 IsLoading = false;
+
                 ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception e)
             {
-                Log.Error(e, "UpdateCurrencyAsync error");
+                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
             }
         }
 
