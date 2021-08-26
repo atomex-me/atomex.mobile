@@ -53,7 +53,7 @@
                        Grid.RowSpan="2"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       Text="{Binding SelectedAddress.Address}"
+                       Text="{Binding SelectedAddress.Address, StringFormat='{0} -'}"
                        FontSize="12"
                        LineBreakMode="MiddleTruncation"
                        HorizontalTextAlignment="Start"
@@ -80,7 +80,7 @@
                     </Label.Triggers>
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='- {0:0.#########}'}"
+                            <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"
                                   FontSize="12"
                                   FontFamily="{DynamicResource BoldFont}"/>
                             <Span Text=" "/>
@@ -99,7 +99,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                        HeightRequest="22"
                        VerticalTextAlignment="Start"
-                       HorizontalTextAlignment="End"
+                       HorizontalTextAlignment="Start"
                        IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
