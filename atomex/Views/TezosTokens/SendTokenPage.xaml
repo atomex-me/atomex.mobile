@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    x:Class="atomex.Views.TezosTokens.SendTokenPage"
+    Title="{helpers:Translate SendPageTitle}"
+    Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Padding="20"
+                         Spacing="0">
+                <Grid VerticalOptions="Fill"
+                      HorizontalOptions="Fill"
+                      RowSpacing="0"
+                      ColumnSpacing="0"
+                      HeightRequest="60">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <controls:CustomFrame  Grid.RowSpan="3"
+                                           Grid.ColumnSpan="3"
+                                           CornerRadius="20,20,0,0"
+                                           Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Frame.GestureRecognizers>
+                    </controls:CustomFrame>   
+                    <Label Text="{helpers:Translate AddressLabel}"
+                           Style="{DynamicResource PickerHintStyle}">
+                         <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.RowSpan="2"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           Text="{Binding From.Address}"
+                           FontSize="12"
+                           LineBreakMode="MiddleTruncation"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start">
+                        <Label.Padding>
+                            <OnPlatform x:TypeArguments="Thickness" iOS="20,5,0,0" Android="20,1,0,0"/>
+                        </Label.Padding>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding From.ShowTokenBalance}"
+                                         Value="True">
+                                <Setter Property="Grid.RowSpan"
+                                        Value="2"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding From.AvailableBalance, StringFormat='- {0:0.######}'}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding From.CurrencyCode}"
+                                      FontSize="10"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding From.TokenBalance}"
+                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                           HeightRequest="22"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="End"
+                           IsVisible="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding From.ShowTokenBalance}"
+                                         Value="True">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding From.TokenBalance, StringFormat='{0:0.######}'}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                                <Span Text=" " /> 
+                                <Span Text="{Binding From.TokenCode}"
+                                      FontSize="10"
+                                      FontFamily="{DynamicResource BoldFont}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Image Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
+                           Grid.RowSpan="3"
+                           Grid.Column="2"
+                           WidthRequest="10"
+                           HeightRequest="10"
+                           Margin="20">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
+                <controls:CustomFrame CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}"
+                                      Opacity="0.7">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTokenContractEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="FillAndExpand"
+                                 Spacing="0">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <controls:CustomEntry x:Name="TokenContract"
+                                                      Placeholder="{helpers:Translate TokenContract}"
+                                                      Text="{Binding TokenContract.Contract.Address}"
+                                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                      Keyboard="Text"
+                                                      TextChanged="OnTokenContractTextChanged"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      IsReadOnly="True"
+                                                      Padding="20,0,0,0"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="TokenContractHint"
+                                       Text="{helpers:Translate TokenContract}"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            </RelativeLayout>
+                        </StackLayout>                        
+                    </StackLayout>
+                </controls:CustomFrame>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
+                <controls:CustomFrame CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}"
+                                      IsVisible="{Binding TokenContract.IsFa2}"
+                                      Opacity="0.7">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTokenIdEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="FillAndExpand"
+                                 Spacing="0">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <controls:CustomEntry x:Name="TokenId"
+                                                      Placeholder="{helpers:Translate TokenId}"
+                                                      Text="{Binding TokenId}"
+                                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                      Keyboard="Numeric"
+                                                      TextChanged="OnTokenIdTextChanged"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      IsReadOnly="True"
+                                                      Padding="20,0,0,0"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="TokenIdHint"
+                                       Text="{helpers:Translate TokenId}"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            </RelativeLayout>
+                        </StackLayout>                        
+                    </StackLayout>
+                </controls:CustomFrame>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
+                <controls:CustomFrame CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAddressEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="FillAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 Spacing="0">
+                        <StackLayout HorizontalOptions="FillAndExpand"
+                                     HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <controls:CustomEntry x:Name="Address"  
+                                                      Text="{Binding To}"
+                                                      Placeholder="{helpers:Translate AddressEntryPlaceholder}"
+                                                      Keyboard="Text"
+                                                      Focused="AddressEntryFocused"
+                                                      Unfocused="AddressEntryFocused"
+                                                      TextChanged="OnAddressTextChanged"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Padding="20,0,0,0"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="AddressLabel"
+                                       Text="{Binding To}"
+                                       LineBreakMode="MiddleTruncation"
+                                       FontSize="14"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Start"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"
+                                       Padding="20,20,0,0"
+                                       IsVisible="False"/>
+                                <Label x:Name="AddressHint"
+                                       Text="{helpers:Translate AddressEntryPlaceholder}"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                            </RelativeLayout>
+                        </StackLayout>
+                        <Button Text="{helpers:Translate PasteButton}"
+                                Clicked="OnPasteButtonClicked"
+                                Command="{Binding PasteCommand}"
+                                Style="{DynamicResource TransparentButtonStyle}"
+                                HorizontalOptions="End"/>
+                        <ImageButton Source="Scan"
+                                     WidthRequest="32"
+                                     HeightRequest="32"
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="Fill"
+                                     Margin="0,10,20,10"
+                                     BackgroundColor="Transparent"
+                                     Command="{Binding ScanCommand}"/>
+                    </StackLayout>
+                </controls:CustomFrame>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
+                <controls:CustomFrame CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}">
+                    <controls:CustomFrame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAmountEntryTapped"/>
+                    </controls:CustomFrame.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="FillAndExpand"
+                                 Spacing="0">
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                <controls:CustomEntry x:Name="Amount"
+                                                      Placeholder="{Binding AmountEntryPlaceholderString}"
+                                                      Text="{Binding AmountString}"
+                                                      Keyboard="Numeric"
+                                                      TextChanged="OnAmountTextChanged"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Padding="20,0,0,0"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label x:Name="AmountHint"
+                                       Text="{Binding AmountEntryPlaceholderString}"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                <Label VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding AmountInBase, StringFormat='({0:0.##} $)'}"
+                                       FontFamily="{DynamicResource LightFont}"
+                                       FontSize="11"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.3}"
+                                       RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </Label>
+                            </RelativeLayout>
+                        </StackLayout>
+                        <Button Text="{helpers:Translate MaxButton}"
+                                HorizontalOptions="End"
+                                VerticalOptions="FillAndExpand"
+                                Style="{DynamicResource TransparentButtonStyle}"
+                                Clicked="OnSetMaxAmountButtonClicked"
+                                Command="{Binding MaxAmountCommand}"/>
+                    </StackLayout>
+                </controls:CustomFrame>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0,0,0"/>
+                <StackLayout Orientation="Horizontal"
+                             HeightRequest="60"
+                             Spacing="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFeeEntryTapped"/>
+                    </StackLayout.GestureRecognizers>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding UseDefaultFee}"
+                                     Value="True">
+                            <Setter Property="Opacity"
+                                    Value="0.7"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding UseDefaultFee}"
+                                     Value="False">
+                            <Setter Property="Opacity"
+                                    Value="1"/>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                    <controls:CustomFrame HasShadow="False"
+                                          CornerRadius="0,0,20,20"
+                                          Style="{DynamicResource EntryFrameStyle}">
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                                    <Label x:Name="FeeHint"
+                                           Text="{Binding FeeEntryPlaceholderString}"
+                                           Style="{DynamicResource EntryHintStyle}"
+                                           VerticalTextAlignment="Center"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                    <controls:CustomEntry Style="{DynamicResource CustomEntryStyle}"
+                                                          x:Name="Fee"
+                                                          Text="{Binding FeeString}"
+                                                          Keyboard="Numeric"
+                                                          Placeholder="{Binding FeeEntryPlaceholderString}"
+                                                          TextChanged="OnFeeTextChanged"
+                                                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                        <controls:CustomEntry.Triggers>
+                                            <DataTrigger TargetType="controls:CustomEntry"
+                                                         Binding="{Binding UseDefaultFee}"
+                                                         Value="True">
+                                                <Setter Property="IsReadOnly"
+                                                        Value="True"/>
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="controls:CustomEntry"
+                                                         Binding="{Binding UseDefaultFee}"
+                                                         Value="False">
+                                                <Setter Property="IsReadOnly"
+                                                        Value="False"/>
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                            </DataTrigger>
+                                        </controls:CustomEntry.Triggers>
+                                    </controls:CustomEntry>
+                                    <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           FontFamily="{DynamicResource LightFont}"
+                                           FontSize="11"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="End"
+                                           Padding="0,0,20,0"
+                                           IsEnabled="False"
+                                           RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
+                                           RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                </RelativeLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </controls:CustomFrame>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Padding="20">
+                    <Label Text="{helpers:Translate UseDefaultFeeLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="14"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+                    <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                            IsToggled="{Binding UseDefaultFee}"
+                            HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                <Frame Style="{DynamicResource ErrorFrameStyle}">
+                    <Frame.Triggers>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding Warning}"
+                                     Value="">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <Label Text="{Binding Warning}"
+                           Style="{DynamicResource ErrorTextStyle}"
+                           HorizontalTextAlignment="Center"/>
+                </Frame>
+                <Button Text="{helpers:Translate NextButton}"
+                        VerticalOptions="EndAndExpand"
+                        Style="{DynamicResource MainButtonStyle}"
+                        Command="{Binding NextCommand}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

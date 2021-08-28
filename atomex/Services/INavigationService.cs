@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using atomex.ViewModel;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex
 {
@@ -7,5 +7,6 @@ namespace atomex
     {
         Task ConvertCurrency(string currencyCode);
         Task ShowCurrency(CurrencyViewModel currencyViewModel);
+        Task ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel);
     }
 }

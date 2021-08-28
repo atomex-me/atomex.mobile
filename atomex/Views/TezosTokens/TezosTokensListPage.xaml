@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
+             x:Name="BindingContextPage"
+             Title="{helpers:Translate TezosTokensListPageTitle}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding TokensContracts}"
+                  SelectionMode="None"
+                  CachingStrategy="RetainElement"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="Default"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding UpdateTokensCommand}"
+                  IsRefreshing="{Binding IsLoading}"
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                  VerticalOptions="FillAndExpand">
+            <ListView.Header>
+                <Grid ColumnSpacing="0"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="4*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"
+                                              Tapped="OnItemTapped"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.RowSpan="2"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           Margin="10,0"
+                           VerticalOptions="CenterAndExpand"
+                           Source="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"/>
+                    <Label Grid.Column="1"
+                           Text="{Binding BindingContext.TezosViewModel.Currency.Description, Source={x:Reference BindingContextPage}}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="14"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start"/>
+                    <Label Grid.Column="2"
+                           Text="{Binding BindingContext.TezosViewModel.TotalAmount, Source={x:Reference BindingContextPage}}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           Margin="10,0"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="End">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding BindingContext.TezosViewModel.TotalAmount, StringFormat='{0:0.#####}', Source={x:Reference BindingContextPage}}"
+                                      FontSize="14"/>
+                                <Span Text=" " /> 
+                                <Span Text="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"
+                                      FontSize="12"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding BindingContext.TezosViewModel.Price, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="10"
+                           Margin="0,3"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"/>
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Text="{Binding BindingContext.TezosViewModel.AvailableAmountInBase, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           FontFamily="{DynamicResource LightFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           FontSize="10"
+                           Margin="10,3"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="End" />
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Grid.Row="2"
+                                 Grid.ColumnSpan="3"
+                                 Margin="20,0,0,0"/>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid ColumnSpacing="0"
+                              RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="8*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.SelectTokenContractCommand, Source={x:Reference BindingContextPage}}"
+                                                      Tapped="OnItemTapped"
+                                                      CommandParameter="{Binding .}"/>
+                            </Grid.GestureRecognizers>
+                            <Frame Grid.RowSpan="2"
+                                   Padding="0"
+                                   Margin="10,0"
+                                   CornerRadius="20"
+                                   HasShadow="False"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
+                                   IsClippedToBounds="True">
+                                <Image Source="{Binding IconUrl}"
+                                       WidthRequest="40"
+                                       HeightRequest="40"/>
+                            </Frame>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="End"
+                                   HorizontalTextAlignment="Start"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding Contract.Address}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   FontFamily="{DynamicResource LightFont}"
+                                   FontSize="10"
+                                   Margin="0,3"
+                                   VerticalTextAlignment="Start"
+                                   HorizontalTextAlignment="Start"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                             VerticalOptions="FillAndExpand">
+                    <StackLayout HeightRequest="300"
+                                 VerticalOptions="FillAndExpand"
+                                 IsVisible="False">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TokensContracts.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Image Source="Magnifier"
+                               WidthRequest="45"
+                               HeightRequest="45"
+                               Margin="20,40,20,10"
+                               VerticalOptions="EndAndExpand"/>
+                        <Label Text="{helpers:Translate NoTokensLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                               FontSize="18"
+                               VerticalOptions="Start"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Start"/>
+                    </StackLayout>
+                    <RelativeLayout HorizontalOptions="Center"
+                                    VerticalOptions="StartAndExpand"
+                                    Margin="20">
+                        <RelativeLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UpdateTokensCommand}"/>
+                        </RelativeLayout.GestureRecognizers>
+                        <Button Text="{helpers:Translate UpdateTokenButton}"
+                                Style="{DynamicResource CurrencyActionButtonStyle}"
+                                Opacity="{Binding Opacity}"
+                                CornerRadius="20"
+                                RelativeLayout.WidthConstraint="120"
+                                RelativeLayout.HeightConstraint="40"
+                                Command="{Binding UpdateTokensCommand}"/>
+                        <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
+                                           RelativeLayout.WidthConstraint="20"
+                                           RelativeLayout.HeightConstraint="20"
+                                           BackgroundColor="Transparent"
+                                           IsVisible="{Binding IsLoading}"
+                                           IsRunning="{Binding IsLoading}"
+                                           Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"/>
+                    </RelativeLayout>
+                </StackLayout>
+            </ListView.Footer>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

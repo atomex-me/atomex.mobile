@@ -1,5 +1,5 @@
 ﻿using Xamarin.Forms;
-using atomex.ViewModel;
+using atomex.ViewModel.CurrencyViewModels;
 using System;
 using System.Threading.Tasks;
 

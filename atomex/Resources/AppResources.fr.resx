@@ -191,11 +191,7 @@
         <value>Étape 5: Mot de passe de connexion</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe doit comporter au moins 8 caractères et contenir au moins:
-    - 1 caractère minuscule,
-    - 1 caractère majuscule, 
-    - 1 chiffre,
-    1 caractère spécial dans (! @ # $% ^ *).</value>
+        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe ne doit pas être vide</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Créer</value>
@@ -253,11 +249,20 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Adresse info</value>
     </data>
+    <data name="SelectAddress" xml:space="preserve">
+        <value>Sélectionner l'adresse</value>
+    </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresses</value>
     </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>adresses</value>
+    </data>
     <data name="Path" xml:space="preserve">
         <value>Chemin d'accès</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
     </data>
     <data name="Key" xml:space="preserve">
         <value>Clé</value>
@@ -518,7 +523,48 @@
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Créer un nouveau swap</value>
     </data>
-    
+
+    <!-- Tezos tokens list, token info Pages -->
+    <data name="TezosTokensListPageTitle" xml:space="preserve">
+        <value>Jetons Tezos</value>
+    </data>
+    <data name="TokenInfoPageTitle" xml:space="preserve">
+        <value>Informations sur le jeton</value>
+    </data>
+    <data name="NoTokensLabel" xml:space="preserve">
+        <value>Pas de jetons pour le moment</value>
+    </data>
+    <data name="NoTransfersLabel" xml:space="preserve">
+        <value>Aucun transfert pour le moment</value>
+    </data>
+    <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
+        <value>Mise à jour du solde......</value>
+    </data>
+    <data name="UpdateTokenButton" xml:space="preserve">
+        <value>Rafraîchir</value>
+    </data>
+    <data name="Tokens" xml:space="preserve">
+        <value>Jetons</value>
+    </data>
+    <data name="TokenBalance" xml:space="preserve">
+        <value>Solde de jetons</value>
+    </data>
+    <data name="Transfers" xml:space="preserve">
+        <value>Transferts</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="TokenId" xml:space="preserve">
+        <value>ID de jeton</value>
+    </data>
+    <data name="TokenContract" xml:space="preserve">
+        <value>Contrat de jeton</value>
+    </data>
+    <data name="ShowInIpfsButton" xml:space="preserve">
+        <value>Afficher en ipfs</value>
+    </data>
+
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
         <value>Paramètres</value>

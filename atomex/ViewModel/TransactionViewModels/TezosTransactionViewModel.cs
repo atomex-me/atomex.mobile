@@ -8,35 +8,34 @@ namespace atomex.ViewModel.TransactionViewModels
     {
         public decimal GasLimit { get; set; }
         public bool IsInternal { get; set; }
-        public string FromExplorerUri => $"{Currency.AddressExplorerUri}{From}";
-        public string ToExplorerUri => $"{Currency.AddressExplorerUri}{To}";
         public string Alias { get; set; }
 
-        public TezosTransactionViewModel(TezosTransaction tx)
-            : base(tx, GetAmount(tx), GetFee(tx))
+
+        public TezosTransactionViewModel(TezosTransaction tx, TezosConfig tezosConfig)
+            : base(tx, tezosConfig, GetAmount(tx, tezosConfig), GetFee(tx))
         {
             From = tx.From;
             To = tx.To;
             GasLimit = tx.GasLimit;
-            Fee = Tezos.MtzToTz(tx.Fee);
+            Fee = TezosConfig.MtzToTz(tx.Fee);
             IsInternal = tx.IsInternal;
             Alias = tx.Alias;
         }
 
-        private static decimal GetAmount(TezosTransaction tx)
+        private static decimal GetAmount(TezosTransaction tx, TezosConfig tezosConfig)
         {
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Input))
-                result += tx.Amount / tx.Currency.DigitsMultiplier;
+                result += tx.Amount / tezosConfig.DigitsMultiplier;
 
-            var includeFee = tx.Currency.Name == tx.Currency.FeeCurrencyName;
+            var includeFee = tezosConfig.Name == tezosConfig.FeeCurrencyName;
             var fee = includeFee ? tx.Fee : 0;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += -(tx.Amount + fee) / tx.Currency.DigitsMultiplier;
+                result += -(tx.Amount + fee) / tezosConfig.DigitsMultiplier;
 
-            tx.InternalTxs?.ForEach(t => result += GetAmount(t));
+            tx.InternalTxs?.ForEach(t => result += GetAmount(t, tezosConfig));
 
             return result;
         }
@@ -46,7 +45,7 @@ namespace atomex.ViewModel.TransactionViewModels
             var result = 0m;
 
             if (tx.Type.HasFlag(BlockchainTransactionType.Output))
-                result += Tezos.MtzToTz(tx.Fee);
+                result += TezosConfig.MtzToTz(tx.Fee);
 
             tx.InternalTxs?.ForEach(t => result += GetFee(t));
 

@@ -36,7 +36,7 @@
                 <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate FromLabel}"
                            Style="{DynamicResource InfoRowTitleStyle}"/>
-                    <Label Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                    <Label Text="{Binding WalletAddressViewModel.Address}"
                            Style="{DynamicResource InfoRowTextStyle}"
                            LineBreakMode="MiddleTruncation"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>

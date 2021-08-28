@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Abstract;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.CurrencyViewModels
 {
     public class CurrenciesViewModel : BaseViewModel
     {
@@ -25,9 +26,12 @@ namespace atomex.ViewModel
 
         public List<CurrencyViewModel> CurrencyViewModels { get; set; }
 
-        public CurrenciesViewModel(IAtomexApp app, bool restore)
+        public TezosTokensViewModel TezosTokensViewModel { get; set; }
+
+        public CurrenciesViewModel(IAtomexApp app, bool restore = false)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            TezosTokensViewModel = new TezosTokensViewModel(app, restore);
             CurrencyViewModels = new List<CurrencyViewModel>();
             _ = FillCurrenciesAsync(restore);
         }
@@ -40,30 +44,26 @@ namespace atomex.ViewModel
                 c.Navigation = navigation;
                 c.NavigationService = navigationService;
             }
+
+            TezosTokensViewModel.Navigation = navigation;
+            TezosTokensViewModel.NavigationService = navigationService;
         }
 
         private async Task FillCurrenciesAsync(bool restore)
         {
-            await Task.WhenAll(Currencies.Select(async c =>
+            await Task.WhenAll(Currencies.Select(c =>
             {
-                var balance = await AtomexApp.Account.GetBalanceAsync(c.Name);
+                var currency = CurrencyViewModelCreator.CreateViewModel(AtomexApp, c);
 
-                CurrencyViewModel currency = new CurrencyViewModel(AtomexApp)
-                {
-                    Currency = c,
-                    TotalAmount = balance.Confirmed,
-                    AvailableAmount = balance.Available,
-                    UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome,
-                };
+                if (currency.CurrencyCode == TezosConfig.Xtz)
+                    TezosTokensViewModel.TezosViewModel = currency;
+
                 CurrencyViewModels.Add(currency);
 
                 if (restore)
                     _ = currency.UpdateCurrencyAsync();
-                else
-                {
-                    _ = currency.UpdateBalanceAsync();
-                    _ = currency.UpdateTransactionsAsync();
-                }
+
+                return Task.CompletedTask;
             }));
         }
 
@@ -72,8 +72,24 @@ namespace atomex.ViewModel
 
         private async Task OnCurrencyTapped(CurrencyViewModel currency)
         {
-            if (currency != null)
-                await Navigation.PushAsync(new CurrencyPage(currency));
+            if (currency == null)
+                return;
+
+            if (currency.CurrencyCode == TezosConfig.Xtz)
+            {
+                await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
+                return;
+            }
+            
+            await Navigation.PushAsync(new CurrencyPage(currency));
+        }
+
+        private ICommand _showTezosTokensCommand;
+        public ICommand ShowTezosTokensCommand => _showTezosTokensCommand ??= new Command<CurrencyViewModel>(async (value) => await ShowTezosTokens());
+
+        private async Task ShowTezosTokens()
+        {
+            await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
         }
     }
 }

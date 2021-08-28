@@ -191,11 +191,7 @@
         <value>Шаг 5: Пароль для входа</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Этот пароль используется для защиты секретных ключей на устройстве и используется каждый раз, когда вы запускаете приложение кошелька. Пароль должен быть длиной не менее 8 символов и содержать не менее:
-    - 1 строчный символ, 
-    - 1 заглавный символ, 
-    - 1 цифру,
-    - 1 специальный символ в (!@#$%^*).</value>
+        <value>Этот пароль используется для защиты секретных ключей на устройстве и используется каждый раз, когда вы запускаете приложение кошелька. Пароль не должен быть пустым</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Создать</value>
@@ -253,11 +249,20 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Информация об адресе</value>
     </data>
+    <data name="SelectAddress" xml:space="preserve">
+        <value>Выберите адрес</value>
+    </data>
     <data name="Addresses" xml:space="preserve">
         <value>Адреса</value>
     </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>адреса</value>
+    </data>
     <data name="Path" xml:space="preserve">
         <value>Путь</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Тип</value>
     </data>
     <data name="Key" xml:space="preserve">
         <value>Ключ</value>
@@ -517,6 +522,47 @@
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Создать новый своп</value>
+    </data>
+
+    <!-- Tezos tokens list, token info Pages -->
+    <data name="TezosTokensListPageTitle" xml:space="preserve">
+        <value>Tezos токены</value>
+    </data>
+    <data name="TokenInfoPageTitle" xml:space="preserve">
+        <value>Информация о токене</value>
+    </data>
+    <data name="NoTokensLabel" xml:space="preserve">
+        <value>Токенов пока нет</value>
+    </data>
+    <data name="NoTransfersLabel" xml:space="preserve">
+        <value>Трансферов пока нет</value>
+    </data>
+    <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
+        <value>Обновление баланса токенов...</value>
+    </data>
+    <data name="UpdateTokenButton" xml:space="preserve">
+        <value>Обновить токены</value>
+    </data>
+    <data name="Tokens" xml:space="preserve">
+        <value>Токены</value>
+    </data>
+    <data name="TokenBalance" xml:space="preserve">
+        <value>Токен баланс</value>
+    </data>
+    <data name="Transfers" xml:space="preserve">
+        <value>Трансферы</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Название</value>
+    </data>
+    <data name="TokenId" xml:space="preserve">
+        <value>ID токена</value>
+    </data>
+    <data name="TokenContract" xml:space="preserve">
+        <value>Контракт токена</value>
+    </data>
+    <data name="ShowInIpfsButton" xml:space="preserve">
+        <value>Показать в ipfs</value>
     </data>
     
     <!-- Settings Page -->

@@ -4,10 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Core;
+using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
@@ -22,11 +24,14 @@ namespace atomex.ViewModel.SendViewModels
             set { _feeRate = value; OnPropertyChanged(nameof(FeeRate)); }
         }
 
-        private BitcoinBasedCurrency BtcBased => Currency as BitcoinBasedCurrency;
+        private BitcoinBasedConfig BtcBased => Currency as BitcoinBasedConfig;
+
+        public bool IsBtcBased => Currency is BitcoinBasedConfig;
 
         public BitcoinBasedSendViewModel(
+            IAtomexApp app,
             CurrencyViewModel currencyViewModel)
-            : base(currencyViewModel)
+            : base(app, currencyViewModel)
         {
         }
 
@@ -46,8 +51,13 @@ namespace atomex.ViewModel.SendViewModels
             {
                 if (UseDefaultFee)
                 {
-                    var (maxAmount, _, _) = await AtomexApp.Account
-                        .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output);
+                    var account = AtomexApp.Account
+                        .GetCurrencyAccount<ILegacyCurrencyAccount>(Currency.Name);
+
+                    var (maxAmount, _, _) = await account
+                        .EstimateMaxAmountToSendAsync(
+                            to: To,
+                            type: BlockchainTransactionType.Output);
 
                     if (_amount > maxAmount)
                     {
@@ -56,7 +66,7 @@ namespace atomex.ViewModel.SendViewModels
                     }
 
                     var estimatedFeeAmount = _amount != 0
-                        ? await AtomexApp.Account.EstimateFeeAsync(Currency.Name, To, _amount, BlockchainTransactionType.Output)
+                        ? await account.EstimateFeeAsync(To, _amount, BlockchainTransactionType.Output)
                         : 0;
 
                     if (raiseOnPropertyChanged)
@@ -85,7 +95,10 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch { }
+            catch(Exception e)
+            {
+                Log.Error(e, "BitcoinBased update amount error");
+            }
         }
 
         public override async Task UpdateFee(decimal fee)
@@ -136,7 +149,10 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch { }
+            catch (Exception e)
+            {
+                Log.Error(e, "BitcoinBased update fee error");
+            }
         }
 
         private ICommand _maxAmountCommand;
@@ -153,8 +169,11 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (UseDefaultFee)
                 {
-                    var (maxAmount, maxFeeAmount, _) = await AtomexApp.Account
-                        .EstimateMaxAmountToSendAsync(Currency.Name, To, BlockchainTransactionType.Output);
+                    var account = AtomexApp.Account
+                        .GetCurrencyAccount<ILegacyCurrencyAccount>(Currency.Name);
+
+                    var (maxAmount, maxFeeAmount, _) = await account
+                        .EstimateMaxAmountToSendAsync(To, BlockchainTransactionType.Output);
 
                     if (maxAmount > 0)
                         _amount = maxAmount;
@@ -202,7 +221,10 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch { }
+            catch (Exception e)
+            {
+                Log.Error(e, "BitcoinBased max click error");
+            }
         }
 
         private async Task<int?> EstimateTxSizeAsync(

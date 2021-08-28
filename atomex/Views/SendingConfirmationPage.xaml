@@ -42,7 +42,7 @@
                                 <Span Text="{Binding Amount, StringFormat='- {0:0.#########}'}"
                                       Style="{DynamicResource TxAmountLabelStyle}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding Currency.Name}"
+                                <Span Text="{Binding CurrencyCode}"
                                       Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -58,6 +58,8 @@
                            Style="{DynamicResource InfoRowTitleStyle}"/>
                     <Label Text="{Binding To}"
                            Style="{DynamicResource InfoRowTextStyle}"
+                           FontSize="12"
+                           FontFamily="{DynamicResource RegularFont}"
                            LineBreakMode="MiddleTruncation"/>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 </StackLayout>
@@ -68,9 +70,13 @@
                            Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
+                                      FontSize="14"
+                                      FontFamily="{DynamicResource RegularFont}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding Currency.Name}"/>
+                                <Span Text="{Binding CurrencyCode}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource RegularFont}"/>
                                 <Span Text="{Binding AmountInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
@@ -89,9 +95,12 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Fee}"
-                                      />
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="14"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
+                                <Span Text="{Binding FeeCurrencyCode}"
+                                      FontFamily="{DynamicResource RegularFont}"
+                                      FontSize="12"/>
                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                       FontFamily="{DynamicResource RegularFont}"
@@ -109,14 +118,16 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding TotalFeeString}"
-                                      />
+                                      FontSize="14"
+                                      FontFamily="{DynamicResource RegularFont}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
-                                      />
+                                <Span Text="{Binding FeeCurrencyCode}"
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource RegularFont}"/>
                                 <Span Text="{Binding FeeInBase, StringFormat=' ({0:0.##} $)'}"
                                       TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="12"/>
+                                      FontSize="12"
+                                      FontFamily="{DynamicResource RegularFont}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

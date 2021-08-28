@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -113,8 +113,10 @@ namespace atomex.ViewModel
         {
             if (currency == "ETH" || currency == "XTZ")
             {
-                var activeTokenAddresses = AtomexApp.Account
-                    .GetUnspentTokenAddressesAsync(currency)
+                var account = AtomexApp.Account.GetCurrencyAccount<ILegacyCurrencyAccount>(currency);
+
+                var activeTokenAddresses = account
+                    .GetUnspentTokenAddressesAsync()
                     .WaitForResult()
                     .ToList();
 

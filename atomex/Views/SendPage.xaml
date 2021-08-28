@@ -132,7 +132,7 @@
                              BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"
                              HorizontalOptions="FillAndExpand"
                              Opacity="0.7"
-                             IsVisible="{Binding FeeRate, Mode=OneWay, FallbackValue=False, TargetNullValue=False}">
+                             IsVisible="{Binding IsBtcBased, Mode=OneWay, FallbackValue=False, TargetNullValue=False}">
                     <Label Text="{helpers:Translate FeeRateLabel}"
                            Style="{DynamicResource EntryHintStyle}"
                            IsVisible="True"/>

@@ -1,13 +1,14 @@
 ﻿using System;
 using Atomex;
 using Microsoft.Extensions.Configuration;
-using Atomex.Subsystems;
-using Atomex.Subsystems.Abstract;
 using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
 using Atomex.Common.Configuration;
 using System.Linq;
 using atomex.Services;
+using Atomex.Services;
+using Atomex.Services.Abstract;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {
@@ -43,7 +44,7 @@ namespace atomex.ViewModel
                 symbolsProvider: AtomexApp.SymbolsProvider,
                 quotesProvider: AtomexApp.QuotesProvider);
 
-            AtomexApp.UseTerminal(atomexClient, restart: true);
+            AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
             CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
@@ -56,17 +57,17 @@ namespace atomex.ViewModel
 
         public void SignOut()
         {
-            AtomexApp.UseTerminal(null);
+            AtomexApp.UseAtomexClient(null);
         }
 
         private void SubscribeToServices()
         {
-            AtomexApp.TerminalChanged += OnTerminalChangedEventHandler;
+            AtomexApp.AtomexClientChanged += OnTerminalChangedEventHandler;
         }
 
-        private void OnTerminalChangedEventHandler(object sender, TerminalChangedEventArgs args)
+        private void OnTerminalChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var terminal = args.Terminal;
+            var terminal = args.AtomexClient;
 
             if (terminal?.Account == null)
                 return;

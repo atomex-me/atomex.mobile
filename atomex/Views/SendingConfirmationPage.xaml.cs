@@ -10,5 +10,11 @@ namespace atomex
             InitializeComponent();
             BindingContext = sendViewModel;
         }
+
+        public SendingConfirmationPage(TezosTokensSendViewModel tezosTokensSendViewModel)
+        {
+            InitializeComponent();
+            BindingContext = tezosTokensSendViewModel;
+        }
     }
 }

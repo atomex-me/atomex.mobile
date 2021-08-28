@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using atomex.CustomElements;
 using atomex.Resources;
@@ -10,7 +12,7 @@ using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
 using Atomex.MarketData.Bitfinex;
-using Atomex.Subsystems;
+using Atomex.Services;
 using Microsoft.Extensions.Configuration;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -29,6 +31,29 @@ namespace atomex
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
+        private static Assembly CoreAssembly { get; } = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .FirstOrDefault(a => a.GetName().Name == "Atomex.Client.Core");
+
+        private static string CurrenciesConfigurationJson
+        {
+            get
+            {
+                var coreAssembly = CoreAssembly;
+                var resourceName = "currencies.json";
+                var resourceNames = coreAssembly.GetManifestResourceNames();
+                var fullFileName = resourceNames.FirstOrDefault(n => n.EndsWith(resourceName));
+                var stream = coreAssembly.GetManifestResourceStream(fullFileName!);
+
+                using StreamReader reader = new(stream!);
+                return reader.ReadToEnd();
+            }
+        }
+
+        private static IConfiguration SymbolsConfiguration { get; } = new ConfigurationBuilder()
+            .AddEmbeddedJsonFile(CoreAssembly, "symbols.json")
+            .Build();
+
         public App()
         {
             InitializeComponent();
@@ -36,20 +61,9 @@ namespace atomex
 
             DependencyService.Get<INotificationManager>().Initialize();
 
-            var coreAssembly = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .FirstOrDefault(a => a.GetName().Name == "Atomex.Client.Core");
+            var currenciesProvider = new CurrenciesProvider(CurrenciesConfigurationJson);
 
-            var currenciesConfiguration = new ConfigurationBuilder()
-                .AddEmbeddedJsonFile(coreAssembly, "currencies.json")
-                .Build();
-
-            var symbolsConfiguration = new ConfigurationBuilder()
-                .AddEmbeddedJsonFile(coreAssembly, "symbols.json")
-                .Build();
-
-            var currenciesProvider = new CurrenciesProvider(currenciesConfiguration);
-            var symbolsProvider = new SymbolsProvider(symbolsConfiguration);
+            var symbolsProvider = new SymbolsProvider(SymbolsConfiguration);
 
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)

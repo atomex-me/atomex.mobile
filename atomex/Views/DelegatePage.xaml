@@ -194,7 +194,7 @@
                            Padding="20,5,20,0"
                            IsVisible="True"/>
                     <Label Grid.Row="1"
-                           Text="{Binding WalletAddressViewModel.WalletAddress.Address}"
+                           Text="{Binding WalletAddressViewModel.Address}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"
@@ -214,7 +214,7 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate Balance}"/>
                                 <Span Text=": "/>
-                                <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#####}'}"
+                                <Span Text="{Binding WalletAddressViewModel.AvailableBalance, StringFormat='{0:0.#####}'}"
                                       FontFamily="{DynamicResource BoldFont}"
                                       FontSize="12"/>
                                 <Span Text=" XTZ"

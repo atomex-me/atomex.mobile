@@ -550,7 +550,7 @@ namespace atomex
 
         private void CheckStoragePassword()
         {
-            if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.Medium)
+            if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.TooShort)
             {
                 Warning = AppResources.PasswordHasInsufficientComplexity;
                 return;

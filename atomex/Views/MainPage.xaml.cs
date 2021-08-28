@@ -11,6 +11,8 @@ using atomex.ViewModel;
 using atomex.Helpers;
 using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
+using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views.TezosTokens;
 
 namespace atomex
 {
@@ -179,13 +181,25 @@ namespace atomex
 
         public async Task ShowCurrency(CurrencyViewModel currencyViewModel)
         {
-            if (currencyViewModel != null)
-            {
-                _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-                CurrentPage = NavigationWalletsListPage;
+            if (currencyViewModel == null)
+                return;
 
-                await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
-            }
+            _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
+            CurrentPage = NavigationWalletsListPage;
+
+            await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
+        }
+
+
+        public async Task ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel)
+        {
+            if (tezosTokensViewModel == null)
+                return;
+
+            _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
+            CurrentPage = NavigationWalletsListPage;
+
+            await NavigationWalletsListPage.PushAsync(new TezosTokensListPage(tezosTokensViewModel));
         }
     }
 }

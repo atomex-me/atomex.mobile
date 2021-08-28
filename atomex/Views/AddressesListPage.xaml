@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="atomex.Views.AddressesListPage"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Name="BindingContextPage"
+    Title="{helpers:Translate Addresses}"
+    Style="{DynamicResource AdditionalBackgroundStyle}">
+    <StackLayout VerticalOptions="FillAndExpand"
+                 Padding="20">
+        <Label Text="{helpers:Translate SelectAddress}"
+               FontFamily="{DynamicResource BoldFont}"
+               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+               FontSize="18"
+               HorizontalTextAlignment="Center"
+               Padding="0,10">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding FromAddressList.Count}"
+                             Value="0">
+                    <Setter Property="IsVisible"
+                            Value="False"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <Label Text="Insufficient token funds on addresses! Please, update your balance!"
+               FontFamily="{DynamicResource RegularFont}"
+               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+               FontSize="16"
+               HorizontalTextAlignment="Center"
+               Padding="0,20"
+               IsVisible="False">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding FromAddressList.Count}"
+                             Value="0">
+                    <Setter Property="IsVisible"
+                            Value="True"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <ListView ItemsSource="{Binding FromAddressList}"
+                  SelectionMode="None"
+                  SeparatorVisibility="None"
+                  HasUnevenRows="True"
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
+                  CachingStrategy="RetainElement"
+                  Margin="0,2"
+                  Footer=""> 
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="2"
+                              RowSpacing="0"
+                              ColumnSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Frame Grid.RowSpan="2"
+                                   Grid.ColumnSpan="2"
+                                   Padding="0"
+                                   HasShadow="False"
+                                   CornerRadius="10"
+                                   HeightRequest="54"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource ListViewItemBackgroundColorDark}, Light={StaticResource ListViewItemBackgroundColor}}">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
+                                                          Tapped="OnItemTapped"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Label Grid.RowSpan="2"
+                                   Text="{Binding Address}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="12"
+                                   LineBreakMode="MiddleTruncation"
+                                   Padding="20,0,10,0"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"
+                                   IsEnabled="False"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding AvailableAmount}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                   Padding="10,0,20,0"
+                                   HorizontalTextAlignment="End"
+                                   IsEnabled="False">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding ShowTokenBalance}"
+                                                 Value="True">
+                                        <Setter Property="VerticalTextAlignment"
+                                                Value="End"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding ShowTokenBalance}"
+                                                 Value="False">
+                                        <Setter Property="VerticalTextAlignment"
+                                                Value="Center"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding AvailableBalance, StringFormat='{0:0.#########}'}"
+                                              FontSize="12"
+                                              FontFamily="{DynamicResource BoldFont}"/>
+                                        <Span Text=" " /> 
+                                        <Span Text="{Binding CurrencyCode}"
+                                              FontSize="10"
+                                              FontFamily="{DynamicResource BoldFont}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding TokenBalance}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                                   HeightRequest="28"
+                                   Padding="10,0,20,0"
+                                   VerticalTextAlignment="Start"
+                                   HorizontalTextAlignment="End"
+                                   IsVisible="False"
+                                   IsEnabled="False">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding ShowTokenBalance}"
+                                                 Value="True">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding TokenBalance, StringFormat='{0:0.#########}'}"
+                                              FontSize="12"
+                                              FontFamily="{DynamicResource BoldFont}"/>
+                                        <Span Text=" " /> 
+                                        <Span Text="{Binding TokenCode}"
+                                              FontSize="10"
+                                              FontFamily="{DynamicResource BoldFont}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

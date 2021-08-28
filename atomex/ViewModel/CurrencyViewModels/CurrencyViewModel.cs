@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
-using atomex.ViewModel.ReceiveViewModels;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using Atomex;
@@ -19,21 +19,21 @@ using Atomex.Wallet.Abstract;
 using Serilog;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModel.CurrencyViewModels
 {
     public class CurrencyViewModel : BaseViewModel
     {
-        private IAtomexApp AtomexApp { get; set; }
+        protected IAtomexApp AtomexApp { get; set; }
 
-        private IAccount Account { get; set; }
+        protected IAccount Account { get; set; }
 
         public INavigation Navigation { get; set; }
 
         public INavigationService NavigationService { get; set; }
 
-        private IToastService ToastService;
+        protected IToastService ToastService { get; set; }
 
-        public Currency Currency { get; set; }
+        public CurrencyConfig Currency { get; set; }
 
         public event EventHandler AmountUpdated;
 
@@ -42,7 +42,6 @@ namespace atomex.ViewModel
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
-        public bool IsStakingAvailable => CurrencyCode == "XTZ";
 
         private decimal _totalAmount;
         public decimal TotalAmount
@@ -153,12 +152,21 @@ namespace atomex.ViewModel
 
         public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
 
-        public CurrencyViewModel(IAtomexApp app)
+        private CancellationTokenSource Cancellation { get; set; }
+
+        public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             ToastService = DependencyService.Get<IToastService>();
+
             SubscribeToUpdates(AtomexApp.Account);
             SubscribeToRatesProvider(AtomexApp.QuotesProvider);
+
+            if (loadTransaction)
+                _ = UpdateTransactionsAsync();
+
+            _ = UpdateBalanceAsync();
         }
 
         public void SubscribeToUpdates(IAccount account)
@@ -243,22 +251,22 @@ namespace atomex.ViewModel
             AmountUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        private void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
+        private async void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
         {
             try
             {
-                if (e.Transaction.Currency.Name != Currency?.Name)
+                if (e.Transaction.Currency != Currency?.Name)
                     return;
 
-                _ = UpdateTransactionsAsync();
+                await UpdateTransactionsAsync();
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "LoadTransactionAsync error for {@currency}", Currency?.Name);
+                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@currency}", Currency?.Name);
             }
         }
 
-        public async Task UpdateTransactionsAsync()
+        public virtual async Task UpdateTransactionsAsync()
         {
             Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
 
@@ -268,55 +276,41 @@ namespace atomex.ViewModel
                     return;
 
                 var transactions = (await AtomexApp.Account
-                    .GetTransactionsAsync(Currency.Name))
-                    .ToList();
+                        .GetTransactionsAsync(Currency.Name))
+                        .ToList();
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                        transactions.Select(t => TransactionViewModelCreator
-                           .CreateViewModel(t))
+                           .CreateViewModel(t, Currency))
                            .ToList()
-                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime)));
+                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
+                           .ForEachDo(t =>
+                            {
+                                t.RemoveClicked += RemoveTransactonEventHandler;
+                            }));
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+
                     OnPropertyChanged(nameof(Transactions));
                     OnPropertyChanged(nameof(GroupedTransactions));
                 });
-
-                //CurrencyUpdated?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransactionAsync error for {@currency}", Currency.Name);
+                Log.Error(e, "LoadTransactionAsync error for {@currency}", Currency?.Name);
             }
         }
 
-        public IAtomexApp GetAtomexApp()
-        {
-            return AtomexApp;
-        }
-
-        public async Task UpdateCurrencyAsync()
-        {
-            try
-            {
-                await new HdWalletScanner(AtomexApp.Account).ScanAsync(Currency.Name);
-            }
-            catch(Exception e)
-            {
-                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
-            }
-        }
-
-        public async void RemoveTransactonAsync(string id)
+        public async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
             if (AtomexApp.Account == null)
                 return;
 
             try
             {
-                var txId = $"{id}:{Currency.Name}";
+                var txId = $"{args.Transaction.Id}:{Currency.Name}";
 
                 var isRemoved = await AtomexApp.Account
                     .RemoveTransactionAsync(txId);
@@ -332,34 +326,26 @@ namespace atomex.ViewModel
             await Navigation.PopAsync();
         }
 
-        private ICommand _sendPageCommand;
+        protected ICommand _sendPageCommand;
         public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
 
-        private ICommand _receivePageCommand;
-        public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+        protected ICommand _receivePageCommand;
+        public virtual ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
-        private ICommand _stakingPageCommand;
-        public ICommand StakingPageCommand => _stakingPageCommand ??= new Command(async () => await OnStakingButtonClicked());
-
-        private ICommand _convertPageCommand;
+        protected ICommand _convertPageCommand;
         public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
 
-        private ICommand _addressesPageCommand;
-        public ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
+        protected ICommand _addressesPageCommand;
+        public virtual ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private async Task OnSendButtonClicked()
         {
-            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(this)));
+            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(AtomexApp, this)));
         }
 
         private async Task OnReceiveButtonClicked()
         {
-            await Navigation.PushAsync(new ReceivePage(ReceiveViewModelCreator.CreateViewModel(this)));
-        }
-
-        private async Task OnStakingButtonClicked()
-        {
-            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp, Navigation)));
+            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, Currency, Navigation)));
         }
 
         private async Task OnConvertButtonClicked()
@@ -378,27 +364,36 @@ namespace atomex.ViewModel
         async Task OnTxItemTapped(TransactionViewModel tx)
         {
             if (tx != null)
-            {
-                tx.CurrencyViewModel = this;
                 await Navigation.PushAsync(new TransactionInfoPage(tx));
-            }
         }
 
         private ICommand _updateCurrencyCommand;
-        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrency());
+        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrencyAsync());
 
-        private async Task UpdateCurrency()
+        public async Task UpdateCurrencyAsync()
         {
+            Cancellation = new CancellationTokenSource();
+
             try
             {
                 IsLoading = true;
-                await UpdateCurrencyAsync();
+
+                var scanner = new HdWalletScanner(AtomexApp.Account);
+
+                await scanner.ScanAsync(
+                    currency: Currency.Name,
+                    skipUsed: true,
+                    cancellationToken: Cancellation.Token);
+
+                await UpdateTransactionsAsync();
+
                 IsLoading = false;
+
                 ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception e)
             {
-                Log.Error(e, "UpdateCurrencyAsync error");
+                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
             }
         }
 

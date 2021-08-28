@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.CustomElements;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex.Common;
 using Microcharts;
 using Serilog;
@@ -132,8 +133,16 @@ namespace atomex.ViewModel
 
         private async Task OnCurrencyTapped(CurrencyViewModel currency)
         {
-            if (currency != null)
-                await NavigationService.ShowCurrency(currency);
+            if (currency == null)
+                return;
+
+            if (currency.CurrencyCode == "XTZ")
+            {
+                await NavigationService.ShowTezosTokens(CurrenciesViewModel.TezosTokensViewModel);
+                return;
+            }
+
+            await NavigationService.ShowCurrency(currency);
         }
     }
 }

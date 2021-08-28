@@ -191,11 +191,7 @@
         <value>Adım 5: Oturum Açma Parolası</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Bu şifre, cihazdaki gizli anahtarları korumak için kullanılır ve M-cüzdan uygulamasını her başlattığınızda kullanılır. Parola en az 8 karakter uzunluğunda olmalı ve en az şunları içermelidir:
-    - 1 küçük harf karakteri,
-    - 1 büyük harf,
-    - 1 hane,
-    - (! @ # $% ^ *) İçinde 1 özel karakter.</value>
+        <value>Bu şifre, cihazdaki gizli anahtarları korumak için kullanılır ve M-cüzdan uygulamasını her başlattığınızda kullanılır. Şifre boş olmamalıdır</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Oluşturmak</value>
@@ -253,11 +249,20 @@
     <data name="AddressInfoPageTitle" xml:space="preserve">
         <value>Adres bilgisi</value>
     </data>
+    <data name="SelectAddress" xml:space="preserve">
+        <value>Adres seçin</value>
+    </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresler</value>
     </data>
+    <data name="CurrencyAddresses" xml:space="preserve">
+        <value>adresler</value>
+    </data>
     <data name="Path" xml:space="preserve">
         <value>Yol</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Tip</value>
     </data>
     <data name="Key" xml:space="preserve">
         <value>Anahtar</value>
@@ -518,7 +523,48 @@
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Yeni swap oluştur</value>
     </data>
-    
+
+    <!-- Tezos tokens list, token info Pages -->
+    <data name="TezosTokensListPageTitle" xml:space="preserve">
+        <value>Tezos jetonları</value>
+    </data>
+    <data name="TokenInfoPageTitle" xml:space="preserve">
+        <value>Jeton bilgisi</value>
+    </data>
+    <data name="NoTokensLabel" xml:space="preserve">
+        <value>Henüz jeton yok</value>
+    </data>
+    <data name="NoTransfersLabel" xml:space="preserve">
+        <value>Henüz transfer yok</value>
+    </data>
+    <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
+        <value>Jeton bakiyesi güncellemesi...</value>
+    </data>
+    <data name="UpdateTokenButton" xml:space="preserve">
+        <value>Jetonları yenile</value>
+    </data>
+    <data name="Tokens" xml:space="preserve">
+        <value>Jetonlar</value>
+    </data>
+    <data name="TokenBalance" xml:space="preserve">
+        <value>Jeton bakiyesi</value>
+    </data>
+    <data name="Transfers" xml:space="preserve">
+        <value>Transferler</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Başlık</value>
+    </data>
+    <data name="TokenId" xml:space="preserve">
+        <value>Jeton ID</value>
+    </data>
+    <data name="TokenContract" xml:space="preserve">
+        <value>Jeton sözleşmesi</value>
+    </data>
+    <data name="ShowInIpfsButton" xml:space="preserve">
+        <value>Ipfs'de göster</value>
+    </data>
+
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
         <value>Ayarlar</value>
