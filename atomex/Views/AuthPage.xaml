@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    x:Class="atomex.Views.AuthPage"
+    Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <RelativeLayout>
+            <StackLayout Opacity="{Binding Opacity}"
+                         Padding="10,0"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                         VerticalOptions="CenterAndExpand">
+                <Label Style="{DynamicResource EnterPinLabelStyle}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{helpers:Translate EnterPasswordFor}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding WalletName, StringFormat='«‎{0}»'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{helpers:Translate ForWallet}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <StackLayout Style="{DynamicResource PinIconsLayout}">
+                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
+                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
+                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}"/>
+                </StackLayout>
+                <Grid Style="{DynamicResource PinCodeGridStyle}">
+                    <Frame Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="1"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Column="1"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="2"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Column="2"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="3"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="1"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="4"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="5"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="1"
+                           Grid.Column="2"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="6"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="2"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="7"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="2"
+                           Grid.Column="1"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="8"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="2"
+                           Grid.Column="2"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="9"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                    <Frame Grid.Row="3"
+                           Grid.Column="1"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Label Text="0"
+                               Style="{DynamicResource PinNumberStyle}"/>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+            <Button Text="{helpers:Translate DeleteButton}"
+                    Style="{DynamicResource PinNumberDeleteButtonStyle}"/>
+            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                               RelativeLayout.WidthConstraint="50"
+                               RelativeLayout.HeightConstraint="50"
+                               BackgroundColor="Transparent"
+                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                               IsRunning="{Binding IsLoading}"/>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

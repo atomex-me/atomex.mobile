@@ -122,6 +122,12 @@
     <data name="UseBiometric" xml:space="preserve">
         <value>Oturum açmak için biyometrik kimlik doğrulama kullanın</value>
     </data>
+        <data name="EnterPasswordFor" xml:space="preserve">
+        <value>Cüzdan şifrenızı yazınız</value>
+    </data>
+    <data name="ForWallet" xml:space="preserve">
+        <value></value>
+    </data>
     
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">

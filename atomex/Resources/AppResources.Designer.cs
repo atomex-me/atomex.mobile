@@ -251,6 +251,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string EnterPasswordFor {
+            get {
+                return ResourceManager.GetString("EnterPasswordFor", resourceCulture);
+            }
+        }
+        
+        internal static string ForWallet {
+            get {
+                return ResourceManager.GetString("ForWallet", resourceCulture);
+            }
+        }
+        
         internal static string CreateNewWalletPageTitle {
             get {
                 return ResourceManager.GetString("CreateNewWalletPageTitle", resourceCulture);

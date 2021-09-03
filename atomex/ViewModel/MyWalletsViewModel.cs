@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.ViewModel;
+using atomex.Views;
 using Atomex;
 using Xamarin.Forms;
 
@@ -30,7 +31,7 @@ namespace atomex
 
         private async Task OnWalletTapped(WalletInfo wallet)
         {
-            await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
+            await Navigation.PushAsync(new AuthPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
         }
     }
 }

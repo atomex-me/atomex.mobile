@@ -27,10 +27,10 @@
         <value>Confirmer</value>
     </data>
     <data name="UnderstandButton" xml:space="preserve">
-        <value>je comprends</value>
+        <value>Je comprends</value>
     </data>
     <data name="DeleteButton" xml:space="preserve">
-        <value>supprimer</value>
+        <value>Supprimer</value>
     </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>Réseau principal</value>
@@ -121,6 +121,12 @@
     </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Utilisez l'authentification biométrique pour vous connecter</value>
+    </data>
+    <data name="EnterPasswordFor" xml:space="preserve">
+        <value>Entrez le mot de passe pour</value>
+    </data>
+    <data name="ForWallet" xml:space="preserve">
+        <value>portefeuille</value>
     </data>
     
     <!-- Create New Wallet Pages -->

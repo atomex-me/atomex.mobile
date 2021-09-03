@@ -69,9 +69,9 @@ namespace atomex
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation;
+            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation)); ;
             WalletName = wallet?.Name;
-            _ = BiometricAuth();
+            _ = Auth();
         }
 
         private SecureString GenerateSecureString(string str)
@@ -171,7 +171,7 @@ namespace atomex
 
         }
 
-        public async Task BiometricAuth()
+        public async Task Auth()
         {
             try
             {

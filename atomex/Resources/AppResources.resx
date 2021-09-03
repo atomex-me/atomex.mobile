@@ -122,6 +122,12 @@
     <data name="UseBiometric" xml:space="preserve">
         <value>Use biometric authentication to login into </value>
     </data>
+    <data name="EnterPasswordFor" xml:space="preserve">
+        <value>Enter password for</value>
+    </data>
+    <data name="ForWallet" xml:space="preserve">
+        <value>wallet</value>
+    </data>
     
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
