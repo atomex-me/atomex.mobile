@@ -32,11 +32,11 @@ namespace atomex
             set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
         }
 
-        private SecureString _password;
-        public SecureString Password
+        private SecureString _storagePassword;
+        public SecureString StoragePassword
         {
-            get => _password;
-            set { _password = value; OnPropertyChanged(nameof(Password)); }
+            get => _storagePassword;
+            set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
         }
 
         private float _opacity = 1f;
@@ -66,12 +66,40 @@ namespace atomex
             }
         }
 
+        public string Header => AppResources.EnterPin;
+
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation)); ;
+            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+            StoragePassword = new SecureString();
             WalletName = wallet?.Name;
             _ = Auth();
+        }
+
+        private void AddChar(string str)
+        {
+            if (StoragePassword?.Length < 4)
+            {
+                foreach (char c in str)
+                {
+                    StoragePassword.AppendChar(c);
+                }
+
+                OnPropertyChanged(nameof(StoragePassword));
+
+                if (StoragePassword.Length == 4)
+                    _ = UnlockAsync();
+            }
+        }
+
+        private void RemoveChar()
+        {
+            if (StoragePassword?.Length != 0)
+            {
+                StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                OnPropertyChanged(nameof(StoragePassword));
+            }
         }
 
         private SecureString GenerateSecureString(string str)
@@ -87,14 +115,17 @@ namespace atomex
         private void SetPassword(string pswd)
         {
             SecureString secureString = GenerateSecureString(pswd);
-            Password = secureString;
+            StoragePassword = secureString;
         }
 
         private ICommand _unlockCommand;
         public ICommand UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
 
-        private ICommand _textChangedCommand;
-        public ICommand TextChangedCommand => _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
+        private ICommand _addCharCommand;
+        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>((value) => AddChar(value));
+
+        private ICommand _deleteCharCommand;
+        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
 
         private async Task UnlockAsync()
         {
@@ -102,7 +133,7 @@ namespace atomex
 
             Account account = null;
 
-            if (Password == null || Password.Length == 0)
+            if (StoragePassword == null || StoragePassword.Length == 0)
             {
                 IsLoading = false;
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
@@ -138,7 +169,7 @@ namespace atomex
                 {
                     return Account.LoadFromFile(
                         walletPath,
-                        Password,
+                        StoragePassword,
                         AtomexApp.CurrenciesProvider,
                         clientType);
                 });
@@ -159,16 +190,40 @@ namespace atomex
                 else
                 {
                     IsLoading = false;
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                    StoragePassword.Clear();
+                    OnPropertyChanged(nameof(StoragePassword));
+                    _ = ShakePage();
                 }
             }
             catch (CryptographicException e)
             {
                 IsLoading = false;
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
+                StoragePassword.Clear();
+                OnPropertyChanged(nameof(StoragePassword));
+                _ = ShakePage();
                 Log.Error(e, "Invalid password error");
             }
+        }
 
+        private async Task ShakePage()
+        {
+            try
+            {
+                Vibration.Vibrate();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                Log.Error(ex, "Vibration not supported on device");
+            }
+
+            var view = Application.Current.MainPage;
+            await view.TranslateTo(-15, 0, 50);
+            await view.TranslateTo(15, 0, 50);
+            await view.TranslateTo(-10, 0, 50);
+            await view.TranslateTo(10, 0, 50);
+            await view.TranslateTo(-5, 0, 50);
+            await view.TranslateTo(5, 0, 50);
+            view.TranslationX = 0;
         }
 
         public async Task Auth()

@@ -8,99 +8,233 @@
     Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:GreaterThanValueConverter x:Key="GreaterThanValue"/>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
             <StackLayout Opacity="{Binding Opacity}"
-                         Padding="10,0"
+                         Padding="20,0"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          VerticalOptions="CenterAndExpand">
-                <Label Style="{DynamicResource EnterPinLabelStyle}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate EnterPasswordFor}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding WalletName, StringFormat='«‎{0}»'}"/>
-                            <Span Text=" "/>
-                            <Span Text="{helpers:Translate ForWallet}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <StackLayout Style="{DynamicResource PinIconsLayout}">
-                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
-                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
-                    <Frame Style="{DynamicResource PinIconFullStyle}"/>
-                    <Frame Style="{DynamicResource PinIconEmptyStyle}"/>
+                <Image WidthRequest="30"
+                       HeightRequest="30"
+                       HorizontalOptions="CenterAndExpand"
+                       Source="Lock"/>
+                <Label Style="{DynamicResource EnterPinLabelStyle}"
+                       Text="{Binding Header}"/>
+                <StackLayout Style="{DynamicResource PinIconsLayout}"
+                             IsVisible="{Binding IsEnteredStoragePassword, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True}">
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=1}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=3}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=4}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource PinIconsLayout}"
+                             IsVisible="{Binding IsEnteredStoragePassword, Mode=OneWay, FallbackValue=False}">
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=1}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=3}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
+                    <Frame Style="{DynamicResource PinIconEmptyStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=4}"
+                                         Value="True">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource PinIconFullStyle}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
                 </StackLayout>
                 <Grid Style="{DynamicResource PinCodeGridStyle}">
                     <Frame Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="1"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="1"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="2"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="2"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Column="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="3"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="3"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="4"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="4"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="1"
                            Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="5"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="5"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="1"
                            Grid.Column="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="6"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="6"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="7"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="7"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="2"
                            Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="8"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="8"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="2"
                            Grid.Column="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="9"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="9"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="3"
                            Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCharCommand}"
+                                                  Tapped="OnItemTapped"
+                                                  CommandParameter="0"/>
+                        </Frame.GestureRecognizers>
                         <Label Text="0"
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
+                    <Frame Grid.Row="3"
+                           Grid.Column="2"
+                           Style="{DynamicResource PinNumberFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DeleteCharCommand}"
+                                                  Tapped="OnItemTapped"/>
+                        </Frame.GestureRecognizers>
+                        <Image Source="ic_pin-del"/>
+                    </Frame>
                 </Grid>
             </StackLayout>
-            <Button Text="{helpers:Translate DeleteButton}"
-                    Style="{DynamicResource PinNumberDeleteButtonStyle}"/>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
                                RelativeLayout.HeightConstraint="50"
                                BackgroundColor="Transparent"
                                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               IsRunning="{Binding IsLoading}"/>
+                               IsRunning="{Binding IsLoading}"
+                               IsEnabled="False"/>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

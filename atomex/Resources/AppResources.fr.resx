@@ -122,13 +122,18 @@
     <data name="UseBiometric" xml:space="preserve">
         <value>Utilisez l'authentification biométrique pour vous connecter</value>
     </data>
-    <data name="EnterPasswordFor" xml:space="preserve">
-        <value>Entrez le mot de passe pour</value>
+
+    <!-- PIN Page -->
+    <data name="CreatePin" xml:space="preserve">
+        <value>Please create a PIN</value>
     </data>
-    <data name="ForWallet" xml:space="preserve">
-        <value>portefeuille</value>
+    <data name="EnterPin" xml:space="preserve">
+        <value>Enter your PIN</value>
     </data>
-    
+    <data name="ReEnterPin" xml:space="preserve">
+        <value>Please re-enter your PIN</value>
+    </data>
+
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
         <value>Créer un portefeuille</value>

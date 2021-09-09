@@ -251,15 +251,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string EnterPasswordFor {
+        internal static string CreatePin {
             get {
-                return ResourceManager.GetString("EnterPasswordFor", resourceCulture);
+                return ResourceManager.GetString("CreatePin", resourceCulture);
             }
         }
         
-        internal static string ForWallet {
+        internal static string EnterPin {
             get {
-                return ResourceManager.GetString("ForWallet", resourceCulture);
+                return ResourceManager.GetString("EnterPin", resourceCulture);
+            }
+        }
+        
+        internal static string ReEnterPin {
+            get {
+                return ResourceManager.GetString("ReEnterPin", resourceCulture);
             }
         }
         

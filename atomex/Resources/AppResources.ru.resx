@@ -122,13 +122,18 @@
     <data name="UseBiometric" xml:space="preserve">
         <value>Используйте аутентификацию по биометрии для входа в </value>
     </data>
-    <data name="EnterPasswordFor" xml:space="preserve">
-        <value>Введите пароль для</value>
+
+    <!-- PIN Page -->
+    <data name="CreatePin" xml:space="preserve">
+        <value>Пожалуйста, создайте PIN</value>
     </data>
-    <data name="ForWallet" xml:space="preserve">
-        <value>кошелька</value>
+    <data name="EnterPin" xml:space="preserve">
+        <value>Введите PIN</value>
     </data>
-    
+    <data name="ReEnterPin" xml:space="preserve">
+        <value>Пожалуйста, подтвердите PIN</value>
+    </data>
+
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
         <value>Создание кошелька</value>

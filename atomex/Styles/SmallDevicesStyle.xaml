@@ -39,14 +39,6 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
-    <Style x:Key="PinNumberDeleteButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="RelativeLayout.XConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.8, Constant=-15}"/>
-        <Setter Property="RelativeLayout.YConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =1, Constant=-60}"/>            
-    </Style>
 
     <!-- Entries -->
     <Style x:Key="EntryStyle" TargetType="Entry">
@@ -87,7 +79,7 @@
     </Style>
     <Style x:Key="PinNumberFrameStyle" TargetType="Frame">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Padding" Value="17"/>
         <Setter Property="CornerRadius" Value="30"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
@@ -201,8 +193,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
         <Setter Property="FontSize" Value="24"/>
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="WidthRequest" Value="60"/>
         <Setter Property="HeightRequest" Value="60"/>
     </Style>
@@ -210,6 +202,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Padding" Value="0,10,0,0"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
