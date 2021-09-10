@@ -127,6 +127,14 @@ namespace atomex
         private ICommand _deleteCharCommand;
         public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
 
+        private ICommand _backCommand;
+        public ICommand BackCommand => _backCommand ??= new Command(async () => await BackButtonClicked());
+
+        private async Task BackButtonClicked()
+        {
+            await Navigation.PopAsync();
+        }
+
         private async Task UnlockAsync()
         {
             IsLoading = true;

@@ -77,56 +77,6 @@
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="Margin" Value="0,10"/>
     </Style>
-    <Style x:Key="PinNumberFrameStyle" TargetType="Frame">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-        <Setter Property="Padding" Value="20"/>
-        <Setter Property="CornerRadius" Value="35"/>
-        <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-        <Setter Property="IsClippedToBounds" Value="True"/>
-    </Style>
-    <Style x:Key="PinIconEmptyStyle" TargetType="Frame">
-        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="CornerRadius" Value="6"/>
-        <Setter Property="HeightRequest" Value="12"/>
-        <Setter Property="WidthRequest" Value="12"/>
-        <Setter Property="HasShadow" Value="False"/>
-        <Setter Property="IsClippedToBounds" Value="True"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
-    </Style>
-    <Style x:Key="PinIconFullStyle" TargetType="Frame" BasedOn="{StaticResource PinIconEmptyStyle}">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-    </Style>     
-
-    <!-- Grids -->
-    <Style x:Key="PinCodeGridStyle" TargetType="Grid">
-        <Setter Property="Margin" Value="0,20"/>
-        <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-        <Setter Property="RowSpacing" Value="20"/>
-        <Setter Property="ColumnSpacing" Value="20"/>
-        <Setter Property="Grid.RowDefinitions">
-            <Setter.Value>
-                <RowDefinitionCollection>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition Height="70"/>
-                    <RowDefinition Height="70"/>
-                </RowDefinitionCollection>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Grid.ColumnDefinitions">
-            <Setter.Value>
-                <ColumnDefinitionCollection>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition Width="70"/>
-                </ColumnDefinitionCollection>
-            </Setter.Value>
-        </Setter> 
-    </Style>
 
     <!-- Labels -->
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
@@ -354,6 +304,10 @@
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="WalletIconStyle" TargetType="Image">
+        <Setter Property="WidthRequest" Value="30"/>
+        <Setter Property="HeightRequest" Value="30"/>
+    </Style>
 
     <!-- Unlock Page -->
     <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
@@ -363,11 +317,61 @@
         <Setter Property="Padding" Value="10,10,10,0"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
+
+    <!-- PIN Page -->
     <Style x:Key="PinIconsLayout" TargetType="StackLayout">
         <Setter Property="Spacing" Value="20"/>
-        <Setter Property="Margin" Value="0,20"/>
+        <Setter Property="Margin" Value="0,10"/>
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="PinNumberFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="CornerRadius" Value="35"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+        <Setter Property="IsClippedToBounds" Value="True"/>
+    </Style>
+    <Style x:Key="PinIconEmptyStyle" TargetType="Frame">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="HeightRequest" Value="12"/>
+        <Setter Property="WidthRequest" Value="12"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="IsClippedToBounds" Value="True"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="PinIconFullStyle" TargetType="Frame" BasedOn="{StaticResource PinIconEmptyStyle}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+    </Style>
+    <Style x:Key="PinCodeGridStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="0,30"/>
+        <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        <Setter Property="RowSpacing" Value="20"/>
+        <Setter Property="ColumnSpacing" Value="20"/>
+        <Setter Property="Grid.RowDefinitions">
+            <Setter.Value>
+                <RowDefinitionCollection>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                </RowDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Grid.ColumnDefinitions">
+            <Setter.Value>
+                <ColumnDefinitionCollection>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                </ColumnDefinitionCollection>
+            </Setter.Value>
+        </Setter> 
     </Style>
 
     <!-- Settings Pages -->

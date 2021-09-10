@@ -42,8 +42,7 @@
                                         </DataTrigger>
                                     </Frame.Triggers>
                                     <StackLayout Orientation="Horizontal">
-                                        <Image WidthRequest="30"
-                                               HeightRequest="30">
+                                        <Image Style="{DynamicResource WalletIconStyle}">
                                             <Image.Triggers>
                                                 <DataTrigger TargetType="Image"
                                                              Binding="{Binding Network}"

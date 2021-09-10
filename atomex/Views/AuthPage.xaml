@@ -206,6 +206,17 @@
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="3"
+                           Style="{DynamicResource PinNumberFrameStyle}"
+                           Padding="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackCommand}"
+                                                  Tapped="OnItemTapped"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="{helpers:Translate CancelButton}"
+                               Style="{DynamicResource PinNumberStyle}"
+                               FontSize="14"/>
+                    </Frame>
+                    <Frame Grid.Row="3"
                            Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
