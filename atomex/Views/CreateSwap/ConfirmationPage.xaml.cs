@@ -11,7 +11,7 @@ namespace atomex.Views.CreateSwap
             InitializeComponent();
         }
 
-        public ConfirmationPage(ConversionViewModel conversionViewModel)
+        public ConfirmationPage(ConversionConfirmationViewModel conversionViewModel)
         {
             InitializeComponent();
 

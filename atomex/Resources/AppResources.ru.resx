@@ -881,4 +881,16 @@
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Приватный ключ скопирован</value>
     </data>
+    <data name="MinimumAllowedQtyWarning" xml:space="preserve">
+        <value>The amount must be greater than or equal to the minimum allowed amount {0} {1}</value>
+    </data>
+    <data name="NotSupportedSymbol" xml:space="preserve">
+        <value>This symbol does not support direct conversion</value>
+    </data>
+    <data name="ServicesUnavailable" xml:space="preserve">
+        <value>Atomex services unavailable. Please check your network connection or contact technical support</value>
+    </data>
+    <data name="BigAmount" xml:space="preserve">
+        <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
+    </data>
 </root>
