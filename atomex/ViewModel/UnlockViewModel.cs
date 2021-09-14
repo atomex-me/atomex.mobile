@@ -7,6 +7,7 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel;
+using atomex.Views;
 using Atomex;
 using Atomex.Common;
 using Atomex.Wallet;
@@ -39,11 +40,39 @@ namespace atomex
             set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
         }
 
+        private SecureString _storagePasswordConfirmation;
+        public SecureString StoragePasswordConfirmation
+        {
+            get => _storagePasswordConfirmation;
+            set { _storagePasswordConfirmation = value; OnPropertyChanged(nameof(StoragePasswordConfirmation)); }
+        }
+
+        private bool _isEnteredStoragePassword = false;
+        public bool IsEnteredStoragePassword
+        {
+            get => _isEnteredStoragePassword;
+            set { _isEnteredStoragePassword = value; OnPropertyChanged(nameof(IsEnteredStoragePassword)); }
+        }
+
+        private string _header;
+        public string Header
+        {
+            get => _header;
+            set { _header = value; OnPropertyChanged(nameof(Header)); }
+        }
+
         private float _opacity = 1f;
         public float Opacity
         {
             get => _opacity;
             set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
+        }
+
+        private bool _isPinExist;
+        public bool IsPinExist
+        { 
+            get => _isPinExist;
+            set { _isPinExist = value; OnPropertyChanged(nameof(IsPinExist)); }
         }
 
         private bool _isLoading = false;
@@ -66,39 +95,116 @@ namespace atomex
             }
         }
 
-        public string Header => AppResources.EnterPin;
-
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
             StoragePassword = new SecureString();
             WalletName = wallet?.Name;
-            _ = Auth();
+            _ = CheckPin();
+            _ = CheckBiometric();
         }
 
         private void AddChar(string str)
         {
-            if (StoragePassword?.Length < 4)
+            if (IsPinExist)
             {
-                foreach (char c in str)
+                if (StoragePassword?.Length < 4)
                 {
-                    StoragePassword.AppendChar(c);
+                    foreach (char c in str)
+                    {
+                        StoragePassword.AppendChar(c);
+                    }
+
+                    OnPropertyChanged(nameof(StoragePassword));
+
+                    if (StoragePassword.Length == 4)
+                        _ = UnlockAsync();
                 }
+            }
+            else
+            {
+                if (!IsEnteredStoragePassword)
+                {
+                    if (StoragePassword?.Length < 4)
+                    {
+                        foreach (char c in str)
+                        {
+                            StoragePassword.AppendChar(c);
+                        }
 
-                OnPropertyChanged(nameof(StoragePassword));
+                        OnPropertyChanged(nameof(StoragePassword));
 
-                if (StoragePassword.Length == 4)
-                    _ = UnlockAsync();
+                        if (StoragePassword?.Length == 4)
+                        {
+                            IsEnteredStoragePassword = true;
+
+                            Header = AppResources.ReEnterPin;
+                            OnPropertyChanged(nameof(Header));
+                        }
+                    }
+                }
+                else
+                {
+                    if (StoragePasswordConfirmation?.Length < 4)
+                    {
+                        foreach (char c in str)
+                        {
+                            StoragePasswordConfirmation.AppendChar(c);
+                        }
+
+                        OnPropertyChanged(nameof(StoragePasswordConfirmation));
+
+                        if (StoragePasswordConfirmation?.Length == 4)
+                        {
+                            if (IsValidStoragePassword())
+                            {
+                                // todo: await core encrypt with PIN
+                                _ = EnablePin();
+                                _ = UnlockAsync();
+                            }
+                            else
+                            {
+                                _ = ShakePage();
+                                ClearStoragePswd();
+                            }
+                        }
+                    }
+                }
             }
         }
 
         private void RemoveChar()
         {
-            if (StoragePassword?.Length != 0)
+            if (!IsEnteredStoragePassword)
             {
-                StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                OnPropertyChanged(nameof(StoragePassword));
+                if (StoragePassword?.Length != 0)
+                {
+                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                    OnPropertyChanged(nameof(StoragePassword));
+                }
+            }
+            else
+            {
+                if (StoragePasswordConfirmation?.Length != 0)
+                {
+                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
+                }
+            }
+        }
+
+        private async Task EnablePin()
+        {
+            IsPinExist = true;
+
+            try
+            {
+                await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, AppResources.NotSupportSecureStorage);
             }
         }
 
@@ -118,6 +224,30 @@ namespace atomex
             StoragePassword = secureString;
         }
 
+        private void ClearStoragePswd()
+        {
+            IsEnteredStoragePassword = false;
+            StoragePassword.Clear();
+            StoragePasswordConfirmation.Clear();
+            Header = AppResources.CreatePin;
+
+            OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(StoragePassword));
+            OnPropertyChanged(nameof(StoragePasswordConfirmation));
+        }
+
+        private bool IsValidStoragePassword()
+        {
+            if (StoragePassword != null &&
+                StoragePasswordConfirmation != null &&
+                !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private ICommand _unlockCommand;
         public ICommand UnlockCommand => _unlockCommand ??= new Command(async () => await UnlockAsync());
 
@@ -129,6 +259,9 @@ namespace atomex
 
         private ICommand _backCommand;
         public ICommand BackCommand => _backCommand ??= new Command(async () => await BackButtonClicked());
+
+        private ICommand _textChangedCommand;
+        public ICommand TextChangedCommand => _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
 
         private async Task BackButtonClicked()
         {
@@ -184,16 +317,36 @@ namespace atomex
 
                 if (account != null)
                 {
-                    string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
-
-                    MainViewModel mainViewModel = null;
-
-                    await Task.Run(() =>
+                    try
                     {
-                        mainViewModel = new MainViewModel(AtomexApp, account, WalletName, appTheme);
-                    });
+                        if (IsPinExist)
+                        {
+                            string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
 
-                    Application.Current.MainPage = new MainPage(mainViewModel);
+                            MainViewModel mainViewModel = null;
+
+                            await Task.Run(() =>
+                            {
+                                mainViewModel = new MainViewModel(AtomexApp, account, WalletName, appTheme);
+                            });
+
+                            Application.Current.MainPage = new MainPage(mainViewModel);
+                        }
+                        else
+                        {
+                            IsLoading = false;
+                            // todo: await core encrypt with PIN
+                            // storagePassword to temp
+                            //ClearStoragePswd(); 
+                            await Navigation.PushAsync(new AuthPage(this));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // msg to user
+                        Log.Error(ex, AppResources.NotSupportSecureStorage);
+                        return;
+                    }
                 }
                 else
                 {
@@ -211,6 +364,25 @@ namespace atomex
                 _ = ShakePage();
                 Log.Error(e, "Invalid password error");
             }
+        }
+
+        private async Task CheckPin()
+        {
+            string authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthVersion");
+
+            if (authType == "1.1")
+            {
+                _header = AppResources.EnterPin;
+                _isPinExist = true;
+            }
+            else
+            {
+                _header = AppResources.CreatePin;
+                _isPinExist = false;
+            }
+
+            OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(IsPinExist));
         }
 
         private async Task ShakePage()
@@ -234,7 +406,7 @@ namespace atomex
             view.TranslationX = 0;
         }
 
-        public async Task Auth()
+        public async Task CheckBiometric()
         {
             try
             {

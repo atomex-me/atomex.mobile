@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Views;
 using Atomex;
+using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex
@@ -31,7 +34,24 @@ namespace atomex
 
         private async Task OnWalletTapped(WalletInfo wallet)
         {
-            await Navigation.PushAsync(new AuthPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
+            try
+            {
+                string authType = await SecureStorage.GetAsync(wallet.Name + "-" + "AuthVersion");
+
+                if (authType == "1.1")
+                {
+                    await Navigation.PushAsync(new AuthPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
+                }
+                else
+                {
+                    await Navigation.PushAsync(new UnlockWalletPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                return;
+            }
         }
     }
 }

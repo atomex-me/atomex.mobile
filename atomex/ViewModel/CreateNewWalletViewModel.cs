@@ -626,6 +626,7 @@ namespace atomex
                         try
                         {
                             await SecureStorage.SetAsync(WalletName, string.Empty);
+                            await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
                         }
                         catch (Exception ex)
                         {
@@ -786,10 +787,21 @@ namespace atomex
 
         private void RemoveChar()
         {
-            if (StoragePassword?.Length != 0)
+            if (!IsEnteredStoragePassword)
             {
-                StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                OnPropertyChanged(nameof(StoragePassword));
+                if (StoragePassword?.Length != 0)
+                {
+                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                    OnPropertyChanged(nameof(StoragePassword));
+                }
+            }
+            else
+            {
+                if (StoragePasswordConfirmation?.Length != 0)
+                {
+                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
+                }
             }
         }
 
