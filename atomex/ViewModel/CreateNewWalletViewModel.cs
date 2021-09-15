@@ -247,6 +247,8 @@ namespace atomex
             set { _isEnteredStoragePassword = value; OnPropertyChanged(nameof(IsEnteredStoragePassword)); }
         }
 
+        private readonly int DefaultAttemptsCount = 5;
+
         public void ResetMnemonicCollections()
         {
             Random rnd = new Random();
@@ -627,6 +629,7 @@ namespace atomex
                         {
                             await SecureStorage.SetAsync(WalletName, string.Empty);
                             await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
+                            await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
                         }
                         catch (Exception ex)
                         {

@@ -47,6 +47,13 @@ namespace atomex
             set { _storagePasswordConfirmation = value; OnPropertyChanged(nameof(StoragePasswordConfirmation)); }
         }
 
+        private SecureString _oldStoragePassword;
+        public SecureString OldStoragePassword
+        {
+            get => _oldStoragePassword;
+            set { _oldStoragePassword = value; OnPropertyChanged(nameof(OldStoragePassword)); }
+        }
+
         private bool _isEnteredStoragePassword = false;
         public bool IsEnteredStoragePassword
         {
@@ -70,7 +77,7 @@ namespace atomex
 
         private bool _isPinExist;
         public bool IsPinExist
-        { 
+        {
             get => _isPinExist;
             set { _isPinExist = value; OnPropertyChanged(nameof(IsPinExist)); }
         }
@@ -95,13 +102,24 @@ namespace atomex
             }
         }
 
+        private bool _isLocked;
+        public bool IsLocked
+        {
+            get => _isLocked;
+            set { _isLocked = value; OnPropertyChanged(nameof(IsLocked)); }
+        }
+
+        private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(1);
+        private readonly int DefaultAttemptsCount = 5;
+
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
             StoragePassword = new SecureString();
             WalletName = wallet?.Name;
-            _ = CheckPin();
+            CheckWalletLock();
+            _ = CheckPinExist();
             _ = CheckBiometric();
         }
 
@@ -159,7 +177,7 @@ namespace atomex
                         {
                             if (IsValidStoragePassword())
                             {
-                                // todo: await core encrypt with PIN
+                                // todo: await core re-encrypt with OldStoragePassword and StoragePassword
                                 _ = EnablePin();
                                 _ = UnlockAsync();
                             }
@@ -201,6 +219,7 @@ namespace atomex
             try
             {
                 await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
+                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
             }
             catch (Exception ex)
             {
@@ -227,8 +246,8 @@ namespace atomex
         private void ClearStoragePswd()
         {
             IsEnteredStoragePassword = false;
-            StoragePassword.Clear();
-            StoragePasswordConfirmation.Clear();
+            StoragePassword?.Clear();
+            StoragePasswordConfirmation?.Clear();
             Header = AppResources.CreatePin;
 
             OnPropertyChanged(nameof(Header));
@@ -331,13 +350,21 @@ namespace atomex
                             });
 
                             Application.Current.MainPage = new MainPage(mainViewModel);
+
+                            try
+                            {
+                                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                            }
                         }
                         else
                         {
                             IsLoading = false;
-                            // todo: await core encrypt with PIN
-                            // storagePassword to temp
-                            //ClearStoragePswd(); 
+                            OldStoragePassword = StoragePassword;
+                            ClearStoragePswd(); 
                             await Navigation.PushAsync(new AuthPage(this));
                         }
                     }
@@ -353,6 +380,7 @@ namespace atomex
                     IsLoading = false;
                     StoragePassword.Clear();
                     OnPropertyChanged(nameof(StoragePassword));
+                    UpdateAttemptsCounter();
                     _ = ShakePage();
                 }
             }
@@ -361,12 +389,13 @@ namespace atomex
                 IsLoading = false;
                 StoragePassword.Clear();
                 OnPropertyChanged(nameof(StoragePassword));
+                UpdateAttemptsCounter();
                 _ = ShakePage();
                 Log.Error(e, "Invalid password error");
             }
         }
 
-        private async Task CheckPin()
+        private async Task CheckPinExist()
         {
             string authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthVersion");
 
@@ -406,7 +435,121 @@ namespace atomex
             view.TranslationX = 0;
         }
 
-        public async Task CheckBiometric()
+        private async void CheckWalletLock()
+        {
+            string lockTime = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
+
+            if (string.IsNullOrEmpty(lockTime))
+            {
+                IsLocked = false;
+            }
+            else
+            {
+                try
+                {
+                    DateTime unlockTime = Convert.ToDateTime(lockTime).ToLocalTime();
+                    _ = StartLockTimer(unlockTime);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("'{0}' is not in the proper format.", lockTime);
+                }
+            }
+        }
+
+        // todo: выход из цикла, если уходили со страницы
+        private async Task StartLockTimer(DateTime unlockTime)
+        {
+            try
+            {
+                if (DateTime.Compare(DateTime.Now, unlockTime) < 0)
+                {
+                    IsLocked = true;
+                    while (IsLocked)
+                    {
+                        await Task.Delay(CheckLockInterval);
+
+                        if (DateTime.Compare(DateTime.Now, unlockTime) >= 0)
+                        {
+                            try
+                            {
+                                IsLocked = false;
+                                await SecureStorage.SetAsync(WalletName + "-" + "LockTime", string.Empty);
+                        
+                                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
+                                attempsCount++;
+                                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error(ex, AppResources.NotSupportSecureStorage);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    IsLocked = false;
+                    await SecureStorage.SetAsync(WalletName + "-" + "LockTime", string.Empty);
+
+                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
+                    attempsCount++;
+                    await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
+                }
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Lock timer error");
+            }
+        }
+
+        private async void UpdateAttemptsCounter()
+        {
+            if (IsLocked)
+                return;
+
+            int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
+
+            if (attempsCount == 0)
+                return;
+
+            attempsCount--;
+            await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
+
+            if (attempsCount == 0)
+            {
+                // todo: show lock minutes
+
+                //var s = lockTime.Subtract(timeNow);
+                //var minutes = s.Minutes;
+
+                IsLocked = true;
+
+                var timeNow = DateTime.UtcNow;
+                var lockTime = timeNow.AddMinutes(1);
+
+                try
+                {
+                    await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, AppResources.NotSupportSecureStorage);
+                }
+
+                try
+                {
+                    DateTime unlockTime = Convert.ToDateTime(lockTime).ToLocalTime();
+                    _ = StartLockTimer(unlockTime);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("'{0}' is not in the proper format.", lockTime);
+                }
+            }
+        }
+
+        private async Task CheckBiometric()
         {
             try
             {
