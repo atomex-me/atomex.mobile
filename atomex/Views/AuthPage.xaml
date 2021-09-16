@@ -242,19 +242,23 @@
             <StackLayout Padding="20,0"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                         VerticalOptions="CenterAndExpand"
+                         BackgroundColor="{AppThemeBinding Dark={StaticResource NavigationBarBackgroundColorDark}, Light={StaticResource NavigationBarBackgroundColor}}"
+                         VerticalOptions="FillAndExpand"
                          IsVisible="{Binding IsLocked, TargetNullValue=False, FallbackValue=False}">
-                <Image WidthRequest="50"
-                       HeightRequest="50"
-                       Margin="0,0,0,20"
-                       HorizontalOptions="CenterAndExpand"
-                       Source="Lock"/>
-                <Label Text="This wallet has been locked"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="22"/>
+                <StackLayout VerticalOptions="CenterAndExpand"
+                             Margin="0,0,0,50">
+                    <Image WidthRequest="150"
+                           HeightRequest="150"
+                           HorizontalOptions="CenterAndExpand"
+                           Source="AtomexLogo"/>
+                    <Label Text="This wallet has been locked"
+                           Margin="20"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"
+                           FontSize="22"/>
+                </StackLayout>
             </StackLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
