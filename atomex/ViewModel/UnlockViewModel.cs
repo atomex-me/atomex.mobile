@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -108,6 +109,8 @@ namespace atomex
             get => _isLocked;
             set { _isLocked = value; OnPropertyChanged(nameof(IsLocked)); }
         }
+
+        private CancellationTokenSource Cancellation { get; set; }
 
         private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(1);
         private readonly int DefaultAttemptsCount = 5;
@@ -277,14 +280,23 @@ namespace atomex
         public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
 
         private ICommand _backCommand;
-        public ICommand BackCommand => _backCommand ??= new Command(async () => await BackButtonClicked());
+        public ICommand BackCommand => _backCommand ??= new Command(() => OnBackButtonTapped());
 
         private ICommand _textChangedCommand;
         public ICommand TextChangedCommand => _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
 
-        private async Task BackButtonClicked()
+        private ICommand _cancelCommand;
+        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
+
+        private async Task OnCancelButtonTapped()
         {
+            Cancellation?.Cancel();
             await Navigation.PopAsync();
+        }
+
+        private void OnBackButtonTapped()
+        {
+            Cancellation?.Cancel();
         }
 
         private async Task UnlockAsync()
@@ -457,16 +469,22 @@ namespace atomex
             }
         }
 
-        // todo: выход из цикла, если уходили со страницы
         private async Task StartLockTimer(DateTime unlockTime)
         {
             try
             {
                 if (DateTime.Compare(DateTime.Now, unlockTime) < 0)
                 {
+                    Cancellation = new CancellationTokenSource();
+
                     IsLocked = true;
                     while (IsLocked)
                     {
+                        if (Cancellation.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
                         await Task.Delay(CheckLockInterval);
 
                         if (DateTime.Compare(DateTime.Now, unlockTime) >= 0)

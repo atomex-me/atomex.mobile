@@ -375,10 +375,10 @@ namespace atomex.ViewModel
         private ICommand _deleteCharCommand;
         public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
 
-        private ICommand _backCommand;
-        public ICommand BackCommand => _backCommand ??= new Command(async () => await BackButtonClicked());
+        private ICommand _cancelCommand;
+        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
 
-        private async Task BackButtonClicked()
+        private async Task OnCancelButtonTapped()
         {
             await Navigation.PopAsync();
         }
@@ -423,8 +423,8 @@ namespace atomex.ViewModel
             }
         }
 
-        private ICommand _backPressCommand;
-        public ICommand BackPressCommand => _backPressCommand ??= new Command(() => OnBackButtonTapped());
+        private ICommand _backCommand;
+        public ICommand BackCommand => _backCommand ??= new Command(() => OnBackButtonTapped());
 
         private void OnBackButtonTapped()
         {

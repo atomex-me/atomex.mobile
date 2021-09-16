@@ -38,14 +38,23 @@ namespace atomex.Views
 
         protected override void OnDisappearing()
         {
-            if (BindingContext is SettingsViewModel)
+            if (BindingContext is UnlockViewModel)
             {
-                var vm = (SettingsViewModel)BindingContext;
-                if (vm.BackPressCommand.CanExecute(null))
+                var vm = (UnlockViewModel)BindingContext;
+                if (vm.BackCommand.CanExecute(null))
                 {
-                    vm.BackPressCommand.Execute(null);
+                    vm.BackCommand.Execute(null);
                 }
             }
+            else if (BindingContext is SettingsViewModel)
+            {
+                var vm = (SettingsViewModel)BindingContext;
+                if (vm.BackCommand.CanExecute(null))
+                {
+                    vm.BackCommand.Execute(null);
+                }
+            }
+
             base.OnDisappearing();
         }
     }

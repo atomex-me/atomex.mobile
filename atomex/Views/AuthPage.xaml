@@ -19,7 +19,7 @@
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          VerticalOptions="CenterAndExpand"
-                         IsVisible="{Binding IsLocked, Converter={StaticResource InverseBool}, TargetNullValue=True}">
+                         IsVisible="{Binding IsLocked, Converter={StaticResource InverseBool}, TargetNullValue=True, FallbackValue=True}">
                 <Image WidthRequest="30"
                        HeightRequest="30"
                        HorizontalOptions="CenterAndExpand"
@@ -210,7 +210,7 @@
                            Style="{DynamicResource PinNumberFrameStyle}"
                            Padding="5">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BackCommand}"
+                            <TapGestureRecognizer Command="{Binding CancelCommand}"
                                                   Tapped="OnItemTapped"/>
                         </Frame.GestureRecognizers>
                         <Label Text="{helpers:Translate CancelButton}"
@@ -243,7 +243,7 @@
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          VerticalOptions="CenterAndExpand"
-                         IsVisible="{Binding IsLocked, TargetNullValue=False}">
+                         IsVisible="{Binding IsLocked, TargetNullValue=False, FallbackValue=False}">
                 <Image WidthRequest="50"
                        HeightRequest="50"
                        Margin="0,0,0,20"
