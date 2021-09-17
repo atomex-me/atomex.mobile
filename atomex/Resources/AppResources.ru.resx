@@ -904,4 +904,16 @@
     <data name="BigAmount" xml:space="preserve">
         <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
     </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Неверный PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>У вас осталось {0} попытки</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Попытайтесь снова через {0} минуты</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>Этот кошелек заблокирован</value>
+    </data>
 </root>

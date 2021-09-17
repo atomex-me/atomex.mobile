@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Security.Cryptography;
@@ -471,7 +472,10 @@ namespace atomex
                     int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
 
                     if (attemptsCount < DefaultAttemptsCount)
-                        Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+                    {
+                        string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
+                        Warning = AppResources.InvalidPin + $"\r\n" + message;
+                    }
                 }
                 else
                 {
@@ -502,7 +506,7 @@ namespace atomex
                     var lockTime = DateTime.UtcNow.AddMinutes(LockTime.Minutes);
                     var lockMinutes = Math.Ceiling(lockTime.Subtract(DateTime.UtcNow).TotalMinutes);
 
-                    Warning = "Попытайтесь снова, когда пройдет " + lockMinutes + " минуты";
+                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.TryAgainInMinutes, lockMinutes);
 
                     while (IsLocked)
                     {
@@ -525,7 +529,10 @@ namespace atomex
                                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
                                 if (attemptsCount < DefaultAttemptsCount)
-                                    Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+                                {
+                                    string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
+                                    Warning = AppResources.InvalidPin + $"\r\n" + message;
+                                }    
                             }
                             catch (Exception ex)
                             {
@@ -544,7 +551,10 @@ namespace atomex
                     await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
                     if (attemptsCount < DefaultAttemptsCount)
-                        Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+                    {
+                        string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
+                        Warning = AppResources.InvalidPin + $"\r\n" + message;
+                    }
                 }
             }
             catch(Exception e)
@@ -568,7 +578,8 @@ namespace atomex
                 attemptsCount--;
                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
-                Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+                string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft, attemptsCount);
+                Warning = AppResources.InvalidPin + $"\r\n" + message;
 
                 if (attemptsCount == 0)
                 {

@@ -904,4 +904,16 @@
     <data name="BigAmount" xml:space="preserve">
         <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
     </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Invalid PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>You have {0} attempts left</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Please try again in {0} minutes</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>This wallet has been locked</value>
+    </data>
 </root>

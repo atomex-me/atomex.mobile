@@ -264,7 +264,7 @@
                            HeightRequest="150"
                            HorizontalOptions="CenterAndExpand"
                            Source="AtomexLogo"/>
-                    <Label Text="This wallet has been locked"
+                    <Label Text="{helpers:Translate WalletHasBeenLocked}"
                            Padding="20,20,20,0"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Center"
