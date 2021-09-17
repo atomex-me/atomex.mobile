@@ -387,6 +387,8 @@ namespace atomex.ViewModel
         {
             if (StoragePassword?.Length < 4)
             {
+                Warning = string.Empty;
+
                 foreach (char c in str)
                 {
                     StoragePassword.AppendChar(c);

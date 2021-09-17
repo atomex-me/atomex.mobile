@@ -110,9 +110,17 @@ namespace atomex
             set { _isLocked = value; OnPropertyChanged(nameof(IsLocked)); }
         }
 
+        private string _warning;
+        public string Warning
+        {
+            get => _warning;
+            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
+        }
+
         private CancellationTokenSource Cancellation { get; set; }
 
         private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(1);
+        private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
         private readonly int DefaultAttemptsCount = 5;
 
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
@@ -252,8 +260,10 @@ namespace atomex
             StoragePassword?.Clear();
             StoragePasswordConfirmation?.Clear();
             Header = AppResources.CreatePin;
+            Warning = string.Empty;
 
             OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(Warning));
             OnPropertyChanged(nameof(StoragePassword));
             OnPropertyChanged(nameof(StoragePasswordConfirmation));
         }
@@ -375,6 +385,7 @@ namespace atomex
                         else
                         {
                             IsLoading = false;
+                            StoragePasswordConfirmation = new SecureString();
                             OldStoragePassword = StoragePassword;
                             ClearStoragePswd(); 
                             await Navigation.PushAsync(new AuthPage(this));
@@ -449,35 +460,50 @@ namespace atomex
 
         private async void CheckWalletLock()
         {
-            string lockTime = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
+            try
+            {
+                string lockTime = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
 
-            if (string.IsNullOrEmpty(lockTime))
-            {
-                IsLocked = false;
+                if (string.IsNullOrEmpty(lockTime))
+                {
+                    IsLocked = false;
+
+                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
+
+                    if (attemptsCount < DefaultAttemptsCount)
+                        Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+                }
+                else
+                {
+                    _ = StartLockTimer();
+                }
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    DateTime unlockTime = Convert.ToDateTime(lockTime).ToLocalTime();
-                    _ = StartLockTimer(unlockTime);
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("'{0}' is not in the proper format.", lockTime);
-                }
+                Log.Error(e, "Check wallet lock error");
             }
         }
 
-        private async Task StartLockTimer(DateTime unlockTime)
+        private async Task StartLockTimer()
         {
             try
             {
+                string time = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
+
+                DateTime unlockTime = Convert.ToDateTime(time).ToLocalTime();
+
                 if (DateTime.Compare(DateTime.Now, unlockTime) < 0)
                 {
                     Cancellation = new CancellationTokenSource();
 
                     IsLocked = true;
+
+
+                    var lockTime = DateTime.UtcNow.AddMinutes(LockTime.Minutes);
+                    var lockMinutes = Math.Ceiling(lockTime.Subtract(DateTime.UtcNow).TotalMinutes);
+
+                    Warning = "Попытайтесь снова, когда пройдет " + lockMinutes + " минуты";
+
                     while (IsLocked)
                     {
                         if (Cancellation.IsCancellationRequested)
@@ -494,9 +520,12 @@ namespace atomex
                                 IsLocked = false;
                                 await SecureStorage.SetAsync(WalletName + "-" + "LockTime", string.Empty);
                         
-                                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
-                                attempsCount++;
-                                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
+                                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
+                                attemptsCount++;
+                                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
+
+                                if (attemptsCount < DefaultAttemptsCount)
+                                    Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
                             }
                             catch (Exception ex)
                             {
@@ -510,9 +539,12 @@ namespace atomex
                     IsLocked = false;
                     await SecureStorage.SetAsync(WalletName + "-" + "LockTime", string.Empty);
 
-                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
-                    attempsCount++;
-                    await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
+                    int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
+                    attemptsCount++;
+                    await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
+
+                    if (attemptsCount < DefaultAttemptsCount)
+                        Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
                 }
             }
             catch(Exception e)
@@ -523,47 +555,33 @@ namespace atomex
 
         private async void UpdateAttemptsCounter()
         {
-            if (IsLocked)
-                return;
-
-            int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attempsCount);
-
-            if (attempsCount == 0)
-                return;
-
-            attempsCount--;
-            await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attempsCount.ToString());
-
-            if (attempsCount == 0)
+            try
             {
-                // todo: show lock minutes
+                if (IsLocked)
+                    return;
 
-                //var s = lockTime.Subtract(timeNow);
-                //var minutes = s.Minutes;
+                int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
 
-                IsLocked = true;
+                if (attemptsCount == 0)
+                    return;
 
-                var timeNow = DateTime.UtcNow;
-                var lockTime = timeNow.AddMinutes(1);
+                attemptsCount--;
+                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
-                try
+                Warning = $"Неверный код доступа.\r\n У вас осталось " + attemptsCount + " попытки.";
+
+                if (attemptsCount == 0)
                 {
+                    IsLocked = true;
+
+                    var lockTime = DateTime.UtcNow.AddMinutes(LockTime.Minutes);
                     await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString());
+                    _ = StartLockTimer();
                 }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, AppResources.NotSupportSecureStorage);
-                }
-
-                try
-                {
-                    DateTime unlockTime = Convert.ToDateTime(lockTime).ToLocalTime();
-                    _ = StartLockTimer(unlockTime);
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("'{0}' is not in the proper format.", lockTime);
-                }
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Update attempts counter error");
             }
         }
 

@@ -238,6 +238,19 @@
                         <Image Source="ic_pin-del"/>
                     </Frame>
                 </Grid>
+                <Label Text="{Binding Warning}"
+                       Style="{DynamicResource ErrorTextStyle}"
+                       FontSize="16"
+                       LineHeight="1.2">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Warning}"
+                                     Value="">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
             </StackLayout>
             <StackLayout Padding="20,0"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
@@ -252,12 +265,19 @@
                            HorizontalOptions="CenterAndExpand"
                            Source="AtomexLogo"/>
                     <Label Text="This wallet has been locked"
-                           Margin="20"
+                           Padding="20,20,20,0"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"
                            FontSize="22"/>
+                    <Label Text="{Binding Warning}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           Padding="20,0"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"
+                           FontSize="18"/>
                 </StackLayout>
             </StackLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"

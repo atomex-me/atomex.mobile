@@ -904,6 +904,7 @@ namespace atomex
         {
             CreateHdWallet();
             ClearStoragePswd();
+            ClearWarning();
             await Navigation.PushAsync(new AuthPage(this));
         }
 
