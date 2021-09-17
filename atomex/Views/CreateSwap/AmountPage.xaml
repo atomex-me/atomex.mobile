@@ -278,7 +278,7 @@
                         VerticalOptions="EndAndExpand"
                         Style="{DynamicResource MainButtonStyle}"
                         IsEnabled="{Binding CanConvert}"
-                        Command="{Binding ConfirmationPageCommand}" >
+                        Command="{Binding NextCommand}" >
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding CanConvert}"

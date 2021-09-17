@@ -1672,5 +1672,29 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("PrivateKeyCopied", resourceCulture);
             }
         }
+        
+        internal static string MinimumAllowedQtyWarning {
+            get {
+                return ResourceManager.GetString("MinimumAllowedQtyWarning", resourceCulture);
+            }
+        }
+        
+        internal static string NotSupportedSymbol {
+            get {
+                return ResourceManager.GetString("NotSupportedSymbol", resourceCulture);
+            }
+        }
+        
+        internal static string ServicesUnavailable {
+            get {
+                return ResourceManager.GetString("ServicesUnavailable", resourceCulture);
+            }
+        }
+        
+        internal static string BigAmount {
+            get {
+                return ResourceManager.GetString("BigAmount", resourceCulture);
+            }
+        }
     }
 }
