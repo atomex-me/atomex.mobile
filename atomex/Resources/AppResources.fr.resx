@@ -117,7 +117,7 @@
         <value>Débloquer</value>
     </data>
     <data name="Authentication" xml:space="preserve">
-        <value>Authentication</value>
+        <value>Authentification</value>
     </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Utilisez l'authentification biométrique pour vous connecter</value>
@@ -125,13 +125,13 @@
 
     <!-- PIN Page -->
     <data name="CreatePin" xml:space="preserve">
-        <value>Please create a PIN</value>
+        <value>Veuillez créer un code PIN</value>
     </data>
     <data name="EnterPin" xml:space="preserve">
-        <value>Enter your PIN</value>
+        <value>Saisissez votre code PIN</value>
     </data>
     <data name="ReEnterPin" xml:space="preserve">
-        <value>Please re-enter your PIN</value>
+        <value>Veuillez saisir à nouveau votre code PIN</value>
     </data>
 
     <!-- Create New Wallet Pages -->
@@ -202,7 +202,7 @@
         <value>Étape 5: Mot de passe de connexion</value>
     </data>
     <data name="StoragePasswordDescriptionText" xml:space="preserve">
-        <value>Ce mot de passe est utilisé pour protéger les clés secrètes de l'appareil et est utilisé chaque fois que vous lancez l'app de portefeuille. Le mot de passe ne doit pas être vide</value>
+        <value>Ce mot de passe est utilisé pour protéger les clés secrètes stockées et sera nécessaire à chaque démarrage de votre application de portefeuille. Le mot de passe ne doit pas être vide</value>
     </data>
     <data name="CreateButton" xml:space="preserve">
         <value>Créer</value>
@@ -253,15 +253,15 @@
         <value>Aucune transaction pour le moment</value>
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
-        <value>Une somme non confirmée</value>
+        <value>Montant non confirmé</value>
     </data>
 
     <!-- Addresses info Page -->
     <data name="AddressInfoPageTitle" xml:space="preserve">
-        <value>Adresse info</value>
+        <value>Informations sur l'adresse</value>
     </data>
     <data name="SelectAddress" xml:space="preserve">
-        <value>Sélectionner l'adresse</value>
+        <value>Sélectionnez une adresse</value>
     </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresses</value>
@@ -270,7 +270,7 @@
         <value>adresses</value>
     </data>
     <data name="Path" xml:space="preserve">
-        <value>Chemin d'accès</value>
+        <value>Voie</value>
     </data>
     <data name="Type" xml:space="preserve">
         <value>Type</value>
@@ -279,7 +279,7 @@
         <value>Clé</value>
     </data>
     <data name="ExportKeyButton" xml:space="preserve">
-        <value>Exportat de la clé privée</value>
+        <value>Exporter une clé privée</value>
     </data>
     
     <!-- Transaction Page -->
@@ -462,7 +462,7 @@
     
     <!-- Buy with card Page -->
     <data name="BuyWithCardPageTitle" xml:space="preserve">
-        <value>Acheter avec une carte</value>
+        <value>Acheter avec carte</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
         <value>Sélectionnez la devise à acheter</value>
@@ -543,13 +543,13 @@
         <value>Informations sur le jeton</value>
     </data>
     <data name="NoTokensLabel" xml:space="preserve">
-        <value>Pas de jetons pour le moment</value>
+        <value>Il n'y a pas encore de jetons</value>
     </data>
     <data name="NoTransfersLabel" xml:space="preserve">
-        <value>Aucun transfert pour le moment</value>
+        <value>Il n'y a pas encore d'échanges</value>
     </data>
     <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
-        <value>Mise à jour du solde......</value>
+        <value>Le solde des jetons est en cours de mise à jour...</value>
     </data>
     <data name="UpdateTokenButton" xml:space="preserve">
         <value>Rafraîchir</value>
@@ -558,7 +558,7 @@
         <value>Jetons</value>
     </data>
     <data name="TokenBalance" xml:space="preserve">
-        <value>Solde de jetons</value>
+        <value>Solde du jeton</value>
     </data>
     <data name="Transfers" xml:space="preserve">
         <value>Transferts</value>
@@ -567,7 +567,7 @@
         <value>Nom</value>
     </data>
     <data name="TokenId" xml:space="preserve">
-        <value>ID de jeton</value>
+        <value>ID du jeton</value>
     </data>
     <data name="TokenContract" xml:space="preserve">
         <value>Contrat de jeton</value>
@@ -887,7 +887,7 @@
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans le portefeuille. Êtes-vous sûr de vouloir copier la clé privée de {0}?</value>
+        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans votre portefeuille. Êtes-vous sûr de vouloir copier la clé privée pour {0}?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Clé privée copiée</value>
