@@ -120,7 +120,7 @@ namespace atomex
 
         private CancellationTokenSource Cancellation { get; set; }
 
-        private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(1);
+        private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
         private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
         private readonly int DefaultAttemptsCount = 5;
 
@@ -230,7 +230,7 @@ namespace atomex
 
             try
             {
-                await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
+                await SecureStorage.SetAsync(WalletName + "-" + "AuthType", "Pin");
                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
             }
             catch (Exception ex)
@@ -421,9 +421,9 @@ namespace atomex
 
         private async Task CheckPinExist()
         {
-            string authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthVersion");
+            string authType = await SecureStorage.GetAsync(WalletName + "-" + "AuthType");
 
-            if (authType == "1.1")
+            if (authType == "Pin")
             {
                 _header = AppResources.EnterPin;
                 _isPinExist = true;
@@ -494,17 +494,15 @@ namespace atomex
             {
                 string time = await SecureStorage.GetAsync(WalletName + "-" + "LockTime");
 
-                DateTime unlockTime = Convert.ToDateTime(time).ToLocalTime();
+                DateTime unlockTime = Convert.ToDateTime(time);
 
-                if (DateTime.Compare(DateTime.Now, unlockTime) < 0)
+                if (DateTime.Compare(DateTime.Now.ToLocalTime(), unlockTime) < 0)
                 {
                     Cancellation = new CancellationTokenSource();
 
                     IsLocked = true;
 
-
-                    var lockTime = DateTime.UtcNow.AddMinutes(LockTime.Minutes);
-                    var lockMinutes = Math.Ceiling(lockTime.Subtract(DateTime.UtcNow).TotalMinutes);
+                    var lockMinutes = Math.Ceiling(unlockTime.Subtract(DateTime.UtcNow.ToLocalTime()).TotalMinutes);
 
                     Warning = string.Format(CultureInfo.InvariantCulture, AppResources.TryAgainInMinutes, lockMinutes);
 
@@ -517,7 +515,15 @@ namespace atomex
 
                         await Task.Delay(CheckLockInterval);
 
-                        if (DateTime.Compare(DateTime.Now, unlockTime) >= 0)
+                        var newTimeMin = Math.Ceiling(unlockTime.Subtract(DateTime.UtcNow.ToLocalTime()).TotalMinutes);
+
+                        if (newTimeMin != lockMinutes)
+                        {
+                            Warning = string.Format(CultureInfo.InvariantCulture, AppResources.TryAgainInMinutes, newTimeMin);
+                            lockMinutes = newTimeMin;
+                        }
+
+                        if (DateTime.Compare(DateTime.Now.ToLocalTime(), unlockTime) >= 0)
                         {
                             try
                             {
@@ -585,7 +591,7 @@ namespace atomex
                 {
                     IsLocked = true;
 
-                    var lockTime = DateTime.UtcNow.AddMinutes(LockTime.Minutes);
+                    var lockTime = DateTime.UtcNow.ToLocalTime().AddMinutes(LockTime.Minutes);
                     await SecureStorage.SetAsync(WalletName + "-" + "LockTime", lockTime.ToString());
                     _ = StartLockTimer();
                 }

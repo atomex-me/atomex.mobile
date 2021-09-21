@@ -628,7 +628,7 @@ namespace atomex
                         try
                         {
                             await SecureStorage.SetAsync(WalletName, string.Empty);
-                            await SecureStorage.SetAsync(WalletName + "-" + "AuthVersion", "1.1");
+                            await SecureStorage.SetAsync(WalletName + "-" + "AuthType", "Pin");
                             await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
                         }
                         catch (Exception ex)

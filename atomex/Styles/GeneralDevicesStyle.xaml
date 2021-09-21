@@ -373,6 +373,29 @@
             </Setter.Value>
         </Setter> 
     </Style>
+    <Style x:Key="LockOverlay" TargetType="StackLayout">
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="RelativeLayout.WidthConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"/>
+        <Setter Property="RelativeLayout.HeightConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource NavigationBarBackgroundColorDark}, Light={StaticResource NavigationBarBackgroundColor}}"/>
+    </Style>
+    <Style x:Key="LockOverlayLabel" TargetType="Label">
+        <Setter Property="Padding" Value="20,20,20,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"/>
+        <Setter Property="FontSize" Value="22"/>
+    </Style>
+    <Style x:Key="LockOverlayWarning" TargetType="Label">
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
 
     <!-- Settings Pages -->
     <Style x:Key="OptionLabelStyle" TargetType="Label">

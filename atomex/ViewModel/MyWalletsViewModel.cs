@@ -36,9 +36,9 @@ namespace atomex
         {
             try
             {
-                string authType = await SecureStorage.GetAsync(wallet.Name + "-" + "AuthVersion");
+                string authType = await SecureStorage.GetAsync(wallet.Name + "-" + "AuthType");
 
-                if (authType == "1.1")
+                if (authType == "Pin")
                 {
                     await Navigation.PushAsync(new AuthPage(new UnlockViewModel(AtomexApp, wallet, Navigation)));
                 }

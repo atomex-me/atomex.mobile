@@ -1720,5 +1720,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("WalletHasBeenLocked", resourceCulture);
             }
         }
+        
+        internal static string BiometricAuthEnabled {
+            get {
+                return ResourceManager.GetString("BiometricAuthEnabled", resourceCulture);
+            }
+        }
     }
 }

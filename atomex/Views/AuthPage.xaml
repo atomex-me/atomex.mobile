@@ -252,11 +252,7 @@
                     </Label.Triggers>
                 </Label>
             </StackLayout>
-            <StackLayout Padding="20,0"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                         BackgroundColor="{AppThemeBinding Dark={StaticResource NavigationBarBackgroundColorDark}, Light={StaticResource NavigationBarBackgroundColor}}"
-                         VerticalOptions="FillAndExpand"
+            <StackLayout Style="{DynamicResource LockOverlay}"
                          IsVisible="{Binding IsLocked, TargetNullValue=False, FallbackValue=False}">
                 <StackLayout VerticalOptions="CenterAndExpand"
                              Margin="0,0,0,50">
@@ -265,19 +261,9 @@
                            HorizontalOptions="CenterAndExpand"
                            Source="AtomexLogo"/>
                     <Label Text="{helpers:Translate WalletHasBeenLocked}"
-                           Padding="20,20,20,0"
-                           FontFamily="{DynamicResource RegularFont}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"
-                           FontSize="22"/>
+                           Style="{DynamicResource LockOverlayLabel}" />
                     <Label Text="{Binding Warning}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           Padding="20,0"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"
-                           FontSize="18"/>
+                           Style="{DynamicResource LockOverlayWarning}" />
                 </StackLayout>
             </StackLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"

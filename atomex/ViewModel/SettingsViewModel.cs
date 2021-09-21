@@ -284,11 +284,11 @@ namespace atomex.ViewModel
                 StoragePassword?.Clear();
                 _ = ResetUseBiometricSetting();
                 await Navigation.PopAsync();
-                ToastService?.Show("Biometric authentication successfully enabled", ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                ToastService?.Show(AppResources.BiometricAuthEnabled, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             else
             {
-                Warning = AppResources.InvalidPassword;
+                Warning = AppResources.InvalidPin;
                 
                 StoragePassword.Clear();
                 OnPropertyChanged(nameof(StoragePassword));

@@ -893,16 +893,16 @@
         <value>Приватный ключ скопирован</value>
     </data>
     <data name="MinimumAllowedQtyWarning" xml:space="preserve">
-        <value>The amount must be greater than or equal to the minimum allowed amount {0} {1}</value>
+        <value>Сумма должна быть больше или равна минимальной допустимой сумме {0} {1}</value>
     </data>
     <data name="NotSupportedSymbol" xml:space="preserve">
-        <value>This symbol does not support direct conversion</value>
+        <value>Конверсия с этим символом не поддерживается</value>
     </data>
     <data name="ServicesUnavailable" xml:space="preserve">
-        <value>Atomex services unavailable. Please check your network connection or contact technical support</value>
+        <value>Сервисы Atomex недоступны. Проверьте подключение к сети или обратитесь в службу технической поддержки</value>
     </data>
     <data name="BigAmount" xml:space="preserve">
-        <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
+        <value>Сумма больше доступной. Используйте кнопку Max, чтобы получить максимальное доступное значение</value>
     </data>
     <data name="InvalidPin" xml:space="preserve">
         <value>Неверный PIN</value>
@@ -915,5 +915,8 @@
     </data>
     <data name="WalletHasBeenLocked" xml:space="preserve">
         <value>Этот кошелек заблокирован</value>
+    </data>
+    <data name="BiometricAuthEnabled" xml:space="preserve">
+        <value>Авторизация по биометрии успешно включена</value>
     </data>
 </root>
