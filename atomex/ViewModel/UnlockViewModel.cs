@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Threading;
@@ -47,13 +48,6 @@ namespace atomex
         {
             get => _storagePasswordConfirmation;
             set { _storagePasswordConfirmation = value; OnPropertyChanged(nameof(StoragePasswordConfirmation)); }
-        }
-
-        private SecureString _oldStoragePassword;
-        public SecureString OldStoragePassword
-        {
-            get => _oldStoragePassword;
-            set { _oldStoragePassword = value; OnPropertyChanged(nameof(OldStoragePassword)); }
         }
 
         private bool _isEnteredStoragePassword = false;
@@ -124,6 +118,8 @@ namespace atomex
         private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
         private readonly int DefaultAttemptsCount = 5;
 
+        private Account _userAccount;
+
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
@@ -189,7 +185,6 @@ namespace atomex
                         {
                             if (IsValidStoragePassword())
                             {
-                                // todo: await core re-encrypt with OldStoragePassword and StoragePassword
                                 _ = EnablePin();
                                 _ = UnlockAsync();
                             }
@@ -302,11 +297,13 @@ namespace atomex
         private async Task OnCancelButtonTapped()
         {
             Cancellation?.Cancel();
+            _userAccount = null;
             await Navigation.PopAsync();
         }
 
         private void OnBackButtonTapped()
         {
+            _userAccount = null;
             Cancellation?.Cancel();
         }
 
@@ -316,46 +313,56 @@ namespace atomex
 
             Account account = null;
 
-            if (StoragePassword == null || StoragePassword.Length == 0)
-            {
-                IsLoading = false;
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidPassword, AppResources.AcceptButton);
-                return;
-            }
-
             try
             {
-                var fileSystem = FileSystem.Current;
-
-                ClientType clientType;
-
-                switch (Device.RuntimePlatform)
+                if (_userAccount == null)
                 {
-                    case Device.iOS:
-                        clientType = ClientType.iOS;
-                        break;
-                    case Device.Android:
-                        clientType = ClientType.Android;
-                        break;
-                    default:
-                        clientType = ClientType.Unknown;
-                        break;
+                    var fileSystem = FileSystem.Current;
+
+                    ClientType clientType;
+
+                    switch (Device.RuntimePlatform)
+                    {
+                        case Device.iOS:
+                            clientType = ClientType.iOS;
+                            break;
+                        case Device.Android:
+                            clientType = ClientType.Android;
+                            break;
+                        default:
+                            clientType = ClientType.Unknown;
+                            break;
+                    }
+
+                    var walletPath = Path.Combine(
+                        fileSystem.PathToDocuments,
+                        WalletInfo.DefaultWalletsDirectory,
+                        WalletName,
+                        WalletInfo.DefaultWalletFileName);
+
+                    account = await Task.Run(() =>
+                    {
+                        return Account.LoadFromFile(
+                            walletPath,
+                            StoragePassword,
+                            AtomexApp.CurrenciesProvider,
+                            clientType);
+                    });
                 }
-
-                var walletPath = Path.Combine(
-                    fileSystem.PathToDocuments,
-                    WalletInfo.DefaultWalletsDirectory,
-                    WalletName,
-                    WalletInfo.DefaultWalletFileName);
-
-                account = await Task.Run(() =>
+                else
                 {
-                    return Account.LoadFromFile(
-                        walletPath,
-                        StoragePassword,
-                        AtomexApp.CurrenciesProvider,
-                        clientType);
-                });
+                    account = _userAccount;
+
+                    try
+                    {
+                        account.ChangePassword(StoragePassword);
+                        await SecureStorage.SetAsync(WalletName, SecureStringToString(StoragePassword));
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "Change password error");
+                    }
+                }
 
                 if (account != null)
                 {
@@ -386,8 +393,8 @@ namespace atomex
                         else
                         {
                             IsLoading = false;
+                            _userAccount = account;
                             StoragePasswordConfirmation = new SecureString();
-                            OldStoragePassword = StoragePassword;
                             ClearStoragePswd(); 
                             await Navigation.PushAsync(new AuthPage(this));
                         }
@@ -436,6 +443,20 @@ namespace atomex
 
             OnPropertyChanged(nameof(Header));
             OnPropertyChanged(nameof(IsPinExist));
+        }
+
+        private String SecureStringToString(SecureString value)
+        {
+            IntPtr valuePtr = IntPtr.Zero;
+            try
+            {
+                valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
+                return Marshal.PtrToStringUni(valuePtr);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+            }
         }
 
         private async Task ShakePage()
