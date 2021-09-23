@@ -16445,7 +16445,7 @@ namespace atomex.Droid
 			public const int ic_payment = 2131230986;
 			
 			// aapt resource value: 0x7F08010B
-			public const int ic_pin_del = 2131230987;
+			public const int ic_pin__del = 2131230987;
 			
 			// aapt resource value: 0x7F08010C
 			public const int ic_question = 2131230988;

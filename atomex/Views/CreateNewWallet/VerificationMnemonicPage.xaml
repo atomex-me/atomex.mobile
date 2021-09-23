@@ -42,23 +42,14 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                                <Frame Style="{DynamicResource EntryFrameStyle}"
-                                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                                       CornerRadius="6"
-                                       Padding="0"
-                                       Margin="3"
-                                       HeightRequest="36">
+                                <Frame Style="{DynamicResource SeedWordFrameStyle}"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}" Command="{Binding BindingContext.DeleteWordFromVerificationCommand, Source={x:Reference BindingContextPage}}"/>
                                     </Frame.GestureRecognizers>
                                     <Label Text="{Binding .}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           LineBreakMode="WordWrap"
-                                           FontSize="16"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"
-                                           Padding="8,0"/>
+                                           Style="{DynamicResource SeedWordLabelStyle}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 </Frame>
                             </StackLayout>
                         </DataTemplate>
@@ -86,23 +77,12 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout>
-                                    <Frame Style="{DynamicResource EntryFrameStyle}"
-                                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                           CornerRadius="6"
-                                           Padding="0"
-                                           Margin="3"
-                                           HeightRequest="36">
+                                    <Frame Style="{DynamicResource SeedWordFrameStyle}">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}" Command="{Binding BindingContext.AddWordToVerificationCommand, Source={x:Reference BindingContextPage}}"/>
                                         </Frame.GestureRecognizers>
                                         <Label Text="{Binding .}"
-                                               TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="16"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="Center"
-                                               LineBreakMode="WordWrap"
-                                               Padding="8,0"/>
+                                               Style="{DynamicResource SeedWordLabelStyle}"/>
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>

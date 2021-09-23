@@ -251,8 +251,8 @@
     <ImageAsset Include="Assets.xcassets\fr.imageset\fr.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_pin-del.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_pin-del.imageset\ic_pin-del.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -400,7 +400,8 @@
     <Folder Include="Assets.xcassets\NavBarBuy.imageset\" />
     <Folder Include="Assets.xcassets\fr.imageset\" />
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
-    <Folder Include="Assets.xcassets\ic_pin-del.imageset\" />
+    <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
+    <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

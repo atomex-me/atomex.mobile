@@ -917,6 +917,6 @@
         <value>This wallet has been locked</value>
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
-        <value>Biometric authentication successfully enabled</value>
+        <value>Biometric authentication enabled</value>
     </data>
 </root>

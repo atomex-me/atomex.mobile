@@ -207,8 +207,7 @@
                                Style="{DynamicResource PinNumberStyle}"/>
                     </Frame>
                     <Frame Grid.Row="3"
-                           Style="{DynamicResource PinNumberFrameStyle}"
-                           Padding="5">
+                           Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CancelCommand}"
                                                   Tapped="OnItemTapped"/>
@@ -235,7 +234,8 @@
                             <TapGestureRecognizer Command="{Binding DeleteCharCommand}"
                                                   Tapped="OnItemTapped"/>
                         </Frame.GestureRecognizers>
-                        <Image Source="ic_pin-del"/>
+                        <Image Source="ic_pin__del"
+                               Margin="20"/>
                     </Frame>
                 </Grid>
                 <Label Text="{Binding Warning}"

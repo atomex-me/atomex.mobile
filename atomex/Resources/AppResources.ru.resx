@@ -917,6 +917,6 @@
         <value>Этот кошелек заблокирован</value>
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
-        <value>Авторизация по биометрии успешно включена</value>
+        <value>Авторизация по биометрии включена</value>
     </data>
 </root>

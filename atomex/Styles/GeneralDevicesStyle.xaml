@@ -139,23 +139,6 @@
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
-    <Style x:Key="PinNumberStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="30"/>
-        <Setter Property="WidthRequest" Value="80"/>
-        <Setter Property="HeightRequest" Value="80"/>
-    </Style>
-    <Style x:Key="EnterPinLabelStyle" TargetType="Label">
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Padding" Value="0,20,0,0"/>
-        <Setter Property="VerticalTextAlignment" Value="Center"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
-    </Style>
 
     <!-- Picker -->
     <Style x:Key="PickerStyle" TargetType="Picker">
@@ -214,6 +197,28 @@
         <Setter Property="IsEnabled" Value="True"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="20"/>
+    </Style>
+    <Style x:Key="SeedWordFrameStyle" TargetType="Frame">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="HeightRequest" Value="36"/>
+    </Style>
+    <Style x:Key="SeedWordLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="8,0" Android="8,-2,8,0"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Start Page -->
@@ -327,7 +332,7 @@
     </Style>
     <Style x:Key="PinNumberFrameStyle" TargetType="Frame">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-        <Setter Property="Padding" Value="20"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="CornerRadius" Value="35"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
@@ -395,6 +400,28 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"/>
         <Setter Property="FontSize" Value="18"/>
+    </Style>
+    <Style x:Key="PinNumberStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0" Android="0,-6,0,0"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WidthRequest" Value="80"/>
+        <Setter Property="HeightRequest" Value="80"/>
+    </Style>
+    <Style x:Key="EnterPinLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Padding" Value="0,20,0,0"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 
     <!-- Settings Pages -->
