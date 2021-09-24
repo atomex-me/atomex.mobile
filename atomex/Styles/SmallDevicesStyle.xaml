@@ -326,7 +326,7 @@
 
     <!-- PIN Page -->
     <Style x:Key="PinIconsLayout" TargetType="StackLayout">
-        <Setter Property="Spacing" Value="20"/>
+        <Setter Property="Spacing" Value="15"/>
         <Setter Property="Margin" Value="0,10"/>
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
@@ -343,9 +343,9 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="CornerRadius" Value="6"/>
-        <Setter Property="HeightRequest" Value="12"/>
-        <Setter Property="WidthRequest" Value="12"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="HeightRequest" Value="10"/>
+        <Setter Property="WidthRequest" Value="10"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="IsClippedToBounds" Value="True"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
@@ -419,7 +419,7 @@
     <Style x:Key="EnterPinLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="0,10,0,0"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>

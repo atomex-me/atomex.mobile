@@ -133,6 +133,21 @@
     <data name="ReEnterPin" xml:space="preserve">
         <value>Lütfen PIN'inize tekrar girin</value>
     </data>
+    <data name="SetPinIsteadOfPswd" xml:space="preserve">
+        <value>Please set a PIN to get access to your wallet. Now it will be used instead of your previous Storage password</value>
+    </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Invalid PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>You have {0} attempts left</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Please try again in {0} minutes</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>This wallet has been locked</value>
+    </data>
 
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
@@ -903,18 +918,6 @@
     </data>
     <data name="BigAmount" xml:space="preserve">
         <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
-    </data>
-    <data name="InvalidPin" xml:space="preserve">
-        <value>Invalid PIN</value>
-    </data>
-    <data name="AttemptsLeft" xml:space="preserve">
-        <value>You have {0} attempts left</value>
-    </data>
-    <data name="TryAgainInMinutes" xml:space="preserve">
-        <value>Please try again in {0} minutes</value>
-    </data>
-    <data name="WalletHasBeenLocked" xml:space="preserve">
-        <value>This wallet has been locked</value>
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
         <value>Biometric authentication enabled</value>

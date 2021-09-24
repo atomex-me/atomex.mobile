@@ -255,7 +255,7 @@ namespace atomex
             IsEnteredStoragePassword = false;
             StoragePassword?.Clear();
             StoragePasswordConfirmation?.Clear();
-            Header = AppResources.CreatePin;
+            Header = AppResources.SetPinIsteadOfPswd;
             Warning = string.Empty;
 
             OnPropertyChanged(nameof(Header));
@@ -437,7 +437,7 @@ namespace atomex
             }
             else
             {
-                _header = AppResources.CreatePin;
+                _header = AppResources.SetPinIsteadOfPswd;
                 _isPinExist = false;
             }
 

@@ -133,6 +133,21 @@
     <data name="ReEnterPin" xml:space="preserve">
         <value>Пожалуйста, подтвердите PIN</value>
     </data>
+    <data name="SetPinIsteadOfPswd" xml:space="preserve">
+        <value>Пожалуйста, установите PIN к кошельку. Теперь он будет использоваться вместо вашего предыдущего пароля</value>
+    </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Неверный PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>У вас осталось {0} попытки</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Попытайтесь снова через {0} минуты</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>Этот кошелек заблокирован</value>
+    </data>
 
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
@@ -903,18 +918,6 @@
     </data>
     <data name="BigAmount" xml:space="preserve">
         <value>Сумма больше доступной. Используйте кнопку Max, чтобы получить максимальное доступное значение</value>
-    </data>
-    <data name="InvalidPin" xml:space="preserve">
-        <value>Неверный PIN</value>
-    </data>
-    <data name="AttemptsLeft" xml:space="preserve">
-        <value>У вас осталось {0} попытки</value>
-    </data>
-    <data name="TryAgainInMinutes" xml:space="preserve">
-        <value>Попытайтесь снова через {0} минуты</value>
-    </data>
-    <data name="WalletHasBeenLocked" xml:space="preserve">
-        <value>Этот кошелек заблокирован</value>
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
         <value>Авторизация по биометрии включена</value>
