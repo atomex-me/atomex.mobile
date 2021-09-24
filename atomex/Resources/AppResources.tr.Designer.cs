@@ -251,6 +251,54 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string CreatePin {
+            get {
+                return ResourceManager.GetString("CreatePin", resourceCulture);
+            }
+        }
+        
+        internal static string EnterPin {
+            get {
+                return ResourceManager.GetString("EnterPin", resourceCulture);
+            }
+        }
+        
+        internal static string ReEnterPin {
+            get {
+                return ResourceManager.GetString("ReEnterPin", resourceCulture);
+            }
+        }
+        
+        internal static string SetPinIsteadOfPswd {
+            get {
+                return ResourceManager.GetString("SetPinIsteadOfPswd", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidPin {
+            get {
+                return ResourceManager.GetString("InvalidPin", resourceCulture);
+            }
+        }
+        
+        internal static string AttemptsLeft {
+            get {
+                return ResourceManager.GetString("AttemptsLeft", resourceCulture);
+            }
+        }
+        
+        internal static string TryAgainInMinutes {
+            get {
+                return ResourceManager.GetString("TryAgainInMinutes", resourceCulture);
+            }
+        }
+        
+        internal static string WalletHasBeenLocked {
+            get {
+                return ResourceManager.GetString("WalletHasBeenLocked", resourceCulture);
+            }
+        }
+        
         internal static string CreateNewWalletPageTitle {
             get {
                 return ResourceManager.GetString("CreateNewWalletPageTitle", resourceCulture);
@@ -1676,6 +1724,12 @@ namespace atomex.Resources {
         internal static string BigAmount {
             get {
                 return ResourceManager.GetString("BigAmount", resourceCulture);
+            }
+        }
+        
+        internal static string BiometricAuthEnabled {
+            get {
+                return ResourceManager.GetString("BiometricAuthEnabled", resourceCulture);
             }
         }
     }

@@ -100,7 +100,7 @@
     
     <!-- My Wallets Page -->
     <data name="SelectWalletLabel" xml:space="preserve">
-        <value>Please, select your wallet</value>
+        <value>Please select your wallet</value>
     </data>
     <data name="MyWalletsTitle" xml:space="preserve">
         <value>My wallets</value>
@@ -111,7 +111,7 @@
         <value>Unlock wallet</value>
     </data>
     <data name="UnlockLabel" xml:space="preserve">
-        <value>Please, enter your password</value>
+        <value>Please enter your password</value>
     </data>
     <data name="UnlockButton" xml:space="preserve">
         <value>Unlock</value>
@@ -121,6 +121,32 @@
     </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Use biometric authentication to login into </value>
+    </data>
+
+    <!-- PIN Page -->
+    <data name="CreatePin" xml:space="preserve">
+        <value>Please create a PIN</value>
+    </data>
+    <data name="EnterPin" xml:space="preserve">
+        <value>Enter your PIN</value>
+    </data>
+    <data name="ReEnterPin" xml:space="preserve">
+        <value>Please re-enter your PIN</value>
+    </data>
+    <data name="SetPinIsteadOfPswd" xml:space="preserve">
+        <value>Please set a PIN to get access to your wallet. Now it will be used instead of your previous Storage password</value>
+    </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Invalid PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>You have {0} attempts left</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Please try again in {0} minutes</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>This wallet has been locked</value>
     </data>
     
     <!-- Create New Wallet Pages -->
@@ -134,13 +160,13 @@
         <value>Step 1: Wallet type</value>
     </data>
     <data name="SelectTypeLabel" xml:space="preserve">
-        <value>Please, select your wallet type</value>
+        <value>Please select your wallet type</value>
     </data>
     <data name="WalletNameStepLabel" xml:space="preserve">
         <value>Step 2: Wallet name</value>
     </data>
     <data name="EnterNameLabel" xml:space="preserve">
-        <value>Please, enter a name for your wallet</value>
+        <value>Please enter a name for your wallet</value>
     </data>
     <data name="WalletNameEntryPlaceholder" xml:space="preserve">
         <value>Wallet name</value>
@@ -179,10 +205,10 @@
         <value>Step 4: Mnemonic phrase verification</value>
     </data>
     <data name="MnemonicVerificationDescriptionText" xml:space="preserve">
-        <value>Please, confirm your mnemonic phrase. Click on the words to place them in the correct order</value>
+        <value>Please confirm your mnemonic phrase. Click on the words to place them in the correct order</value>
     </data>
     <data name="DerivedVerificationDescriptionText" xml:space="preserve">
-        <value>Please, enter your derived key password</value>
+        <value>Please enter your derived key password</value>
     </data>
     <data name="EnterDerivedPasswordText" xml:space="preserve">
         <value>If you used a password to additional protect the secret key, please enter it in the box below. If you enter the wrong password, you will not be able to access your secret key and wallet</value>
@@ -640,7 +666,7 @@
     
     <!-- Biometric setting popup -->
     <data name="EnableBiometricLabel" xml:space="preserve">
-        <value>Please, enter your password to enable biometric authentication</value>
+        <value>Please enter your password to enable biometric authentication</value>
     </data>
     
     <!-- Messages -->
@@ -807,7 +833,7 @@
         <value>Not enough liquidity to convert a specified amount</value>
     </data>
     <data name="PriceChangedError" xml:space="preserve">
-        <value>Oops, the price has changed during the order sending. Please, try again</value>
+        <value>Oops, the price has changed during the order sending. Please try again</value>
     </data>
     <data name="OrderRejectedError" xml:space="preserve">
         <value>Order rejected</value>
@@ -816,7 +842,7 @@
         <value>Atomex is not responding for a long time</value>
     </data>
     <data name="ConversionError" xml:space="preserve">
-        <value>Conversion error. Please, contact technical support</value>
+        <value>Conversion error. Please contact technical support</value>
     </data>
     <data name="AvailableFundsError" xml:space="preserve">
         <value>The transfer amount (including commission) exceeds the amount of available funds</value>
@@ -858,7 +884,7 @@
         <value>Device doesn't support secure storage on device</value>
     </data>
     <data name="NeedPermissionsForBiometricLogin" xml:space="preserve">
-        <value>Please, enable biometric authentication in the device settings</value>
+        <value>Please enable biometric authentication in the device settings</value>
     </data>
     <data name="NotAuthenticated" xml:space="preserve">
         <value>You were not authenticated</value>
@@ -892,5 +918,8 @@
     </data>
     <data name="BigAmount" xml:space="preserve">
         <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
+    </data>
+    <data name="BiometricAuthEnabled" xml:space="preserve">
+        <value>Biometric authentication enabled</value>
     </data>
 </root>

@@ -198,6 +198,28 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="20"/>
     </Style>
+    <Style x:Key="SeedWordFrameStyle" TargetType="Frame">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="HeightRequest" Value="30"/>
+    </Style>
+    <Style x:Key="SeedWordLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="8,0" Android="8,-2,8,0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- Start Page -->
     <Style x:Key="LogoLabelStyle" TargetType="Label">
@@ -256,7 +278,7 @@
     </Style>
     <Style x:Key="TestNetWalletFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="20,15"/>
+        <Setter Property="Padding" Value="20,10"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="30"/>
@@ -264,7 +286,7 @@
     </Style>
     <Style x:Key="MainNetWalletFrameStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="20,15"/>
+        <Setter Property="Padding" Value="20,10"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="HasShadow" Value="False"/>
         <Setter Property="HeightRequest" Value="30"/>
@@ -288,6 +310,10 @@
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="WalletIconStyle" TargetType="Image">
+        <Setter Property="WidthRequest" Value="24"/>
+        <Setter Property="HeightRequest" Value="24"/>
+    </Style>
 
     <!-- Unlock Page -->
     <Style x:Key="UnlockWalletTextStyle" TargetType="Label">
@@ -295,6 +321,107 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="10,10,10,0"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- PIN Page -->
+    <Style x:Key="PinIconsLayout" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="15"/>
+        <Setter Property="Margin" Value="0,10"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="PinNumberFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="30"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+        <Setter Property="IsClippedToBounds" Value="True"/>
+    </Style>
+    <Style x:Key="PinIconEmptyStyle" TargetType="Frame">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="HeightRequest" Value="10"/>
+        <Setter Property="WidthRequest" Value="10"/>
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="IsClippedToBounds" Value="True"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="PinIconFullStyle" TargetType="Frame" BasedOn="{StaticResource PinIconEmptyStyle}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+    </Style>
+    <Style x:Key="PinCodeGridStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="0,10"/>
+        <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+        <Setter Property="RowSpacing" Value="10"/>
+        <Setter Property="ColumnSpacing" Value="10"/>
+        <Setter Property="Grid.RowDefinitions">
+            <Setter.Value>
+                <RowDefinitionCollection>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                </RowDefinitionCollection>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Grid.ColumnDefinitions">
+            <Setter.Value>
+                <ColumnDefinitionCollection>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                </ColumnDefinitionCollection>
+            </Setter.Value>
+        </Setter> 
+    </Style>
+    <Style x:Key="LockOverlay" TargetType="StackLayout">
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="RelativeLayout.WidthConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"/>
+        <Setter Property="RelativeLayout.HeightConstraint" Value="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource NavigationBarBackgroundColorDark}, Light={StaticResource NavigationBarBackgroundColor}}"/>
+    </Style>
+    <Style x:Key="LockOverlayLabel" TargetType="Label">
+        <Setter Property="Padding" Value="20,20,20,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+    <Style x:Key="LockOverlayWarning" TargetType="Label">
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColorDark}}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+    <Style x:Key="PinNumberStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Padding">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Thickness" iOS="5,0" Android="5,-6,5,0"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="WidthRequest" Value="60"/>
+        <Setter Property="HeightRequest" Value="60"/>
+    </Style>
+    <Style x:Key="EnterPinLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="0,10,0,0"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 

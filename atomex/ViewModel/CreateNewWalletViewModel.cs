@@ -12,6 +12,7 @@ using atomex.Models;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel;
+using atomex.Views;
 using atomex.Views.CreateNewWallet;
 using Atomex;
 using Atomex.Common;
@@ -61,6 +62,13 @@ namespace atomex
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(CurrentAction));
             }
+        }
+
+        private string _header;
+        public string Header
+        {
+            get => _header;
+            set { _header = value; OnPropertyChanged(nameof(Header)); }
         }
 
         private string _title;
@@ -232,6 +240,15 @@ namespace atomex
             set { _derivedPswdVerified = value; OnPropertyChanged(nameof(DerivedPswdVerified)); }
         }
 
+        private bool _isEnteredStoragePassword = false;
+        public bool IsEnteredStoragePassword
+        {
+            get => _isEnteredStoragePassword;
+            set { _isEnteredStoragePassword = value; OnPropertyChanged(nameof(IsEnteredStoragePassword)); }
+        }
+
+        private readonly int DefaultAttemptsCount = 5;
+
         public void ResetMnemonicCollections()
         {
             Random rnd = new Random();
@@ -339,23 +356,11 @@ namespace atomex
             set { _derivedPasswordConfirmation = value; OnPropertyChanged(nameof(DerivedPasswordConfirmation)); }
         }
 
-        private int _storagePasswordScore;
-        public int StoragePasswordScore
-        {
-            get => _storagePasswordScore;
-            set { _storagePasswordScore = value; OnPropertyChanged(nameof(StoragePasswordScore)); }
-        }
-
         private SecureString _storagePassword;
         public SecureString StoragePassword
         {
             get => _storagePassword;
-            set
-            {
-                _storagePassword = value;
-                StoragePasswordScore = (int)PasswordAdvisor.CheckStrength(StoragePassword);
-                OnPropertyChanged(nameof(StoragePassword));
-            }
+            set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
         }
 
         private SecureString _storagePasswordConfirmation;
@@ -377,6 +382,10 @@ namespace atomex
             Entropy = WordCountToEntropyLength.FirstOrDefault();
             WalletName = string.Empty;
             Mnemonic = string.Empty;
+            StoragePassword = new SecureString();
+            DerivedPassword = new SecureString();
+            DerivedPasswordConfirmation = new SecureString();
+            StoragePasswordConfirmation = new SecureString();
         }
 
         private void SaveWalletName()
@@ -548,23 +557,18 @@ namespace atomex
             Warning = string.Empty;
         }
 
-        private void CheckStoragePassword()
+        private bool IsValidStoragePassword()
         {
-            if (StoragePasswordScore < (int)PasswordAdvisor.PasswordScore.TooShort)
-            {
-                Warning = AppResources.PasswordHasInsufficientComplexity;
-                return;
-            }
-
             if (StoragePassword != null &&
                 StoragePasswordConfirmation != null &&
                 !StoragePassword.SecureEqual(StoragePasswordConfirmation) || StoragePasswordConfirmation == null)
             {
                 Warning = AppResources.PasswordsDoNotMatch;
-                return;
+                return false;
             }
 
             Warning = string.Empty;
+            return true;
         }
 
         private void CreateHdWallet()
@@ -585,14 +589,6 @@ namespace atomex
             try
             {
                 IsLoading = true;
-
-                CheckStoragePassword();
-
-                if (Warning != string.Empty)
-                {
-                    IsLoading = false;
-                    return;
-                }
 
                 Account account = null;
 
@@ -632,6 +628,8 @@ namespace atomex
                         try
                         {
                             await SecureStorage.SetAsync(WalletName, string.Empty);
+                            await SecureStorage.SetAsync(WalletName + "-" + "AuthType", "Pin");
+                            await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
                         }
                         catch (Exception ex)
                         {
@@ -656,21 +654,24 @@ namespace atomex
                     }
                     else
                     {
-                        IsLoading = false;
                         await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
                     }
                 }
                 catch (CryptographicException e)
                 {
-                    IsLoading = false;
+                    _ = ShakePage();
                     Log.Error(e, "Create wallet error");
                 }
             }
             catch (Exception e)
             {
-                IsLoading = false;
+                _ = ShakePage();
                 Log.Error(e, "Create wallet error");
             }
+
+            IsLoading = false;
+            StoragePassword.Clear();
+            OnPropertyChanged(nameof(StoragePassword));
         }
 
         private ICommand _setTestNetTypeCommand;
@@ -723,6 +724,110 @@ namespace atomex
 
         private ICommand _createWalletCommand;
         public ICommand CreateWalletCommand => _createWalletCommand ??= new Command(async () => await ConnectToWallet());
+
+        private ICommand _addCharCommand;
+        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>((value) => AddChar(value));
+
+        private ICommand _deleteCharCommand;
+        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
+
+        private ICommand _cancelCommand;
+        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
+
+        private async Task OnCancelButtonTapped()
+        {
+            await Navigation.PopAsync();
+        }
+
+        private void AddChar(string str)
+        {
+            if (!IsEnteredStoragePassword)
+            {
+                if (StoragePassword?.Length < 4)
+                {
+                    foreach (char c in str)
+                    {
+                        StoragePassword.AppendChar(c);
+                    }
+
+                    OnPropertyChanged(nameof(StoragePassword));
+
+                    if (StoragePassword?.Length == 4)
+                    {
+                        IsEnteredStoragePassword = true;
+
+                        Header = AppResources.ReEnterPin;
+                        OnPropertyChanged(nameof(Header));
+                    }
+                }
+            }
+            else
+            {
+                if (StoragePasswordConfirmation?.Length < 4)
+                {
+                    foreach (char c in str)
+                    {
+                        StoragePasswordConfirmation.AppendChar(c);
+                    }
+
+                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
+
+                    if (StoragePasswordConfirmation?.Length == 4)
+                    {
+                        if (IsValidStoragePassword())
+                        {
+                            _ = ConnectToWallet();
+                        }
+                        else
+                        {
+                            _ = ShakePage();
+                            ClearStoragePswd();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RemoveChar()
+        {
+            if (!IsEnteredStoragePassword)
+            {
+                if (StoragePassword?.Length != 0)
+                {
+                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                    OnPropertyChanged(nameof(StoragePassword));
+                }
+            }
+            else
+            {
+                if (StoragePasswordConfirmation?.Length != 0)
+                {
+                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
+                }
+            }
+        }
+
+        private async Task ShakePage()
+        {
+            try
+            {
+                Vibration.Vibrate();
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                Log.Error(ex, "Vibration not supported on device");
+            }
+
+            var view = Application.Current.MainPage;
+            await view.TranslateTo(-15, 0, 50);
+            await view.TranslateTo(15, 0, 50);
+            await view.TranslateTo(-10, 0, 50);
+            await view.TranslateTo(10, 0, 50);
+            await view.TranslateTo(-5, 0, 50);
+            await view.TranslateTo(5, 0, 50);
+            view.TranslationX = 0;
+        }
 
         private async Task SetMainNetType()
         {
@@ -799,7 +904,8 @@ namespace atomex
         {
             CreateHdWallet();
             ClearStoragePswd();
-            await Navigation.PushAsync(new CreateStoragePasswordPage(this));
+            ClearWarning();
+            await Navigation.PushAsync(new AuthPage(this));
         }
 
         private void ClearWarning()
@@ -815,17 +921,22 @@ namespace atomex
         private void ClearDerivedPswd()
         {
             Warning = string.Empty;
-            DerivedPassword = null;
-            DerivedPasswordConfirmation = null;
+            DerivedPassword.Clear();
+            DerivedPasswordConfirmation.Clear();
             DerivedPasswordScore = 0;
         }
 
         private void ClearStoragePswd()
         {
             Warning = string.Empty;
-            StoragePassword = null;
-            StoragePasswordConfirmation = null;
-            StoragePasswordScore = 0;
+            IsEnteredStoragePassword = false;
+            StoragePassword.Clear();
+            StoragePasswordConfirmation.Clear();
+            Header = AppResources.CreatePin;
+
+            OnPropertyChanged(nameof(Header));
+            OnPropertyChanged(nameof(StoragePassword));
+            OnPropertyChanged(nameof(StoragePasswordConfirmation));
         }
     }
 }

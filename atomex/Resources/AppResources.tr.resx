@@ -117,12 +117,38 @@
         <value>Engeli kaldırmak</value>
     </data>
     <data name="Authentication" xml:space="preserve">
-        <value>Doğrulama</value>
+        <value>Kimlik doğrulama</value>
     </data>
     <data name="UseBiometric" xml:space="preserve">
         <value>Oturum açmak için biyometrik kimlik doğrulama kullanın</value>
     </data>
-    
+
+    <!-- PIN Page -->
+    <data name="CreatePin" xml:space="preserve">
+        <value>Lütfen bir PIN oluşturun</value>
+    </data>
+    <data name="EnterPin" xml:space="preserve">
+        <value>PIN'inizi girin</value>
+    </data>
+    <data name="ReEnterPin" xml:space="preserve">
+        <value>Lütfen PIN'inize tekrar girin</value>
+    </data>
+    <data name="SetPinIsteadOfPswd" xml:space="preserve">
+        <value>Please set a PIN to get access to your wallet. Now it will be used instead of your previous Storage password</value>
+    </data>
+    <data name="InvalidPin" xml:space="preserve">
+        <value>Invalid PIN</value>
+    </data>
+    <data name="AttemptsLeft" xml:space="preserve">
+        <value>You have {0} attempts left</value>
+    </data>
+    <data name="TryAgainInMinutes" xml:space="preserve">
+        <value>Please try again in {0} minutes</value>
+    </data>
+    <data name="WalletHasBeenLocked" xml:space="preserve">
+        <value>This wallet has been locked</value>
+    </data>
+
     <!-- Create New Wallet Pages -->
     <data name="CreateNewWalletPageTitle" xml:space="preserve">
         <value>Cüzdan oluşturmak</value>
@@ -242,7 +268,7 @@
         <value>Henüz işlem yok</value>
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
-        <value>Doğrulanmamış miktar</value>
+        <value>Eyit edilmemiş miktar</value>
     </data>
 
     <!-- Addresses info Page -->
@@ -250,7 +276,7 @@
         <value>Adres bilgisi</value>
     </data>
     <data name="SelectAddress" xml:space="preserve">
-        <value>Adres seçin</value>
+        <value>Bir adres seçin</value>
     </data>
     <data name="Addresses" xml:space="preserve">
         <value>Adresler</value>
@@ -262,13 +288,13 @@
         <value>Yol</value>
     </data>
     <data name="Type" xml:space="preserve">
-        <value>Tip</value>
+        <value>Çeşit</value>
     </data>
     <data name="Key" xml:space="preserve">
         <value>Anahtar</value>
     </data>
     <data name="ExportKeyButton" xml:space="preserve">
-        <value>Özel bir anahtarı exportu</value>
+        <value>Özel anahtarın ihracati</value>
     </data>
     
     <!-- Transaction Page -->
@@ -454,7 +480,7 @@
         <value>Kartla satın al</value>
     </data>
     <data name="SelectCurrencyToBuyLabel" xml:space="preserve">
-        <value>Satın alınacak para birimini seçin</value>
+        <value>Satın almak için para birimini seçin</value>
     </data>
 
     <!-- Swap Info Page -->
@@ -526,40 +552,40 @@
 
     <!-- Tezos tokens list, token info Pages -->
     <data name="TezosTokensListPageTitle" xml:space="preserve">
-        <value>Tezos jetonları</value>
+        <value>Tezos Tokenleri</value>
     </data>
     <data name="TokenInfoPageTitle" xml:space="preserve">
-        <value>Jeton bilgisi</value>
+        <value>Tokenlar bilgisi</value>
     </data>
     <data name="NoTokensLabel" xml:space="preserve">
-        <value>Henüz jeton yok</value>
+        <value>Tokenlar henüz yok</value>
     </data>
     <data name="NoTransfersLabel" xml:space="preserve">
-        <value>Henüz transfer yok</value>
+        <value>Henüz takas yok</value>
     </data>
     <data name="TokenBalanceUpdatingLabel" xml:space="preserve">
-        <value>Jeton bakiyesi güncellemesi...</value>
+        <value>Token bakiyesi güncelleniyor...</value>
     </data>
     <data name="UpdateTokenButton" xml:space="preserve">
-        <value>Jetonları yenile</value>
+        <value>Tokenlari yenilemek</value>
     </data>
     <data name="Tokens" xml:space="preserve">
-        <value>Jetonlar</value>
+        <value>Token</value>
     </data>
     <data name="TokenBalance" xml:space="preserve">
-        <value>Jeton bakiyesi</value>
+        <value>Token bakiyesi</value>
     </data>
     <data name="Transfers" xml:space="preserve">
         <value>Transferler</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Başlık</value>
+        <value>İsim</value>
     </data>
     <data name="TokenId" xml:space="preserve">
-        <value>Jeton ID</value>
+        <value>ID token</value>
     </data>
     <data name="TokenContract" xml:space="preserve">
-        <value>Jeton sözleşmesi</value>
+        <value>Token sözleşmesi</value>
     </data>
     <data name="ShowInIpfsButton" xml:space="preserve">
         <value>Ipfs'de göster</value>
@@ -876,7 +902,7 @@
         <value>Swap geçmişi, cihazınızda yerel olarak depolanır. Bu, başka bir cihazda gerçekleştirilen işlemleri görmeyeceğiniz anlamına gelir.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Özel anahtarı panoya kopyalamak, cüzdandaki tüm paranızın kaybedilmesine neden olabilir. {0} için özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
+        <value>Özel anahtarı panoya kopyalamak, cüzdanınızdaki tüm madeni paralarınızın kaybolmasına neden olabilir. {0} için özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Özel anahtar kopyalandı</value>
@@ -892,5 +918,8 @@
     </data>
     <data name="BigAmount" xml:space="preserve">
         <value>Amount is greater than the available. Please use the Max button to get the maximum available value</value>
+    </data>
+    <data name="BiometricAuthEnabled" xml:space="preserve">
+        <value>Biometric authentication enabled</value>
     </data>
 </root>

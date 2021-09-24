@@ -19,7 +19,8 @@
                        TextTransform="Uppercase"
                        Padding="20,5"/>
                 <Frame CornerRadius="10"
-                       Style="{DynamicResource EntryFrameStyle}">
+                       Style="{DynamicResource EntryFrameStyle}"
+                       Padding="0,5">
                     <StackLayout BindableLayout.ItemsSource="{Binding Languages}"
                                  BackgroundColor="Transparent"
                                  Spacing="0">
@@ -30,7 +31,8 @@
                                              Padding="20,0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}"
-                                                              Command="{Binding BindingContext.ChangeLanguageCommand, Source={x:Reference Page}}"/>
+                                                              Command="{Binding BindingContext.ChangeLanguageCommand, Source={x:Reference Page}}"
+                                                              Tapped="OnItemTapped"/>
                                     </StackLayout.GestureRecognizers>
                                     <Image Source="{Binding Code}"
                                            VerticalOptions="Center"

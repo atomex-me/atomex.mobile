@@ -123,7 +123,7 @@ namespace atomex.Droid
               .MinimumLevel.Debug()
               .WriteTo.Sentry(o =>
               {
-                  o.Dsn = "https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6";
+                  o.Dsn = new Dsn("https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6");
                   o.MinimumEventLevel = LogEventLevel.Error;
                   o.MinimumBreadcrumbLevel = LogEventLevel.Error;
                   o.AttachStacktrace = true;
