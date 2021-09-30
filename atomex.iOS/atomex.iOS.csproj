@@ -253,6 +253,24 @@
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__progress.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__progress.imageset\swap-16-progress.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCancelled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCancelled.imageset\swap-49-cancelled.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -276,6 +294,12 @@
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
+      <Version>4.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Com.Airbnb.iOS.Lottie">
+      <Version>2.5.13</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -402,6 +426,20 @@
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
     <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
     <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
+    <Folder Include="Assets.xcassets\ic_completed.imageset\" />
+    <Folder Include="Assets.xcassets\ic_loader__progress.imageset\" />
+    <Folder Include="Assets.xcassets\ic_loader__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__completed.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__canceled.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__progress.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
+    <Folder Include="Assets.xcassets\SwapCompleted.imageset\" />
+    <Folder Include="Assets.xcassets\SwapCancelled.imageset\" />
+    <Folder Include="Assets.xcassets\SwapInProgress.imageset\" />
+    <Folder Include="Assets\" />
+    <Folder Include="Assets\Animations\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
@@ -413,5 +451,7 @@
     <BundleResource Include="Resources\Roboto-Medium.ttf" />
     <BundleResource Include="Resources\Roboto-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
+    <BundleResource Include="Assets\Animations\loader_light__blue.json" />
+    <BundleResource Include="Assets\Animations\loader_dark__blue.json" />
   </ItemGroup>
 </Project>

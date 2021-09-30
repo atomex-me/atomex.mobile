@@ -69,13 +69,7 @@
                                  Binding="{Binding HasWallets}"
                                  Value="False">
                         <Setter Property="Opacity"
-                                Value="0.7"/>
-                        <Setter Property="BackgroundColor"
-                                Value="LightGray"/>
-                        <Setter Property="BorderColor"
-                                Value="LightGray"/>
-                        <Setter Property="TextColor"
-                                Value="Gray"/>
+                                Value="0.3"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

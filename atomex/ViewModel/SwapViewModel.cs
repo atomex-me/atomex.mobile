@@ -48,6 +48,8 @@ namespace atomex
             SwapCompactState.Unsettled  => "Unsettled",
             _ => throw new ArgumentOutOfRangeException(),
         };
+
+        public string Status { get; set; }
     }
 }
 

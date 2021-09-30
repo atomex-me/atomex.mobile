@@ -37,7 +37,7 @@
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                          Margin="20"
                          Opacity="{Binding Opacity}"
-                         Spacing="0">
+                         Spacing="0.5">
                 <Label Text="{helpers:Translate DelegateToBakeryLabel}"
                        FontFamily="{DynamicResource BoldFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -51,7 +51,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
-                        <RowDefinition Height="0.5" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
@@ -120,10 +119,6 @@
                             <TapGestureRecognizer Command="{Binding ShowBakersCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="2"
-                                 Grid.ColumnSpan="4"
-                                 Margin="20,0,0,0"/>
                 </Grid>       
                 <Grid VerticalOptions="Fill"
                       HorizontalOptions="Fill"
@@ -133,7 +128,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20" />
                         <RowDefinition Height="40" />
-                        <RowDefinition Height="0.5" />
                     </Grid.RowDefinitions>
                     <Label Text="{helpers:Translate ToAddressLabel}"
                            Style="{DynamicResource EntryHintStyle}"
@@ -160,9 +154,6 @@
                             </controls:CustomEntry.Behaviors>
                         </controls:CustomEntry>
                     </Frame>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="2"
-                                 Margin="20,0,0,0"/>
                 </Grid>
                 <Grid VerticalOptions="Fill"
                       HorizontalOptions="Fill"
@@ -172,7 +163,6 @@
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
-                        <RowDefinition Height="0.5" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="9*" />
@@ -231,10 +221,6 @@
                             <TapGestureRecognizer Tapped="OnFromAddressPickerClicked"/>
                         </Image.GestureRecognizers>
                     </Image>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="3"
-                                 Grid.ColumnSpan="2"
-                                 Margin="20,0,0,0"/>
                 </Grid>
                 <controls:CustomFrame CornerRadius="0,0,20,20"
                                       x:Name="FeeFrame"
