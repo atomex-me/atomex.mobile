@@ -266,11 +266,11 @@
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCancelled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCancelled.imageset\swap-49-cancelled.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -440,6 +440,7 @@
     <Folder Include="Assets.xcassets\SwapInProgress.imageset\" />
     <Folder Include="Assets\" />
     <Folder Include="Assets\Animations\" />
+    <Folder Include="Assets.xcassets\SwapCanceled.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

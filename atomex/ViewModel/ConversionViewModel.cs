@@ -813,50 +813,13 @@ namespace atomex.ViewModel
             {
                 var swaps = await AtomexApp.Account
                     .GetSwapsAsync();
-
+       
                 var swapViewModels = swaps
                                    .Select(s => SwapViewModelFactory.CreateSwapViewModel(s, Currencies))
                                    .ToList()
                                    .SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
 
                 Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
-
-
-                // test
-                var testSwap = new SwapViewModel
-                {
-                    CompactState = SwapCompactState.InProgress,
-                    Id = "123",
-                    Time = new DateTime(2021, 09, 20, 22, 35, 5),
-
-                    FromAmount = 12,
-                    FromCurrencyCode = "BTC",
-
-                    ToAmount = 29753,
-                    ToCurrencyCode = "ETH",
-
-                    Price = 41843,
-
-                    Status = "Initialization"
-                };
-                var testSwap2 = new SwapViewModel
-                {
-                    CompactState = SwapCompactState.InProgress,
-                    Id = "345",
-                    Time = new DateTime(2021, 09, 20, 21, 39, 6),
-
-                    FromAmount = 54,
-                    FromCurrencyCode = "LTC",
-
-                    ToAmount = 6,
-                    ToCurrencyCode = "ETH",
-
-                    Price = 219,
-
-                    Status = "Exchanging"
-                };
-                Swaps.Add(testSwap);
-                Swaps.Add(testSwap2);
 
                 var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
                 GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);

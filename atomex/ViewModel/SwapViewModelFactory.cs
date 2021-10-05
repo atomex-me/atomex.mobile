@@ -1,6 +1,9 @@
-﻿using Atomex.Abstract;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Atomex.Abstract;
 using Atomex.Common;
 using Atomex.Core;
+using static Atomex.ViewModels.Helpers;
 
 namespace atomex
 {
@@ -30,6 +33,8 @@ namespace atomex
 
                 ToAmount         = toAmount,
                 ToCurrencyCode   = purchasedCurrency.Name,
+
+                DetailingInfo    = GetSwapDetailingInfo(swap).ToList(),
 
                 Price            = swap.Price,
                 PriceFormat      = $"F{quoteCurrency.Digits}"

@@ -3,9 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.SwapInfoPage"
              Title="{helpers:Translate SwapInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:EqualsConverter x:Key="EqualsConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0"
@@ -30,19 +38,19 @@
                                      Binding="{Binding State}"
                                      Value="Canceled">
                             <Setter Property="Source"
-                                    Value="SwapCancelled"/>
+                                    Value="SwapCanceled"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding State}"
                                      Value="Refunded">
                             <Setter Property="Source"
-                                    Value="SwapCancelled"/>
+                                    Value="SwapCanceled"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding State}"
                                      Value="Unsettled">
                             <Setter Property="Source"
-                                    Value="SwapCancelled"/>
+                                    Value="SwapCanceled"/>
                         </DataTrigger>
                     </Image.Triggers>
                 </Image>
@@ -90,7 +98,7 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Text="Do not close the app until the swap is completed"
+                <Label Text="{Binding StateDescription}"
                        Padding="10"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
@@ -305,7 +313,7 @@
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -316,18 +324,72 @@
                                HeightRequest="16"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"/>
-                        <Image Source="ic_status__completed"
-                               WidthRequest="16"
+                        <Image WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
-                               HorizontalOptions="Center">
+                               HorizontalOptions="Center"
+                               IsVisible="False">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding Status}"
-                                             Value="Initialization">
+                                             Value="Exchanging">
                                     <Setter Property="IsVisible"
-                                            Value="False"/>
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
                                 </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding Status}"
+                                             Value="Completion">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Completed">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                </DataTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Canceled"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Initialization"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Refunded"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Initialization"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Unsettled"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Initialization"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
                             </Image.Triggers>
                         </Image>
                         <lottie:AnimationView WidthRequest="16"
@@ -339,16 +401,19 @@
                                               RepeatMode="Infinite"
                                               Speed="1"
                                               VerticalOptions="Start"
-                                              HorizontalOptions="Center"
-                                              IsVisible="False">
-                            <lottie:AnimationView.Triggers>
-                                <DataTrigger TargetType="lottie:AnimationView"
-                                             Binding="{Binding Status}"
-                                             Value="Initialization">
-                                    <Setter Property="IsVisible"
-                                            Value="True"/>
-                                </DataTrigger>
-                            </lottie:AnimationView.Triggers>
+                                              HorizontalOptions="Center">
+                            <lottie:AnimationView.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="Status"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="Initialization"/>
+                                    <Binding Path="State"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="In Progress"/>
+                                </MultiBinding>
+                            </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
                         <Label Text="Initialization"
                                Grid.Column="1"
@@ -373,13 +438,21 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="Completed on March 9, 12:30pm"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               VerticalTextAlignment="Start"/>
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
+                                     BackgroundColor="Transparent"
+                                     BindableLayout.ItemsSource="{Binding InitStatusMessages}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Text="{Binding .}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           VerticalTextAlignment="Start"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="0"
@@ -387,7 +460,7 @@
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -398,6 +471,90 @@
                                HeightRequest="16"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"/>
+                        <Image WidthRequest="16"
+                               HeightRequest="16"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding Status}"
+                                             Value="Completion">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Completed">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                </DataTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Completion"/>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="In Progress"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Canceled"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Initialization"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Canceled"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Exchanging"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Refunded"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Exchanging"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                                <MultiTrigger TargetType="Image">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding State}"
+                                                          Value="Unsettled"/>
+                                        <BindingCondition Binding="{Binding Status}"
+                                                          Value="Exchanging"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </MultiTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <lottie:AnimationView WidthRequest="16"
                                               HeightRequest="16"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
@@ -407,16 +564,19 @@
                                               RepeatMode="Infinite"
                                               Speed="1"
                                               VerticalOptions="Start"
-                                              HorizontalOptions="Center"
-                                              IsVisible="False">
-                            <lottie:AnimationView.Triggers>
-                                <DataTrigger TargetType="lottie:AnimationView"
-                                             Binding="{Binding Status}"
-                                             Value="Exchanging">
-                                    <Setter Property="IsVisible"
-                                            Value="True"/>
-                                </DataTrigger>
-                            </lottie:AnimationView.Triggers>
+                                              HorizontalOptions="Center">
+                            <lottie:AnimationView.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="Status"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="Exchanging"/>
+                                    <Binding Path="State"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="In Progress"/>
+                                </MultiBinding>
+                            </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
                         <Label Text="Exchanging"
                                Grid.Column="1"
@@ -432,7 +592,7 @@
                                Source="ic_line__full"
                                VerticalOptions="FillAndExpand"
                                HorizontalOptions="Center"
-                                IsVisible="False">
+                               IsVisible="False">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding Status}"
@@ -440,15 +600,29 @@
                                     <Setter Property="IsVisible"
                                             Value="True"/>
                                 </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Completed">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="Ethereum redeem broadcasted"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               VerticalTextAlignment="Start"/>
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
+                                     BackgroundColor="Transparent"
+                                     BindableLayout.ItemsSource="{Binding ExchangeStatusMessages}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Text="{Binding .}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           VerticalTextAlignment="Start"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="0"
@@ -456,7 +630,7 @@
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -467,6 +641,46 @@
                                HeightRequest="16"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"/>
+                        <Image WidthRequest="16"
+                               HeightRequest="16"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Completed">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__completed"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Canceled">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Unsettled">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Refunded">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                    <Setter Property="Source"
+                                            Value="ic_status__canceled"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <lottie:AnimationView WidthRequest="16"
                                               HeightRequest="16"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
@@ -476,16 +690,19 @@
                                               RepeatMode="Infinite"
                                               Speed="1"
                                               VerticalOptions="Start"
-                                              HorizontalOptions="Center"
-                                              IsVisible="False">
-                            <lottie:AnimationView.Triggers>
-                                <DataTrigger TargetType="lottie:AnimationView"
-                                             Binding="{Binding Status}"
-                                             Value="Completion">
-                                    <Setter Property="IsVisible"
-                                            Value="True"/>
-                                </DataTrigger>
-                            </lottie:AnimationView.Triggers>
+                                              HorizontalOptions="Center">
+                            <lottie:AnimationView.IsVisible>
+                                <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                    <Binding Path="Status"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="Completion"/>
+                                    <Binding Path="State"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource EqualsConverter}"
+                                             ConverterParameter="In Progress"/>
+                                </MultiBinding>
+                            </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
                         <Label Text="Completion"
                                Grid.Column="1"
@@ -493,15 +710,25 @@
                                FontSize="16"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start"/>
-                        <!--<Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="Completed on March 9, 12:30pm"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               VerticalTextAlignment="Start"/>-->
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
+                                     BackgroundColor="Transparent"
+                                     BindableLayout.ItemsSource="{Binding CompletionStatusMessages}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Text="{Binding .}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           VerticalTextAlignment="Start"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </Grid>
                 </StackLayout>
+
+
                 <StackLayout Padding="20"
                              x:Name="DetailsTab">
                     <VisualStateManager.VisualStateGroups>
@@ -569,40 +796,6 @@
                                HorizontalTextAlignment="End"/>
                     </StackLayout>
                 </StackLayout>
-
-                <Grid HorizontalOptions="FillAndExpand"
-                      VerticalOptions="EndAndExpand"
-                      ColumnSpacing="0"
-                      RowSpacing="0"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1" />
-                        <RowDefinition Height="80" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*" />
-                        <ColumnDefinition Width="5*" />
-                    </Grid.ColumnDefinitions>
-                    <StackLayout Grid.ColumnSpan="2"
-                                 Style="{DynamicResource SeparatorStyle}"/>
-                    <Button Grid.Row="1"
-                            Style="{DynamicResource MainButtonStyle}"
-                            HorizontalOptions="End"
-                            Margin="10,20"
-                            Padding="10"
-                            FontSize="12"
-                            CornerRadius="3"
-                            Text="Repeat Swap"/>
-                    <Button Style="{DynamicResource PopupCancelButtonStyle}"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalOptions="Start"
-                            Margin="10,20"
-                            Padding="10"
-                            FontSize="12"
-                            CornerRadius="3"
-                            Text="Cancel Swap"/>
-                </Grid>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
