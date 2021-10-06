@@ -365,6 +365,8 @@ namespace atomex.ViewModel
             set { _swaps = value; OnPropertyChanged(nameof(Swaps)); }
         }
 
+        private Dictionary<long, SwapViewModel> _cachedSwaps;
+
         public class Grouping<K, T> : ObservableCollection<T>
         {
             public K Date { get; private set; }
@@ -426,8 +428,10 @@ namespace atomex.ViewModel
             _fromCurrencies = new List<CurrencyViewModel>();
             _toCurrencies = new List<CurrencyViewModel>();
             _currencyViewModels = new List<CurrencyViewModel>();
+            _cachedSwaps = new Dictionary<long, SwapViewModel>();
 
             SubscribeToServices();
+            GetSwaps();
         }
 
         private void SubscribeToServices()
@@ -807,19 +811,61 @@ namespace atomex.ViewModel
             }
         }
 
-        private async void OnSwapEventHandler(object sender, SwapEventArgs args)
+        private void OnSwapEventHandler(object sender, SwapEventArgs args)
+        {
+            try
+            {
+                if (args == null)
+                    return;
+
+                if (_cachedSwaps.TryGetValue(args.Swap.Id, out SwapViewModel swap))
+                {
+                    swap.UpdateSwap(args.Swap);
+                }
+                else
+                {
+                    var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
+                    _cachedSwaps.Add(args.Swap.Id, swapViewModel);
+                    Swaps.Add(swapViewModel);
+
+                    var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
+                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+
+                    Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        OnPropertyChanged(nameof(Swaps));
+                        OnPropertyChanged(nameof(GroupedSwaps));
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Swaps update error");
+            }
+        }
+
+        private async void GetSwaps()
         {
             try
             {
                 var swaps = await AtomexApp.Account
                     .GetSwapsAsync();
-       
-                var swapViewModels = swaps
-                                   .Select(s => SwapViewModelFactory.CreateSwapViewModel(s, Currencies))
-                                   .ToList()
-                                   .SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
 
-                Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
+                Swaps = new ObservableCollection<SwapViewModel>();
+
+                if (swaps == null)
+                    return;
+
+                foreach (var swap in swaps)
+                {
+                    var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
+
+                    long.TryParse(swapViewModel.Id, out long id);
+                    _cachedSwaps.Add(id, swapViewModel);
+                    Swaps.Add(swapViewModel);
+                }
+
+                Swaps.ToList().SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
 
                 var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
                 GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
@@ -830,9 +876,9 @@ namespace atomex.ViewModel
                     OnPropertyChanged(nameof(GroupedSwaps));
                 });
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Log.Error(e, "Swaps update error");
+                Log.Error(e, "Get swaps error");
             }
         }
 

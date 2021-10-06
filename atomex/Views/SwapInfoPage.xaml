@@ -289,7 +289,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </StackLayout>
                 </Grid>
-                <StackLayout Padding="20"
+                <StackLayout Padding="10,20"
                              x:Name="ProgressTab">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup Name="SwapInfoStates">
@@ -435,6 +435,12 @@
                                              Value="Initialization">
                                     <Setter Property="IsVisible"
                                             Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="Completed">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
@@ -755,39 +761,7 @@
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                VerticalTextAlignment="Center"
                                HorizontalTextAlignment="Start"/>
-                        <Label Text="0.00034234"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               HorizontalOptions="FillAndExpand"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="End"/>
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal"
-                                 Padding="20,5">
-                        <Label Text="Network Fees:"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Start"/>
-                        <Label Text="22.13$"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               HorizontalOptions="FillAndExpand"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="End"/>
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal"
-                                 Padding="20,5">
-                        <Label Text="Other Fees:"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Start"/>
-                        <Label Text="13.2$"
+                        <Label Text="{Binding Price}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="14"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"

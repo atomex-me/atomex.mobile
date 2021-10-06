@@ -493,6 +493,21 @@
     <data name="State" xml:space="preserve">
         <value>Etat</value>
     </data>
+    <data name="SwapInProgressDesc" xml:space="preserve">
+        <value>Do not close the app until the swap is completed</value>
+    </data>
+    <data name="SwapCompletedDesc" xml:space="preserve">
+        <value>You can close Atomex app now</value>
+    </data>
+    <data name="SwapCanceledDesc" xml:space="preserve">
+        <value>Swap was canceled by you</value>
+    </data>
+    <data name="SwapRefundedDesc" xml:space="preserve">
+        <value>Lock time has passed (here the reason for a refund goes)</value>
+    </data>
+    <data name="SwapUnsettledDesc" xml:space="preserve">
+        <value>Here the reason or description goes</value>
+    </data>
     
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">

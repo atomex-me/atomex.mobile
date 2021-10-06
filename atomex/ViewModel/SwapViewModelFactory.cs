@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Atomex.Abstract;
 using Atomex.Common;
 using Atomex.Core;
@@ -48,7 +47,7 @@ namespace atomex
                 : SwapMode.CounterParty;
         }
 
-        private static SwapCompactState CompactStateBySwap(Swap swap)
+        public static SwapCompactState CompactStateBySwap(Swap swap)
         {
             if (swap.IsComplete)
                 return SwapCompactState.Completed;

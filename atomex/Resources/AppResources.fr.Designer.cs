@@ -923,6 +923,36 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SwapInProgressDesc {
+            get {
+                return ResourceManager.GetString("SwapInProgressDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCompletedDesc {
+            get {
+                return ResourceManager.GetString("SwapCompletedDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCanceledDesc {
+            get {
+                return ResourceManager.GetString("SwapCanceledDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapRefundedDesc {
+            get {
+                return ResourceManager.GetString("SwapRefundedDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapUnsettledDesc {
+            get {
+                return ResourceManager.GetString("SwapUnsettledDesc", resourceCulture);
+            }
+        }
+        
         internal static string SwapListPageTitle {
             get {
                 return ResourceManager.GetString("SwapListPageTitle", resourceCulture);

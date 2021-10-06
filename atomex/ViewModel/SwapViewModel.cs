@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using atomex.Resources;
 using atomex.ViewModel;
+using Atomex.Core;
 using static Atomex.ViewModels.Helpers;
 
 namespace atomex
@@ -36,23 +39,23 @@ namespace atomex
                 {
                     case SwapCompactState.InProgress:
                         State = "In Progress";
-                        StateDescription = "Do not close the app until the swap is completed";
+                        StateDescription = AppResources.SwapInProgressDesc;
                         break;
                     case SwapCompactState.Completed:
                         State = "Completed";
-                        StateDescription = "You can close Atomex app now";
+                        StateDescription = AppResources.SwapCompletedDesc;
                         break;
                     case SwapCompactState.Canceled:
                         State = "Canceled";
-                        StateDescription = "Swap was canceled by you";
+                        StateDescription = AppResources.SwapCanceledDesc;
                         break;
                     case SwapCompactState.Refunded:
                         State = "Refunded";
-                        StateDescription = "Lock time has passed (here the reason for a refund goes)";
+                        StateDescription = AppResources.SwapRefundedDesc;
                         break;
                     case SwapCompactState.Unsettled:
                         State = "Unsettled";
-                        StateDescription = "Here the reason or description goes";
+                        StateDescription = AppResources.SwapUnsettledDesc;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -84,6 +87,11 @@ namespace atomex
             set
             {
                 _detailingInfo = value;
+
+                if (_detailingInfo == null)
+                    return;
+
+                ClearStatusMessages();
 
                 Status = SwapDetailingStatus.Initialization.ToString();
                 foreach (var item in DetailingInfo)
@@ -147,12 +155,24 @@ namespace atomex
 
         public string StateDescription { get; set; }
 
-
         public SwapViewModel()
         {
             _initStatusMessages = new ObservableCollection<string>();
             _exchangeStatusMessages = new ObservableCollection<string>();
             _completionStatusMessages = new ObservableCollection<string>();
+        }
+
+        public void UpdateSwap(Swap swap)
+        {
+            CompactState = SwapViewModelFactory.CompactStateBySwap(swap);
+            DetailingInfo = GetSwapDetailingInfo(swap).ToList();
+        }
+
+        private void ClearStatusMessages()
+        {
+            _initStatusMessages.Clear();
+            _exchangeStatusMessages.Clear();
+            _completionStatusMessages.Clear();
         }
     }
 }
