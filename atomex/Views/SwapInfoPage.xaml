@@ -734,7 +734,6 @@
                     </Grid>
                 </StackLayout>
 
-
                 <StackLayout Padding="20"
                              x:Name="DetailsTab">
                     <VisualStateManager.VisualStateGroups>

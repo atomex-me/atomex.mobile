@@ -811,7 +811,7 @@ namespace atomex.ViewModel
             }
         }
 
-        private void OnSwapEventHandler(object sender, SwapEventArgs args)
+        private async void OnSwapEventHandler(object sender, SwapEventArgs args)
         {
             try
             {
@@ -826,17 +826,34 @@ namespace atomex.ViewModel
                 {
                     var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                     _cachedSwaps.Add(args.Swap.Id, swapViewModel);
-                    Swaps.Add(swapViewModel);
 
-                    var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
-                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
 
-                    Device.InvokeOnMainThreadAsync(() =>
+                    Device.BeginInvokeOnMainThread(() =>
                     {
-                        OnPropertyChanged(nameof(Swaps));
-                        OnPropertyChanged(nameof(GroupedSwaps));
+                        Navigation.PushAsync(new SwapInfoPage(swapViewModel));
+
+                        int pageNumber = Navigation.NavigationStack.Count;
+
+                        for (int i = pageNumber - 2; i > 0; i--)
+                        {
+                            Navigation.RemovePage(Navigation.NavigationStack[i]);
+                        }
+
+                        Swaps.Add(swapViewModel);
+
+                        var groups = Swaps
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g.OrderByDescending(g => g.LocalTime)));
+                        GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
                     });
                 }
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    OnPropertyChanged(nameof(Swaps));
+                    OnPropertyChanged(nameof(GroupedSwaps));
+                });
             }
             catch (Exception e)
             {
@@ -851,27 +868,29 @@ namespace atomex.ViewModel
                 var swaps = await AtomexApp.Account
                     .GetSwapsAsync();
 
-                Swaps = new ObservableCollection<SwapViewModel>();
-
-                if (swaps == null)
-                    return;
-
-                foreach (var swap in swaps)
-                {
-                    var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
-
-                    long.TryParse(swapViewModel.Id, out long id);
-                    _cachedSwaps.Add(id, swapViewModel);
-                    Swaps.Add(swapViewModel);
-                }
-
-                Swaps.ToList().SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
-
-                var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
-                GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
-
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
+                    Swaps = new ObservableCollection<SwapViewModel>();
+
+                    if (swaps == null)
+                        return;
+
+                    foreach (var swap in swaps)
+                    {
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
+
+                        long.TryParse(swapViewModel.Id, out long id);
+                        _cachedSwaps.Add(id, swapViewModel);
+                        Swaps.Add(swapViewModel);
+                    }
+
+                    var groups = Swaps
+                        .GroupBy(p => p.LocalTime.Date)
+                        .OrderByDescending(g => g.Key)
+                        .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g.OrderByDescending(g => g.LocalTime)));
+
+                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+
                     OnPropertyChanged(nameof(Swaps));
                     OnPropertyChanged(nameof(GroupedSwaps));
                 });

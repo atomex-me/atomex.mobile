@@ -259,8 +259,6 @@
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__progress.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__progress.imageset\swap-16-progress.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
@@ -271,6 +269,22 @@
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11_light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

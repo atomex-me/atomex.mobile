@@ -118,7 +118,6 @@ namespace atomex.ViewModel
                 if (!res)
                 {
                     OnSuccess?.Invoke(this, EventArgs.Empty);
-                    await Navigation.PopToRootAsync();
                 }
             }
             catch (Exception e)

@@ -5,6 +5,7 @@ using System.Linq;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
+using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
 
 namespace atomex
@@ -62,6 +63,8 @@ namespace atomex
                 }
 
                 OnPropertyChanged(nameof(CompactState));
+                OnPropertyChanged(nameof(State));
+                OnPropertyChanged(nameof(StateDescription));
             }
         }
 
@@ -91,35 +94,37 @@ namespace atomex
                 if (_detailingInfo == null)
                     return;
 
-                ClearStatusMessages();
-
-                Status = SwapDetailingStatus.Initialization.ToString();
-                foreach (var item in DetailingInfo)
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    switch (item.Status)
+                    ClearStatusMessages();
+
+                    _status = SwapDetailingStatus.Initialization.ToString();
+                    foreach (var item in DetailingInfo)
                     {
-                        case SwapDetailingStatus.Initialization:
-                            if (item.IsCompleted)
-                                Status = SwapDetailingStatus.Exchanging.ToString();
-                            InitStatusMessages.Add(item.Description);
-                            break;
-                        case SwapDetailingStatus.Exchanging:
-                            if (item.IsCompleted)
-                                Status = SwapDetailingStatus.Completion.ToString();
-                            ExchangeStatusMessages.Add(item.Description);
-                            break;
-                        case SwapDetailingStatus.Completion:
-                            CompletionStatusMessages.Add(item.Description);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        switch (item.Status)
+                        {
+                            case SwapDetailingStatus.Initialization:
+                                if (item.IsCompleted)
+                                    _status = SwapDetailingStatus.Exchanging.ToString();
+                                _initStatusMessages.Add(item.Description);
+                                break;
+                            case SwapDetailingStatus.Exchanging:
+                                if (item.IsCompleted)
+                                    _status = SwapDetailingStatus.Completion.ToString();
+                                _exchangeStatusMessages.Add(item.Description);
+                                break;
+                            case SwapDetailingStatus.Completion:
+                                _status = SwapDetailingStatus.Completion.ToString();
+                                _completionStatusMessages.Add(item.Description);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
-                }
-                OnPropertyChanged(nameof(DetailingInfo));
-                OnPropertyChanged(nameof(Status));
-                OnPropertyChanged(nameof(InitStatusMessages));
-                OnPropertyChanged(nameof(ExchangeStatusMessages));
-                OnPropertyChanged(nameof(CompletionStatusMessages));
+
+                    OnPropertyChanged(nameof(DetailingInfo));
+                    OnPropertyChanged(nameof(Status));
+                });
             }
         }
 
