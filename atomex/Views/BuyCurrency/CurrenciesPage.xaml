@@ -28,7 +28,7 @@
                         <DataTemplate>
                             <StackLayout>
                                 <Frame Style="{DynamicResource EntryFrameStyle}"
-                                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
                                        CornerRadius="6"
                                        Padding="0"
                                        Margin="3"

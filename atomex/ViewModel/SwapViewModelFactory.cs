@@ -20,10 +20,9 @@ namespace atomex
                 ? soldCurrency
                 : purchasedCurrency;
 
-            return new SwapViewModel
+            var swapViewModel = new SwapViewModel
             {
                 Id               = swap.Id.ToString(),
-                CompactState     = CompactStateBySwap(swap),
                 Mode             = ModeBySwap(swap),
                 Time             = swap.TimeStamp,
 
@@ -38,6 +37,10 @@ namespace atomex
                 Price            = swap.Price,
                 PriceFormat      = $"F{quoteCurrency.Digits}"
             };
+
+            swapViewModel.UpdateState(swap);
+
+            return swapViewModel;
         }
 
         private static SwapMode ModeBySwap(Swap swap)
@@ -45,23 +48,6 @@ namespace atomex
             return swap.IsInitiator
                 ? SwapMode.Initiator
                 : SwapMode.CounterParty;
-        }
-
-        public static SwapCompactState CompactStateBySwap(Swap swap)
-        {
-            if (swap.IsComplete)
-                return SwapCompactState.Completed;
-
-            if (swap.IsCanceled)
-                return SwapCompactState.Canceled;
-
-            if (swap.IsUnsettled)
-                return SwapCompactState.Unsettled;
-
-            if (swap.IsRefunded)
-                return SwapCompactState.Refunded;
-
-            return SwapCompactState.InProgress;
         }
     }
 }

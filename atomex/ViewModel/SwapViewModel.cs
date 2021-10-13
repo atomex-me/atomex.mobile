@@ -10,16 +10,6 @@ using static Atomex.ViewModels.Helpers;
 
 namespace atomex
 {
-
-    public enum SwapCompactState
-    {
-        Canceled,
-        InProgress,
-        Completed,
-        Refunded,
-        Unsettled
-    }
-
     public enum SwapMode
     {
         Initiator,
@@ -29,44 +19,6 @@ namespace atomex
     public class SwapViewModel : BaseViewModel
     {
         public string Id { get; set; }
-
-        private SwapCompactState _compactState;
-        public SwapCompactState CompactState
-        {
-            get => _compactState;
-            set
-            {
-                switch (value)
-                {
-                    case SwapCompactState.InProgress:
-                        State = "In Progress";
-                        StateDescription = AppResources.SwapInProgressDesc;
-                        break;
-                    case SwapCompactState.Completed:
-                        State = "Completed";
-                        StateDescription = AppResources.SwapCompletedDesc;
-                        break;
-                    case SwapCompactState.Canceled:
-                        State = "Canceled";
-                        StateDescription = AppResources.SwapCanceledDesc;
-                        break;
-                    case SwapCompactState.Refunded:
-                        State = "Refunded";
-                        StateDescription = AppResources.SwapRefundedDesc;
-                        break;
-                    case SwapCompactState.Unsettled:
-                        State = "Unsettled";
-                        StateDescription = AppResources.SwapUnsettledDesc;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                OnPropertyChanged(nameof(CompactState));
-                OnPropertyChanged(nameof(State));
-                OnPropertyChanged(nameof(StateDescription));
-            }
-        }
 
         public SwapMode Mode { get; set; }
         public DateTime Time { get; set; }
@@ -93,7 +45,7 @@ namespace atomex
 
                 if (_detailingInfo == null)
                     return;
-
+                
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     ClearStatusMessages();
@@ -160,6 +112,47 @@ namespace atomex
 
         public string StateDescription { get; set; }
 
+        public string StateColor { get; set; }
+
+        public void UpdateState(Swap swap)
+        {
+            if (swap.IsComplete)
+            {
+                State = "Completed";
+                StateDescription = AppResources.SwapCompletedDesc;
+                StateColor = "#3a6cb1";
+            }
+            else if (swap.IsCanceled)
+            {
+                State = "Canceled";
+                StateDescription = AppResources.SwapCanceledDesc;
+                StateColor = "#303740";
+            }
+            else if (swap.IsUnsettled)
+            {
+                State = "Unsettled";
+                StateDescription = AppResources.SwapUnsettledDesc;
+                StateColor = "#cd3e4a";
+            }
+
+            else if (swap.IsRefunded)
+            {
+                State = "Refunded";
+                StateDescription = AppResources.SwapRefundedDesc;
+                StateColor = "#ffc300";
+            }
+            else
+            {
+                State = "In Progress";
+                StateDescription = AppResources.SwapInProgressDesc;
+                StateColor = "#14a4be";
+            }
+
+            OnPropertyChanged(nameof(StateColor));
+            OnPropertyChanged(nameof(State));
+            OnPropertyChanged(nameof(StateDescription));
+        }
+
         public SwapViewModel()
         {
             _initStatusMessages = new ObservableCollection<string>();
@@ -169,7 +162,7 @@ namespace atomex
 
         public void UpdateSwap(Swap swap)
         {
-            CompactState = SwapViewModelFactory.CompactStateBySwap(swap);
+            UpdateState(swap);
             DetailingInfo = GetSwapDetailingInfo(swap).ToList();
         }
 
