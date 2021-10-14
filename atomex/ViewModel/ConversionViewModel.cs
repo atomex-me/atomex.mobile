@@ -705,6 +705,7 @@ namespace atomex.ViewModel
             FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
 
             OnSwapEventHandler(this, null);
+            OnQuotesUpdatedEventHandler(Terminal, null);
         }
 
         protected async void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
