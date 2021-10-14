@@ -64,7 +64,7 @@
                                        HorizontalOptions="EndAndExpand">
                                     <Image.Triggers>
                                         <DataTrigger TargetType="Image"
-                                                     Binding="{Binding Baker.Logo, TargetNullValue=''}"
+                                                     Binding="{Binding Baker.Logo, TargetNullValue='', FallbackValue=''}"
                                                      Value="">
                                             <Setter Property="Source"
                                                     Value="CustomBakerLogo"/>
@@ -76,7 +76,7 @@
                                        HorizontalOptions="End">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
-                                                     Binding="{Binding Baker.Name, TargetNullValue=''}"
+                                                     Binding="{Binding Baker.Name, TargetNullValue='', FallbackValue=''}"
                                                      Value="">
                                             <Setter Property="Text"
                                                     Value="Custom Baker"/>

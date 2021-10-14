@@ -5,6 +5,7 @@ using System.Linq;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
+using Atomex.Wallet.Abstract;
 using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
 
@@ -114,6 +115,8 @@ namespace atomex
 
         public string StateColor { get; set; }
 
+        public IAccount Account { get; set; }
+
         private void SetState(Swap swap)
         {
             if (swap.IsComplete)
@@ -163,7 +166,7 @@ namespace atomex
         public void UpdateSwap(Swap swap)
         {
             SetState(swap);
-            DetailingInfo = GetSwapDetailingInfo(swap).ToList();
+            DetailingInfo = GetSwapDetailingInfo(swap, Account).ToList();
         }
 
         private void ClearStatusMessages()

@@ -719,10 +719,10 @@ namespace atomex.ViewModel
             var fromCurrencyPrice = provider.GetQuote(_currencyCode, _baseCurrencyCode)?.Bid ?? 0m;
             _amountInBase = _amount * fromCurrencyPrice;
 
-            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel?.Currency?.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
             _estimatedPaymentFeeInBase = _estimatedPaymentFee * fromCurrencyFeePrice;
 
-            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel?.Currency?.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
             _estimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
             var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, _baseCurrencyCode)?.Bid ?? 0m;
@@ -827,7 +827,7 @@ namespace atomex.ViewModel
                     }
                     else
                     {
-                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies, AtomexApp.Account);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
 
                         Navigation.PushAsync(new SwapInfoPage(swapViewModel));
@@ -876,7 +876,7 @@ namespace atomex.ViewModel
 
                     foreach (var swap in swaps)
                     {
-                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies, AtomexApp.Account);
 
                         long.TryParse(swapViewModel.Id, out long id);
                         _cachedSwaps.Add(id, swapViewModel);

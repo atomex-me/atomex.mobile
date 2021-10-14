@@ -673,9 +673,7 @@ namespace atomex.ViewModel
         {
             try
             {
-                var balance = await AtomexApp.Account
-                    .GetBalanceAsync(_tezosConfig.Name)
-                    .ConfigureAwait(false);
+                var rpc = new Rpc(_tezosConfig.RpcNodeUri);
 
                 var addresses = await AtomexApp.Account
                     .GetUnspentAddressesAsync(_tezosConfig.Name)
@@ -695,6 +693,15 @@ namespace atomex.ViewModel
 
                 foreach (var wa in addresses)
                 {
+                    var accountData = await rpc
+                        .GetAccount(wa.Address)
+                        .ConfigureAwait(false);
+
+                    var @delegate = accountData["delegate"]?.ToString();
+
+                    if (string.IsNullOrEmpty(@delegate))
+                        continue;
+
                     var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
 
                     if (account == null || account.HasError)
@@ -709,7 +716,7 @@ namespace atomex.ViewModel
 
                     var baker = await BbApi
                         .GetBaker(account.Value.DelegateAddress, AtomexApp.Account.Network)
-                        .ConfigureAwait(false);
+                        .ConfigureAwait(false) ?? new BakerData { Address = @delegate }; ;
 
                     decimal txCycle = AtomexApp.Account.Network == Network.MainNet ?
                         Math.Floor((account.Value.DelegationLevel - 1) / 4096) :
