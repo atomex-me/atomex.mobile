@@ -811,14 +811,14 @@ namespace atomex.ViewModel
             }
         }
 
-        private void OnSwapEventHandler(object sender, SwapEventArgs args)
+        private async void OnSwapEventHandler(object sender, SwapEventArgs args)
         {
             try
             {
                 if (args == null)
                     return;
 
-                Device.BeginInvokeOnMainThread(() =>
+                await Device.InvokeOnMainThreadAsync(() =>
                 {
                     if (_cachedSwaps.TryGetValue(args.Swap.Id, out SwapViewModel swap))
                     {
@@ -885,7 +885,7 @@ namespace atomex.ViewModel
                     var groups = Swaps
                         .GroupBy(p => p.LocalTime.Date)
                         .OrderByDescending(g => g.Key)
-                        .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g.OrderByDescending(g => g.LocalTime)));
+                        .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
                     GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
 

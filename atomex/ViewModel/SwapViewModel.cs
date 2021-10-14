@@ -114,7 +114,7 @@ namespace atomex
 
         public string StateColor { get; set; }
 
-        public void UpdateState(Swap swap)
+        private void SetState(Swap swap)
         {
             if (swap.IsComplete)
             {
@@ -162,7 +162,7 @@ namespace atomex
 
         public void UpdateSwap(Swap swap)
         {
-            UpdateState(swap);
+            SetState(swap);
             DetailingInfo = GetSwapDetailingInfo(swap).ToList();
         }
 
