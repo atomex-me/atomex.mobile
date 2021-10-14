@@ -581,10 +581,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\ConvertArrow.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\Copy.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -738,6 +734,10 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-night\SwapInProgress.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ConvertArrow.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

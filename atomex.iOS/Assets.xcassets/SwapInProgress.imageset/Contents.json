@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "swap-40-progress.pdf",
+      "filename": "swap-progress__light-1.pdf",
       "idiom": "universal"
     },
     {
@@ -87,7 +87,7 @@
       "idiom": "car"
     },
     {
-      "filename": "swap-40-progress-1.pdf",
+      "filename": "swap-40-progress__dark-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

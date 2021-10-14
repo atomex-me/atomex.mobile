@@ -177,13 +177,10 @@
     <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3-1.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
@@ -266,12 +263,10 @@
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf" />
@@ -285,6 +280,11 @@
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11_light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__dark.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
