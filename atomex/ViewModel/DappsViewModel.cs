@@ -35,12 +35,15 @@ namespace atomex.ViewModel
             LoadDapps();
         }
 
+        /// <summary>
+        /// TODO: BeaconClient Request with user crendetails
+        /// </summary>
         void LoadDapps()
         {
             DappsInfo = new ObservableCollection<DappInfo>()
             {
-                new DappInfo() { Name = "abcd", Network = Network.TestNet},
-                new DappInfo() { Name = "xyz", Network = Network.MainNet}
+                new DappInfo() { Name = "abcd", Network = Network.TestNet, IsActive = true},
+                new DappInfo() { Name = "xyz", Network = Network.MainNet, IsActive = true}
             };
             OnPropertyChanged(nameof(DappsInfo));
         }
