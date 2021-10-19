@@ -693,18 +693,9 @@ namespace atomex.ViewModel
 
                 foreach (var wa in addresses)
                 {
-                    var accountData = await rpc
-                        .GetAccount(wa.Address)
-                        .ConfigureAwait(false);
+                    var accountResult = await tzktApi.GetAccountByAddressAsync(wa.Address);
 
-                    var @delegate = accountData["delegate"]?.ToString();
-
-                    //if (string.IsNullOrEmpty(@delegate))
-                    //    continue;
-
-                    var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
-
-                    if (account == null || account.HasError)
+                    if (accountResult == null || accountResult.HasError || accountResult.Value?.DelegateAddress == null)
                     {
                         delegations.Add(new DelegationViewModel(this, Navigation)
                         {
@@ -714,13 +705,15 @@ namespace atomex.ViewModel
                         continue;
                     }
 
+                    var account = accountResult.Value;
+
                     var baker = await BbApi
-                        .GetBaker(account.Value.DelegateAddress, AtomexApp.Account.Network)
-                        .ConfigureAwait(false) ?? new BakerData { Address = @delegate }; ;
+                        .GetBaker(account.DelegateAddress, AtomexApp.Account.Network)
+                        .ConfigureAwait(false) ?? new BakerData { Address = account.DelegateAddress };
 
                     decimal txCycle = AtomexApp.Account.Network == Network.MainNet ?
-                        Math.Floor((account.Value.DelegationLevel - 1) / 4096) :
-                        Math.Floor((account.Value.DelegationLevel - 1) / 2048);
+                        Math.Floor((account.DelegationLevel - 1) / 4096) :
+                        Math.Floor((account.DelegationLevel - 1) / 2048);
 
                     delegations.Add(new DelegationViewModel(this, Navigation)
                     {
@@ -728,7 +721,7 @@ namespace atomex.ViewModel
                         Address = wa.Address,
                         Balance = wa.Balance,
                         BbUri = _tezosConfig.BbUri,
-                        DelegationTime = account.Value.DelegationTime,
+                        DelegationTime = account.DelegationTime,
                         Status = currentCycle - txCycle < 2 ? "Pending" :
                             currentCycle - txCycle < 7 ? "Confirmed" :
                             "Active"
