@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
 using Atomex.Wallet.Abstract;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
 
@@ -59,16 +62,22 @@ namespace atomex
                             case SwapDetailingStatus.Initialization:
                                 if (item.IsCompleted)
                                     _status = SwapDetailingStatus.Exchanging.ToString();
-                                _initStatusMessages.Add(item.Description);
+                                _initStatusMessages.Add(new SwapDetailingMessage {
+                                    Message = item.Description,
+                                    ExplorerLink = item.ExplorerLink });
                                 break;
                             case SwapDetailingStatus.Exchanging:
                                 if (item.IsCompleted)
                                     _status = SwapDetailingStatus.Completion.ToString();
-                                _exchangeStatusMessages.Add(item.Description);
+                                _exchangeStatusMessages.Add(new SwapDetailingMessage {
+                                    Message = item.Description,
+                                    ExplorerLink = item.ExplorerLink });
                                 break;
                             case SwapDetailingStatus.Completion:
                                 _status = SwapDetailingStatus.Completion.ToString();
-                                _completionStatusMessages.Add(item.Description);
+                                _completionStatusMessages.Add(new SwapDetailingMessage {
+                                    Message = item.Description,
+                                    ExplorerLink = item.ExplorerLink });
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -88,22 +97,29 @@ namespace atomex
             set { _status = value; OnPropertyChanged(nameof(Status)); }
         }
 
-        private ObservableCollection<string> _initStatusMessages;
-        public ObservableCollection<string> InitStatusMessages
+        private string _expandedStatus;
+        public string ExpandedStatus
+        {
+            get => _expandedStatus;
+            set { _expandedStatus = value; OnPropertyChanged(nameof(ExpandedStatus)); }
+        }
+
+        private ObservableCollection<SwapDetailingMessage> _initStatusMessages;
+        public ObservableCollection<SwapDetailingMessage> InitStatusMessages
         {
             get => _initStatusMessages;
             set { _initStatusMessages = value; OnPropertyChanged(nameof(InitStatusMessages)); }
         }
 
-        private ObservableCollection<string> _exchangeStatusMessages;
-        public ObservableCollection<string> ExchangeStatusMessages
+        private ObservableCollection<SwapDetailingMessage> _exchangeStatusMessages;
+        public ObservableCollection<SwapDetailingMessage> ExchangeStatusMessages
         {
             get => _exchangeStatusMessages;
             set { _exchangeStatusMessages = value; OnPropertyChanged(nameof(ExchangeStatusMessages)); }
         }
 
-        private ObservableCollection<string> _completionStatusMessages;
-        public ObservableCollection<string> CompletionStatusMessages
+        private ObservableCollection<SwapDetailingMessage> _completionStatusMessages;
+        public ObservableCollection<SwapDetailingMessage> CompletionStatusMessages
         {
             get => _completionStatusMessages;
             set { _completionStatusMessages = value; OnPropertyChanged(nameof(CompletionStatusMessages)); }
@@ -113,8 +129,6 @@ namespace atomex
 
         public string StateDescription { get; set; }
 
-        public string StateColor { get; set; }
-
         public IAccount Account { get; set; }
 
         private void SetState(Swap swap)
@@ -123,44 +137,39 @@ namespace atomex
             {
                 State = "Completed";
                 StateDescription = AppResources.SwapCompletedDesc;
-                StateColor = "#3a6cb1";
             }
             else if (swap.IsCanceled)
             {
                 State = "Canceled";
                 StateDescription = AppResources.SwapCanceledDesc;
-                StateColor = "#303740";
             }
             else if (swap.IsUnsettled)
             {
                 State = "Unsettled";
                 StateDescription = AppResources.SwapUnsettledDesc;
-                StateColor = "#cd3e4a";
             }
 
             else if (swap.IsRefunded)
             {
                 State = "Refunded";
                 StateDescription = AppResources.SwapRefundedDesc;
-                StateColor = "#ffc300";
             }
             else
             {
                 State = "In Progress";
                 StateDescription = AppResources.SwapInProgressDesc;
-                StateColor = "#14a4be";
             }
 
-            OnPropertyChanged(nameof(StateColor));
             OnPropertyChanged(nameof(State));
             OnPropertyChanged(nameof(StateDescription));
         }
 
         public SwapViewModel()
         {
-            _initStatusMessages = new ObservableCollection<string>();
-            _exchangeStatusMessages = new ObservableCollection<string>();
-            _completionStatusMessages = new ObservableCollection<string>();
+            ExpandedStatus = string.Empty;
+            _initStatusMessages = new ObservableCollection<SwapDetailingMessage>();
+            _exchangeStatusMessages = new ObservableCollection<SwapDetailingMessage>();
+            _completionStatusMessages = new ObservableCollection<SwapDetailingMessage>();
         }
 
         public void UpdateSwap(Swap swap)
@@ -174,6 +183,28 @@ namespace atomex
             _initStatusMessages.Clear();
             _exchangeStatusMessages.Clear();
             _completionStatusMessages.Clear();
+        }
+
+        private ICommand _openInExplorerCommand;
+        public ICommand OpenInExplorerCommand => _openInExplorerCommand ??= new Command<string>((value) => OpenInExplorer(value));
+
+        private void OpenInExplorer(string uri)
+        {
+            if (!string.IsNullOrEmpty(uri))
+            {
+                Launcher.OpenAsync(new Uri(uri));
+            }
+        }
+
+        private ICommand _expandStatusCommand;
+        public ICommand ExpandStatusCommand => _expandStatusCommand ??= new Command<string>((value) => OnStatusClicked(value));
+
+        private void OnStatusClicked(string status)
+        {
+            if (ExpandedStatus == status)
+                ExpandedStatus = string.Empty;
+            else
+                ExpandedStatus = status;
         }
     }
 }

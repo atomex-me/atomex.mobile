@@ -699,8 +699,8 @@ namespace atomex.ViewModel
 
                     var @delegate = accountData["delegate"]?.ToString();
 
-                    if (string.IsNullOrEmpty(@delegate))
-                        continue;
+                    //if (string.IsNullOrEmpty(@delegate))
+                    //    continue;
 
                     var account = await tzktApi.GetAccountByAddressAsync(wa.Address);
 

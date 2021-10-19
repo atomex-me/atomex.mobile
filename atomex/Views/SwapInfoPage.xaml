@@ -2,9 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.SwapInfoPage"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate SwapInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
@@ -12,6 +14,7 @@
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -310,6 +313,7 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
                     <Grid HorizontalOptions="FillAndExpand"
+                          Padding="20,0"
                           ColumnSpacing="0"
                           RowSpacing="0"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -318,8 +322,9 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="8*" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
                                WidthRequest="16"
@@ -417,12 +422,6 @@
                                 </MultiBinding>
                             </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
-                        <Label Text="Initialization"
-                               Grid.Column="1"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="16"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               VerticalTextAlignment="Start"/>
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
                                VerticalOptions="FillAndExpand"
@@ -446,23 +445,88 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
+                        <Label Text="Initialization"
+                               Grid.Column="1"
+                               Padding="10,0"
+                               FontFamily="{DynamicResource RegularFont}"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               VerticalTextAlignment="Start">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Initialization"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
                                      BackgroundColor="Transparent"
+                                     Padding="10,0,5,0"
                                      BindableLayout.ItemsSource="{Binding InitStatusMessages}">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Initialization"/>
+                            </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Label Text="{Binding .}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="12"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           VerticalTextAlignment="Start"/>
+                                    <StackLayout Spacing="0">
+                                        <Label Text="{Binding Message}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                FontSize="12"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                VerticalTextAlignment="Start"/>
+                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                               VerticalTextAlignment="Start"
+                                               IsVisible="False">
+                                            <Label.Triggers>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                          Value="Initialization"/>
+                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                          Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="IsVisible"
+                                                            Value="True"/>
+                                                </MultiTrigger>
+                                            </Label.Triggers>
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                      CommandParameter="{Binding ExplorerLink}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
+                        <Image Grid.Column="2"
+                               Grid.RowSpan="2"
+                               Source="DownArrow"
+                               HeightRequest="10"
+                               WidthRequest="10"
+                               Margin="0,5,0,0"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               Rotation="0">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Initialization">
+                                    <Setter Property="Rotation"
+                                            Value="180"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Initialization"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
+                          Padding="20,0"
                           ColumnSpacing="0"
                           RowSpacing="0"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -471,8 +535,9 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="8*" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
                                WidthRequest="16"
@@ -586,12 +651,6 @@
                                 </MultiBinding>
                             </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
-                        <Label Text="Exchanging"
-                               Grid.Column="1"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="16"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               VerticalTextAlignment="Start"/>
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
                                VerticalOptions="FillAndExpand"
@@ -616,23 +675,88 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
+                        <Label Text="Exchanging"
+                               Grid.Column="1"
+                               FontFamily="{DynamicResource RegularFont}"
+                               FontSize="16"
+                               BackgroundColor="Transparent"
+                               Padding="10,0,5,0"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               VerticalTextAlignment="Start">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Exchanging"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
-                                     BackgroundColor="Transparent"
+                                     Padding="10,0"
                                      BindableLayout.ItemsSource="{Binding ExchangeStatusMessages}">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Exchanging"/>
+                            </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Label Text="{Binding .}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="12"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           VerticalTextAlignment="Start"/>
+                                    <StackLayout Spacing="0">
+                                        <Label Text="{Binding Message}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                FontSize="12"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                VerticalTextAlignment="Start"/>
+                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                               VerticalTextAlignment="Start"
+                                               IsVisible="False">
+                                            <Label.Triggers>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                          Value="Exchanging"/>
+                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                          Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="IsVisible"
+                                                            Value="True"/>
+                                                </MultiTrigger>
+                                            </Label.Triggers>
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                      CommandParameter="{Binding ExplorerLink}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
+                        <Image Grid.Column="2"
+                               Grid.RowSpan="2"
+                               Source="DownArrow"
+                               HeightRequest="10"
+                               WidthRequest="10"
+                               Margin="0,5,0,0"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               Rotation="0">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Exchanging">
+                                    <Setter Property="Rotation"
+                                            Value="180"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Exchanging"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
+                          Padding="20,0"
                           ColumnSpacing="0"
                           RowSpacing="0"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -641,8 +765,9 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="8*" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
                                WidthRequest="16"
@@ -714,25 +839,83 @@
                         </lottie:AnimationView>
                         <Label Text="Completion"
                                Grid.Column="1"
+                               Padding="10,0"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="16"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               VerticalTextAlignment="Start"/>
+                               VerticalTextAlignment="Start">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Completion"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
                                      BackgroundColor="Transparent"
+                                     Padding="10,0,5,0"
                                      BindableLayout.ItemsSource="{Binding CompletionStatusMessages}">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CompletionStatusCommand}"
+                                                      CommandParameter="Completion"/>
+                            </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Label Text="{Binding .}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="12"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           VerticalTextAlignment="Start"/>
+                                    <StackLayout Spacing="0">
+                                        <Label Text="{Binding Message}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                FontSize="12"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                VerticalTextAlignment="Start"/>
+                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                               VerticalTextAlignment="Start"
+                                               IsVisible="False">
+                                            <Label.Triggers>
+                                                <MultiTrigger TargetType="Label">
+                                                    <MultiTrigger.Conditions>
+                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                          Value="Completion"/>
+                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                          Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="IsVisible"
+                                                            Value="True"/>
+                                                </MultiTrigger>
+                                            </Label.Triggers>
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                      CommandParameter="{Binding ExplorerLink}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
+                        <Image Grid.Column="2"
+                               Grid.RowSpan="2"
+                               Source="DownArrow"
+                               HeightRequest="10"
+                               WidthRequest="10"
+                               Margin="0,5,0,0"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center"
+                               Rotation="0">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Completion">
+                                    <Setter Property="Rotation"
+                                            Value="180"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Completion"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                     </Grid>
                 </StackLayout>
 
