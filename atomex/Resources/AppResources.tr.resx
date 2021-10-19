@@ -584,6 +584,9 @@
     <data name="UseBiometricLabel" xml:space="preserve">
         <value>Biyometrik yetkilendirme</value>
     </data>
+    <data name="DappsDevices" xml:space="preserve">
+        <value>Dapps Devices</value>
+    </data>
     <data name="DeletingWallet" xml:space="preserve">
         <value>Bir cüzdanı silme</value>
     </data>

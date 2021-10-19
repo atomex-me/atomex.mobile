@@ -502,7 +502,14 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("CurrencyAddresses", resourceCulture);
             }
         }
-        
+
+
+        internal static string DappsDevices {
+            get {
+                return ResourceManager.GetString("DappsDevices", resourceCulture);
+            }
+        }
+
         internal static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);

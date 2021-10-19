@@ -13,6 +13,7 @@ namespace atomex
         {
             InitializeComponent();
         }
+
         public CurrencyPage(CurrencyViewModel currencyViewModel)
         {
             InitializeComponent();
