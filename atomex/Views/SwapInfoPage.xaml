@@ -57,7 +57,7 @@
                         </DataTrigger>
                     </Image.Triggers>
                 </Image>
-                <Label Text="{Binding State}"
+                <Label Text="{Binding StateStringI18n}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="22"
                        HorizontalTextAlignment="Center">
@@ -93,26 +93,34 @@
                                     Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                         </DataTrigger>
                     </Label.Triggers>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Swap"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding State}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
                 </Label>
                 <Label Text="{Binding StateDescription}"
                        Padding="10"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       HorizontalTextAlignment="Center">
+                       HorizontalTextAlignment="Center"
+                       IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding State}"
                                      Value="In Progress">
                             <Setter Property="TextColor"
                                     Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding State}"
+                                     Value="Refunded">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding State}"
+                                     Value="Unsettled">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -189,7 +197,7 @@
                                  Style="{DynamicResource SeparatorStyle}"/>
                     <Button Grid.Row="1"
                             CornerRadius="0"
-                            Text="Progress"
+                            Text="{helpers:Translate ProgressTab}"
                             TextTransform="Uppercase"
                             FontFamily="{DynamicResource BoldFont}"
                             FontSize="14"
@@ -217,7 +225,7 @@
                     <Button Grid.Row="1"
                             Grid.Column="1"
                             CornerRadius="0"
-                            Text="Details"
+                            Text="{helpers:Translate DetailsTab}"
                             TextTransform="Uppercase"
                             FontFamily="{DynamicResource BoldFont}"
                             FontSize="14"
@@ -445,7 +453,7 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Label Text="Initialization"
+                        <Label Text="{helpers:Translate Initialization}"
                                Grid.Column="1"
                                Padding="10,0"
                                FontFamily="{DynamicResource RegularFont}"
@@ -460,22 +468,54 @@
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
+                                     Padding="10,0">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Initialization"/>
+                            </StackLayout.GestureRecognizers>
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding ExpandedStatus}"
+                                             Value="Initialization">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label Text="{Binding InitStatusDesc}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   VerticalTextAlignment="Start"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
                                      BackgroundColor="Transparent"
                                      Padding="10,0,5,0"
-                                     BindableLayout.ItemsSource="{Binding InitStatusMessages}">
+                                     BindableLayout.ItemsSource="{Binding InitStatusMessages}"
+                                     IsVisible="False">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Initialization">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Initialization"/>
                             </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Spacing="0">
+                                    <StackLayout Spacing="0"
+                                                 Padding="0,2">
                                         <Label Text="{Binding Message}"
-                                                FontFamily="{DynamicResource RegularFont}"
-                                                FontSize="12"
-                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                VerticalTextAlignment="Start"/>
-                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                               VerticalTextAlignment="Start"/>
+                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
                                                FontFamily="{DynamicResource RegularFont}"
                                                FontSize="12"
                                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
@@ -675,7 +715,7 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Label Text="Exchanging"
+                        <Label Text="{helpers:Translate Exchanging}"
                                Grid.Column="1"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="16"
@@ -691,21 +731,53 @@
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
+                                     Padding="10,0">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Exchanging"/>
+                            </StackLayout.GestureRecognizers>
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding ExpandedStatus}"
+                                             Value="Exchanging">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label Text="{Binding ExchangeStatusDesc}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   VerticalTextAlignment="Start"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
                                      Padding="10,0"
-                                     BindableLayout.ItemsSource="{Binding ExchangeStatusMessages}">
+                                     BindableLayout.ItemsSource="{Binding ExchangeStatusMessages}"
+                                     IsVisible="False">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Exchanging">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Exchanging"/>
                             </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Spacing="0">
+                                    <StackLayout Spacing="0"
+                                                 Padding="0,2">
                                         <Label Text="{Binding Message}"
-                                                FontFamily="{DynamicResource RegularFont}"
-                                                FontSize="12"
-                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                VerticalTextAlignment="Start"/>
-                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                               VerticalTextAlignment="Start"/>
+                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
                                                FontFamily="{DynamicResource RegularFont}"
                                                FontSize="12"
                                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
@@ -837,7 +909,7 @@
                                 </MultiBinding>
                             </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
-                        <Label Text="Completion"
+                        <Label Text="{helpers:Translate Completion}"
                                Grid.Column="1"
                                Padding="10,0"
                                FontFamily="{DynamicResource RegularFont}"
@@ -852,22 +924,54 @@
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
+                                     Padding="10,0">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
+                                                      CommandParameter="Completion"/>
+                            </StackLayout.GestureRecognizers>
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding ExpandedStatus}"
+                                             Value="Completion">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label Text="{Binding CompletionStatusDesc}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   VerticalTextAlignment="Start"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Spacing="0"
                                      BackgroundColor="Transparent"
                                      Padding="10,0,5,0"
-                                     BindableLayout.ItemsSource="{Binding CompletionStatusMessages}">
+                                     BindableLayout.ItemsSource="{Binding CompletionStatusMessages}"
+                                     IsVisible="False">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                             Value="Completion">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding CompletionStatusCommand}"
                                                       CommandParameter="Completion"/>
                             </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Spacing="0">
+                                    <StackLayout Spacing="0"
+                                                 Padding="0,2">
                                         <Label Text="{Binding Message}"
-                                                FontFamily="{DynamicResource RegularFont}"
-                                                FontSize="12"
-                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                VerticalTextAlignment="Start"/>
-                                        <Label Text="Open in Explorer"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               FontSize="12"
+                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                               VerticalTextAlignment="Start"/>
+                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
                                                FontFamily="{DynamicResource RegularFont}"
                                                FontSize="12"
                                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
@@ -939,7 +1043,7 @@
                     </VisualStateManager.VisualStateGroups>
                     <StackLayout Orientation="Horizontal"
                                  Padding="20,5">
-                        <Label Text="Price:"
+                        <Label Text="{helpers:Translate Price, StringFormat='{0}:'}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="14"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"

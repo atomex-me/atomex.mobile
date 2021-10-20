@@ -500,15 +500,69 @@
         <value>You can close Atomex app now</value>
     </data>
     <data name="SwapCanceledDesc" xml:space="preserve">
-        <value>Swap was canceled by you</value>
+        <value>Swap was canceled</value>
     </data>
     <data name="SwapRefundedDesc" xml:space="preserve">
-        <value>Lock time has passed (here the reason for a refund goes)</value>
+        <value>Lock time has passed</value>
     </data>
     <data name="SwapUnsettledDesc" xml:space="preserve">
-        <value>Here the reason or description goes</value>
+        <value>You did not have time to redeem the funds, please contact Atomex support</value>
     </data>
-    
+    <data name="Initialization" xml:space="preserve">
+        <value>Initialization</value>
+    </data>
+    <data name="Exchanging" xml:space="preserve">
+        <value>Exchanging</value>
+    </data>
+    <data name="Completion" xml:space="preserve">
+        <value>Completion</value>
+    </data>
+    <data name="SwapCompleted" xml:space="preserve">
+        <value>Swap Completed</value>
+    </data>
+    <data name="SwapInProgress" xml:space="preserve">
+        <value>Swap in Progress</value>
+    </data>
+    <data name="SwapCanceled" xml:space="preserve">
+        <value>Swap Canceled</value>
+    </data>
+    <data name="SwapRefunded" xml:space="preserve">
+        <value>Funds Refunded</value>
+    </data>
+    <data name="SwapUnsettled" xml:space="preserve">
+        <value>Funds Unsettled</value>
+    </data>
+    <data name="InitCompleted" xml:space="preserve">
+        <value>Initialization completed</value>
+    </data>
+    <data name="PaymentsConfirmed" xml:space="preserve">
+        <value>Payments confirmed</value>
+    </data>
+    <data name="WaitingForPayment" xml:space="preserve">
+        <value>Waiting payment confirmations</value>
+    </data>
+    <data name="WaitingForRedeem" xml:space="preserve">
+        <value>Waiting redeem confirmations</value>
+    </data>
+    <data name="InitFailure" xml:space="preserve">
+        <value>Initialization failure</value>
+    </data>
+    <data name="FailedPayment" xml:space="preserve">
+        <value>Failed payment transaction</value>
+    </data>
+    <data name="FailedRedeem" xml:space="preserve">
+        <value>Failed redeem transaction</value>
+    </data>
+    <data name="CurrencyReceived" xml:space="preserve">
+        <value>{0} received</value>
+    </data>
+    <data name="DetailsTab" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="ProgressTab" xml:space="preserve">
+        <value>Progress</value>
+    </data>
+ 
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">
         <value>Swap Listesi</value>
