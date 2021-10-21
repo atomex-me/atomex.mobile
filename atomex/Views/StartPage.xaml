@@ -56,7 +56,6 @@
                      Style="{DynamicResource StartPageButtonsStyle}">
             <Button Text="{helpers:Translate MyWalletsButton}"
                     Style="{DynamicResource MainButtonStyle}"
-                    IsEnabled="{Binding HasWallets}"
                     Command="{Binding ShowMyWalletsCommand}">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button"
@@ -64,12 +63,16 @@
                                  Value="True">
                         <Setter Property="Opacity"
                                 Value="1"/>
+                        <Setter Property="IsEnabled"
+                                Value="True"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Button"
                                  Binding="{Binding HasWallets}"
                                  Value="False">
                         <Setter Property="Opacity"
                                 Value="0.3"/>
+                        <Setter Property="IsEnabled"
+                                Value="False"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

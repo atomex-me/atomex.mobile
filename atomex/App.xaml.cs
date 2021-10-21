@@ -26,8 +26,8 @@ namespace atomex
 
         private IAtomexApp AtomexApp;
 
-        const int smallWightResolution = 768;
-        const int smallHeightResolution = 1280;
+        const int smallWightResolution = 1080;
+        const int smallHeightResolution = 1920;
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
