@@ -432,11 +432,11 @@
                         </lottie:AnimationView>
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
-                               VerticalOptions="FillAndExpand"
+                               VerticalOptions="Center"
                                HorizontalOptions="Center"/>
                         <Image Grid.Row="1"
                                Source="ic_line__full"
-                               VerticalOptions="FillAndExpand"
+                               VerticalOptions="Center"
                                HorizontalOptions="Center">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
@@ -510,34 +510,56 @@
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
                                                  Padding="0,2">
-                                        <Label Text="{Binding Message}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                               VerticalTextAlignment="Start"/>
-                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                               VerticalTextAlignment="Start"
-                                               IsVisible="False">
-                                            <Label.Triggers>
-                                                <MultiTrigger TargetType="Label">
-                                                    <MultiTrigger.Conditions>
-                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                                                          Value="Initialization"/>
-                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
-                                                                          Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="IsVisible"
-                                                            Value="True"/>
-                                                </MultiTrigger>
-                                            </Label.Triggers>
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                      CommandParameter="{Binding ExplorerLink}"/>
-                                            </Label.GestureRecognizers>
-                                        </Label>
+                                        <StackLayout Spacing="0"
+                                                     Orientation="Horizontal">
+                                            <Image Source="Tick"
+                                                   Margin="0,2,8,0"
+                                                   VerticalOptions="Start"
+                                                   WidthRequest="10"
+                                                   HeightRequest="10"/>
+                                            <StackLayout Spacing="0">
+                                                <Label Text="{Binding Message}"
+                                                       FontFamily="{DynamicResource RegularFont}"
+                                                       FontSize="12"
+                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                       VerticalTextAlignment="Start"/>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Spacing="0"
+                                                             IsVisible="False">
+                                                    <StackLayout.Triggers>
+                                                        <MultiTrigger TargetType="StackLayout">
+                                                            <MultiTrigger.Conditions>
+                                                                <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                                  Value="Initialization"/>
+                                                                <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                                  Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="IsVisible"
+                                                                    Value="True"/>
+                                                        </MultiTrigger>
+                                                    </StackLayout.Triggers>
+                                                    <Label Text="{helpers:Translate ShowInExplorerButton}"
+                                                           FontFamily="{DynamicResource RegularFont}"
+                                                           FontSize="12"
+                                                           TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                                           VerticalTextAlignment="Start">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Image Source="ic_export"
+                                                           Margin="5,0"
+                                                           WidthRequest="10"
+                                                           HeightRequest="10">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
@@ -693,11 +715,11 @@
                         </lottie:AnimationView>
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
-                               VerticalOptions="FillAndExpand"
+                               VerticalOptions="Center"
                                HorizontalOptions="Center"/>
                         <Image Grid.Row="1"
                                Source="ic_line__full"
-                               VerticalOptions="FillAndExpand"
+                               VerticalOptions="Center"
                                HorizontalOptions="Center"
                                IsVisible="False">
                             <Image.Triggers>
@@ -772,34 +794,56 @@
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
                                                  Padding="0,2">
-                                        <Label Text="{Binding Message}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                               VerticalTextAlignment="Start"/>
-                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                               VerticalTextAlignment="Start"
-                                               IsVisible="False">
-                                            <Label.Triggers>
-                                                <MultiTrigger TargetType="Label">
-                                                    <MultiTrigger.Conditions>
-                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                                                          Value="Exchanging"/>
-                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
-                                                                          Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="IsVisible"
-                                                            Value="True"/>
-                                                </MultiTrigger>
-                                            </Label.Triggers>
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                      CommandParameter="{Binding ExplorerLink}"/>
-                                            </Label.GestureRecognizers>
-                                        </Label>
+                                        <StackLayout Spacing="0"
+                                                     Orientation="Horizontal">
+                                            <Image Source="Tick"
+                                                   Margin="0,2,8,0"
+                                                   VerticalOptions="Start"
+                                                   WidthRequest="10"
+                                                   HeightRequest="10"/>
+                                            <StackLayout Spacing="0">
+                                                <Label Text="{Binding Message}"
+                                                       FontFamily="{DynamicResource RegularFont}"
+                                                       FontSize="12"
+                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                       VerticalTextAlignment="Start"/>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Spacing="0"
+                                                             IsVisible="False">
+                                                    <StackLayout.Triggers>
+                                                        <MultiTrigger TargetType="StackLayout">
+                                                            <MultiTrigger.Conditions>
+                                                                <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                                    Value="Exchanging"/>
+                                                                <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                                    Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="IsVisible"
+                                                                    Value="True"/>
+                                                        </MultiTrigger>
+                                                    </StackLayout.Triggers>
+                                                    <Label Text="{helpers:Translate ShowInExplorerButton}"
+                                                           FontFamily="{DynamicResource RegularFont}"
+                                                           FontSize="12"
+                                                           TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                                           VerticalTextAlignment="Start">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Image Source="ic_export"
+                                                           Margin="5,0"
+                                                           WidthRequest="10"
+                                                           HeightRequest="10">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
@@ -966,34 +1010,56 @@
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
                                                  Padding="0,2">
-                                        <Label Text="{Binding Message}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                               VerticalTextAlignment="Start"/>
-                                        <Label Text="{helpers:Translate ShowInExplorerButton}"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               FontSize="12"
-                                               TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                                               VerticalTextAlignment="Start"
-                                               IsVisible="False">
-                                            <Label.Triggers>
-                                                <MultiTrigger TargetType="Label">
-                                                    <MultiTrigger.Conditions>
-                                                        <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                                                          Value="Completion"/>
-                                                        <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
-                                                                          Value="True"/>
-                                                    </MultiTrigger.Conditions>
-                                                    <Setter Property="IsVisible"
-                                                            Value="True"/>
-                                                </MultiTrigger>
-                                            </Label.Triggers>
-                                            <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                      CommandParameter="{Binding ExplorerLink}"/>
-                                            </Label.GestureRecognizers>
-                                        </Label>
+                                        <StackLayout Spacing="0"
+                                                     Orientation="Horizontal">
+                                            <Image Source="Tick"
+                                                   Margin="0,2,8,0"
+                                                   VerticalOptions="Start"
+                                                   WidthRequest="10"
+                                                   HeightRequest="10"/>
+                                            <StackLayout Spacing="0">
+                                                <Label Text="{Binding Message}"
+                                                       FontFamily="{DynamicResource RegularFont}"
+                                                       FontSize="12"
+                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                       VerticalTextAlignment="Start"/>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Spacing="0"
+                                                             IsVisible="False">
+                                                    <StackLayout.Triggers>
+                                                        <MultiTrigger TargetType="StackLayout">
+                                                            <MultiTrigger.Conditions>
+                                                                <BindingCondition Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                                                    Value="Completion"/>
+                                                                <BindingCondition Binding="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                                                    Value="True"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter Property="IsVisible"
+                                                                    Value="True"/>
+                                                        </MultiTrigger>
+                                                    </StackLayout.Triggers>
+                                                    <Label Text="{helpers:Translate ShowInExplorerButton}"
+                                                           FontFamily="{DynamicResource RegularFont}"
+                                                           FontSize="12"
+                                                           TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                                                           VerticalTextAlignment="Start">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Image Source="ic_export"
+                                                           Margin="5,0"
+                                                           WidthRequest="10"
+                                                           HeightRequest="10">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                  CommandParameter="{Binding ExplorerLink}"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>

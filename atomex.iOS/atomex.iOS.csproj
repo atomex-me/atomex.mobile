@@ -289,6 +289,10 @@
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -466,6 +470,7 @@
     <Folder Include="Assets\Animations\" />
     <Folder Include="Assets.xcassets\SwapCanceled.imageset\" />
     <Folder Include="Assets.xcassets\ConvertArrowFailure.imageset\" />
+    <Folder Include="Assets.xcassets\ic_export.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
