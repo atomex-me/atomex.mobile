@@ -52,6 +52,7 @@
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                       VerticalOptions="StartAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                      CachingStrategy="RecycleElement"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
@@ -250,19 +251,6 @@
                                                  Converter="{StaticResource EqualsConverter}"
                                                  ConverterParameter="In Progress"/>
                                     </lottie:AnimationView.IsVisible>
-                                    <lottie:AnimationView.Triggers>
-                                        <MultiTrigger TargetType="lottie:AnimationView">
-                                            <MultiTrigger.Conditions>
-                                                <BindingCondition Binding="{Binding State, Converter={StaticResource EqualsConverter}, ConverterParameter='In Progress', Mode=OneWay}"/>
-                                            </MultiTrigger.Conditions>
-                                            <MultiTrigger.EnterActions>
-                                                <helpers:StartLottieAnimationTriggerAction />
-                                            </MultiTrigger.EnterActions>
-                                            <MultiTrigger.ExitActions>
-                                                <helpers:StopLottieAnimationTriggerAction />
-                                            </MultiTrigger.ExitActions>
-                                        </MultiTrigger>
-                                    </lottie:AnimationView.Triggers>
                                 </lottie:AnimationView>
                             </Grid>
                         </ViewCell>
