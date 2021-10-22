@@ -26,8 +26,10 @@ namespace atomex
 
         private IAtomexApp AtomexApp;
 
-        const int smallWightResolution = 1080;
-        const int smallHeightResolution = 1920;
+        public static double ScreenWidth { get; } = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        public static double ScreenHeight { get; } = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+
+        public static bool IsSmallScreen { get; } = ScreenWidth <= 360;
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
@@ -151,23 +153,10 @@ namespace atomex
 
         private void LoadStyles()
         {
-            if (IsASmallDevice())
+            if (IsSmallScreen)
                 ResDictionary.MergedDictionaries.Add(SmallDevicesStyle.SharedInstance);
             else
                 ResDictionary.MergedDictionaries.Add(GeneralDevicesStyle.SharedInstance);
-        }
-
-        public static bool IsASmallDevice()
-        {
-            // Get Metrics
-            var mainDisplayInfo = DeviceDisplay.MainDisplayInfo;
-
-            // Width (in pixels)
-            var width = mainDisplayInfo.Width;
-
-            // Height (in pixels)
-            var height = mainDisplayInfo.Height;
-            return (width <= smallWightResolution && height <= smallHeightResolution);
         }
     }
 }
