@@ -445,7 +445,7 @@
     <!-- Portfolio Page -->
     <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
         <Setter Property="HeightRequest" Value="200"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0,5"/>
     </Style>
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
@@ -502,7 +502,7 @@
         </Setter>
     </Style>
     <Style x:Key="CurrencyHeaderLayoutStyle" TargetType="StackLayout">
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0,10"/>
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
     <Style x:Key="CurrencyIconStyle" TargetType="Image">

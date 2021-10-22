@@ -50,7 +50,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                      VerticalOptions="FillAndExpand"
+                      VerticalOptions="StartAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
                 <ListView.Triggers>
