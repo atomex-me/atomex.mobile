@@ -1013,6 +1013,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string WaitingInit {
+            get {
+                return ResourceManager.GetString("WaitingInit", resourceCulture);
+            }
+        }
+        
         internal static string WaitingForPayment {
             get {
                 return ResourceManager.GetString("WaitingForPayment", resourceCulture);
@@ -1046,6 +1052,12 @@ namespace atomex.Resources {
         internal static string CurrencyReceived {
             get {
                 return ResourceManager.GetString("CurrencyReceived", resourceCulture);
+            }
+        }
+        
+        internal static string CurrencyRefunded {
+            get {
+                return ResourceManager.GetString("CurrencyRefunded", resourceCulture);
             }
         }
         

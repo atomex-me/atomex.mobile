@@ -67,9 +67,12 @@ namespace atomex
                                     _initStatusDesc = AppResources.InitCompleted;
                                 }
                                 if ((!item.IsCompleted && State == "Canceled") ||
-                                    (!item.IsCompleted && State == "Refunded") ||
                                     (!item.IsCompleted && State == "Unsettled"))
                                     _initStatusDesc = AppResources.InitFailure;
+                                if (!item.IsCompleted && State == "Refunded")
+                                    _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                if (!item.IsCompleted && State == "In Progress")
+                                    _initStatusDesc = AppResources.WaitingInit;
                                 _initStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
                                     ExplorerLink = item.ExplorerLink });
@@ -81,9 +84,12 @@ namespace atomex
                                     _exchangeStatusDesc = AppResources.PaymentsConfirmed;
                                 }
                                 if ((!item.IsCompleted && State == "Canceled") ||
-                                    (!item.IsCompleted && State == "Refunded") ||
                                     (!item.IsCompleted && State == "Unsettled"))
                                     _exchangeStatusDesc = AppResources.FailedPayment;
+                                if (!item.IsCompleted && State == "Refunded")
+                                    _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                if (!item.IsCompleted && State == "In Progress")
+                                    _exchangeStatusDesc = AppResources.WaitingForPayment;
                                 _exchangeStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
                                     ExplorerLink = item.ExplorerLink });
@@ -93,9 +99,12 @@ namespace atomex
                                 if (State == "Completed")
                                     _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyReceived, ToCurrencyCode);
                                 if ((!item.IsCompleted && State == "Canceled") ||
-                                   (!item.IsCompleted && State == "Refunded") ||
                                    (!item.IsCompleted && State == "Unsettled"))
-                                    _exchangeStatusDesc = AppResources.FailedRedeem;
+                                    _completionStatusDesc = AppResources.FailedRedeem;
+                                if (!item.IsCompleted && State == "Refunded")
+                                    _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                if (!item.IsCompleted && State == "In Progress")
+                                    _completionStatusDesc = AppResources.WaitingForRedeem;
                                 _completionStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
                                     ExplorerLink = item.ExplorerLink });

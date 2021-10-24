@@ -538,6 +538,9 @@
     <data name="PaymentsConfirmed" xml:space="preserve">
         <value>Платежи подтверждены</value>
     </data>
+    <data name="WaitingInit" xml:space="preserve">
+        <value>Ожидание согласования ордеров</value>
+    </data>
     <data name="WaitingForPayment" xml:space="preserve">
         <value>Ожидание подтверждений платежей</value>
     </data>
@@ -555,6 +558,9 @@
     </data>
     <data name="CurrencyReceived" xml:space="preserve">
         <value>{0} получен</value>
+    </data>
+    <data name="CurrencyRefunded" xml:space="preserve">
+        <value>{0} возвращен</value>
     </data>
     <data name="DetailsTab" xml:space="preserve">
         <value>Подробнее</value>
