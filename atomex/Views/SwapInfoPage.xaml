@@ -433,9 +433,15 @@
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
                                VerticalOptions="Center"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               Aspect="AspectFill"
+                               WidthRequest="1"
+                               HeightRequest="40"/>
                         <Image Grid.Row="1"
                                Source="ic_line__full"
+                               Aspect="AspectFill"
+                               WidthRequest="1"
+                               HeightRequest="40"
                                VerticalOptions="Center"
                                HorizontalOptions="Center">
                             <Image.Triggers>
@@ -716,13 +722,34 @@
                         <Image Grid.Row="1"
                                Source="ic_line__empty"
                                VerticalOptions="Center"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               Aspect="AspectFill"
+                               WidthRequest="1"
+                               HeightRequest="40">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding ExpandedStatus}"
+                                             Value="Exchanging">
+                                    <Setter Property="HeightRequest"
+                                            Value="80"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <Image Grid.Row="1"
                                Source="ic_line__full"
                                VerticalOptions="Center"
                                HorizontalOptions="Center"
+                               Aspect="AspectFill"
+                               WidthRequest="1"
+                               HeightRequest="40"
                                IsVisible="False">
                             <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding ExpandedStatus}"
+                                             Value="Exchanging">
+                                    <Setter Property="HeightRequest"
+                                            Value="80"/>
+                                </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding Status}"
                                              Value="Completion">
@@ -800,7 +827,17 @@
                                                    Margin="0,2,8,0"
                                                    VerticalOptions="Start"
                                                    WidthRequest="10"
-                                                   HeightRequest="10"/>
+                                                   HeightRequest="10"
+                                                   IsVisible="False">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding IsCompleted}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
                                             <StackLayout Spacing="0">
                                                 <Label Text="{Binding Message}"
                                                        FontFamily="{DynamicResource RegularFont}"
@@ -1003,7 +1040,7 @@
                                 </DataTrigger>
                             </StackLayout.Triggers>
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding CompletionStatusCommand}"
+                                <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Completion"/>
                             </StackLayout.GestureRecognizers>
                             <BindableLayout.ItemTemplate>

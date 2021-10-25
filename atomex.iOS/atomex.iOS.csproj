@@ -58,6 +58,7 @@
     <MtouchLink>None</MtouchLink>
 <LangVersion>8.0</LangVersion>
 <MtouchInterpreter>-all</MtouchInterpreter>
+<MtouchExtraArgs>--interpreter</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -257,9 +258,6 @@
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
@@ -276,10 +274,6 @@
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11_light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf" />
@@ -293,6 +287,13 @@
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -471,6 +472,7 @@
     <Folder Include="Assets.xcassets\SwapCanceled.imageset\" />
     <Folder Include="Assets.xcassets\ConvertArrowFailure.imageset\" />
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

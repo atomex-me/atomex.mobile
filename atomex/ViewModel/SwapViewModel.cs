@@ -50,7 +50,7 @@ namespace atomex
 
                 if (_detailingInfo == null)
                     return;
-                
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     ClearStatusMessages();
@@ -75,7 +75,9 @@ namespace atomex
                                     _initStatusDesc = AppResources.WaitingInit;
                                 _initStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink });
+                                    ExplorerLink = item.ExplorerLink,
+                                    IsCompleted = true
+                                });
                                 break;
                             case SwapDetailingStatus.Exchanging:
                                 if (item.IsCompleted)
@@ -92,7 +94,9 @@ namespace atomex
                                     _exchangeStatusDesc = AppResources.WaitingForPayment;
                                 _exchangeStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink });
+                                    ExplorerLink = item.ExplorerLink,
+                                    IsCompleted = true
+                                });
                                 break;
                             case SwapDetailingStatus.Completion:
                                 _status = SwapDetailingStatus.Completion.ToString();
@@ -107,12 +111,16 @@ namespace atomex
                                     _completionStatusDesc = AppResources.WaitingForRedeem;
                                 _completionStatusMessages.Add(new SwapDetailingMessage {
                                     Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink });
+                                    ExplorerLink = item.ExplorerLink,
+                                    IsCompleted = true
+                                });
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
                     }
+
+                    ValidateStatusMessages();
 
                     OnPropertyChanged(nameof(DetailingInfo));
                     OnPropertyChanged(nameof(Status));
@@ -256,6 +264,31 @@ namespace atomex
         {
             SetState(swap);
             DetailingInfo = GetSwapDetailingInfo(swap, Account).ToList();
+        }
+
+        private void ValidateStatusMessages()
+        {
+            if (State == "Completed")
+                return;
+
+            if (_status == SwapDetailingStatus.Initialization.ToString())
+            {
+                _initStatusMessages.Last().IsCompleted = false;
+                OnPropertyChanged(nameof(InitStatusMessages));
+                return;
+            }
+            if (_status == SwapDetailingStatus.Exchanging.ToString())
+            {
+                _exchangeStatusMessages.Last().IsCompleted = false;
+                OnPropertyChanged(nameof(ExchangeStatusMessages));
+                return;
+            }
+            if (_status == SwapDetailingStatus.Completion.ToString())
+            {
+                _completionStatusMessages.LastOrDefault().IsCompleted = false;
+                OnPropertyChanged(nameof(CompletionStatusMessages));
+                return;
+            }
         }
 
         private void ClearStatusMessages()
