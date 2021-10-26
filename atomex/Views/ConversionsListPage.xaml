@@ -126,7 +126,7 @@
                                        Text="{Binding FromCurrencyCode}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="14"
-                                       FontFamily="{Binding RegularFont}"
+                                       FontFamily="{DynamicResource RegularFont}"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
@@ -134,7 +134,7 @@
                                        Text="{Binding FromAmount, StringFormat='{0:0.000000000}'}"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        FontSize="12"
-                                       FontFamily="{Binding RegularFont}"
+                                       FontFamily="{DynamicResource RegularFont}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start"/>
                                 <Image Grid.Column="2"
@@ -184,7 +184,7 @@
                                        Text="{Binding ToCurrencyCode}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="14"
-                                       FontFamily="{Binding RegularFont}"
+                                       FontFamily="{DynamicResource RegularFont}"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
@@ -192,7 +192,7 @@
                                        Text="{Binding ToAmount, StringFormat='{0:0.000000000}'}"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        FontSize="12"
-                                       FontFamily="{Binding RegularFont}"
+                                       FontFamily="{DynamicResource RegularFont}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start"/>
                                 <Image Grid.Column="5"
