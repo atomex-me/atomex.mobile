@@ -596,6 +596,12 @@
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
         <value>Are you sure you want to delete the wallet "{0}"?</value>
     </data>
+    <data name="DeletingDapp" xml:space="preserve">
+        <value>Deleting Dapp</value>
+    </data>
+    <data name="DeletingDappText" xml:space="preserve">
+        <value>Removing dapp may cause you to lose your connection to the device</value>
+    </data>
     <data name="DeletingDappConfirmationText" xml:space="preserve">
         <value>Are you sure you want to delete this dapp "{0}"?</value>
     </data>

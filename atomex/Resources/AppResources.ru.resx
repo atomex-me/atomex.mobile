@@ -596,6 +596,12 @@
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
         <value>Вы уверены, что хотите удалить кошелек "{0}"?</value>
     </data>
+    <data name="DeletingDapp" xml:space="preserve">
+        <value>Удаление dapp</value>
+    </data>
+    <data name="DeletingDappText" xml:space="preserve">
+        <value>Удаление dapp может привести к потере вашей связки с устройством</value>
+    </data>
     <data name="DeletingDappConfirmationText" xml:space="preserve">
         <value>Вы уверены, что хотите удалить этот dapp "{0}"?</value>
     </data>

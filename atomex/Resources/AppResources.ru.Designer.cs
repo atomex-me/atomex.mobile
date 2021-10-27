@@ -1127,6 +1127,18 @@ namespace atomex.Resources {
             }
         }
 
+        internal static string DeletingDapp {
+            get {
+                return ResourceManager.GetString("DeletingDapp", resourceCulture);
+            }
+        }
+
+        internal static string DeletingDappText {
+            get {
+                return ResourceManager.GetString("DeletingDappText", resourceCulture);
+            }
+        }
+
         internal static string SecuritySection {
             get {
                 return ResourceManager.GetString("SecuritySection", resourceCulture);

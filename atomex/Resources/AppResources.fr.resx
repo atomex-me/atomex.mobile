@@ -596,6 +596,12 @@
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
         <value>Voulez-vous vraiment supprimer le portefeuille "{0}"?</value>
     </data>
+    <data name="DeletingDapp" xml:space="preserve">
+        <value>Suppression de fap</value>
+    </data>
+    <data name="DeletingDappText" xml:space="preserve">
+        <value>Le retrait du fap peut entraîner la perte de votre ligament avec l'appareil</value>
+    </data>
     <data name="DeletingDappConfirmationText" xml:space="preserve">
         <value>Êtes-vous sûr de vouloir supprimer ce dapp "{0}"?</value>
     </data>
