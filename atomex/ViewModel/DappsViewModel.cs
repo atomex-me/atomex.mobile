@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
+using System.Windows.Input;
+using atomex.Resources;
 using Atomex;
 using Atomex.Core;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
@@ -26,7 +32,13 @@ namespace atomex.ViewModel
             }
         }
 
-        public ObservableCollection<DappInfo> DappsInfo { get; set; }
+        private ObservableCollection<DappInfo> _dappsInfo;
+
+        public ObservableCollection<DappInfo> DappsInfo
+        {
+            get => _dappsInfo;
+            set { _dappsInfo = value; OnPropertyChanged(nameof(DappsInfo)); }
+        }
 
         public DappsViewModel(IAtomexApp app, INavigation navigation)
         {
@@ -42,10 +54,45 @@ namespace atomex.ViewModel
         {
             DappsInfo = new ObservableCollection<DappInfo>()
             {
-                new DappInfo() { Name = "abcd", Network = Network.TestNet, IsActive = true},
-                new DappInfo() { Name = "xyz", Network = Network.MainNet, IsActive = true}
+                new() { Name = "abcd", Network = Network.TestNet, IsActive = true, DappDeviceType = "Desktop"},
+                new() { Name = "xyz", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
+                new() { Name = "Desktop", Network = Network.MainNet, IsActive = true, DappDeviceType = "Web"},
+                new() { Name = "xyz5", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
+                new() { Name = "xyz4", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
+                new() { Name = "xyz3", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
+                new() { Name = "xyz2", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
+                new() { Name = "xyz43", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
             };
-            OnPropertyChanged(nameof(DappsInfo));
         }
+
+        private ICommand _deleteDappCommand;
+        public ICommand DeleteDappCommand => _deleteDappCommand ??= new Command<string>((name) => OnDappTapped(name));
+
+        private async void OnDappTapped(string name)
+        {
+            var selectedDapp = DappsInfo.FirstOrDefault(w => w.Name == name);
+
+            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingDapp, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingDappConfirmationText, selectedDapp?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+            if (confirm)
+            {
+                DeleteDapp(selectedDapp);
+            }
+        }
+
+        private async void DeleteDapp(DappInfo dapp)
+        {
+            try
+            {
+                DappsInfo.Remove(dapp);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Delete dapp error");
+            }
+        }
+        // private ICommand _selectDappDeviceCommand;
+
+        // public ICommand SelectDappDeviceCommand => _selectDappDeviceCommand ??= new Command<DappInfo>();
+
     }
 }

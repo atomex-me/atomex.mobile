@@ -1,94 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.SettingsOptions.Dapps.DappsPage"
              x:Name="BindingContextPage"
-             Title="{helpers:Translate Addresses}"
-             Style="{DynamicResource MainBackgroundStyle}">
-    <StackLayout Style="{StaticResource SeparatorStyle}"/>
-        <ListView ItemsSource="{Binding DappsInfo}"
-                  SeparatorVisibility="Default"
-                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  HasUnevenRows="True"
-                  SelectionMode="None"
-                  VerticalOptions="FillAndExpand"
-                  Footer="">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid RowSpacing="0"
-                              ColumnSpacing="10"
-                              VerticalOptions="Center"
-                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                              Padding="20,0">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
-                                                      Tapped="OnItemTapped"
-                                                      CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="20" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.RowSpan="2"
-                                   Text="{Binding Address}"
+             Title="{helpers:Translate DappsDevices}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+                <StackLayout 
+                    Orientation="Vertical"
+                    Padding="20"
+                    Spacing="0">
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="SCAN QR CODE"
                                    FontFamily="{DynamicResource RegularFont}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                   FontSize="12"
-                                   HeightRequest="50"
-                                   LineBreakMode="MiddleTruncation"
-                                   VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Start"/>
-                            <Label Grid.Column="1"
-                                   FontFamily="{DynamicResource BoldFont}"
-                                   Text="{Binding Balance, StringFormat='{0:0.######}'}"
                                    FontSize="14"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="End">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding BindingContext.HasTokens, Source={x:Reference BindingContextPage}}"
-                                                 Value="True">
-                                        <Setter Property="Grid.RowSpan"
-                                                Value="2"/>
-                                    </DataTrigger>
-                                </Label.Triggers> 
-                            </Label>
-                            <Label Grid.Column="1"
-                                   Grid.Row="1"
-                                   FontFamily="{DynamicResource BoldFont}"
-                                   Text="{Binding TokenBalance, StringFormat='{0:0.######}', TargetNullValue=''}"
-                                   HeightRequest="18"
-                                   FontSize="12"
-                                   TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
-                                   VerticalTextAlignment="Start"
-                                   HorizontalTextAlignment="End"
-                                   IsVisible="False">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding BindingContext.HasTokens, Source={x:Reference BindingContextPage}}"
-                                                 Value="True">
-                                        <Setter Property="IsVisible"
-                                                Value="True"/>
-                                    </DataTrigger>
-                                </Label.Triggers>     
-                            </Label>
-                            <Image Grid.RowSpan="2"
-                                   Grid.Column="2"
-                                   Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                                   HorizontalTextAlignment="Center"
+                                   />
+                            <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                                   HorizontalOptions="EndAndExpand"
+                                   VerticalOptions="Center"
                                    HeightRequest="10"
-                                   WidthRequest="10"
-                                   HorizontalOptions="End"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                   WidthRequest="10"/>
+                        </StackLayout>
+                    </Frame>
+                    <Label Text="{helpers:Translate DappsDevices}"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           VerticalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           Padding="20,5"/>
+                    <Frame CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,5">
+                    <ListView ItemsSource="{Binding DappsInfo}"
+                              SeparatorVisibility="Default"
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                              SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                              HasUnevenRows="True"
+                              SelectionMode="None"
+                              VerticalOptions="FillAndExpand"
+                              Footer="">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid ColumnSpacing="0"
+                                              RowSpacing="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="30" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="7*" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.RowSpan="2"
+                                                   WidthRequest="40"
+                                                   HeightRequest="40"
+                                                   VerticalOptions="Center"
+                                                   Source="LTC"/>
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding .Name}"
+                                                   FontFamily="{DynamicResource RegularFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                   FontSize="18"
+                                                   VerticalTextAlignment="End"
+                                                   HorizontalTextAlignment="Start"/>
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="1"
+                                                   Text="{Binding .Network}"
+                                                   FontFamily="{DynamicResource LightFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                   FontSize="16"
+                                                   Margin="0,3"
+                                                   VerticalTextAlignment="Start"
+                                                   HorizontalTextAlignment="Start">
+                                            </Label>
+                                            <Image Grid.Column="2"
+                                                   Grid.RowSpan="2"
+                                                   Source="ic_delete"
+                                                   WidthRequest="20"
+                                                   HeightRequest="20"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Center">
+                                                   <Image.GestureRecognizers>
+                                                       <TapGestureRecognizer CommandParameter="{Binding Name}" Command="{Binding BindingContext.DeleteDappCommand, Source={x:Reference BindingContextPage}}"/>
+                                                   </Image.GestureRecognizers>
+                                            </Image>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Frame>
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>
