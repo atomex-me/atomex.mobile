@@ -1121,7 +1121,13 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("DeletingWalletConfirmationText", resourceCulture);
             }
         }
-        
+
+        internal static string DeletingDappConfirmationText {
+            get {
+                return ResourceManager.GetString("DeletingDappConfirmationText", resourceCulture);
+            }
+        }
+
         internal static string SecuritySection {
             get {
                 return ResourceManager.GetString("SecuritySection", resourceCulture);

@@ -596,6 +596,9 @@
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
         <value>"{0}" cüzdanını silmek istediğinizden emin misiniz?</value>
     </data>
+    <data name="DeletingDappConfirmationText" xml:space="preserve">
+        <value>"{0}" Bu dapp'i kaldırmak istediğinizden emin misiniz?</value>
+    </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Hesap</value>
     </data>

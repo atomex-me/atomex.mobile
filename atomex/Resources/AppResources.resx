@@ -596,6 +596,9 @@
     <data name="DeletingWalletConfirmationText" xml:space="preserve">
         <value>Are you sure you want to delete the wallet "{0}"?</value>
     </data>
+    <data name="DeletingDappConfirmationText" xml:space="preserve">
+        <value>Are you sure you want to delete this dapp "{0}"?</value>
+    </data>
     <data name="AccountSection" xml:space="preserve">
         <value>Account</value>
     </data>
