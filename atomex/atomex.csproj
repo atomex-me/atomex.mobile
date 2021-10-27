@@ -22,9 +22,7 @@
     <PackageReference Include="Sentry.Serilog" Version="2.1.1" />
     <PackageReference Include="Xam.Plugin.LatestVersion" Version="2.1.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
-    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="4.0.10" />
-    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
-    <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.2.0" />
+    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="4.0.11" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
