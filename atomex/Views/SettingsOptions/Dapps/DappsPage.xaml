@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             mc:Ignorable="d"
              x:Class="atomex.Views.SettingsOptions.Dapps.DappsPage"
              x:Name="BindingContextPage"
              Title="{helpers:Translate DappsDevices}"
@@ -77,8 +80,8 @@
                                      Spacing="15">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Orientation="Vertical"
-                                                  HeightRequest="40">
+                                    <xct:Expander>
+                                        <xct:Expander.Header>
                                         <Grid ColumnSpacing="0"
                                               RowSpacing="0">
                                             <Grid.RowDefinitions>
@@ -123,7 +126,20 @@
                                                    </Image.GestureRecognizers>
                                             </Image>
                                         </Grid>
-                                    </StackLayout>
+                                            </xct:Expander.Header>
+                                        <Label Text="Permissions"
+                                               FontFamily="{DynamicResource RegularFont}"
+                                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                               FontSize="12"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="Start"/>
+                                        <!-- <Label Text="Binding .Permissions" -->
+                                        <!--        FontFamily="{DynamicResource RegularFont}" -->
+                                        <!--        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" -->
+                                        <!--        FontSize="12" -->
+                                        <!--        VerticalTextAlignment="End" -->
+                                        <!--        HorizontalTextAlignment="Start"/> -->
+                                    </xct:Expander>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
