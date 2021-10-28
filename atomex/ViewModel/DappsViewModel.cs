@@ -52,17 +52,7 @@ namespace atomex.ViewModel
         /// </summary>
         void LoadDapps()
         {
-            DappsInfo = new ObservableCollection<DappInfo>()
-            {
-                new() { Name = "abcd", Network = Network.TestNet, IsActive = true, DappDeviceType = "Desktop"},
-                new() { Name = "xyz", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-                new() { Name = "Desktop", Network = Network.MainNet, IsActive = true, DappDeviceType = "Web"},
-                new() { Name = "xyz5", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-                new() { Name = "xyz4", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-                new() { Name = "xyz3", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-                new() { Name = "xyz2", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-                new() { Name = "xyz43", Network = Network.MainNet, IsActive = true, DappDeviceType = "Mobile"},
-            };
+            DappsInfo = new ObservableCollection<DappInfo>(DappInfo.MockDapps());
         }
 
         private ICommand _deleteDappCommand;

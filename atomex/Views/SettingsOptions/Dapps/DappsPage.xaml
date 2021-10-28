@@ -70,7 +70,7 @@
                                                    WidthRequest="40"
                                                    HeightRequest="40"
                                                    VerticalOptions="Center"
-                                                   Source="LTC"/>
+                                                   Source="{Binding .ImageUrl}"/>
                                             <Label Grid.Column="1"
                                                    Text="{Binding .Name}"
                                                    FontFamily="{DynamicResource RegularFont}"
@@ -86,8 +86,7 @@
                                                    FontSize="16"
                                                    Margin="0,3"
                                                    VerticalTextAlignment="Start"
-                                                   HorizontalTextAlignment="Start">
-                                            </Label>
+                                                   HorizontalTextAlignment="Start"/>
                                             <Image Grid.Column="2"
                                                    Grid.RowSpan="2"
                                                    Source="ic_delete"
