@@ -1,11 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             mc:Ignorable="d"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.SettingsOptions.Dapps.DappsPage"
              x:Name="BindingContextPage"
              Title="{helpers:Translate DappsDevices}"
@@ -28,13 +25,15 @@
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    FontSize="14"
                                    VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Center"
-                                   />
+                                   HorizontalTextAlignment="Center"/>
                             <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
                                    HorizontalOptions="EndAndExpand"
                                    VerticalOptions="Center"
                                    HeightRequest="10"
                                    WidthRequest="10"/>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding .ScanQrCodeCommand}"/>
+                            </Frame.GestureRecognizers>
                         </StackLayout>
                     </Frame>
                     <Label Text="{helpers:Translate DappsDevices}"

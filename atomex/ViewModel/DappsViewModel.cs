@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Core;
+using atomex.Views.SettingsOptions.Dapps;
 using Serilog;
 using Xamarin.Forms;
 
@@ -18,19 +20,6 @@ namespace atomex.ViewModel
         private readonly IAtomexApp _app;
 
         public INavigation Navigation { get; set; }
-
-        private CancellationTokenSource _cancellation;
-
-        private bool _isUpdating;
-        public bool IsUpdating
-        {
-            get => _isUpdating;
-            set
-            {
-                _isUpdating = value;
-                OnPropertyChanged(nameof(IsUpdating));
-            }
-        }
 
         private ObservableCollection<DappInfo> _dappsInfo;
 
@@ -73,6 +62,7 @@ namespace atomex.ViewModel
         {
             try
             {
+                var index = DappsInfo.IndexOf(dapp);
                 DappsInfo.Remove(dapp);
             }
             catch (Exception e)
@@ -80,9 +70,14 @@ namespace atomex.ViewModel
                 Log.Error(e, "Delete dapp error");
             }
         }
-        // private ICommand _selectDappDeviceCommand;
 
-        // public ICommand SelectDappDeviceCommand => _selectDappDeviceCommand ??= new Command<DappInfo>();
+        private ICommand _scanQrCodeCommand;
 
+        public ICommand ScanQrCodeCommand => _scanQrCodeCommand ??= new Command(async () => await OnScanQrCodeClicked());
+
+        private async Task OnScanQrCodeClicked()
+        {
+            await Navigation.PushAsync(new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation)));
+        }
     }
 }

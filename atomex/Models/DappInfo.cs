@@ -13,7 +13,6 @@ namespace atomex.ViewModel
         public string ImageUrl { get; set; }
         public Network Network { get; set; }
         public bool IsActive { get; set; }
-        private DappType _dappDeviceType;
         public DappType DappDeviceType { get; set; }
         public IReadOnlyCollection<Permission> Permissions { get; set; }
 
