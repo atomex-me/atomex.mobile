@@ -77,7 +77,35 @@
                            HorizontalOptions="Start"
                            VerticalTextAlignment="Center"
                            Margin="10,10"/>
-                    
+                    <Frame CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,5"
+                           IsVisible="True">
+                        <StackLayout 
+                            BindableLayout.ItemsSource="{Binding Dapp.Permissions}"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                            VerticalOptions="FillAndExpand"
+                            Spacing="5">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout
+                                        VerticalOptions="FillAndExpand"
+                                        Orientation="Horizontal"
+                                        Spacing="0">
+                                        <Label
+                                            Text="{Binding .Name}"
+                                            FontFamily="{DynamicResource RegularFont}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                            FontSize="18"
+                                            Margin="5, 5"
+                                            VerticalTextAlignment="Start"
+                                            HorizontalTextAlignment="Start"/>
+                                        <CheckBox  IsChecked="{Binding Selected}" Color="Red" HorizontalOptions="End"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
                 </StackLayout>
         </ScrollView>
     </ContentPage.Content>
