@@ -41,20 +41,44 @@
                            VerticalTextAlignment="Center"
                            TextTransform="Uppercase"
                            Padding="20,5"/>
+                    <StackLayout
+                        Orientation="Vertical"
+                        Spacing="30"
+                        IsVisible="False">
+                        <Image WidthRequest="170"
+                           HeightRequest="156"
+                           Margin="10"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Source="AtomexLogo"/>
+                        <Label Text="No Dapps have been connected"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="20"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           HorizontalOptions="Center"
+                           VerticalTextAlignment="Center"
+                           Padding="20,5"/>
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding DappsInfo.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                    </StackLayout>
                     <Frame CornerRadius="10"
                            Style="{DynamicResource EntryFrameStyle}"
-                           Padding="20,5">
-                    <ListView ItemsSource="{Binding DappsInfo}"
-                              SeparatorVisibility="Default"
-                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                              SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                              HasUnevenRows="True"
-                              SelectionMode="None"
-                              VerticalOptions="FillAndExpand"
-                              Footer="">
-                            <ListView.ItemTemplate>
+                           Padding="20,5"
+                           IsVisible="True">
+                        <StackLayout BindableLayout.ItemsSource="{Binding DappsInfo}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                     VerticalOptions="FillAndExpand"
+                                     Spacing="15">
+                            <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
+                                    <StackLayout Orientation="Vertical"
+                                                  HeightRequest="40">
                                         <Grid ColumnSpacing="0"
                                               RowSpacing="0">
                                             <Grid.RowDefinitions>
@@ -99,10 +123,18 @@
                                                    </Image.GestureRecognizers>
                                             </Image>
                                         </Grid>
-                                    </ViewCell>
+                                    </StackLayout>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding DappsInfo.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
                     </Frame>
                 </StackLayout>
         </ScrollView>
