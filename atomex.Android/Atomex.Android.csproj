@@ -770,6 +770,14 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_close__red.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_close__red.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -804,6 +812,8 @@
     <AndroidAsset Include="Assets\Animations\loader_light__blue.json" />
     <AndroidAsset Include="Assets\loader_light__blue.json" />
     <AndroidAsset Include="Assets\loader_dark__blue.json" />
+    <AndroidAsset Include="Assets\Animations\loader__white.json" />
+    <AndroidAsset Include="Assets\loader__white.json" />
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />

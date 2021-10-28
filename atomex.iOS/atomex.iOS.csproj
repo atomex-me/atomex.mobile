@@ -294,6 +294,10 @@
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -464,6 +468,7 @@
     <Folder Include="Assets.xcassets\ConvertArrowFailure.imageset\" />
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
     <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
+    <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
@@ -477,5 +482,6 @@
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
     <BundleResource Include="Assets\Animations\loader_light__blue.json" />
     <BundleResource Include="Assets\Animations\loader_dark__blue.json" />
+    <BundleResource Include="Assets\Animations\loader__white.json" />
   </ItemGroup>
 </Project>

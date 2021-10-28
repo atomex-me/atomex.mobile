@@ -521,7 +521,85 @@
                                                    Margin="0,2,8,0"
                                                    VerticalOptions="Start"
                                                    WidthRequest="10"
-                                                   HeightRequest="10"/>
+                                                   HeightRequest="10">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding IsCompleted}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </DataTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Initialization"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Canceled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Initialization"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Unsettled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Initialization"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Refunded"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                            <lottie:AnimationView WidthRequest="10"
+                                                                  HeightRequest="10"
+                                                                  Margin="0,2,8,0"
+                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
+                                                                  AnimationSource="AssetOrBundle"
+                                                                  ImageAssetsFolder="Assets/Animations"
+                                                                  AutoPlay="True"
+                                                                  RepeatMode="Infinite"
+                                                                  Speed="1"
+                                                                  VerticalOptions="Start"
+                                                                  HorizontalOptions="Center"
+                                                                  IsVisible="False">
+                                                <lottie:AnimationView.Triggers>
+                                                    <MultiTrigger TargetType="lottie:AnimationView">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Initialization"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="In Progress"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </lottie:AnimationView.Triggers>
+                                            </lottie:AnimationView>
                                             <StackLayout Spacing="0">
                                                 <Label Text="{Binding Message}"
                                                        FontFamily="{DynamicResource RegularFont}"
@@ -835,8 +913,77 @@
                                                         <Setter Property="IsVisible"
                                                                 Value="True"/>
                                                     </DataTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Exchanging"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Canceled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Exchanging"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Unsettled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Exchanging"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Refunded"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
                                                 </Image.Triggers>
                                             </Image>
+                                            <lottie:AnimationView WidthRequest="10"
+                                                                  HeightRequest="10"
+                                                                  Margin="0,2,8,0"
+                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
+                                                                  AnimationSource="AssetOrBundle"
+                                                                  ImageAssetsFolder="Assets/Animations"
+                                                                  AutoPlay="True"
+                                                                  RepeatMode="Infinite"
+                                                                  Speed="1"
+                                                                  VerticalOptions="Start"
+                                                                  HorizontalOptions="Center"
+                                                                  IsVisible="False">
+                                                <lottie:AnimationView.Triggers>
+                                                    <MultiTrigger TargetType="lottie:AnimationView">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Exchanging"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="In Progress"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </lottie:AnimationView.Triggers>
+                                            </lottie:AnimationView>
                                             <StackLayout Spacing="0">
                                                 <Label Text="{Binding Message}"
                                                        FontFamily="{DynamicResource RegularFont}"
@@ -1052,7 +1199,85 @@
                                                    Margin="0,2,8,0"
                                                    VerticalOptions="Start"
                                                    WidthRequest="10"
-                                                   HeightRequest="10"/>
+                                                   HeightRequest="10">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding IsCompleted}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </DataTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Completion"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Canceled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Completion"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Unsettled"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger TargetType="Image">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Completion"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Refunded"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Source"
+                                                                Value="ic_close__red"/>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                            <lottie:AnimationView WidthRequest="10"
+                                                                  HeightRequest="10"
+                                                                  Margin="0,2,6,0"
+                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
+                                                                  AnimationSource="AssetOrBundle"
+                                                                  ImageAssetsFolder="Assets/Animations"
+                                                                  AutoPlay="True"
+                                                                  RepeatMode="Infinite"
+                                                                  Speed="1"
+                                                                  VerticalOptions="Start"
+                                                                  HorizontalOptions="Center"
+                                                                  IsVisible="False">
+                                                <lottie:AnimationView.Triggers>
+                                                    <MultiTrigger TargetType="lottie:AnimationView">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding IsCompleted}"
+                                                                              Value="False"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
+                                                                              Value="Completion"/>
+                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
+                                                                              Value="In Progress"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </lottie:AnimationView.Triggers>
+                                            </lottie:AnimationView>
                                             <StackLayout Spacing="0">
                                                 <Label Text="{Binding Message}"
                                                        FontFamily="{DynamicResource RegularFont}"
