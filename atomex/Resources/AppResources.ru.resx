@@ -503,10 +503,10 @@
         <value>Своп отменен</value>
     </data>
     <data name="SwapRefundedDesc" xml:space="preserve">
-        <value>Время блокировки истекло</value>
+        <value>Время ожидания завершения свопа истекло</value>
     </data>
     <data name="SwapUnsettledDesc" xml:space="preserve">
-        <value>Вы не успели выкупить средства, пожалуйста, обратитесь в службу поддержки Atomex</value>
+        <value>Не удалось выкупить средства, пожалуйста, обратитесь в службу поддержки Atomex</value>
     </data>
     <data name="Initialization" xml:space="preserve">
         <value>Инициализация</value>
@@ -530,7 +530,7 @@
         <value>Средства возвращены</value>
     </data>
     <data name="SwapUnsettled" xml:space="preserve">
-        <value>Средства потеряны</value>
+        <value>Своп потерян</value>
     </data>
     <data name="InitCompleted" xml:space="preserve">
         <value>Инициализация завершена</value>
@@ -539,13 +539,13 @@
         <value>Платежи подтверждены</value>
     </data>
     <data name="WaitingInit" xml:space="preserve">
-        <value>Ожидание согласования ордеров</value>
+        <value>Ожидание сведения ордеров</value>
     </data>
     <data name="WaitingForPayment" xml:space="preserve">
-        <value>Ожидание подтверждений платежей</value>
+        <value>Ожидание подтверждения платежей</value>
     </data>
     <data name="WaitingForRedeem" xml:space="preserve">
-        <value>Ожидание подтверждений выкупа</value>
+        <value>Ожидание подтверждения выкупов</value>
     </data>
     <data name="InitFailure" xml:space="preserve">
         <value>Сбой инициализации</value>

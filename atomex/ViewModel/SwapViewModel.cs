@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Core;
@@ -73,11 +72,8 @@ namespace atomex
                                     _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
                                 if (!item.IsCompleted && State == "In Progress")
                                     _initStatusDesc = AppResources.WaitingInit;
-                                _initStatusMessages.Add(new SwapDetailingMessage {
-                                    Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink,
-                                    IsCompleted = true
-                                });
+                                item.IsCompleted = true;
+                                _initStatusMessages.Add(item);
                                 break;
                             case SwapDetailingStatus.Exchanging:
                                 if (item.IsCompleted)
@@ -92,11 +88,8 @@ namespace atomex
                                     _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
                                 if (!item.IsCompleted && State == "In Progress")
                                     _exchangeStatusDesc = AppResources.WaitingForPayment;
-                                _exchangeStatusMessages.Add(new SwapDetailingMessage {
-                                    Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink,
-                                    IsCompleted = true
-                                });
+                                item.IsCompleted = true;
+                                _exchangeStatusMessages.Add(item);
                                 break;
                             case SwapDetailingStatus.Completion:
                                 _status = SwapDetailingStatus.Completion.ToString();
@@ -109,11 +102,8 @@ namespace atomex
                                     _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
                                 if (!item.IsCompleted && State == "In Progress")
                                     _completionStatusDesc = AppResources.WaitingForRedeem;
-                                _completionStatusMessages.Add(new SwapDetailingMessage {
-                                    Message = item.Description,
-                                    ExplorerLink = item.ExplorerLink,
-                                    IsCompleted = true
-                                });
+                                item.IsCompleted = true;
+                                _completionStatusMessages.Add(item);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -166,22 +156,22 @@ namespace atomex
             set { _completionStatusDesc = value; OnPropertyChanged(nameof(CompletionStatusDesc)); }
         }
 
-        private ObservableCollection<SwapDetailingMessage> _initStatusMessages;
-        public ObservableCollection<SwapDetailingMessage> InitStatusMessages
+        private ObservableCollection<SwapDetailingInfo> _initStatusMessages;
+        public ObservableCollection<SwapDetailingInfo> InitStatusMessages
         {
             get => _initStatusMessages;
             set { _initStatusMessages = value; OnPropertyChanged(nameof(InitStatusMessages)); }
         }
 
-        private ObservableCollection<SwapDetailingMessage> _exchangeStatusMessages;
-        public ObservableCollection<SwapDetailingMessage> ExchangeStatusMessages
+        private ObservableCollection<SwapDetailingInfo> _exchangeStatusMessages;
+        public ObservableCollection<SwapDetailingInfo> ExchangeStatusMessages
         {
             get => _exchangeStatusMessages;
             set { _exchangeStatusMessages = value; OnPropertyChanged(nameof(ExchangeStatusMessages)); }
         }
 
-        private ObservableCollection<SwapDetailingMessage> _completionStatusMessages;
-        public ObservableCollection<SwapDetailingMessage> CompletionStatusMessages
+        private ObservableCollection<SwapDetailingInfo> _completionStatusMessages;
+        public ObservableCollection<SwapDetailingInfo> CompletionStatusMessages
         {
             get => _completionStatusMessages;
             set { _completionStatusMessages = value; OnPropertyChanged(nameof(CompletionStatusMessages)); }
@@ -255,9 +245,9 @@ namespace atomex
             InitStatusDesc = string.Empty;
             ExchangeStatusDesc = string.Empty;
             CompletionStatusDesc = string.Empty;
-            _initStatusMessages = new ObservableCollection<SwapDetailingMessage>();
-            _exchangeStatusMessages = new ObservableCollection<SwapDetailingMessage>();
-            _completionStatusMessages = new ObservableCollection<SwapDetailingMessage>();
+            _initStatusMessages = new ObservableCollection<SwapDetailingInfo>();
+            _exchangeStatusMessages = new ObservableCollection<SwapDetailingInfo>();
+            _completionStatusMessages = new ObservableCollection<SwapDetailingInfo>();
         }
 
         public void UpdateSwap(Swap swap)
@@ -274,19 +264,16 @@ namespace atomex
             if (_status == SwapDetailingStatus.Initialization.ToString())
             {
                 _initStatusMessages.Last().IsCompleted = false;
-                OnPropertyChanged(nameof(InitStatusMessages));
                 return;
             }
             if (_status == SwapDetailingStatus.Exchanging.ToString())
             {
                 _exchangeStatusMessages.Last().IsCompleted = false;
-                OnPropertyChanged(nameof(ExchangeStatusMessages));
                 return;
             }
             if (_status == SwapDetailingStatus.Completion.ToString())
             {
-                _completionStatusMessages.LastOrDefault().IsCompleted = false;
-                OnPropertyChanged(nameof(CompletionStatusMessages));
+                _completionStatusMessages.Last().IsCompleted = false;
                 return;
             }
         }

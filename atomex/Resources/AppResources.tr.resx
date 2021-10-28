@@ -542,19 +542,19 @@
         <value>Waiting for orders matching</value>
     </data>
     <data name="WaitingForPayment" xml:space="preserve">
-        <value>Waiting payment confirmations</value>
+        <value>Waiting for payments confirmation</value>
     </data>
     <data name="WaitingForRedeem" xml:space="preserve">
-        <value>Waiting redeem confirmations</value>
+        <value>Waiting for redeems confirmation</value>
     </data>
     <data name="InitFailure" xml:space="preserve">
-        <value>Initialization failure</value>
+        <value>Initialization failed</value>
     </data>
     <data name="FailedPayment" xml:space="preserve">
-        <value>Failed payment transaction</value>
+        <value>Payment transaction failed</value>
     </data>
     <data name="FailedRedeem" xml:space="preserve">
-        <value>Failed redeem transaction</value>
+        <value>Redeem transaction failed</value>
     </data>
     <data name="CurrencyReceived" xml:space="preserve">
         <value>{0} received</value>
