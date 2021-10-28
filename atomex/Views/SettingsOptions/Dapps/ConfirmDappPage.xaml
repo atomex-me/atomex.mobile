@@ -10,14 +10,13 @@
         <ScrollView>
                 <StackLayout 
                     Orientation="Vertical"
-                    Padding="20"
+                    Padding="40"
                     Spacing="0">
                     <Grid ColumnSpacing="0"
-                          RowSpacing="0" 
-                          BindableLayout.ItemsSource="{Binding Dapp}">
+                          RowSpacing="10" >
                         <Grid.RowDefinitions>
-                                <RowDefinition Height="60" />
-                                <RowDefinition Height="20" />
+                                <RowDefinition Height="80" />
+                                <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -29,26 +28,29 @@
                                WidthRequest="60"
                                HeightRequest="60"
                                VerticalOptions="Center"
-                               Source="{Binding .ImageUrl}"/>
+                               HorizontalOptions="Center"
+                               Source="{Binding Dapp.ImageUrl}"/>
                         <Image Grid.Column="1"
+                               Grid.Row="0"
                                WidthRequest="60"
                                HeightRequest="60"
                                VerticalOptions="Center"
+                               HorizontalOptions="Center"
                                Source="ic_delete"/>
-                        />
                         <Image Grid.Column="2"
                                WidthRequest="60"
                                HeightRequest="60"
                                VerticalOptions="Center"
+                               HorizontalOptions="Center"
                                Source="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"
                                />
                         <Label
                                Grid.Row="1"
-                               Text="{Binding .Name}"
+                               Text="{Binding Dapp.Name}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="20"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               HorizontalOptions="Start"
+                               HorizontalOptions="Center"
                                VerticalTextAlignment="Center"
                             />
                         <Label
@@ -58,9 +60,24 @@
                             FontFamily="{DynamicResource RegularFont}"
                             FontSize="20"
                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                            HorizontalOptions="Start"
+                            HorizontalOptions="Center"
                             VerticalTextAlignment="Center"/>
                     </Grid>
+                    <Label Text="The Dapp would like to connect to your account"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="26"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="10,30"/>
+                    <Label Text="The website is requesting the following permissions. Always make sure you trust the websites you interact with."
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="18"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="10,10"/>
+                    
                 </StackLayout>
         </ScrollView>
     </ContentPage.Content>

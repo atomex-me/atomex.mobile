@@ -32,7 +32,7 @@ namespace atomex.ViewModel
         {
             Dapp = new DappInfo()
             {
-                Name = "It's dapp", Network = Network.TestNet, ImageUrl = "BTC", DappDeviceType = DappType.Mobile,
+                Name = "Dapp", Network = Network.TestNet, ImageUrl = "BTC", DappDeviceType = DappType.Mobile,
                 Permissions = new List<Permission>()
                 {
                     new Permission() { Name = "Ты можешь сидеть?" },
