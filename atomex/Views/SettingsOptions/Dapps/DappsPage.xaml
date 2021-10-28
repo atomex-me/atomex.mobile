@@ -127,18 +127,31 @@
                                             </Image>
                                         </Grid>
                                             </xct:Expander.Header>
-                                        <Label Text="Permissions"
-                                               FontFamily="{DynamicResource RegularFont}"
-                                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                               FontSize="12"
-                                               VerticalTextAlignment="End"
-                                               HorizontalTextAlignment="Start"/>
-                                        <!-- <Label Text="Binding .Permissions" -->
-                                        <!--        FontFamily="{DynamicResource RegularFont}" -->
-                                        <!--        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" -->
-                                        <!--        FontSize="12" -->
-                                        <!--        VerticalTextAlignment="End" -->
-                                        <!--        HorizontalTextAlignment="Start"/> -->
+                                        <StackLayout Spacing="10"
+                                                     VerticalOptions="FillAndExpand"
+                                                     Orientation="Vertical">
+                                            <Label Text="Permissions"
+                                                   FontFamily="{DynamicResource RegularFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                   FontSize="15"
+                                                   Margin="10, 5"
+                                                   VerticalTextAlignment="Start"
+                                                   HorizontalTextAlignment="Start"/>
+                                            <Label Text="{Binding .PermissionsFormatted}"
+                                                   FontFamily="{DynamicResource RegularFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                   FontSize="12"
+                                                   Margin="15, 5"
+                                                   VerticalTextAlignment="Start"
+                                                   HorizontalTextAlignment="Start"/>
+                                            <Label Text="Settings: TODO"
+                                                   FontFamily="{DynamicResource RegularFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                   FontSize="15"
+                                                   Margin="15, 5"
+                                                   VerticalTextAlignment="Start"
+                                                   HorizontalTextAlignment="Start"/>
+                                        </StackLayout>
                                     </xct:Expander>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
