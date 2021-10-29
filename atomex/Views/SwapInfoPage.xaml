@@ -605,17 +605,10 @@
                                                          Orientation="Horizontal"
                                                          IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, TargetNullValue='', FallbackValue=''}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
+                                                       Text="{Binding Description}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <Span Text="{Binding Description}"/>
-                                                            <Span Text=" "/>
-                                                            <Span Text="{Binding ExplorerLink.Text}"/>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
+                                                       VerticalTextAlignment="Start"/>
                                             </StackLayout>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
@@ -629,6 +622,7 @@
                                                             <Span Text="{Binding Description}"/>
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
+                                                                  TextDecorations="Underline"
                                                                   TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
@@ -638,44 +632,35 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                <Image Source="ic_export"
-                                                       Margin="5,0"
-                                                       WidthRequest="10"
-                                                       HeightRequest="10"
-                                                       HorizontalOptions="Start">
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
-                        <Image Grid.Column="2"
-                               Grid.RowSpan="2"
-                               Source="DownArrow"
-                               HeightRequest="10"
-                               WidthRequest="10"
-                               Margin="0,5,0,0"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Center"
-                               Rotation="0">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                             Value="Initialization">
-                                    <Setter Property="Rotation"
-                                            Value="180"/>
-                                </DataTrigger>
-                            </Image.Triggers>
-                            <Image.GestureRecognizers>
+                        <StackLayout Grid.Column="2"
+                                     Grid.RowSpan="2">
+                            <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Initialization"/>
-                            </Image.GestureRecognizers>
-                        </Image>
+                            </StackLayout.GestureRecognizers>
+                            <Image Source="DownArrow"
+                                   HeightRequest="10"
+                                   WidthRequest="10"
+                                   Margin="0,5,0,0"
+                                   VerticalOptions="StartAndExpand"
+                                   HorizontalOptions="Center"
+                                   Rotation="0">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                 Value="Initialization">
+                                        <Setter Property="Rotation"
+                                                Value="180"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           Padding="20,0"
@@ -1019,6 +1004,7 @@
                                                             <Span Text="{Binding Description}"/>
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
+                                                                  TextDecorations="Underline"
                                                                   TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
@@ -1028,44 +1014,35 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                <Image Source="ic_export"
-                                                       Margin="5,0"
-                                                       WidthRequest="10"
-                                                       HeightRequest="10"
-                                                       HorizontalOptions="Start">
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
-                        <Image Grid.Column="2"
-                               Grid.RowSpan="2"
-                               Source="DownArrow"
-                               HeightRequest="10"
-                               WidthRequest="10"
-                               Margin="0,5,0,0"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Center"
-                               Rotation="0">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                             Value="Exchanging">
-                                    <Setter Property="Rotation"
-                                            Value="180"/>
-                                </DataTrigger>
-                            </Image.Triggers>
-                            <Image.GestureRecognizers>
+                        <StackLayout Grid.Column="2"
+                                     Grid.RowSpan="2">
+                            <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Exchanging"/>
-                            </Image.GestureRecognizers>
-                        </Image>
+                            </StackLayout.GestureRecognizers>
+                            <Image Source="DownArrow"
+                                   HeightRequest="10"
+                                   WidthRequest="10"
+                                   Margin="0,5,0,0"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Center"
+                                   Rotation="0">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                 Value="Exchanging">
+                                        <Setter Property="Rotation"
+                                                Value="180"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           Padding="20,0"
@@ -1320,6 +1297,7 @@
                                                             <Span Text="{Binding Description}"/>
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
+                                                                  TextDecorations="Underline"
                                                                   TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
@@ -1329,44 +1307,35 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                <Image Source="ic_export"
-                                                       Margin="5,0"
-                                                       WidthRequest="10"
-                                                       HeightRequest="10"
-                                                       HorizontalOptions="Start">
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
-                        <Image Grid.Column="2"
-                               Grid.RowSpan="2"
-                               Source="DownArrow"
-                               HeightRequest="10"
-                               WidthRequest="10"
-                               Margin="0,5,0,0"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Center"
-                               Rotation="0">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image"
-                                             Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
-                                             Value="Completion">
-                                    <Setter Property="Rotation"
-                                            Value="180"/>
-                                </DataTrigger>
-                            </Image.Triggers>
-                            <Image.GestureRecognizers>
+                        <StackLayout Grid.Column="2"
+                                     Grid.RowSpan="2">
+                            <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Completion"/>
-                            </Image.GestureRecognizers>
-                        </Image>
+                            </StackLayout.GestureRecognizers>
+                            <Image Source="DownArrow"
+                                   HeightRequest="10"
+                                   WidthRequest="10"
+                                   Margin="0,5,0,0"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Center"
+                                   Rotation="0">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
+                                                 Value="Completion">
+                                        <Setter Property="Rotation"
+                                                Value="180"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </StackLayout>
                     </Grid>
                 </StackLayout>
 
