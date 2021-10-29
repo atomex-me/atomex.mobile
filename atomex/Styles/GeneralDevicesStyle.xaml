@@ -409,7 +409,7 @@
         <Setter Property="FontSize" Value="30"/>
         <Setter Property="Padding">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="Thickness" iOS="0" Android="0,-6,0,0"/>
+                <OnPlatform x:TypeArguments="Thickness" iOS="0" Android="0,-4,0,0"/>
             </Setter.Value>
         </Setter>
         <Setter Property="WidthRequest" Value="80"/>
