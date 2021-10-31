@@ -11,10 +11,9 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter"/>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" /> 
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+            <converters:NullToBooleanInvertConverter x:Key="NullToBooleanInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -338,7 +337,17 @@
                                WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="In Progress">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <Image WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
@@ -601,22 +610,33 @@
                                                     </MultiTrigger>
                                                 </lottie:AnimationView.Triggers>
                                             </lottie:AnimationView>
+                                            <Label FontFamily="{DynamicResource RegularFont}"
+                                                   Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                   VerticalTextAlignment="Start"
+                                                   IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, TargetNullValue='', FallbackValue=''}">
-                                                <Label FontFamily="{DynamicResource RegularFont}"
-                                                       Text="{Binding Description}"
-                                                       FontSize="12"
-                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start"/>
-                                            </StackLayout>
-                                            <StackLayout Spacing="0"
-                                                         Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource StringToBool}, TargetNullValue='', FallbackValue=''}">
+                                                         IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Description}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding ExplorerLink.Text}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label FontFamily="{DynamicResource RegularFont}"
+                                                       FontSize="12"
+                                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding Description}"/>
@@ -653,6 +673,12 @@
                                    Rotation="0">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.InitStatusMessages.Count, Source={x:Reference BindingContextPage}}"
+                                                 Value="0">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                  Value="Initialization">
                                         <Setter Property="Rotation"
@@ -680,7 +706,17 @@
                                WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="In Progress">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <Image WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
@@ -976,13 +1012,20 @@
                                                     </MultiTrigger>
                                                 </lottie:AnimationView.Triggers>
                                             </lottie:AnimationView>
+                                            <Label FontFamily="{DynamicResource RegularFont}"
+                                                   Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                   VerticalTextAlignment="Start"
+                                                   IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, TargetNullValue='', FallbackValue=''}">
+                                                         IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding Description}"/>
@@ -991,14 +1034,11 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                            </StackLayout>
-                                            <StackLayout Spacing="0"
-                                                         Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource StringToBool}, TargetNullValue='', FallbackValue=''}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding Description}"/>
@@ -1035,6 +1075,12 @@
                                    Rotation="0">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.ExchangeStatusMessages.Count, Source={x:Reference BindingContextPage}}"
+                                                 Value="0">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
                                                  Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                  Value="Exchanging">
                                         <Setter Property="Rotation"
@@ -1062,7 +1108,17 @@
                                WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                               IsVisible="False">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding State}"
+                                             Value="In Progress">
+                                    <Setter Property="IsVisible"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
                         <Image WidthRequest="16"
                                HeightRequest="16"
                                VerticalOptions="Start"
@@ -1269,13 +1325,20 @@
                                                     </MultiTrigger>
                                                 </lottie:AnimationView.Triggers>
                                             </lottie:AnimationView>
+                                            <Label FontFamily="{DynamicResource RegularFont}"
+                                                   Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                   VerticalTextAlignment="Start"
+                                                   IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, TargetNullValue='', FallbackValue=''}">
+                                                         IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding Description}"/>
@@ -1284,14 +1347,11 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                            </StackLayout>
-                                            <StackLayout Spacing="0"
-                                                         Orientation="Horizontal"
-                                                         IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource StringToBool}, TargetNullValue='', FallbackValue=''}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
                                                        FontSize="12"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                       VerticalTextAlignment="Start">
+                                                       VerticalTextAlignment="Start"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding Description}"/>
@@ -1327,6 +1387,12 @@
                                    HorizontalOptions="Center"
                                    Rotation="0">
                                 <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding BindingContext.CompletionStatusMessages.Count, Source={x:Reference BindingContextPage}}"
+                                                 Value="0">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
                                     <DataTrigger TargetType="Image"
                                                  Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                  Value="Completion">

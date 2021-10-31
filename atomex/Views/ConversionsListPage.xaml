@@ -50,7 +50,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                      VerticalOptions="StartAndExpand"
+                      VerticalOptions="FillAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       CachingStrategy="RecycleElement"
                       Footer="">

@@ -50,69 +50,84 @@ namespace atomex
                 if (_detailingInfo == null)
                     return;
 
+                List<SwapDetailingInfo> initMessages = new List<SwapDetailingInfo>();
+                List<SwapDetailingInfo> exchangeMessages = new List<SwapDetailingInfo>();
+                List<SwapDetailingInfo> completionMessages = new List<SwapDetailingInfo>();
+
+                _status = SwapDetailingStatus.Initialization.ToString();
+                foreach (var item in DetailingInfo)
+                {
+                    switch (item.Status)
+                    {
+                        case SwapDetailingStatus.Initialization:
+                            if (item.IsCompleted)
+                            {
+                                _status = SwapDetailingStatus.Exchanging.ToString();
+                                _initStatusDesc = AppResources.InitCompleted;
+                            }
+                            else if ((!item.IsCompleted && State == "Canceled") ||
+                                (!item.IsCompleted && State == "Unsettled"))
+                                _initStatusDesc = AppResources.InitFailure;
+                            else if (!item.IsCompleted && State == "Refunded")
+                                _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                            else if (!item.IsCompleted && State == "In Progress")
+                                _initStatusDesc = AppResources.WaitingInit;
+                            item.IsCompleted = true;
+                            initMessages.Add(item);
+                            break;
+                        case SwapDetailingStatus.Exchanging:
+                            if (item.IsCompleted)
+                            {
+                                _status = SwapDetailingStatus.Completion.ToString();
+                                _exchangeStatusDesc = AppResources.PaymentsConfirmed;
+                            }
+                            else if ((!item.IsCompleted && State == "Canceled") ||
+                                (!item.IsCompleted && State == "Unsettled"))
+                                _exchangeStatusDesc = AppResources.FailedPayment;
+                            else if (!item.IsCompleted && State == "Refunded")
+                                _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                            else if (!item.IsCompleted && State == "In Progress")
+                                _exchangeStatusDesc = AppResources.WaitingForPayment;
+                            item.IsCompleted = true;
+                            exchangeMessages.Add(item);
+                            break;
+                        case SwapDetailingStatus.Completion:
+                            _status = SwapDetailingStatus.Completion.ToString();
+                            if (State == "Completed")
+                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyReceived, ToCurrencyCode);
+                            else if ((!item.IsCompleted && State == "Canceled") ||
+                                (!item.IsCompleted && State == "Unsettled"))
+                                _completionStatusDesc = AppResources.FailedRedeem;
+                            else if (!item.IsCompleted && State == "Refunded")
+                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                            else if (!item.IsCompleted && State == "In Progress")
+                                _completionStatusDesc = AppResources.WaitingForRedeem;
+                            item.IsCompleted = true;
+                            completionMessages.Add(item);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                if (State != "Completed")
+                {
+                    if (_status == SwapDetailingStatus.Initialization.ToString())
+                        initMessages.LastOrDefault().IsCompleted = false;
+                    else if (_status == SwapDetailingStatus.Exchanging.ToString())
+                        exchangeMessages.LastOrDefault().IsCompleted = false;
+                    else if (_status == SwapDetailingStatus.Completion.ToString())
+                        completionMessages.LastOrDefault().IsCompleted = false;
+                }
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     ClearStatusMessages();
 
-                    _status = SwapDetailingStatus.Initialization.ToString();
-                    foreach (var item in DetailingInfo)
-                    {
-                        switch (item.Status)
-                        {
-                            case SwapDetailingStatus.Initialization:
-                                if (item.IsCompleted)
-                                {
-                                    _status = SwapDetailingStatus.Exchanging.ToString();
-                                    _initStatusDesc = AppResources.InitCompleted;
-                                }
-                                if ((!item.IsCompleted && State == "Canceled") ||
-                                    (!item.IsCompleted && State == "Unsettled"))
-                                    _initStatusDesc = AppResources.InitFailure;
-                                if (!item.IsCompleted && State == "Refunded")
-                                    _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
-                                if (!item.IsCompleted && State == "In Progress")
-                                    _initStatusDesc = AppResources.WaitingInit;
-                                item.IsCompleted = true;
-                                _initStatusMessages.Add(item);
-                                break;
-                            case SwapDetailingStatus.Exchanging:
-                                if (item.IsCompleted)
-                                {
-                                    _status = SwapDetailingStatus.Completion.ToString();
-                                    _exchangeStatusDesc = AppResources.PaymentsConfirmed;
-                                }
-                                if ((!item.IsCompleted && State == "Canceled") ||
-                                    (!item.IsCompleted && State == "Unsettled"))
-                                    _exchangeStatusDesc = AppResources.FailedPayment;
-                                if (!item.IsCompleted && State == "Refunded")
-                                    _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
-                                if (!item.IsCompleted && State == "In Progress")
-                                    _exchangeStatusDesc = AppResources.WaitingForPayment;
-                                item.IsCompleted = true;
-                                _exchangeStatusMessages.Add(item);
-                                break;
-                            case SwapDetailingStatus.Completion:
-                                _status = SwapDetailingStatus.Completion.ToString();
-                                if (State == "Completed")
-                                    _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyReceived, ToCurrencyCode);
-                                if ((!item.IsCompleted && State == "Canceled") ||
-                                   (!item.IsCompleted && State == "Unsettled"))
-                                    _completionStatusDesc = AppResources.FailedRedeem;
-                                if (!item.IsCompleted && State == "Refunded")
-                                    _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
-                                if (!item.IsCompleted && State == "In Progress")
-                                    _completionStatusDesc = AppResources.WaitingForRedeem;
-                                item.IsCompleted = true;
-                                _completionStatusMessages.Add(item);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
+                    initMessages.ForEach(mes => _initStatusMessages.Add(mes));
+                    exchangeMessages.ForEach(mes => _exchangeStatusMessages.Add(mes));
+                    completionMessages.ForEach(mes => _completionStatusMessages.Add(mes));
 
-                    ValidateStatusMessages();
-
-                    OnPropertyChanged(nameof(DetailingInfo));
                     OnPropertyChanged(nameof(Status));
                     OnPropertyChanged(nameof(InitStatusDesc));
                     OnPropertyChanged(nameof(ExchangeStatusDesc));
@@ -161,7 +176,7 @@ namespace atomex
         {
             get => _initStatusMessages;
             set { _initStatusMessages = value; OnPropertyChanged(nameof(InitStatusMessages)); }
-        }
+            }
 
         private ObservableCollection<SwapDetailingInfo> _exchangeStatusMessages;
         public ObservableCollection<SwapDetailingInfo> ExchangeStatusMessages
@@ -254,28 +269,6 @@ namespace atomex
         {
             SetState(swap);
             DetailingInfo = GetSwapDetailingInfo(swap, Account).ToList();
-        }
-
-        private void ValidateStatusMessages()
-        {
-            if (State == "Completed")
-                return;
-
-            if (_status == SwapDetailingStatus.Initialization.ToString())
-            {
-                _initStatusMessages.Last().IsCompleted = false;
-                return;
-            }
-            if (_status == SwapDetailingStatus.Exchanging.ToString())
-            {
-                _exchangeStatusMessages.Last().IsCompleted = false;
-                return;
-            }
-            if (_status == SwapDetailingStatus.Completion.ToString())
-            {
-                _completionStatusMessages.Last().IsCompleted = false;
-                return;
-            }
         }
 
         private void ClearStatusMessages()
