@@ -18,7 +18,7 @@
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
-                         Spacing="0">
+                         Spacing="0.5">
                 <Grid VerticalOptions="Fill"
                       HorizontalOptions="Fill"
                       RowSpacing="0"
@@ -134,8 +134,6 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </Grid>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}"
@@ -169,8 +167,6 @@
                         </StackLayout>                        
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}"
@@ -205,8 +201,6 @@
                         </StackLayout>                        
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
@@ -265,8 +259,6 @@
                                      Command="{Binding ScanCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
@@ -313,8 +305,6 @@
                                 Command="{Binding MaxAmountCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <StackLayout Orientation="Horizontal"
                              HeightRequest="60"
                              Spacing="0">

@@ -121,7 +121,8 @@
                            Margin="0,10"/>
                     <Image Source="ConvertArrow"
                            Grid.Column="1"
-                           WidthRequest="40"
+                           Grid.RowSpan="3"
+                           WidthRequest="24"
                            VerticalOptions="CenterAndExpand"/>
                     <Image Grid.Column="2"
                            Source="{Binding ToCurrencyViewModel.CurrencyCode}"

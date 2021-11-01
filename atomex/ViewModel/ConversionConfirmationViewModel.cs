@@ -111,15 +111,10 @@ namespace atomex.ViewModel
                     IsLoading = false;
                     return;
                 }
-
                 IsLoading = false;
-                var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, AppResources.SwapCreated, null, AppResources.AcceptButton);
 
-                if (!res)
-                {
-                    OnSuccess?.Invoke(this, EventArgs.Empty);
-                    await Navigation.PopToRootAsync();
-                }
+                OnSuccess?.Invoke(this, EventArgs.Empty);
+                
             }
             catch (Exception e)
             {

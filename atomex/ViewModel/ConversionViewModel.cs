@@ -365,6 +365,8 @@ namespace atomex.ViewModel
             set { _swaps = value; OnPropertyChanged(nameof(Swaps)); }
         }
 
+        private Dictionary<long, SwapViewModel> _cachedSwaps;
+
         public class Grouping<K, T> : ObservableCollection<T>
         {
             public K Date { get; private set; }
@@ -426,8 +428,10 @@ namespace atomex.ViewModel
             _fromCurrencies = new List<CurrencyViewModel>();
             _toCurrencies = new List<CurrencyViewModel>();
             _currencyViewModels = new List<CurrencyViewModel>();
+            _cachedSwaps = new Dictionary<long, SwapViewModel>();
 
             SubscribeToServices();
+            GetSwaps();
         }
 
         private void SubscribeToServices()
@@ -701,6 +705,7 @@ namespace atomex.ViewModel
             FromCurrencyViewModel = _currencyViewModels.FirstOrDefault();
 
             OnSwapEventHandler(this, null);
+            OnQuotesUpdatedEventHandler(Terminal, null);
         }
 
         protected async void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
@@ -714,10 +719,10 @@ namespace atomex.ViewModel
             var fromCurrencyPrice = provider.GetQuote(_currencyCode, _baseCurrencyCode)?.Bid ?? 0m;
             _amountInBase = _amount * fromCurrencyPrice;
 
-            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            var fromCurrencyFeePrice = provider.GetQuote(FromCurrencyViewModel?.Currency?.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
             _estimatedPaymentFeeInBase = _estimatedPaymentFee * fromCurrencyFeePrice;
 
-            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel.Currency.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
+            var toCurrencyFeePrice = provider.GetQuote(ToCurrencyViewModel?.Currency?.FeeCurrencyName, _baseCurrencyCode)?.Bid ?? 0m;
             _estimatedRedeemFeeInBase = _estimatedRedeemFee * toCurrencyFeePrice;
 
             var toCurrencyPrice = provider.GetQuote(TargetCurrencyCode, _baseCurrencyCode)?.Bid ?? 0m;
@@ -811,21 +816,40 @@ namespace atomex.ViewModel
         {
             try
             {
-                var swaps = await AtomexApp.Account
-                    .GetSwapsAsync();
-
-                var swapViewModels = swaps
-                                   .Select(s => SwapViewModelFactory.CreateSwapViewModel(s, Currencies))
-                                   .ToList()
-                                   .SortList((s1, s2) => s2.LocalTime.CompareTo(s1.LocalTime));
-
-                Swaps = new ObservableCollection<SwapViewModel>(swapViewModels);
-
-                var groups = Swaps.GroupBy(p => p.Time.Date).Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, g));
-                GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+                if (args == null)
+                    return;
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
+                    if (_cachedSwaps.TryGetValue(args.Swap.Id, out SwapViewModel swap))
+                    {
+                        swap.UpdateSwap(args.Swap);
+                    }
+                    else
+                    {
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies, AtomexApp.Account);
+                        _cachedSwaps.Add(args.Swap.Id, swapViewModel);
+
+                        Navigation.PushAsync(new SwapInfoPage(swapViewModel));
+
+                        int pageNumber = Navigation.NavigationStack.Count;
+
+                        for (int i = pageNumber - 2; i > 0; i--)
+                        {
+                            Navigation.RemovePage(Navigation.NavigationStack[i]);
+                        }
+
+                        Swaps.Add(swapViewModel);
+
+                        var groups = Swaps
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                        GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+                    }
+
+
                     OnPropertyChanged(nameof(Swaps));
                     OnPropertyChanged(nameof(GroupedSwaps));
                 });
@@ -833,6 +857,46 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Swaps update error");
+            }
+        }
+
+        private async void GetSwaps()
+        {
+            try
+            {
+                var swaps = await AtomexApp.Account
+                    .GetSwapsAsync();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Swaps = new ObservableCollection<SwapViewModel>();
+
+                    if (swaps == null)
+                        return;
+
+                    foreach (var swap in swaps)
+                    {
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies, AtomexApp.Account);
+
+                        long.TryParse(swapViewModel.Id, out long id);
+                        _cachedSwaps.Add(id, swapViewModel);
+                        Swaps.Add(swapViewModel);
+                    }
+
+                    var groups = Swaps
+                        .GroupBy(p => p.LocalTime.Date)
+                        .OrderByDescending(g => g.Key)
+                        .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+
+                    OnPropertyChanged(nameof(Swaps));
+                    OnPropertyChanged(nameof(GroupedSwaps));
+                });
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Get swaps error");
             }
         }
 

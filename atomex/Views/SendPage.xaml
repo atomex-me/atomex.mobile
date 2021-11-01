@@ -17,7 +17,7 @@
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
                          Padding="20"
-                         Spacing="0">
+                         Spacing="0.5">
                 <controls:CustomFrame CornerRadius="20,20,0,0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
@@ -76,8 +76,6 @@
                                      Command="{Binding ScanCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
@@ -124,8 +122,6 @@
                                 Command="{Binding MaxAmountCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="20,0,0,0"/>
                 <StackLayout HeightRequest="60"
                              Padding="0"
                              Spacing="8"
@@ -140,8 +136,6 @@
                                           IsReadOnly="True"
                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                           Text="{Binding FeeRate, StringFormat='{0} sat/byte'}"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Margin="20,0,0,0"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              x:Name="FeeLayout"
@@ -222,7 +216,7 @@
                 </StackLayout>
                 <StackLayout Padding="0"
                              IsVisible="{Binding GasCode, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
-                    <StackLayout Spacing="0">
+                    <StackLayout Spacing="0.5">
                         <StackLayout Orientation="Horizontal"
                                      HeightRequest="60"
                                      Spacing="0">
@@ -284,8 +278,6 @@
                                 </StackLayout>
                             </controls:CustomFrame>
                         </StackLayout>
-                        <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                     Margin="20,0,0,0"/>
                         <StackLayout Orientation="Horizontal"
                                      Spacing="0"
                                      HeightRequest="60"
@@ -316,8 +308,6 @@
                                 </StackLayout>
                             </controls:CustomFrame>
                         </StackLayout>
-                        <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                     Margin="20,0,0,0"/>
                         <StackLayout Orientation="Horizontal"
                                      HeightRequest="60"
                                      Spacing="0"

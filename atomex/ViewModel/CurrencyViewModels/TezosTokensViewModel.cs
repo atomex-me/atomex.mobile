@@ -351,6 +351,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 IsLoading = true;
 
+                var scanner = new HdWalletScanner(_app.Account);
+
+                await scanner.ScanAsync(
+                    currency: TezosConfig.Xtz,
+                    skipUsed: true,
+                    cancellationToken: _cancellation.Token);
+
+                await TezosViewModel.UpdateTransactionsAsync();
+
                 var tezosAccount = _app.Account
                     .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
@@ -368,7 +377,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                             .ReloadBalances();
 
                 IsLoading = false;
-                ToastService?.Show("Tokens" + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                ToastService?.Show(AppResources.Tokens + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (OperationCanceledException)
             {

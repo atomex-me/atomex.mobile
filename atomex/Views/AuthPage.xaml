@@ -214,7 +214,8 @@
                         </Frame.GestureRecognizers>
                         <Label Text="{helpers:Translate CancelButton}"
                                Style="{DynamicResource PinNumberStyle}"
-                               FontSize="14"/>
+                               FontSize="14"
+                               Padding="0"/>
                     </Frame>
                     <Frame Grid.Row="3"
                            Grid.Column="1"

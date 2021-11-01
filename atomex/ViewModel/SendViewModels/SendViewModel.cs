@@ -329,10 +329,7 @@ namespace atomex.ViewModel.SendViewModels
             var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To, null, AppResources.AcceptButton);
             if (!res)
             {
-                for (var i = 1; i < 2; i++)
-                {
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                }
+                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 await Navigation.PopAsync();
             }
         }

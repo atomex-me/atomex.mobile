@@ -58,6 +58,7 @@
     <MtouchLink>None</MtouchLink>
 <LangVersion>8.0</LangVersion>
 <MtouchInterpreter>-all</MtouchInterpreter>
+<MtouchExtraArgs>--interpreter</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -177,13 +178,10 @@
     <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Right-arrow-3-1.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
@@ -253,6 +251,49 @@
     <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -276,6 +317,9 @@
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
+      <Version>4.0.10</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -402,6 +446,25 @@
     <Folder Include="Assets.xcassets\ic_telegram.imageset\" />
     <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
     <Folder Include="Assets.xcassets\ic_pin__del.imageset\" />
+    <Folder Include="Assets.xcassets\ic_completed.imageset\" />
+    <Folder Include="Assets.xcassets\ic_loader__progress.imageset\" />
+    <Folder Include="Assets.xcassets\ic_loader__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__completed.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__canceled.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_status__progress.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__empty.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
+    <Folder Include="Assets.xcassets\SwapCompleted.imageset\" />
+    <Folder Include="Assets.xcassets\SwapCancelled.imageset\" />
+    <Folder Include="Assets.xcassets\SwapInProgress.imageset\" />
+    <Folder Include="Assets\" />
+    <Folder Include="Assets\Animations\" />
+    <Folder Include="Assets.xcassets\SwapCanceled.imageset\" />
+    <Folder Include="Assets.xcassets\ConvertArrowFailure.imageset\" />
+    <Folder Include="Assets.xcassets\ic_export.imageset\" />
+    <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
+    <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
@@ -413,5 +476,8 @@
     <BundleResource Include="Resources\Roboto-Medium.ttf" />
     <BundleResource Include="Resources\Roboto-Regular.ttf" />
     <BundleResource Include="Resources\Roboto-Thin.ttf" />
+    <BundleResource Include="Assets\Animations\loader_light__blue.json" />
+    <BundleResource Include="Assets\Animations\loader_dark__blue.json" />
+    <BundleResource Include="Assets\Animations\loader__white.json" />
   </ItemGroup>
 </Project>

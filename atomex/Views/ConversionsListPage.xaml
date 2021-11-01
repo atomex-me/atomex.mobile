@@ -2,9 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="atomex.ConversionsListPage"
              x:Name="BindingContextPage"
              Title="{helpers:Translate SwapListPageTitle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:EqualsConverter x:Key="EqualsConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout VerticalOptions="FillAndExpand"
@@ -38,7 +45,6 @@
                 </StackLayout>
             </StackLayout>
             <ListView ItemsSource="{Binding GroupedSwaps}"
-                      CachingStrategy="RetainElement"
                       IsGroupingEnabled="True"
                       SelectionMode="None"
                       HasUnevenRows="True"
@@ -46,6 +52,7 @@
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                       VerticalOptions="FillAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                      CachingStrategy="RecycleElement"
                       Footer="">
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
@@ -92,96 +99,159 @@
                         <ViewCell>
                             <Grid Padding="8"
                                   RowSpacing="0"
-                                  ColumnSpacing="0">
+                                  ColumnSpacing="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1.5*" />
-                                    <ColumnDefinition Width="6*" />
-                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectSwapCommand, Source={x:Reference BindingContextPage}}"
                                                           Tapped="OnItemTapped"
                                                           CommandParameter="{Binding .}"/>
                                 </Grid.GestureRecognizers>
-                                <RelativeLayout VerticalOptions="CenterAndExpand">
-                                    <Image Source="{Binding FromCurrencyCode}"
-                                           x:Name="FromCurrencyIcon"
-                                           HeightRequest="32"
-                                           WidthRequest="32"/>
-                                    <Image Source="{Binding ToCurrencyCode}"
-                                           HeightRequest="32"
-                                           WidthRequest="32"
-                                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=Y,Factor=1,Constant=0}"
-                                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=FromCurrencyIcon,Property=X,Factor=1,Constant=+18}"/>
-                                </RelativeLayout>
+                                <Image Source="{Binding FromCurrencyCode}"
+                                       Grid.RowSpan="2"
+                                       WidthRequest="32"
+                                       HeightRequest="32"
+                                       VerticalOptions="CenterAndExpand"/>
                                 <Label Grid.Column="1"
-                                       VerticalTextAlignment="Center"
+                                       Text="{Binding FromCurrencyCode}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                       Padding="5">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding FromAmount, StringFormat=' {0:0.###}'}"
-                                                  FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="14"/>
-                                            <Span Text="{Binding FromCurrencyCode, StringFormat=' {0}'}"
-                                                  FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="12"/>
-                                            <Span Text=" to "
-                                                  FontFamily="{DynamicResource RegularFont}"
-                                                  FontSize="12"/>
-                                            <Span Text="{Binding ToAmount, StringFormat='{0:0.###}'}"
-                                                  FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="14"/>
-                                            <Span Text="{Binding ToCurrencyCode, StringFormat=' {0}'}"
-                                                  FontFamily="{DynamicResource BoldFont}"
-                                                  FontSize="12"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Frame Grid.Column="2"
-                                       CornerRadius="8"
-                                       Padding="2"
-                                       Margin="0,10"
-                                       HasShadow="False"
-                                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                                    <Frame.Triggers>
-                                        <DataTrigger TargetType="Frame"
+                                       FontSize="14"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="Start"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{Binding FromAmount, StringFormat='{0:0.000000000}'}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       FontSize="12"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start"/>
+                                <Image Grid.Column="2"
+                                       Grid.RowSpan="3"
+                                       WidthRequest="24"
+                                       VerticalOptions="CenterAndExpand">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Completed">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapCompletedStateColor}"/>
+                                            <Setter Property="Source"
+                                                    Value="ConvertArrow"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapInProgressStateColor}"/>
+                                            <Setter Property="Source"
+                                                    Value="ConvertArrow"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Canceled">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapCanceledStateColor}"/>
+                                            <Setter Property="Source"
+                                                    Value="ConvertArrowFailure"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Refunded">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapRefundedStateColor}"/>
+                                            <Setter Property="Source"
+                                                    Value="ConvertArrowFailure"/>
                                         </DataTrigger>
-                                        <DataTrigger TargetType="Frame"
+                                        <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Unsettled">
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{DynamicResource SwapUnsettledStateColor}"/>
+                                            <Setter Property="Source"
+                                                    Value="ConvertArrowFailure"/>
                                         </DataTrigger>
-                                    </Frame.Triggers>
-                                    <Label Style="{DynamicResource TxStateLabelStyle}"
-                                           Text="{Binding State}"/>
-                                </Frame>  
+                                    </Image.Triggers>
+                                </Image>
+                                <Image Source="{Binding ToCurrencyCode}"
+                                       Grid.Column="3"
+                                       Grid.RowSpan="2"
+                                       WidthRequest="32"
+                                       HeightRequest="32"
+                                       VerticalOptions="CenterAndExpand"/>
+                                <Label Grid.Column="4"
+                                       Text="{Binding ToCurrencyCode}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       FontSize="14"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="Start"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="4"
+                                       Text="{Binding ToAmount, StringFormat='{0:0.000000000}'}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       FontSize="12"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start"/>
+                                <Image Grid.Column="5"
+                                       Grid.RowSpan="2"
+                                       WidthRequest="24"
+                                       HeightRequest="24"
+                                       VerticalOptions="CenterAndExpand">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding State}"
+                                                     Value="Completed">
+                                            <Setter Property="Source"
+                                                    Value="SwapCompleted"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding State}"
+                                                     Value="In Progress">
+                                            <Setter Property="Source"
+                                                    Value="ic_status__empty"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding State}"
+                                                     Value="Canceled">
+                                            <Setter Property="Source"
+                                                    Value="SwapCanceled"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding State}"
+                                                     Value="Refunded">
+                                            <Setter Property="Source"
+                                                    Value="SwapCanceled"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding State}"
+                                                     Value="Unsettled">
+                                            <Setter Property="Source"
+                                                    Value="SwapCanceled"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <lottie:AnimationView Grid.Column="5"
+                                                      Grid.RowSpan="2"
+                                                      WidthRequest="24"
+                                                      HeightRequest="24"
+                                                      Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
+                                                      AnimationSource="AssetOrBundle"
+                                                      ImageAssetsFolder="Assets/Animations"
+                                                      AutoPlay="True"
+                                                      RepeatMode="Infinite"
+                                                      Speed="1"
+                                                      VerticalOptions="Center"
+                                                      HorizontalOptions="Center">
+                                    <lottie:AnimationView.IsVisible>
+                                        <Binding Path="State"
+                                                 Mode="OneWay"
+                                                 Converter="{StaticResource EqualsConverter}"
+                                                 ConverterParameter="In Progress"/>
+                                    </lottie:AnimationView.IsVisible>
+                                </lottie:AnimationView>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

@@ -7,7 +7,6 @@
              Title="{helpers:Translate MyWalletsTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
-        <ScrollView>
             <StackLayout Padding="20,0">
                 <Label Text="{helpers:Translate SelectWalletLabel}"
                        Style="{DynamicResource SelectWalletTextStyle}"/>
@@ -97,6 +96,5 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

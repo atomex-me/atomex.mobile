@@ -923,6 +923,156 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SwapInProgressDesc {
+            get {
+                return ResourceManager.GetString("SwapInProgressDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCompletedDesc {
+            get {
+                return ResourceManager.GetString("SwapCompletedDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCanceledDesc {
+            get {
+                return ResourceManager.GetString("SwapCanceledDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapRefundedDesc {
+            get {
+                return ResourceManager.GetString("SwapRefundedDesc", resourceCulture);
+            }
+        }
+        
+        internal static string SwapUnsettledDesc {
+            get {
+                return ResourceManager.GetString("SwapUnsettledDesc", resourceCulture);
+            }
+        }
+        
+        internal static string Initialization {
+            get {
+                return ResourceManager.GetString("Initialization", resourceCulture);
+            }
+        }
+        
+        internal static string Exchanging {
+            get {
+                return ResourceManager.GetString("Exchanging", resourceCulture);
+            }
+        }
+        
+        internal static string Completion {
+            get {
+                return ResourceManager.GetString("Completion", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCompleted {
+            get {
+                return ResourceManager.GetString("SwapCompleted", resourceCulture);
+            }
+        }
+        
+        internal static string SwapInProgress {
+            get {
+                return ResourceManager.GetString("SwapInProgress", resourceCulture);
+            }
+        }
+        
+        internal static string SwapCanceled {
+            get {
+                return ResourceManager.GetString("SwapCanceled", resourceCulture);
+            }
+        }
+        
+        internal static string SwapRefunded {
+            get {
+                return ResourceManager.GetString("SwapRefunded", resourceCulture);
+            }
+        }
+        
+        internal static string SwapUnsettled {
+            get {
+                return ResourceManager.GetString("SwapUnsettled", resourceCulture);
+            }
+        }
+        
+        internal static string InitCompleted {
+            get {
+                return ResourceManager.GetString("InitCompleted", resourceCulture);
+            }
+        }
+        
+        internal static string PaymentsConfirmed {
+            get {
+                return ResourceManager.GetString("PaymentsConfirmed", resourceCulture);
+            }
+        }
+        
+        internal static string WaitingInit {
+            get {
+                return ResourceManager.GetString("WaitingInit", resourceCulture);
+            }
+        }
+        
+        internal static string WaitingForPayment {
+            get {
+                return ResourceManager.GetString("WaitingForPayment", resourceCulture);
+            }
+        }
+        
+        internal static string WaitingForRedeem {
+            get {
+                return ResourceManager.GetString("WaitingForRedeem", resourceCulture);
+            }
+        }
+        
+        internal static string InitFailure {
+            get {
+                return ResourceManager.GetString("InitFailure", resourceCulture);
+            }
+        }
+        
+        internal static string FailedPayment {
+            get {
+                return ResourceManager.GetString("FailedPayment", resourceCulture);
+            }
+        }
+        
+        internal static string FailedRedeem {
+            get {
+                return ResourceManager.GetString("FailedRedeem", resourceCulture);
+            }
+        }
+        
+        internal static string CurrencyReceived {
+            get {
+                return ResourceManager.GetString("CurrencyReceived", resourceCulture);
+            }
+        }
+        
+        internal static string CurrencyRefunded {
+            get {
+                return ResourceManager.GetString("CurrencyRefunded", resourceCulture);
+            }
+        }
+        
+        internal static string DetailsTab {
+            get {
+                return ResourceManager.GetString("DetailsTab", resourceCulture);
+            }
+        }
+        
+        internal static string ProgressTab {
+            get {
+                return ResourceManager.GetString("ProgressTab", resourceCulture);
+            }
+        }
+        
         internal static string SwapListPageTitle {
             get {
                 return ResourceManager.GetString("SwapListPageTitle", resourceCulture);

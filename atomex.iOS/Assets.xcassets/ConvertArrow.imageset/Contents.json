@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "Right-arrow-3.pdf",
+      "filename": "swap-24__light-1.pdf",
       "idiom": "universal"
     },
     {
@@ -87,7 +87,7 @@
       "idiom": "car"
     },
     {
-      "filename": "Right-arrow-3__white.pdf",
+      "filename": "swap-24__dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -305,7 +305,7 @@
       "idiom": "car"
     },
     {
-      "filename": "Right-arrow-3-1.pdf",
+      "filename": "swap-24__light.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

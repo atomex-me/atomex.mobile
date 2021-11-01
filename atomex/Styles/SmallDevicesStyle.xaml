@@ -408,7 +408,7 @@
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="Padding">
             <Setter.Value>
-                <OnPlatform x:TypeArguments="Thickness" iOS="5,0" Android="5,-6,5,0"/>
+                <OnPlatform x:TypeArguments="Thickness" iOS="5,0" Android="5,-4,5,0"/>
             </Setter.Value>
         </Setter>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -445,7 +445,7 @@
     <!-- Portfolio Page -->
     <Style x:Key="PortfolioChartStyle" TargetType="RelativeLayout">
         <Setter Property="HeightRequest" Value="200"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0,5"/>
     </Style>
     <Style x:Key="TotalAmountLabelStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
@@ -502,7 +502,7 @@
         </Setter>
     </Style>
     <Style x:Key="CurrencyHeaderLayoutStyle" TargetType="StackLayout">
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0,10"/>
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
     <Style x:Key="CurrencyIconStyle" TargetType="Image">
@@ -548,11 +548,11 @@
     <Style x:Key="TokenActionButtonStyle" TargetType="Button" BasedOn="{StaticResource CurrencyActionButtonStyle}"></Style>
 
     <!-- TxInfo / SwapInfo / AddressInfo / Confirmations Pages  -->
-    <Style x:Key="TxAmountLabelStyle" TargetType="Label">
+    <Style x:Key="TxAmountLabelStyle" TargetType="Span">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="14"/>
     </Style>
-    <Style x:Key="TxAmountCodeLabelStyle" TargetType="Label">
+    <Style x:Key="TxAmountCodeLabelStyle" TargetType="Span">
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="12"/>
     </Style>
@@ -659,17 +659,17 @@
         <Setter Property="Padding" Value="20,20,20,10"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
-     <Style x:Key="EstimatedLabelStyle" TargetType="Label">
+    <Style x:Key="EstimatedLabelStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
     </Style>
-    <Style x:Key="EstimatedValueStyle" TargetType="Label">
+    <Style x:Key="EstimatedValueStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
-    <Style x:Key="CurrencyCodeLabelStyle" TargetType="Label">
+    <Style x:Key="CurrencyCodeLabelStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
@@ -679,12 +679,12 @@
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
     </Style>
-     <Style x:Key="MarketVolumeLabelStyle" TargetType="Label">
+     <Style x:Key="MarketVolumeLabelStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
     </Style>
-    <Style x:Key="MarketVolumeValueStyle" TargetType="Label">
+    <Style x:Key="MarketVolumeValueStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
