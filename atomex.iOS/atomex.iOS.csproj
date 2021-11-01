@@ -253,7 +253,6 @@
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
@@ -269,7 +268,6 @@
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
@@ -283,10 +281,6 @@
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Export_light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf" />
@@ -298,6 +292,8 @@
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
