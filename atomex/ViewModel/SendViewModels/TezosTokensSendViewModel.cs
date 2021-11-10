@@ -8,6 +8,7 @@ using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
@@ -16,6 +17,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
+using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -821,22 +823,39 @@ namespace atomex.ViewModel.SendViewModels
                 if (error != null)
                 {
                     IsLoading = false;
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Error,
+                            Title = AppResources.Error,
+                            Body = error.Description,
+                            ButtonText = AppResources.AcceptButton
+                        }));
+                    return;
                 }
 
-                var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To, null, AppResources.AcceptButton);
-                if (!res)
-                {
-                    for (var i = 1; i < 2; i++)
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
                     {
-                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    }
-                    await Navigation.PopAsync();
-                }
+                        Type = PopupType.Success,
+                        Title = AppResources.Success,
+                        Body = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencySentToAddress, Amount, CurrencyCode, To),
+                        ButtonText = AppResources.AcceptButton
+                    }));
+
+                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                await Navigation.PopAsync();
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
+                    {
+                        Type = PopupType.Error,
+                        Title = AppResources.Error,
+                        Body = AppResources.SendingTransactionError,
+                        ButtonText = AppResources.AcceptButton
+                    }));
                 Log.Error(e, "Transaction send error.");
             }
 

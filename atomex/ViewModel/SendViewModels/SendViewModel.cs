@@ -347,7 +347,7 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     Type = PopupType.Success,
                     Title = AppResources.Success,
-                    Body = Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To,
+                    Body = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencySentToAddress, Amount, CurrencyCode, To),
                     ButtonText = AppResources.AcceptButton
                 }));
 
