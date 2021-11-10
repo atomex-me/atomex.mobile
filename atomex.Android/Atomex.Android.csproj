@@ -806,6 +806,14 @@
     <AndroidAsset Include="Assets\loader_dark__blue.json" />
     <AndroidAsset Include="Assets\Animations\loader__white.json" />
     <AndroidAsset Include="Assets\loader__white.json" />
+    <AndroidAsset Include="Assets\Animations\failed-completion_dark.json" />
+    <AndroidAsset Include="Assets\Animations\failed-completion_light.json" />
+    <AndroidAsset Include="Assets\Animations\successful-completion_dark.json" />
+    <AndroidAsset Include="Assets\Animations\successful-completion_light.json" />
+    <AndroidAsset Include="Assets\failed-completion_dark.json" />
+    <AndroidAsset Include="Assets\failed-completion_light.json" />
+    <AndroidAsset Include="Assets\successful-completion_dark.json" />
+    <AndroidAsset Include="Assets\successful-completion_light.json" />
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />

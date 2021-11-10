@@ -48,13 +48,9 @@
                            Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding WalletAddressViewModel.WalletAddress.Balance, StringFormat='{0:0.#########}'}"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="14"/>
+                                <Span Text="{Binding WalletAddressViewModel.AvailableBalance, StringFormat='{0:0.#########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="XTZ"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="12"/>
+                                <Span Text="XTZ"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -63,7 +59,7 @@
                 <Grid RowSpacing="0"
                       ColumnSpacing="5"
                       HeightRequest="40"
-                      Padding="20,5">
+                      Padding="20,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="50"/>
@@ -96,7 +92,8 @@
                                LineBreakMode="MiddleTruncation"/>
                     </StackLayout>
                 </Grid>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Margin="20,0"/>
                 <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <Label Text="{helpers:Translate FeeLabel}"
                            Style="{DynamicResource InfoRowTitleStyle}"/>
@@ -104,13 +101,9 @@
                            Style="{DynamicResource InfoRowTextStyle}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="14"/>
+                                <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="XTZ"
-                                      FontFamily="{DynamicResource RegularFont}"
-                                      FontSize="12"/>
+                                <Span Text="XTZ"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

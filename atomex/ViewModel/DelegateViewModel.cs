@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -15,6 +16,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
+using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -547,8 +549,8 @@ namespace atomex.ViewModel
                     Fee = tx.Fee;
                     OnPropertyChanged(nameof(FeeString));
 
-                     if (Fee > WalletAddressViewModel.AvailableBalance)
-                        return new Error(Errors.InsufficientAmount, AppResources.InsufficientFunds);
+                    if (Fee > WalletAddressViewModel.AvailableBalance)
+                       return new Error(Errors.InsufficientAmount, AppResources.InsufficientFunds);
                 }
                 else
                 {
@@ -645,25 +647,44 @@ namespace atomex.ViewModel
                 if (result.Error != null)
                 {
                     IsLoading = false;
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Error,
+                            Title = AppResources.Error,
+                            Body = result.Error.Description,
+                            ButtonText = AppResources.AcceptButton
+                        }));
                     return;
                 }
                 await LoadDelegationInfoAsync();
-                var res = await Application.Current.MainPage.DisplayAlert(AppResources.SuccessDelegation, AppResources.DelegationListWillBeUpdated + "\r\n" + AppResources.ExplorerUri + ": " + result.Value, null, AppResources.CopyAndExitButton);
-                if (!res)
-                {
-                    await Clipboard.SetTextAsync(result.Value);
-                    for (var i = 1; i < 3; i++)
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
                     {
-                        Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    }
-                    await Navigation.PopAsync();
+                        Type = PopupType.Success,
+                        Title = AppResources.SuccessDelegation,
+                        Body = AppResources.DelegationListWillBeUpdated,
+                        ButtonText = AppResources.AcceptButton
+                    }));
+
+                await Clipboard.SetTextAsync(result.Value);
+                for (var i = 1; i < 3; i++)
+                {
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                 }
+                await Navigation.PopAsync();
             }
             catch (Exception e)
             {
                 IsLoading = false;
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.DelegationError, AppResources.AcceptButton);
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
+                    {
+                        Type = PopupType.Error,
+                        Title = AppResources.Error,
+                        Body = AppResources.DelegationError,
+                        ButtonText = AppResources.AcceptButton
+                    }));
                 Log.Error(e, "Delegation error");
             }
         }
