@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: 5.0.402
 
+      - name: Restore NuGet Packages
+        run: nuget restore atomex.sln
+
       - name: Create keystore for codesign
         run: echo "${{ secrets.ANDROID_SIGNING_CERT }}" | base64 --decode > atomex.keystore
 
