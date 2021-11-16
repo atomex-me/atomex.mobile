@@ -769,8 +769,8 @@
     <data name="ExplorerUri" xml:space="preserve">
         <value>Explorer Uri</value>
     </data>
-    <data name="sentTo" xml:space="preserve">
-        <value>sent to</value>
+    <data name="CurrencySentToAddress" xml:space="preserve">
+        <value>{0} {1} sent to {2}</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>is not in the wordlist for this language</value>

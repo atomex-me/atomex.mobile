@@ -1445,9 +1445,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string sentTo {
+        internal static string CurrencySentToAddress {
             get {
-                return ResourceManager.GetString("sentTo", resourceCulture);
+                return ResourceManager.GetString("CurrencySentToAddress", resourceCulture);
             }
         }
         
