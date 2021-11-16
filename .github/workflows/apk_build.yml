@@ -24,6 +24,9 @@ jobs:
       - name: Create keystore for codesign
         run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.keystore
 
+      - name: Creating keystore test
+        run: ls -la
+
       - name: Run android build
         run: MSBuild /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=atomex /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} /p:AndroidSigningKeyStore=atomex.keystore /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} atomex.Android/Atomex.Android.csproj
 
