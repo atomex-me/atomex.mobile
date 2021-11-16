@@ -31,11 +31,11 @@ jobs:
         run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
 
       - name: Rename apk file
-        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex-${{ env.VER }}.apk
+        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.VER }}"
-          files: atomex.Android/bin/Release/atomex-${{ env.VER }}.apk
+          automatic_release_tag: "${{ env.VERSION }}"
+          files: atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
           prerelease: false
