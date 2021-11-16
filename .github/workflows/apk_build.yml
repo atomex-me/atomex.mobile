@@ -4,7 +4,7 @@ name: APK build
 
 on:
   push:
-    branches: [feature/cicd]
+    branches: [master]
 
 jobs:
   apk_build:
