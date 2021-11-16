@@ -1,0 +1,41 @@
+
+
+name: APK build
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  apk_build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.402
+
+      - name: Restore NuGet Packages
+        run: nuget restore atomex.sln
+
+      - name: Create keystore for codesign
+        run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.Android/atomex.keystore
+
+      - name: Run android build
+        run: MSBuild /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=atomex /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} /p:AndroidSigningKeyStore=atomex.keystore /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} atomex.Android/Atomex.Android.csproj
+
+      - name: Get app version
+        run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
+
+      - name: Rename apk file
+        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ env.VERSION }}"
+          files: atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
+          prerelease: false

@@ -43,7 +43,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-<AndroidPackageFormat>aab</AndroidPackageFormat>
+<AndroidPackageFormat>apk</AndroidPackageFormat>
 <AndroidLinkMode>None</AndroidLinkMode>
 <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
