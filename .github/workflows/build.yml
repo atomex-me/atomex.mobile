@@ -5,9 +5,7 @@ name: Production builds
 on:
   push:
     branches: [feature/cicd]
-  pull_request:
-    branches: [develop]
-
+    
 jobs:
   builds:
     name: build APK and iPA
@@ -21,6 +19,9 @@ jobs:
         with:
           dotnet-version: 5.0.402
 
+      - name: Restore NuGet Packages
+        run: nuget restore atomex.sln
+
       - name: Run and sign iOS build
         uses: bradyjoslin/xamarinios-signedbuild-action@v1
         with:
@@ -31,9 +32,6 @@ jobs:
           configuration: "Release"
           mono_version: "stable"
           xamarin_ios_version: "stable"
-          
-      - name: Restore NuGet Packages
-        run: nuget restore atomex.sln
 
       - name: Create Android keystore for codesign
         run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.Android/atomex.keystore
