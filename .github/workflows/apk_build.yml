@@ -1,13 +1,16 @@
 
 
-name: APK build
+name: Production builds
 
 on:
   push:
-    branches: [master]
+    branches: [feature/cicd]
+  pull_request:
+    branches: [develop]
 
 jobs:
-  apk_build:
+  builds:
+    name: build APK and iPA
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,21 +24,34 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore atomex.sln
 
-      - name: Create keystore for codesign
+      - name: Create Android keystore for codesign
         run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.Android/atomex.keystore
 
       - name: Run android build
         run: MSBuild /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=atomex /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} /p:AndroidSigningKeyStore=atomex.keystore /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} atomex.Android/Atomex.Android.csproj
 
-      - name: Get app version
+      - name: Get Android app version
         run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
 
       - name: Rename apk file
         run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
 
+      - name: Run and sign iOS build
+        uses: bradyjoslin/xamarinios-signedbuild-action@v1
+        with:
+          csproj_path: atomex.iOS/atomex.iOS.csproj
+          mobileprovision: ${{ secrets.APPLE_PROVISION_PROFILE }}
+          cert_p12: ${{ secrets.APPLE_DISTRIBUTION_CERT_P12 }}
+          p12_pass: ${{ secrets.APPLE_DISTRIBUTION_CERT_P12_PASS }}
+          configuration: "Release"
+          mono_version: "stable"
+          xamarin_ios_version: "stable"
+      
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ env.VERSION }}"
-          files: atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
+          files: |
+            atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
+            atomex.iOS/bin/iPhone/Release/**.ipa
           prerelease: false
