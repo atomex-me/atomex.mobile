@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             x:Class="atomex.Views.OperationRequestListPage"
+             x:Name="BindingContextPage"
+             Title="{helpers:Translate OperationRequest}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+                <StackLayout 
+                    Orientation="Vertical"
+                    Padding="20"
+                    Spacing="0">
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="Operation"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="20"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0">
+                        <StackLayout 
+                            BindableLayout.ItemsSource="{Binding .Operations}"
+                            BackgroundColor="Transparent"
+                            VerticalOptions="FillAndExpand"
+                            Spacing="5">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout
+                                        VerticalOptions="FillAndExpand"
+                                        Orientation="Vertical"
+                                        Spacing="0">
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.SelectOperationTappedCommand, Source={x:Reference BindingContextPage}}"
+                                                                  CommandParameter="{Binding .}"/>
+                                        </StackLayout.GestureRecognizers>
+                                        <StackLayout
+                                            VerticalOptions="FillAndExpand"
+                                            Orientation="Horizontal">
+                                        <Label
+                                            Text="Source:"
+                                            FontFamily="{DynamicResource RegularFont}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                            FontSize="14"
+                                            Margin="5, 5"
+                                            VerticalTextAlignment="Start"
+                                            HorizontalTextAlignment="Start"/>
+                                        <Label
+                                            Text="{Binding .Source}"
+                                            FontFamily="{DynamicResource RegularFont}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                            FontSize="14"
+                                            Margin="5, 5"
+                                            VerticalTextAlignment="Start"
+                                            HorizontalTextAlignment="End"/>
+                                        </StackLayout>
+                                        <StackLayout
+                                            VerticalOptions="FillAndExpand"
+                                            Orientation="Horizontal">
+                                            <Label
+                                                Text="Amount:"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                FontSize="14"
+                                                Margin="5, 5"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="Start"/>
+                                            <Label
+                                                Text="{Binding .Amount}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                FontSize="14"
+                                                Margin="5, 5"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="End"/>
+                                        </StackLayout>
+                                        <StackLayout
+                                            VerticalOptions="FillAndExpand"
+                                            Orientation="Horizontal">
+                                            <Label
+                                                Text="Fee:"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                FontSize="14"
+                                                Margin="5, 5"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="Start"/>
+                                            <Label
+                                                Text="{Binding .SumFee}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                FontSize="14"
+                                                Margin="5, 5"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="End"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="Fee for operation: "
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding .SumFeeOperations}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding BindingContext.DisplayExtraTransactionDetailsCommand, Source={x:Reference BindingContextPage}}"/>
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="Display transaction details"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"/>
+                        </StackLayout>
+                    </Frame>
+                    <Label Text="{Binding .DisplayExtraTransactionDetails}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20"
+                           IsVisible="False"
+                           FontSize="14"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding .IsVisibleExtraTransactionDetails}"
+                                         Value="true">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding .IsVisibleExtraTransactionDetails}"
+                                         Value="false">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Grid ColumnSpacing="0"
+                          RowSpacing="0"
+                          VerticalOptions="EndAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="{helpers:Translate CancelButton}"
+                                Style="{DynamicResource PopupCancelButtonStyle}"
+                                Command="{Binding ClosePopupCommand}"/>
+                        <Button Grid.Column="1"
+                                Text="{helpers:Translate AcceptButton}"
+                                Style="{DynamicResource PopupAcceptButtonStyle}"
+                                VerticalOptions="FillAndExpand"
+                                Command="{Binding AcceptOperationsCommand}"/>
+                    </Grid>
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

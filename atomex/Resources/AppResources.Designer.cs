@@ -509,6 +509,12 @@ namespace atomex.Resources {
             }
         }
 
+        internal static string OperationRequest {
+            get {
+                return ResourceManager.GetString("OperationRequest", resourceCulture);
+            }
+        }
+
         internal static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);

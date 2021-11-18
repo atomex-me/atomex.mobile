@@ -51,7 +51,9 @@ namespace atomex.ViewModel
         {
             var selectedDapp = DappsInfo.FirstOrDefault(w => w.Name == name);
 
-            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingDapp, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingDappConfirmationText, selectedDapp?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingDapp, 
+                string.Format(CultureInfo.InvariantCulture, AppResources.DeletingDappConfirmationText, selectedDapp?.Name), 
+                AppResources.DeleteButton, AppResources.CancelButton);
             if (confirm)
             {
                 DeleteDapp(selectedDapp);

@@ -58,6 +58,24 @@
                                    HorizontalTextAlignment="Center"/>
                         </StackLayout>
                     </Frame>
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowOperationRequestCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="FillAndExpand">
+                            <Label Text="{helpers:Translate OperationRequest}"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
                 </StackLayout>
                 <Label Text="{helpers:Translate CommonSection}"
                        FontFamily="{DynamicResource LightFont}"

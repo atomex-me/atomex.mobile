@@ -587,6 +587,9 @@
     <data name="DappsDevices" xml:space="preserve">
         <value>Привязанные устройства</value>
     </data>
+    <data name="OperationRequest" xml:space="preserve">
+        <value>Отправка операций</value>
+    </data>
     <data name="DeletingWallet" xml:space="preserve">
         <value>Удаление кошелька</value>
     </data>

@@ -587,6 +587,9 @@
     <data name="DappsDevices" xml:space="preserve">
         <value>Dapps Devices</value>
     </data>
+    <data name="OperationRequest" xml:space="preserve">
+        <value>Operation Request</value>
+    </data>
     <data name="DeletingWallet" xml:space="preserve">
         <value>Supprimer un portefeuille</value>
     </data>

@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:behaviors="clr-namespace:EventToCommandBehavior"
+             x:Class="atomex.Views.OperationRequestEditPage"
+             x:Name="BindingContextPage"
+             Title="{helpers:Translate OperationRequest}"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView
+            x:Name="Page">
+                <StackLayout 
+                    Orientation="Vertical"
+                    Padding="20"
+                    Spacing="2">
+                    <Frame x:Name="FrameSource"
+                                   Style="{DynamicResource EntryFrameStyle}"
+                                   Margin="0,10,0,0"
+                                   CornerRadius="10">
+                         <StackLayout 
+                             HeightRequest="60"
+                             Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"> 
+                            <RelativeLayout 
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="60">
+                                <controls:CustomEntry x:Name="EntrySource"
+                                                      Placeholder="Source"
+                                                      Keyboard="Text"
+                                                      IsEnabled="false"
+                                                      Focused="EntryFocusedSource"
+                                                      Unfocused="EntryFocusedSource"
+                                                      TextChanged="OnTextChangedSource"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.Source}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                                <Label x:Name="NameHintSource"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedSource"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </RelativeLayout>
+                         </StackLayout> 
+                    </Frame>
+                    <Frame x:Name="FrameAmount"
+                                   Style="{DynamicResource EntryFrameStyle}"
+                                   Margin="0,10,0,0"
+                                   CornerRadius="10">
+                        <StackLayout HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                                <Label x:Name="NameHintAmount"
+                                               Style="{DynamicResource EntryHintStyle}"
+                                               VerticalTextAlignment="Center"
+                                               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedAmount"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <controls:CustomEntry x:Name="EntryAmount"
+                                                      Placeholder="Amount"
+                                                      Keyboard="Text"
+                                                      IsEnabled="false"
+                                                      Focused="EntryFocusedAmount"
+                                                      Unfocused="EntryFocusedAmount"
+                                                      TextChanged="OnTextChangedAmount"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.Amount}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame x:Name="FrameFee"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Margin="0,10,0,0"
+                           CornerRadius="10">
+                        <StackLayout HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                                <Label x:Name="NameHintFee"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       Text="Fee"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedFee"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <controls:CustomEntry x:Name="EntryFee"
+                                                      Placeholder="Fee"
+                                                      Keyboard="Numeric"
+                                                      Focused="EntryFocusedFee"
+                                                      Unfocused="EntryFocusedFee"
+                                                      TextChanged="OnTextChangedFee"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.Fee}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame x:Name="FrameGasLimit"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Margin="0,10,0,0"
+                           CornerRadius="10">
+                        <StackLayout HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                                <Label x:Name="NameHintGasLimit"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       Text="Gas limit"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedGasLimit"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <controls:CustomEntry x:Name="EntryGasLimit"
+                                                      Placeholder="Gas limit"
+                                                      Keyboard="Numeric"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.GasLimit}"
+                                                      Focused="EntryFocusedGasLimit"
+                                                      Unfocused="EntryFocusedGasLimit"
+                                                      TextChanged="OnTextChangedGasLimit"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame x:Name="FrameStorageLimit"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Margin="0,10,0,0"
+                           CornerRadius="10">
+                        <StackLayout HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                                <Label x:Name="NameHintStorageLimit"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedStorageLimit"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <controls:CustomEntry x:Name="EntryStorageLimit"
+                                                      Placeholder="Storage limit"
+                                                      Keyboard="Numeric"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.StorageLimit}"
+                                                      Focused="EntryFocusedStorageLimit"
+                                                      Unfocused="EntryFocusedStorageLimit"
+                                                      TextChanged="OnTextChangedStorageLimit"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame x:Name="FrameDestination"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Margin="0,10,0,0"
+                           CornerRadius="10">
+                        <StackLayout HeightRequest="60">
+                            <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                                <Label x:Name="NameHintDestination"
+                                       Style="{DynamicResource EntryHintStyle}"
+                                       VerticalTextAlignment="Center"
+                                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEntryTappedDestination"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <controls:CustomEntry x:Name="EntryDestination"
+                                                      Placeholder="Destination"
+                                                      IsEnabled="false" 
+                                                      Keyboard="Text"
+                                                      Focused="EntryFocusedDestination"
+                                                      Unfocused="EntryFocusedDestination"
+                                                      TextChanged="OnTextChangedDestination"
+                                                      Style="{DynamicResource CustomEntryStyle}"
+                                                      Text="{Binding .Operation.Destination}"
+                                                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
+                                </controls:CustomEntry>
+                            </RelativeLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Label Text="Warning! Changing fee, gas limit or storage limit can lead to the cancellation of the transaction"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="18"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="10,10"/>
+                    <Grid ColumnSpacing="0"
+                          RowSpacing="0"
+                          VerticalOptions="EndAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="{helpers:Translate CancelButton}"
+                                Style="{DynamicResource PopupCancelButtonStyle}"
+                                Command="{Binding ClosePopupCommand}"/>
+                        <Button Grid.Column="1"
+                                Text="{helpers:Translate AcceptButton}"
+                                Style="{DynamicResource PopupAcceptButtonStyle}"
+                                VerticalOptions="FillAndExpand"
+                                Command="{Binding AcceptPopupCommand}"/>
+                    </Grid>
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
