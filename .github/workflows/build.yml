@@ -1,0 +1,61 @@
+
+
+name: Production builds
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  builds:
+    name: build APK and iPA
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.402
+
+      - name: Restore NuGet Packages
+        run: nuget restore atomex.sln
+
+      - name: Run and sign iOS build
+        uses: bradyjoslin/xamarinios-signedbuild-action@v1
+        with:
+          csproj_path: atomex.iOS/atomex.iOS.csproj
+          mobileprovision: ${{ secrets.APPLE_PROVISION_PROFILE }}
+          cert_p12: ${{ secrets.APPLE_DISTRIBUTION_CERT_P12 }}
+          p12_pass: ${{ secrets.APPLE_DISTRIBUTION_CERT_P12_PSWD }}
+          configuration: "Release"
+          mono_version: "stable"
+          xamarin_ios_version: "stable"
+
+      - name: Rename iPA file
+        run: mv atomex.iOS/bin/iPhone/Release/atomex.iOS.ipa atomex.iOS/bin/iPhone/Release/atomex.ipa
+
+      - name: Create Android keystore for codesign
+        run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.Android/atomex.keystore
+
+      - name: Run android build
+        run: MSBuild /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=atomex /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} /p:AndroidSigningKeyStore=atomex.keystore /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} atomex.Android/Atomex.Android.csproj
+
+      - name: Rename APK file
+        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex.apk
+
+      - name: Get app version
+        run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
+      
+      - name: Upload Release builds
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "v${{ env.VERSION }}"
+          files: |
+            atomex.Android/bin/Release/atomex.apk
+            atomex.iOS/bin/iPhone/Release/atomex.ipa
+          prerelease: false
