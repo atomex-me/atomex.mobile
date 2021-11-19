@@ -5,15 +5,17 @@ name: Production builds
 on:
   push:
     branches: [feature/cicd]
-    
+
 jobs:
   builds:
     name: build APK and iPA
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           submodules: true
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -33,23 +35,27 @@ jobs:
           mono_version: "stable"
           xamarin_ios_version: "stable"
 
+      - name: Rename iPA file
+        run: mv atomex.iOS/bin/iPhone/Release/atomex.iOS.ipa atomex.iOS/bin/iPhone/Release/atomex.ipa
+
       - name: Create Android keystore for codesign
         run: echo ${{ secrets.ANDROID_SIGNING_CERT }} | base64 --decode > atomex.Android/atomex.keystore
 
       - name: Run android build
         run: MSBuild /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias=atomex /p:AndroidSigningKeyPass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} /p:AndroidSigningKeyStore=atomex.keystore /p:AndroidSigningStorePass=${{ secrets.ANDROID_SIGNING_CERT_PSWD }} atomex.Android/Atomex.Android.csproj
 
-      - name: Get Android app version
-        run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
+      - name: Rename APK file
+        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex.apk
 
-      - name: Rename apk file
-        run: mv atomex.Android/bin/Release/com.atomex.android-Signed.apk atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
+      - name: Get app version
+        run: echo 'VERSION='$(xmllint --xpath 'string(/manifest/@*[local-name()="versionName"])' atomex.Android/Properties/AndroidManifest.xml) >> $GITHUB_ENV
       
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Upload Release builds
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.VERSION }}"
+          automatic_release_tag: "v${{ env.VERSION }}"
           files: |
-            atomex.Android/bin/Release/atomex-${{ env.VERSION }}.apk
-            atomex.iOS/bin/iPhone/Release/**.ipa
+            atomex.Android/bin/Release/atomex.apk
+            atomex.iOS/bin/iPhone/Release/atomex.ipa
           prerelease: false
