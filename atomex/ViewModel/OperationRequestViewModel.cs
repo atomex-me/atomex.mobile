@@ -10,7 +10,9 @@ using Atomex;
 using atomex.Views;
 using atomex.Models;
 using atomex.Resources;
+using Atomex.Wallet.Abstract;
 using Netezos.Forging.Models;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
@@ -75,11 +77,23 @@ namespace atomex.ViewModel
 
         private async Task ConfirmSendRequestOperations()
         {
-            var confirm = await Application.Current.MainPage.DisplayAlert("Success", "Your transaction has been successfully broadcasted", "OK", "Open Tzkt Explorer");
-            if (confirm)
+            var account = _app.Account.GetCurrencyAccount<ILegacyCurrencyAccount>("BTC/TZC");
+            try
             {
-                await ClosePopup();
+                // Operations.Select(async x => await account.SendAsync(x.Destination, x.Amount, x.Fee, x.))
+
+                var confirm = await Application.Current.MainPage.DisplayAlert("Success", "Your transaction has been successfully broadcasted", "OK", "Open Tzkt Explorer");
+                if (confirm)
+                {
+                    await ClosePopup();
+                }
             }
+            catch (Exception e)
+            {
+                Log.Error(e, "Transaction send error.");
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+            }
+            
         }
         private async Task ClosePopup()
         {

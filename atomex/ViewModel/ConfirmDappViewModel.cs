@@ -15,13 +15,15 @@ namespace atomex.ViewModel
 
         private DappInfo _dapp;
 
+        public string QrCodeResult { get; set; }
+
         public DappInfo Dapp
         {
             get => _dapp;
             set { _dapp = value; OnPropertyChanged(nameof(Dapp)); }
         }
 
-        public ConfirmDappViewModel(IAtomexApp app, INavigation navigation)
+        public ConfirmDappViewModel(IAtomexApp app, INavigation navigation, string qrCodeResult)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));;
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));

@@ -11,6 +11,7 @@ using Atomex;
 using Atomex.Core;
 using atomex.Views.SettingsOptions.Dapps;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
@@ -28,6 +29,8 @@ namespace atomex.ViewModel
             get => _dappsInfo;
             set { _dappsInfo = value; OnPropertyChanged(nameof(DappsInfo)); }
         }
+
+        public string QrCodeScanningResult { get; set; }
 
         public DappsViewModel(IAtomexApp app, INavigation navigation)
         {
@@ -79,7 +82,22 @@ namespace atomex.ViewModel
 
         private async Task OnScanQrCodeClicked()
         {
-            await Navigation.PushAsync(new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation)));
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
+
+            var scanningQrPage = new ScanningQrPage(selected =>
+            {
+                QrCodeScanningResult = selected;
+            });
+
+            var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, QrCodeScanningResult));
+
+            await Navigation.PushAsync(confirmDappPage);
+            await Navigation.PushAsync(scanningQrPage);
         }
     }
 }
