@@ -14,6 +14,7 @@ using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -227,8 +228,49 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(async () => await OnNextButtonClicked());
 
+        private ICommand _onScanAddressCommand;
+        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+
+        public Result ScanResult { get; set; }
+
+        private bool _isScanning = true;
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
+        private bool _isAnalyzing = true;
+        public bool IsAnalyzing
+        {
+            get => _isAnalyzing;
+            set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
+        }
+
+        private async Task OnScanResultCommand()
+        {
+            IsScanning = IsAnalyzing = false;
+
+            if (ScanResult == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+                await Navigation.PopAsync();
+            }
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                int indexOfChar = ScanResult.Text.IndexOf(':');
+                if (indexOfChar == -1)
+                    To = ScanResult.Text;
+                else
+                    To = ScanResult.Text.Substring(indexOfChar + 1);
+                await Navigation.PopAsync();
+            });
+        }
+
         private async Task OnScanButtonClicked()
         {
+            IsScanning = IsAnalyzing = true;
             PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
             if (permissions != PermissionStatus.Granted)
@@ -236,12 +278,7 @@ namespace atomex.ViewModel.SendViewModels
             if (permissions != PermissionStatus.Granted)
                 return;
 
-            var scanningQrPage = new ScanningQrPage(selected =>
-            {
-                To = selected;
-            });
-
-            await Navigation.PushAsync(scanningQrPage);
+            await Navigation.PushAsync(new ScanningQrPage(this));
         }
 
         async Task OnPasteButtonClicked()
