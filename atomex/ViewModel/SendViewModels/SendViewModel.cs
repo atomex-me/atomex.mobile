@@ -255,17 +255,19 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
                 await Navigation.PopAsync();
+                return;
             }
 
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
                 if (indexOfChar == -1)
                     To = ScanResult.Text;
                 else
                     To = ScanResult.Text.Substring(indexOfChar + 1);
-                await Navigation.PopAsync();
             });
+
+            await Navigation.PopAsync();
         }
 
         private async Task OnScanButtonClicked()
