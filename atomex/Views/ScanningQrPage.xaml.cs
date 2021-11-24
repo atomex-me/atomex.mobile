@@ -1,35 +1,20 @@
-﻿using System;
+﻿using atomex.ViewModel.SendViewModels;
 using Xamarin.Forms;
-using ZXing;
-using ZXing.Net.Mobile.Forms;
 
 namespace atomex
 {
-    public partial class ScanningQrPage : ZXingScannerPage
+    public partial class ScanningQrPage : ContentPage
     {
-        public Action<string> OnQrScanned;
-
-        public ScanningQrPage(Action<string> onQrScanned)
+        public ScanningQrPage(SendViewModel sendViewModel)
         {
             InitializeComponent();
-            OnQrScanned = onQrScanned;
+            BindingContext = sendViewModel;
         }
 
-        public void OnScanResultHandle(Result result)
+        public ScanningQrPage(TezosTokensSendViewModel sendViewModel)
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                int indexOfChar = result.Text.IndexOf(':');
-                if (indexOfChar == -1)
-                {
-                    OnQrScanned(result.Text);
-                }
-                else
-                {
-                    OnQrScanned(result.Text.Substring(indexOfChar + 1));
-                }
-                await Navigation.PopAsync();
-            });
+            InitializeComponent();
+            BindingContext = sendViewModel;
         }
     }
 }

@@ -1,10 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<zxing:ZXingScannerPage xmlns="http://xamarin.com/schemas/2014/forms"
-                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                        x:Class="atomex.ScanningQrPage"
-                        xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-                        xmlns:helpers="clr-namespace:atomex.Helpers"
-                        Title="{helpers:Translate ScanningQrCodePageTitle}"
-                        OnScanResult="OnScanResultHandle"
-                        IsScanning="true">
-</zxing:ZXingScannerPage>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.ScanningQrPage"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             Title="{helpers:Translate ScanningQrCodePageTitle}">
+    <Grid VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
+        <zxing:ZXingScannerView Result="{Binding ScanResult, Mode=TwoWay}"
+                                ScanResultCommand="{Binding OnScanAddressCommand}"
+                                IsScanning="{Binding IsScanning}"
+                                IsAnalyzing="{Binding IsAnalyzing}"/>
+        <zxing:ZXingDefaultOverlay TopText="{helpers:Translate ScannerTopOverlayText}"
+                                   BottomText="{helpers:Translate ScannerBottomOverlayText}"/>
+    </Grid>
+</ContentPage>
