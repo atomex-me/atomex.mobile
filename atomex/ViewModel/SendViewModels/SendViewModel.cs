@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views;
 using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Abstract;
@@ -218,6 +219,9 @@ namespace atomex.ViewModel.SendViewModels
         public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
+        private ICommand _showAddressesCommand;
+        public ICommand ShowAddressesCommand => _showAddressesCommand ??= new Command(async () => await OnFromAddressClicked());
+        
         private ICommand _pasteCommand;
         public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
 
@@ -226,6 +230,11 @@ namespace atomex.ViewModel.SendViewModels
 
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(async () => await OnNextButtonClicked());
+
+        private async Task OnFromAddressClicked()
+        {
+            await Navigation.PushAsync(new AddressesListPage(this));
+        }
 
         private async Task OnScanButtonClicked()
         {

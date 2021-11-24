@@ -21,6 +21,76 @@
                 <controls:CustomFrame CornerRadius="20,20,0,0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
+                    <Grid VerticalOptions="Fill"
+                          HorizontalOptions="Fill"
+                          RowSpacing="0"
+                          ColumnSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                        </Grid.GestureRecognizers>
+                        <Label Text="{helpers:Translate FromAddressLabel}"
+                               Style="{DynamicResource EntryHintStyle}"
+                               Padding="20,5,20,0"
+                               IsVisible="True">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="1"
+                               Text="tzWEMop37hnb#9sidj39knddas*dan435jsdfghjk"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"
+                               LineBreakMode="MiddleTruncation"
+                               Padding="20,0,10,0"
+                               VerticalTextAlignment="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="2"
+                               Style="{DynamicResource PickerBalanceLabelStyle}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                            </Label.GestureRecognizers>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate Balance}"/>
+                                    <Span Text=": "/>
+                                    <Span Text="23412.43525"
+                                          FontFamily="{DynamicResource BoldFont}"
+                                          FontSize="12"/>
+                                    <!--<Span Text="{Binding WalletAddressViewModel.AvailableBalance, StringFormat='{0:0.#########}'}"
+                                          FontFamily="{DynamicResource BoldFont}"
+                                          FontSize="12"/>-->
+                                    <Span Text=" XTZ"
+                                          FontFamily="{DynamicResource BoldFont}"
+                                          FontSize="10"/>
+                            </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Image Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
+                               Grid.Column="1"
+                               Grid.RowSpan="3"
+                               Margin="0,25,15,25">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Grid>
+                </controls:CustomFrame>
+                <controls:CustomFrame CornerRadius="0"
+                                      HeightRequest="60"
+                                      Style="{DynamicResource EntryFrameStyle}">
                     <controls:CustomFrame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnAddressEntryTapped"/>
                     </controls:CustomFrame.GestureRecognizers>
@@ -33,7 +103,7 @@
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Address"  
                                                       Text="{Binding To}"
-                                                      Placeholder="{helpers:Translate AddressEntryPlaceholder}"
+                                                      Placeholder="{helpers:Translate ToAddressLabel}"
                                                       Keyboard="Text"
                                                       Focused="AddressEntryFocused"
                                                       Unfocused="AddressEntryFocused"
@@ -54,7 +124,7 @@
                                        Padding="20,20,0,0"
                                        IsVisible="False"/>
                                 <Label x:Name="AddressHint"
-                                       Text="{helpers:Translate AddressEntryPlaceholder}"
+                                       Text="{helpers:Translate ToAddressLabel}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"

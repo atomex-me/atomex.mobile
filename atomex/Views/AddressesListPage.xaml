@@ -24,7 +24,7 @@
                 </DataTrigger>
             </Label.Triggers>
         </Label>
-        <Label Text="Insufficient token funds on addresses! Please, update your balance!"
+        <Label Text="Insufficient funds on addresses! Please, update your balance!"
                FontFamily="{DynamicResource RegularFont}"
                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                FontSize="16"

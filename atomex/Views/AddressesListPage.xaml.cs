@@ -14,19 +14,26 @@ namespace atomex.Views
         {
             InitializeComponent();
             BindingContext = receiveViewModel;
-            string selectedColorName = "ListViewSelectedBackgroundColor";
+            SetColors();
+        }
 
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "ListViewSelectedBackgroundColorDark";
 
-            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
-            selectedItemBackgroundColor = (Color)selectedColor;
+        public AddressesListPage(SendViewModel sendViewModel)
+        {
+            InitializeComponent();
+            BindingContext = sendViewModel;
+            SetColors();
         }
 
         public AddressesListPage(TezosTokensSendViewModel tezosTokensSendViewModel)
         {
             InitializeComponent();
             BindingContext = tezosTokensSendViewModel;
+            SetColors();
+        }
+
+        private void SetColors()
+        {
             string selectedColorName = "ListViewSelectedBackgroundColor";
 
             if (Application.Current.RequestedTheme == OSAppTheme.Dark)

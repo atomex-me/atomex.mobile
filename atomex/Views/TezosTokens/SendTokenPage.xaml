@@ -34,15 +34,16 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
-                    <controls:CustomFrame  Grid.RowSpan="3"
-                                           Grid.ColumnSpan="3"
-                                           CornerRadius="20,20,0,0"
-                                           Style="{DynamicResource EntryFrameStyle}">
+                    <controls:CustomFrame Grid.RowSpan="3"
+                                          Grid.ColumnSpan="3"
+                                          CornerRadius="20,20,0,0"
+                                          Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
+
                             <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
                         </Frame.GestureRecognizers>
                     </controls:CustomFrame>   
-                    <Label Text="{helpers:Translate AddressLabel}"
+                    <Label Text="{helpers:Translate FromAddressLabel}"
                            Style="{DynamicResource PickerHintStyle}">
                          <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
@@ -216,7 +217,7 @@
                             <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                                 <controls:CustomEntry x:Name="Address"  
                                                       Text="{Binding To}"
-                                                      Placeholder="{helpers:Translate AddressEntryPlaceholder}"
+                                                      Placeholder="{helpers:Translate ToAddressLabel}"
                                                       Keyboard="Text"
                                                       Focused="AddressEntryFocused"
                                                       Unfocused="AddressEntryFocused"
@@ -237,7 +238,7 @@
                                        Padding="20,20,0,0"
                                        IsVisible="False"/>
                                 <Label x:Name="AddressHint"
-                                       Text="{helpers:Translate AddressEntryPlaceholder}"
+                                       Text="{helpers:Translate ToAddressLabel}"
                                        Style="{DynamicResource EntryHintStyle}"
                                        VerticalTextAlignment="Center"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
