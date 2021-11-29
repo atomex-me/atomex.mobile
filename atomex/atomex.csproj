@@ -12,6 +12,7 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Netezos" Version="2.4.4" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
@@ -60,6 +61,13 @@
     </Compile>
     <Compile Update="Resources\AppResources.fr.Designer.cs">
       <DependentUpon>AppResources.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OperationRequestEditPage.xaml.cs">
+      <DependentUpon>OperationRequestEditPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Popup\CompletitionPopup.xaml.cs">
+      <DependentUpon>CompletionPopup.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="http://rotorgames.com"
+              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+              x:Class="atomex.Views.Popup.CompletionPopup">
+    <rg:PopupPage.Animation>
+        <rg:ScaleAnimation PositionIn="Center"
+                           PositionOut="Center"
+                           ScaleIn="1.2"
+                           ScaleOut="0.8"
+                           DurationIn="400"
+                           DurationOut="300"
+                           EasingIn="SinOut"
+                           EasingOut="SinIn"
+                           HasBackgroundAnimation="True"/>
+    </rg:PopupPage.Animation>
+    <Frame CornerRadius="20"
+           Padding="0"
+           Margin="20,0"
+           HasShadow="False"
+           HorizontalOptions="FillAndExpand"
+           HeightRequest="400"
+           VerticalOptions="Center"
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <StackLayout Padding="20">
+            <lottie:AnimationView WidthRequest="200"
+                                  HeightRequest="200"
+                                  AnimationSource="AssetOrBundle"
+                                  ImageAssetsFolder="Assets/Animations"
+                                  AutoPlay="True"
+                                  Speed="1"
+                                  VerticalOptions="Start"
+                                  HorizontalOptions="Center">
+                <lottie:AnimationView.Triggers>
+                    <DataTrigger TargetType="lottie:AnimationView"
+                                 Binding="{Binding Type}"
+                                 Value="Success">
+                        <Setter Property="Animation"
+                                Value="{AppThemeBinding Dark=successful-completion_dark.json, Light=successful-completion_light.json}"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="lottie:AnimationView"
+                                 Binding="{Binding Type}"
+                                 Value="Error">
+                        <Setter Property="Animation"
+                                Value="{AppThemeBinding Dark=failed-completion_dark.json, Light=failed-completion_light.json}"/>
+                    </DataTrigger>
+                </lottie:AnimationView.Triggers>
+            </lottie:AnimationView>
+            <Label Text="{Binding Title}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                   FontSize="18"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="{DynamicResource BoldFont}"/>
+            <Label Text="{Binding Body}"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                   FontSize="14"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="{DynamicResource RegularFont}"/>
+            <Button Text="{Binding ButtonText}"
+                    Style="{DynamicResource MainButtonStyle}"
+                    VerticalOptions="EndAndExpand"
+                    Command="{Binding CancelCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding Type}"
+                                 Value="Success">
+                        <Setter Property="BackgroundColor"
+                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding Type}"
+                                 Value="Error">
+                        <Setter Property="BackgroundColor"
+                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </StackLayout>
+    </Frame>
+</rg:PopupPage>

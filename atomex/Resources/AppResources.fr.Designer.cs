@@ -636,6 +636,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ScannerTopOverlayText {
+            get {
+                return ResourceManager.GetString("ScannerTopOverlayText", resourceCulture);
+            }
+        }
+
+        internal static string ScannerBottomOverlayText {
+            get {
+                return ResourceManager.GetString("ScannerBottomOverlayText", resourceCulture);
+            }
+        }
+        
         internal static string PasteButton {
             get {
                 return ResourceManager.GetString("PasteButton", resourceCulture);
