@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Core;
+using Base58Check;
+
+using Beacon.Sdk.Beacon;
 using atomex.Views.SettingsOptions.Dapps;
+using Newtonsoft.Json;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -110,12 +115,27 @@ namespace atomex.ViewModel
             Device.BeginInvokeOnMainThread(() =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
-                var result  = indexOfChar == -1 
+                QrCodeScanningResult = indexOfChar == -1 
                     ? ScanResult.Text 
                     : ScanResult.Text.Substring(indexOfChar + 1);
             });
 
+
             await Navigation.PopAsync();
+            try
+            {
+                byte[] decodedBytes = Base58Check.Base58CheckEncoding.Decode(QrCodeScanningResult);
+                string message = Encoding.Default.GetString(decodedBytes);
+
+                var pairingRequest = JsonConvert.DeserializeObject<P2PPairingRequest>(message);
+                
+                var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, pairingRequest));
+                await Navigation.PushAsync(confirmDappPage);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+            }
         }
 
         private async Task OnScanQrCodeClicked()
@@ -129,10 +149,7 @@ namespace atomex.ViewModel
                 return;
 
             await Navigation.PushAsync(new ScanningQrPage(this));
-
-            var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, QrCodeScanningResult));
-
-            await Navigation.PushAsync(confirmDappPage);
+            
         }
     }
 }

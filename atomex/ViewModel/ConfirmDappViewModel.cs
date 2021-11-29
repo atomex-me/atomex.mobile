@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using Atomex;
 using Atomex.Core;
 using Xamarin.Forms;
+using Beacon;
+using Beacon.Sdk.Beacon;
+using Beacon.Sdk.Core.Domain;
+using Beacon.Sdk.Core.Domain.Services;
+using Beacon.Sdk.Core.Infrastructure.Cryptography;
+using Beacon.Sdk.Core.Infrastructure.Repositories;
 
 namespace atomex.ViewModel
 {
@@ -15,7 +21,7 @@ namespace atomex.ViewModel
 
         private DappInfo _dapp;
 
-        public string QrCodeResult { get; set; }
+        public P2PPairingRequest PairingRequest { get; set; }
 
         public DappInfo Dapp
         {
@@ -23,7 +29,7 @@ namespace atomex.ViewModel
             set { _dapp = value; OnPropertyChanged(nameof(Dapp)); }
         }
 
-        public ConfirmDappViewModel(IAtomexApp app, INavigation navigation, string qrCodeResult)
+        public ConfirmDappViewModel(IAtomexApp app, INavigation navigation, P2PPairingRequest pairingRequest)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));;
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
