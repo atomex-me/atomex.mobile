@@ -13,6 +13,7 @@ using atomex.Views.SettingsOptions.Dapps;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
 
 namespace atomex.ViewModel
 {
@@ -79,9 +80,47 @@ namespace atomex.ViewModel
         private ICommand _scanQrCodeCommand;
 
         public ICommand ScanQrCodeCommand => _scanQrCodeCommand ??= new Command(async () => await OnScanQrCodeClicked());
+        public Result ScanResult { get; set; }
+
+        private bool _isScanning = true;
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
+        private bool _isAnalyzing = true;
+        public bool IsAnalyzing
+        {
+            get => _isAnalyzing;
+            set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
+        }
+
+        private async Task OnScanResultCommand()
+        {
+            IsScanning = IsAnalyzing = false;
+
+            if (ScanResult == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+                await Navigation.PopAsync();
+                return;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                int indexOfChar = ScanResult.Text.IndexOf(':');
+                var result  = indexOfChar == -1 
+                    ? ScanResult.Text 
+                    : ScanResult.Text.Substring(indexOfChar + 1);
+            });
+
+            await Navigation.PopAsync();
+        }
 
         private async Task OnScanQrCodeClicked()
         {
+            IsScanning = IsAnalyzing = true;
             PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
             if (permissions != PermissionStatus.Granted)
@@ -89,15 +128,11 @@ namespace atomex.ViewModel
             if (permissions != PermissionStatus.Granted)
                 return;
 
-            var scanningQrPage = new ScanningQrPage(selected =>
-            {
-                QrCodeScanningResult = selected;
-            });
+            await Navigation.PushAsync(new ScanningQrPage(this));
 
             var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, QrCodeScanningResult));
 
             await Navigation.PushAsync(confirmDappPage);
-            await Navigation.PushAsync(scanningQrPage);
         }
     }
 }
