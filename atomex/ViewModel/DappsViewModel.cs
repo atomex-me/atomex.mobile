@@ -10,9 +10,8 @@ using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Core;
-using Base58Check;
-
 using Beacon.Sdk.Beacon;
+using Beacon.Sdk.Utils;
 using atomex.Views.SettingsOptions.Dapps;
 using Newtonsoft.Json;
 using Serilog;
@@ -87,6 +86,9 @@ namespace atomex.ViewModel
         public ICommand ScanQrCodeCommand => _scanQrCodeCommand ??= new Command(async () => await OnScanQrCodeClicked());
         public Result ScanResult { get; set; }
 
+        private ICommand _onScanAddressCommand;
+        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+
         private bool _isScanning = true;
         public bool IsScanning
         {
@@ -124,7 +126,7 @@ namespace atomex.ViewModel
             await Navigation.PopAsync();
             try
             {
-                byte[] decodedBytes = Base58Check.Base58CheckEncoding.Decode(QrCodeScanningResult);
+                byte[] decodedBytes = Base58CheckEncoding.Decode(QrCodeScanningResult);
                 string message = Encoding.Default.GetString(decodedBytes);
 
                 var pairingRequest = JsonConvert.DeserializeObject<P2PPairingRequest>(message);

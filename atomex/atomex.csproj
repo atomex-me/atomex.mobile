@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
@@ -51,7 +51,7 @@
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Beacon\Beacon.Sdk\Beacon.Sdk.csproj" />
+    <ProjectReference Include="..\Beacon2\Beacon.Sdk\Beacon.Sdk.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\AppResources.Designer.cs">
@@ -65,13 +65,6 @@
     </Compile>
     <Compile Update="Resources\AppResources.fr.Designer.cs">
       <DependentUpon>AppResources.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Views\OperationRequestEditPage.xaml.cs">
-      <DependentUpon>OperationRequestEditPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Popup\CompletitionPopup.xaml.cs">
-      <DependentUpon>CompletionPopup.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +89,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="configuration.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="**/*" />
