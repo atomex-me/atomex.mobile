@@ -10,8 +10,6 @@ using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Core;
-using Beacon.Sdk.Beacon;
-using Beacon.Sdk.Utils;
 using atomex.Views.SettingsOptions.Dapps;
 using Newtonsoft.Json;
 using Serilog;
@@ -126,13 +124,13 @@ namespace atomex.ViewModel
             await Navigation.PopAsync();
             try
             {
-                byte[] decodedBytes = Base58CheckEncoding.Decode(QrCodeScanningResult);
-                string message = Encoding.Default.GetString(decodedBytes);
-
-                var pairingRequest = JsonConvert.DeserializeObject<P2PPairingRequest>(message);
-                
-                var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, pairingRequest));
-                await Navigation.PushAsync(confirmDappPage);
+                // byte[] decodedBytes = Base58CheckEncoding.Decode(QrCodeScanningResult);
+                // string message = Encoding.Default.GetString(decodedBytes);
+                //
+                // var pairingRequest = JsonConvert.DeserializeObject<P2PPairingRequest>(message);
+                //
+                // var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, pairingRequest));
+                // await Navigation.PushAsync(confirmDappPage);
             }
             catch (Exception ex)
             {
