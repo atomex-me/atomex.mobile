@@ -4,14 +4,17 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Abstract;
+using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -225,8 +228,51 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(async () => await OnNextButtonClicked());
 
+        private ICommand _onScanAddressCommand;
+        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+
+        public Result ScanResult { get; set; }
+
+        private bool _isScanning = true;
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
+        private bool _isAnalyzing = true;
+        public bool IsAnalyzing
+        {
+            get => _isAnalyzing;
+            set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
+        }
+
+        private async Task OnScanResultCommand()
+        {
+            IsScanning = IsAnalyzing = false;
+
+            if (ScanResult == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+                await Navigation.PopAsync();
+                return;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                int indexOfChar = ScanResult.Text.IndexOf(':');
+                if (indexOfChar == -1)
+                    To = ScanResult.Text;
+                else
+                    To = ScanResult.Text.Substring(indexOfChar + 1);
+            });
+
+            await Navigation.PopAsync();
+        }
+
         private async Task OnScanButtonClicked()
         {
+            IsScanning = IsAnalyzing = true;
             PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
             if (permissions != PermissionStatus.Granted)
@@ -234,12 +280,7 @@ namespace atomex.ViewModel.SendViewModels
             if (permissions != PermissionStatus.Granted)
                 return;
 
-            var scanningQrPage = new ScanningQrPage(selected =>
-            {
-                To = selected;
-            });
-
-            await Navigation.PushAsync(scanningQrPage);
+            await Navigation.PushAsync(new ScanningQrPage(this));
         }
 
         async Task OnPasteButtonClicked()
@@ -315,7 +356,14 @@ namespace atomex.ViewModel.SendViewModels
                 if (error != null)
                 {
                     IsLoading = false;
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Error,
+                            Title = AppResources.Error,
+                            Body = error.Description,
+                            ButtonText = AppResources.AcceptButton
+                        }));
                     return;
                 }
             }
@@ -323,18 +371,27 @@ namespace atomex.ViewModel.SendViewModels
             {
                 Log.Error(e, "Transaction send error.");
                 IsLoading = false;
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.SendingTransactionError, AppResources.AcceptButton);
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
+                    {
+                        Type = PopupType.Error,
+                        Title = AppResources.Error,
+                        Body = AppResources.SendingTransactionError,
+                        ButtonText = AppResources.AcceptButton
+                    }));
             }
 
-            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Success, Amount + " " + CurrencyCode + " " + AppResources.sentTo + " " + To, null, AppResources.AcceptButton);
-            if (!res)
-            {
-                for (var i = 1; i < 2; i++)
+            await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                new PopupViewModel
                 {
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                }
-                await Navigation.PopAsync();
-            }
+                    Type = PopupType.Success,
+                    Title = AppResources.Success,
+                    Body = string.Format(CultureInfo.InvariantCulture, AppResources.Addresses, Amount, CurrencyCode, To),
+                    ButtonText = AppResources.AcceptButton
+                }));
+
+            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+            await Navigation.PopAsync();
         }
 
 
@@ -635,4 +692,3 @@ namespace atomex.ViewModel.SendViewModels
         }
     }
 }
-

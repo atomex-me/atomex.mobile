@@ -322,6 +322,12 @@
     <data name="ScanningQrCodePageTitle" xml:space="preserve">
         <value>Scanner le code QR</value>
     </data>
+    <data name="ScannerTopOverlayText" xml:space="preserve">
+        <value>Hold your phone up to the QR code</value>
+    </data>
+    <data name="ScannerBottomOverlayText" xml:space="preserve">
+        <value>Scanning will happen automatically</value>
+    </data>
     <data name="PasteButton" xml:space="preserve">
         <value>Pâter</value>
     </data>

@@ -1,3 +1,12 @@
 [submodule "atomex.client.core"]
 	path = atomex.client.core
+	url = https://github.com/atomex-me/atomex.client.core.git
 	url = ../atomex.client.core.git
+[submodule "Beacon2"]
+	path = Beacon2
+	url = https://github.com/baking-bad/beacon-dotnet-sdk/
+	branch = main
+[submodule "MatrixSdk2"]
+	path = MatrixSdk2
+	url = https://github.com/baking-bad/matrix-dotnet-sdk.git
+	branch = main

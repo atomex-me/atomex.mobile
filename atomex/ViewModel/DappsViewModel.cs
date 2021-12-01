@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using Atomex;
 using Atomex.Core;
+using Beacon.Sdk.Beacon;
+using Beacon.Sdk.Utils;
 using atomex.Views.SettingsOptions.Dapps;
+using Newtonsoft.Json;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
 
 namespace atomex.ViewModel
 {
@@ -28,6 +34,8 @@ namespace atomex.ViewModel
             get => _dappsInfo;
             set { _dappsInfo = value; OnPropertyChanged(nameof(DappsInfo)); }
         }
+
+        public string QrCodeScanningResult { get; set; }
 
         public DappsViewModel(IAtomexApp app, INavigation navigation)
         {
@@ -76,10 +84,74 @@ namespace atomex.ViewModel
         private ICommand _scanQrCodeCommand;
 
         public ICommand ScanQrCodeCommand => _scanQrCodeCommand ??= new Command(async () => await OnScanQrCodeClicked());
+        public Result ScanResult { get; set; }
+
+        private ICommand _onScanAddressCommand;
+        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+
+        private bool _isScanning = true;
+        public bool IsScanning
+        {
+            get => _isScanning;
+            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
+        }
+
+        private bool _isAnalyzing = true;
+        public bool IsAnalyzing
+        {
+            get => _isAnalyzing;
+            set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
+        }
+
+        private async Task OnScanResultCommand()
+        {
+            IsScanning = IsAnalyzing = false;
+
+            if (ScanResult == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+                await Navigation.PopAsync();
+                return;
+            }
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                int indexOfChar = ScanResult.Text.IndexOf(':');
+                QrCodeScanningResult = indexOfChar == -1 
+                    ? ScanResult.Text 
+                    : ScanResult.Text.Substring(indexOfChar + 1);
+            });
+
+
+            await Navigation.PopAsync();
+            try
+            {
+                byte[] decodedBytes = Base58CheckEncoding.Decode(QrCodeScanningResult);
+                string message = Encoding.Default.GetString(decodedBytes);
+
+                var pairingRequest = JsonConvert.DeserializeObject<P2PPairingRequest>(message);
+                
+                var confirmDappPage = new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation, pairingRequest));
+                await Navigation.PushAsync(confirmDappPage);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+            }
+        }
 
         private async Task OnScanQrCodeClicked()
         {
-            await Navigation.PushAsync(new ConfirmDappPage(new ConfirmDappViewModel(_app, Navigation)));
+            IsScanning = IsAnalyzing = true;
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
+
+            await Navigation.PushAsync(new ScanningQrPage(this));
+            
         }
     }
 }
