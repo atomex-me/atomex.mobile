@@ -51,9 +51,6 @@
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Beacon2\Beacon.Sdk\Beacon.Sdk.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Resources\AppResources.Designer.cs">
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
