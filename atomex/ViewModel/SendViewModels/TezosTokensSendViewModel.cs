@@ -31,7 +31,7 @@ namespace atomex.ViewModel.SendViewModels
         public const string DefaultBaseCurrencyFormat = "$0.00";
         public const int MaxCurrencyDecimals = 9;
 
-        private readonly IAtomexApp _app;
+        private readonly IAtomexApp AtomexApp;
 
         private readonly INavigation Navigation;
 
@@ -85,6 +85,10 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
+
+        private readonly string _tokenType;
+        public bool IsFa2 => _tokenType == "FA2";
+
         protected string _to;
         public string To
         {
@@ -98,58 +102,69 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        public string CurrencyFormat { get; set; }
-        public string FeeCurrencyFormat { get; set; }
-
-        private string _baseCurrencyFormat;
-        public string BaseCurrencyFormat
-        {
-            get => _baseCurrencyFormat;
-            set { _baseCurrencyFormat = value; OnPropertyChanged(nameof(BaseCurrencyFormat)); }
-        }
-
         private decimal _amount;
         public decimal Amount
         {
             get => _amount;
-            set { _ = UpdateAmount(value); }
+            set { UpdateAmount(value); }
         }
 
         public string AmountString
         {
-            //get => Amount.ToString(CurrencyFormat, CultureInfo.InvariantCulture);
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
-                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var amount))
+                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,
+                    out var amount))
                 {
-                    ResetSendValues(raiseOnPropertyChanged: false);
+                    if (amount == 0)
+                        Amount = amount;
+                    OnPropertyChanged(nameof(AmountString));
                     return;
                 }
 
-                _ = UpdateAmount(amount, raiseOnPropertyChanged: false);
+                Amount = amount;
+                OnPropertyChanged(nameof(AmountString));
             }
+        }
+
+        private bool _isAmountUpdating;
+        public bool IsAmountUpdating
+        {
+            get => _isAmountUpdating;
+            set { _isAmountUpdating = value; OnPropertyChanged(nameof(IsAmountUpdating)); }
         }
 
         private decimal _fee;
         public decimal Fee
         {
             get => _fee;
-            set { _ = UpdateFee(value); }
+            set { UpdateFee(value); }
         }
 
         public string FeeString
         {
-            get => Fee.ToString(FeeCurrencyFormat, CultureInfo.InvariantCulture);
+            get => Fee.ToString(CultureInfo.InvariantCulture);
             set
             {
-                string temp = value.Replace(",", ".");
-                if (!decimal.TryParse(temp, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
+                {
+                    if (fee == 0)
+                        Fee = fee;
+                    OnPropertyChanged(nameof(FeeString));
                     return;
+                }
 
                 Fee = fee;
+                OnPropertyChanged(nameof(FeeString));
             }
+        }
+
+        private bool _isFeeUpdating;
+        public bool IsFeeUpdating
+        {
+            get => _isFeeUpdating;
+            set { _isFeeUpdating = value; OnPropertyChanged(nameof(IsFeeUpdating)); }
         }
 
         private bool _useDefaultFee;
@@ -164,8 +179,7 @@ namespace atomex.ViewModel.SendViewModels
                 if (_useDefaultFee)
                 {
                     Warning = string.Empty;
-                    _ = UpdateAmount(_amount);
-
+                    Fee = _fee;
                 }
             }
         }
@@ -245,28 +259,22 @@ namespace atomex.ViewModel.SendViewModels
         public TezosTokensSendViewModel(
             IAtomexApp app,
             INavigation navigation,
+            string tokenType,
             string from = null,
             TezosTokenContractViewModel tokenContract = null,
             decimal tokenId = 0)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(app));
 
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
-
-            var tezosConfig = _app.Account
-                .Currencies
-                .Get<TezosConfig>(TezosConfig.Xtz);
 
             CurrencyCode = "";
             FeeCurrencyCode = TezosConfig.Xtz;
             BaseCurrencyCode = DefaultBaseCurrencyCode;
 
-            CurrencyFormat = DefaultCurrencyFormat;
-            FeeCurrencyFormat = tezosConfig.FeeFormat;
-            BaseCurrencyFormat = DefaultBaseCurrencyFormat;
-
             _tokenContract = tokenContract;
             _tokenId = tokenId;
+            _tokenType = tokenType;
 
             UpdateFromAddressList(from);
             UpdateCurrencyCode();
@@ -278,25 +286,8 @@ namespace atomex.ViewModel.SendViewModels
 
         private void SubscribeToServices()
         {
-            if (_app.HasQuotesProvider)
-                _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
-        }
-
-        private void ResetSendValues(bool raiseOnPropertyChanged = true)
-        {
-            _amount = 0;
-            OnPropertyChanged(nameof(Amount));
-
-            if (raiseOnPropertyChanged)
-                OnPropertyChanged(nameof(AmountString));
-
-            AmountInBase = 0;
-
-            Fee = 0;
-
-            OnPropertyChanged(nameof(FeeString));
-
-            FeeInBase = 0;
+            if (AtomexApp.HasQuotesProvider)
+                AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private ICommand _nextCommand;
@@ -304,7 +295,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private async void OnNextButtonClicked()
         {
-            var tezosConfig = _app.Account
+            var tezosConfig = AtomexApp.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -350,11 +341,16 @@ namespace atomex.ViewModel.SendViewModels
                 return;
             }
 
-            var fromTokenAddress = await GetTokenAddressAsync(_app.Account, From.Address, TokenContract?.Contract?.Address, TokenId);
+            var fromTokenAddress = await GetTokenAddressAsync(
+                account: AtomexApp.Account,
+                address: From?.Address,
+                tokenContract: TokenContract?.Contract?.Address,
+                tokenId: _tokenId,
+                tokenType: _tokenType );
 
             if (fromTokenAddress == null)
             {
-                Warning = $"Insufficient token funds on address {From.Address}! Please update your balance!";
+                Warning = $"Insufficient token funds on address {From?.Address}! Please update your balance!";
                 return;
             }
 
@@ -364,12 +360,12 @@ namespace atomex.ViewModel.SendViewModels
                 return;
             }
 
-            var xtzAddress = await _app.Account
+            var xtzAddress = await AtomexApp.Account
                 .GetAddressAsync(TezosConfig.Xtz, From.Address);
 
             if (xtzAddress == null)
             {
-                Warning = $"Insufficient funds for fee. Please update your balance for address {From.Address}!";
+                Warning = $"Insufficient funds for fee. Please update your balance for address {From?.Address}!";
                 return;
             }
 
@@ -386,34 +382,24 @@ namespace atomex.ViewModel.SendViewModels
 
         }
 
-        private async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
+        private async void UpdateAmount(decimal amount)
         {
+            if (IsAmountUpdating)
+                return;
+
+            IsAmountUpdating = true;
             Warning = string.Empty;
 
-            if (amount == 0)
-            {
-                ResetSendValues(raiseOnPropertyChanged);
-                return;
-            }
-
             _amount = amount;
+            OnPropertyChanged(nameof(AmountString));
 
             try
             {
-                var tezosConfig = _app.Account
+                var tezosConfig = AtomexApp.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                if (FromAddressList == null)
-                {
-                    _amount = 0;
-                    OnPropertyChanged(nameof(AmountString));
-
-                    Warning = $"Insufficient token funds on addresses! Please update your balance!";
-                    return;
-                }
-
-                if (TokenContract == null || From == null)
+                if (TokenContract == null || From?.Address == null)
                 {
                     Warning = "Invalid 'From' address or token contract address!";
                     return;
@@ -426,14 +412,15 @@ namespace atomex.ViewModel.SendViewModels
                 }
 
                 var fromTokenAddress = await GetTokenAddressAsync(
-                    account: _app.Account,
-                    address: From.Address,
+                    account: AtomexApp.Account,
+                    address: From?.Address,
                     tokenContract: TokenContract?.Contract?.Address,
-                    tokenId: TokenId);
+                    tokenId: _tokenId,
+                    tokenType: _tokenType);
 
                 if (fromTokenAddress == null)
                 {
-                    Warning = $"Insufficient token funds on address {From.Address}! Please update your balance!";
+                    Warning = $"Insufficient token funds on address {From?.Address}! Please update your balance!";
                     return;
                 }
 
@@ -443,23 +430,28 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch (Exception e)
+            finally
             {
-                Log.Error(e, "Update amount error");
+                IsAmountUpdating = false;
             }
         }
 
-        private async Task UpdateFee(decimal fee)
+        private async void UpdateFee(decimal fee)
         {
+            if (IsFeeUpdating)
+                return;
+
+            IsFeeUpdating = true;
+
             try
             {
-                var tezosConfig = _app.Account
+                var tezosConfig = AtomexApp.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                if (TokenContract == null || From == null)
+                if (TokenContract == null || From?.Address == null)
                 {
                     Warning = "Invalid 'From' address or token contract address!";
                     return;
@@ -474,22 +466,23 @@ namespace atomex.ViewModel.SendViewModels
                 if (UseDefaultFee)
                 {
                     var fromTokenAddress = await GetTokenAddressAsync(
-                        account: _app.Account,
-                        address: From.Address,
+                        account: AtomexApp.Account,
+                        address: From?.Address,
                         tokenContract: TokenContract?.Contract?.Address,
-                        tokenId: TokenId);
+                        tokenId: _tokenId,
+                        tokenType: _tokenType);
 
                     if (fromTokenAddress == null)
                     {
-                        Warning = $"Insufficient token funds on address {From.Address}! Please update your balance!";
+                        Warning = $"Insufficient token funds on address {From?.Address}! Please update your balance!";
                         return;
                     }
 
-                    var tokenAccount = _app.Account
+                    var tokenAccount = AtomexApp.Account
                         .GetTezosTokenAccount<TezosTokenAccount>(fromTokenAddress.Currency, TokenContract?.Contract?.Address, TokenId);
 
                     var (estimatedFee, isEnougth) = await tokenAccount
-                        .EstimateTransferFeeAsync(From.Address);
+                        .EstimateTransferFeeAsync(From?.Address);
 
                     if (!isEnougth)
                     {
@@ -501,12 +494,12 @@ namespace atomex.ViewModel.SendViewModels
                 }
                 else
                 {
-                    var xtzAddress = await _app.Account
-                        .GetAddressAsync(TezosConfig.Xtz, From.Address);
+                    var xtzAddress = await AtomexApp.Account
+                        .GetAddressAsync(TezosConfig.Xtz, From?.Address);
 
                     if (xtzAddress == null)
                     {
-                        Warning = $"Insufficient funds for fee. Please update your balance for address {From.Address}!";
+                        Warning = $"Insufficient funds for fee. Please update your balance for address {From?.Address}!";
                         return;
                     }
 
@@ -521,26 +514,30 @@ namespace atomex.ViewModel.SendViewModels
 
                 OnPropertyChanged(nameof(FeeString));
 
-                OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch (Exception e)
+            finally
             {
-                Log.Error(e, "Update fee error");
+                IsFeeUpdating = false;
             }
         }
 
-        private async Task OnMaxClick()
+        private async void OnMaxClick()
         {
+            if (IsAmountUpdating)
+                return;
+
+            IsAmountUpdating = true;
 
             Warning = string.Empty;
 
             try
             {
-                var tezosConfig = _app.Account
+                var tezosConfig = AtomexApp.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                if (TokenContract == null || From == null)
+                if (TokenContract == null || From?.Address == null)
                 {
                     _amount = 0;
                     OnPropertyChanged(nameof(AmountString));
@@ -558,28 +555,29 @@ namespace atomex.ViewModel.SendViewModels
                 }
 
                 var fromTokenAddress = await GetTokenAddressAsync(
-                    account: _app.Account,
-                    address: From.Address,
+                    account: AtomexApp.Account,
+                    address: From?.Address,
                     tokenContract: TokenContract?.Contract?.Address,
-                    tokenId: TokenId);
+                    tokenId: _tokenId,
+                    tokenType: _tokenType);
 
                 if (fromTokenAddress == null)
                 {
                     _amount = 0;
                     OnPropertyChanged(nameof(AmountString));
 
-                    Warning = $"Insufficient token funds on address {From.Address}! Please update your balance!";
+                    Warning = $"Insufficient token funds on address {From?.Address}! Please update your balance!";
                     return;
                 }
 
                 _amount = fromTokenAddress.Balance;
                 OnPropertyChanged(nameof(AmountString));
 
-                OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
-            catch (Exception e)
+            finally
             {
-                Log.Error(e, "Max click error");
+                IsAmountUpdating = false;
             }
         }
 
@@ -597,36 +595,34 @@ namespace atomex.ViewModel.SendViewModels
                 : 0;
         }
 
-        public async Task<WalletAddress> GetTokenAddressAsync(
+        public static async Task<WalletAddress> GetTokenAddressAsync(
             IAccount account,
             string address,
             string tokenContract,
-            decimal tokenId)
+            decimal tokenId,
+            string tokenType)
         {
             var tezosAccount = account
                 .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
             return await tezosAccount
                 .DataRepository
-                .GetTezosTokenAddressAsync(TokenContract?.Contract?.GetContractType(), tokenContract, tokenId, address);
+                .GetTezosTokenAddressAsync(tokenType, tokenContract, tokenId, address);
         }
 
         private void UpdateFromAddressList(string from)
         {
             _fromAddressList = new ObservableCollection<WalletAddressViewModel>(GetFromAddressList(TokenContract?.Contract?.Address));
 
-            if (string.IsNullOrEmpty(from))
+            var tempFrom = from;
+
+            if (tempFrom == null)
             {
                 var unspentAddresses = _fromAddressList.Where(w => w.AvailableBalance > 0);
                 var unspentTokenAddresses = _fromAddressList.Where(w => w.TokenBalance > 0);
 
-                From = unspentTokenAddresses.MaxByOrDefault(w => w.TokenBalance) ??
-                    unspentAddresses.MaxByOrDefault(w => w.AvailableBalance);
-            }
-            else
-            {
-                var fromAddressViewModel = _fromAddressList.Where(w => w.Address == from).First();
-                From = fromAddressViewModel;
+                tempFrom = unspentTokenAddresses.MaxByOrDefault(w => w.TokenBalance)?.Address ??
+                    unspentAddresses.MaxByOrDefault(w => w.AvailableBalance)?.Address;
             }
 
             OnPropertyChanged(nameof(FromAddressList));
@@ -634,27 +630,26 @@ namespace atomex.ViewModel.SendViewModels
 
         private async void UpdateCurrencyCode()
         {
-            if (TokenContract == null || From == null)
+            if (TokenContract == null || From?.Address == null)
                 return;
 
             var tokenAddress = await GetTokenAddressAsync(
-                account: _app.Account,
-                address: From.Address,
+                account: AtomexApp.Account,
+                address: From?.Address,
                 tokenContract: TokenContract?.Contract?.Address,
-                tokenId: TokenId);
+                tokenId: _tokenId,
+                tokenType: _tokenType);
 
             if (tokenAddress?.TokenBalance?.Symbol != null)
             {
                 CurrencyCode = tokenAddress.TokenBalance.Symbol;
-                CurrencyFormat = $"F{Math.Min(tokenAddress.TokenBalance.Decimals, MaxCurrencyDecimals)}";
                 OnPropertyChanged(nameof(AmountString));
             }
             else
             {
-                CurrencyCode = _app.Account.Currencies
+                CurrencyCode = AtomexApp.Account.Currencies
                     .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract?.Contract?.Address)
                     ?.Name ?? "TOKENS";
-                CurrencyFormat = DefaultCurrencyFormat;
                 OnPropertyChanged(nameof(AmountString));
             }
         }
@@ -664,11 +659,11 @@ namespace atomex.ViewModel.SendViewModels
             if (tokenContract == null)
                 return Enumerable.Empty<WalletAddressViewModel>();
 
-            var tezosConfig = _app.Account
+            var tezosConfig = AtomexApp.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            var tezosAccount = _app.Account
+            var tezosAccount = AtomexApp.Account
                 .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
             var tezosAddresses = tezosAccount
@@ -723,7 +718,7 @@ namespace atomex.ViewModel.SendViewModels
         public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
 
         private ICommand _maxAmountCommand;
-        public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(async () => await OnMaxClick());
+        public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(() => OnMaxClick());
 
         private async Task OnShowAddressesClicked()
         {
@@ -780,38 +775,47 @@ namespace atomex.ViewModel.SendViewModels
 
                 Error error;
 
-                var tezosAccount = _app.Account
+                var tezosAccount = AtomexApp.Account
                     .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
                 var tokenAddress = await GetTokenAddressAsync(
-                    _app.Account,
-                    From.Address,
+                    AtomexApp.Account,
+                    From?.Address,
                     TokenContract?.Contract?.Address,
-                    TokenId);
+                    _tokenId,
+                    _tokenType);
 
                 if (tokenAddress.Currency == "FA12")
                 {
-                    var currencyName = _app.Account.Currencies
+                    var currencyName = AtomexApp.Account.Currencies
                         .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract?.Contract?.Address)
                         ?.Name ?? "FA12";
 
-                    var tokenAccount = _app.Account
-                        .GetTezosTokenAccount<Fa12Account>(currencyName, TokenContract?.Contract?.Address, TokenId);
+                    var tokenAccount = AtomexApp.Account.GetTezosTokenAccount<Fa12Account>(
+                        currency: currencyName,
+                        tokenContract: TokenContract?.Contract?.Address,
+                        tokenId: TokenId);
 
-                    error = await tokenAccount
-                        .SendAsync(new WalletAddress[] { tokenAddress }, To, Amount, Fee, 1, UseDefaultFee);
+                    error = await tokenAccount.SendAsync(
+                        from: tokenAddress.Address,
+                        to: To,
+                        amount: Amount,
+                        fee: Fee,
+                        useDefaultFee: UseDefaultFee);
                 }
                 else
                 {
-                    var tokenAccount = _app.Account
-                        .GetTezosTokenAccount<Fa2Account>("FA2", TokenContract?.Contract?.Address, TokenId);
+                    var tokenAccount = AtomexApp.Account.GetTezosTokenAccount<Fa2Account>(
+                        currency: "FA2",
+                        tokenContract: TokenContract?.Contract?.Address,
+                        tokenId: TokenId);
 
                     var decimals = tokenAddress.TokenBalance.Decimals;
                     var amount = Amount * (decimal)Math.Pow(10, decimals);
                     var fee = (int)Fee.ToMicroTez();
 
                     error = await tokenAccount.SendAsync(
-                        from: From.Address,
+                        from: From?.Address,
                         to: To,
                         amount: amount,
                         tokenContract: TokenContract?.Contract?.Address,

@@ -7,7 +7,6 @@ using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
-using Atomex.Blockchain.Abstract;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
@@ -21,11 +20,14 @@ namespace atomex.ViewModel
     {
         public event EventHandler OnSuccess;
 
-        private static TimeSpan SwapTimeout = TimeSpan.FromSeconds(60);
-        private static TimeSpan SwapCheckInterval = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan SwapTimeout = TimeSpan.FromSeconds(60);
+        private static readonly TimeSpan SwapCheckInterval = TimeSpan.FromSeconds(3);
 
         private IAtomexApp AtomexApp { get; }
         private INavigation Navigation { get; }
+        public IFromSource From { get; }
+        public string To { get; }
+        public string RedeemAddress { get; }
         public CurrencyViewModel FromCurrencyViewModel { get; set; }
         public CurrencyViewModel ToCurrencyViewModel { get; set; }
         public decimal Amount { get; set; }
@@ -129,19 +131,8 @@ namespace atomex.ViewModel
             try
             {
                 var account = AtomexApp.Account;
-                var currencyAccount = account
-                    .GetCurrencyAccount<ILegacyCurrencyAccount>(FromCurrencyViewModel.Currency.Name);
 
-                var fromWallets = (await currencyAccount
-                    .GetUnspentAddressesAsync(
-                        toAddress: null,
-                        amount: Amount,
-                        fee: 0,
-                        feePrice: await FromCurrencyViewModel.Currency.GetDefaultFeePriceAsync(),
-                        feeUsagePolicy: FeeUsagePolicy.EstimatedFee,
-                        addressUsagePolicy: AddressUsagePolicy.UseMinimalBalanceFirst,
-                        transactionType: BlockchainTransactionType.SwapPayment))
-                    .ToList();
+                var fromWallets = await GetFromAddressesAsync();
 
                 foreach (var fromWallet in fromWallets)
                     if (fromWallet.Currency != FromCurrencyViewModel.Currency.Name)
@@ -240,6 +231,29 @@ namespace atomex.ViewModel
 
                 return new Error(Errors.SwapError, AppResources.ConversionError);
             }
+        }
+
+        private async Task<IEnumerable<WalletAddress>> GetFromAddressesAsync()
+        {
+            if (From is FromAddress fromAddress)
+            {
+                var walletAddress = await AtomexApp.Account
+                    .GetAddressAsync(FromCurrencyViewModel.Currency.Name, fromAddress.Address);
+
+                return new WalletAddress[] { walletAddress };
+            }
+            else if (From is FromOutputs fromOutputs)
+            {
+                var config = (BitcoinBasedConfig)FromCurrencyViewModel.Currency;
+
+                return await Task.WhenAll(fromOutputs.Outputs
+                    .Select(o => o.DestinationAddress(config.Network))
+                    .Distinct()
+                    .Select(async a => await AtomexApp.Account.GetAddressAsync(FromCurrencyViewModel.Currency.Name, a)));
+
+            }
+
+            throw new NotSupportedException("Not supported type of From field");
         }
 
         private string GetErrorsDescription(IEnumerable<BalanceError> errors)

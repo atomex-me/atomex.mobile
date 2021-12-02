@@ -33,11 +33,12 @@ namespace atomex.ViewModel
                 _currency = value;
                 OnPropertyChanged(nameof(Currency));
 
+                // get all addresses with tokens (if exists)
                 var tokenAddresses = Currencies.HasTokens(_currency.Name)
-                    ? AtomexApp.Account
-                        .GetCurrencyAccount<ILegacyCurrencyAccount>(_currency.Name)
-                        .GetUnspentTokenAddressesAsync()
-                        .WaitForResult()
+                    ? (AtomexApp.Account
+                        .GetCurrencyAccount(_currency.Name) as IHasTokens)
+                        ?.GetUnspentTokenAddressesAsync()
+                        .WaitForResult() ?? new List<WalletAddress>()
                     : new List<WalletAddress>();
 
                 // get all active addresses
@@ -57,8 +58,8 @@ namespace atomex.ViewModel
                     .GroupBy(w => w.Address)
                     .Select(g =>
                     {
-                        // main address
-                        var address = g.FirstOrDefault(w => w.Currency == _currency.Name);
+                            // main address
+                            var address = g.FirstOrDefault(w => w.Currency == _currency.Name);
 
                         var isFreeAddress = address?.Address == freeAddress.Address;
 

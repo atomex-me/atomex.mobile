@@ -49,6 +49,10 @@ namespace atomex.ViewModel
 
         public INavigation Navigation { get; set; }
 
+        private IFromSource FromSource { get; set; }
+        private string To { get; set; }
+        private string RedeemAddress { get; set; }
+
         private List<CurrencyViewModel> _currencyViewModels;
 
         private List<CurrencyViewModel> _fromCurrencies;
@@ -409,8 +413,13 @@ namespace atomex.ViewModel
         {
             try
             {
-                FromCurrencyViewModel = _currencyViewModels.
-                    Where(c => c.CurrencyCode == currencyCode).Single() ?? _currencyViewModels.First();
+                //FromCurrencyViewModel = _currencyViewModels.
+                //    Where(c => c.CurrencyCode == currencyCode).Single() ?? _currencyViewModels.First();
+
+                var fromCurrencyVm = FromCurrencies
+                    .FirstOrDefault(c => c.Currency?.Name == currencyCode);
+
+                //FromCurrencyIndex = FromCurrencies.IndexOf(fromCurrencyVm);
             }
             catch(Exception e)
             {
@@ -453,12 +462,16 @@ namespace atomex.ViewModel
             {
                 var swapParams = await Atomex.ViewModels.Helpers
                     .EstimateSwapPaymentParamsAsync(
+                        from: FromSource,
+                        to: To,
                         amount: EstimatedMaxAmount,
-                        fromCurrency: FromCurrencyViewModel.Currency,
-                        toCurrency: ToCurrencyViewModel.Currency,
+                        redeemFromAddress: RedeemAddress,
+                        fromCurrency: FromCurrencyViewModel?.Currency,
+                        toCurrency: ToCurrencyViewModel?.Currency,
                         account: AtomexApp.Account,
                         atomexClient: AtomexApp.Terminal,
-                        symbolsProvider: AtomexApp.SymbolsProvider);
+                        symbolsProvider: AtomexApp.SymbolsProvider,
+                        quotesProvider: AtomexApp.QuotesProvider);
 
                 _amount = Math.Min(swapParams.Amount, EstimatedMaxAmount);
                 _ = UpdateAmountAsync(_amount, updateUi: true);
@@ -577,57 +590,57 @@ namespace atomex.ViewModel
                 }
 
                 // esitmate max payment amount and max fee
-                var swapParams = await Atomex.ViewModels.Helpers.
-                    EstimateSwapPaymentParamsAsync(
-                        amount: value,
-                        fromCurrency: FromCurrencyViewModel.Currency,
-                        toCurrency: ToCurrencyViewModel.Currency,
-                        account: AtomexApp.Account,
-                        atomexClient: AtomexApp.Terminal,
-                        symbolsProvider: AtomexApp.SymbolsProvider);
+                //var swapParams = await Atomex.ViewModels.Helpers.
+                //    EstimateSwapPaymentParamsAsync(
+                //        amount: value,
+                //        fromCurrency: FromCurrencyViewModel.Currency,
+                //        toCurrency: ToCurrencyViewModel.Currency,
+                //        account: AtomexApp.Account,
+                //        atomexClient: AtomexApp.Terminal,
+                //        symbolsProvider: AtomexApp.SymbolsProvider);
 
-                IsCriticalWarning = false;
+                //IsCriticalWarning = false;
 
-                if (swapParams.Error != null)
-                {
-                    Warning = swapParams.Error.Code switch
-                    {
-                        Errors.InsufficientFunds => AppResources.InsufficientFunds,
-                        Errors.InsufficientChainFunds => string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName),
-                        _ => AppResources.Error
-                    };
-                }
-                else
-                {
-                    Warning = string.Empty;
-                }
+                //if (swapParams.Error != null)
+                //{
+                //    Warning = swapParams.Error.Code switch
+                //    {
+                //        Errors.InsufficientFunds => AppResources.InsufficientFunds,
+                //        Errors.InsufficientChainFunds => string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, FromCurrencyViewModel.Currency.FeeCurrencyName),
+                //        _ => AppResources.Error
+                //    };
+                //}
+                //else
+                //{
+                //    Warning = string.Empty;
+                //}
 
-                if (value > swapParams.Amount)
-                {
-                    Warning = AppResources.InsufficientFunds;
-                    ResetSwapValues(updateUi: false);
-                    return;
-                }
+                //if (value > swapParams.Amount)
+                //{
+                //    Warning = AppResources.InsufficientFunds;
+                //    ResetSwapValues(updateUi: false);
+                //    return;
+                //}
 
-                _estimatedPaymentFee = swapParams.PaymentFee;
-                _estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
+                //_estimatedPaymentFee = swapParams.PaymentFee;
+                //_estimatedMakerNetworkFee = swapParams.MakerNetworkFee;
  
-                OnPropertyChanged(nameof(EstimatedPaymentFee));
-                OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
+                //OnPropertyChanged(nameof(EstimatedPaymentFee));
+                //OnPropertyChanged(nameof(EstimatedMakerNetworkFee));
 
-                IsAmountValid = _amount <= swapParams.Amount;
+                //IsAmountValid = _amount <= swapParams.Amount;
 
-                OnPropertyChanged(nameof(Amount));
+                //OnPropertyChanged(nameof(Amount));
 
-                if (updateUi)
-                {
-                    OnPropertyChanged(nameof(AmountString));
-                }
+                //if (updateUi)
+                //{
+                //    OnPropertyChanged(nameof(AmountString));
+                //}
 
-                await UpdateRedeemAndRewardFeesAsync();
+                //await UpdateRedeemAndRewardFeesAsync();
 
-                OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
-                OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                //OnQuotesUpdatedEventHandler(AtomexApp.Terminal, null);
+                //OnBaseQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
             }
             finally
             {
@@ -653,21 +666,21 @@ namespace atomex.ViewModel
 
         private async Task UpdateRedeemAndRewardFeesAsync()
         {
-            var walletAddress = await AtomexApp.Account
-                .GetCurrencyAccount<ILegacyCurrencyAccount>(ToCurrencyViewModel.Currency.Name)
-                .GetRedeemAddressAsync();
+            //var walletAddress = await AtomexApp.Account
+            //    .GetCurrencyAccount(ToCurrencyViewModel.Currency.Name)
+            //    .GetAddressAsync(RedeemAddress);
 
-            _estimatedRedeemFee = await ToCurrencyViewModel.Currency
-                .GetEstimatedRedeemFeeAsync(walletAddress, withRewardForRedeem: false);
+            //_estimatedRedeemFee = await ToCurrency
+            //    .GetEstimatedRedeemFeeAsync(walletAddress, withRewardForRedeem: false);
 
-            _rewardForRedeem = await RewardForRedeemHelper
-                .EstimateAsync(
-                    account: AtomexApp.Account,
-                    quotesProvider: AtomexApp.QuotesProvider,
-                    feeCurrencyQuotesProvider: symbol => AtomexApp.Terminal?.GetOrderBook(symbol)?.TopOfBook(),
-                    walletAddress: walletAddress);
+            //_rewardForRedeem = await RewardForRedeemHelper
+            //    .EstimateAsync(
+            //        account: _app.Account,
+            //        quotesProvider: _app.QuotesProvider,
+            //        feeCurrencyQuotesProvider: symbol => _app.Terminal?.GetOrderBook(symbol)?.TopOfBook(),
+            //        walletAddress: walletAddress);
 
-            _hasRewardForRedeem = _rewardForRedeem != 0;
+            //_hasRewardForRedeem = _rewardForRedeem != 0;
 
             await Device.InvokeOnMainThreadAsync(() =>
             {

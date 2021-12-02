@@ -446,6 +446,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             var sendViewModel = new TezosTokensSendViewModel(
                 app: _app,
                 navigation: Navigation,
+                tokenType: TokenContract.Contract.GetContractType(),
                 from: null,
                 tokenContract: TokenContract,
                 tokenId: 0);
@@ -463,6 +464,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             var sendViewModel = new TezosTokensSendViewModel(
                 app: _app,
                 navigation: Navigation,
+                tokenType: TokenContract.Contract.GetContractType(),
                 from: token.Address,
                 tokenContract: TokenContract,
                 tokenId: token.TokenBalance.TokenId);
