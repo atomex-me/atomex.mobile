@@ -316,19 +316,19 @@
       <Version>1.68.2.1</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>2.0.0.10</Version>
+      <Version>2.0.0.14</Version>
     </PackageReference>
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
-      <Version>4.0.10</Version>
+      <Version>4.0.11</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
-      <Version>17.0.1</Version>
+      <Version>17.1.6</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.XamForms">
-      <Version>17.0.1</Version>
+      <Version>17.1.6</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI">
-      <Version>17.0.1</Version>
+      <Version>17.1.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
