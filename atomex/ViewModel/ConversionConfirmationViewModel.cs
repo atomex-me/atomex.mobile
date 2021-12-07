@@ -102,13 +102,16 @@ namespace atomex.ViewModel
                 if (error != null)
                 {
                     if (error.Code == Errors.PriceHasChanged)
-                    {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.PriceChanged, error.Description, AppResources.AcceptButton);
-                    }
+                        await Application.Current.MainPage.DisplayAlert(
+                            AppResources.PriceChanged,
+                            error.Description,
+                            AppResources.AcceptButton);
+                    
                     else
-                    {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, error.Description, AppResources.AcceptButton);
-                    }
+                        await Application.Current.MainPage.DisplayAlert(
+                            AppResources.Error,
+                            error.Description,
+                            AppResources.AcceptButton);
 
                     IsLoading = false;
                     return;
@@ -121,7 +124,10 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 IsLoading = false;
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "An error has occurred while sending swap", AppResources.AcceptButton);
+                await Application.Current.MainPage.DisplayAlert(
+                    AppResources.Error,
+                    "An error has occurred while sending swap",
+                    AppResources.AcceptButton);
                 Log.Error(e, "Swap error.");
             }
         }
@@ -167,8 +173,16 @@ namespace atomex.ViewModel
 
                 if (qty < symbol.MinimumQty)
                 {
-                    var minimumAmount = AmountHelper.QtyToAmount(side, symbol.MinimumQty, price, FromCurrencyViewModel.Currency.DigitsMultiplier);
-                    var message = string.Format(CultureInfo.InvariantCulture, AppResources.MinimumAllowedQtyWarning, minimumAmount, FromCurrencyViewModel.Currency.Name);
+                    var minimumAmount = AmountHelper.QtyToAmount(
+                        side: side,
+                        qty: symbol.MinimumQty,
+                        price: price,
+                        digitsMultiplier: FromCurrencyViewModel.Currency.DigitsMultiplier);
+                    var message = string.Format(
+                        CultureInfo.InvariantCulture,
+                        AppResources.MinimumAllowedQtyWarning,
+                        minimumAmount,
+                        FromCurrencyViewModel.Currency.Name);
 
                     return new Error(Errors.SwapError, message);
                 }
