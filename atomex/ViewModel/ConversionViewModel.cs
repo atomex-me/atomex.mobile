@@ -22,7 +22,6 @@ using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
 using System.Reactive.Linq;
-using atomex.Common;
 
 namespace atomex.ViewModel
 {
@@ -231,50 +230,20 @@ namespace atomex.ViewModel
                         .Where(fc => Symbols.SymbolByCurrencies(fc.Currency, c.Currency) != null)
                         .ToList();
 
-                    ToCurrencyViewModel = ToCurrencies.FirstOrDefault();
+                    //ToCurrencyViewModel = ToCurrencies.FirstOrDefault();
                 });
 
-            // "From" or "To" currencies changed => update PriceFormat
-            this.WhenAnyValue(vm => vm.FromCurrencyViewModel, vm => vm.ToCurrencyViewModel)
-                .WhereAllNotNull()
-                .Select(t =>
+            // Amoung, "From" currency or  "To" currency changed => estimate swap price and target amount
+            this.WhenAnyValue(vm => vm.Amount, vm => vm.FromCurrencyViewModel, vm => vm.ToCurrencyViewModel)
+                .Throttle(TimeSpan.FromMilliseconds(1))
+                .Subscribe(a =>
                 {
-                    var symbol = Symbols.SymbolByCurrencies(t.Item1.Currency, t.Item2.Currency);
-                    return symbol != null ? Currencies.GetByName(symbol.Quote).Format : null;
-                })
-                .WhereNotNull()
-                .ToPropertyEx(this, vm => vm.PriceFormat);
-
-            // "From" currency changed => estimate swap params with zero amount
-            this.WhenAnyValue(vm => vm.FromCurrencyViewModel)
-                .WhereNotNull()
-                .Subscribe(t =>
-                {
-                    Amount = 0;
-                    AmountString = string.Empty;
                     _ = EstimateSwapParamsAsync(amount: Amount);
+                    OnQuotesUpdatedEventHandler(sender: this, args: null);
                 });
-
-            // "To" currency changed => estimate swap params with zero amount
-            this.WhenAnyValue(vm => vm.ToCurrencyViewModel)
-                .WhereNotNull()
-                .Subscribe(t =>
-                {
-                    Amount = 0;
-                    AmountString = string.Empty;
-                    _ = EstimateSwapParamsAsync(amount: Amount);
-                });
-
-            // Amount changed => estimate swap params and prices with new amount
-            this.WhenAnyValue(vm => vm.Amount)
-                .Subscribe(a => { _ = EstimateSwapParamsAsync(amount: Amount); });
-
-            // Amoung changed => estimate swap price and target amount
-            this.WhenAnyValue(vm => vm.Amount)
-                .Subscribe(a => OnQuotesUpdatedEventHandler(sender: this, args: null));
 
             // Amount changed => update AmountInBase
-            this.WhenAnyValue(vm => vm.AmountString)
+            this.WhenAnyValue(vm => vm.Amount)
                 .Subscribe(amount => UpdateAmountInBase());
 
             // TargetAmount changed => update TargetAmountInBase
@@ -328,8 +297,8 @@ namespace atomex.ViewModel
                         from: FromSource,
                         amount: EstimatedMaxAmount,
                         redeemFromAddress: RedeemAddress,
-                        fromCurrency: FromCurrencyViewModel?.Currency,
-                        toCurrency: ToCurrencyViewModel?.Currency,
+                        fromCurrency: FromCurrencyViewModel.Currency,
+                        toCurrency: ToCurrencyViewModel.Currency,
                         account: _app.Account,
                         atomexClient: _app.Terminal,
                         symbolsProvider: _app.SymbolsProvider,
@@ -339,10 +308,11 @@ namespace atomex.ViewModel
                 //    TODO: warning?
                 //}
 
-                Amount = Math.Min(swapParams.Amount, EstimatedMaxAmount);
-                AmountString = Amount.ToString();
-                this.RaisePropertyChanged(nameof(Amount));
-                this.RaisePropertyChanged(nameof(AmountString));
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AmountString = Math.Min(swapParams.Amount, EstimatedMaxAmount).ToString();
+                    this.RaisePropertyChanged(nameof(AmountString));
+                });
             }
             catch (Exception e)
             {
@@ -373,8 +343,6 @@ namespace atomex.ViewModel
 
         protected virtual async Task EstimateSwapParamsAsync(decimal amount)
         {
-            Warning = string.Empty;
-            IsCriticalWarning = false;
 
             if (FromCurrencyViewModel == null || ToCurrencyViewModel == null)
                 return;
@@ -392,30 +360,36 @@ namespace atomex.ViewModel
                     symbolsProvider: _app.SymbolsProvider,
                     quotesProvider: _app.QuotesProvider);
 
-            if (swapParams.Error != null)
-            {
-                Warning = swapParams.Error.Code switch
-                {
-                    Errors.InsufficientFunds => AppResources.InsufficientFunds,
-                    Errors.InsufficientChainFunds => string.Format(
-                        CultureInfo.InvariantCulture,
-                        AppResources.InsufficientChainFunds,
-                        FromCurrencyViewModel?.Currency.FeeCurrencyName),
-                    _ => AppResources.Error
-                };
-            }
-            else
+            await Device.InvokeOnMainThreadAsync(() =>
             {
                 Warning = string.Empty;
-            }
+                IsCriticalWarning = false;
 
-            EstimatedPaymentFee = swapParams.PaymentFee;
-            EstimatedRedeemFee = swapParams.RedeemFee;
-            RewardForRedeem = swapParams.RewardForRedeem;
-            EstimatedMakerNetworkFee = swapParams.MakerNetworkFee;
+                if (swapParams.Error != null)
+                {
+                    Warning = swapParams.Error.Code switch
+                    {
+                        Errors.InsufficientFunds => AppResources.InsufficientFunds,
+                        Errors.InsufficientChainFunds => string.Format(
+                            CultureInfo.InvariantCulture,
+                            AppResources.InsufficientChainFunds,
+                            FromCurrencyViewModel?.Currency.FeeCurrencyName),
+                        _ => AppResources.Error
+                    };
+                }
+                else
+                {
+                    Warning = string.Empty;
+                }
 
-            if (FromCurrencyViewModel != null)
-                IsAmountValid = Amount <= swapParams.Amount;
+                EstimatedPaymentFee = swapParams.PaymentFee;
+                EstimatedRedeemFee = swapParams.RedeemFee;
+                RewardForRedeem = swapParams.RewardForRedeem;
+                EstimatedMakerNetworkFee = swapParams.MakerNetworkFee;
+
+                if (FromCurrencyViewModel != null)
+                    IsAmountValid = Amount <= swapParams.Amount;
+            });
         }
 
         private static decimal TryGetAmountInBase(
