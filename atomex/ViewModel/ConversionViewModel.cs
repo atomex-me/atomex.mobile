@@ -24,6 +24,7 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
+using ZXing;
 
 namespace atomex.ViewModel
 {
@@ -224,6 +225,15 @@ namespace atomex.ViewModel
 
         [Reactive]
         public string AddressPageTitle { get; set; }
+
+        [Reactive]
+        public Result ScanResult { get; set; }
+
+        [Reactive]
+        public bool IsScanning { get; set; }
+
+        [Reactive]
+        public bool IsAnalyzing { get; set; }
 
         public ConversionViewModel(IAtomexApp app)
         {
@@ -777,22 +787,54 @@ namespace atomex.ViewModel
         private ICommand _scanAddressCommand;
         public ICommand ScanAddressCommand => _scanAddressCommand ??= new Command(async () => await OnScanButtonClicked());
 
+        private ICommand _scanResultCommand;
+        public ICommand ScanResultCommand => _scanResultCommand ??= new Command(async () => await OnScanResult());
+
         private async Task OnScanButtonClicked()
         {
             Console.WriteLine("Scan");
-            //PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
-            //if (permissions != PermissionStatus.Granted)
-            //    permissions = await Permissions.RequestAsync<Permissions.Camera>();
-            //if (permissions != PermissionStatus.Granted)
-            //    return;
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
-            //var scanningQrPage = new ScanningQrPage(selected =>
-            //{
-            //    //Address = selected;
-            //});
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
 
-            //await Navigation.PushAsync(scanningQrPage);
+            IsScanning = IsAnalyzing = true;
+
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
+
+            await Navigation.PushAsync(new ScanningQrPage(this));
+        }
+
+        private async Task OnScanResult()
+        {
+            IsScanning = IsAnalyzing = false;
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
+
+            if (ScanResult == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopAsync();
+                });
+                return;
+            }
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                int indexOfChar = ScanResult.Text.IndexOf(':');
+                //if (indexOfChar == -1)
+                //    To = ScanResult.Text;
+                //else
+                //    To = ScanResult.Text.Substring(indexOfChar + 1);
+                await Navigation.PopAsync();
+            });
         }
 
         private ICommand _selectSwapCommand;

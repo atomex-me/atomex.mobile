@@ -1,4 +1,5 @@
-﻿using atomex.ViewModel.SendViewModels;
+﻿using atomex.ViewModel;
+using atomex.ViewModel.SendViewModels;
 using Xamarin.Forms;
 
 namespace atomex
@@ -11,10 +12,16 @@ namespace atomex
             BindingContext = sendViewModel;
         }
 
-        public ScanningQrPage(TezosTokensSendViewModel sendViewModel)
+        public ScanningQrPage(TezosTokensSendViewModel tezosTokensSendViewModel)
         {
             InitializeComponent();
-            BindingContext = sendViewModel;
+            BindingContext = tezosTokensSendViewModel;
+        }
+
+        public ScanningQrPage(ConversionViewModel conversionViewModel)
+        {
+            InitializeComponent();
+            BindingContext = conversionViewModel;
         }
     }
 }

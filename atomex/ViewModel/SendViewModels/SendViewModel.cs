@@ -240,8 +240,8 @@ namespace atomex.ViewModel.SendViewModels
         {
             await Navigation.PushAsync(new AddressesListPage(this));
         }
-        private ICommand _onScanAddressCommand;
-        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+        private ICommand _scanResultCommand;
+        public ICommand ScanResultCommand => _scanResultCommand ??= new Command(async () => await OnScanResult());
 
         public Result ScanResult { get; set; }
 
@@ -259,38 +259,43 @@ namespace atomex.ViewModel.SendViewModels
             set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
         }
 
-        private async Task OnScanResultCommand()
+        private async Task OnScanResult()
         {
             IsScanning = IsAnalyzing = false;
 
             if (ScanResult == null)
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-                await Navigation.PopAsync();
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopAsync();
+                });
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
                 if (indexOfChar == -1)
                     To = ScanResult.Text;
                 else
                     To = ScanResult.Text.Substring(indexOfChar + 1);
-            });
 
-            await Navigation.PopAsync();
+                await Navigation.PopAsync();
+            });
         }
 
         private async Task OnScanButtonClicked()
         {
-            IsScanning = IsAnalyzing = true;
             PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
             if (permissions != PermissionStatus.Granted)
                 permissions = await Permissions.RequestAsync<Permissions.Camera>();
             if (permissions != PermissionStatus.Granted)
                 return;
+
+            IsScanning = IsAnalyzing = true;
 
             await Navigation.PushAsync(new ScanningQrPage(this));
         }

@@ -721,8 +721,8 @@ namespace atomex.ViewModel.SendViewModels
         private ICommand _maxAmountCommand;
         public ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(() => OnMaxClick());
 
-        private ICommand _onScanAddressCommand;
-        public ICommand OnScanAddressCommand => _onScanAddressCommand ??= new Command(async () => await OnScanResultCommand());
+        private ICommand _scanResultCommand;
+        public ICommand ScanResultCommand => _scanResultCommand ??= new Command(async () => await OnScanResult());
 
         public Result ScanResult { get; set; }
 
@@ -740,27 +740,31 @@ namespace atomex.ViewModel.SendViewModels
             set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
         }
 
-        private async Task OnScanResultCommand()
+        private async Task OnScanResult()
         {
             IsScanning = IsAnalyzing = false;
 
             if (ScanResult == null)
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-                await Navigation.PopAsync();
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopAsync();
+                });
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
                 if (indexOfChar == -1)
                     To = ScanResult.Text;
                 else
                     To = ScanResult.Text.Substring(indexOfChar + 1);
-            });
 
-            await Navigation.PopAsync();
+                await Navigation.PopAsync();
+            });
         }
 
         private async Task OnShowAddressesClicked()
