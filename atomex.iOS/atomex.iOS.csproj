@@ -294,6 +294,8 @@
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ScanTest.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ScanTest.imageset\ScanTest.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -474,6 +476,7 @@
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
     <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
     <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
+    <Folder Include="Assets.xcassets\ScanTest.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

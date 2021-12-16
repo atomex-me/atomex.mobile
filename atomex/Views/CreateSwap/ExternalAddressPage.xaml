@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Class="atomex.Views.CreateSwap.ExternalAddressPage"
+    x:Name="BindingContextPage"
+    Title="{helpers:Translate CreateSwapPageTitle}"
+    Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ScanTest"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ScanAddressCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Enter an external address"
+                   Style="{DynamicResource CreateSwapTitleStyle}"
+                   HorizontalTextAlignment="Start"
+                   FontSize="30"
+                   Margin="0,20"/>
+            <StackLayout HeightRequest="60">
+                <Entry Placeholder="External address"
+                       Style="{DynamicResource EntryStyle}"
+                       FontSize="16"
+                       BackgroundColor="Transparent"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center"
+                       Margin="15,0"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Margin="15,0"
+                         Spacing="0">
+                <CheckBox IsChecked="True"
+                          Color="#61C4DEFF"/>
+                <Label Text="Save to my addresses"
+                       FontFamily="{Binding RegularFont}"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Start"/>
+            </StackLayout>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Margin="20">
+                <Button Text="Confirm"
+                        Style="{DynamicResource MainButtonStyle}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

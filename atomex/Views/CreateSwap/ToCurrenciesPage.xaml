@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Class="atomex.Views.CreateSwap.ToCurrenciesPage"
+    x:Name="BindingContextPage"
+    Title="{helpers:Translate CreateSwapPageTitle}"
+    Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Receive to"
+                   Style="{DynamicResource CreateSwapTitleStyle}"
+                   HorizontalTextAlignment="Start"
+                   FontSize="30"
+                   Margin="0,20"/>
+            <ListView ItemsSource="{Binding ToCurrencies}"
+                      SelectionMode="None"
+                      CachingStrategy="RetainElement"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="Default"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                      SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                      VerticalOptions="FillAndExpand"
+                      Footer="">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                    <ColumnDefinition Width="3.5*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectToCurrencyCommand, Source={x:Reference BindingContextPage}}"
+                                                          Tapped="OnItemTapped"
+                                                          CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
+                                <Image Grid.RowSpan="2"
+                                       WidthRequest="22"
+                                       HeightRequest="22"
+                                       Margin="10,0"
+                                       VerticalOptions="CenterAndExpand"
+                                       Source="{Binding CurrencyCode}"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Currency.Description}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       FontSize="20"
+                                       Margin="0,3"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="Start"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontSize="14"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:#########}'}"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Column="2"
+                                       Text="to mxFz2...vgh12"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       Margin="10,2"
+                                       FontSize="12"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="End">
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="2"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       Margin="10,0"
+                                       FontSize="12"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:#########}'}"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Image Grid.RowSpan="2"
+                                       Grid.Column="3"
+                                       WidthRequest="16"
+                                       HeightRequest="16"
+                                       Margin="10,0,20,0"
+                                       VerticalOptions="CenterAndExpand"
+                                       Source="ic_delete">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.EditToAddressCommand, Source={x:Reference BindingContextPage}}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

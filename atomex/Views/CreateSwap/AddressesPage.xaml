@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
+    x:Class="atomex.Views.CreateSwap.AddressesPage"
+    Title="{helpers:Translate Addresses}"
+    Style="{DynamicResource MainBackgroundStyle}"
+    x:Name="BindingContextPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding AddressPageTitle}"
+                   Style="{DynamicResource CreateSwapTitleStyle}"
+                   HorizontalTextAlignment="Start"
+                   FontSize="30"
+                   Margin="0,20"/>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         Margin="15,0">
+                <custom:CustomEntry Placeholder="My addresses"
+                                    Style="{DynamicResource EntryStyle}"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Start"
+                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    x:Name="AddressesEntry">
+                    <custom:CustomEntry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                          Command="{Binding SearchAddressCommand}"
+                                                          CommandParameter="{Binding Source={x:Reference AddressesEntry},Path=Text}"/>
+                    </custom:CustomEntry.Behaviors>
+                </custom:CustomEntry>
+                <Button TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        BackgroundColor="#29C4DEFF"
+                        Text="sort by balance"
+                        WidthRequest="132"
+                        HeightRequest="32"
+                        HorizontalOptions="End"
+                        CornerRadius="16"
+                        FontSize="14"
+                        FontFamily="{DynamicResource RegularFont}"
+                        TextTransform="Lowercase"/>
+                <ImageButton Source="ic_delete"
+                             BackgroundColor="#29C4DEFF"
+                             Padding="8"
+                             HorizontalOptions="End"
+                             HeightRequest="32"
+                             WidthRequest="32"
+                             CornerRadius="16"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"
+                         Margin="0,20"/>
+            <ListView ItemsSource="{Binding FromCurrencies}"
+                      SelectionMode="None"
+                      CachingStrategy="RetainElement"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                      VerticalOptions="FillAndExpand"
+                      Footer="">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid ColumnSpacing="0"
+                                  RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="32" />
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="6*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectFromCurrencyCommand, Source={x:Reference BindingContextPage}}"
+                                                          Tapped="OnItemTapped"
+                                                          CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
+                                <Image Grid.RowSpan="2"
+                                       WidthRequest="20"
+                                       HeightRequest="20"
+                                       Margin="10,0"
+                                       VerticalOptions="CenterAndExpand"
+                                       Source="Tick"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Currency.Description}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       FontSize="16"
+                                       Margin="0,3"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="Start"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontSize="14"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding AvailableAmount, StringFormat='{0:#########}'}"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Image Grid.RowSpan="2"
+                                       Grid.Column="2"
+                                       WidthRequest="18"
+                                       HeightRequest="18"
+                                       Margin="20,0"
+                                       VerticalOptions="CenterAndExpand"
+                                       Source="Copy"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout VerticalOptions="EndAndExpand"
+                         Margin="20">
+                <Button Text="Confirm"
+                        Style="{DynamicResource MainButtonStyle}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

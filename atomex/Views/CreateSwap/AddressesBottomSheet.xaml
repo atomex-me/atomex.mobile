@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage  
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    x:Class="atomex.Views.CreateSwap.AddressesBottomSheet"
+    xmlns:controls="clr-namespace:atomex.CustomElements">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="170"
+                              BackgroundColor="#203040">
+            <StackLayout>
+                <Label Text="Receive to"
+                       FontSize="16"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Start"
+                       Margin="10,10,20,10"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowToAddressesCommand}"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label Text="my addresses"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="FillAndExpand"
+                           Margin="10,20"/>
+                    <Image Source="RightArrow__white"
+                           HeightRequest="12"
+                           WidthRequest="12"
+                           HorizontalOptions="End"
+                           Margin="10,20"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExternalAddressCommand}"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label Text="external address"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="FillAndExpand"
+                           Margin="10,20"/>
+                    <Image Source="RightArrow__white"
+                           HeightRequest="12"
+                           WidthRequest="12"
+                           HorizontalOptions="End"
+                           Margin="10,20"/>
+                </StackLayout>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

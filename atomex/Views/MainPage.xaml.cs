@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.TezosTokens;
+using atomex.Views.CreateSwap;
 
 namespace atomex
 {
@@ -175,7 +176,7 @@ namespace atomex
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
                 CurrentPage = NavigationConversionPage;
 
-                await NavigationConversionPage.PushAsync(new Views.CreateSwap.CurrenciesPage(conversionViewModel));
+                await NavigationConversionPage.PushAsync(new ExchangePage(conversionViewModel));
             }
         }
 
