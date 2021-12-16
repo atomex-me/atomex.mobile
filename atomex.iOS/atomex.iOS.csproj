@@ -73,6 +73,7 @@
     <MtouchLink>SdkOnly</MtouchLink>
 <LangVersion>8.0</LangVersion>
 <CodesignProvision>Automatic:AppStore</CodesignProvision>
+<BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
