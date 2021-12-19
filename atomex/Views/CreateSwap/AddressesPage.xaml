@@ -43,9 +43,9 @@
                         FontSize="14"
                         FontFamily="{DynamicResource RegularFont}"
                         TextTransform="Lowercase"/>
-                <ImageButton Source="ic_delete"
+                <ImageButton Source="ic_sort__down"
                              BackgroundColor="#29C4DEFF"
-                             Padding="8"
+                             Padding="6"
                              HorizontalOptions="End"
                              HeightRequest="32"
                              WidthRequest="32"
@@ -111,11 +111,11 @@
                                 </Label>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="2"
-                                       WidthRequest="18"
-                                       HeightRequest="18"
+                                       WidthRequest="24"
+                                       HeightRequest="24"
                                        Margin="20,0"
                                        VerticalOptions="CenterAndExpand"
-                                       Source="Copy"/>
+                                       Source="ic_copy"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

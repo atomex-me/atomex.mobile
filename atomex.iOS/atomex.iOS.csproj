@@ -297,6 +297,26 @@
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ScanTest.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ScanTest.imageset\ScanTest.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\ic_copy--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\ic_copy--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\ic_copy.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -478,6 +498,11 @@
     <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
     <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
     <Folder Include="Assets.xcassets\ScanTest.imageset\" />
+    <Folder Include="Assets.xcassets\ic_edit.imageset\" />
+    <Folder Include="Assets.xcassets\ic_copy.imageset\" />
+    <Folder Include="Assets.xcassets\ic_swap.imageset\" />
+    <Folder Include="Assets.xcassets\ic_sort__up.imageset\" />
+    <Folder Include="Assets.xcassets\ic_sort__down.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

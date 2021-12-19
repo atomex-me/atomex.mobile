@@ -99,11 +99,11 @@
                                 </Label>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="3"
-                                       WidthRequest="16"
-                                       HeightRequest="16"
+                                       WidthRequest="24"
+                                       HeightRequest="24"
                                        Margin="10,0,20,0"
                                        VerticalOptions="CenterAndExpand"
-                                       Source="ic_delete">
+                                       Source="ic_edit">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.ShowFromAddressesCommand, Source={x:Reference BindingContextPage}}"/>
                                     </Image.GestureRecognizers>

@@ -498,8 +498,8 @@ namespace atomex.ViewModel
                 .Select(c => CurrencyViewModelCreator.CreateViewModel(_app, c, false))
                 .ToList();
 
-            FromCurrencyViewModel = FromCurrencies.First(c => c.Currency.Name == "BTC");
-            ToCurrencyViewModel = ToCurrencies.First(c => c.Currency.Name == "LTC");
+            //FromCurrencyViewModel = FromCurrencies.First(c => c.Currency.Name == "BTC");
+            //ToCurrencyViewModel = ToCurrencies.First(c => c.Currency.Name == "LTC");
 
             OnSwapEventHandler(this, args: null);
             OnQuotesUpdatedEventHandler(this, args: null);
@@ -613,8 +613,6 @@ namespace atomex.ViewModel
 
         public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
 
-        public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {FromCurrencyViewModel.CurrencyCode}";
-
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= new Command(OnNextButtonClick);
 
@@ -683,6 +681,12 @@ namespace atomex.ViewModel
 
         private async Task OnToCurrencyTapped()
         {
+            if (FromCurrencyViewModel == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Warning, "Choose the From currency first", AppResources.AcceptButton);
+                return;
+            }
+
             await Navigation.PushAsync(new ToCurrenciesPage(this));
         }
 
@@ -694,7 +698,7 @@ namespace atomex.ViewModel
             if (currency == null)
                 return;
 
-            //FromCurrency = currency;
+            FromCurrencyViewModel = currency;
 
             await Navigation.PopAsync();
         }
@@ -707,7 +711,7 @@ namespace atomex.ViewModel
             if (currency == null)
                 return;
 
-            //ToCurrency = currency;
+            ToCurrencyViewModel = currency;
 
             await Navigation.PopAsync();
         }
