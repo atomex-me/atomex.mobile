@@ -142,13 +142,22 @@
                         </DataTrigger>
                     </custom:CustomEntry.Triggers>
                 </custom:CustomEntry>
-                <Image Grid.Row="2"
-                       Source="ic_swap"
-                       HeightRequest="18"
-                       WidthRequest="18"
-                       Margin="20,10,10,10"
+                <Frame Grid.Row="2"
+                       Margin="10,0,0,0"
                        HorizontalOptions="Center"
-                       IsVisible="{Binding ToCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"/>
+                       CornerRadius="8"
+                       Padding="10"
+                       BackgroundColor="Transparent"
+                       BorderColor="#29C4DEFF"
+                       IsVisible="{Binding ToCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SwapCurrenciesCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="ic_swap"
+                           HeightRequest="18"
+                           WidthRequest="18"
+                           HorizontalOptions="Center"/>
+                </Frame>
                 <StackLayout Grid.Row="2"
                              Grid.Column="1"
                              Grid.ColumnSpan="2"

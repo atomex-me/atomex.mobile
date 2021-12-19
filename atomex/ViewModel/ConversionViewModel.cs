@@ -748,7 +748,17 @@ namespace atomex.ViewModel
 
         private async Task ShowFromAddresses()
         {
+            if (FromCurrencyViewModel == null)
+                return;
+
             CurrentSelection = SelectionAddressType.From;
+
+            if (FromCurrencyViewModel.Currency is BitcoinBasedConfig)
+            {
+                await Navigation.PushAsync(new BitcoinBasedAddressesPage(this));
+                return;
+            }
+
             await Navigation.PushAsync(new Views.CreateSwap.AddressesPage(this));
         }
 
