@@ -34,7 +34,7 @@
                     </custom:CustomEntry.Behaviors>
                 </custom:CustomEntry>
                 <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                        BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
                         Text="sort by balance"
                         WidthRequest="132"
                         HeightRequest="32"
@@ -44,7 +44,7 @@
                         FontFamily="{DynamicResource RegularFont}"
                         TextTransform="Lowercase"/>
                 <ImageButton Source="ic_sort__down"
-                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                             BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
                              Padding="6"
                              HorizontalOptions="End"
                              HeightRequest="32"

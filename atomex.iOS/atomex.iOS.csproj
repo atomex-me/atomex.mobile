@@ -327,7 +327,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2244" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile.Forms">
       <Version>2.4.1</Version>
@@ -336,7 +336,7 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp">
-      <Version>1.68.2.1</Version>
+      <Version>2.80.3</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.14</Version>
@@ -345,13 +345,16 @@
       <Version>4.0.11</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Fody">
-      <Version>17.1.6</Version>
+      <Version>17.1.9</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.XamForms">
-      <Version>17.1.6</Version>
+      <Version>17.1.9</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI">
-      <Version>17.1.6</Version>
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>3.7.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

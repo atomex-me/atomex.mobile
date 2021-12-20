@@ -41,6 +41,7 @@ namespace atomex.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+            Plugin.InputKit.Platforms.Droid.Config.Init(this, bundle);
             Rg.Plugins.Popup.Popup.Init(this);
             Xamarin.Essentials.Platform.Init(this, bundle);
             Forms.Init(this, bundle);

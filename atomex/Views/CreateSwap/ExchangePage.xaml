@@ -42,13 +42,13 @@
                        HasShadow="False"
                        CornerRadius="12"
                        BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource AdditionalBackgroundColor}}"
-                       BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}">
+                       BorderColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowFromCurrenciesCommand}"/>
                     </Frame.GestureRecognizers>
                 </Frame>
-                <Frame BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource MainBackgroundColor}}"
-                       BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                <Frame BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource MainBackgroundColor}}"
+                       BorderColor="Transparent"
                        Padding="5"
                        HasShadow="False"
                        Margin="15,0,0,0"
@@ -90,7 +90,7 @@
                 <Button Grid.Row="1"
                         Grid.Column="1"
                         Text="max"
-                        BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                        BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
                         BorderWidth="1"
                         TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                         HeightRequest="30"
@@ -152,7 +152,7 @@
                        Padding="10"
                        HasShadow="False"
                        BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource AdditionalBackgroundColor}}"
-                       BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                       BorderColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
                        IsVisible="{Binding ToCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SwapCurrenciesCommand}"/>
@@ -197,7 +197,7 @@
                        HasShadow="False"
                        CornerRadius="12"
                        BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource AdditionalBackgroundColor}}"
-                       BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}">
+                       BorderColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowToCurrenciesCommand}"/>
                     </Frame.GestureRecognizers>
@@ -209,8 +209,8 @@
                        HasShadow="False"
                        CornerRadius="8"
                        VerticalOptions="End"
-                       BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource MainBackgroundColor}}"
-                       BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
+                       BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource MainBackgroundColor}}"
+                       BorderColor="Transparent"
                        IsVisible="{Binding ToCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowToCurrenciesCommand}"/>

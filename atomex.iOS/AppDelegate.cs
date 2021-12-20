@@ -63,6 +63,8 @@ namespace atomex.iOS
 
             LoadApplication(new App());
 
+            Plugin.InputKit.Platforms.iOS.Config.Init();
+
             return base.FinishedLaunching(app, options);
         }
 

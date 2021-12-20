@@ -5,6 +5,7 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Class="atomex.Views.CreateSwap.ExternalAddressPage"
     x:Name="BindingContextPage"
+    xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     Title="{helpers:Translate CreateSwapPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.ToolbarItems>
@@ -29,18 +30,15 @@
                        VerticalTextAlignment="Center"
                        Margin="15,0"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Margin="15,0"
-                         Spacing="0">
-                <CheckBox IsChecked="True"
-                          Color="{AppThemeBinding Dark='#61C4DEFF', Light={StaticResource MainButtonBackgroundColor}}"/>
-                <Label Text="Save to my addresses"
-                       FontFamily="{Binding RegularFont}"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Start"/>
-            </StackLayout>
+            <input:CheckBox Text="Save to my addresses"
+                            Margin="15,0"
+                            BoxSizeRequest="18"
+                            TextFontSize="16"
+                            IsChecked="False"
+                            Type="Material"
+                            Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
+                            IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light={StaticResource AdditionalBackgroundColor}}">
                 <Button Text="Confirm"
