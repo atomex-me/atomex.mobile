@@ -33,8 +33,8 @@
                                                           CommandParameter="{Binding Source={x:Reference AddressesEntry},Path=Text}"/>
                     </custom:CustomEntry.Behaviors>
                 </custom:CustomEntry>
-                <Button TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                        BackgroundColor="#29C4DEFF"
+                <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                        BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
                         Text="sort by balance"
                         WidthRequest="132"
                         HeightRequest="32"
@@ -44,7 +44,7 @@
                         FontFamily="{DynamicResource RegularFont}"
                         TextTransform="Lowercase"/>
                 <ImageButton Source="ic_sort__down"
-                             BackgroundColor="#29C4DEFF"
+                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light={StaticResource AdditionalBackgroundColor}}"
                              Padding="6"
                              HorizontalOptions="End"
                              HeightRequest="32"
@@ -122,8 +122,9 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackLayout VerticalOptions="EndAndExpand"
-                         Margin="20">
+                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light={StaticResource AdditionalBackgroundColor}}">
                 <Button Text="Confirm"
+                        Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"/>
             </StackLayout>
         </StackLayout>

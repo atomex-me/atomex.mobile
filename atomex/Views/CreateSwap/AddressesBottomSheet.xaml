@@ -21,7 +21,7 @@
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="170"
-                              BackgroundColor="#203040">
+                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
             <StackLayout>
                 <Label Text="Receive to"
                        FontSize="16"
@@ -44,7 +44,7 @@
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="FillAndExpand"
                            Margin="10,20"/>
-                    <Image Source="RightArrow__white"
+                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
                            HorizontalOptions="End"

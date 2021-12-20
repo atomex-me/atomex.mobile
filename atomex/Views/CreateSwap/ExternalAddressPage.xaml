@@ -33,7 +33,7 @@
                          Margin="15,0"
                          Spacing="0">
                 <CheckBox IsChecked="True"
-                          Color="#61C4DEFF"/>
+                          Color="{AppThemeBinding Dark='#61C4DEFF', Light={StaticResource MainButtonBackgroundColor}}"/>
                 <Label Text="Save to my addresses"
                        FontFamily="{Binding RegularFont}"
                        FontSize="16"
@@ -42,8 +42,9 @@
                        HorizontalTextAlignment="Start"/>
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand"
-                         Margin="20">
+                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light={StaticResource AdditionalBackgroundColor}}">
                 <Button Text="Confirm"
+                        Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"/>
             </StackLayout>
         </StackLayout>
