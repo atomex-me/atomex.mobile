@@ -9,7 +9,7 @@
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Send from"
+            <Label Text="{helpers:Translate SendFrom}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"
                    FontSize="30"
@@ -73,13 +73,19 @@
                                     </Label.FormattedText>
                                 </Label>
                                 <Label Grid.Column="2"
-                                       Text="from mxFz2...vgh12"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        Margin="10,2"
                                        FontSize="12"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{helpers:Translate FromLabel}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="mxFz2...vgh12"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
                                 </Label>
                                 <Label Grid.Row="1"
                                        Grid.Column="2"

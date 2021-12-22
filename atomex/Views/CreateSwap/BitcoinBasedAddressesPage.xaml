@@ -20,7 +20,7 @@
                          HorizontalOptions="FillAndExpand"
                          Margin="15,0"
                          Spacing="0">
-                <input:CheckBox Text="Select all"
+                <input:CheckBox Text="{helpers:Translate SelectAll}"
                                 BoxSizeRequest="18"
                                 TextFontSize="16"
                                 IsChecked="True"
@@ -32,7 +32,7 @@
                              Orientation="Horizontal">
                     <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                             BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
-                            Text="sort by balance"
+                            Text="{helpers:Translate SortByBalanceButton}"
                             WidthRequest="132"
                             HeightRequest="32"
                             HorizontalOptions="End"
@@ -139,21 +139,28 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.RowSpan="2"
                         Margin="15,10"
-                        Text="Confirm"
+                        Text="{helpers:Translate ConfirmButton}"
                         Style="{DynamicResource MainButtonStyle}"/>
                 <Label Grid.Column="1"
-                       Text="Selected 9"
+                       Text="{helpers:Translate SelectedNumber}"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="End" />
                 <Label Grid.Column="1"
                        Grid.Row="1"
-                       Text="Total 0.0532864 BTC"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Start" />
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{helpers:Translate Total}"/>
+                            <Span Text=" "/>
+                            <Span Text="0.082343 BTC"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </Grid>
         </StackLayout>
     </ContentPage.Content>

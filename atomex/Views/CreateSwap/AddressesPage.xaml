@@ -19,7 +19,7 @@
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
                          Margin="15,0">
-                <custom:CustomEntry Placeholder="My addresses"
+                <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
                                     Style="{DynamicResource EntryStyle}"
                                     FontSize="14"
                                     HorizontalTextAlignment="Start"
@@ -35,7 +35,7 @@
                 </custom:CustomEntry>
                 <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                         BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
-                        Text="sort by balance"
+                        Text="{helpers:Translate SortByBalanceButton}"
                         WidthRequest="132"
                         HeightRequest="32"
                         HorizontalOptions="End"
@@ -124,7 +124,7 @@
             </ListView>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light={StaticResource AdditionalBackgroundColor}}">
-                <Button Text="Confirm"
+                <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"/>
             </StackLayout>

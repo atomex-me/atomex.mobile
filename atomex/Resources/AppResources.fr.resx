@@ -86,6 +86,18 @@
     <data name="IdLabel" xml:space="preserve">
         <value>Id</value>
     </data>
+    <data name="Available" xml:space="preserve">
+        <value>Disponible</value>
+    </data>
+    <data name="Total" xml:space="preserve">
+        <value>Total</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>De</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>À l'adresse</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">
@@ -413,9 +425,6 @@
     <data name="DelegateToBakeryLabel" xml:space="preserve">
         <value>Déléguer au baker</value>
     </data>
-    <data name="Available" xml:space="preserve">
-        <value>Disponible</value>
-    </data>
     <data name="Balance" xml:space="preserve">
         <value>Solde</value>
     </data>
@@ -438,12 +447,6 @@
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
         <value>Voulez-vous vraiment déléguer?</value>
-    </data>
-    <data name="FromLabel" xml:space="preserve">
-        <value>De</value>
-    </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>À l'adresse</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Copier l'URI et fermer</value>
@@ -629,6 +632,62 @@
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Créer un nouveau swap</value>
+    </data>
+
+    <!-- Exchange Pages -->
+    <data name="ExchangePageTitle" xml:space="preserve">
+        <value>Exchange</value>
+    </data>
+    <data name="ExchangeLabel" xml:space="preserve">
+        <value>Exchange</value>
+    </data>
+    <data name="ChooseFromCurrency" xml:space="preserve">
+        <value>Choose From</value>
+    </data>
+    <data name="ChooseToCurrency" xml:space="preserve">
+        <value>Choose To</value>
+    </data>
+    <data name="ExchangeHistory" xml:space="preserve">
+        <value>Exchange History</value>
+    </data>
+    <data name="SendFrom" xml:space="preserve">
+        <value>Send from</value>
+    </data>
+    <data name="ReceiveTo" xml:space="preserve">
+        <value>Receive to</value>
+    </data>
+    <data name="ChooseAnAddress" xml:space="preserve">
+        <value>Choose an address</value>
+    </data>
+    <data name="ChangeRedeemAddress" xml:space="preserve">
+        <value>Change redeem address</value>
+    </data>
+    <data name="MyAddresses" xml:space="preserve">
+        <value>My addresses</value>
+    </data>
+    <data name="SortByBalanceButton" xml:space="preserve">
+        <value>Sort by balance</value>
+    </data>
+    <data name="ExternalAddress" xml:space="preserve">
+        <value>External address</value>
+    </data>
+    <data name="EnterAnExternalAddress" xml:space="preserve">
+        <value>Enter an external address</value>
+    </data>
+    <data name="SaveToMyAddresses" xml:space="preserve">
+        <value>Save to my addresses</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="DiselectAll" xml:space="preserve">
+        <value>Diselect all</value>
+    </data>
+    <data name="SelectedNumber" xml:space="preserve">
+        <value>{0} selected</value>
+    </data>
+    <data name="FromAddressesNumber" xml:space="preserve">
+        <value>from {0} addresses</value>
     </data>
 
     <!-- Tezos tokens list, token info Pages -->

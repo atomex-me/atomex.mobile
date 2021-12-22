@@ -17,7 +17,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Exchange"
+            <Label Text="{helpers:Translate ExchangePageTitle}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"/>
             <Grid HorizontalOptions="Fill"
@@ -89,7 +89,7 @@
                 </Label>
                 <Button Grid.Row="1"
                         Grid.Column="1"
-                        Text="max"
+                        Text="{helpers:Translate MaxButton}"
                         BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
                         BackgroundColor="Transparent"
                         BorderWidth="1"
@@ -114,7 +114,7 @@
                        IsVisible="{Binding FromCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"/>
                 <Label Grid.RowSpan="2"
                        Grid.ColumnSpan="2"
-                       Text="Choose From"
+                       Text="{helpers:Translate ChooseFromCurrency}"
                        VerticalTextAlignment="Center"
                        Padding="15,0"
                        FontSize="20"
@@ -181,7 +181,7 @@
                            FontSize="12">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="Available"/>
+                                <Span Text="{helpers:Translate Available}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.#########}'}"/>
                                 <Span Text=" "/>
@@ -286,7 +286,7 @@
                 <Label Grid.Row="3"
                        Grid.RowSpan="2"
                        Grid.ColumnSpan="2"
-                       Text="Choose To"
+                       Text="{helpers:Translate ChooseToCurrency}"
                        VerticalTextAlignment="Center"
                        Padding="15,0"
                        FontSize="20"
@@ -309,7 +309,7 @@
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ShowRedeemAddressesCommand}"/>
                 </StackLayout.GestureRecognizers>
-                <Label Text="Change redeem address"
+                <Label Text="{helpers:Translate ChangeRedeemAddress}"
                        HorizontalTextAlignment="Start"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -333,8 +333,8 @@
                        FontSize="12">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="Estimated Price 1"/>
-                            <Span Text=" "/>
+                            <Span Text="{helpers:Translate EstimatedPriceLabel}"/>
+                            <Span Text=" 1 "/>
                             <Span Text="{Binding FromCurrencyViewModel.CurrencyCode}"/>
                             <Span Text=" = "/>
                             <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}"/>
@@ -354,7 +354,7 @@
                            FontSize="12">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="Estimated network fees"/>
+                                <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}"/>
                             </FormattedString>
@@ -368,7 +368,7 @@
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand"
                          Margin="20">
-                <Button Text="Exchange"
+                <Button Text="{helpers:Translate ExchangeLabel}"
                         Style="{DynamicResource MainButtonStyle}"
                         Command="{Binding ConvertCommand}"/>
             </StackLayout>

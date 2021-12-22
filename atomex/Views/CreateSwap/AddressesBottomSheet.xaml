@@ -2,6 +2,7 @@
 <pages:PopupPage  
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     x:Class="atomex.Views.CreateSwap.AddressesBottomSheet"
@@ -23,7 +24,7 @@
                               HeightRequest="170"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
             <StackLayout>
-                <Label Text="Receive to"
+                <Label Text="{helpers:Translate ReceiveTo}"
                        FontSize="16"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -36,10 +37,11 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowToAddressesCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Text="my addresses"
+                    <Label Text="{helpers:Translate MyAddresses}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="FillAndExpand"
@@ -55,10 +57,11 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ExternalAddressCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Text="external address"
+                    <Label Text="{helpers:Translate ExternalAddress}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="FillAndExpand"

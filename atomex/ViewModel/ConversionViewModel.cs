@@ -536,19 +536,19 @@ namespace atomex.ViewModel
                 if (CurrentSelection == SelectionAddressType.From)
                 {
                     //FoundAddress = FromAddresses
-                    AddressPageTitle = "Send from";
+                    AddressPageTitle = AppResources.SendFrom;
                     return;
                 }
                 if (CurrentSelection == SelectionAddressType.To)
                 {
                     //FoundAddress = MyAddresses
-                    AddressPageTitle = "Choose an address";
+                    AddressPageTitle = AppResources.ChooseAnAddress;
                     return;
                 }
                 if (CurrentSelection == SelectionAddressType.Redeem)
                 {
                     //FoundAddress = MyAddresses ?
-                    AddressPageTitle = "Change redeem address";
+                    AddressPageTitle = AppResources.ChangeRedeemAddress;
                     return;
                 }
             });

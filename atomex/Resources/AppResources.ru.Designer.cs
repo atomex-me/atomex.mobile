@@ -191,6 +191,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        internal static string FromLabel {
+            get {
+                return ResourceManager.GetString("FromLabel", resourceCulture);
+            }
+        }
+        
         internal static string MyWalletsButton {
             get {
                 return ResourceManager.GetString("MyWalletsButton", resourceCulture);
@@ -785,12 +803,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string Available {
-            get {
-                return ResourceManager.GetString("Available", resourceCulture);
-            }
-        }
-        
         internal static string Balance {
             get {
                 return ResourceManager.GetString("Balance", resourceCulture);
@@ -830,12 +842,6 @@ namespace atomex.Resources {
         internal static string WantToDelegate {
             get {
                 return ResourceManager.GetString("WantToDelegate", resourceCulture);
-            }
-        }
-        
-        internal static string FromLabel {
-            get {
-                return ResourceManager.GetString("FromLabel", resourceCulture);
             }
         }
         
@@ -1190,6 +1196,114 @@ namespace atomex.Resources {
         internal static string CreateSwapButton {
             get {
                 return ResourceManager.GetString("CreateSwapButton", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangePageTitle {
+            get {
+                return ResourceManager.GetString("ExchangePageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangeLabel {
+            get {
+                return ResourceManager.GetString("ExchangeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseFromCurrency {
+            get {
+                return ResourceManager.GetString("ChooseFromCurrency", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseToCurrency {
+            get {
+                return ResourceManager.GetString("ChooseToCurrency", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangeHistory {
+            get {
+                return ResourceManager.GetString("ExchangeHistory", resourceCulture);
+            }
+        }
+        
+        internal static string SendFrom {
+            get {
+                return ResourceManager.GetString("SendFrom", resourceCulture);
+            }
+        }
+        
+        internal static string ReceiveTo {
+            get {
+                return ResourceManager.GetString("ReceiveTo", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseAnAddress {
+            get {
+                return ResourceManager.GetString("ChooseAnAddress", resourceCulture);
+            }
+        }
+        
+        internal static string ChangeRedeemAddress {
+            get {
+                return ResourceManager.GetString("ChangeRedeemAddress", resourceCulture);
+            }
+        }
+        
+        internal static string MyAddresses {
+            get {
+                return ResourceManager.GetString("MyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SortByBalanceButton {
+            get {
+                return ResourceManager.GetString("SortByBalanceButton", resourceCulture);
+            }
+        }
+        
+        internal static string ExternalAddress {
+            get {
+                return ResourceManager.GetString("ExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string EnterAnExternalAddress {
+            get {
+                return ResourceManager.GetString("EnterAnExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string SaveToMyAddresses {
+            get {
+                return ResourceManager.GetString("SaveToMyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        internal static string DiselectAll {
+            get {
+                return ResourceManager.GetString("DiselectAll", resourceCulture);
+            }
+        }
+        
+        internal static string SelectedNumber {
+            get {
+                return ResourceManager.GetString("SelectedNumber", resourceCulture);
+            }
+        }
+        
+        internal static string FromAddressesNumber {
+            get {
+                return ResourceManager.GetString("FromAddressesNumber", resourceCulture);
             }
         }
         

@@ -17,7 +17,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Enter an external address"
+            <Label Text="{helpers:Translate EnterAnExternalAddress}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"
                    FontSize="30"
@@ -29,23 +29,14 @@
                    CornerRadius="5"
                    Margin="15,0"
                    HasShadow="False">
-                <custom:CustomEntry Placeholder="External address"
+                <custom:CustomEntry Placeholder="{helpers:Translate ExternalAddress}"
                                     Style="{DynamicResource EntryStyle}"
                                     FontSize="16"
                                     HorizontalTextAlignment="Start"
                                     VerticalTextAlignment="Center"
                                     Margin="15,0"/>
             </Frame>
-            <!--<StackLayout HeightRequest="60">
-                <Entry Placeholder="External address"
-                       Style="{DynamicResource EntryStyle}"
-                       FontSize="16"
-                       BackgroundColor="Transparent"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
-                       Margin="15,0"/>
-            </StackLayout>-->
-            <input:CheckBox Text="Save to my addresses"
+            <input:CheckBox Text="{helpers:Translate SaveToMyAddresses}"
                             Margin="15,0"
                             BoxSizeRequest="18"
                             TextFontSize="16"
@@ -56,7 +47,7 @@
                             TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light={StaticResource AdditionalBackgroundColor}}">
-                <Button Text="Confirm"
+                <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"/>
             </StackLayout>
