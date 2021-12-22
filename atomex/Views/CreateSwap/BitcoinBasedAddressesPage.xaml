@@ -38,6 +38,7 @@
                             HorizontalOptions="End"
                             CornerRadius="16"
                             FontSize="14"
+                            Padding="0"
                             Margin="0,10"
                             FontFamily="{DynamicResource RegularFont}"
                             TextTransform="Lowercase"/>
@@ -143,14 +144,14 @@
                 <Label Grid.Column="1"
                        Text="Selected 9"
                        FontSize="12"
-                       FontFamily="{Binding RegularFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="End" />
                 <Label Grid.Column="1"
                        Grid.Row="1"
                        Text="Total 0.0532864 BTC"
                        FontSize="12"
-                       FontFamily="{Binding RegularFont}"
+                       FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="Start" />
             </Grid>

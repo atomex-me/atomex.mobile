@@ -91,8 +91,12 @@
                         Grid.Column="1"
                         Text="max"
                         BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                        BackgroundColor="Transparent"
                         BorderWidth="1"
                         TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                        FontSize="12"
+                        Padding="0"
+                        TextTransform="Lowercase"
                         HeightRequest="30"
                         Margin="15,0"
                         CornerRadius="15"
@@ -140,8 +144,8 @@
                                     Value="Center"/>
                             <Setter Property="IsReadOnly"
                                     Value="True"/>
-                            <Setter Property="IsEnabled"
-                                    Value="False"/>
+                            <!--<Setter Property="IsEnabled"
+                                    Value="False"/>-->
                         </DataTrigger>
                     </custom:CustomEntry.Triggers>
                 </custom:CustomEntry>
@@ -249,13 +253,15 @@
                                     Grid.Column="1"
                                     Keyboard="Numeric"
                                     Text="{Binding TargetAmount, Mode=TwoWay, StringFormat='{0:0.######}'}"
-                                    Style="{DynamicResource EntryStyle}"
+                                    Style="{DynamicResource EntryStyle}"                                    
                                     FontSize="24"
                                     HorizontalTextAlignment="End"
                                     VerticalTextAlignment="End"
                                     Margin="5,0,15,5"
-                                    IsReadOnly="True"
-                                    IsEnabled="False">
+                                    IsReadOnly="True">
+                    <custom:CustomEntry.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowToCurrenciesCommand}"/>
+                    </custom:CustomEntry.GestureRecognizers>
                     <custom:CustomEntry.Triggers>
                         <DataTrigger TargetType="custom:CustomEntry"
                                      Binding="{Binding ToCurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"

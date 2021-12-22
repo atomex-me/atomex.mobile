@@ -41,6 +41,7 @@
                         HorizontalOptions="End"
                         CornerRadius="16"
                         FontSize="14"
+                        Padding="0"
                         FontFamily="{DynamicResource RegularFont}"
                         TextTransform="Lowercase"/>
                 <ImageButton Source="ic_sort__down"

@@ -5,6 +5,7 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Class="atomex.Views.CreateSwap.ExternalAddressPage"
     x:Name="BindingContextPage"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     Title="{helpers:Translate CreateSwapPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
@@ -21,7 +22,21 @@
                    HorizontalTextAlignment="Start"
                    FontSize="30"
                    Margin="0,20"/>
-            <StackLayout HeightRequest="60">
+            <Frame Padding="0"
+                   HeightRequest="56"
+                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                   CornerRadius="5"
+                   Margin="15,0"
+                   HasShadow="False">
+                <custom:CustomEntry Placeholder="External address"
+                                    Style="{DynamicResource EntryStyle}"
+                                    FontSize="16"
+                                    HorizontalTextAlignment="Start"
+                                    VerticalTextAlignment="Center"
+                                    Margin="15,0"/>
+            </Frame>
+            <!--<StackLayout HeightRequest="60">
                 <Entry Placeholder="External address"
                        Style="{DynamicResource EntryStyle}"
                        FontSize="16"
@@ -29,7 +44,7 @@
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
                        Margin="15,0"/>
-            </StackLayout>
+            </StackLayout>-->
             <input:CheckBox Text="Save to my addresses"
                             Margin="15,0"
                             BoxSizeRequest="18"
