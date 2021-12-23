@@ -189,7 +189,7 @@
                                 VerticalOptions="FillAndExpand"
                                 Style="{DynamicResource TransparentButtonStyle}"
                                 Clicked="OnSetMaxAmountButtonClicked"
-                                Command="{Binding MaxAmountCommand}"/>
+                                Command="{Binding MaxCommand}"/>
                     </StackLayout>
                 </controls:CustomFrame>
                 <StackLayout HeightRequest="60"

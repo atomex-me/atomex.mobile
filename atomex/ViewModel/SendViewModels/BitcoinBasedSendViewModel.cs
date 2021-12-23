@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +11,10 @@ using Atomex.Blockchain.BitcoinBased;
 using Atomex.Core;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
+using NBitcoin;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Serilog;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -23,208 +27,202 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
-        }
 
-        // TODO: select outputs from UI
-        public IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
+            this.WhenAnyValue(vm => vm.Outputs)
+                .WhereNotNull()
+                .Subscribe(outputs =>
+                {
+                    From = outputs.Count != 1
+                        ? $"{outputs.Count} outputs"
+                        : outputs.ElementAt(0).DestinationAddress(Config.Network);
 
-        protected decimal _feeRate;
-        public decimal FeeRate
-        {
-            get => _feeRate;
-            set { _feeRate = value; OnPropertyChanged(nameof(FeeRate)); }
+                    var totalOutputsSatoshi = outputs
+                        .Aggregate((long)0, (sum, output) => sum + output.Value);
+
+                    SelectedFromAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
+                });
+
+            _ = Task.Run(async () =>
+            {
+                var outputs = (await Account.GetAvailableOutputsAsync())
+                    .Select(output => (BitcoinBasedTxOutput)output);
+
+                Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);                
+            });
         }
 
         private BitcoinBasedConfig Config => (BitcoinBasedConfig)Currency;
 
-        protected override async void UpdateAmount(decimal amount)
+        [Reactive] private ObservableCollection<BitcoinBasedTxOutput> Outputs { get; set; }
+
+        [Reactive] public decimal FeeRate { get; set; }
+
+        private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
+
+        protected override async Task UpdateAmount(decimal amount)
         {
-            IsAmountUpdating = true;
-
-            _amount = amount;
-            Warning = string.Empty;
-
             try
             {
-                var account = AtomexApp.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
-
                 if (UseDefaultFee)
                 {
                     FeeRate = await Config.GetFeeRateAsync();
 
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeRateAsync(
                         availableOutputs: Outputs,
-                        to: _to,
-                        amount: _amount,
-                        feeRate: _feeRate,
-                        account: account);
+                        to: To,
+                        amount: Amount,
+                        feeRate: FeeRate,
+                        account: Account);
 
                     if (transactionParams == null)
                     {
                         Warning = AppResources.InsufficientFunds;
-                        IsAmountUpdating = false;
                         return;
                     }
 
-                    _fee = Config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
-                    OnPropertyChanged(nameof(FeeString));
+                    var feeVal = Config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
+                    Fee = feeVal;
                 }
                 else
                 {
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
                         availableOutputs: Outputs,
-                        to: _to,
-                        amount: _amount,
-                        fee: _fee,
-                        account: account);
+                        to: To,
+                        amount: Amount,
+                        fee: Fee,
+                        account: Account);
 
                     if (transactionParams == null)
                     {
                         Warning = AppResources.InsufficientFunds;
-                        IsAmountUpdating = false;
                         return;
                     }
 
+                    var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
+                    var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
+
+                    if (Fee < minimumFee)
+                        Warning = AppResources.LowFees;
+
                     FeeRate = transactionParams.FeeRate;
-                    //Fee = _fee; // recalculate fee
                 }
 
-                OnPropertyChanged(nameof(AmountString));
-
-                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
-            finally
+            catch (Exception e)
             {
-                IsAmountUpdating = false;
+                Log.Error(e, "Update Amount error");
             }
         }
 
-        protected override async void UpdateFee(decimal fee)
+        protected override async Task UpdateFee(decimal fee)
         {
-            if (IsFeeUpdating)
-                return;
-
-            IsFeeUpdating = true;
-
-            _fee = Math.Min(fee, Currency.GetMaximumFee());
-            Warning = string.Empty;
-
             try
             {
-                var account = AtomexApp.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
-
                 var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
                     availableOutputs: Outputs,
-                    to: _to,
-                    amount: _amount,
-                    fee: _fee,
-                    account: account);
+                    to: To,
+                    amount: Amount,
+                    fee: Fee,
+                    account: Account);
 
                 if (transactionParams == null)
                 {
                     Warning = AppResources.InsufficientFunds;
-                    IsFeeUpdating = false;
                     return;
                 }
 
                 var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
                 var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
 
-                if (_fee < minimumFee)
+                if (Fee < minimumFee)
                     Warning = AppResources.LowFees;
 
                 FeeRate = transactionParams.FeeRate;
 
-                //OnPropertyChanged(nameof(AmountString));
-                OnPropertyChanged(nameof(FeeString));
-
-                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
-            finally
+            catch (Exception e)
             {
-                IsFeeUpdating = false;
+                Log.Error(e, "Update Fee error");
             }
         }
 
-        protected override async void OnMaxClick()
+        protected override async Task OnMaxClick()
         {
-            if (IsAmountUpdating)
-                return;
-
-            IsAmountUpdating = true;
-            Warning = string.Empty;
-
             try
             {
-                if (UseDefaultFee) // auto fee
+                if (UseDefaultFee)
                 {
-                    if (AtomexApp.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
+                    if (App.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
                         return; // todo: error?
 
                     FeeRate = await Config.GetFeeRateAsync();
 
                     var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
                         from: new FromOutputs(Outputs),
-                        to: _to,
+                        to: To,
                         type: BlockchainTransactionType.Output,
                         fee: 0,
-                        feePrice: _feeRate,
+                        feePrice: FeeRate,
                         reserve: false);
 
                     if (maxAmountEstimation.Amount > 0)
-                        _amount = maxAmountEstimation.Amount;
+                    {
+                        Amount = maxAmountEstimation.Amount;
+                        return;
+                    }
 
-                    OnPropertyChanged(nameof(AmountString));
-
-                    _fee = maxAmountEstimation.Fee;
-                    OnPropertyChanged(nameof(FeeString));
+                    Fee = maxAmountEstimation.Fee;
                 }
-                else // manual fee
+                else
                 {
                     var availableInSatoshi = Outputs.Sum(o => o.Value);
-                    var feeInSatoshi = Config.CoinToSatoshi(_fee);
-                    var maxAmountInSatoshi = availableInSatoshi - feeInSatoshi;
+                    var feeInSatoshi = Config.CoinToSatoshi(Fee);
+                    var maxAmountInSatoshi = Math.Max(availableInSatoshi - feeInSatoshi, 0);
                     var maxAmount = Config.SatoshiToCoin(maxAmountInSatoshi);
-
-                    var account = AtomexApp.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
 
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
                         availableOutputs: Outputs,
-                        to: _to,
+                        to: To,
                         amount: maxAmount,
-                        fee: _fee,
-                        account: account);
+                        fee: Fee,
+                        account: Account);
 
                     if (transactionParams == null)
                     {
                         Warning = AppResources.InsufficientFunds;
-                        IsAmountUpdating = false;
-
-                        _amount = 0;
-                        OnPropertyChanged(nameof(AmountString));
-
+                        Amount = 0;
                         return;
                     }
 
-                    _amount = maxAmount;
-                    OnPropertyChanged(nameof(AmountString));
+                    if (Amount != maxAmount)
+                    {
+                        Amount = maxAmount;
+                    }
+                    else
+                    {
+                        var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
+                        var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
+
+                        if (Fee < minimumFee)
+                            Warning = AppResources.LowFees;
+                    }
 
                     FeeRate = transactionParams.FeeRate;
                 }
 
-                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
-            finally
+            catch (Exception e)
             {
-                IsAmountUpdating = false;
+                Log.Error(e, "Max Click error");
             }
         }
 
-        protected override Task<Error> SendAsync(CancellationToken cancellationToken = default)
+        protected override Task<Error> Send(CancellationToken cancellationToken = default)
         {
-            var account = AtomexApp.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
-
-            return account.SendAsync(
+            return Account.SendAsync(
                 from: Outputs.ToList(),
                 to: To,
                 amount: Amount,

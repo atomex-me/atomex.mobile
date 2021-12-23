@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
@@ -10,6 +11,8 @@ using atomex.Views.Popup;
 using Atomex;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
@@ -20,248 +23,179 @@ namespace atomex.ViewModel.SendViewModels
 {
     public abstract class SendViewModel : BaseViewModel
     {
-        protected IAtomexApp AtomexApp { get; set; }
-
+        protected IAtomexApp App { get; }
         protected INavigation Navigation { get; set; }
+        protected CurrencyConfig Currency { get; set; }
 
-        protected CurrencyConfig _currency;
-        public virtual CurrencyConfig Currency
-        {
-            get => _currency;
-            set
-            {
-                _currency = value;
-                OnPropertyChanged(nameof(Currency));
-
-                _amount = 0;
-                OnPropertyChanged(nameof(AmountString));
-
-                _fee = 0;
-                OnPropertyChanged(nameof(FeeString));
-            }
-        }
-
-        protected CurrencyViewModel _currencyViewModel;
-        public virtual CurrencyViewModel CurrencyViewModel
-        {
-            get => _currencyViewModel;
-            set
-            {
-                _currencyViewModel = value;
-
-                CurrencyCode = _currencyViewModel?.CurrencyCode;
-                FeeCurrencyCode = _currencyViewModel?.FeeCurrencyCode;
-                BaseCurrencyCode = _currencyViewModel?.BaseCurrencyCode;
-            }
-        }
-
-        protected string _to;
-        public virtual string To
-        {
-            get => _to;
-            set
-            {
-                _to = value;
-                OnPropertyChanged(nameof(To));
-
-                Warning = string.Empty;
-            }
-        }
-
-        protected decimal _amount;
-        public decimal Amount
-        {
-            get => _amount;
-            set { UpdateAmount(value); }
-        }
+        [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
+        [Reactive] public string From { get; set; }
+        [Reactive] public decimal SelectedFromAmount { get; set; }
+        [Reactive] public string To { get; set; }
+        [Reactive] protected decimal Amount { get; set; }
 
         public string AmountString
         {
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
             {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,
-                    out var amount))
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var amount))
                 {
-                    if (amount == 0)
-                        Amount = amount;
-
-                    OnPropertyChanged(nameof(AmountString));
-                    return;
+                    Amount = 0;
                 }
-
-                Amount = amount;
-                OnPropertyChanged(nameof(AmountString));
-            }
-        }
-
-        private bool _isAmountUpdating;
-        public bool IsAmountUpdating
-        {
-            get => _isAmountUpdating;
-            set { _isAmountUpdating = value; OnPropertyChanged(nameof(IsAmountUpdating)); }
-        }
-
-        protected decimal _fee;
-        public decimal Fee
-        {
-            get => _fee;
-            set { UpdateFee(value); }
-        }
-
-        public virtual string FeeString
-        {
-            get => Fee.ToString(CultureInfo.InvariantCulture);
-            set
-            {
-                if (!decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var fee))
-                {
-                    if (fee == 0)
-                        Fee = fee;
-
-                    OnPropertyChanged(nameof(FeeString));
-                    return;
-                }
-
-                Fee = fee;
-                OnPropertyChanged(nameof(FeeString));
-            }
-        }
-
-        private bool _isFeeUpdating;
-        public bool IsFeeUpdating
-        {
-            get => _isFeeUpdating;
-            set { _isFeeUpdating = value; OnPropertyChanged(nameof(IsFeeUpdating)); }
-        }
-
-        protected bool _useDefaultFee;
-        public virtual bool UseDefaultFee
-        {
-            get => _useDefaultFee;
-            set
-            {
-                _useDefaultFee = value;
-                OnPropertyChanged(nameof(UseDefaultFee));
-
-                if (_useDefaultFee)
-                {
-                    Warning = string.Empty;
-                    Amount = _amount;
-                }
-            }
-        }
-
-        protected string _warning = string.Empty;
-        public string Warning
-        {
-            get => _warning;
-            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
-        }
-
-        protected decimal _amountInBase;
-        public decimal AmountInBase
-        {
-            get => _amountInBase;
-            set { _amountInBase = value; OnPropertyChanged(nameof(AmountInBase)); }
-        }
-
-        protected decimal _feeInBase;
-        public decimal FeeInBase
-        {
-            get => _feeInBase;
-            set { _feeInBase = value; OnPropertyChanged(nameof(FeeInBase)); }
-        }
-
-        protected string _currencyCode;
-        public string CurrencyCode
-        {
-            get => _currencyCode;
-            set { _currencyCode = value; OnPropertyChanged(nameof(CurrencyCode)); }
-        }
-
-        protected string _feeCurrencyCode;
-        public string FeeCurrencyCode
-        {
-            get => _feeCurrencyCode;
-            set { _feeCurrencyCode = value; OnPropertyChanged(nameof(FeeCurrencyCode)); }
-        }
-
-        protected string _baseCurrencyCode = "USD";
-        public string BaseCurrencyCode
-        {
-            get => _baseCurrencyCode;
-            set { _baseCurrencyCode = value; OnPropertyChanged(nameof(BaseCurrencyCode)); }
-        }
-
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
                 else
-                    Opacity = 1f;
+                {
+                    Amount = amount;
 
-                OnPropertyChanged(nameof(IsLoading));
+                    if (Amount > long.MaxValue)
+                        Amount = long.MaxValue;
+                }
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    this.RaisePropertyChanged(nameof(Amount));
+                });
             }
         }
+
+        [Reactive] protected decimal Fee { get; set; }
+
+        public string FeeString
+        {
+            get => Amount.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                string temp = value.Replace(",", ".");
+                if (!decimal.TryParse(
+                    s: temp,
+                    style: NumberStyles.AllowDecimalPoint,
+                    provider: CultureInfo.InvariantCulture,
+                    result: out var fee))
+                {
+                    Fee = 0;
+                }
+                else
+                {
+                    Fee = Math.Min(fee, Currency.GetMaximumFee());
+                }
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    this.RaisePropertyChanged(nameof(Fee));
+                });
+            }
+        }
+
+        [Reactive] public bool UseDefaultFee { get; set; }
+        [Reactive] public decimal AmountInBase { get; set; }
+        [Reactive] public decimal FeeInBase { get; set; }
+        [Reactive] public string Warning { get; set; }
+        [Reactive] public bool IsLoading { get; set; }
+        [Reactive] public bool IsScanning { get; set; }
+        [Reactive] public bool IsAnalyzing { get; set; }
+
+        public string CurrencyCode => CurrencyViewModel.CurrencyCode;
+        public string FeeCurrencyCode => CurrencyViewModel.FeeCurrencyCode;
+        public string BaseCurrencyCode => CurrencyViewModel.BaseCurrencyCode;
 
         public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
-        private ICommand _showAddressesCommand;
-        public ICommand ShowAddressesCommand => _showAddressesCommand ??= new Command(async () => await OnFromAddressClicked());
-        
-        private ICommand _pasteCommand;
-        public ICommand PasteCommand => _pasteCommand ??= new Command(async () => await OnPasteButtonClicked());
+        protected abstract Task UpdateAmount(decimal amount);
+        protected abstract Task UpdateFee(decimal fee);
+        protected abstract Task OnMaxClick();
+        protected abstract Task<Error> Send(CancellationToken cancellationToken = default);
 
-        private ICommand _scanCommand;
-        public ICommand ScanCommand => _scanCommand ??= new Command(async () => await OnScanButtonClicked());
+        public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
+        {
+            App = app ?? throw new ArgumentNullException(nameof(AtomexApp));
 
-        private ICommand _nextCommand;
-        public ICommand NextCommand => _nextCommand ??= new Command(async () => await OnNextButtonClicked());
+            CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel));
+            Currency = currencyViewModel?.Currency;
+
+            Navigation = currencyViewModel?.Navigation;
+
+            UseDefaultFee = true;
+
+            var updateAmountCommand = ReactiveCommand.CreateFromTask<decimal>(UpdateAmount);
+            var updateFeeCommand = ReactiveCommand.CreateFromTask<decimal>(UpdateFee);
+
+            this.WhenAnyValue(
+                    vm => vm.To,
+                    vm => vm.Amount,
+                    vm => vm.Fee
+                )
+                .Subscribe(_ => Warning = string.Empty);
+
+            this.WhenAnyValue(vm => vm.Amount)
+                .InvokeCommand(updateAmountCommand);
+
+            this.WhenAnyValue(vm => vm.Fee)
+                .InvokeCommand(updateFeeCommand);
+
+            this.WhenAnyValue(vm => vm.UseDefaultFee)
+                .Where(useDefaultFee => useDefaultFee)
+                .Subscribe(_ => updateAmountCommand.Execute(Amount));
+
+            SubscribeToServices();
+        }
+
+        private void SubscribeToServices()
+        {
+            if (App.HasQuotesProvider)
+                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+        }
+
+        private ReactiveCommand<Unit, Unit> _nextCommand;
+        public ReactiveCommand<Unit, Unit> NextCommand =>
+            _nextCommand ??= (_nextCommand = ReactiveCommand.CreateFromTask(OnNextButtonClicked));
+
+        private ReactiveCommand<Unit, Unit> _sendCommand;
+        public ReactiveCommand<Unit, Unit> SendCommand =>
+            _sendCommand ??= (_sendCommand = ReactiveCommand.CreateFromTask(SendClicked));
+
+        private ReactiveCommand<Unit, Unit> _maxCommand;
+        public ReactiveCommand<Unit, Unit> MaxCommand =>
+            _maxCommand ??= (_maxCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                Warning = string.Empty;
+                await OnMaxClick();
+            }));
+
+        private ReactiveCommand<Unit, Unit> _showAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowAddressesCommand =>
+            _showAddressesCommand ??= (_showAddressesCommand = ReactiveCommand.CreateFromTask(OnFromAddressClicked));
+
+        private ReactiveCommand<Unit, Unit> _pasteCommand;
+        public ReactiveCommand<Unit, Unit> PasteCommand =>
+            _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
+
+        private ReactiveCommand<Unit, Unit> _scanCommand;
+        public ReactiveCommand<Unit, Unit> ScanCommand =>
+            _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
+
+        private ReactiveCommand<Unit, Unit> _scanResultCommand;
+        public ReactiveCommand<Unit, Unit> ScanResultCommand =>
+            _scanResultCommand ??= (_scanResultCommand = ReactiveCommand.CreateFromTask(OnScanResult));
 
         private async Task OnFromAddressClicked()
         {
+            if (Currency is BitcoinBasedConfig)
             await Navigation.PushAsync(new AddressesListPage(this));
         }
-        private ICommand _scanResultCommand;
-        public ICommand ScanResultCommand => _scanResultCommand ??= new Command(async () => await OnScanResult());
 
-        public Result ScanResult { get; set; }
-
-        private bool _isScanning = true;
-        public bool IsScanning
-        {
-            get => _isScanning;
-            set { _isScanning = value; OnPropertyChanged(nameof(IsScanning)); }
-        }
-
-        private bool _isAnalyzing = true;
-        public bool IsAnalyzing
-        {
-            get => _isAnalyzing;
-            set { _isAnalyzing = value; OnPropertyChanged(nameof(IsAnalyzing)); }
-        }
+        [Reactive] public Result ScanResult { get; set; }
 
         private async Task OnScanResult()
         {
-            IsScanning = IsAnalyzing = false;
+            IsScanning = false;
+            IsAnalyzing = false;
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             if (ScanResult == null)
             {
@@ -295,12 +229,15 @@ namespace atomex.ViewModel.SendViewModels
             if (permissions != PermissionStatus.Granted)
                 return;
 
-            IsScanning = IsAnalyzing = true;
+            IsScanning = true;
+            IsAnalyzing = true;
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             await Navigation.PushAsync(new ScanningQrPage(this));
         }
 
-        async Task OnPasteButtonClicked()
+        private async Task OnPasteButtonClicked()
         {
             if (Clipboard.HasText)
             {
@@ -355,20 +292,18 @@ namespace atomex.ViewModel.SendViewModels
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
-        private ICommand _sendCommand;
-        public ICommand SendCommand => _sendCommand ??= new Command(async () => await Send());
-
-        private async Task Send()
+        private async Task SendClicked()
         {
             IsLoading = true;
-
+            this.RaisePropertyChanged(nameof(IsLoading));
             try
             {
-                var error = await SendAsync();
+                var error = await Send();
 
                 if (error != null)
                 {
                     IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
                     await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                         new PopupViewModel
                         {
@@ -384,6 +319,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 Log.Error(e, "Transaction send error.");
                 IsLoading = false;
+                this.RaisePropertyChanged(nameof(IsLoading));
                 await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                     new PopupViewModel
                     {
@@ -407,202 +343,9 @@ namespace atomex.ViewModel.SendViewModels
             await Navigation.PopAsync();
         }
 
-
-        public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
+        protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-
-            CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel));
-            Currency = currencyViewModel?.Currency;
-
-            Navigation = currencyViewModel?.Navigation;
-
-            UseDefaultFee = true;
-
-            SubscribeToServices();
-        }
-
-        private void SubscribeToServices()
-        {
-            if (AtomexApp.HasQuotesProvider)
-                AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
-        }
-
-        //protected virtual void ResetSendValues(bool raiseOnPropertyChanged = true)
-        //{
-        //    _amount = 0;
-        //    OnPropertyChanged(nameof(Amount));
-
-        //    if (raiseOnPropertyChanged)
-        //        OnPropertyChanged(nameof(AmountString));
-
-        //    AmountInBase = 0;
-
-        //    Fee = 0;
-
-        //    OnPropertyChanged(nameof(FeeString));
-
-        //    FeeInBase = 0;
-        //}
-
-        protected abstract void UpdateAmount(decimal amount);
-        protected abstract void UpdateFee(decimal fee);
-        protected abstract void OnMaxClick();
-        protected abstract Task<Error> SendAsync(CancellationToken cancellationToken = default);
-        //public virtual async Task UpdateAmount(decimal amount, bool raiseOnPropertyChanged = true)
-        //{
-        //    Warning = string.Empty;
-
-        //    if (amount == 0)
-        //    {
-        //        ResetSendValues(raiseOnPropertyChanged);
-        //        return;
-        //    }
-
-        //    _amount = amount;
-
-        //    try
-        //    {
-        //        var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
-
-        //        var account = AtomexApp.Account
-        //           .GetCurrencyAccount<ILegacyCurrencyAccount>(Currency.Name);
-
-        //        if (UseDefaultFee)
-        //        {
-        //            var (maxAmount, _, _) = await account
-        //                .EstimateMaxAmountToSendAsync(
-        //                    to: To,
-        //                    type: BlockchainTransactionType.Output,
-        //                    fee: 0,
-        //                    feePrice: 0,
-        //                    reserve: true);
-
-        //            if (_amount > maxAmount)
-        //            {
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-        //                return;
-        //            }
-
-        //            var estimatedFeeAmount = _amount != 0
-        //                    ? await account.EstimateFeeAsync(To, _amount, BlockchainTransactionType.Output)
-        //                    : 0;
-
-        //            if (raiseOnPropertyChanged)
-        //                OnPropertyChanged(nameof(AmountString));
-
-        //            _fee = Currency.GetFeeFromFeeAmount(estimatedFeeAmount ?? Currency.GetDefaultFee(), defaultFeePrice);
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-        //        else
-        //        {
-        //            var (maxAmount, maxFeeAmount, _) = await account
-        //                .EstimateMaxAmountToSendAsync(
-        //                    to: To,
-        //                    type: BlockchainTransactionType.Output,
-        //                    fee: 0,
-        //                    feePrice: 0,
-        //                    reserve: false);
-
-        //            var availableAmount = Currency is BitcoinBasedConfig
-        //                ? CurrencyViewModel.AvailableAmount
-        //                : maxAmount + maxFeeAmount;
-
-        //            var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
-
-        //            if (_amount > maxAmount || _amount + feeAmount > availableAmount)
-        //            {
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-        //                return;
-        //            }
-
-        //            if (raiseOnPropertyChanged)
-        //                OnPropertyChanged(nameof(AmountString));
-
-        //            Fee = _fee;
-        //        }
-
-        //        OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-        //    }
-
-        //    catch (Exception e)
-        //    {
-        //        Log.Error(e, "Update amount error");
-        //    }
-        //}
-
-        //public virtual async Task UpdateFee(decimal fee)
-        //{
-        //    Warning = string.Empty;
-
-        //    _fee = Math.Min(fee, Currency.GetMaximumFee());
-
-        //    try
-        //    {
-
-        //        var defaultFeePrice = await Currency.GetDefaultFeePriceAsync();
-
-        //        if (_amount == 0)
-        //        {
-        //            if (Currency.GetFeeAmount(_fee, defaultFeePrice) > CurrencyViewModel.AvailableAmount)
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-
-        //            return;
-        //        }
-
-        //        if (!UseDefaultFee)
-        //        {
-        //            var account = AtomexApp.Account
-        //                .GetCurrencyAccount<ILegacyCurrencyAccount>(Currency.Name);
-
-        //            var estimatedFeeAmount = _amount != 0
-        //                ? await account.EstimateFeeAsync(To, _amount, BlockchainTransactionType.Output)
-        //                : 0;
-
-        //            var (maxAmount, maxFeeAmount, _) = await account
-        //                .EstimateMaxAmountToSendAsync(
-        //                    to: To,
-        //                    type: BlockchainTransactionType.Output,
-        //                    fee: 0,
-        //                    feePrice: 0,
-        //                    reserve: false);
-
-        //            var availableAmount = Currency is BitcoinBasedConfig
-        //                ? CurrencyViewModel.AvailableAmount
-        //                : maxAmount + maxFeeAmount;
-
-        //            var feeAmount = Currency.GetFeeAmount(_fee, defaultFeePrice);
-
-        //            if (_amount + feeAmount > availableAmount)
-        //            {
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientFunds);
-        //                return;
-        //            }
-        //            else if (estimatedFeeAmount == null || feeAmount < estimatedFeeAmount.Value)
-        //            {
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.LowFees);
-        //                return;
-        //            }
-
-        //            Warning = string.Empty;
-
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-
-        //        OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error(e, "Update fee error");
-        //    }
-        //}
-
-        private ICommand _maxAmountCommand;
-        public  ICommand MaxAmountCommand => _maxAmountCommand ??= new Command(() => OnMaxClick());
-
-        protected virtual void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
-        {
-            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+            if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
