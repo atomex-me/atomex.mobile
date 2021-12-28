@@ -31,7 +31,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public INavigationService NavigationService { get; set; }
 
-        protected IToastService ToastService { get; set; }
+        public IToastService ToastService { get; set; }
 
         public CurrencyConfig Currency { get; set; }
 

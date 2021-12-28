@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -21,10 +22,12 @@
                 <controls:CustomFrame CornerRadius="20,20,0,0"
                                       HeightRequest="60"
                                       Style="{DynamicResource EntryFrameStyle}">
+                    <StackLayout Spacing="0">
                     <Grid VerticalOptions="Fill"
                           HorizontalOptions="Fill"
                           RowSpacing="0"
-                          ColumnSpacing="0">
+                          ColumnSpacing="0"
+                          IsVisible="{Binding IsBtcBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20" />
                             <RowDefinition Height="20" />
@@ -35,14 +38,14 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                            <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                         </Grid.GestureRecognizers>
                         <Label Text="{helpers:Translate FromAddressLabel}"
                                Style="{DynamicResource EntryHintStyle}"
                                Padding="20,5,20,0"
                                IsVisible="True">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Grid.Row="1"
@@ -54,13 +57,13 @@
                                Padding="20,0,10,0"
                                VerticalTextAlignment="End">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
                         <Label Grid.Row="2"
                                Style="{DynamicResource PickerBalanceLabelStyle}">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                             </Label.GestureRecognizers>
                             <Label.FormattedText>
                                 <FormattedString>
@@ -83,10 +86,75 @@
                                Grid.RowSpan="3"
                                Margin="0,25,15,25">
                             <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowAddressesCommand}"/>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                             </Image.GestureRecognizers>
                         </Image>
                     </Grid>
+                    <Grid VerticalOptions="Fill"
+                          HorizontalOptions="Fill"
+                          RowSpacing="0"
+                          ColumnSpacing="0"
+                          IsVisible="{Binding IsBtcBased, Mode=OneWay, FallbackValue=False, TargetNullValue=False}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        </Grid.GestureRecognizers>
+                        <Label Text="{helpers:Translate FromAddressLabel}"
+                               Style="{DynamicResource EntryHintStyle}"
+                               Padding="20,5,20,0"
+                               IsVisible="True">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="1"
+                               Text="{Binding From}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"
+                               LineBreakMode="MiddleTruncation"
+                               Padding="20,0,10,0"
+                               VerticalTextAlignment="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Row="2"
+                               Style="{DynamicResource PickerBalanceLabelStyle}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                            </Label.GestureRecognizers>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate Balance}"/>
+                                    <Span Text=": "/>
+                                    <Span Text="{Binding SelectedFromAmount}"
+                                          FontFamily="{DynamicResource BoldFont}"
+                                          FontSize="12"/>
+                                    <Span Text="{Binding Currency.Name}"
+                                          FontFamily="{DynamicResource BoldFont}"
+                                          FontSize="10"/>
+                            </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Image Source="{AppThemeBinding Dark=RightArrow__gray, Light=RightArrow__black}"
+                               Grid.Column="1"
+                               Grid.RowSpan="3"
+                               Margin="0,25,15,25">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Grid>
+                    </StackLayout>
                 </controls:CustomFrame>
                 <controls:CustomFrame CornerRadius="0"
                                       HeightRequest="60"

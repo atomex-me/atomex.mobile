@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
+using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.BitcoinBased;
@@ -15,6 +18,8 @@ using NBitcoin;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -27,13 +32,14 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
+            _ = GetOutputs();
 
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
                 .Subscribe(outputs =>
                 {
-                    From = outputs.Count != 1
-                        ? $"{outputs.Count} outputs"
+                    From = outputs.ToList().Count != 1
+                        ? $"{outputs.ToList().Count} outputs"
                         : outputs.ElementAt(0).DestinationAddress(Config.Network);
 
                     var totalOutputsSatoshi = outputs
@@ -41,23 +47,44 @@ namespace atomex.ViewModel.SendViewModels
 
                     SelectedFromAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
                 });
-
-            _ = Task.Run(async () =>
-            {
-                var outputs = (await Account.GetAvailableOutputsAsync())
-                    .Select(output => (BitcoinBasedTxOutput)output);
-
-                Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);                
-            });
         }
 
         private BitcoinBasedConfig Config => (BitcoinBasedConfig)Currency;
 
-        [Reactive] private ObservableCollection<BitcoinBasedTxOutput> Outputs { get; set; }
+        [Reactive] private IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
 
         [Reactive] public decimal FeeRate { get; set; }
 
+        [Reactive] public SelectOutputsViewModel SelectOutputsViewModel { get; set; }
+
         private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
+
+        protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        {
+            //Outputs = outputs;
+            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+            await Navigation.PopAsync();
+        }
+
+        protected async Task GetOutputs()
+        {
+            var outputs = (await Account.GetAvailableOutputsAsync())
+                    .Select(output => (BitcoinBasedTxOutput)output);
+
+            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+
+            SelectOutputsViewModel = new SelectOutputsViewModel
+            {
+                ConfirmAction = ConfirmOutputs,
+                Outputs = new ObservableCollection<OutputViewModel>(
+                    Outputs.Select(output => new OutputViewModel
+                    {
+                        CopyAction = OnCopyClicked,
+                        Output = output,
+                        Config = Config
+                    }))
+            };
+        }
 
         protected override async Task UpdateAmount(decimal amount)
         {
@@ -229,6 +256,29 @@ namespace atomex.ViewModel.SendViewModels
                 fee: Fee,
                 dustUsagePolicy: DustUsagePolicy.AddToFee,
                 cancellationToken: cancellationToken);
+        }
+
+        private async void OnCopyClicked(string address)
+        {
+            if (!string.IsNullOrEmpty(address))
+            {
+                await Clipboard.SetTextAsync(address);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        protected async override Task FromClick()
+        {
+            await Navigation.PushAsync(new OutputsListPage(this));
+        }
+
+        protected override Task ToClick()
+        {
+            throw new NotImplementedException();
         }
     }
 }

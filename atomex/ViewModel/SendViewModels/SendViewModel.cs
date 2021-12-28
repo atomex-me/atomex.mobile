@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
+using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using atomex.Views.Popup;
@@ -25,6 +26,8 @@ namespace atomex.ViewModel.SendViewModels
     {
         protected IAtomexApp App { get; }
         protected INavigation Navigation { get; set; }
+        protected IToastService ToastService { get; set; }
+
         protected CurrencyConfig Currency { get; set; }
 
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -118,6 +121,7 @@ namespace atomex.ViewModel.SendViewModels
             Currency = currencyViewModel?.Currency;
 
             Navigation = currencyViewModel?.Navigation;
+            ToastService = DependencyService.Get<IToastService>();
 
             UseDefaultFee = true;
 
@@ -166,10 +170,6 @@ namespace atomex.ViewModel.SendViewModels
                 await OnMaxClick();
             }));
 
-        private ReactiveCommand<Unit, Unit> _showAddressesCommand;
-        public ReactiveCommand<Unit, Unit> ShowAddressesCommand =>
-            _showAddressesCommand ??= (_showAddressesCommand = ReactiveCommand.CreateFromTask(OnFromAddressClicked));
-
         private ReactiveCommand<Unit, Unit> _pasteCommand;
         public ReactiveCommand<Unit, Unit> PasteCommand =>
             _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
@@ -182,11 +182,17 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> ScanResultCommand =>
             _scanResultCommand ??= (_scanResultCommand = ReactiveCommand.CreateFromTask(OnScanResult));
 
-        private async Task OnFromAddressClicked()
-        {
-            if (Currency is BitcoinBasedConfig)
-            await Navigation.PushAsync(new AddressesListPage(this));
-        }
+        private ReactiveCommand<Unit, Unit> _selectFromCommand;
+        public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
+            (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
+
+        private ReactiveCommand<Unit, Unit> _selectToCommand;
+        public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
+            (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
+
+        protected abstract Task FromClick();
+
+        protected abstract Task ToClick();
 
         [Reactive] public Result ScanResult { get; set; }
 
