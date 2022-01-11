@@ -32,7 +32,7 @@ namespace atomex.ViewModel.SendViewModels
 
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string From { get; set; }
-        [Reactive] public decimal SelectedFromAmount { get; set; }
+        [Reactive] public decimal SelectedAmount { get; set; }
         [Reactive] public string To { get; set; }
         [Reactive] protected decimal Amount { get; set; }
 

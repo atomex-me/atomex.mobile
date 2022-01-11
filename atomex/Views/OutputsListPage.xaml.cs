@@ -10,10 +10,10 @@ namespace atomex.Views
             InitializeComponent();
         }
 
-        public OutputsListPage(BitcoinBasedSendViewModel bitcoinBasedSendViewModel)
+        public OutputsListPage(SelectOutputsViewModel selectOutputsViewModel)
         {
             InitializeComponent();
-            BindingContext = bitcoinBasedSendViewModel;
+            BindingContext = selectOutputsViewModel;
         }
     }
 }

@@ -311,12 +311,12 @@
     <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-2.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\sort-down__dark.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

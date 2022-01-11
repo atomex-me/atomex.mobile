@@ -17,10 +17,13 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public int SelectedOutputsNumber { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
+        [Reactive] public BitcoinBasedConfig Currency { get; set; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
         public SelectOutputsViewModel()
         {
+            SelectAll = true;
+            
             this.WhenAnyValue(vm => vm.SelectAll)
                 .Throttle(TimeSpan.FromMilliseconds(1))
                 .Where(_ => Outputs != null && !_selectFromList)
@@ -41,36 +44,6 @@ namespace atomex.ViewModel.SendViewModels
                         : new ObservableCollection<OutputViewModel>(
                             Outputs.OrderByDescending(output => output.Balance));
                 });
-
-            //this.WhenAnyValue(vm => vm.Outputs)
-            //    .WhereNotNull()
-            //    .Take(1)
-            //    .Subscribe(outputs =>
-            //        Outputs = new ObservableCollection<OutputViewModel>(
-            //            outputs.OrderByDescending(output => output.Balance)));
-
-            //Outputs.ToObservableChangeSet()
-            //    .AutoRefresh()
-            //    .Subscribe(vm =>
-            //         Test1());
-
-            //this.Outputs
-            //     .ToObservableChangeSet(x => x)
-            //     .ToCollection()
-            //     .Select(items => items.Any())
-            //     .Subscribe(x => Test());
-
-            //this.WhenAnyValue(vm => vm.Outputs)
-            //    .WhereNotNull()
-            //    .Subscribe(outputs =>
-            //    {
-            //        outputs
-            //            .ToObservableChangeSet()
-            //            .Subscribe(o =>
-            //            {
-            //                Test1();
-            //            });
-            //    });
         }
 
         [Reactive] public bool SelectAll { get; set; }
@@ -87,9 +60,9 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<OutputViewModel, Unit> SelectOutputCommand => _selectOutputCommand ??=
             (_selectOutputCommand = ReactiveCommand.Create<OutputViewModel>(o => SelectOutput(o)));
 
-        private ReactiveCommand<Unit, Unit> _selectAllCommand;
-        public ReactiveCommand<Unit, Unit> SelectAllCommand => _selectAllCommand ??=
-            (_selectAllCommand = ReactiveCommand.Create(SelectAllOutputs));
+        private ReactiveCommand<object, Unit> _selectAllCommand;
+        public ReactiveCommand<object, Unit> SelectAllCommand => _selectAllCommand ??=
+            (_selectAllCommand = ReactiveCommand.Create<object>(o => SelectAllOutputs()));
 
         private ICommand _confirmOutputsCommand;
         public ICommand ConfirmOutputsCommand => _confirmOutputsCommand ??=
@@ -106,6 +79,8 @@ namespace atomex.ViewModel.SendViewModels
         {
             _selectFromList = false;
             Outputs.ToList().ForEach(o => o.IsSelected = SelectAll);
+
+            UpdateSelectedAmount();
         }
 
         private void UpdateSelectedAmount()
@@ -131,7 +106,6 @@ namespace atomex.ViewModel.SendViewModels
         }
     }
 
-
     public class OutputViewModel : BaseViewModel
     {
         [Reactive] public bool IsSelected { get; set; }
@@ -140,9 +114,7 @@ namespace atomex.ViewModel.SendViewModels
 
         public Action<string> CopyAction { get; set; }
 
-        public decimal Balance =>
-            Config.SatoshiToCoin(Output.Value);
-
+        public decimal Balance =>  Config.SatoshiToCoin(Output.Value);
         public string Address => Output.DestinationAddress(Config.Network);
 
         private ICommand _copyCommand;

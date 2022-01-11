@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "ic_sort-down--dark.pdf",
+      "filename": "sort-down-1.pdf",
       "idiom": "universal"
     },
     {
@@ -305,7 +305,7 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_sort-down--dark-2.pdf",
+      "filename": "sort-down.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

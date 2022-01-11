@@ -136,10 +136,11 @@
                                 <FormattedString>
                                     <Span Text="{helpers:Translate Balance}"/>
                                     <Span Text=": "/>
-                                    <Span Text="{Binding SelectedFromAmount}"
+                                    <Span Text="{Binding SelectedAmount}"
                                           FontFamily="{DynamicResource BoldFont}"
                                           FontSize="12"/>
-                                    <Span Text="{Binding Currency.Name}"
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding CurrencyCode}"
                                           FontFamily="{DynamicResource BoldFont}"
                                           FontSize="10"/>
                             </FormattedString>

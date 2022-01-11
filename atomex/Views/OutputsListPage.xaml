@@ -7,7 +7,7 @@
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
     Title="Outputs"
-    Style="{DynamicResource AdditionalBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
@@ -23,8 +23,8 @@
                 <input:CheckBox Text="{helpers:Translate SelectAll}"
                                 BoxSizeRequest="18"
                                 TextFontSize="16"
-                                IsChecked="{Binding SelectOutputsViewModel.SelectAll, Mode=TwoWay}"
-                                CheckChangedCommand="{Binding SelectAllCommand}"
+                                IsChecked="{Binding SelectAll, Mode=TwoWay}"
+                                CheckChangedCommand="{Binding SelectAllCommand, Mode=TwoWay}"
                                 Type="Material"
                                 Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
                                 IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
@@ -51,16 +51,16 @@
                                  HeightRequest="32"
                                  WidthRequest="32"
                                  CornerRadius="16"
-                                 Command="{Binding SelectOutputsViewModel.ChangeSortTypeCommand}">
+                                 Command="{Binding ChangeSortTypeCommand}">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SelectOutputsViewModel.SortIsAscending}"
+                                         Binding="{Binding SortIsAscending}"
                                          Value="True">
                                 <Setter Property="Source"
                                         Value="ic_sort__up"/>
                             </DataTrigger>
                             <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SelectOutputsViewModel.SortIsAscending}"
+                                         Binding="{Binding SortIsAscending}"
                                          Value="False">
                                 <Setter Property="Source"
                                         Value="ic_sort__down"/>
@@ -70,7 +70,7 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <ListView ItemsSource="{Binding SelectOutputsViewModel.Outputs}"
+            <ListView ItemsSource="{Binding Outputs}"
                       SelectionMode="None"
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
@@ -94,7 +94,7 @@
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectOutputsViewModel.SelectOutputCommand, Source={x:Reference BindingContextPage}}"
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectOutputCommand, Source={x:Reference BindingContextPage}}"
                                                           CommandParameter="{Binding .}"/>
                                 </Grid.GestureRecognizers>
                                 <input:CheckBox Grid.RowSpan="2"
@@ -162,7 +162,7 @@
                         Margin="15,10"
                         Text="{helpers:Translate ConfirmButton}"
                         Style="{DynamicResource MainButtonStyle}"
-                        Command="{Binding SelectOutputsViewModel.ConfirmOutputsCommand}"/>
+                        Command="{Binding ConfirmOutputsCommand}"/>
                 <Label Grid.Column="1"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
@@ -170,9 +170,9 @@
                        VerticalTextAlignment="End">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectOutputsViewModel.SelectedOutputsNumber}"/>
+                            <Span Text="{Binding SelectedOutputsNumber}"/>
                             <Span Text=" of "/>
-                            <Span Text="{Binding SelectOutputsViewModel.Outputs.Count}"/>
+                            <Span Text="{Binding Outputs.Count}"/>
                             <Span Text=" selected"/>
                         </FormattedString>
                     </Label.FormattedText>
@@ -187,9 +187,9 @@
                         <FormattedString>
                             <Span Text="{helpers:Translate Total}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding SelectOutputsViewModel.SelectedAmount}"/>
+                            <Span Text="{Binding SelectedAmount}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.Currency.Name}"/>
+                            <Span Text="{Binding Currency.Name}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

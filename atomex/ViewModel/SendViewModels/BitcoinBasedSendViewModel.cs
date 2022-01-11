@@ -45,7 +45,7 @@ namespace atomex.ViewModel.SendViewModels
                     var totalOutputsSatoshi = outputs
                         .Aggregate((long)0, (sum, output) => sum + output.Value);
 
-                    SelectedFromAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
+                    SelectedAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
                 });
         }
 
@@ -61,7 +61,6 @@ namespace atomex.ViewModel.SendViewModels
 
         protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
         {
-            //Outputs = outputs;
             Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
             await Navigation.PopAsync();
         }
@@ -82,7 +81,8 @@ namespace atomex.ViewModel.SendViewModels
                         CopyAction = OnCopyClicked,
                         Output = output,
                         Config = Config
-                    }))
+                    })),
+                Currency = Config
             };
         }
 
@@ -273,7 +273,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected async override Task FromClick()
         {
-            await Navigation.PushAsync(new OutputsListPage(this));
+            await Navigation.PushAsync(new OutputsListPage(SelectOutputsViewModel));
         }
 
         protected override Task ToClick()
