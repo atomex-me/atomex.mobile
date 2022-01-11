@@ -317,6 +317,10 @@
     <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\sort-down__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -506,6 +510,7 @@
     <Folder Include="Assets.xcassets\ic_swap.imageset\" />
     <Folder Include="Assets.xcassets\ic_sort__up.imageset\" />
     <Folder Include="Assets.xcassets\ic_sort__down.imageset\" />
+    <Folder Include="Assets.xcassets\ic_qr.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
