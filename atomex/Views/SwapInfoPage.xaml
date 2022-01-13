@@ -182,28 +182,23 @@
                 <Grid HorizontalOptions="FillAndExpand"
                       ColumnSpacing="0"
                       RowSpacing="0"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                      BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1" />
-                        <RowDefinition Height="40" />
+                        <RowDefinition Height="50" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
-                    <StackLayout Grid.ColumnSpan="2"
-                                 Style="{DynamicResource SeparatorStyle}"/>
-                    <Button Grid.Row="1"
-                            CornerRadius="0"
+                    <Button CornerRadius="0"
                             Text="{helpers:Translate ProgressTab}"
-                            TextTransform="Uppercase"
                             FontFamily="{DynamicResource BoldFont}"
                             FontSize="14"
                             Clicked="OnButtonClicked"
                             CommandParameter="SwapProgress"
                             x:Name="SwapProgressButton"
-                            BackgroundColor="Transparent">
+                            BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="SwapInfoStates">
                                 <VisualState Name="SwapProgress">
@@ -221,17 +216,15 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Button>
-                    <Button Grid.Row="1"
-                            Grid.Column="1"
+                    <Button Grid.Column="1"
                             CornerRadius="0"
                             Text="{helpers:Translate DetailsTab}"
-                            TextTransform="Uppercase"
                             FontFamily="{DynamicResource BoldFont}"
                             FontSize="14"
                             Clicked="OnButtonClicked"
                             CommandParameter="SwapDetails"
                             x:Name="SwapDetailsButton"
-                            BackgroundColor="Transparent">
+                            BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="SwapInfoStates">
                                 <VisualState Name="SwapProgress">
@@ -249,7 +242,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Button>
-                    <StackLayout Grid.Row="2"
+                    <StackLayout Grid.Row="1"
                                  x:Name="ProgressUnderline"
                                  Style="{DynamicResource SeparatorStyle}"
                                  VerticalOptions="End">
@@ -266,7 +259,7 @@
                                 <VisualState Name="SwapDetails">
                                     <VisualState.Setters>
                                         <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"/>
+                                                Value="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}"/>
                                         <Setter Property="HeightRequest"
                                                 Value="1"/>
                                     </VisualState.Setters>
@@ -274,7 +267,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </StackLayout>
-                    <StackLayout Grid.Row="2"
+                    <StackLayout Grid.Row="1"
                                  Grid.Column="1"
                                  x:Name="DetailsUnderline"
                                  Style="{DynamicResource SeparatorStyle}"
@@ -284,7 +277,7 @@
                                 <VisualState Name="SwapProgress">
                                     <VisualState.Setters>
                                         <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"/>
+                                                Value="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}"/>
                                         <Setter Property="HeightRequest"
                                                 Value="1"/>
                                     </VisualState.Setters>
@@ -472,7 +465,7 @@
                                Grid.Column="1"
                                Padding="10,0"
                                FontFamily="{DynamicResource RegularFont}"
-                               FontSize="16"
+                               FontSize="18"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start">
                             <Label.GestureRecognizers>
@@ -872,7 +865,7 @@
                         <Label Text="{helpers:Translate Exchanging}"
                                Grid.Column="1"
                                FontFamily="{DynamicResource RegularFont}"
-                               FontSize="16"
+                               FontSize="18"
                                BackgroundColor="Transparent"
                                Padding="10,0,5,0"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -1186,7 +1179,7 @@
                                Grid.Column="1"
                                Padding="10,0"
                                FontFamily="{DynamicResource RegularFont}"
-                               FontSize="16"
+                               FontSize="18"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start">
                             <Label.GestureRecognizers>

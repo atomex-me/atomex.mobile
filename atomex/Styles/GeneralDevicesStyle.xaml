@@ -654,8 +654,8 @@
     <Style x:Key="CreateSwapTitleStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Padding" Value="20,20,20,10"/>
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="Padding" Value="20,20,20,0"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="EstimatedLabelStyle" TargetType="Span">

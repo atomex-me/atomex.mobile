@@ -54,7 +54,7 @@ namespace atomex
                 Title = AppResources.WalletsTab
             };
 
-            NavigationConversionPage = new NavigationPage(new ConversionsListPage(MainViewModel.ConversionViewModel))
+            NavigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
             {
                 IconImageSource = "NavBarConversion",
                 Title = AppResources.ConversionTab
