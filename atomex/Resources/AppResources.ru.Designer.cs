@@ -737,6 +737,72 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SendFrom {
+            get {
+                return ResourceManager.GetString("SendFrom", resourceCulture);
+            }
+        }
+        
+        internal static string ReceiveTo {
+            get {
+                return ResourceManager.GetString("ReceiveTo", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseAnAddress {
+            get {
+                return ResourceManager.GetString("ChooseAnAddress", resourceCulture);
+            }
+        }
+        
+        internal static string MyAddresses {
+            get {
+                return ResourceManager.GetString("MyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SortByBalanceButton {
+            get {
+                return ResourceManager.GetString("SortByBalanceButton", resourceCulture);
+            }
+        }
+        
+        internal static string SortByDateButton {
+            get {
+                return ResourceManager.GetString("SortByDateButton", resourceCulture);
+            }
+        }
+        
+        internal static string ExternalAddress {
+            get {
+                return ResourceManager.GetString("ExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string EnterAnExternalAddress {
+            get {
+                return ResourceManager.GetString("EnterAnExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string SaveToMyAddresses {
+            get {
+                return ResourceManager.GetString("SaveToMyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        internal static string SelectedOfTotal {
+            get {
+                return ResourceManager.GetString("SelectedOfTotal", resourceCulture);
+            }
+        }
+        
         internal static string ReceivePageTitle {
             get {
                 return ResourceManager.GetString("ReceivePageTitle", resourceCulture);
@@ -1229,81 +1295,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string SendFrom {
-            get {
-                return ResourceManager.GetString("SendFrom", resourceCulture);
-            }
-        }
-        
-        internal static string ReceiveTo {
-            get {
-                return ResourceManager.GetString("ReceiveTo", resourceCulture);
-            }
-        }
-        
-        internal static string ChooseAnAddress {
-            get {
-                return ResourceManager.GetString("ChooseAnAddress", resourceCulture);
-            }
-        }
-        
         internal static string ChangeRedeemAddress {
             get {
                 return ResourceManager.GetString("ChangeRedeemAddress", resourceCulture);
-            }
-        }
-        
-        internal static string MyAddresses {
-            get {
-                return ResourceManager.GetString("MyAddresses", resourceCulture);
-            }
-        }
-        
-        internal static string SortByBalanceButton {
-            get {
-                return ResourceManager.GetString("SortByBalanceButton", resourceCulture);
-            }
-        }
-        
-        internal static string ExternalAddress {
-            get {
-                return ResourceManager.GetString("ExternalAddress", resourceCulture);
-            }
-        }
-        
-        internal static string EnterAnExternalAddress {
-            get {
-                return ResourceManager.GetString("EnterAnExternalAddress", resourceCulture);
-            }
-        }
-        
-        internal static string SaveToMyAddresses {
-            get {
-                return ResourceManager.GetString("SaveToMyAddresses", resourceCulture);
-            }
-        }
-        
-        internal static string SelectAll {
-            get {
-                return ResourceManager.GetString("SelectAll", resourceCulture);
-            }
-        }
-        
-        internal static string DiselectAll {
-            get {
-                return ResourceManager.GetString("DiselectAll", resourceCulture);
-            }
-        }
-        
-        internal static string SelectedNumber {
-            get {
-                return ResourceManager.GetString("SelectedNumber", resourceCulture);
-            }
-        }
-        
-        internal static string FromAddressesNumber {
-            get {
-                return ResourceManager.GetString("FromAddressesNumber", resourceCulture);
             }
         }
         

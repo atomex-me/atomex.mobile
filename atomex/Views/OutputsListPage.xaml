@@ -6,12 +6,11 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
-    Title="Outputs"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
-            <Label Text="Select outputs"
+            <Label Text="{helpers:Translate SendFrom}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"
                    FontSize="30"
@@ -33,7 +32,6 @@
                              Orientation="Horizontal">
                     <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                             BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                            Text="{helpers:Translate SortByBalanceButton}"
                             WidthRequest="132"
                             HeightRequest="32"
                             HorizontalOptions="End"
@@ -42,16 +40,31 @@
                             Padding="0"
                             Margin="0,10"
                             FontFamily="{DynamicResource RegularFont}"
-                            TextTransform="Lowercase"/>
-                    <ImageButton Source="ic_sort__down"
-                                 BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                            Command="{Binding ChangeSortTypeCommand}"
+                            TextTransform="Lowercase">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SortByBalance}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="Sort by balance"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SortByBalance}"
+                                         Value="False">
+                                <Setter Property="Text"
+                                        Value="Sort by date"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
                                  Padding="6"
                                  Margin="0,10"
                                  HorizontalOptions="End"
                                  HeightRequest="32"
                                  WidthRequest="32"
                                  CornerRadius="16"
-                                 Command="{Binding ChangeSortTypeCommand}">
+                                 Command="{Binding ChangeSortDirectionCommand}">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton"
                                          Binding="{Binding SortIsAscending}"
@@ -164,19 +177,11 @@
                         Style="{DynamicResource MainButtonStyle}"
                         Command="{Binding ConfirmOutputsCommand}"/>
                 <Label Grid.Column="1"
+                       Text="{Binding TotalSelectedString}"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="End">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding SelectedOutputsNumber}"/>
-                            <Span Text=" of "/>
-                            <Span Text="{Binding Outputs.Count}"/>
-                            <Span Text=" selected"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                       VerticalTextAlignment="End"/>
                 <Label Grid.Column="1"
                        Grid.Row="1"
                        FontSize="12"

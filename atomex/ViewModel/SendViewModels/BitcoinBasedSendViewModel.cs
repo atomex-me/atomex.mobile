@@ -72,7 +72,7 @@ namespace atomex.ViewModel.SendViewModels
 
             Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
 
-            SelectOutputsViewModel = new SelectOutputsViewModel
+            SelectOutputsViewModel = new SelectOutputsViewModel(Account, Config)
             {
                 ConfirmAction = ConfirmOutputs,
                 Outputs = new ObservableCollection<OutputViewModel>(
@@ -81,8 +81,7 @@ namespace atomex.ViewModel.SendViewModels
                         CopyAction = OnCopyClicked,
                         Output = output,
                         Config = Config
-                    })),
-                Currency = Config
+                    }))
             };
         }
 

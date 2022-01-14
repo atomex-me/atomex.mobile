@@ -90,7 +90,7 @@
         <value>Доступно</value>
     </data>
     <data name="Total" xml:space="preserve">
-        <value>Total</value>
+        <value>Всего</value>
     </data>
     <data name="FromLabel" xml:space="preserve">
         <value>От</value>
@@ -384,7 +384,42 @@
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>Подтвердите транзакцию</value>
     </data>
-    
+
+    <!-- Addresses Pages -->
+    <data name="SendFrom" xml:space="preserve">
+        <value>Отправить</value>
+    </data>
+    <data name="ReceiveTo" xml:space="preserve">
+        <value>Получить</value>
+    </data>
+    <data name="ChooseAnAddress" xml:space="preserve">
+        <value>Выберите адрес</value>
+    </data>
+    <data name="MyAddresses" xml:space="preserve">
+        <value>Мои адреса</value>
+    </data>
+    <data name="SortByBalanceButton" xml:space="preserve">
+        <value>Сорт. по балансу</value>
+    </data>
+    <data name="SortByDateButton" xml:space="preserve">
+        <value>Сорт. по дате</value>
+    </data>
+    <data name="ExternalAddress" xml:space="preserve">
+        <value>Внешний адрес</value>
+    </data>
+    <data name="EnterAnExternalAddress" xml:space="preserve">
+        <value>Введите внешний адрес</value>
+    </data>
+    <data name="SaveToMyAddresses" xml:space="preserve">
+        <value>Сохранить в мои адреса</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Выбрать все</value>
+    </data>
+    <data name="SelectedOfTotal" xml:space="preserve">
+        <value>{0} из {1} выбрано</value>
+    </data>
+
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
         <value>Получить</value>
@@ -650,44 +685,8 @@
     <data name="ExchangeHistory" xml:space="preserve">
         <value>История обмена</value>
     </data>
-    <data name="SendFrom" xml:space="preserve">
-        <value>Отправить</value>
-    </data>
-    <data name="ReceiveTo" xml:space="preserve">
-        <value>Получить</value>
-    </data>
-    <data name="ChooseAnAddress" xml:space="preserve">
-        <value>Выберите адрес</value>
-    </data>
     <data name="ChangeRedeemAddress" xml:space="preserve">
         <value>Изменить адрес выкупа</value>
-    </data>
-    <data name="MyAddresses" xml:space="preserve">
-        <value>Мои адреса</value>
-    </data>
-    <data name="SortByBalanceButton" xml:space="preserve">
-        <value>Сортировка</value>
-    </data>
-    <data name="ExternalAddress" xml:space="preserve">
-        <value>Внешний адрес</value>
-    </data>
-    <data name="EnterAnExternalAddress" xml:space="preserve">
-        <value>Введите внешний адрес</value>
-    </data>
-    <data name="SaveToMyAddresses" xml:space="preserve">
-        <value>Сохранить в мои адреса</value>
-    </data>
-    <data name="SelectAll" xml:space="preserve">
-        <value>Выбрать все</value>
-    </data>
-    <data name="DiselectAll" xml:space="preserve">
-        <value>Снять выделения</value>
-    </data>
-    <data name="SelectedNumber" xml:space="preserve">
-        <value>{0} выбрано</value>
-    </data>
-    <data name="FromAddressesNumber" xml:space="preserve">
-        <value>с {0} адресов</value>
     </data>
 
     <!-- Tezos tokens list, token info Pages -->

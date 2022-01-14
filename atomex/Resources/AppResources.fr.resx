@@ -384,7 +384,42 @@
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>Confirmer la transaction</value>
     </data>
-    
+
+    <!-- Addresses Pages -->
+    <data name="SendFrom" xml:space="preserve">
+        <value>Send from</value>
+    </data>
+    <data name="ReceiveTo" xml:space="preserve">
+        <value>Receive to</value>
+    </data>
+    <data name="ChooseAnAddress" xml:space="preserve">
+        <value>Choose an address</value>
+    </data>
+    <data name="MyAddresses" xml:space="preserve">
+        <value>My addresses</value>
+    </data>
+    <data name="SortByBalanceButton" xml:space="preserve">
+        <value>Sort by balance</value>
+    </data>
+    <data name="SortByDateButton" xml:space="preserve">
+        <value>Sort by date</value>
+    </data>
+    <data name="ExternalAddress" xml:space="preserve">
+        <value>External address</value>
+    </data>
+    <data name="EnterAnExternalAddress" xml:space="preserve">
+        <value>Enter an external address</value>
+    </data>
+    <data name="SaveToMyAddresses" xml:space="preserve">
+        <value>Save to my addresses</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="SelectedOfTotal" xml:space="preserve">
+        <value>{0} of {1} selected</value>
+    </data>
+
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
         <value>Recevoir</value>
@@ -650,44 +685,8 @@
     <data name="ExchangeHistory" xml:space="preserve">
         <value>Exchange History</value>
     </data>
-    <data name="SendFrom" xml:space="preserve">
-        <value>Send from</value>
-    </data>
-    <data name="ReceiveTo" xml:space="preserve">
-        <value>Receive to</value>
-    </data>
-    <data name="ChooseAnAddress" xml:space="preserve">
-        <value>Choose an address</value>
-    </data>
     <data name="ChangeRedeemAddress" xml:space="preserve">
         <value>Change redeem address</value>
-    </data>
-    <data name="MyAddresses" xml:space="preserve">
-        <value>My addresses</value>
-    </data>
-    <data name="SortByBalanceButton" xml:space="preserve">
-        <value>Sort by balance</value>
-    </data>
-    <data name="ExternalAddress" xml:space="preserve">
-        <value>External address</value>
-    </data>
-    <data name="EnterAnExternalAddress" xml:space="preserve">
-        <value>Enter an external address</value>
-    </data>
-    <data name="SaveToMyAddresses" xml:space="preserve">
-        <value>Save to my addresses</value>
-    </data>
-    <data name="SelectAll" xml:space="preserve">
-        <value>Select all</value>
-    </data>
-    <data name="DiselectAll" xml:space="preserve">
-        <value>Diselect all</value>
-    </data>
-    <data name="SelectedNumber" xml:space="preserve">
-        <value>{0} selected</value>
-    </data>
-    <data name="FromAddressesNumber" xml:space="preserve">
-        <value>from {0} addresses</value>
     </data>
 
     <!-- Tezos tokens list, token info Pages -->

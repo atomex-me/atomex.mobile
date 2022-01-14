@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
+using Atomex.Core;
+using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -15,21 +19,47 @@ namespace atomex.ViewModel.SendViewModels
     public class SelectOutputsViewModel : BaseViewModel
     {
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
-        [Reactive] public int SelectedOutputsNumber { get; set; }
+        [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
-        [Reactive] public BitcoinBasedConfig Currency { get; set; }
+        public BitcoinBasedConfig Currency { get; }
+        private BitcoinBasedAccount Account { get; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
-        public SelectOutputsViewModel()
+        public SelectOutputsViewModel(BitcoinBasedAccount account, BitcoinBasedConfig config)
         {
-            SelectAll = true;
-            
+            Account = account ?? throw new ArgumentNullException(nameof(Account));
+            Currency = config ?? throw new ArgumentNullException(nameof(Currency));
+
+            this.WhenAnyValue(vm => vm.Outputs)
+                .WhereNotNull()
+                .Take(1)
+                .Subscribe(async outputs =>
+                {
+                    var addresses = (await Account
+                        .GetAddressesAsync())
+                        .Where(address => outputs.FirstOrDefault(o => o.Address == address.Address) != null)
+                        .ToList();
+
+                    var outputsWithAddresses = outputs.Select(output =>
+                    {
+                        var address = addresses.FirstOrDefault(a => a.Address == output.Address);
+                        output.WalletAddress = address ?? null;
+                        return output;
+                    });
+
+                    Outputs = new ObservableCollection<OutputViewModel>(
+                        outputsWithAddresses.OrderByDescending(output => output.Balance));
+                });
+
             this.WhenAnyValue(vm => vm.SelectAll)
                 .Throttle(TimeSpan.FromMilliseconds(1))
-                .Where(_ => Outputs != null && !_selectFromList)
+                .Where(_ => !_selectFromList)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ =>
                 {
+                    if (Outputs == null)
+                        return;
+
                     SelectAllOutputs();
                     UpdateSelectedAmount();
                 });
@@ -44,17 +74,91 @@ namespace atomex.ViewModel.SendViewModels
                         : new ObservableCollection<OutputViewModel>(
                             Outputs.OrderByDescending(output => output.Balance));
                 });
+
+            this.WhenAnyValue(vm => vm.SortByBalance, vm => vm.SortIsAscending)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(value =>
+                {
+                    var (item1, item2) = value;
+
+                    if (Outputs == null) return;
+
+                    if (!item1)
+                    {
+                        var outputsList = Outputs.ToList();
+                        if (item2)
+                        {
+                            outputsList.Sort((a1, a2) =>
+                            {
+                                var typeResult = a1.WalletAddress.KeyType.CompareTo(a2.WalletAddress.KeyType);
+
+                                if (typeResult != 0)
+                                    return typeResult;
+
+                                var accountResult =
+                                    a1.WalletAddress.KeyIndex.Account.CompareTo(a2.WalletAddress.KeyIndex.Account);
+
+                                if (accountResult != 0)
+                                    return accountResult;
+
+                                var chainResult =
+                                    a1.WalletAddress.KeyIndex.Chain.CompareTo(a2.WalletAddress.KeyIndex.Chain);
+
+                                return chainResult != 0
+                                    ? chainResult
+                                    : a1.WalletAddress.KeyIndex.Index.CompareTo(a2.WalletAddress.KeyIndex.Index);
+                            });
+                        }
+                        else
+                        {
+                            outputsList.Sort((a2, a1) =>
+                            {
+                                var typeResult = a1.WalletAddress.KeyType.CompareTo(a2.WalletAddress.KeyType);
+
+                                if (typeResult != 0)
+                                    return typeResult;
+
+                                var accountResult =
+                                    a1.WalletAddress.KeyIndex.Account.CompareTo(a2.WalletAddress.KeyIndex.Account);
+
+                                if (accountResult != 0)
+                                    return accountResult;
+
+                                var chainResult =
+                                    a1.WalletAddress.KeyIndex.Chain.CompareTo(a2.WalletAddress.KeyIndex.Chain);
+
+                                return chainResult != 0
+                                    ? chainResult
+                                    : a1.WalletAddress.KeyIndex.Index.CompareTo(a2.WalletAddress.KeyIndex.Index);
+                            });
+                        }
+
+                        Outputs = new ObservableCollection<OutputViewModel>(outputsList);
+                    }
+                    else
+                    {
+                        Outputs = new ObservableCollection<OutputViewModel>(item2
+                            ? Outputs.OrderBy(output => output.Balance)
+                            : Outputs.OrderByDescending(output => output.Balance));
+                    }
+                });
+
+            SelectAll = true;
         }
 
         [Reactive] public bool SelectAll { get; set; }
         [Reactive] public bool SortByBalance { get; set; }
         [Reactive] public bool SortIsAscending { get; set; }
 
-        private bool _selectFromList;
+        private bool _selectFromList = false;
 
         private ReactiveCommand<Unit, Unit> _changeSortTypeCommand;
         public ReactiveCommand<Unit, Unit> ChangeSortTypeCommand => _changeSortTypeCommand ??=
-            (_changeSortTypeCommand = ReactiveCommand.Create(() => { SortIsAscending = !SortIsAscending; }));
+            (_changeSortTypeCommand = ReactiveCommand.Create(() => { SortByBalance = !SortByBalance; }));
+
+        private ReactiveCommand<Unit, Unit> _changeSortDirectionCommand;
+        public ReactiveCommand<Unit, Unit> ChangeSortDirectionCommand => _changeSortDirectionCommand ??=
+            (_changeSortDirectionCommand = ReactiveCommand.Create(() => { SortIsAscending = !SortIsAscending; }));
 
         private ReactiveCommand<OutputViewModel, Unit> _selectOutputCommand;
         public ReactiveCommand<OutputViewModel, Unit> SelectOutputCommand => _selectOutputCommand ??=
@@ -85,8 +189,14 @@ namespace atomex.ViewModel.SendViewModels
 
         private void UpdateSelectedAmount()
         {
-            SelectedOutputsNumber = Outputs
+            var selectedCount = Outputs
                 .Where(o => o.IsSelected).Count();
+
+            TotalSelectedString = string.Format(
+                CultureInfo.InvariantCulture,
+                AppResources.SelectedOfTotal,
+                selectedCount,
+                Outputs.Count);
 
             SelectedAmount = Outputs
                 .Where(o => o.IsSelected)
@@ -111,10 +221,10 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool IsSelected { get; set; }
         public BitcoinBasedTxOutput Output { get; set; }
         public BitcoinBasedConfig Config { get; set; }
-
+        public WalletAddress WalletAddress { get; set; }
         public Action<string> CopyAction { get; set; }
 
-        public decimal Balance =>  Config.SatoshiToCoin(Output.Value);
+        public decimal Balance => Config.SatoshiToCoin(Output.Value);
         public string Address => Output.DestinationAddress(Config.Network);
 
         private ICommand _copyCommand;
