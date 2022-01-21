@@ -6,8 +6,8 @@ using System.Linq;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.ViewModel;
+using Atomex.Abstract;
 using Atomex.Core;
-using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
@@ -213,7 +213,7 @@ namespace atomex
             set { _stateStringI18n = value; OnPropertyChanged(nameof(StateStringI18n)); }
         }
 
-        public IAccount Account { get; set; }
+        public ICurrencies Currencies { get; set; }
 
         private void SetState(Swap swap)
         {
@@ -268,7 +268,7 @@ namespace atomex
         public void UpdateSwap(Swap swap)
         {
             SetState(swap);
-            DetailingInfo = GetSwapDetailingInfo(swap, Account).ToList();
+            DetailingInfo = GetSwapDetailingInfo(swap, Currencies).ToList();
         }
 
         private void ClearStatusMessages()

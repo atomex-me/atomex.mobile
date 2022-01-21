@@ -25,10 +25,14 @@ namespace atomex.ViewModel.SendViewModels
         private BitcoinBasedAccount Account { get; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
-        public SelectOutputsViewModel(BitcoinBasedAccount account, BitcoinBasedConfig config)
+        public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config)
         {
             Account = account ?? throw new ArgumentNullException(nameof(Account));
             Currency = config ?? throw new ArgumentNullException(nameof(Currency));
+
+            Outputs = new ObservableCollection<OutputViewModel>(outputs);
+
+            SelectAll = Outputs.Aggregate(true, (result, output) => result && output.IsSelected);
 
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
@@ -43,17 +47,20 @@ namespace atomex.ViewModel.SendViewModels
                     var outputsWithAddresses = outputs.Select(output =>
                     {
                         var address = addresses.FirstOrDefault(a => a.Address == output.Address);
-                        output.WalletAddress = address ?? null;
+                        output.WalletAddress = address ?? null;;
                         return output;
                     });
 
                     Outputs = new ObservableCollection<OutputViewModel>(
                         outputsWithAddresses.OrderByDescending(output => output.Balance));
+
+                    UpdateSelectedAmount();
                 });
 
             this.WhenAnyValue(vm => vm.SelectAll)
-                .Throttle(TimeSpan.FromMilliseconds(1))
                 .Where(_ => !_selectFromList)
+                .Throttle(TimeSpan.FromMilliseconds(1))
+                .Skip(1)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ =>
                 {
@@ -142,8 +149,6 @@ namespace atomex.ViewModel.SendViewModels
                             : Outputs.OrderByDescending(output => output.Balance));
                     }
                 });
-
-            SelectAll = true;
         }
 
         [Reactive] public bool SelectAll { get; set; }
@@ -170,14 +175,17 @@ namespace atomex.ViewModel.SendViewModels
 
         private ICommand _confirmOutputsCommand;
         public ICommand ConfirmOutputsCommand => _confirmOutputsCommand ??=
-            (_confirmOutputsCommand = ReactiveCommand.Create(() =>
-            {
-                var outputs = Outputs
-                    .Where(output => output.IsSelected)
-                    .Select(o => o.Output);
+            (_confirmOutputsCommand = ReactiveCommand.Create(ConfirmOutputs));
 
-                ConfirmAction?.Invoke(outputs);
-            }));
+
+        private void ConfirmOutputs()
+        {
+            var outputs = Outputs
+                .Where(output => output.IsSelected)
+                .Select(o => o.Output);
+
+            ConfirmAction?.Invoke(outputs);
+        }
 
         private void SelectAllOutputs()
         {
@@ -211,7 +219,7 @@ namespace atomex.ViewModel.SendViewModels
             var selectionResult = Outputs.Aggregate(true, (result, output) => result && output.IsSelected);
             if (SelectAll != selectionResult)
                 SelectAll = selectionResult;
-            
+
             UpdateSelectedAmount();
         }
     }

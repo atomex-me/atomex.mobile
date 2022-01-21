@@ -890,7 +890,7 @@ namespace atomex.ViewModel
                     }
                     else
                     {
-                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies, _app.Account);
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
 
                         Navigation.PushAsync(new SwapInfoPage(swapViewModel));
@@ -946,7 +946,7 @@ namespace atomex.ViewModel
 
                     foreach (var swap in swaps)
                     {
-                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies, _app.Account);
+                        var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
 
                         long.TryParse(swapViewModel.Id, out long id);
                         _cachedSwaps.Add(id, swapViewModel);

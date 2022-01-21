@@ -42,6 +42,7 @@
     <Folder Include="Behaviors\" />
     <Folder Include="Views\BuyCurrency\" />
     <Folder Include="Views\TezosTokens\" />
+    <Folder Include="Views\Send\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
@@ -92,6 +93,7 @@
     <None Remove="ReactiveUI.XamForms" />
     <None Remove="ReactiveUI.Fody" />
     <None Remove="Xamarin.Forms.InputKit" />
+    <None Remove="Views\Send\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="**/*" />

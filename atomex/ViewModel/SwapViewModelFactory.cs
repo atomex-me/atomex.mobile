@@ -1,13 +1,12 @@
 ﻿using Atomex.Abstract;
 using Atomex.Common;
 using Atomex.Core;
-using Atomex.Wallet.Abstract;
 
 namespace atomex
 {
     public static class SwapViewModelFactory
     {
-        public static SwapViewModel CreateSwapViewModel(Swap swap, ICurrencies currencies, IAccount account)
+        public static SwapViewModel CreateSwapViewModel(Swap swap, ICurrencies currencies)
         {
             var soldCurrency = currencies.GetByName(swap.SoldCurrency);
             var purchasedCurrency = currencies.GetByName(swap.PurchasedCurrency);
@@ -34,7 +33,7 @@ namespace atomex
                 Price            = swap.Price,
                 PriceFormat      = $"F{quoteCurrency.Digits}",
 
-                Account          = account
+                Currencies       = currencies
             };
 
             swapViewModel.UpdateSwap(swap);

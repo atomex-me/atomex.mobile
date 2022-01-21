@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
@@ -29,12 +30,14 @@ namespace atomex.ViewModel.SendViewModels
         protected IToastService ToastService { get; set; }
 
         protected CurrencyConfig Currency { get; set; }
-
+        public BaseViewModel SelectFromViewModel { get; set; }
+        protected SelectAddressViewModel SelectToViewModel { get; set; }
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string From { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
         [Reactive] public string To { get; set; }
         [Reactive] protected decimal Amount { get; set; }
+        [ObservableAsProperty] public string TotalAmountString { get; }
 
         public string AmountString
         {
@@ -129,9 +132,10 @@ namespace atomex.ViewModel.SendViewModels
             var updateFeeCommand = ReactiveCommand.CreateFromTask<decimal>(UpdateFee);
 
             this.WhenAnyValue(
-                    vm => vm.To,
-                    vm => vm.Amount,
-                    vm => vm.Fee
+                vm => vm.From,
+                vm => vm.To,
+                vm => vm.Amount,
+                vm => vm.Fee
                 )
                 .Subscribe(_ => Warning = string.Empty);
 
@@ -174,9 +178,9 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> PasteCommand =>
             _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
 
-        private ReactiveCommand<Unit, Unit> _scanCommand;
+        private ReactiveCommand<Unit, Unit> _scanAddressCommand;
         public ReactiveCommand<Unit, Unit> ScanCommand =>
-            _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
+            _scanAddressCommand ??= (_scanAddressCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
 
         private ReactiveCommand<Unit, Unit> _scanResultCommand;
         public ReactiveCommand<Unit, Unit> ScanResultCommand =>
@@ -189,6 +193,28 @@ namespace atomex.ViewModel.SendViewModels
         private ReactiveCommand<Unit, Unit> _selectToCommand;
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
+
+        private ICommand _searchAddressCommand;
+        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
+
+        private ReactiveCommand<Unit, Unit> _confirmToAddressCommand;
+        public ReactiveCommand<Unit, Unit> ConfirmToAddressCommand => _confirmToAddressCommand ??=
+            (_confirmToAddressCommand = ReactiveCommand.CreateFromTask(Test));
+
+        private async Task Test()
+        {
+            await Navigation.PushAsync(new Views.Send.SendPage(this));
+        }
+
+        private ReactiveCommand<Unit, Unit> _sendingConfirmationCommand;
+        public ReactiveCommand<Unit, Unit> SendingConfirmationCommand => _sendingConfirmationCommand ??=
+            (_sendingConfirmationCommand = ReactiveCommand.CreateFromTask(Test2));
+
+        private async Task Test2()
+        {
+            await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
+            //await Navigation.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
+        }
 
         protected abstract Task FromClick();
 
@@ -241,6 +267,18 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             await Navigation.PushAsync(new ScanningQrPage(this));
+        }
+
+        private void OnSearchEntryTextChanged(string value)
+        {
+            try
+            {
+                Console.WriteLine(value);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
         }
 
         private async Task OnPasteButtonClicked()

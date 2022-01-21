@@ -13,7 +13,7 @@ namespace atomex.ViewModel.SendViewModels
 {
     public class TezosSendViewModel : SendViewModel
     {
-        public string From { get; set; }
+        //public string From { get; set; }
 
         public TezosSendViewModel(
             IAtomexApp app,

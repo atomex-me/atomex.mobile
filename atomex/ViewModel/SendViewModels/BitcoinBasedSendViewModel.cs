@@ -8,9 +8,11 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.BitcoinBased;
+using Atomex.Common;
 using Atomex.Core;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
@@ -62,26 +64,31 @@ namespace atomex.ViewModel.SendViewModels
         protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
         {
             Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+            await Navigation.PushAsync(new ToAddressPage(this));
+        }
+
+        protected async void ChangeOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        {
+            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
             await Navigation.PopAsync();
         }
 
         protected async Task GetOutputs()
         {
+
             var outputs = (await Account.GetAvailableOutputsAsync())
-                    .Select(output => (BitcoinBasedTxOutput)output);
+                .Select(output => new OutputViewModel()
+                {
+                    Output = (BitcoinBasedTxOutput)output,
+                    Config = Config,
+                    CopyAction = OnCopyClicked,
+                    IsSelected = true
+                })
+                .ToList();
 
-            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
-
-            SelectOutputsViewModel = new SelectOutputsViewModel(Account, Config)
+            SelectOutputsViewModel = new SelectOutputsViewModel(outputs, Account, Config)
             {
-                ConfirmAction = ConfirmOutputs,
-                Outputs = new ObservableCollection<OutputViewModel>(
-                    Outputs.Select(output => new OutputViewModel
-                    {
-                        CopyAction = OnCopyClicked,
-                        Output = output,
-                        Config = Config
-                    }))
+                ConfirmAction = ConfirmOutputs
             };
         }
 
@@ -249,7 +256,7 @@ namespace atomex.ViewModel.SendViewModels
         protected override Task<Error> Send(CancellationToken cancellationToken = default)
         {
             return Account.SendAsync(
-                from: Outputs.ToList(),
+                from: Outputs,
                 to: To,
                 amount: Amount,
                 fee: Fee,
@@ -257,11 +264,11 @@ namespace atomex.ViewModel.SendViewModels
                 cancellationToken: cancellationToken);
         }
 
-        private async void OnCopyClicked(string address)
+        private async void OnCopyClicked(string value)
         {
-            if (!string.IsNullOrEmpty(address))
+            if (!string.IsNullOrEmpty(value))
             {
-                await Clipboard.SetTextAsync(address);
+                await Clipboard.SetTextAsync(value);
                 ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             else
@@ -272,6 +279,24 @@ namespace atomex.ViewModel.SendViewModels
 
         protected async override Task FromClick()
         {
+            var outputs = (await Account.GetAvailableOutputsAsync())
+                .Select(output => new OutputViewModel()
+                {
+                    Output = (BitcoinBasedTxOutput)output,
+                    Config = Config,
+                    CopyAction = OnCopyClicked,
+                    IsSelected = Outputs.Any(o =>
+                        output.TxId == o.TxId &&
+                        output.Index == o.Index)
+
+                })
+                .ToList();
+
+            SelectOutputsViewModel = new SelectOutputsViewModel(outputs, Account, Config)
+            {
+                ConfirmAction = ChangeOutputs
+            };
+
             await Navigation.PushAsync(new OutputsListPage(SelectOutputsViewModel));
         }
 

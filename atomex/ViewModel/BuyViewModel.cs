@@ -9,6 +9,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
