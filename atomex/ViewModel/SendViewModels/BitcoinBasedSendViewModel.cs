@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
-using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using atomex.Views.Send;
@@ -20,8 +19,6 @@ using NBitcoin;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -34,8 +31,6 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
-            _ = GetOutputs();
-
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
                 .Subscribe(outputs =>
@@ -49,34 +44,9 @@ namespace atomex.ViewModel.SendViewModels
 
                     SelectedAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
                 });
-        }
 
-        private BitcoinBasedConfig Config => (BitcoinBasedConfig)Currency;
-
-        [Reactive] private IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
-
-        [Reactive] public decimal FeeRate { get; set; }
-
-        [Reactive] public SelectOutputsViewModel SelectOutputsViewModel { get; set; }
-
-        private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
-
-        protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
-        {
-            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
-            await Navigation.PushAsync(new ToAddressPage(this));
-        }
-
-        protected async void ChangeOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
-        {
-            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
-            await Navigation.PopAsync();
-        }
-
-        protected async Task GetOutputs()
-        {
-
-            var outputs = (await Account.GetAvailableOutputsAsync())
+            var outputs = Account.GetAvailableOutputsAsync()
+                .WaitForResult()
                 .Select(output => new OutputViewModel()
                 {
                     Output = (BitcoinBasedTxOutput)output,
@@ -86,16 +56,46 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectOutputsViewModel = new SelectOutputsViewModel(outputs, Account, Config)
+            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config)
             {
                 ConfirmAction = ConfirmOutputs
             };
+
+            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency)
+            {
+                ConfirmAction = ConfirmToAddress,
+                ScanAction = ScanPage,
+                ScanResultAction = ScanResult
+            };
         }
 
-        protected override async Task UpdateAmount(decimal amount)
+        private BitcoinBasedConfig Config => (BitcoinBasedConfig)Currency;
+
+        [Reactive] private IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
+
+        [Reactive] public decimal FeeRate { get; set; }
+
+        private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
+
+        protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        {
+            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+        }
+
+        protected async void ChangeOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        {
+            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+            await Navigation.PopAsync();
+        }
+
+        protected override async Task UpdateAmount()
         {
             try
             {
+                if (Outputs == null)
+                    return;
+
                 if (UseDefaultFee)
                 {
                     FeeRate = await Config.GetFeeRateAsync();
@@ -148,10 +148,13 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected override async Task UpdateFee(decimal fee)
+        protected override async Task UpdateFee()
         {
             try
             {
+                if (Outputs == null)
+                    return;
+
                 var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
                     availableOutputs: Outputs,
                     to: To,
@@ -185,6 +188,9 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
+                if (Outputs == null)
+                    return;
+
                 if (UseDefaultFee)
                 {
                     if (App.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
@@ -203,6 +209,9 @@ namespace atomex.ViewModel.SendViewModels
                     if (maxAmountEstimation.Amount > 0)
                     {
                         Amount = maxAmountEstimation.Amount;
+                        AmountString = Amount.ToString();
+                        this.RaisePropertyChanged(nameof(AmountString));
+
                         return;
                     }
 
@@ -226,6 +235,9 @@ namespace atomex.ViewModel.SendViewModels
                     {
                         Warning = AppResources.InsufficientFunds;
                         Amount = 0;
+                        AmountString = Amount.ToString();
+                        this.RaisePropertyChanged(nameof(AmountString));
+
                         return;
                     }
 
@@ -242,9 +254,12 @@ namespace atomex.ViewModel.SendViewModels
                             Warning = AppResources.LowFees;
                     }
 
+                    AmountString = Amount.ToString();                        
+
                     FeeRate = transactionParams.FeeRate;
                 }
 
+                this.RaisePropertyChanged(nameof(AmountString));
                 OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
             catch (Exception e)
@@ -264,19 +279,6 @@ namespace atomex.ViewModel.SendViewModels
                 cancellationToken: cancellationToken);
         }
 
-        private async void OnCopyClicked(string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                await Clipboard.SetTextAsync(value);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
         protected async override Task FromClick()
         {
             var outputs = (await Account.GetAvailableOutputsAsync())
@@ -292,17 +294,18 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectOutputsViewModel = new SelectOutputsViewModel(outputs, Account, Config)
+            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config)
             {
                 ConfirmAction = ChangeOutputs
             };
 
-            await Navigation.PushAsync(new OutputsListPage(SelectOutputsViewModel));
+            await Navigation.PushAsync(new OutputsListPage(SelectFromViewModel as SelectOutputsViewModel));
         }
 
-        protected override Task ToClick()
+        protected async override Task ToClick()
         {
-            throw new NotImplementedException();
+            SelectToViewModel.ConfirmAction = ChangeToAddress;
+            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }
     }
 }

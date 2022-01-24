@@ -8,7 +8,6 @@ using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views;
 using atomex.Views.Popup;
 using Atomex;
 using Atomex.Core;
@@ -19,7 +18,6 @@ using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -72,7 +70,7 @@ namespace atomex.ViewModel.SendViewModels
 
         public string FeeString
         {
-            get => Amount.ToString(CultureInfo.InvariantCulture);
+            get => Fee.ToString(CultureInfo.InvariantCulture);
             set
             {
                 string temp = value.Replace(",", ".");
@@ -99,10 +97,9 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool UseDefaultFee { get; set; }
         [Reactive] public decimal AmountInBase { get; set; }
         [Reactive] public decimal FeeInBase { get; set; }
+        [Reactive] public decimal TotalAmountInBase { get; set; }
         [Reactive] public string Warning { get; set; }
         [Reactive] public bool IsLoading { get; set; }
-        [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
 
         public string CurrencyCode => CurrencyViewModel.CurrencyCode;
         public string FeeCurrencyCode => CurrencyViewModel.FeeCurrencyCode;
@@ -111,10 +108,12 @@ namespace atomex.ViewModel.SendViewModels
         public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
-        protected abstract Task UpdateAmount(decimal amount);
-        protected abstract Task UpdateFee(decimal fee);
+        protected abstract Task UpdateAmount();
+        protected abstract Task UpdateFee();
         protected abstract Task OnMaxClick();
         protected abstract Task<Error> Send(CancellationToken cancellationToken = default);
+        protected abstract Task FromClick();
+        protected abstract Task ToClick();
 
         public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
         {
@@ -128,8 +127,8 @@ namespace atomex.ViewModel.SendViewModels
 
             UseDefaultFee = true;
 
-            var updateAmountCommand = ReactiveCommand.CreateFromTask<decimal>(UpdateAmount);
-            var updateFeeCommand = ReactiveCommand.CreateFromTask<decimal>(UpdateFee);
+            var updateAmountCommand = ReactiveCommand.CreateFromTask(UpdateAmount);
+            var updateFeeCommand = ReactiveCommand.CreateFromTask(UpdateFee);
 
             this.WhenAnyValue(
                 vm => vm.From,
@@ -139,15 +138,38 @@ namespace atomex.ViewModel.SendViewModels
                 )
                 .Subscribe(_ => Warning = string.Empty);
 
-            this.WhenAnyValue(vm => vm.Amount)
+            this.WhenAnyValue(
+                    vm => vm.Amount,
+                    vm => vm.Fee,
+                    (amount, fee) => amount + fee
+                )
+                .Select(totalAmount => totalAmount.ToString())
+                .ToPropertyEx(this, vm => vm.TotalAmountString);
+
+            this.WhenAnyValue(
+                    vm => vm.Amount,
+                    vm => vm.From,
+                    vm => vm.To
+                )
+                .Select(_ => Unit.Default)
                 .InvokeCommand(updateAmountCommand);
 
+            //this.WhenAnyValue(vm => vm.Amount)
+            //    .Select(amount => amount.ToString())
+            //    .ToPropertyEx(this, vm => vm.AmountString);
+
             this.WhenAnyValue(vm => vm.Fee)
+                .Select(_ => Unit.Default)
                 .InvokeCommand(updateFeeCommand);
+
+            //this.WhenAnyValue(vm => vm.Fee)
+            //    .Select(fee => fee.ToString())
+            //    .ToPropertyEx(this, vm => vm.FeeString);
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
                 .Where(useDefaultFee => useDefaultFee)
-                .Subscribe(_ => updateAmountCommand.Execute(Amount));
+                .Select(_ => Unit.Default)
+                .InvokeCommand(updateAmountCommand);
 
             SubscribeToServices();
         }
@@ -178,14 +200,6 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> PasteCommand =>
             _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
 
-        private ReactiveCommand<Unit, Unit> _scanAddressCommand;
-        public ReactiveCommand<Unit, Unit> ScanCommand =>
-            _scanAddressCommand ??= (_scanAddressCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
-
-        private ReactiveCommand<Unit, Unit> _scanResultCommand;
-        public ReactiveCommand<Unit, Unit> ScanResultCommand =>
-            _scanResultCommand ??= (_scanResultCommand = ReactiveCommand.CreateFromTask(OnScanResult));
-
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
             (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
@@ -194,90 +208,48 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
 
-        private ICommand _searchAddressCommand;
-        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
+        private ReactiveCommand<Unit, Unit> _sendingConfirmationCommand;
+        public ReactiveCommand<Unit, Unit> SendingConfirmationCommand => _sendingConfirmationCommand ??=
+            (_sendingConfirmationCommand = ReactiveCommand.CreateFromTask(SendingConfirmation));
 
-        private ReactiveCommand<Unit, Unit> _confirmToAddressCommand;
-        public ReactiveCommand<Unit, Unit> ConfirmToAddressCommand => _confirmToAddressCommand ??=
-            (_confirmToAddressCommand = ReactiveCommand.CreateFromTask(Test));
-
-        private async Task Test()
+        private async Task SendingConfirmation()
         {
+            await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
+        }
+
+        protected async void ConfirmToAddress(string address, decimal balance)
+        {
+            To = address;
             await Navigation.PushAsync(new Views.Send.SendPage(this));
         }
 
-        private ReactiveCommand<Unit, Unit> _sendingConfirmationCommand;
-        public ReactiveCommand<Unit, Unit> SendingConfirmationCommand => _sendingConfirmationCommand ??=
-            (_sendingConfirmationCommand = ReactiveCommand.CreateFromTask(Test2));
-
-        private async Task Test2()
+        protected async void ChangeToAddress(string address, decimal balance)
         {
-            await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
-            //await Navigation.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
+            To = address;
+            await Navigation.PopAsync();
         }
 
-        protected abstract Task FromClick();
-
-        protected abstract Task ToClick();
-
-        [Reactive] public Result ScanResult { get; set; }
-
-        private async Task OnScanResult()
+        protected async void ScanPage()
         {
-            IsScanning = false;
-            IsAnalyzing = false;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
+            await Navigation.PushAsync(new ScanningQrPage(SelectToViewModel));
+        }
 
-            if (ScanResult == null)
+        protected async void ScanResult(string address)
+        {
+            To = address;
+            await Navigation.PopAsync();
+        }
+
+        protected async void OnCopyClicked(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PopAsync();
-                });
-                return;
+                await Clipboard.SetTextAsync(value);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
-
-            Device.BeginInvokeOnMainThread(async () =>
+            else
             {
-                int indexOfChar = ScanResult.Text.IndexOf(':');
-                if (indexOfChar == -1)
-                    To = ScanResult.Text;
-                else
-                    To = ScanResult.Text.Substring(indexOfChar + 1);
-
-                await Navigation.PopAsync();
-            });
-        }
-
-        private async Task OnScanButtonClicked()
-        {
-            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
-
-            if (permissions != PermissionStatus.Granted)
-                permissions = await Permissions.RequestAsync<Permissions.Camera>();
-            if (permissions != PermissionStatus.Granted)
-                return;
-
-            IsScanning = true;
-            IsAnalyzing = true;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
-            await Navigation.PushAsync(new ScanningQrPage(this));
-        }
-
-        private void OnSearchEntryTextChanged(string value)
-        {
-            try
-            {
-                Console.WriteLine(value);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 
@@ -396,6 +368,7 @@ namespace atomex.ViewModel.SendViewModels
 
             AmountInBase = Amount * (quote?.Bid ?? 0m);
             FeeInBase = Fee * (quote?.Bid ?? 0m);
+            TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
         }
     }
 }

@@ -6,10 +6,10 @@ namespace atomex
 {
     public partial class ScanningQrPage : ContentPage
     {
-        public ScanningQrPage(SendViewModel sendViewModel)
+        public ScanningQrPage(SelectAddressViewModel selectAddressViewModel)
         {
             InitializeComponent();
-            BindingContext = sendViewModel;
+            BindingContext = selectAddressViewModel;
         }
 
         public ScanningQrPage(TezosTokensSendViewModel tezosTokensSendViewModel)

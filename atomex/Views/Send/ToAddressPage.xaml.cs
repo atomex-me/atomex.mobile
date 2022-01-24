@@ -6,10 +6,10 @@ namespace atomex.Views.Send
 {
     public partial class ToAddressPage : ContentPage
     {
-        public ToAddressPage(SendViewModel sendViewModel)
+        public ToAddressPage(SelectAddressViewModel selectAddressViewModel)
         {
             InitializeComponent();
-            BindingContext = sendViewModel;
+            BindingContext = selectAddressViewModel;
             SetVisualState("External");
         }
 

@@ -29,7 +29,7 @@ namespace atomex.ViewModel.SendViewModels
         //protected abstract Task OnMaxClick();
         //protected abstract Task<Error> Send(CancellationToken cancellationToken = default);
 
-        protected override Task UpdateFee(decimal fee)
+        protected override Task UpdateFee()
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace atomex.ViewModel.SendViewModels
             throw new NotImplementedException();
         }
 
-        protected override Task UpdateAmount(decimal amount)
+        protected override Task UpdateAmount()
         {
             throw new NotImplementedException();
         }

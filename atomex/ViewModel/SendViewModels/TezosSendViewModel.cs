@@ -22,12 +22,12 @@ namespace atomex.ViewModel.SendViewModels
         {
         }
 
-        protected override Task UpdateAmount(decimal amount)
+        protected override Task UpdateAmount()
         {
             throw new NotImplementedException();
         }
 
-        protected override Task UpdateFee(decimal fee)
+        protected override Task UpdateFee()
         {
             throw new NotImplementedException();
         }

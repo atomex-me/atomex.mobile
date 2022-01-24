@@ -49,12 +49,12 @@
                     </Frame.GestureRecognizers>
                 </Frame>
                 <Image Grid.RowSpan="2"
-                       Source="BTC"
+                       Source="{Binding CurrencyViewModel.CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
                        Margin="20,0,10,0"/>
-                <Label Grid.Column="1"
+                <!--<Label Grid.Column="1"
                        Text="mx6hd7698...345bhhj"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
@@ -62,7 +62,7 @@
                        LineBreakMode="MiddleTruncation"
                        FontSize="16"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       IsVisible="{Binding IsBtcBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}"/>
+                       IsVisible="{Binding IsBtcBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}"/>-->
                 <Label Grid.Column="1"
                        Text="{Binding From}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -74,30 +74,12 @@
                        IsVisible="{Binding IsBtcBased}"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Text="{Binding CurrencyViewModel.AvailableAmount}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       IsVisible="{Binding IsBtcBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding CurrencyViewModel.AvailableAmount}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Grid.Row="1"
-                       Grid.Column="1"
                        Text="{Binding SelectedAmount}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       IsVisible="{Binding IsBtcBased}">
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding SelectedAmount}"/>
@@ -128,7 +110,7 @@
                 </Frame>
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
-                       Source="BTC"
+                       Source="{Binding CurrencyViewModel.CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -136,7 +118,7 @@
                 <Label Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="1"
-                       Text="mx6hd7698dghfGH87gJDHdjhf345bhhj"
+                       Text="{Binding To}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
@@ -181,7 +163,7 @@
                     <Label Grid.Column="1"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End"
-                           Text="$2134.42"
+                           Text="{Binding AmountInBase, StringFormat='${0:0.00}'}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="12"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
@@ -209,25 +191,59 @@
                             Margin="16,0"
                             BoxSizeRequest="18"
                             TextFontSize="16"
-                            IsChecked="True"
+                            IsChecked="{Binding UseDefaultFee}"
                             Type="Material"
                             Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
                             IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
                             TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-            <Label Text="Gas price 100 GWEI"
+            <Label FontFamily="{DynamicResource RegularFont}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontSize="12"
+                   Margin="16,0"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                   IsVisible="{Binding IsBtcBased}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Fee rate"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"/>
+                        <Span Text=" sat/byte"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label FontFamily="{DynamicResource RegularFont}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontSize="12"
+                   Margin="16,0"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Fee"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding FeeString}"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding FeeInBase, StringFormat='(${0:0.00})'}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <!--<Label Text="Gas price 100 GWEI"
                    FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
                    FontSize="12"
                    Margin="16,0"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-            <Label Text="Fee 0.042 ETH ($18.24)"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>-->
+            <!--<Label Text="Fee 0.042 ETH ($18.24)"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
                    FontFamily="{DynamicResource RegularFont}"
                    FontSize="12"
                    Margin="16,0"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>-->
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='#E3F2FD'}">
                 <Button Text="Review"

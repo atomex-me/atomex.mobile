@@ -344,8 +344,8 @@ namespace atomex.ViewModel.CurrencyViewModels
             var sendViewModel = SendViewModelCreator.CreateViewModel(AtomexApp, this);
             if (Currency is BitcoinBasedConfig)
             {
-                var bitcoinBasedViewModel = sendViewModel as BitcoinBasedSendViewModel;
-                await Navigation.PushAsync(new OutputsListPage(bitcoinBasedViewModel.SelectOutputsViewModel));
+                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                await Navigation.PushAsync(new OutputsListPage(selectOutputsViewModel));
             }
             else
                 await Navigation.PushAsync(new SendPage(sendViewModel));
