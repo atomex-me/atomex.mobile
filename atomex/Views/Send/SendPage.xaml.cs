@@ -16,5 +16,10 @@ namespace atomex.Views.Send
         {
             AmountEntry.Focus();
         }
+
+        private void FeeEntryFocus(object sender, EventArgs args)
+        {
+            FeeEntry.Focus();
+        }
     }
 }

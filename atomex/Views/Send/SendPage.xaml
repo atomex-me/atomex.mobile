@@ -10,13 +10,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <RelativeLayout>
+    <ContentPage.Content>
         <StackLayout Spacing="0"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-            <Label Text="Send"
+            <Label Text="{helpers:Translate SendPageTitle}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    Padding="0,20"
                    Margin="16,0"
@@ -26,10 +27,11 @@
                   RowSpacing="8"
                   Margin="16,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60" />
@@ -39,7 +41,6 @@
                 <Frame Grid.RowSpan="2"
                        Grid.ColumnSpan="3"
                        HorizontalOptions="FillAndExpand"
-                       HeightRequest="90"
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F002041'}"
@@ -54,15 +55,6 @@
                        HeightRequest="22"
                        VerticalOptions="Center"
                        Margin="20,0,10,0"/>
-                <!--<Label Grid.Column="1"
-                       Text="mx6hd7698...345bhhj"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"
-                       LineBreakMode="MiddleTruncation"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       IsVisible="{Binding IsBtcBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}"/>-->
                 <Label Grid.Column="1"
                        Text="{Binding From}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -99,7 +91,6 @@
                        Grid.RowSpan="2"
                        Grid.ColumnSpan="3"
                        HorizontalOptions="FillAndExpand"
-                       HeightRequest="90"
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F000E22'}"
@@ -132,6 +123,30 @@
                        HeightRequest="12"
                        WidthRequest="12"
                        VerticalOptions="Center"/>
+                <Frame WidthRequest="40"
+                       HeightRequest="40"
+                       CornerRadius="20"
+                       Margin="0,70,0,-70"
+                       Grid.ColumnSpan="3"
+                       Padding="0"
+                       HorizontalOptions="Center"
+                       IsClippedToBounds="True"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+                <StackLayout Grid.Row="4"
+                             HeightRequest="8"
+                             WidthRequest="40"
+                             Margin="0,-104,0,104"
+                             Grid.ColumnSpan="3"
+                             HorizontalOptions="Center"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+                <Image Grid.ColumnSpan="3"
+                       Source="SwapArrows"
+                       HeightRequest="20"
+                       WidthRequest="20"
+                       Margin="0,70,0,-70"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
             </Grid>
             <Frame Padding="0"
                    Margin="16"
@@ -151,7 +166,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
-                    <custom:CustomEntry Placeholder="Enter amount"
+                    <custom:CustomEntry Placeholder="{Binding AmountEntryPlaceholderString}"
                                         Text="{Binding AmountString}"
                                         Keyboard="Numeric"
                                         x:Name="AmountEntry"
@@ -187,7 +202,66 @@
                             Command="{Binding MaxCommand}"/>
                 </Grid>
             </Frame>
-            <input:CheckBox Text="Use default fee"
+            <Frame Padding="0"
+                   Margin="16,0,16,16"
+                   HeightRequest="56"
+                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                   CornerRadius="5"
+                   HasShadow="False"
+                   IsVisible="False">
+                <Frame.Triggers>
+                    <MultiTrigger TargetType="Frame">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding UseDefaultFee}"
+                                              Value="False"/>
+                            <BindingCondition Binding="{Binding IsBtcBased}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </Frame.Triggers>
+                <Grid HorizontalOptions="Fill"
+                      ColumnSpacing="0"
+                      RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <custom:CustomEntry Placeholder="{Binding FeeEntryPlaceholderString}"
+                                        Text="{Binding Fee}"
+                                        Keyboard="Numeric"
+                                        x:Name="FeeEntry"
+                                        Margin="16,0"
+                                        Style="{DynamicResource EntryStyle}"
+                                        FontSize="16"
+                                        HorizontalTextAlignment="Start"
+                                        VerticalTextAlignment="Center"/>
+                    <Label Grid.Column="1"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="End"
+                           Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="12"
+                           Margin="16,0"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="FeeEntryFocus"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </Frame>
+            <Label Text="{Binding Warning}"
+                   Style="{DynamicResource WarningTextStyle}"
+                   TextColor="#FF7A00"
+                   HorizontalTextAlignment="Start"
+                   Margin="16,0"
+                   IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
+            <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
                             Margin="16,0"
                             BoxSizeRequest="18"
                             TextFontSize="16"
@@ -205,7 +279,7 @@
                    IsVisible="{Binding IsBtcBased}">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Fee rate"/>
+                        <Span Text="{helpers:Translate FeeRateLabel}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"/>
                         <Span Text=" sat/byte"/>
@@ -220,9 +294,9 @@
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Fee"/>
+                        <Span Text="{helpers:Translate FeeLabel}"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding FeeString}"/>
+                        <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                         <Span Text=" "/>
@@ -245,8 +319,8 @@
                    Margin="16,0"
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>-->
             <StackLayout VerticalOptions="EndAndExpand"
-                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='#E3F2FD'}">
-                <Button Text="Review"
+                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                <Button Text="{helpers:Translate ReviewButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"
                         Command="{Binding SendingConfirmationCommand}">
@@ -254,39 +328,18 @@
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding Amount}"
                                      Value="0">
-                            <Setter Property="BackgroundColor"
+                            <!--<Setter Property="BackgroundColor"
                                     Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>-->
                             <Setter Property="Opacity"
                                     Value="0.5"/>
                             <Setter Property="IsEnabled"
                                     Value="False"/>
                         </DataTrigger>
-                        <!--<MultiTrigger TargetType="StackLayout">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding Amount}"
-                                                  Value="0"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
-                        </MultiTrigger>-->
                     </Button.Triggers>
                 </Button>
             </StackLayout>
         </StackLayout>
-        <Frame WidthRequest="40"
-               HeightRequest="40"
-               CornerRadius="20"
-               Padding="0"
-               HorizontalOptions="Center"
-               IsClippedToBounds="True"
-               HasShadow="False"
-               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0,Constant=154}"
-               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=-20}">
-            <Image Source="SwapArrows"
-                   Margin="10"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"/>
-        </Frame>
-    </RelativeLayout>
+    </ContentPage.Content>
 </ContentPage>

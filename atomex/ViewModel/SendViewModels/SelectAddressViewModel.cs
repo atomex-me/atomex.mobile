@@ -31,9 +31,13 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool SortIsAscending { get; set; }
         [Reactive] public bool SortByBalance { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
+        //[Reactive] public string Warning { get; set; }
 
         public SelectAddressViewModel(IAccount account, CurrencyConfig currency, bool useToSelectFrom = false)
         {
+            //this.WhenAnyValue(vm => vm.ToAddress)
+            //    .Subscribe(_ => Warning = string.Empty);
+
             this.WhenAnyValue(
                     vm => vm.SortByBalance,
                     vm => vm.SortIsAscending,
@@ -145,8 +149,27 @@ namespace atomex.ViewModel.SendViewModels
                     ? 0m
                     : SelectedAddress.WalletAddress.AvailableBalance();
 
+                //if (string.IsNullOrEmpty(ToAddress))
+                //{
+                //    Warning = AppResources.EmptyAddressError;
+                //    return;
+                //}
+
                 ConfirmAction?.Invoke(selectedAddress, balance);
             }));
+
+        private ReactiveCommand<WalletAddressViewModel, Unit> _selectAddressCommand;
+        public ReactiveCommand<WalletAddressViewModel, Unit> SelectAddressCommand => _selectAddressCommand ??=
+            (_selectAddressCommand = ReactiveCommand.Create<WalletAddressViewModel>(a => SelectAddress(a)));
+
+        private void SelectAddress(WalletAddressViewModel address)
+        {
+            SelectedAddress = address;
+            var selectedAddress = SelectedAddress.WalletAddress.Address;
+            var balance = SelectedAddress.WalletAddress.AvailableBalance();
+
+            ConfirmAction?.Invoke(selectedAddress, balance);
+        }
 
         private ICommand _searchAddressCommand;
         public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));

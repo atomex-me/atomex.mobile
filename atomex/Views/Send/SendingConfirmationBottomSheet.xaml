@@ -23,11 +23,8 @@
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
-        <RelativeLayout>
-        <StackLayout Spacing="10"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
-            <Label Text="Review"
+        <StackLayout Spacing="10">
+            <Label Text="{helpers:Translate ReviewButton}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    Padding="0,20,0,0"
                    HorizontalTextAlignment="Start"/>
@@ -35,10 +32,11 @@
                   ColumnSpacing="0"
                   RowSpacing="8">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60" />
@@ -47,7 +45,6 @@
                 <Frame Grid.RowSpan="2"
                        Grid.ColumnSpan="2"
                        HorizontalOptions="FillAndExpand"
-                       HeightRequest="90"
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="Transparent"
@@ -87,14 +84,13 @@
                        Grid.RowSpan="2"
                        Grid.ColumnSpan="2"
                        HorizontalOptions="FillAndExpand"
-                       HeightRequest="90"
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
-                       Source="BTC"
+                       Source="{Binding CurrencyViewModel.CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -109,10 +105,36 @@
                        Padding="0,0,20,0"
                        FontSize="16"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                <Frame WidthRequest="40"
+                       HeightRequest="40"
+                       CornerRadius="20"
+                       Margin="0,70,0,-70"
+                       Grid.ColumnSpan="2"
+                       Padding="0"
+                       HorizontalOptions="Center"
+                       IsClippedToBounds="True"
+                       HasShadow="False"
+                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"
+                       BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                <StackLayout Grid.Row="4"
+                             HeightRequest="8"
+                             WidthRequest="40"
+                             Margin="0,-104,0,104"
+                             Grid.ColumnSpan="2"
+                             HorizontalOptions="Center"
+                             BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                <Image Grid.ColumnSpan="2"
+                       Source="SwapArrows"
+                       HeightRequest="20"
+                       WidthRequest="20"
+                       Margin="0,70,0,-70"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+
             </Grid>
             <StackLayout Orientation="Horizontal"
                          Spacing="4">
-                <Label Text="Amount"
+                <Label Text="{helpers:Translate AmountLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
@@ -143,7 +165,7 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal"
                          Spacing="4">
-                <Label Text="Fee"
+                <Label Text="{helpers:Translate FeeLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
@@ -155,7 +177,7 @@
                        HorizontalOptions="EndAndExpand">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding FeeString}"
+                            <Span Text="{Binding Fee,StringFormat='{0:0.#########}'}"
                                   FontSize="14"
                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                             <Span Text=" "/>
@@ -175,7 +197,7 @@
             <StackLayout Orientation="Horizontal"
                          Spacing="4"
                          IsVisible="{Binding IsBtcBased}">
-                <Label Text="Fee rate"
+                <Label Text="{helpers:Translate FeeRateLabel}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
@@ -187,7 +209,7 @@
                        HorizontalOptions="EndAndExpand">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding FeeRate}"
+                            <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"
                                   FontSize="14"
                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                             <Span Text=" sat/byte"
@@ -200,7 +222,7 @@
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Orientation="Horizontal"
                          Spacing="4">
-                <Label Text="Total (incl. fees)"
+                <Label Text="{helpers:Translate TotalAmountInclFees}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start"
@@ -232,27 +254,11 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand">
-                <Button Text="Send"
+                <Button Text="{helpers:Translate SendButton}"
                         Style="{DynamicResource MainButtonStyle}"
-                        Command="{Binding SendingConfirmationCommand}"/>
+                        Command="{Binding SendCommand}"/>
             </StackLayout>
         </StackLayout>
-        <Frame WidthRequest="40"
-               HeightRequest="40"
-               CornerRadius="20"
-               Padding="0"
-               HorizontalOptions="Center"
-               IsClippedToBounds="True"
-               HasShadow="False"
-               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"
-               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=0,Constant=142}"
-               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=.5,Constant=-20}">
-            <Image Source="SwapArrows"
-                   Margin="10"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center"/>
-        </Frame>
-        </RelativeLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>

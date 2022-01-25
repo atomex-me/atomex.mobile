@@ -71,6 +71,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ReviewButton {
+            get {
+                return ResourceManager.GetString("ReviewButton", resourceCulture);
+            }
+        }
+        
         internal static string UnderstandButton {
             get {
                 return ResourceManager.GetString("UnderstandButton", resourceCulture);
@@ -152,6 +158,12 @@ namespace atomex.Resources {
         internal static string MinimumAmountLabel {
             get {
                 return ResourceManager.GetString("MinimumAmountLabel", resourceCulture);
+            }
+        }
+        
+        internal static string TotalAmountInclFees {
+            get {
+                return ResourceManager.GetString("TotalAmountInclFees", resourceCulture);
             }
         }
         

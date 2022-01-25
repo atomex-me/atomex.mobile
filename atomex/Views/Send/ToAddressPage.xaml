@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -169,22 +170,13 @@
                        Margin="15,0"
                        HasShadow="False">
                     <custom:CustomEntry Placeholder="{helpers:Translate ExternalAddress}"
-                                        Text="{Binding ToAddress}"
+                                        Text="{Binding ToAddress, Mode=TwoWay}"
                                         Style="{DynamicResource EntryStyle}"
                                         FontSize="16"
                                         HorizontalTextAlignment="Start"
                                         VerticalTextAlignment="Center"
                                         Margin="15,0"/>
                 </Frame>
-                <input:CheckBox Text="{helpers:Translate SaveToMyAddresses}"
-                                Margin="15,0"
-                                BoxSizeRequest="18"
-                                TextFontSize="16"
-                                IsChecked="False"
-                                Type="Material"
-                                Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
-                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
             </StackLayout>
             <StackLayout Spacing="5"
                          x:Name="MyAddressesTab">
@@ -298,11 +290,10 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="40" />
                                 </Grid.ColumnDefinitions>
-                                <!--<Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectFromCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                                          Tapped="OnItemTapped"
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
                                                           CommandParameter="{Binding .}"/>
-                                </Grid.GestureRecognizers>-->
+                                </Grid.GestureRecognizers>
                                 <Label Grid.ColumnSpan="2"
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
@@ -356,6 +347,14 @@
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='#E3F2FD'}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"
+                                 Value="False">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"

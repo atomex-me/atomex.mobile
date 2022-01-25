@@ -26,6 +26,9 @@
     <data name="ConfirmButton" xml:space="preserve">
         <value>Confirm</value>
     </data>
+    <data name="ReviewButton" xml:space="preserve">
+        <value>Review</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>I understand</value>
     </data>
@@ -67,6 +70,9 @@
     </data>
     <data name="MinimumAmountLabel" xml:space="preserve">
         <value>Min. amount</value>
+    </data>
+    <data name="TotalAmountInclFees" xml:space="preserve">
+        <value>Total (incl. fees)</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
         <value>To</value>

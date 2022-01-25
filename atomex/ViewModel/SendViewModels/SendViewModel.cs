@@ -4,7 +4,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
@@ -34,7 +33,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public string From { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
         [Reactive] public string To { get; set; }
-        [Reactive] protected decimal Amount { get; set; }
+        [Reactive] public decimal Amount { get; set; }
         [ObservableAsProperty] public string TotalAmountString { get; }
 
         public string AmountString
@@ -66,7 +65,7 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        [Reactive] protected decimal Fee { get; set; }
+        [Reactive] public decimal Fee { get; set; }
 
         public string FeeString
         {
@@ -105,7 +104,7 @@ namespace atomex.ViewModel.SendViewModels
         public string FeeCurrencyCode => CurrencyViewModel.FeeCurrencyCode;
         public string BaseCurrencyCode => CurrencyViewModel.BaseCurrencyCode;
 
-        public string AmountEntryPlaceholderString => $"{AppResources.AmountEntryPlaceholder}, {CurrencyCode}";
+        public string AmountEntryPlaceholderString => $"{AppResources.EnterAmountLabel}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
         protected abstract Task UpdateAmount();
