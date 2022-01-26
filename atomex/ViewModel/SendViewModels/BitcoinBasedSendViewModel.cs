@@ -51,7 +51,6 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     Output = (BitcoinBasedTxOutput)output,
                     Config = Config,
-                    CopyAction = OnCopyClicked,
                     IsSelected = true
                 })
                 .ToList();
@@ -286,7 +285,6 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     Output = (BitcoinBasedTxOutput)output,
                     Config = Config,
-                    CopyAction = OnCopyClicked,
                     IsSelected = Outputs.Any(o =>
                         output.TxId == o.TxId &&
                         output.Index == o.Index)

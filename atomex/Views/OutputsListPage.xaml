@@ -150,7 +150,8 @@
                                        VerticalOptions="FillAndExpand"
                                        Source="ic_copy">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
+                                                              CommandParameter="{Binding .}"/>
                                     </Image.GestureRecognizers>
                                 </Image>
                             </Grid>

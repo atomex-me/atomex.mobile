@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
+using atomex.Services;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
@@ -20,7 +21,9 @@ namespace atomex.ViewModel.SendViewModels
 {
     public class SelectAddressViewModel : BaseViewModel
     {
-        public Action<string, decimal> ConfirmAction { get; set; }
+        protected IToastService ToastService { get; set; }
+
+        public Action<string, decimal?> ConfirmAction { get; set; }
         public Action ScanAction { get; set; }
         public Action<string> ScanResultAction { get; set; }
         public bool UseToSelectFrom { get; set; }
@@ -31,12 +34,14 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool SortIsAscending { get; set; }
         [Reactive] public bool SortByBalance { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
-        //[Reactive] public string Warning { get; set; }
+
+        [Reactive] public Result ScanResult { get; set; }
+        [Reactive] public bool IsScanning { get; set; }
+        [Reactive] public bool IsAnalyzing { get; set; }
 
         public SelectAddressViewModel(IAccount account, CurrencyConfig currency, bool useToSelectFrom = false)
         {
-            //this.WhenAnyValue(vm => vm.ToAddress)
-            //    .Subscribe(_ => Warning = string.Empty);
+            ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
 
             this.WhenAnyValue(
                     vm => vm.SortByBalance,
@@ -104,14 +109,14 @@ namespace atomex.ViewModel.SendViewModels
                         }
 
                         MyAddresses = new ObservableCollection<WalletAddressViewModel>(myAddressesList);
-                        
+
                     }
                     else
                     {
                         MyAddresses = new ObservableCollection<WalletAddressViewModel>(item2
                             ? myAddresses.OrderBy(addressViewModel => addressViewModel.AvailableBalance)
                             : myAddresses.OrderByDescending(addressViewModel => addressViewModel.AvailableBalance));
-                        
+
                     }
                 });
 
@@ -125,7 +130,7 @@ namespace atomex.ViewModel.SendViewModels
                     .WaitForResult()
                     .Where(address => !useToSelectFrom || !address.IsFreeAddress)
                 );
-            
+
             InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(MyAddresses);
         }
 
@@ -141,68 +146,57 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> ConfirmCommand => _confirmCommand ??=
             (_confirmCommand = ReactiveCommand.Create(() =>
             {
-                var selectedAddress = SelectedAddress == null
-                    ? ToAddress
-                    : SelectedAddress.WalletAddress.Address;
-
-                var balance = SelectedAddress == null
-                    ? 0m
-                    : SelectedAddress.WalletAddress.AvailableBalance();
-
-                //if (string.IsNullOrEmpty(ToAddress))
-                //{
-                //    Warning = AppResources.EmptyAddressError;
-                //    return;
-                //}
-
-                ConfirmAction?.Invoke(selectedAddress, balance);
+                ConfirmAction?.Invoke(ToAddress, 0m);
             }));
 
         private ReactiveCommand<WalletAddressViewModel, Unit> _selectAddressCommand;
         public ReactiveCommand<WalletAddressViewModel, Unit> SelectAddressCommand => _selectAddressCommand ??=
-            (_selectAddressCommand = ReactiveCommand.Create<WalletAddressViewModel>(a => SelectAddress(a)));
+            (_selectAddressCommand = ReactiveCommand.Create<WalletAddressViewModel>(SelectAddress));
 
-        private void SelectAddress(WalletAddressViewModel address)
-        {
-            SelectedAddress = address;
-            var selectedAddress = SelectedAddress.WalletAddress.Address;
-            var balance = SelectedAddress.WalletAddress.AvailableBalance();
+        private ReactiveCommand<Unit, Unit> _pasteCommand;
+        public ReactiveCommand<Unit, Unit> PasteCommand =>
+            _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
 
-            ConfirmAction?.Invoke(selectedAddress, balance);
-        }
-
-        private ICommand _searchAddressCommand;
-        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
-
-        private void OnSearchEntryTextChanged(string value)
-        {
-            try
-            {
-                Console.WriteLine(value);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
-        }
-        private ICommand _copyAddressCommand;
-        public ICommand CopyAddressCommand =>
-            _copyAddressCommand ??= (_copyAddressCommand = ReactiveCommand.Create((WalletAddress address) =>
-            {
-            }));
+        private ReactiveCommand<WalletAddressViewModel, Unit> _copyCommand;
+        public ReactiveCommand<WalletAddressViewModel, Unit> CopyCommand =>
+            _copyCommand ??= (_copyCommand = ReactiveCommand.CreateFromTask<WalletAddressViewModel>(OnCopyButtonClicked));
 
         private ReactiveCommand<Unit, Unit> _scanCommand;
         public ReactiveCommand<Unit, Unit> ScanCommand =>
             _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
 
+        private ReactiveCommand<Unit, Unit> _clearToAddressCommand;
+        public ReactiveCommand<Unit, Unit> ClearToAddressCommand =>
+            _clearToAddressCommand ??= (_clearToAddressCommand = ReactiveCommand.Create(() =>
+            {
+                ToAddress = string.Empty;
+            }));
+
         private ICommand _scanResultCommand;
         public ICommand ScanResultCommand =>
             _scanResultCommand ??= new Command(async () => await OnScanResult());
 
+        protected async void OnCopyClicked(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                await Clipboard.SetTextAsync(value);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
 
-        [Reactive] public Result ScanResult { get; set; }
-        [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
+        private void SelectAddress(WalletAddressViewModel address)
+        {
+            SelectedAddress = address;
+            var selectedAddress = SelectedAddress?.WalletAddress?.Address;
+            var balance = SelectedAddress?.WalletAddress?.AvailableBalance();
+
+            ConfirmAction?.Invoke(selectedAddress, balance);
+        }
 
         private async Task OnScanResult()
         {
@@ -249,6 +243,47 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsAnalyzing));
 
             ScanAction?.Invoke();
+        }
+
+        private async Task OnPasteButtonClicked()
+        {
+            if (Clipboard.HasText)
+            {
+                var text = await Clipboard.GetTextAsync();
+                ToAddress = text;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
+            }
+        }
+
+        private async Task OnCopyButtonClicked(WalletAddressViewModel address)
+        {
+            if (address != null)
+            {
+                await Clipboard.SetTextAsync(address.Address);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private ICommand _searchAddressCommand;
+        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
+
+        private void OnSearchEntryTextChanged(string value)
+        {
+            try
+            {
+                Console.WriteLine(value);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
         }
     }
 }

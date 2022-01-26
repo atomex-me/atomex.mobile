@@ -110,6 +110,7 @@
                        Grid.RowSpan="2"
                        Grid.Column="1"
                        Text="{Binding To}"
+                       LineHeight="1.25"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
@@ -255,12 +256,6 @@
                     </Label>
                 </Grid>
             </Frame>
-            <Label Text="{Binding Warning}"
-                   Style="{DynamicResource WarningTextStyle}"
-                   TextColor="#FF7A00"
-                   HorizontalTextAlignment="Start"
-                   Margin="16,0"
-                   IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
             <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
                             Margin="16,0"
                             BoxSizeRequest="18"
@@ -304,30 +299,53 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <!--<Label Text="Gas price 100 GWEI"
-                   FontFamily="{DynamicResource RegularFont}"
-                   HorizontalTextAlignment="Start"
-                   VerticalTextAlignment="Center"
-                   FontSize="12"
-                   Margin="16,0"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>-->
-            <!--<Label Text="Fee 0.042 ETH ($18.24)"
-                   HorizontalTextAlignment="Start"
-                   VerticalTextAlignment="Center"
-                   FontFamily="{DynamicResource RegularFont}"
-                   FontSize="12"
-                   Margin="16,0"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>-->
+            <Frame BackgroundColor="Transparent"
+                   BorderColor="#FF7A00"
+                   CornerRadius="5"
+                   Padding="20"
+                   Margin="16"
+                   IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
+                <Label Text="{Binding Warning}"
+                       Style="{DynamicResource WarningTextStyle}"
+                       TextColor="#FF7A00"
+                       HorizontalTextAlignment="Center"
+                       VerticalOptions="EndAndExpand"
+                       Margin="16,0"/>
+            </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
                 <Button Text="{helpers:Translate ReviewButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"
-                        Command="{Binding SendingConfirmationCommand}">
+                        Command="{Binding ConfirmationCommand}">
                     <Button.Triggers>
+                        <!--<MultiTrigger TargetType="Button">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Amount}"
+                                                  Value="0"/>
+                                <BindingCondition Binding="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                                  Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Opacity"
+                                    Value="0.5"/>
+                            <Setter Property="IsEnabled"
+                                    Value="False"/>
+                        </MultiTrigger>-->
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding Amount}"
                                      Value="0">
+                            <!--<Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>-->
+                            <Setter Property="Opacity"
+                                    Value="0.5"/>
+                            <Setter Property="IsEnabled"
+                                    Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                     Value="True">
                             <!--<Setter Property="BackgroundColor"
                                     Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
                             <Setter Property="TextColor"

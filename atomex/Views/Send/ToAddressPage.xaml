@@ -6,7 +6,6 @@
     x:Name="BindingContextPage"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:custom="clr-namespace:atomex.CustomElements"
-    xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
@@ -14,6 +13,7 @@
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -169,13 +169,52 @@
                        CornerRadius="5"
                        Margin="15,0"
                        HasShadow="False">
-                    <custom:CustomEntry Placeholder="{helpers:Translate ExternalAddress}"
-                                        Text="{Binding ToAddress, Mode=TwoWay}"
-                                        Style="{DynamicResource EntryStyle}"
-                                        FontSize="16"
-                                        HorizontalTextAlignment="Start"
-                                        VerticalTextAlignment="Center"
-                                        Margin="15,0"/>
+                    <Grid HorizontalOptions="Fill"
+                          ColumnSpacing="0"
+                          RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <custom:CustomEntry Placeholder="Paste an address"
+                                            Text="{Binding ToAddress, Mode=TwoWay}"
+                                            Style="{DynamicResource EntryStyle}"
+                                            FontSize="16"
+                                            HorizontalTextAlignment="Start"
+                                            VerticalTextAlignment="Center"
+                                            Margin="15,0"/>
+                        <Button Grid.Column="1"
+                                Text="{helpers:Translate PasteButton}"
+                                BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                                BackgroundColor="Transparent"
+                                BorderWidth="1"
+                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                FontSize="12"
+                                Padding="0"
+                                WidthRequest="56"
+                                HeightRequest="28"
+                                Margin="16,0"
+                                CornerRadius="14"
+                                VerticalOptions="Center"
+                                Command="{Binding PasteCommand}"
+                                IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>
+                        <ImageButton Grid.Column="1"
+                                     Source="ic_close__red"
+                                     BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                                     BackgroundColor="Transparent"
+                                     BorderWidth="1"
+                                     Padding="7"
+                                     WidthRequest="24"
+                                     HeightRequest="24"
+                                     Margin="16,0"
+                                     CornerRadius="12"
+                                     VerticalOptions="Center"
+                                     Command="{Binding ClearToAddressCommand}"
+                                     IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"></ImageButton>
+                    </Grid>
                 </Frame>
             </StackLayout>
             <StackLayout Spacing="5"
@@ -338,7 +377,12 @@
                                        Margin="0"
                                        VerticalOptions="CenterAndExpand"
                                        HorizontalOptions="End"
-                                       Source="ic_copy"/>
+                                       Source="ic_copy">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

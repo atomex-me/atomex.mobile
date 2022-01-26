@@ -5,19 +5,24 @@ using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
+using atomex.Services;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Core;
 using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
     public class SelectOutputsViewModel : BaseViewModel
     {
+        protected IToastService ToastService { get; set; }
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
@@ -29,6 +34,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             Account = account ?? throw new ArgumentNullException(nameof(Account));
             Currency = config ?? throw new ArgumentNullException(nameof(Currency));
+            ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
 
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 
@@ -167,11 +173,15 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<OutputViewModel, Unit> _selectOutputCommand;
         public ReactiveCommand<OutputViewModel, Unit> SelectOutputCommand => _selectOutputCommand ??=
-            (_selectOutputCommand = ReactiveCommand.Create<OutputViewModel>(o => SelectOutput(o)));
+            (_selectOutputCommand = ReactiveCommand.Create<OutputViewModel>(SelectOutput));
 
         private ReactiveCommand<object, Unit> _selectAllCommand;
         public ReactiveCommand<object, Unit> SelectAllCommand => _selectAllCommand ??=
             (_selectAllCommand = ReactiveCommand.Create<object>(o => SelectAllOutputs()));
+
+        private ReactiveCommand<OutputViewModel, Unit> _copyCommand;
+        public ReactiveCommand<OutputViewModel, Unit> CopyCommand =>
+            _copyCommand ??= (_copyCommand = ReactiveCommand.CreateFromTask<OutputViewModel>(OnCopyButtonClicked));
 
         private ICommand _confirmOutputsCommand;
         public ICommand ConfirmOutputsCommand => _confirmOutputsCommand ??=
@@ -222,6 +232,19 @@ namespace atomex.ViewModel.SendViewModels
 
             UpdateSelectedAmount();
         }
+
+        protected async Task OnCopyButtonClicked(OutputViewModel output)
+        {
+            if (output != null)
+            {
+                await Clipboard.SetTextAsync(output.Address);
+                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
     }
 
     public class OutputViewModel : BaseViewModel
@@ -234,10 +257,6 @@ namespace atomex.ViewModel.SendViewModels
 
         public decimal Balance => Config.SatoshiToCoin(Output.Value);
         public string Address => Output.DestinationAddress(Config.Network);
-
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??=
-            (_copyCommand = ReactiveCommand.Create(() => { CopyAction?.Invoke(Address); }));
     }
 }
 

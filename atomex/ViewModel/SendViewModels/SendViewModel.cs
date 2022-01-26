@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
-using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Popup;
 using Atomex;
@@ -15,7 +14,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Rg.Plugins.Popup.Services;
 using Serilog;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
@@ -24,7 +22,6 @@ namespace atomex.ViewModel.SendViewModels
     {
         protected IAtomexApp App { get; }
         protected INavigation Navigation { get; set; }
-        protected IToastService ToastService { get; set; }
 
         protected CurrencyConfig Currency { get; set; }
         public BaseViewModel SelectFromViewModel { get; set; }
@@ -120,9 +117,7 @@ namespace atomex.ViewModel.SendViewModels
 
             CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel));
             Currency = currencyViewModel?.Currency;
-
             Navigation = currencyViewModel?.Navigation;
-            ToastService = DependencyService.Get<IToastService>();
 
             UseDefaultFee = true;
 
@@ -153,17 +148,9 @@ namespace atomex.ViewModel.SendViewModels
                 .Select(_ => Unit.Default)
                 .InvokeCommand(updateAmountCommand);
 
-            //this.WhenAnyValue(vm => vm.Amount)
-            //    .Select(amount => amount.ToString())
-            //    .ToPropertyEx(this, vm => vm.AmountString);
-
             this.WhenAnyValue(vm => vm.Fee)
                 .Select(_ => Unit.Default)
                 .InvokeCommand(updateFeeCommand);
-
-            //this.WhenAnyValue(vm => vm.Fee)
-            //    .Select(fee => fee.ToString())
-            //    .ToPropertyEx(this, vm => vm.FeeString);
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
                 .Where(useDefaultFee => useDefaultFee)
@@ -179,13 +166,9 @@ namespace atomex.ViewModel.SendViewModels
                 App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        private ReactiveCommand<Unit, Unit> _nextCommand;
-        public ReactiveCommand<Unit, Unit> NextCommand =>
-            _nextCommand ??= (_nextCommand = ReactiveCommand.CreateFromTask(OnNextButtonClicked));
-
         private ReactiveCommand<Unit, Unit> _sendCommand;
         public ReactiveCommand<Unit, Unit> SendCommand =>
-            _sendCommand ??= (_sendCommand = ReactiveCommand.CreateFromTask(SendClicked));
+            _sendCommand ??= (_sendCommand = ReactiveCommand.CreateFromTask(SendButtonClicked));
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
         public ReactiveCommand<Unit, Unit> MaxCommand =>
@@ -195,10 +178,6 @@ namespace atomex.ViewModel.SendViewModels
                 await OnMaxClick();
             }));
 
-        private ReactiveCommand<Unit, Unit> _pasteCommand;
-        public ReactiveCommand<Unit, Unit> PasteCommand =>
-            _pasteCommand ??= (_pasteCommand = ReactiveCommand.CreateFromTask(OnPasteButtonClicked));
-
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
             (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
@@ -207,65 +186,11 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
 
-        private ReactiveCommand<Unit, Unit> _sendingConfirmationCommand;
-        public ReactiveCommand<Unit, Unit> SendingConfirmationCommand => _sendingConfirmationCommand ??=
-            (_sendingConfirmationCommand = ReactiveCommand.CreateFromTask(SendingConfirmation));
+        private ReactiveCommand<Unit, Unit> _confirmationCommand;
+        public ReactiveCommand<Unit, Unit> ConfirmationCommand => _confirmationCommand ??=
+            (_confirmationCommand = ReactiveCommand.CreateFromTask(SendingConfirmation));
 
         private async Task SendingConfirmation()
-        {
-            await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
-        }
-
-        protected async void ConfirmToAddress(string address, decimal balance)
-        {
-            To = address;
-            await Navigation.PushAsync(new Views.Send.SendPage(this));
-        }
-
-        protected async void ChangeToAddress(string address, decimal balance)
-        {
-            To = address;
-            await Navigation.PopAsync();
-        }
-
-        protected async void ScanPage()
-        {
-            await Navigation.PushAsync(new ScanningQrPage(SelectToViewModel));
-        }
-
-        protected async void ScanResult(string address)
-        {
-            To = address;
-            await Navigation.PopAsync();
-        }
-
-        protected async void OnCopyClicked(string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                await Clipboard.SetTextAsync(value);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private async Task OnPasteButtonClicked()
-        {
-            if (Clipboard.HasText)
-            {
-                var text = await Clipboard.GetTextAsync();                
-                To = text;
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
-            }
-        }
-
-        protected virtual async Task OnNextButtonClicked()
         {
             if (string.IsNullOrEmpty(To))
             {
@@ -302,33 +227,56 @@ namespace atomex.ViewModel.SendViewModels
             }
 
             if (string.IsNullOrEmpty(Warning))
-                await Navigation.PushAsync(new SendingConfirmationPage(this));
+                await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
             else
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
-        private async Task SendClicked()
+        protected async void ConfirmToAddress(string address, decimal? balance)
+        {
+            To = address;
+            await Navigation.PushAsync(new Views.Send.SendPage(this));
+        }
+
+        protected async void ChangeToAddress(string address, decimal? balance)
+        {
+            To = address;
+            await Navigation.PopAsync();
+        }
+
+        protected async void ScanPage()
+        {
+            await Navigation.PushAsync(new ScanningQrPage(SelectToViewModel));
+        }
+
+        protected async void ScanResult(string address)
+        {
+            To = address;
+            await Navigation.PopAsync();
+        }
+
+        private async Task SendButtonClicked()
         {
             IsLoading = true;
             this.RaisePropertyChanged(nameof(IsLoading));
             try
             {
-                var error = await Send();
+                //var error = await Send();
 
-                if (error != null)
-                {
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Error,
-                            Title = AppResources.Error,
-                            Body = error.Description,
-                            ButtonText = AppResources.AcceptButton
-                        }));
-                    return;
-                }
+                //if (error != null)
+                //{
+                //    IsLoading = false;
+                //    this.RaisePropertyChanged(nameof(IsLoading));
+                //    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                //        new PopupViewModel
+                //        {
+                //            Type = PopupType.Error,
+                //            Title = AppResources.Error,
+                //            Body = error.Description,
+                //            ButtonText = AppResources.AcceptButton
+                //        }));
+                //    return;
+                //}
             }
             catch (Exception e)
             {
@@ -354,8 +302,8 @@ namespace atomex.ViewModel.SendViewModels
                     ButtonText = AppResources.AcceptButton
                 }));
 
-            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-            await Navigation.PopAsync();
+            //for (int i = Navigation.NavigationStack.Count; i >= 1; i--) 
+            //    Navigation.RemovePage(Navigation.NavigationStack[i]);
         }
 
         protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
