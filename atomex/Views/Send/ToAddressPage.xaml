@@ -202,7 +202,7 @@
                                 Command="{Binding PasteCommand}"
                                 IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>
                         <ImageButton Grid.Column="1"
-                                     Source="ic_close__red"
+                                     Source="ic_close"
                                      BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
                                      BackgroundColor="Transparent"
                                      BorderWidth="1"
@@ -399,6 +399,7 @@
                                 Value="False"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"

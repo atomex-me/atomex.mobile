@@ -30,7 +30,7 @@ namespace atomex.Views
             Color initColor = selectedItem.BackgroundColor;
             selectedItem.BackgroundColor = selectedItemBackgroundColor;
 
-            await Task.Delay(200);
+            await Task.Delay(100);
 
             selectedItem.BackgroundColor = initColor;
             selectedItem.IsEnabled = true;

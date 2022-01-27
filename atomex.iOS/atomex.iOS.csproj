@@ -321,6 +321,14 @@
     <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down--light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down--light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -511,6 +519,8 @@
     <Folder Include="Assets.xcassets\ic_sort__up.imageset\" />
     <Folder Include="Assets.xcassets\ic_sort__down.imageset\" />
     <Folder Include="Assets.xcassets\ic_qr.imageset\" />
+    <Folder Include="Assets.xcassets\ic_arrow__down.imageset\" />
+    <Folder Include="Assets.xcassets\ic_close.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

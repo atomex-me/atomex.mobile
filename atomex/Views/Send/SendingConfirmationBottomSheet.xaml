@@ -124,9 +124,9 @@
                              HorizontalOptions="Center"
                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
                 <Image Grid.ColumnSpan="2"
-                       Source="SwapArrows"
-                       HeightRequest="20"
-                       WidthRequest="20"
+                       Source="ic_arrow__down"
+                       HeightRequest="14"
+                       WidthRequest="14"
                        Margin="0,70,0,-70"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"/>
@@ -254,6 +254,7 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand">
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate SendButton}"
                         Style="{DynamicResource MainButtonStyle}"
                         Command="{Binding SendCommand}"/>

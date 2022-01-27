@@ -142,9 +142,9 @@
                              HorizontalOptions="Center"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
                 <Image Grid.ColumnSpan="3"
-                       Source="SwapArrows"
-                       HeightRequest="20"
-                       WidthRequest="20"
+                       Source="ic_arrow__down"
+                       HeightRequest="14"
+                       WidthRequest="14"
                        Margin="0,70,0,-70"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"/>
@@ -314,6 +314,7 @@
             </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ReviewButton}"
                         Margin="15,10"
                         Style="{DynamicResource MainButtonStyle}"
