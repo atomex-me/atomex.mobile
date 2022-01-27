@@ -261,22 +261,22 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsLoading));
             try
             {
-                //var error = await Send();
+                var error = await Send();
 
-                //if (error != null)
-                //{
-                //    IsLoading = false;
-                //    this.RaisePropertyChanged(nameof(IsLoading));
-                //    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                //        new PopupViewModel
-                //        {
-                //            Type = PopupType.Error,
-                //            Title = AppResources.Error,
-                //            Body = error.Description,
-                //            ButtonText = AppResources.AcceptButton
-                //        }));
-                //    return;
-                //}
+                if (error != null)
+                {
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Error,
+                            Title = AppResources.Error,
+                            Body = error.Description,
+                            ButtonText = AppResources.AcceptButton
+                        }));
+                    return;
+                }
             }
             catch (Exception e)
             {
@@ -293,6 +293,8 @@ namespace atomex.ViewModel.SendViewModels
                     }));
             }
 
+            await PopupNavigation.Instance.PopAsync();
+
             await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                 new PopupViewModel
                 {
@@ -302,8 +304,8 @@ namespace atomex.ViewModel.SendViewModels
                     ButtonText = AppResources.AcceptButton
                 }));
 
-            //for (int i = Navigation.NavigationStack.Count; i >= 1; i--) 
-            //    Navigation.RemovePage(Navigation.NavigationStack[i]);
+            for (int i = Navigation.NavigationStack.Count; i > 2; i--)
+                Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
         }
 
         protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)

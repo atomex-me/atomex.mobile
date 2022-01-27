@@ -307,7 +307,6 @@
                          Margin="16,0,0,0"/>
             <ListView ItemsSource="{Binding MyAddresses}"
                       SelectionMode="None"
-                      Margin="16,0"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       CachingStrategy="RetainElement"
@@ -319,7 +318,7 @@
                         <ViewCell>
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0"
-                                  Margin="0,5">
+                                  Padding="16,5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="32" />
                                     <RowDefinition Height="20" />
@@ -331,7 +330,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
-                                                          CommandParameter="{Binding .}"/>
+                                                          CommandParameter="{Binding .}"
+                                                          Tapped="OnItemTapped"/>
                                 </Grid.GestureRecognizers>
                                 <Label Grid.ColumnSpan="2"
                                        Text="{Binding Address}"

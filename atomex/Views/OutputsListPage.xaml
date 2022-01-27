@@ -96,7 +96,7 @@
                         <ViewCell>
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0"
-                                  Margin="15,0">
+                                  Padding="16,5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="32" />
                                     <RowDefinition Height="32" />
@@ -108,7 +108,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectOutputCommand, Source={x:Reference BindingContextPage}}"
-                                                          CommandParameter="{Binding .}"/>
+                                                          CommandParameter="{Binding .}"
+                                                          Tapped="OnItemTapped"/>
                                 </Grid.GestureRecognizers>
                                 <input:CheckBox Grid.RowSpan="2"
                                                 BoxSizeRequest="18"
