@@ -1,7 +1,7 @@
 {
   "images": [
     {
-      "filename": "ScanTest.pdf",
+      "filename": "ic_search.pdf",
       "idiom": "universal"
     },
     {
@@ -87,6 +87,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_search--dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -304,6 +305,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_search-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

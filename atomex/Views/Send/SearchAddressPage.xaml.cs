@@ -5,11 +5,11 @@ using Xamarin.Forms;
 
 namespace atomex.Views.Send
 {
-    public partial class ToAddressPage : ContentPage
+    public partial class SearchAddressPage : ContentPage
     {
         Color selectedItemBackgroundColor;
 
-        public ToAddressPage(SelectAddressViewModel selectAddressViewModel)
+        public SearchAddressPage(SelectAddressViewModel selectAddressViewModel)
         {
             InitializeComponent();
             BindingContext = selectAddressViewModel;

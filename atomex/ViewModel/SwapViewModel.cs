@@ -196,7 +196,7 @@ namespace atomex
         public string State
         { 
             get => _state;
-            set { _state = value; OnPropertyChanged(nameof(CompletionStatusMessages)); }
+            set { _state = value; OnPropertyChanged(nameof(State)); }
         }
 
         private string _stateDescription;

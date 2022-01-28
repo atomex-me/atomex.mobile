@@ -244,12 +244,7 @@ namespace atomex.ViewModel.SendViewModels
             await Navigation.PopAsync();
         }
 
-        protected async void ScanPage()
-        {
-            await Navigation.PushAsync(new ScanningQrPage(SelectToViewModel));
-        }
-
-        protected async void ScanResult(string address)
+        protected async void ScanAddress(string address)
         {
             To = address;
             await Navigation.PopAsync();

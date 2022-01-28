@@ -10,7 +10,7 @@
     Title="{helpers:Translate CreateSwapPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ScanTest"
+        <ToolbarItem IconImageSource="ic_qr"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ScanAddressCommand}"/>

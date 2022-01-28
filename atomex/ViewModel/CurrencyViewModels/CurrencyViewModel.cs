@@ -10,6 +10,7 @@ using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain;
 using Atomex.Common;
@@ -345,7 +346,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (Currency is BitcoinBasedConfig)
             {
                 var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                await Navigation.PushAsync(new OutputsListPage(selectOutputsViewModel));
+                await Navigation.PushAsync(new FromOutputsPage(selectOutputsViewModel));
             }
             else
                 await Navigation.PushAsync(new SendPage(sendViewModel));

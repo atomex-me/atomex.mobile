@@ -12,6 +12,12 @@ namespace atomex
             BindingContext = selectAddressViewModel;
         }
 
+        public ScanningQrPage(SelectOutputsViewModel selectAddressViewModel)
+        {
+            InitializeComponent();
+            BindingContext = selectAddressViewModel;
+        }
+
         public ScanningQrPage(TezosTokensSendViewModel tezosTokensSendViewModel)
         {
             InitializeComponent();

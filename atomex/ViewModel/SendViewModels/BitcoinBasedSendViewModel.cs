@@ -55,16 +55,15 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config)
+            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config, Navigation)
             {
                 ConfirmAction = ConfirmOutputs
             };
 
-            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency)
+            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
             {
                 ConfirmAction = ConfirmToAddress,
-                ScanAction = ScanPage,
-                ScanResultAction = ScanResult
+                ScanAction = ScanAddress
             };
         }
 
@@ -292,12 +291,12 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config)
+            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config, Navigation)
             {
                 ConfirmAction = ChangeOutputs
             };
 
-            await Navigation.PushAsync(new OutputsListPage(SelectFromViewModel as SelectOutputsViewModel));
+            await Navigation.PushAsync(new FromOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
         }
 
         protected async override Task ToClick()

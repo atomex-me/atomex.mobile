@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Core;
@@ -17,12 +18,15 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
     public class SelectOutputsViewModel : BaseViewModel
     {
         protected IToastService ToastService { get; set; }
+        protected INavigation Navigation { get; set; }
+
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedAmount { get; set; }
@@ -30,11 +34,16 @@ namespace atomex.ViewModel.SendViewModels
         private BitcoinBasedAccount Account { get; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
-        public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config)
+        [Reactive] public Result ScanResult { get; set; }
+        [Reactive] public bool IsScanning { get; set; }
+        [Reactive] public bool IsAnalyzing { get; set; }
+
+        public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config, INavigation navigation)
         {
             Account = account ?? throw new ArgumentNullException(nameof(Account));
             Currency = config ?? throw new ArgumentNullException(nameof(Currency));
             ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
+            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
 
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 
@@ -183,6 +192,14 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<OutputViewModel, Unit> CopyCommand =>
             _copyCommand ??= (_copyCommand = ReactiveCommand.CreateFromTask<OutputViewModel>(OnCopyButtonClicked));
 
+        private ReactiveCommand<Unit, Unit> _scanCommand;
+        public ReactiveCommand<Unit, Unit> ScanCommand =>
+            _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
+
+        private ReactiveCommand<Unit, Unit> _searchCommand;
+        public ReactiveCommand<Unit, Unit> SearchCommand =>
+            _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
+
         private ICommand _confirmOutputsCommand;
         public ICommand ConfirmOutputsCommand => _confirmOutputsCommand ??=
             (_confirmOutputsCommand = ReactiveCommand.Create(ConfirmOutputs));
@@ -244,6 +261,28 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
+        }
+
+        private async Task OnScanButtonClicked()
+        {
+            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
+
+            if (permissions != PermissionStatus.Granted)
+                permissions = await Permissions.RequestAsync<Permissions.Camera>();
+            if (permissions != PermissionStatus.Granted)
+                return;
+
+            IsScanning = true;
+            IsAnalyzing = true;
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
+
+            await Navigation.PushAsync(new ScanningQrPage(this));
+        }
+
+        private async Task OnSearchButtonClicked()
+        {
+            await Navigation.PushAsync(new SearchOutputsPage(this));
         }
     }
 

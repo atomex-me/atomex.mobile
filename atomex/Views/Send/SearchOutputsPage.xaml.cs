@@ -5,14 +5,14 @@ using Xamarin.Forms;
 
 namespace atomex.Views.Send
 {
-    public partial class ToAddressPage : ContentPage
+    public partial class SearchOutputsPage : ContentPage
     {
         Color selectedItemBackgroundColor;
 
-        public ToAddressPage(SelectAddressViewModel selectAddressViewModel)
+        public SearchOutputsPage(SelectOutputsViewModel selectOutputsViewModel)
         {
             InitializeComponent();
-            BindingContext = selectAddressViewModel;
+            BindingContext = selectOutputsViewModel;
 
             string selectedColorName = "ListViewSelectedBackgroundColor";
 
@@ -30,7 +30,7 @@ namespace atomex.Views.Send
             Color initColor = selectedItem.BackgroundColor;
             selectedItem.BackgroundColor = selectedItemBackgroundColor;
 
-            await Task.Delay(500);
+            await Task.Delay(100);
 
             selectedItem.BackgroundColor = initColor;
             selectedItem.IsEnabled = true;

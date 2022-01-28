@@ -295,8 +295,6 @@
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ScanTest.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ScanTest.imageset\ScanTest.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_edit.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit.pdf" />
@@ -329,6 +327,10 @@
     <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -521,6 +523,7 @@
     <Folder Include="Assets.xcassets\ic_qr.imageset\" />
     <Folder Include="Assets.xcassets\ic_arrow__down.imageset\" />
     <Folder Include="Assets.xcassets\ic_close.imageset\" />
+    <Folder Include="Assets.xcassets\ic_search.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

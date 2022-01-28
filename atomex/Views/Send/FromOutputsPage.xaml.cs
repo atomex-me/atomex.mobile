@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using atomex.ViewModel.SendViewModels;
 using Xamarin.Forms;
 
-namespace atomex.Views
+namespace atomex.Views.Send
 {
-    public partial class OutputsListPage : ContentPage
+    public partial class FromOutputsPage : ContentPage
     {
         Color selectedItemBackgroundColor;
 
-        public OutputsListPage(SelectOutputsViewModel selectOutputsViewModel)
+        public FromOutputsPage(SelectOutputsViewModel selectOutputsViewModel)
         {
             InitializeComponent();
             BindingContext = selectOutputsViewModel;

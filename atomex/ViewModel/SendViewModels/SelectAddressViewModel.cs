@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
+using atomex.Views.Send;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
@@ -22,10 +22,10 @@ namespace atomex.ViewModel.SendViewModels
     public class SelectAddressViewModel : BaseViewModel
     {
         protected IToastService ToastService { get; set; }
+        protected INavigation Navigation { get; set; }
 
         public Action<string, decimal?> ConfirmAction { get; set; }
-        public Action ScanAction { get; set; }
-        public Action<string> ScanResultAction { get; set; }
+        public Action<string> ScanAction { get; set; }
         public bool UseToSelectFrom { get; set; }
         private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
@@ -39,9 +39,29 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool IsScanning { get; set; }
         [Reactive] public bool IsAnalyzing { get; set; }
 
-        public SelectAddressViewModel(IAccount account, CurrencyConfig currency, bool useToSelectFrom = false)
+        [Reactive] public bool IsMyAddressesTab { get; set; }
+        [Reactive] public string ToolbarIcon { get; set; }
+        [Reactive] public ReactiveCommand<Unit, Unit> ToolbarCommand { get; set; }
+
+        public SelectAddressViewModel(IAccount account, CurrencyConfig currency, INavigation navigation, bool useToSelectFrom = false)
         {
             ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
+            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+
+            this.WhenAnyValue(vm => vm.IsMyAddressesTab)
+                .Subscribe(value =>
+                {
+                    if (IsMyAddressesTab)
+                    {
+                        ToolbarIcon = "ic_search";
+                        ToolbarCommand = SearchCommand;
+                    }
+                    else
+                    {
+                        ToolbarIcon = "ic_qr";
+                        ToolbarCommand = ScanCommand;
+                    }
+                });
 
             this.WhenAnyValue(
                     vm => vm.SortByBalance,
@@ -121,6 +141,7 @@ namespace atomex.ViewModel.SendViewModels
                 });
 
             UseToSelectFrom = useToSelectFrom;
+            IsMyAddressesTab = false;
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(
                 AddressesHelper
@@ -165,11 +186,22 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> ScanCommand =>
             _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
 
+        private ReactiveCommand<Unit, Unit> _searchCommand;
+        public ReactiveCommand<Unit, Unit> SearchCommand =>
+            _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
+
         private ReactiveCommand<Unit, Unit> _clearToAddressCommand;
         public ReactiveCommand<Unit, Unit> ClearToAddressCommand =>
             _clearToAddressCommand ??= (_clearToAddressCommand = ReactiveCommand.Create(() =>
             {
                 ToAddress = string.Empty;
+            }));
+
+        private ReactiveCommand<bool, Unit> _changeAddressesTabCommand;
+        public ReactiveCommand<bool, Unit> ChangeAddressesTabCommand =>
+            _changeAddressesTabCommand ??= (_changeAddressesTabCommand = ReactiveCommand.Create<bool>((value) =>
+            {
+                IsMyAddressesTab = value;
             }));
 
         private ICommand _scanResultCommand;
@@ -211,7 +243,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    ScanResultAction.Invoke(string.Empty);
+                    ScanAction.Invoke(string.Empty);
                 });
                 return;
             }
@@ -224,7 +256,7 @@ namespace atomex.ViewModel.SendViewModels
                 else
                     ToAddress = ScanResult.Text.Substring(indexOfChar + 1);
 
-                ScanResultAction.Invoke(ToAddress);
+                ScanAction.Invoke(ToAddress);
             });
         }
 
@@ -242,7 +274,12 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsScanning));
             this.RaisePropertyChanged(nameof(IsAnalyzing));
 
-            ScanAction?.Invoke();
+            await Navigation.PushAsync(new ScanningQrPage(this));
+        }
+
+        private async Task OnSearchButtonClicked()
+        {
+            await Navigation.PushAsync(new SearchAddressPage(this));
         }
 
         private async Task OnPasteButtonClicked()
@@ -268,21 +305,6 @@ namespace atomex.ViewModel.SendViewModels
             else
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private ICommand _searchAddressCommand;
-        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
-
-        private void OnSearchEntryTextChanged(string value)
-        {
-            try
-            {
-                Console.WriteLine(value);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
             }
         }
     }

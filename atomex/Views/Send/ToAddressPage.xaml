@@ -7,7 +7,6 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
-    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,10 +16,11 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ScanTest"
+        <ToolbarItem IconImageSource="{Binding ToolbarIcon}"
                      Order="Primary"
                      Priority="0"
-                     Command="{Binding ScanCommand}"/>
+                     Command="{Binding ToolbarCommand}">
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
@@ -44,124 +44,113 @@
                         Text="{helpers:Translate ExternalAddress}"
                         FontFamily="{DynamicResource RegularFont}"
                         FontSize="14"
-                        Clicked="OnButtonClicked"
-                        CommandParameter="External"
-                        x:Name="ExternalAddressButton"
+                        Command="{Binding ChangeAddressesTabCommand}"
                         BackgroundColor="Transparent">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="External">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState Name="My">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    <Button.CommandParameter>
+                        <x:Boolean>False</x:Boolean>
+                    </Button.CommandParameter>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                        </DataTrigger>
+                    </Button.Triggers>
                 </Button>
                 <Button Grid.Column="1"
                         CornerRadius="0"
                         Text="{helpers:Translate MyAddresses}"
                         FontFamily="{DynamicResource RegularFont}"
                         FontSize="14"
-                        Clicked="OnButtonClicked"
-                        CommandParameter="My"
-                        x:Name="MyAddressButton"
-                        BackgroundColor="Transparent">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="External">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState Name="My">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                        BackgroundColor="Transparent"
+                        Command="{Binding ChangeAddressesTabCommand}">
+                    <Button.CommandParameter>
+                        <x:Boolean>True</x:Boolean>
+                    </Button.CommandParameter>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="True">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="False">
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                        </DataTrigger>
+                    </Button.Triggers>
                 </Button>
                 <StackLayout Grid.Row="1"
-                             x:Name="ExternalAddressUnderline"
                              Style="{DynamicResource SeparatorStyle}"
                              VerticalOptions="End">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="External">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                    <Setter Property="HeightRequest"
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
+                            <Setter Property="HeightRequest"
+                                    Value="1"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                            <Setter Property="HeightRequest"
                                             Value="2"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState Name="My">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
-                                    <Setter Property="HeightRequest"
-                                            Value="1"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
                 <StackLayout Grid.Row="1"
                              Grid.Column="1"
-                             x:Name="MyAddressUnderline"
                              Style="{DynamicResource SeparatorStyle}"
                              VerticalOptions="End">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="External">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
-                                    <Setter Property="HeightRequest"
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
+                            <Setter Property="HeightRequest"
                                             Value="1"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState Name="My">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                    <Setter Property="HeightRequest"
+                        </DataTrigger>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding IsMyAddressesTab}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                            <Setter Property="HeightRequest"
                                             Value="2"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
             </Grid>
             <StackLayout Spacing="15"
-                         Margin="0,20"
-                         x:Name="ExternalAddressTab">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup>
-                        <VisualState Name="My">
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState Name="External">
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible"
-                                        Value="True"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
+                         Margin="0,20">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsMyAddressesTab}"
+                                 Value="True">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsMyAddressesTab}"
+                                 Value="False">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <Frame Padding="0"
                        HeightRequest="56"
                        BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"
@@ -217,41 +206,31 @@
                     </Grid>
                 </Frame>
             </StackLayout>
-            <StackLayout Spacing="5"
-                         x:Name="MyAddressesTab">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup>
-                        <VisualState Name="My">
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible"
-                                        Value="True"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState Name="External">
-                            <VisualState.Setters>
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
+            <StackLayout Spacing="5">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsMyAddressesTab}"
+                                 Value="True">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsMyAddressesTab}"
+                                 Value="False">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
                          Margin="15,0">
-                <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
-                                    Style="{DynamicResource EntryStyle}"
-                                    FontSize="14"
+                <Label Text="{helpers:Translate MyAddresses}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                     HorizontalTextAlignment="Start"
                                     VerticalTextAlignment="Center"
                                     VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"
-                                    x:Name="AddressesEntry">
-                    <custom:CustomEntry.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="TextChanged"
-                                                          Command="{Binding SearchAddressCommand}"
-                                                          CommandParameter="{Binding Source={x:Reference AddressesEntry},Path=Text}"/>
-                    </custom:CustomEntry.Behaviors>
-                </custom:CustomEntry>
+                                    HorizontalOptions="FillAndExpand"/>
                 <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                         BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
                         WidthRequest="132"
@@ -337,6 +316,7 @@
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       LineBreakMode="MiddleTruncation"
                                        FontSize="16"
                                        Padding="0,3"
                                        VerticalTextAlignment="End"

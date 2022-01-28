@@ -2,85 +2,41 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="atomex.Views.OutputsListPage"
+    x:Class="atomex.Views.Send.SearchOutputsPage"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
+    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
-            <Label Text="{helpers:Translate SendFrom}"
-                   Style="{DynamicResource CreateSwapTitleStyle}"
-                   HorizontalTextAlignment="Start"
-                   FontSize="30"
-                   Margin="0,10"/>
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
                          Margin="15,0,15,10"
                          Spacing="0">
-                <input:CheckBox Text="{helpers:Translate SelectAll}"
-                                BoxSizeRequest="18"
-                                TextFontSize="16"
-                                IsChecked="{Binding SelectAll, Mode=TwoWay}"
-                                CheckChangedCommand="{Binding SelectAllCommand, Mode=TwoWay}"
-                                Type="Material"
-                                Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
-                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                <StackLayout HorizontalOptions="EndAndExpand"
-                             Orientation="Horizontal">
-                    <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                            BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                            WidthRequest="132"
-                            HeightRequest="32"
-                            HorizontalOptions="End"
-                            CornerRadius="16"
-                            FontSize="14"
-                            Padding="0"
-                            Margin="0,10"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding ChangeSortTypeCommand}"
-                            TextTransform="Lowercase">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value="Sort by balance"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="False">
-                                <Setter Property="Text"
-                                        Value="Sort by date"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                                 Padding="6"
-                                 Margin="0,10"
-                                 HorizontalOptions="End"
-                                 HeightRequest="32"
-                                 WidthRequest="32"
-                                 CornerRadius="16"
-                                 Command="{Binding ChangeSortDirectionCommand}">
-                        <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SortIsAscending}"
-                                         Value="True">
-                                <Setter Property="Source"
-                                        Value="ic_sort__up"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SortIsAscending}"
-                                         Value="False">
-                                <Setter Property="Source"
-                                        Value="ic_sort__down"/>
-                            </DataTrigger>
-                        </ImageButton.Triggers>
-                    </ImageButton>
-                </StackLayout>
+                <Label Text="{helpers:Translate MyAddresses}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                    HorizontalTextAlignment="Start"
+                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"/>
+                <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
+                                    Style="{DynamicResource EntryStyle}"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Start"
+                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                    x:Name="AddressesEntry">
+                    <custom:CustomEntry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                          Command="{Binding SearchAddressCommand}"
+                                                          CommandParameter="{Binding Source={x:Reference AddressesEntry},Path=Text}"/>
+                    </custom:CustomEntry.Behaviors>
+                </custom:CustomEntry>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding Outputs}"

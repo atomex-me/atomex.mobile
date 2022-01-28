@@ -303,6 +303,7 @@
                    BorderColor="#FF7A00"
                    CornerRadius="5"
                    Padding="20"
+                   HasShadow="False"
                    Margin="16"
                    IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                 <Label Text="{Binding Warning}"
