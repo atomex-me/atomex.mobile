@@ -325,19 +325,27 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Frame BackgroundColor="Transparent"
-                   BorderColor="#FF7A00"
-                   CornerRadius="5"
+            <Frame BackgroundColor="#FFA800"
+                   CornerRadius="4"
                    Padding="20"
                    HasShadow="False"
                    Margin="16"
                    IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
-                <Label Text="{Binding Warning}"
-                       Style="{DynamicResource WarningTextStyle}"
-                       TextColor="#FF7A00"
-                       HorizontalTextAlignment="Center"
-                       VerticalOptions="EndAndExpand"
-                       Margin="16,0"/>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="20">
+                    <Label Text="{Binding Warning}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="#F7000E22"
+                           HorizontalTextAlignment="Start"
+                           VerticalOptions="Center"/>
+                    <Label Text="Edit"
+                           FontSize="14"
+                           FontFamily="{DynamicResource BoldFont}"
+                           TextColor="#F7000E22"
+                           HorizontalTextAlignment="End"
+                           VerticalOptions="Center"/>
+                </StackLayout>
             </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">

@@ -6,12 +6,12 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Name="BindingContextPage"
     xmlns:custom="clr-namespace:atomex.CustomElements"
-    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     xmlns:converters="clr-namespace:atomex.Converters"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -29,9 +29,17 @@
                                     HorizontalTextAlignment="Start"
                                     VerticalTextAlignment="Center"
                                     VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"
-                                    x:Name="AddressesEntry">
+                                    HorizontalOptions="FillAndExpand">
                 </custom:CustomEntry>
+                <ImageButton Source="ic_close"
+                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                             Padding="7"
+                             WidthRequest="24"
+                             HeightRequest="24"
+                             CornerRadius="12"
+                             VerticalOptions="Center"
+                             Command="{Binding ClearSearchAddressCommand}"
+                             IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding MyAddresses}"
@@ -42,6 +50,14 @@
                       VerticalOptions="Fill"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding MyAddresses.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -118,6 +134,28 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout IsVisible="False"
+                         VerticalOptions="Start">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding MyAddresses.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Image Source="ic_search"
+                       WidthRequest="45"
+                       HeightRequest="45"
+                       Margin="20,40,20,10"
+                       VerticalOptions="Start"/>
+                <Label Text="No addresses found"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -196,6 +196,13 @@ namespace atomex.ViewModel.SendViewModels
                 ToAddress = string.Empty;
             }));
 
+        private ReactiveCommand<Unit, Unit> _clearSearchAddressCommand;
+        public ReactiveCommand<Unit, Unit> ClearSearchAddressCommand =>
+            _clearSearchAddressCommand ??= (_clearSearchAddressCommand = ReactiveCommand.Create(() =>
+            {
+                SearchPattern = string.Empty;
+            }));
+
         private ReactiveCommand<bool, Unit> _changeAddressesTabCommand;
         public ReactiveCommand<bool, Unit> ChangeAddressesTabCommand =>
             _changeAddressesTabCommand ??= (_changeAddressesTabCommand = ReactiveCommand.Create<bool>((value) =>

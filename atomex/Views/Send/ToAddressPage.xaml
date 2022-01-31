@@ -202,7 +202,7 @@
                                      CornerRadius="12"
                                      VerticalOptions="Center"
                                      Command="{Binding ClearToAddressCommand}"
-                                     IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"></ImageButton>
+                                     IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </Frame>
             </StackLayout>
