@@ -174,9 +174,15 @@
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.RowSpan="2"
-                        Margin="15,10"
                         Text="{helpers:Translate ConfirmButton}"
-                        Style="{DynamicResource MainButtonStyle}"
+                        Margin="16,14"
+                        CornerRadius="8"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        FontSize="17"
+                        HeightRequest="44"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmOutputsCommand}"/>
                 <Label Grid.Column="1"
                        Text="{Binding TotalSelectedString}"

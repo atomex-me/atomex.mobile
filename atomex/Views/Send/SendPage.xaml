@@ -348,11 +348,18 @@
                 </StackLayout>
             </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
+                         Spacing="0"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ReviewButton}"
-                        Margin="15,10"
-                        Style="{DynamicResource MainButtonStyle}"
+                        Margin="16,14"
+                        CornerRadius="8"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        FontSize="17"
+                        HeightRequest="44"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmationCommand}">
                     <Button.Triggers>
                         <!--<MultiTrigger TargetType="Button">
