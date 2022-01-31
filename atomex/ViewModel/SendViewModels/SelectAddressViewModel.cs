@@ -25,7 +25,6 @@ namespace atomex.ViewModel.SendViewModels
         protected INavigation Navigation { get; set; }
 
         public Action<string, decimal?> ConfirmAction { get; set; }
-        public Action<string> ScanAction { get; set; }
         public bool UseToSelectFrom { get; set; }
         private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
@@ -240,15 +239,15 @@ namespace atomex.ViewModel.SendViewModels
             if (ScanResult == null)
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-
-                Device.BeginInvokeOnMainThread(() =>
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    ScanAction.Invoke(string.Empty);
+                    await Navigation.PopAsync();
                 });
+
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() =>
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
                 if (indexOfChar == -1)
@@ -256,7 +255,9 @@ namespace atomex.ViewModel.SendViewModels
                 else
                     ToAddress = ScanResult.Text.Substring(indexOfChar + 1);
 
-                ScanAction.Invoke(ToAddress);
+                await Navigation.PopAsync();
+
+                ConfirmAction?.Invoke(ToAddress, 0m);
             });
         }
 

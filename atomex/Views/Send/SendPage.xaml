@@ -44,7 +44,7 @@
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F002041'}"
-                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='#0F002041'}">
+                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='Transparent'}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                     </Frame.GestureRecognizers>
@@ -54,7 +54,11 @@
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
-                       Margin="20,0,10,0"/>
+                       Margin="20,0,10,0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Label Grid.Column="1"
                        Text="{Binding From}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -62,8 +66,11 @@
                        VerticalTextAlignment="End"
                        LineBreakMode="MiddleTruncation"
                        FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       IsVisible="{Binding IsBtcBased}"/>
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Text="{Binding SelectedAmount}"
@@ -79,6 +86,9 @@
                             <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="2"
@@ -86,7 +96,11 @@
                        Margin="20,0"
                        HeightRequest="12"
                        WidthRequest="12"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Frame Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.ColumnSpan="3"
@@ -105,7 +119,11 @@
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
-                       Margin="20,0,10,0"/>
+                       Margin="20,0,10,0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Label Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="1"
@@ -115,7 +133,11 @@
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
                        FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="2"
@@ -123,7 +145,11 @@
                        Margin="20,0"
                        HeightRequest="12"
                        WidthRequest="12"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
                 <Frame WidthRequest="40"
                        HeightRequest="40"
                        CornerRadius="20"

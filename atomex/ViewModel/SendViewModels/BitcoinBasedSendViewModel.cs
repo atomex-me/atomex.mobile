@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.Abstract;
@@ -62,8 +61,7 @@ namespace atomex.ViewModel.SendViewModels
 
             SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
             {
-                ConfirmAction = ConfirmToAddress,
-                ScanAction = ScanAddress
+                ConfirmAction = ConfirmToAddress
             };
         }
 
@@ -301,7 +299,6 @@ namespace atomex.ViewModel.SendViewModels
 
         protected async override Task ToClick()
         {
-            SelectToViewModel.ConfirmAction = ChangeToAddress;
             await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }
     }

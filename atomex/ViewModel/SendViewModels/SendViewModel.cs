@@ -232,22 +232,26 @@ namespace atomex.ViewModel.SendViewModels
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
-        protected async void ConfirmToAddress(string address, decimal? balance)
+        protected void ConfirmToAddress(string address, decimal? balance)
         {
             To = address;
-            await Navigation.PushAsync(new Views.Send.SendPage(this));
-        }
 
-        protected async void ChangeToAddress(string address, decimal? balance)
-        {
-            To = address;
-            await Navigation.PopAsync();
-        }
-
-        protected async void ScanAddress(string address)
-        {
-            To = address;
-            await Navigation.PopAsync();
+            if (Navigation.NavigationStack.Count <= 5)
+            {
+                Navigation.PushAsync(new Views.Send.SendPage(this));
+                return;
+            }
+            if (Navigation.NavigationStack.Count == 6)
+            {
+                Navigation.PopAsync();
+                return;
+            }
+            if (Navigation.NavigationStack.Count >= 7)
+            {
+                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                Navigation.PopAsync();
+                return;
+            }
         }
 
         private async Task SendButtonClicked()

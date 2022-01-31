@@ -18,7 +18,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -33,10 +32,6 @@ namespace atomex.ViewModel.SendViewModels
         public BitcoinBasedConfig Currency { get; }
         private BitcoinBasedAccount Account { get; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
-
-        [Reactive] public Result ScanResult { get; set; }
-        [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
 
         public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config, INavigation navigation)
         {
@@ -192,10 +187,6 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<OutputViewModel, Unit> CopyCommand =>
             _copyCommand ??= (_copyCommand = ReactiveCommand.CreateFromTask<OutputViewModel>(OnCopyButtonClicked));
 
-        private ReactiveCommand<Unit, Unit> _scanCommand;
-        public ReactiveCommand<Unit, Unit> ScanCommand =>
-            _scanCommand ??= (_scanCommand = ReactiveCommand.CreateFromTask(OnScanButtonClicked));
-
         private ReactiveCommand<Unit, Unit> _searchCommand;
         public ReactiveCommand<Unit, Unit> SearchCommand =>
             _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
@@ -261,23 +252,6 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
-        }
-
-        private async Task OnScanButtonClicked()
-        {
-            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
-
-            if (permissions != PermissionStatus.Granted)
-                permissions = await Permissions.RequestAsync<Permissions.Camera>();
-            if (permissions != PermissionStatus.Granted)
-                return;
-
-            IsScanning = true;
-            IsAnalyzing = true;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
-            await Navigation.PushAsync(new ScanningQrPage(this));
         }
 
         private async Task OnSearchButtonClicked()
