@@ -221,6 +221,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
         internal static string MyWalletsButton {
             get {
                 return ResourceManager.GetString("MyWalletsButton", resourceCulture);

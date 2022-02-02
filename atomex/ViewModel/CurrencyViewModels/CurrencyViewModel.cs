@@ -349,7 +349,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 await Navigation.PushAsync(new FromOutputsPage(selectOutputsViewModel));
             }
             else
-                await Navigation.PushAsync(new SendPage(sendViewModel));
+            {
+                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                await Navigation.PushAsync(new FromAddressPage(selectOutputsViewModel));
+            }
         }
 
         private async Task OnReceiveButtonClicked()

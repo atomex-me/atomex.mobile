@@ -23,10 +23,10 @@
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
-        <StackLayout Spacing="10">
+        <StackLayout Spacing="0">
             <Label Text="{helpers:Translate ReviewButton}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
-                   Padding="0,20,0,0"
+                   Padding="0,20"
                    HorizontalTextAlignment="Start"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
@@ -66,7 +66,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Text="{Binding SelectedAmount}"
+                       Text="{Binding SelectedFromBalance}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start"
                        FontFamily="{DynamicResource RegularFont}"
@@ -74,7 +74,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectedAmount}"/>
+                            <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                         </FormattedString>
@@ -103,6 +103,7 @@
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
                        Padding="0,0,20,0"
+                       LineHeight="1.25"
                        FontSize="16"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                 <Frame WidthRequest="40"
@@ -132,96 +133,153 @@
                        HorizontalOptions="Center"/>
 
             </Grid>
-            <StackLayout Orientation="Horizontal"
-                         Spacing="4">
-                <Label Text="{helpers:Translate AmountLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center"
-                       HorizontalOptions="EndAndExpand">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding AmountString}"
-                                  FontSize="14"
-                                  TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
-                                  FontSize="14"
-                                  TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Span Text=" / "
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                            <Span Text="{Binding AmountInBase, StringFormat='${0:0.00}'}"
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Spacing="4">
-                <Label Text="{helpers:Translate FeeLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center"
-                       HorizontalOptions="EndAndExpand">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding Fee,StringFormat='{0:0.#########}'}"
-                                  FontSize="14"
-                                  TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
-                                  FontSize="14"
-                                  TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Span Text=" / "
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                            <Span Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Spacing="4"
-                         IsVisible="{Binding IsBtcBased}">
-                <Label Text="{helpers:Translate FeeRateLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center"
-                       HorizontalOptions="EndAndExpand">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"
-                                  FontSize="14"
-                                  TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Span Text=" sat/byte"
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+            <StackLayout Padding="0,16"
+                         Spacing="2">
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4">
+                    <Label Text="{helpers:Translate AmountLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" / "
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                <Span Text="{Binding AmountInBase, StringFormat='${0:0.00}'}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4">
+                    <Label Text="{helpers:Translate FeeLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Fee,StringFormat='{0:0.#########}'}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" / "
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                <Span Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4"
+                             IsVisible="{Binding IsBtcBased, FallbackValue='False'}">
+                    <Label Text="{helpers:Translate FeeRateLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding FeeRateCode}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4"
+                             IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                    <Label Text="{helpers:Translate GasPriceLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding GasPrice, StringFormat='{0:0}'}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding GasPriceCode}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4"
+                             IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                    <Label Text="{helpers:Translate GasLimitLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding GasLimit, StringFormat='{0:0}'}"
+                                      FontSize="14"
+                                      TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding GasLimitCode}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <StackLayout Orientation="Horizontal"
-                         Spacing="4">
+                         Spacing="4"
+                         Margin="0,16">
                 <Label Text="{helpers:Translate TotalAmountInclFees}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
@@ -245,18 +303,23 @@
                         </Label.FormattedText>
                     </Label>
                     <Label Text="{Binding TotalAmountInBase, StringFormat='${0:0.00}'}"
-                           FontSize="12"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Start"
-                           HorizontalOptions="EndAndExpand"/>
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                            FontFamily="{DynamicResource RegularFont}"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Start"
+                            HorizontalOptions="EndAndExpand"/>
                 </StackLayout>
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand">
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate SendButton}"
-                        Style="{DynamicResource MainButtonStyle}"
+                        CornerRadius="8"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        FontSize="17"
+                        HeightRequest="44"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding SendCommand}"/>
             </StackLayout>
         </StackLayout>

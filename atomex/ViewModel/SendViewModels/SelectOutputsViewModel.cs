@@ -28,7 +28,7 @@ namespace atomex.ViewModel.SendViewModels
 
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
-        [Reactive] public decimal SelectedAmount { get; set; }
+        [Reactive] public decimal SelectedFromBalance { get; set; }
         public BitcoinBasedConfig Currency { get; }
         private BitcoinBasedAccount Account { get; }
         public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
@@ -64,7 +64,7 @@ namespace atomex.ViewModel.SendViewModels
                     Outputs = new ObservableCollection<OutputViewModel>(
                         outputsWithAddresses.OrderByDescending(output => output.Balance));
 
-                    UpdateSelectedAmount();
+                    UpdateSelectedStats();
                 });
 
             this.WhenAnyValue(vm => vm.SelectAll)
@@ -78,7 +78,7 @@ namespace atomex.ViewModel.SendViewModels
                         return;
 
                     SelectAllOutputs();
-                    UpdateSelectedAmount();
+                    UpdateSelectedStats();
                 });
 
             this.WhenAnyValue(vm => vm.SortIsAscending)
@@ -210,10 +210,10 @@ namespace atomex.ViewModel.SendViewModels
             _selectFromList = false;
             Outputs.ToList().ForEach(o => o.IsSelected = SelectAll);
 
-            UpdateSelectedAmount();
+            UpdateSelectedStats();
         }
 
-        private void UpdateSelectedAmount()
+        private void UpdateSelectedStats()
         {
             var selectedCount = Outputs
                 .Where(o => o.IsSelected).Count();
@@ -224,7 +224,7 @@ namespace atomex.ViewModel.SendViewModels
                 selectedCount,
                 Outputs.Count);
 
-            SelectedAmount = Outputs
+            SelectedFromBalance = Outputs
                 .Where(o => o.IsSelected)
                 .Aggregate((decimal)0, (sum, output) => sum + output.Balance);
         }
@@ -238,7 +238,7 @@ namespace atomex.ViewModel.SendViewModels
             if (SelectAll != selectionResult)
                 SelectAll = selectionResult;
 
-            UpdateSelectedAmount();
+            UpdateSelectedStats();
         }
 
         protected async Task OnCopyButtonClicked(OutputViewModel output)

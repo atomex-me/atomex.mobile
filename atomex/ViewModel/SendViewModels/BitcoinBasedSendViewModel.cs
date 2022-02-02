@@ -8,11 +8,9 @@ using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
 using Atomex;
-using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
 using Atomex.Core;
-using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
 using NBitcoin;
 using ReactiveUI;
@@ -41,7 +39,7 @@ namespace atomex.ViewModel.SendViewModels
                     var totalOutputsSatoshi = outputs
                         .Aggregate((long)0, (sum, output) => sum + output.Value);
 
-                    SelectedAmount = Config.SatoshiToCoin(totalOutputsSatoshi);
+                    SelectedFromBalance = Config.SatoshiToCoin(totalOutputsSatoshi);
                 });
 
             var outputs = Account.GetAvailableOutputsAsync()
@@ -70,6 +68,8 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] private IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
 
         [Reactive] public decimal FeeRate { get; set; }
+
+        public string FeeRateCode => "sat/byte";
 
         private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
 
@@ -189,18 +189,20 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (UseDefaultFee)
                 {
-                    if (App.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
-                        return; // todo: error?
+                    if (Outputs.Count() == 0)
+                    {
+                        Warning = AppResources.InsufficientFunds;
+                        Amount = 0;
+                        return;
+                    }
 
                     FeeRate = await Config.GetFeeRateAsync();
 
-                    var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
-                        from: new FromOutputs(Outputs),
+                    var maxAmountEstimation = await Account.EstimateMaxAmountToSendAsync(
+                        outputs: Outputs,
                         to: To,
-                        type: BlockchainTransactionType.Output,
-                        fee: 0,
-                        feePrice: FeeRate,
-                        reserve: false);
+                        fee: null,
+                        feeRate: FeeRate);
 
                     if (maxAmountEstimation.Amount > 0)
                     {

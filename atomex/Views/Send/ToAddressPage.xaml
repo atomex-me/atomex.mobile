@@ -300,12 +300,12 @@
                                   Padding="16,5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="32" />
-                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="32" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="36" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
@@ -338,15 +338,17 @@
                                     </Label.FormattedText>
                                 </Label>
                                 <Frame Grid.Row="1"
-                                       Padding="0"
+                                       Padding="5,0"
+                                       Margin="0,6"
                                        HasShadow="False"
                                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
                                        CornerRadius="4"
                                        IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
                                     <Label FontFamily="{DynamicResource RegularFont}"
-                                           Text="new"
+                                           Text="{helpers:Translate New}"
                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            FontSize="12"
+                                           TextTransform="Lowercase"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"/>
                                 </Frame>

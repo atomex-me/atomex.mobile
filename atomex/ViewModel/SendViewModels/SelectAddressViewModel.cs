@@ -24,7 +24,7 @@ namespace atomex.ViewModel.SendViewModels
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
 
-        public Action<string, decimal?> ConfirmAction { get; set; }
+        public Action<string, decimal> ConfirmAction { get; set; }
         public bool UseToSelectFrom { get; set; }
         private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
@@ -233,7 +233,7 @@ namespace atomex.ViewModel.SendViewModels
             var selectedAddress = SelectedAddress?.WalletAddress?.Address;
             var balance = SelectedAddress?.WalletAddress?.AvailableBalance();
 
-            ConfirmAction?.Invoke(selectedAddress, balance);
+            ConfirmAction?.Invoke(selectedAddress, balance ?? 0m);
         }
 
         private async Task OnScanResult()

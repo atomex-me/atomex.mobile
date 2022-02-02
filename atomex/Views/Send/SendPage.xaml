@@ -13,7 +13,7 @@
             <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>
+    <ScrollView>
         <StackLayout Spacing="0"
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
@@ -73,7 +73,7 @@
                 </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Text="{Binding SelectedAmount}"
+                       Text="{Binding SelectedFromBalance}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start"
                        FontFamily="{DynamicResource RegularFont}"
@@ -81,7 +81,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectedAmount}"/>
+                            <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                         </FormattedString>
@@ -108,7 +108,7 @@
                        HasShadow="False"
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F000E22'}"
-                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='#0F000E22'}">
+                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='#Transparent'}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
                     </Frame.GestureRecognizers>
@@ -260,7 +260,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <custom:CustomEntry Placeholder="{Binding FeeEntryPlaceholderString}"
-                                        Text="{Binding Fee}"
+                                        Text="{Binding FeeString, Mode=TwoWay}"
                                         Keyboard="Numeric"
                                         x:Name="FeeEntry"
                                         Margin="16,0"
@@ -282,6 +282,59 @@
                     </Label>
                 </Grid>
             </Frame>
+            <Frame Padding="0"
+                   Margin="16,0,16,16"
+                   HeightRequest="56"
+                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                   CornerRadius="5"
+                   HasShadow="False"
+                   IsVisible="False">
+                <Frame.Triggers>
+                    <MultiTrigger TargetType="Frame">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding UseDefaultFee}"
+                                              Value="False"/>
+                            <BindingCondition Binding="{Binding IsEthBased}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </Frame.Triggers>
+                <Grid HorizontalOptions="Fill"
+                      ColumnSpacing="0"
+                      RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <custom:CustomEntry Placeholder="Enter GWEI"
+                                        Text="{Binding GasPriceString, Mode=TwoWay}"
+                                        Keyboard="Numeric"
+                                        x:Name="GasPriceEntry"
+                                        Margin="16,0"
+                                        Style="{DynamicResource EntryStyle}"
+                                        FontSize="16"
+                                        HorizontalTextAlignment="Start"
+                                        VerticalTextAlignment="Center"/>
+                    <Label Grid.Column="1"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="End"
+                           Text="{Binding GasPriceCode}"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="12"
+                           Margin="16,0"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="GasPriceEntryFocus"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </Frame>
             <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
                             Margin="16,0"
                             BoxSizeRequest="18"
@@ -295,15 +348,16 @@
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
                    FontSize="12"
-                   Margin="16,0"
+                   Margin="16,1"
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                   IsVisible="{Binding IsBtcBased}">
+                   IsVisible="{Binding IsBtcBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{helpers:Translate FeeRateLabel}"/>
-                        <Span Text=" "/>
+                        <Span Text=": "/>
                         <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"/>
-                        <Span Text=" sat/byte"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding FeeRateCode}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -311,12 +365,46 @@
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
                    FontSize="12"
-                   Margin="16,0"
+                   Margin="16,1"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                   IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{helpers:Translate GasPriceLabel}"/>
+                        <Span Text=": "/>
+                        <Span Text="{Binding GasPrice, StringFormat='{0:0}'}"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding GasPriceCode}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label FontFamily="{DynamicResource RegularFont}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontSize="12"
+                   Margin="16,1"
+                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                   IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{helpers:Translate GasLimitLabel}"/>
+                        <Span Text=": "/>
+                        <Span Text="{Binding GasLimit, StringFormat='{0:0}'}"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding GasLimitCode}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label FontFamily="{DynamicResource RegularFont}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontSize="12"
+                   Margin="16,1"
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{helpers:Translate FeeLabel}"/>
-                        <Span Text=" "/>
+                        <Span Text=": "/>
                         <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
@@ -332,18 +420,21 @@
                    Margin="16"
                    IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
                 <StackLayout Orientation="Horizontal"
-                             Spacing="20">
+                             Spacing="20"
+                             HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Warning}"
                            FontSize="14"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="#F7000E22"
                            HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center"/>
                     <Label Text="Edit"
-                           FontSize="14"
+                           FontSize="17"
                            FontFamily="{DynamicResource BoldFont}"
                            TextColor="#F7000E22"
                            HorizontalTextAlignment="End"
+                           HorizontalOptions="End"
                            VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
@@ -402,5 +493,5 @@
                 </Button>
             </StackLayout>
         </StackLayout>
-    </ContentPage.Content>
+    </ScrollView>
 </ContentPage>

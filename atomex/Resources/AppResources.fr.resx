@@ -104,6 +104,9 @@
     <data name="ToLabel" xml:space="preserve">
         <value>À l'adresse</value>
     </data>
+    <data name="New" xml:space="preserve">
+        <value>New</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">

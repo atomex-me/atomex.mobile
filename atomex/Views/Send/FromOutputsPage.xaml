@@ -200,7 +200,7 @@
                         <FormattedString>
                             <Span Text="{helpers:Translate Total}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding SelectedAmount}"/>
+                            <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding Currency.Name}"/>
                         </FormattedString>

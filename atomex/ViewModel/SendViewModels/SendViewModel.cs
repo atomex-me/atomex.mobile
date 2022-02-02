@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Popup;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
@@ -28,7 +29,7 @@ namespace atomex.ViewModel.SendViewModels
         protected SelectAddressViewModel SelectToViewModel { get; set; }
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string From { get; set; }
-        [Reactive] public decimal SelectedAmount { get; set; }
+        [Reactive] public decimal SelectedFromBalance { get; set; }
         [Reactive] public string To { get; set; }
         [Reactive] public decimal Amount { get; set; }
         [ObservableAsProperty] public string TotalAmountString { get; }
@@ -105,7 +106,7 @@ namespace atomex.ViewModel.SendViewModels
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";
 
         protected abstract Task UpdateAmount();
-        protected abstract Task UpdateFee();
+        protected virtual Task UpdateFee() { return Task.CompletedTask; }
         protected abstract Task OnMaxClick();
         protected abstract Task<Error> Send(CancellationToken cancellationToken = default);
         protected abstract Task FromClick();
@@ -125,10 +126,10 @@ namespace atomex.ViewModel.SendViewModels
             var updateFeeCommand = ReactiveCommand.CreateFromTask(UpdateFee);
 
             this.WhenAnyValue(
-                vm => vm.From,
-                vm => vm.To,
-                vm => vm.Amount,
-                vm => vm.Fee
+                    vm => vm.From,
+                    vm => vm.To,
+                    vm => vm.Amount,
+                    vm => vm.Fee
                 )
                 .Subscribe(_ => Warning = string.Empty);
 
@@ -142,11 +143,9 @@ namespace atomex.ViewModel.SendViewModels
 
             this.WhenAnyValue(
                     vm => vm.Amount,
-                    vm => vm.From,
-                    vm => vm.To
+                    vm => vm.Fee
                 )
-                .Select(_ => Unit.Default)
-                .InvokeCommand(updateAmountCommand);
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(vm => vm.Fee)
                 .Select(_ => Unit.Default)
@@ -156,6 +155,16 @@ namespace atomex.ViewModel.SendViewModels
                 .Where(useDefaultFee => useDefaultFee)
                 .Select(_ => Unit.Default)
                 .InvokeCommand(updateAmountCommand);
+
+            this.WhenAnyValue(vm => vm.Fee)
+                .Subscribe(fee =>
+                {
+                    FeeString = fee.ToString(CultureInfo.InvariantCulture);
+                    this.RaisePropertyChanged(nameof(FeeString));
+                });
+
+            this.WhenAnyValue(vm => vm.To)
+                .Subscribe(_ => UpdateAmount());
 
             SubscribeToServices();
         }
@@ -213,32 +222,51 @@ namespace atomex.ViewModel.SendViewModels
             if (Fee <= 0)
             {
                 Warning = AppResources.CommissionLessThanZeroError;
-                return;
             }
 
-            var isToken = Currency.FeeCurrencyName != Currency.Name;
-
-            var feeAmount = !isToken ? Fee : 0;
+            var feeAmount = !Currency.IsToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
             {
                 Warning = AppResources.AvailableFundsError;
-                return;
             }
 
             if (string.IsNullOrEmpty(Warning))
-                await PopupNavigation.Instance.PushAsync(new Views.Send.SendingConfirmationBottomSheet(this));
+                await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
             else
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
         }
 
-        protected void ConfirmToAddress(string address, decimal? balance)
+        protected void ConfirmFromAddress(string address, decimal balance)
+        {
+            From = address;
+            SelectedFromBalance = balance;
+
+            if (Navigation.NavigationStack.Count <= 4)
+            {
+                Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                return;
+            }
+            if (Navigation.NavigationStack.Count == 6)
+            {
+                Navigation.PopAsync();
+                return;
+            }
+            if (Navigation.NavigationStack.Count >= 7)
+            {
+                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                Navigation.PopAsync();
+                return;
+            }
+        }
+
+        protected void ConfirmToAddress(string address, decimal _)
         {
             To = address;
 
             if (Navigation.NavigationStack.Count <= 5)
             {
-                Navigation.PushAsync(new Views.Send.SendPage(this));
+                Navigation.PushAsync(new SendPage(this));
                 return;
             }
             if (Navigation.NavigationStack.Count == 6)
@@ -307,7 +335,7 @@ namespace atomex.ViewModel.SendViewModels
                 Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
         }
 
-        protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        protected virtual void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
