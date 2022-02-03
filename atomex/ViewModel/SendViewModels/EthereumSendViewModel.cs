@@ -63,12 +63,12 @@ namespace atomex.ViewModel.SendViewModels
                 .Select(totalAmount => totalAmount.ToString(CultureInfo.InvariantCulture))
                 .ToPropertyEx(this, vm => vm.TotalAmountString);
 
-            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, currencyViewModel?.Navigation, true)
+            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, true)
             {
                 ConfirmAction = ConfirmFromAddress
             };
 
-            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, currencyViewModel?.Navigation)
+            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
             {
                 ConfirmAction = ConfirmToAddress
             };

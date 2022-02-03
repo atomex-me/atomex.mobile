@@ -81,7 +81,7 @@ namespace atomex.ViewModel.SendViewModels
                 }
                 else
                 {
-                    Fee = Math.Min(fee, Currency.GetMaximumFee());
+                    Fee = fee;
                 }
 
                 Device.InvokeOnMainThreadAsync(() =>

@@ -242,7 +242,7 @@
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding UseDefaultFee}"
                                               Value="False"/>
-                            <BindingCondition Binding="{Binding IsBtcBased}"
+                            <BindingCondition Binding="{Binding IsEthBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='True'}"
                                               Value="True"/>
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
@@ -295,7 +295,7 @@
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding UseDefaultFee}"
                                               Value="False"/>
-                            <BindingCondition Binding="{Binding IsEthBased}"
+                            <BindingCondition Binding="{Binding IsEthBased, FallbackValue='False'}"
                                               Value="True"/>
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
