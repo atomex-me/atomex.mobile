@@ -144,12 +144,14 @@ namespace atomex.ViewModel.SendViewModels
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(
                 AddressesHelper
-                    .GetReceivingAddressesAsync(
-                        account: account,
-                        currency: currency)
-                    .WaitForResult()
-                    .Where(address => !useToSelectFrom || !address.IsFreeAddress)
-                );
+                .GetReceivingAddressesAsync(
+                    account: account,
+                    currency: currency)
+                .WaitForResult()
+                .Where(address => !useToSelectFrom ||
+                                  address.IsTezosToken && address.TokenBalance != 0 ||
+                                  !address.IsTezosToken && address.AvailableBalance != 0)
+                .OrderByDescending(address => address.AvailableBalance));
 
             InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(MyAddresses);
         }

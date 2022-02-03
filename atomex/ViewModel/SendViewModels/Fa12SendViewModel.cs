@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
-using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
+using ReactiveUI;
+using Serilog;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -23,310 +24,187 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
+            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, true)
+            {
+                ConfirmAction = ConfirmFromAddress
+            };
+
+            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
+            {
+                ConfirmAction = ConfirmToAddress
+            };
         }
 
-        protected override Task FromClick()
+        protected override async Task FromClick()
         {
-            throw new NotImplementedException();
+            var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
+            await Navigation.PushAsync(new FromAddressPage(selectFromViewModel));
         }
 
-        protected override Task OnMaxClick()
+        protected override async Task ToClick()
         {
-            throw new NotImplementedException();
+            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }
 
-        protected override Task<Error> Send(CancellationToken cancellationToken = default)
+        protected override async Task UpdateAmount()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var account = App.Account
+                    .GetCurrencyAccount<Fa12Account>(Currency.Name);
+
+                var maxAmountEstimation = await account
+                    .EstimateMaxAmountToSendAsync(
+                        from: From,
+                        type: BlockchainTransactionType.Output,
+                        reserve: UseDefaultFee);
+
+                if (UseDefaultFee && maxAmountEstimation.Fee > 0)
+                    Fee = maxAmountEstimation.Fee;
+
+                if (maxAmountEstimation.Error != null)
+                {
+                    Warning = maxAmountEstimation.Error.Description;
+                    return;
+                }
+
+                if (Amount > maxAmountEstimation.Amount)
+                {
+                    Warning = AppResources.InsufficientFunds;
+                    return;
+                }
+
+                if (Fee < maxAmountEstimation.Fee)
+                    Warning = AppResources.LowFees;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "{@currency}: update amount error", Currency?.Description);
+            }
         }
 
-        protected override Task ToClick()
+        protected override async Task UpdateFee()
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!UseDefaultFee)
+                {
+                    var account = App.Account
+                        .GetCurrencyAccount<Fa12Account>(Currency.Name);
+
+                    var maxAmountEstimation = await account
+                        .EstimateMaxAmountToSendAsync(
+                            from: From,
+                            type: BlockchainTransactionType.Output,
+                            reserve: UseDefaultFee);
+
+                    if (maxAmountEstimation.Error != null)
+                    {
+                        Warning = maxAmountEstimation.Error.Description;
+                        return;
+                    }
+
+                    if (Amount > maxAmountEstimation.Amount)
+                    {
+                        Warning = AppResources.InsufficientFunds;
+                        return;
+                    }
+
+                    if (Fee < maxAmountEstimation.Fee)
+                        Warning = AppResources.LowFees;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "{@currency}: update fee error", Currency?.Description);
+            }
         }
 
-        protected override Task UpdateAmount()
+        protected override async Task OnMaxClick()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var account = App.Account
+                    .GetCurrencyAccount<Fa12Account>(Currency.Name);
+
+                var maxAmountEstimation = await account
+                    .EstimateMaxAmountToSendAsync(
+                        from: From,
+                        type: BlockchainTransactionType.Output,
+                        reserve: UseDefaultFee);
+
+                if (UseDefaultFee && maxAmountEstimation.Fee > 0)
+                    Fee = maxAmountEstimation.Fee;
+
+                if (maxAmountEstimation.Error != null)
+                {
+                    Warning = maxAmountEstimation.Error.Description;
+                    Amount = 0;
+                    AmountString = Amount.ToString();
+                    this.RaisePropertyChanged(nameof(AmountString));
+
+                    return;
+                }
+
+                Amount = maxAmountEstimation.Amount > 0
+                    ? maxAmountEstimation.Amount
+                    : 0;
+
+                if (Fee < maxAmountEstimation.Fee)
+                    Warning = AppResources.LowFees;
+
+                AmountString = Amount.ToString();
+                this.RaisePropertyChanged(nameof(AmountString));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "{@currency}: max click error", Currency?.Description);
+            }
         }
 
-        protected override Task UpdateFee()
+        protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (sender is not ICurrencyQuotesProvider quotesProvider)
+                return;
+
+            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+            var xtzQuote = quotesProvider.GetQuote("XTZ", BaseCurrencyCode);
+
+            AmountInBase = Amount * (quote?.Bid ?? 0m);
+            FeeInBase = Fee * (xtzQuote?.Bid ?? 0m);
+            TotalAmountInBase = AmountInBase + FeeInBase;
         }
 
-        //public string From { get; set; }
+        protected override async Task<Error> Send(CancellationToken cancellationToken = default)
+        {
+            var tokenConfig = (Fa12Config)Currency;
+            var tokenContract = tokenConfig.TokenContractAddress;
+            const int tokenId = 0;
+            const string? tokenType = "FA12";
 
-        //public override bool UseDefaultFee
-        //{
-        //    get => _useDefaultFee;
-        //    set
-        //    {
-        //        Warning = string.Empty;
+            var tokenAddress = await TezosTokensSendViewModel.GetTokenAddressAsync(
+                account: App.Account,
+                address: From,
+                tokenContract: tokenContract,
+                tokenId: tokenId,
+                tokenType: tokenType);
 
-        //        _useDefaultFee = value;
-        //        OnPropertyChanged(nameof(UseDefaultFee));
+            var currencyName = App.Account.Currencies
+                .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == tokenContract)
+                ?.Name ?? "FA12";
 
-        //        Amount = _amount; // recalculate amount
-        //    }
-        //}
+            var tokenAccount = App.Account.GetTezosTokenAccount<Fa12Account>(
+                currency: currencyName,
+                tokenContract: tokenContract,
+                tokenId: tokenId);
 
-        //protected override async void UpdateAmount(decimal amount)
-        //{
-        //    IsAmountUpdating = true;
-
-        //    var availableAmount = CurrencyViewModel.AvailableAmount;
-        //    _amount = amount;
-
-        //    Warning = string.Empty;
-
-        //    try
-        //    {
-        //        if (AtomexApp.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
-        //            return; // todo: error?
-
-        //        var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
-        //            from: new FromAddress(From),
-        //            to: _to,
-        //            type: BlockchainTransactionType.Output,
-        //            fee: 0,
-        //            feePrice: 0,
-        //            reserve: false);
-
-        //        if (UseDefaultFee)
-        //        {
-        //            if (_amount > maxAmountEstimation.Amount)
-        //            {
-        //                if (_amount <= availableAmount)
-        //                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-        //                else
-        //                    Warning = AppResources.InsufficientFunds;
-
-        //                IsAmountUpdating = false;
-        //                return;
-        //            }
-
-        //            var estimatedFeeAmount = _amount != 0
-        //                ? await account.EstimateFeeAsync(
-        //                    from: new FromAddress(From),
-        //                    to: To,
-        //                    amount: _amount,
-        //                    type: BlockchainTransactionType.Output)
-        //                : 0;
-
-        //            OnPropertyChanged(nameof(AmountString));
-
-        //            _fee = estimatedFeeAmount ?? Currency.GetDefaultFee();
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-        //        else
-        //        {
-        //            if (_amount > maxAmountEstimation.Amount)
-        //            {
-        //                if (_amount <= availableAmount)
-        //                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-        //                else
-        //                    Warning = AppResources.InsufficientFunds;
-
-        //                IsAmountUpdating = false;
-        //                return;
-        //            }
-
-        //            OnPropertyChanged(nameof(AmountString));
-
-        //            Fee = _fee;
-        //        }
-
-        //        OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-        //    }
-        //    finally
-        //    {
-        //        IsAmountUpdating = false;
-        //    }
-        //}
-
-        //protected override async void UpdateFee(decimal fee)
-        //{
-        //    if (IsFeeUpdating)
-        //        return;
-
-        //    IsFeeUpdating = true;
-
-        //    _fee = Math.Min(fee, Currency.GetMaximumFee());
-
-        //    Warning = string.Empty;
-
-        //    try
-        //    {
-        //        if (_amount == 0)
-        //        {
-        //            if (_fee > CurrencyViewModel.AvailableAmount)
-        //                Warning = AppResources.InsufficientFunds;
-
-        //            return;
-        //        }
-
-        //        if (!UseDefaultFee)
-        //        {
-        //            var availableAmount = CurrencyViewModel.AvailableAmount;
-
-        //            if (AtomexApp.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
-        //                return; // todo: error?
-
-        //            var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
-        //                from: new FromAddress(From),
-        //                to: _to,
-        //                type: BlockchainTransactionType.Output,
-        //                fee: 0,
-        //                feePrice: 0,
-        //                reserve: false);
-
-        //            var estimatedFeeAmount = _amount != 0
-        //                ? await account.EstimateFeeAsync(
-        //                    from: new FromAddress(From),
-        //                    to: To,
-        //                    amount: _amount,
-        //                    type: BlockchainTransactionType.Output)
-        //                : 0;
-
-        //            if (_amount > maxAmountEstimation.Amount)
-        //            {
-        //                if (_amount <= availableAmount)
-        //                    Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-        //                else
-        //                    Warning = AppResources.InsufficientFunds;
-
-        //                return;
-        //            }
-        //            else if (estimatedFeeAmount == null || _fee < estimatedFeeAmount.Value)
-        //            {
-        //                Warning = AppResources.LowFees;
-        //            }
-
-        //            if (_fee > maxAmountEstimation.Fee)
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-
-        //        OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-        //    }
-        //    finally
-        //    {
-        //        IsFeeUpdating = false;
-        //    }
-        //}
-
-        //protected override async void OnMaxClick()
-        //{
-        //    if (IsAmountUpdating)
-        //        return;
-
-        //    IsAmountUpdating = true;
-
-        //    Warning = string.Empty;
-
-        //    try
-        //    {
-        //        var availableAmount = CurrencyViewModel.AvailableAmount;
-
-        //        if (availableAmount == 0)
-        //            return;
-
-        //        if (AtomexApp.Account.GetCurrencyAccount(Currency.Name) is not IEstimatable account)
-        //            return; // todo: error?
-
-        //        var maxAmountEstimation = await account.EstimateMaxAmountToSendAsync(
-        //            from: new FromAddress(From),
-        //            to: _to,
-        //            type: BlockchainTransactionType.Output,
-        //            fee: 0,
-        //            feePrice: 0,
-        //            reserve: UseDefaultFee);
-
-        //        if (UseDefaultFee)
-        //        {
-        //            if (maxAmountEstimation.Amount > 0)
-        //                _amount = maxAmountEstimation.Amount;
-        //            else
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-
-        //            OnPropertyChanged(nameof(AmountString));
-
-        //            _fee = maxAmountEstimation.Fee;
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-        //        else
-        //        {
-        //            if (_fee < maxAmountEstimation.Fee)
-        //            {
-        //                Warning = AppResources.LowFees;
-        //                if (_fee == 0)
-        //                {
-        //                    _amount = 0;
-        //                    OnPropertyChanged(nameof(AmountString));
-        //                    return;
-        //                }
-        //            }
-
-        //            _amount = maxAmountEstimation.Amount;
-
-        //            if (maxAmountEstimation.Amount < availableAmount || _fee > maxAmountEstimation.Fee)
-        //                Warning = string.Format(CultureInfo.InvariantCulture, AppResources.InsufficientChainFunds, Currency.FeeCurrencyName);
-
-        //            OnPropertyChanged(nameof(AmountString));
-        //            OnPropertyChanged(nameof(FeeString));
-        //        }
-
-        //        OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
-        //    }
-        //    finally
-        //    {
-        //        IsAmountUpdating = false;
-        //    }
-        //}
-
-        //protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
-        //{
-        //    if (sender is not ICurrencyQuotesProvider quotesProvider)
-        //        return;
-
-        //    var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-        //    var xtzQuote = quotesProvider.GetQuote("XTZ", BaseCurrencyCode);
-
-        //    AmountInBase = Amount * (quote?.Bid ?? 0m);
-        //    FeeInBase = Fee * (xtzQuote?.Bid ?? 0m);
-        //}
-
-        //protected override async Task<Error> SendAsync(CancellationToken cancellationToken = default)
-        //{
-        //    var tokenConfig = (Fa12Config)Currency;
-        //    var tokenContract = tokenConfig.TokenContractAddress;
-        //    var tokenId = 0;
-        //    var tokenType = "FA12";
-
-        //    var tokenAddress = await TezosTokensSendViewModel.GetTokenAddressAsync(
-        //        account: AtomexApp.Account,
-        //        address: From,
-        //        tokenContract: tokenContract,
-        //        tokenId: tokenId,
-        //        tokenType: tokenType);
-
-        //    var currencyName = AtomexApp.Account.Currencies
-        //        .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == tokenContract)
-        //        ?.Name ?? "FA12";
-
-        //    var tokenAccount = AtomexApp.Account.GetTezosTokenAccount<Fa12Account>(
-        //        currency: currencyName,
-        //        tokenContract: tokenContract,
-        //        tokenId: tokenId);
-
-        //    return await tokenAccount.SendAsync(
-        //        from: tokenAddress.Address,
-        //        to: To,
-        //        amount: Amount,
-        //        fee: Fee,
-        //        useDefaultFee: UseDefaultFee);
-        //}
+            return await tokenAccount.SendAsync(
+                from: tokenAddress.Address,
+                to: To,
+                amount: Amount,
+                fee: Fee,
+                useDefaultFee: UseDefaultFee,
+                cancellationToken: cancellationToken);
+        }
     }
 }
