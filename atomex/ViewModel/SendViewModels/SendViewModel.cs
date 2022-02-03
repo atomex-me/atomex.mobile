@@ -320,6 +320,9 @@ namespace atomex.ViewModel.SendViewModels
                     }));
             }
 
+            IsLoading = false;
+            this.RaisePropertyChanged(nameof(IsLoading));
+
             await PopupNavigation.Instance.PopAsync();
 
             await PopupNavigation.Instance.PushAsync(new CompletionPopup(

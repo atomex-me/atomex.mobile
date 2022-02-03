@@ -133,7 +133,7 @@
                        HorizontalOptions="Center"/>
 
             </Grid>
-            <StackLayout Padding="0,16"
+            <StackLayout Padding="0,8,0,16"
                          Spacing="2">
                 <StackLayout Orientation="Horizontal"
                              Spacing="4">
@@ -312,15 +312,37 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand">
-                <Button Text="{helpers:Translate SendButton}"
-                        CornerRadius="8"
-                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                        FontSize="17"
-                        HeightRequest="44"
-                        HorizontalOptions="FillAndExpand"
-                        FontFamily="{DynamicResource RegularFont}"
-                        Command="{Binding SendCommand}"/>
+                <RelativeLayout HeightRequest="44">
+                    <Button Text="{helpers:Translate SendButton}"
+                            CornerRadius="8"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                            FontSize="17"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            HorizontalOptions="FillAndExpand"
+                            FontFamily="{DynamicResource RegularFont}"
+                            Command="{Binding SendCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsLoading}"
+                                         Value="True">
+                                <Setter Property="IsEnabled"
+                                        Value="False"/>
+                                <Setter Property="Text"
+                                        Value=""/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                                       RelativeLayout.WidthConstraint="24"
+                                       RelativeLayout.HeightConstraint="24"
+                                       Color="#92C8F9"
+                                       BackgroundColor="Transparent"
+                                       IsRunning="{Binding IsLoading}"
+                                       IsVisible="{Binding IsLoading}"/>
+                </RelativeLayout>
             </StackLayout>
         </StackLayout>
         </controls:CustomFrame>
