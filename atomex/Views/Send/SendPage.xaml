@@ -407,7 +407,7 @@
                         <Span Text=": "/>
                         <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                        <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding FeeInBase, StringFormat='(${0:0.00})'}"/>
                     </FormattedString>

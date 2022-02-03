@@ -184,7 +184,7 @@
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" / "
@@ -288,8 +288,7 @@
                        Padding="0,5"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                 <StackLayout HorizontalOptions="EndAndExpand">
-                    <Label Text="{Binding TotalAmountString}"
-                           FontFamily="{DynamicResource RegularFont}"
+                    <Label FontFamily="{DynamicResource RegularFont}"
                            FontSize="24"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            HorizontalTextAlignment="End"
@@ -299,6 +298,20 @@
                                 <Span Text="{Binding TotalAmountString}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           FontSize="17"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="End"
+                           IsVisible="{Binding CurrencyViewModel.Currency.IsToken}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Fee, StringFormat='+ {0:0.#########}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyViewModel.Currency.FeeCurrencyName}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
