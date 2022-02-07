@@ -7,6 +7,13 @@
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
     Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_search"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding SearchCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
@@ -14,74 +21,76 @@
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"
                    FontSize="30"
-                   Margin="0,10"/>
-            <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="FillAndExpand"
-                         Margin="15,0,15,10"
-                         Spacing="0">
-                <input:CheckBox Text="{helpers:Translate SelectAll}"
-                                BoxSizeRequest="18"
-                                TextFontSize="16"
-                                IsChecked="{Binding SelectAll, Mode=TwoWay}"
-                                CheckChangedCommand="{Binding SelectAllCommand, Mode=TwoWay}"
-                                Type="Material"
-                                Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
-                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                <StackLayout HorizontalOptions="EndAndExpand"
-                             Orientation="Horizontal">
-                    <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                            BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                            WidthRequest="132"
-                            HeightRequest="32"
-                            HorizontalOptions="End"
-                            CornerRadius="16"
-                            FontSize="14"
-                            Padding="0"
-                            Margin="0,10"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding ChangeSortTypeCommand}"
-                            TextTransform="Lowercase">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value="Sort by balance"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="False">
-                                <Setter Property="Text"
-                                        Value="Sort by date"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                                 Padding="6"
-                                 Margin="0,10"
-                                 HorizontalOptions="End"
-                                 HeightRequest="32"
-                                 WidthRequest="32"
-                                 CornerRadius="16"
-                                 Command="{Binding ChangeSortDirectionCommand}">
-                        <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SortIsAscending}"
-                                         Value="True">
-                                <Setter Property="Source"
-                                        Value="ic_sort__up"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding SortIsAscending}"
-                                         Value="False">
-                                <Setter Property="Source"
-                                        Value="ic_sort__down"/>
-                            </DataTrigger>
-                        </ImageButton.Triggers>
-                    </ImageButton>
+                   Margin="0,20"/>
+            <StackLayout Spacing="5">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"
+                             Margin="16,0"
+                             Spacing="12">
+                    <input:CheckBox Text="{helpers:Translate SelectAll}"
+                                    BoxSizeRequest="18"
+                                    TextFontSize="16"
+                                    IsChecked="{Binding SelectAll, Mode=TwoWay}"
+                                    CheckChangedCommand="{Binding SelectAllCommand, Mode=TwoWay}"
+                                    Type="Material"
+                                    Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
+                                    IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                    <StackLayout HorizontalOptions="EndAndExpand"
+                                 Orientation="Horizontal">
+                        <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                                WidthRequest="132"
+                                HeightRequest="32"
+                                HorizontalOptions="End"
+                                CornerRadius="16"
+                                FontSize="14"
+                                Padding="0"
+                                Margin="0,10"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding ChangeSortTypeCommand}"
+                                TextTransform="Lowercase">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SortByBalance}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="Sort by balance"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SortByBalance}"
+                                             Value="False">
+                                    <Setter Property="Text"
+                                            Value="Sort by date"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                                     Padding="6"
+                                     Margin="0,10"
+                                     HorizontalOptions="End"
+                                     HeightRequest="32"
+                                     WidthRequest="32"
+                                     CornerRadius="16"
+                                     Command="{Binding ChangeSortDirectionCommand}">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding SortIsAscending}"
+                                             Value="True">
+                                    <Setter Property="Source"
+                                            Value="ic_sort__up"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding SortIsAscending}"
+                                             Value="False">
+                                    <Setter Property="Source"
+                                            Value="ic_sort__down"/>
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
+            
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding Outputs}"
                       SelectionMode="None"
@@ -160,6 +169,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </StackLayout>
             <Grid HorizontalOptions="Fill"
                   VerticalOptions="EndAndExpand"
                   ColumnSpacing="0"

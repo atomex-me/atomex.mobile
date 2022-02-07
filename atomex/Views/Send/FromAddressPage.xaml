@@ -14,6 +14,13 @@
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_search"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding SearchCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{helpers:Translate SendFrom}"
@@ -23,66 +30,67 @@
                    Margin="0,20"/>
             <StackLayout Spacing="5">
                 <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="FillAndExpand"
-                         Margin="16,0">
-                <Label Text="{helpers:Translate MyAddresses}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                    HorizontalTextAlignment="Start"
-                                    VerticalTextAlignment="Center"
-                                    VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"/>
-                <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                        WidthRequest="132"
-                        HeightRequest="32"
-                        HorizontalOptions="End"
-                        CornerRadius="16"
-                        FontSize="14"
-                        Padding="0"
-                        Margin="0,10"
-                        FontFamily="{DynamicResource RegularFont}"
-                        Command="{Binding ChangeSortTypeCommand}"
-                        TextTransform="Lowercase">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding SortByBalance}"
-                                     Value="True">
-                            <Setter Property="Text"
-                                    Value="Sort by balance"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding SortByBalance}"
-                                     Value="False">
-                            <Setter Property="Text"
-                                    Value="Sort by date"/>
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-                <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                             Padding="6"
-                             Margin="0,10"
-                             HorizontalOptions="End"
-                             HeightRequest="32"
-                             WidthRequest="32"
-                             CornerRadius="16"
-                             Command="{Binding ChangeSortDirectionCommand}">
-                    <ImageButton.Triggers>
-                        <DataTrigger TargetType="ImageButton"
-                                     Binding="{Binding SortIsAscending}"
-                                     Value="True">
-                            <Setter Property="Source"
-                                    Value="ic_sort__up"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="ImageButton"
-                                     Binding="{Binding SortIsAscending}"
-                                     Value="False">
-                            <Setter Property="Source"
-                                    Value="ic_sort__down"/>
-                        </DataTrigger>
-                    </ImageButton.Triggers>
-                </ImageButton>
-            </StackLayout>
+                             HorizontalOptions="FillAndExpand"
+                             Margin="16,0"
+                             Spacing="12">
+                    <Label Text="{helpers:Translate MyAddresses}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           VerticalOptions="FillAndExpand"
+                           HorizontalOptions="FillAndExpand"/>
+                    <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                            BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                            WidthRequest="132"
+                            HeightRequest="32"
+                            HorizontalOptions="End"
+                            CornerRadius="16"
+                            FontSize="14"
+                            Padding="0"
+                            Margin="0,10"
+                            FontFamily="{DynamicResource RegularFont}"
+                            Command="{Binding ChangeSortTypeCommand}"
+                            TextTransform="Lowercase">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SortByBalance}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="Sort by balance"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding SortByBalance}"
+                                         Value="False">
+                                <Setter Property="Text"
+                                        Value="Sort by date"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                                 Padding="6"
+                                 Margin="0,10"
+                                 HorizontalOptions="End"
+                                 HeightRequest="32"
+                                 WidthRequest="32"
+                                 CornerRadius="16"
+                                 Command="{Binding ChangeSortDirectionCommand}">
+                        <ImageButton.Triggers>
+                            <DataTrigger TargetType="ImageButton"
+                                         Binding="{Binding SortIsAscending}"
+                                         Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_sort__up"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="ImageButton"
+                                         Binding="{Binding SortIsAscending}"
+                                         Value="False">
+                                <Setter Property="Source"
+                                        Value="ic_sort__down"/>
+                            </DataTrigger>
+                        </ImageButton.Triggers>
+                    </ImageButton>
+                </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"
                          Margin="16,0,0,0"/>
             <ListView ItemsSource="{Binding MyAddresses}"

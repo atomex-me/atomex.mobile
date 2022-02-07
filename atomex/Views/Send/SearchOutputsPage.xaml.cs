@@ -35,5 +35,14 @@ namespace atomex.Views.Send
             selectedItem.BackgroundColor = initColor;
             selectedItem.IsEnabled = true;
         }
+
+        protected override void OnDisappearing()
+        {
+            var vm = (SelectOutputsViewModel)BindingContext;
+            if (vm.BackCommand.CanExecute(null))
+                vm.BackCommand.Execute(null);
+
+            base.OnDisappearing();
+        }
     }
 }

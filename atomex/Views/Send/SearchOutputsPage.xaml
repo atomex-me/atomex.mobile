@@ -7,36 +7,39 @@
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
     xmlns:custom="clr-namespace:atomex.CustomElements"
-    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
+    xmlns:converters="clr-namespace:atomex.Converters"
     Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
-                         Margin="15,0,15,10"
+                         Margin="16,10"
+                         HeightRequest="52"
                          Spacing="0">
-                <Label Text="{helpers:Translate MyAddresses}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                    HorizontalTextAlignment="Start"
-                                    VerticalTextAlignment="Center"
-                                    VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"/>
                 <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
                                     Style="{DynamicResource EntryStyle}"
+                                    Text="{Binding SearchPattern, Mode=TwoWay}"
                                     FontSize="14"
                                     HorizontalTextAlignment="Start"
                                     VerticalTextAlignment="Center"
                                     VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"
-                                    x:Name="AddressesEntry">
-                    <custom:CustomEntry.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="TextChanged"
-                                                          Command="{Binding SearchAddressCommand}"
-                                                          CommandParameter="{Binding Source={x:Reference AddressesEntry},Path=Text}"/>
-                    </custom:CustomEntry.Behaviors>
-                </custom:CustomEntry>
+                                    HorizontalOptions="FillAndExpand"/>
+                <ImageButton Source="ic_close"
+                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                             Padding="7"
+                             WidthRequest="24"
+                             HeightRequest="24"
+                             CornerRadius="12"
+                             VerticalOptions="Center"
+                             Command="{Binding ClearSearchAddressCommand}"
+                             IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding Outputs}"
@@ -47,6 +50,14 @@
                       VerticalOptions="Fill"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding Outputs.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -116,6 +127,28 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout IsVisible="False"
+                         VerticalOptions="Start">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding Outputs.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Image Source="ic_search"
+                       WidthRequest="45"
+                       HeightRequest="45"
+                       Margin="20,40,20,10"
+                       VerticalOptions="Start"/>
+                <Label Text="No outputs found"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+            </StackLayout>
             <Grid HorizontalOptions="Fill"
                   VerticalOptions="EndAndExpand"
                   ColumnSpacing="0"
@@ -130,9 +163,15 @@
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.RowSpan="2"
-                        Margin="15,10"
                         Text="{helpers:Translate ConfirmButton}"
-                        Style="{DynamicResource MainButtonStyle}"
+                        Margin="16,14"
+                        CornerRadius="8"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        FontSize="17"
+                        HeightRequest="44"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmOutputsCommand}"/>
                 <Label Grid.Column="1"
                        Text="{Binding TotalSelectedString}"

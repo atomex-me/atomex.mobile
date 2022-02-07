@@ -242,21 +242,27 @@ namespace atomex.ViewModel.SendViewModels
             From = address;
             SelectedFromBalance = balance;
 
-            if (Navigation.NavigationStack.Count <= 4)
+            var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
+
+            switch (selectFromViewModel.AddressSettingType)
             {
-                Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
-                return;
-            }
-            if (Navigation.NavigationStack.Count == 6)
-            {
-                Navigation.PopAsync();
-                return;
-            }
-            if (Navigation.NavigationStack.Count >= 7)
-            {
-                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                Navigation.PopAsync();
-                return;
+                case SelectAddressViewModel.SettingType.Init:
+                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    break;
+
+                case SelectAddressViewModel.SettingType.Change:
+                    Navigation.PopAsync();
+                    break;
+
+                case SelectAddressViewModel.SettingType.InitFromSearch:
+                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    break;
+
+                case SelectAddressViewModel.SettingType.ChangeFromSearch:
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    Navigation.PopAsync();
+                    break;
             }
         }
 
@@ -264,21 +270,25 @@ namespace atomex.ViewModel.SendViewModels
         {
             To = address;
 
-            if (Navigation.NavigationStack.Count <= 5)
+            switch (SelectToViewModel.AddressSettingType)
             {
-                Navigation.PushAsync(new SendPage(this));
-                return;
-            }
-            if (Navigation.NavigationStack.Count == 6)
-            {
-                Navigation.PopAsync();
-                return;
-            }
-            if (Navigation.NavigationStack.Count >= 7)
-            {
-                Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                Navigation.PopAsync();
-                return;
+                case SelectAddressViewModel.SettingType.Init:
+                    Navigation.PushAsync(new SendPage(this));
+                    break;
+
+                case SelectAddressViewModel.SettingType.Change:
+                    Navigation.PopAsync();
+                    break;
+
+                case SelectAddressViewModel.SettingType.InitFromSearch:
+                    Navigation.PushAsync(new SendPage(this));
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    break;
+
+                case SelectAddressViewModel.SettingType.ChangeFromSearch:
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    Navigation.PopAsync();
+                    break;
             }
         }
 

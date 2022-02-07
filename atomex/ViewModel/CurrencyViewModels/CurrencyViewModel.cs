@@ -350,8 +350,8 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             else
             {
-                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                await Navigation.PushAsync(new FromAddressPage(selectOutputsViewModel));
+                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                await Navigation.PushAsync(new FromAddressPage(selectAddressViewModel));
             }
         }
 

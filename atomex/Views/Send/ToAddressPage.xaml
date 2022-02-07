@@ -156,7 +156,7 @@
                        BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                        CornerRadius="5"
-                       Margin="15,0"
+                       Margin="16,0"
                        HasShadow="False">
                     <Grid HorizontalOptions="Fill"
                           ColumnSpacing="0"
@@ -174,7 +174,7 @@
                                             FontSize="16"
                                             HorizontalTextAlignment="Start"
                                             VerticalTextAlignment="Center"
-                                            Margin="15,0"/>
+                                            Margin="16,0"/>
                         <Button Grid.Column="1"
                                 Text="{helpers:Translate PasteButton}"
                                 BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
@@ -223,7 +223,8 @@
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
-                         Margin="15,0">
+                         Margin="16,0"
+                         Spacing="12">
                 <Label Text="{helpers:Translate MyAddresses}"
                        FontSize="14"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"

@@ -73,16 +73,32 @@ namespace atomex.ViewModel.SendViewModels
 
         private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
 
-        protected async void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        protected void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
         {
             Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
-            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
-        }
 
-        protected async void ChangeOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
-        {
-            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
-            await Navigation.PopAsync();
+            var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
+
+            switch (selectFromViewModel.AddressSettingType)
+            {
+                case SelectOutputsViewModel.SettingType.Init:
+                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    break;
+
+                case SelectOutputsViewModel.SettingType.Change:
+                    Navigation.PopAsync();
+                    break;
+
+                case SelectOutputsViewModel.SettingType.InitFromSearch:
+                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    break;
+
+                case SelectOutputsViewModel.SettingType.ChangeFromSearch:
+                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    Navigation.PopAsync();
+                    break;
+            }
         }
 
         protected override async Task UpdateAmount()
@@ -293,14 +309,19 @@ namespace atomex.ViewModel.SendViewModels
 
             SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config, Navigation)
             {
-                ConfirmAction = ChangeOutputs
+                ConfirmAction = ConfirmOutputs
             };
+
+            var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
+            selectFromViewModel.AddressSettingType = SelectOutputsViewModel.SettingType.Change;
 
             await Navigation.PushAsync(new FromOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
         }
 
         protected async override Task ToClick()
         {
+            SelectToViewModel.AddressSettingType = SelectAddressViewModel.SettingType.Change;
+
             await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }
     }

@@ -26,7 +26,18 @@ namespace atomex.ViewModel.SendViewModels
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
 
+        public enum SettingType
+        {
+            Init,
+            Change,
+            InitFromSearch,
+            ChangeFromSearch
+        }
+
+        public SettingType AddressSettingType { get; set; }
+        private ObservableCollection<OutputViewModel> InitialOutputs { get; set; }
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
+        [Reactive] public string SearchPattern { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedFromBalance { get; set; }
         public BitcoinBasedConfig Currency { get; }
@@ -43,6 +54,7 @@ namespace atomex.ViewModel.SendViewModels
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 
             SelectAll = Outputs.Aggregate(true, (result, output) => result && output.IsSelected);
+            AddressSettingType = SettingType.Init;
 
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
@@ -63,6 +75,8 @@ namespace atomex.ViewModel.SendViewModels
 
                     Outputs = new ObservableCollection<OutputViewModel>(
                         outputsWithAddresses.OrderByDescending(output => output.Balance));
+
+                    InitialOutputs = new ObservableCollection<OutputViewModel>(Outputs);
 
                     UpdateSelectedStats();
                 });
@@ -92,17 +106,23 @@ namespace atomex.ViewModel.SendViewModels
                             Outputs.OrderByDescending(output => output.Balance));
                 });
 
-            this.WhenAnyValue(vm => vm.SortByBalance, vm => vm.SortIsAscending)
-                .ObserveOn(RxApp.MainThreadScheduler)
+            this.WhenAnyValue(
+                    vm => vm.SortByBalance,
+                    vm => vm.SortIsAscending,
+                    vm => vm.SearchPattern)
                 .Subscribe(value =>
                 {
-                    var (item1, item2) = value;
+                    var (item1, item2, item3) = value;
 
                     if (Outputs == null) return;
 
+                    var outputViewModels = new ObservableCollection<OutputViewModel>(
+                        InitialOutputs
+                            .Where(output => output.Address.ToLower().Contains(item3?.ToLower() ?? string.Empty)));
+
                     if (!item1)
                     {
-                        var outputsList = Outputs.ToList();
+                        var outputsList = outputViewModels.ToList();
                         if (item2)
                         {
                             outputsList.Sort((a1, a2) =>
@@ -150,6 +170,7 @@ namespace atomex.ViewModel.SendViewModels
                             });
                         }
 
+
                         Outputs = new ObservableCollection<OutputViewModel>(outputsList);
                     }
                     else
@@ -191,6 +212,23 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> SearchCommand =>
             _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
 
+        private ReactiveCommand<Unit, Unit> _clearSearchAddressCommand;
+        public ReactiveCommand<Unit, Unit> ClearSearchAddressCommand =>
+            _clearSearchAddressCommand ??= (_clearSearchAddressCommand = ReactiveCommand.Create(() =>
+            {
+                SearchPattern = string.Empty;
+            }));
+
+        private ICommand _backCommand;
+        public ICommand BackCommand => _backCommand ??= new Command(() =>
+        {
+            SearchPattern = string.Empty;
+            if (AddressSettingType == SettingType.InitFromSearch)
+                AddressSettingType = SettingType.Init;
+            if (AddressSettingType == SettingType.ChangeFromSearch)
+                AddressSettingType = SettingType.Change;
+        });
+
         private ICommand _confirmOutputsCommand;
         public ICommand ConfirmOutputsCommand => _confirmOutputsCommand ??=
             (_confirmOutputsCommand = ReactiveCommand.Create(ConfirmOutputs));
@@ -198,7 +236,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private void ConfirmOutputs()
         {
-            var outputs = Outputs
+            var outputs = InitialOutputs
                 .Where(output => output.IsSelected)
                 .Select(o => o.Output);
 
@@ -256,6 +294,11 @@ namespace atomex.ViewModel.SendViewModels
 
         private async Task OnSearchButtonClicked()
         {
+            if (AddressSettingType == SettingType.Init)
+                AddressSettingType = SettingType.InitFromSearch;
+            if (AddressSettingType == SettingType.Change)
+                AddressSettingType = SettingType.ChangeFromSearch;
+
             await Navigation.PushAsync(new SearchOutputsPage(this));
         }
     }

@@ -24,8 +24,17 @@ namespace atomex.ViewModel.SendViewModels
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
 
+        public enum SettingType
+        {
+            Init,
+            Change,
+            InitFromSearch,
+            ChangeFromSearch
+        }
+
         public Action<string, decimal> ConfirmAction { get; set; }
         public bool UseToSelectFrom { get; set; }
+        public SettingType AddressSettingType { get; set; }
         private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
         [Reactive] public string SearchPattern { get; set; }
@@ -141,6 +150,7 @@ namespace atomex.ViewModel.SendViewModels
 
             UseToSelectFrom = useToSelectFrom;
             IsMyAddressesTab = false;
+            AddressSettingType = SettingType.Init;
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(
                 AddressesHelper
@@ -216,6 +226,16 @@ namespace atomex.ViewModel.SendViewModels
         public ICommand ScanResultCommand =>
             _scanResultCommand ??= new Command(async () => await OnScanResult());
 
+        private ICommand _backCommand;
+        public ICommand BackCommand => _backCommand ??= new Command(() =>
+            {
+                SearchPattern = string.Empty;
+                if (AddressSettingType == SettingType.InitFromSearch)
+                    AddressSettingType = SettingType.Init;
+                if (AddressSettingType == SettingType.ChangeFromSearch)
+                    AddressSettingType = SettingType.Change;
+            });
+
         protected async void OnCopyClicked(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -289,6 +309,11 @@ namespace atomex.ViewModel.SendViewModels
 
         private async Task OnSearchButtonClicked()
         {
+            if (AddressSettingType == SettingType.Init)
+                AddressSettingType = SettingType.InitFromSearch;
+            if (AddressSettingType == SettingType.Change)
+                AddressSettingType = SettingType.ChangeFromSearch;
+
             await Navigation.PushAsync(new SearchAddressPage(this));
         }
 
