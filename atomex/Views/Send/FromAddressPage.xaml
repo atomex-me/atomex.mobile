@@ -136,9 +136,9 @@
                                        HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding AvailableBalance}"/>
+                                            <Span Text="{Binding Balance}"/>
                                             <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyCode}"/>
+                                            <Span Text="{Binding BalanceCode}"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

@@ -51,7 +51,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public string ToolbarIcon { get; set; }
         [Reactive] public ReactiveCommand<Unit, Unit> ToolbarCommand { get; set; }
 
-        public SelectAddressViewModel(IAccount account, CurrencyConfig currency, INavigation navigation, bool useToSelectFrom = false)
+        public SelectAddressViewModel(IAccount account, CurrencyConfig currency, INavigation navigation, bool useToSelectFrom = false, string tokenContract = null)
         {
             ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
@@ -152,18 +152,18 @@ namespace atomex.ViewModel.SendViewModels
             IsMyAddressesTab = false;
             AddressSettingType = SettingType.Init;
 
-            MyAddresses = new ObservableCollection<WalletAddressViewModel>(
-                AddressesHelper
+            var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(
-                    account: account,
-                    currency: currency)
+                  account: account,
+                  currency: currency,
+                  tokenContract: tokenContract)
                 .WaitForResult()
-                .Where(address => !useToSelectFrom ||
-                                  address.IsTezosToken && address.TokenBalance != 0 ||
-                                  !address.IsTezosToken && address.AvailableBalance != 0)
-                .OrderByDescending(address => address.AvailableBalance));
+                .Where(address => !useToSelectFrom || address.Balance != 0)
+                .OrderByDescending(address => address.Balance);
 
-            InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(MyAddresses);
+            MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
+
+            InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
         }
 
         private ReactiveCommand<Unit, Unit> _changeSortTypeCommand;

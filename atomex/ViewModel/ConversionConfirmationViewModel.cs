@@ -169,11 +169,11 @@ namespace atomex.ViewModel
                 if (price == 0)
                     return new Error(Errors.NoLiquidity, AppResources.NoLiquidityError);
 
-                var qty = AmountHelper.AmountToQty(side, Amount, price, baseCurrency.DigitsMultiplier);
+                var qty = AmountHelper.AmountToSellQty(side, Amount, price, baseCurrency.DigitsMultiplier);
 
                 if (qty < symbol.MinimumQty)
                 {
-                    var minimumAmount = AmountHelper.QtyToAmount(
+                    var minimumAmount = AmountHelper.QtyToSellAmount(
                         side: side,
                         qty: symbol.MinimumQty,
                         price: price,

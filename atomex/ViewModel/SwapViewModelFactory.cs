@@ -11,8 +11,8 @@ namespace atomex
             var soldCurrency = currencies.GetByName(swap.SoldCurrency);
             var purchasedCurrency = currencies.GetByName(swap.PurchasedCurrency);
 
-            var fromAmount = AmountHelper.QtyToAmount(swap.Side, swap.Qty, swap.Price, soldCurrency.DigitsMultiplier);
-            var toAmount = AmountHelper.QtyToAmount(swap.Side.Opposite(), swap.Qty, swap.Price, purchasedCurrency.DigitsMultiplier);
+            var fromAmount = AmountHelper.QtyToSellAmount(swap.Side, swap.Qty, swap.Price, soldCurrency.DigitsMultiplier);
+            var toAmount = AmountHelper.QtyToSellAmount(swap.Side.Opposite(), swap.Qty, swap.Price, purchasedCurrency.DigitsMultiplier);
 
             var quoteCurrency = swap.Symbol.QuoteCurrency() == swap.SoldCurrency
                 ? soldCurrency
@@ -23,16 +23,12 @@ namespace atomex
                 Id               = swap.Id.ToString(),
                 Mode             = ModeBySwap(swap),
                 Time             = swap.TimeStamp,
-
                 FromAmount       = fromAmount,
                 FromCurrencyCode = soldCurrency.Name,
-
                 ToAmount         = toAmount,
                 ToCurrencyCode   = purchasedCurrency.Name,
-
                 Price            = swap.Price,
                 PriceFormat      = $"F{quoteCurrency.Digits}",
-
                 Currencies       = currencies
             };
 

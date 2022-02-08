@@ -333,7 +333,7 @@ namespace atomex.ViewModel
                 var swapParams = await Atomex.ViewModels.Helpers
                     .EstimateSwapParamsAsync(
                         from: FromSource,
-                        amount: EstimatedMaxAmount,
+                        fromAmount: EstimatedMaxAmount,
                         redeemFromAddress: RedeemAddress,
                         fromCurrency: FromCurrencyViewModel.Currency,
                         toCurrency: ToCurrencyViewModel.Currency,
@@ -389,7 +389,7 @@ namespace atomex.ViewModel
             var swapParams = await Atomex.ViewModels.Helpers
                 .EstimateSwapParamsAsync(
                     from: FromSource,
-                    amount: amount,
+                    fromAmount: amount,
                     redeemFromAddress: RedeemAddress,
                     fromCurrency: FromCurrencyViewModel?.Currency,
                     toCurrency: ToCurrencyViewModel?.Currency,
@@ -580,27 +580,29 @@ namespace atomex.ViewModel
         {
             try
             {
-                var swapPriceEstimation = await Atomex.ViewModels.Helpers.EstimateSwapPriceAsync(
-                    amount: Amount,
-                    fromCurrency: FromCurrencyViewModel?.Currency,
-                    toCurrency: ToCurrencyViewModel?.Currency,
-                    account: _app.Account,
-                    atomexClient: _app.Terminal,
-                    symbolsProvider: _app.SymbolsProvider);
+                //var swapPriceEstimation = await Atomex.ViewModels.Helpers
+                //    .EstimateSwapPriceAsync(
+                //        amount: Amount,
+                //        amountType: null,
+                //        fromCurrency: FromCurrencyViewModel?.Currency,
+                //        toCurrency: ToCurrencyViewModel?.Currency,
+                //        account: _app.Account,
+                //        atomexClient: _app.Terminal,
+                //        symbolsProvider: _app.SymbolsProvider);
 
-                if (swapPriceEstimation == null)
-                    return;
+                //if (swapPriceEstimation == null)
+                //    return;
 
-                await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _estimatedOrderPrice = swapPriceEstimation.OrderPrice;
+                //await Device.InvokeOnMainThreadAsync(() =>
+                //{
+                //    _estimatedOrderPrice = swapPriceEstimation.OrderPrice;
 
-                    TargetAmount = swapPriceEstimation.TargetAmount;
-                    EstimatedPrice = swapPriceEstimation.Price;
-                    EstimatedMaxAmount = swapPriceEstimation.MaxAmount;
-                    IsNoLiquidity = swapPriceEstimation.IsNoLiquidity;
+                //    TargetAmount = swapPriceEstimation.TargetAmount;
+                //    EstimatedPrice = swapPriceEstimation.Price;
+                //    EstimatedMaxAmount = swapPriceEstimation.MaxAmount;
+                //    IsNoLiquidity = swapPriceEstimation.IsNoLiquidity;
 
-                });
+                //});
             }
             catch (Exception e)
             {
@@ -1036,7 +1038,7 @@ namespace atomex.ViewModel
             var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
             var price = EstimatedPrice;
             var baseCurrency = Currencies.GetByName(symbol.Base);
-            var qty = AmountHelper.AmountToQty(
+            var qty = AmountHelper.AmountToSellQty(
                 side: side,
                 amount: Amount,
                 price: price,
@@ -1044,20 +1046,23 @@ namespace atomex.ViewModel
 
             if (qty < symbol.MinimumQty)
             {
-                var minimumAmount = AmountHelper.QtyToAmount(
+                var minimumAmount = AmountHelper.QtyToSellAmount(
                     side: side,
                     qty: symbol.MinimumQty,
                     price: price,
                     digitsMultiplier: FromCurrencyViewModel.Currency.DigitsMultiplier);
+
                 var message = string.Format(
                     CultureInfo.InvariantCulture,
                     AppResources.MinimumAllowedQtyWarning,
                     minimumAmount,
                     FromCurrencyViewModel.Currency.Name);
+
                 await Application.Current.MainPage.DisplayAlert(
                     AppResources.Error,
                     message,
                     AppResources.AcceptButton);
+
                 return;
             }
 
