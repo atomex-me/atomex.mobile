@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Resources;
@@ -12,6 +14,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 
 namespace atomex.ViewModel.SendViewModels
@@ -33,6 +36,14 @@ namespace atomex.ViewModel.SendViewModels
             {
                 ConfirmAction = ConfirmToAddress
             };
+
+            this.WhenAnyValue(
+                vm => vm.Amount,
+                vm => vm.Fee,
+                (amount, fee) => Currency.IsToken ? amount : amount + fee
+            )
+            .Select(totalAmount => totalAmount.ToString(CultureInfo.InvariantCulture))
+            .ToPropertyEx(this, vm => vm.TotalAmountString);
         }
 
         protected override async Task FromClick()
@@ -61,7 +72,7 @@ namespace atomex.ViewModel.SendViewModels
                     .EstimateMaxAmountToSendAsync(
                         from: From,
                         type: BlockchainTransactionType.Output,
-                        reserve: UseDefaultFee);
+                        reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
                     Fee = maxAmountEstimation.Fee;
@@ -100,7 +111,7 @@ namespace atomex.ViewModel.SendViewModels
                         .EstimateMaxAmountToSendAsync(
                             from: From,
                             type: BlockchainTransactionType.Output,
-                            reserve: UseDefaultFee);
+                            reserve: false);
 
                     if (maxAmountEstimation.Error != null)
                     {
@@ -135,7 +146,7 @@ namespace atomex.ViewModel.SendViewModels
                     .EstimateMaxAmountToSendAsync(
                         from: From,
                         type: BlockchainTransactionType.Output,
-                        reserve: UseDefaultFee);
+                        reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
                     Fee = maxAmountEstimation.Fee;
@@ -184,7 +195,7 @@ namespace atomex.ViewModel.SendViewModels
             var tokenConfig = (Fa12Config)Currency;
             var tokenContract = tokenConfig.TokenContractAddress;
             const int tokenId = 0;
-            const string? tokenType = "FA12";
+            const string tokenType = "FA12";
 
             var tokenAddress = await TezosTokensSendViewModel.GetTokenAddressAsync(
                 account: App.Account,
