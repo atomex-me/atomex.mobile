@@ -65,14 +65,21 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
+
                     return;
                 }
 
                 var availableAmount = maxAmountEstimation.Amount + maxAmountEstimation.Fee;
 
                 if (Amount + Fee > availableAmount)
-                    Warning = AppResources.InsufficientFunds;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: AppResources.InsufficientFunds);
             }
             catch (Exception e)
             {
@@ -98,7 +105,11 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (maxAmountEstimation.Error != null)
                     {
-                        Warning = maxAmountEstimation.Error.Description;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: maxAmountEstimation.Error.Description);
+
                         return;
                     }
 
@@ -106,12 +117,21 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (Amount + Fee > availableAmount)
                     {
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
+
                         return;
                     }
 
                     if (Fee < maxAmountEstimation.Fee)
-                        Warning = AppResources.LowFees;
+                    {
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Fee,
+                            text: AppResources.LowFees);
+                    }
                 }
             }
             catch (Exception e)
@@ -139,7 +159,11 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
+
                     Amount = 0;
                     AmountString = Amount.ToString();
                     this.RaisePropertyChanged(nameof(AmountString));
@@ -162,10 +186,14 @@ namespace atomex.ViewModel.SendViewModels
                         : 0;
 
                     if (Fee < maxAmountEstimation.Fee)
-                        Warning = AppResources.LowFees;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Fee,
+                            text: AppResources.LowFees);
                 }
 
                 AmountString = Amount.ToString();
+
                 this.RaisePropertyChanged(nameof(AmountString));
             }
             catch (Exception e)

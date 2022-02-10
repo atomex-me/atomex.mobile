@@ -7,12 +7,15 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -174,7 +177,12 @@
                                             FontSize="16"
                                             HorizontalTextAlignment="Start"
                                             VerticalTextAlignment="Center"
-                                            Margin="16,0"/>
+                                            Margin="16,0">
+                            <custom:CustomEntry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="Unfocused"
+                                                                  Command="{Binding ValidateAddressCommand}"/>
+                            </custom:CustomEntry.Behaviors>
+                        </custom:CustomEntry>
                         <Button Grid.Column="1"
                                 Text="{helpers:Translate PasteButton}"
                                 BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
@@ -205,6 +213,50 @@
                                      IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </Frame>
+                <StackLayout Margin="16,0">
+                    <StackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                            <Binding Path="Message.RelatedTo"
+                                     Mode="OneWay"
+                                     Converter="{StaticResource StringEnumEqualsConverter}"
+                                     ConverterParameter="Address"/>
+                            <Binding Path="Message.Text"
+                                     Mode="OneWay"
+                                     Converter="{StaticResource StringToBool}"/>
+                        </MultiBinding>                   
+                    </StackLayout.IsVisible>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="{Binding Message.Text}"
+                               FontSize="14"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="#FFA800"
+                               HorizontalTextAlignment="Start"
+                               HorizontalOptions="StartAndExpand"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="#FFA800"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Image WidthRequest="12"
+                               HeightRequest="12"
+                               Source="ic_question"
+                               HorizontalOptions="End"
+                               Margin="0,0,20,0"
+                               VerticalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
             <StackLayout Spacing="5">
                 <StackLayout.Triggers>
@@ -353,19 +405,20 @@
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"/>
                                 </Frame>
-                                <Image Grid.RowSpan="2"
-                                       Grid.Column="2"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
-                                       Margin="0"
-                                       VerticalOptions="CenterAndExpand"
-                                       HorizontalOptions="End"
-                                       Source="ic_copy">
-                                    <Image.GestureRecognizers>
+                                <StackLayout Grid.RowSpan="2"
+                                             Grid.Column="2"
+                                             VerticalOptions="FillAndExpand"
+                                             HorizontalOptions="FillAndExpand">
+                                    <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
                                                               CommandParameter="{Binding .}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    </StackLayout.GestureRecognizers>
+                                    <Image WidthRequest="24"
+                                           HeightRequest="24"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="End"
+                                           Source="ic_copy"/>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -374,15 +427,17 @@
             </StackLayout>
             <StackLayout VerticalOptions="EndAndExpand"
                          Spacing="0"
-                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='#E3F2FD'}">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"
-                                 Value="False">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
+                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                <StackLayout.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                        <Binding Path="ToAddress"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringToBool}"/>
+                        <Binding Path="IsMyAddressesTab"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource InverseBool}"/>
+                    </MultiBinding>                   
+                </StackLayout.IsVisible>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="16,14"
@@ -393,7 +448,34 @@
                         HeightRequest="44"
                         HorizontalOptions="FillAndExpand"
                         FontFamily="{DynamicResource RegularFont}"
-                        Command="{Binding ConfirmCommand}"/>
+                        Command="{Binding ConfirmCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
+                            <Setter Property="Opacity"
+                                    Value="0.5"/>
+                            <Setter Property="IsEnabled"
+                                    Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                            <Setter Property="TextColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                            <Setter Property="Opacity"
+                                    Value="1"/>
+                            <Setter Property="IsEnabled"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

@@ -19,6 +19,27 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
+    public enum MessageType
+    {
+        Warning,
+        Error
+    }
+
+    public enum RelatedTo
+    {
+        Amount,
+        Fee,
+        Address,
+        Core
+    }
+
+    public class Message
+    {
+        public MessageType Type { get; set; }
+        public RelatedTo RelatedTo { get; set; }
+        public string Text { get; set; }
+    }
+
     public abstract class SendViewModel : BaseViewModel
     {
         protected IAtomexApp App { get; }
@@ -95,7 +116,8 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public decimal AmountInBase { get; set; }
         [Reactive] public decimal FeeInBase { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }
-        [Reactive] public string Warning { get; set; }
+
+        [Reactive] public Message Message { get; set; }
         [Reactive] public bool IsLoading { get; set; }
 
         public string CurrencyCode => CurrencyViewModel.CurrencyCode;
@@ -120,6 +142,8 @@ namespace atomex.ViewModel.SendViewModels
             Currency = currencyViewModel?.Currency;
             Navigation = currencyViewModel?.Navigation;
 
+            Message = new Message();
+            Message.RelatedTo = RelatedTo.Amount;
             UseDefaultFee = true;
 
             var updateAmountCommand = ReactiveCommand.CreateFromTask(UpdateAmount);
@@ -131,7 +155,7 @@ namespace atomex.ViewModel.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee
                 )
-                .Subscribe(_ => Warning = string.Empty);
+                .Subscribe(_ => Message.Text = string.Empty);
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -140,6 +164,16 @@ namespace atomex.ViewModel.SendViewModels
                 )
                 .Select(totalAmount => totalAmount.ToString())
                 .ToPropertyEx(this, vm => vm.TotalAmountString);
+
+            this.WhenAnyValue(
+                    vm => vm.Amount,
+                    vm => vm.From,
+                    vm => vm.To,
+                    (amount, from, to) => from
+                 )
+                .WhereNotNull()
+                .Select(_ => Unit.Default)
+                .InvokeCommand(updateAmountCommand);
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -163,9 +197,6 @@ namespace atomex.ViewModel.SendViewModels
                     this.RaisePropertyChanged(nameof(FeeString));
                 });
 
-            this.WhenAnyValue(vm => vm.To)
-                .Subscribe(_ => UpdateAmount());
-
             SubscribeToServices();
         }
 
@@ -183,8 +214,9 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> MaxCommand =>
             _maxCommand ??= (_maxCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                Warning = string.Empty;
+                Message.Text = string.Empty;
                 await OnMaxClick();
+                this.RaisePropertyChanged(nameof(Message));
             }));
 
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
@@ -202,39 +234,43 @@ namespace atomex.ViewModel.SendViewModels
         private async Task SendingConfirmation()
         {
             if (string.IsNullOrEmpty(To))
-            {
-                Warning = AppResources.EmptyAddressError;
-                return;
-            }
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Address,
+                    text: AppResources.EmptyAddressError);
 
-            if (!Currency.IsValidAddress(To))
-            {
-                Warning = AppResources.InvalidAddressError;
-                return;
-            }
+            else if (!Currency.IsValidAddress(To))
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Address,
+                    text: AppResources.InvalidAddressError);
 
-            if (Amount <= 0)
-            {
-                Warning = AppResources.AmountLessThanZeroError;
-                return;
-            }
+            else if (Amount <= 0)
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Amount,
+                    text: AppResources.AmountLessThanZeroError);
 
-            if (Fee <= 0)
-            {
-                Warning = AppResources.CommissionLessThanZeroError;
-            }
+            else if (Fee <= 0)
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Fee,
+                    text: AppResources.CommissionLessThanZeroError);
 
             var feeAmount = !Currency.IsToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
-            {
-                Warning = AppResources.AvailableFundsError;
-            }
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Amount,
+                    text: AppResources.AvailableFundsError);
 
-            if (string.IsNullOrEmpty(Warning))
+            this.RaisePropertyChanged(nameof(Message));
+
+            if (string.IsNullOrEmpty(Message?.Text))
                 await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
             else
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, Warning, AppResources.AcceptButton);
+                await Application.Current.MainPage.DisplayAlert(AppResources.Error, Message?.Text, AppResources.AcceptButton);
         }
 
         protected void ConfirmFromAddress(string address, decimal balance)
@@ -358,6 +394,15 @@ namespace atomex.ViewModel.SendViewModels
             AmountInBase = Amount * (quote?.Bid ?? 0m);
             FeeInBase = Fee * (quote?.Bid ?? 0m);
             TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
+        }
+
+        protected void ShowMessage(MessageType messageType, RelatedTo element, string text)
+        {
+            Message.Type = messageType;
+            Message.RelatedTo = element;
+            Message.Text = text;
+
+            this.RaisePropertyChanged(nameof(Message));
         }
     }
 }

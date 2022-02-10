@@ -104,7 +104,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid ColumnSpacing="0"
+                            <Grid ColumnSpacing="20"
                                   RowSpacing="0"
                                   Padding="16,5">
                                 <Grid.RowDefinitions>
@@ -113,7 +113,7 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="40" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
@@ -142,19 +142,20 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Image Grid.RowSpan="2"
-                                       Grid.Column="1"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
-                                       Margin="0"
-                                       VerticalOptions="CenterAndExpand"
-                                       HorizontalOptions="End"
-                                       Source="ic_copy">
-                                    <Image.GestureRecognizers>
+                                <StackLayout Grid.RowSpan="2"
+                                             Grid.Column="1"
+                                             VerticalOptions="FillAndExpand"
+                                             HorizontalOptions="FillAndExpand">
+                                    <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
                                                               CommandParameter="{Binding .}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    </StackLayout.GestureRecognizers>
+                                    <Image WidthRequest="24"
+                                           HeightRequest="24"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="End"
+                                           Source="ic_copy"/>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

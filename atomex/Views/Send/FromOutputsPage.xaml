@@ -103,7 +103,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid ColumnSpacing="0"
+                            <Grid ColumnSpacing="20"
                                   RowSpacing="0"
                                   Padding="16,5">
                                 <Grid.RowDefinitions>
@@ -151,19 +151,20 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Image Grid.RowSpan="2"
-                                       Grid.Column="2"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
-                                       Margin="10,0,0,0"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="FillAndExpand"
-                                       Source="ic_copy">
-                                    <Image.GestureRecognizers>
+                                <StackLayout Grid.RowSpan="2"
+                                             Grid.Column="2"
+                                             VerticalOptions="FillAndExpand"
+                                             HorizontalOptions="FillAndExpand">
+                                    <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
                                                               CommandParameter="{Binding .}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
+                                    </StackLayout.GestureRecognizers>
+                                    <Image WidthRequest="24"
+                                           HeightRequest="24"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="End"
+                                           Source="ic_copy"/>
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -174,8 +175,9 @@
                   VerticalOptions="EndAndExpand"
                   ColumnSpacing="0"
                   RowSpacing="0"
-                  BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='#E3F2FD'}">
+                  BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1" />
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
                 </Grid.RowDefinitions>
@@ -183,7 +185,10 @@
                     <ColumnDefinition Width="5*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             Grid.ColumnSpan="2"/>
                 <Button Grid.RowSpan="2"
+                        Grid.Row="1"
                         Text="{helpers:Translate ConfirmButton}"
                         Margin="16,14"
                         CornerRadius="8"
@@ -195,13 +200,14 @@
                         FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmOutputsCommand}"/>
                 <Label Grid.Column="1"
+                       Grid.Row="1"
                        Text="{Binding TotalSelectedString}"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Column="1"
-                       Grid.Row="1"
+                       Grid.Row="2"
                        FontSize="12"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"

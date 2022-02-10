@@ -33,7 +33,7 @@ namespace atomex.ViewModel.SendViewModels
             var updateGasPriceCommand = ReactiveCommand.CreateFromTask(UpdateGasPrice);
 
             this.WhenAnyValue(vm => vm.GasPrice)
-                .Subscribe(_ => Warning = string.Empty);
+                .Subscribe(_ => Message.Text = string.Empty);
 
             this.WhenAnyValue(vm => vm.GasPrice)
                 .Subscribe(gasPrice => GasPriceString = gasPrice.ToString(CultureInfo.InvariantCulture));
@@ -154,12 +154,21 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
+
                     return;
                 }
 
                 if (Amount > maxAmountEstimation.Amount)
-                    Warning = AppResources.InsufficientFunds;
+                {
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: AppResources.InsufficientFunds);
+                }
 
                 OnQuotesUpdatedEventHandler(this, EventArgs.Empty);
             }
@@ -188,12 +197,21 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (maxAmountEstimation.Error != null)
                     {
-                        Warning = maxAmountEstimation.Error.Description;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: maxAmountEstimation.Error.Description);
+
                         return;
                     }
 
                     if (Amount > maxAmountEstimation.Amount)
-                        Warning = AppResources.InsufficientFunds;
+                    {
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
+                    }
                 }
             }
             catch (Exception e)
@@ -222,10 +240,15 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
+
                     Amount = 0;
                     AmountString = Amount.ToString();
                     this.RaisePropertyChanged(nameof(AmountString));
+                    
 
                     return;
                 }

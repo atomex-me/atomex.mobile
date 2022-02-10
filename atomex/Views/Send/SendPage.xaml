@@ -11,6 +11,9 @@
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -176,7 +179,7 @@
                        HorizontalOptions="Center"/>
             </Grid>
             <Frame Padding="0"
-                   Margin="16"
+                   Margin="16,8,16,0"
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -184,7 +187,7 @@
                    HasShadow="False">
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
-                      RowSpacing="8">
+                      RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -229,8 +232,52 @@
                             Command="{Binding MaxCommand}"/>
                 </Grid>
             </Frame>
+            <StackLayout Margin="16,12,16,0">
+                <StackLayout.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                        <Binding Path="Message.RelatedTo"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringEnumEqualsConverter}"
+                                 ConverterParameter="Amount"/>
+                        <Binding Path="Message.Text"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringToBool}"/>
+                    </MultiBinding>                   
+                </StackLayout.IsVisible>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding Message.Text}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="#FFA800"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="#FFA800"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Image WidthRequest="12"
+                           HeightRequest="12"
+                           Source="ic_question"
+                           HorizontalOptions="End"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                </StackLayout>
+            </StackLayout>
             <Frame Padding="0"
-                   Margin="16,0,16,16"
+                   Margin="16,16,16,0"
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -251,7 +298,7 @@
                 </Frame.Triggers>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
-                      RowSpacing="8">
+                      RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -282,8 +329,52 @@
                     </Label>
                 </Grid>
             </Frame>
+            <StackLayout Margin="16,12,16,0">
+                <StackLayout.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                        <Binding Path="Message.RelatedTo"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringEnumEqualsConverter}"
+                                 ConverterParameter="Fee"/>
+                        <Binding Path="Message.Text"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringToBool}"/>
+                    </MultiBinding>                   
+                </StackLayout.IsVisible>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding Message.Text}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="#FFA800"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="#FFA800"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Image WidthRequest="12"
+                           HeightRequest="12"
+                           Source="ic_question"
+                           HorizontalOptions="End"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                </StackLayout>
+            </StackLayout>
             <Frame Padding="0"
-                   Margin="16,0,16,16"
+                   Margin="16,12,16,0"
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -336,7 +427,7 @@
                 </Grid>
             </Frame>
             <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
-                            Margin="16,0"
+                            Margin="16,4"
                             BoxSizeRequest="18"
                             TextFontSize="16"
                             IsChecked="{Binding UseDefaultFee}"
@@ -413,31 +504,6 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Frame BackgroundColor="#FFA800"
-                   CornerRadius="4"
-                   Padding="20"
-                   HasShadow="False"
-                   Margin="16"
-                   IsVisible="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}">
-                <StackLayout Orientation="Horizontal"
-                             Spacing="20"
-                             HorizontalOptions="FillAndExpand">
-                    <Label Text="{Binding Warning}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="#F7000E22"
-                           HorizontalTextAlignment="Start"
-                           HorizontalOptions="StartAndExpand"
-                           VerticalOptions="Center"/>
-                    <Label Text="Edit"
-                           FontSize="17"
-                           FontFamily="{DynamicResource BoldFont}"
-                           TextColor="#F7000E22"
-                           HorizontalTextAlignment="End"
-                           HorizontalOptions="End"
-                           VerticalOptions="Center"/>
-                </StackLayout>
-            </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          Spacing="0"
                          BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
@@ -453,41 +519,29 @@
                         FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmationCommand}">
                     <Button.Triggers>
-                        <!--<MultiTrigger TargetType="Button">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding Amount}"
-                                                  Value="0"/>
-                                <BindingCondition Binding="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}}"
-                                                  Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Opacity"
-                                    Value="0.5"/>
-                            <Setter Property="IsEnabled"
-                                    Value="False"/>
-                        </MultiTrigger>-->
                         <DataTrigger TargetType="Button"
-                                     Binding="{Binding Amount}"
-                                     Value="0">
-                            <!--<Setter Property="BackgroundColor"
+                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
                                     Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>-->
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
                             <Setter Property="Opacity"
                                     Value="0.5"/>
                             <Setter Property="IsEnabled"
                                     Value="False"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
-                                     Binding="{Binding Warning, Mode=OneWay, Converter={StaticResource StringToBool}}"
+                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}"
                                      Value="True">
-                            <!--<Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>-->
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
                             <Setter Property="Opacity"
-                                    Value="0.5"/>
+                                    Value="1"/>
                             <Setter Property="IsEnabled"
-                                    Value="False"/>
+                                    Value="True"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>

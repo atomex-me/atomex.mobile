@@ -23,6 +23,7 @@ namespace atomex.ViewModel.SendViewModels
     {
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
+        protected CurrencyConfig Currency { get; set; }
 
         public enum SettingType
         {
@@ -51,10 +52,14 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public string ToolbarIcon { get; set; }
         [Reactive] public ReactiveCommand<Unit, Unit> ToolbarCommand { get; set; }
 
+        [Reactive] public Message Message { get; set; }
+
         public SelectAddressViewModel(IAccount account, CurrencyConfig currency, INavigation navigation, bool useToSelectFrom = false, string tokenContract = null)
         {
             ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            Message = new Message();
 
             this.WhenAnyValue(vm => vm.IsMyAddressesTab)
                 .Subscribe(value =>
@@ -148,6 +153,13 @@ namespace atomex.ViewModel.SendViewModels
                     }
                 });
 
+            this.WhenAnyValue(vm => vm.ToAddress)
+                .Subscribe(_ =>
+                {
+                    Message.Text = string.Empty;
+                    this.RaisePropertyChanged(nameof(Message));
+                });
+
             UseToSelectFrom = useToSelectFrom;
             IsMyAddressesTab = false;
             AddressSettingType = SettingType.Init;
@@ -178,6 +190,16 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> ConfirmCommand => _confirmCommand ??=
             (_confirmCommand = ReactiveCommand.Create(() =>
             {
+                if (!Currency.IsValidAddress(ToAddress))
+                {
+                    Message.Type = MessageType.Error;
+                    Message.RelatedTo = RelatedTo.Address;
+                    Message.Text = AppResources.InvalidAddressError;
+                    this.RaisePropertyChanged(nameof(Message));
+
+                    return;
+                }
+
                 ConfirmAction?.Invoke(ToAddress, 0m);
             }));
 
@@ -235,6 +257,12 @@ namespace atomex.ViewModel.SendViewModels
                 if (AddressSettingType == SettingType.ChangeFromSearch)
                     AddressSettingType = SettingType.Change;
             });
+
+        private ICommand _validateAddressCommand;
+        public ICommand ValidateAddressCommand => _validateAddressCommand ??= new Command(() =>
+        {
+            ValidateAddress(ToAddress);
+        });
 
         protected async void OnCopyClicked(string value)
         {
@@ -323,6 +351,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 var text = await Clipboard.GetTextAsync();
                 ToAddress = text;
+                ValidateAddress(ToAddress);
             }
             else
             {
@@ -340,6 +369,17 @@ namespace atomex.ViewModel.SendViewModels
             else
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private void ValidateAddress(string address)
+        {
+            if (!Currency.IsValidAddress(address))
+            {
+                Message.Type = MessageType.Error;
+                Message.RelatedTo = RelatedTo.Address;
+                Message.Text = AppResources.InvalidAddressError;
+                this.RaisePropertyChanged(nameof(Message));
             }
         }
     }

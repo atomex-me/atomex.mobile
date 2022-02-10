@@ -51,12 +51,18 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
                     return;
                 }
 
                 if (Amount > maxAmountEstimation.Amount)
-                    Warning = AppResources.InsufficientFunds;
+                    ShowMessage(
+                       messageType: MessageType.Error,
+                       element: RelatedTo.Amount,
+                       text: AppResources.InsufficientFunds);
             }
             catch (Exception e)
             {
@@ -83,12 +89,18 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (maxAmountEstimation.Error != null)
                     {
-                        Warning = maxAmountEstimation.Error.Description;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: maxAmountEstimation.Error.Description);
                         return;
                     }
 
                     if (Amount > maxAmountEstimation.Amount)
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: AppResources.InsufficientFunds);
                 }
             }
             catch (Exception e)
@@ -117,7 +129,10 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (maxAmountEstimation.Error != null)
                 {
-                    Warning = maxAmountEstimation.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: maxAmountEstimation.Error.Description);
                     Amount = 0;
                     AmountString = Amount.ToString();
                     this.RaisePropertyChanged(nameof(AmountString));

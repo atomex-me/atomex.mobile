@@ -121,7 +121,11 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (transactionParams == null)
                     {
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
+
                         return;
                     }
 
@@ -139,7 +143,11 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (transactionParams == null)
                     {
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
+
                         return;
                     }
 
@@ -147,7 +155,12 @@ namespace atomex.ViewModel.SendViewModels
                     var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
 
                     if (Fee < minimumFee)
-                        Warning = AppResources.LowFees;
+                    {
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Fee,
+                            text: AppResources.LowFees);
+                    }
 
                     FeeRate = transactionParams.FeeRate;
                 }
@@ -176,7 +189,11 @@ namespace atomex.ViewModel.SendViewModels
 
                 if (transactionParams == null)
                 {
-                    Warning = AppResources.InsufficientFunds;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Amount,
+                        text: AppResources.InsufficientFunds);
+
                     return;
                 }
 
@@ -184,7 +201,12 @@ namespace atomex.ViewModel.SendViewModels
                 var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
 
                 if (Fee < minimumFee)
-                    Warning = AppResources.LowFees;
+                {
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.Fee,
+                        text: AppResources.LowFees);
+                }
 
                 FeeRate = transactionParams.FeeRate;
 
@@ -207,8 +229,14 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     if (Outputs.Count() == 0)
                     {
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
                         Amount = 0;
+                        AmountString = Amount.ToString();
+                        this.RaisePropertyChanged(nameof(AmountString));
+
                         return;
                     }
 
@@ -247,7 +275,10 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (transactionParams == null)
                     {
-                        Warning = AppResources.InsufficientFunds;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.Amount,
+                            text: AppResources.InsufficientFunds);
                         Amount = 0;
                         AmountString = Amount.ToString();
                         this.RaisePropertyChanged(nameof(AmountString));
@@ -265,7 +296,12 @@ namespace atomex.ViewModel.SendViewModels
                         var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
 
                         if (Fee < minimumFee)
-                            Warning = AppResources.LowFees;
+                        {
+                            ShowMessage(
+                                messageType: MessageType.Error,
+                                element: RelatedTo.Fee,
+                                text: AppResources.LowFees);
+                        }
                     }
 
                     AmountString = Amount.ToString();                        
