@@ -273,7 +273,22 @@
                            Source="ic_question"
                            HorizontalOptions="End"
                            Margin="0,0,30,0"
-                           VerticalOptions="Center"/>
+                           VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                            Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__error"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                            Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__warning"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
                 </StackLayout>
             </StackLayout>
             <Frame Padding="0"
@@ -370,7 +385,22 @@
                            Source="ic_question"
                            HorizontalOptions="End"
                            Margin="0,0,30,0"
-                           VerticalOptions="Center"/>
+                           VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                            Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__error"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                            Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__warning"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
                 </StackLayout>
             </StackLayout>
             <Frame Padding="0"

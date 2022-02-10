@@ -1,6 +1,7 @@
 {
   "images": [
     {
+      "filename": "ic_question__warning.pdf",
       "idiom": "universal"
     },
     {
@@ -86,7 +87,6 @@
       "idiom": "car"
     },
     {
-      "filename": "Scan__dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -304,7 +304,6 @@
       "idiom": "car"
     },
     {
-      "filename": "Scan-2-1.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
