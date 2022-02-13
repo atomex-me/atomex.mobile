@@ -353,6 +353,9 @@ MigrationBackup/
 
 # Test wallets
 atomex.iOS/atomex.wallet
+
+# Rider
+.idea/*
 <<<<<<< HEAD
 
 =======
