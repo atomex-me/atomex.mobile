@@ -1070,4 +1070,7 @@
     <data name="BiometricAuthEnabled" xml:space="preserve">
         <value>Biometric authentication enabled</value>
     </data>
+    <data name="AmountToFeeRatioToolTip" xml:space="preserve">
+        <value>The commission does not depend on the conversion amount and is determined only by the current network fees. The larger the convertible amount, the smaller the commission to amount ratio. Atomex blocks the conversion if the commission exceeds 75% of the conversion amount</value>
+    </data>
 </root>

@@ -73,28 +73,26 @@ namespace atomex.ViewModel.SendViewModels
 
         private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
 
-        protected void ConfirmOutputs(IEnumerable<BitcoinBasedTxOutput> outputs)
+        protected void ConfirmOutputs(SelectOutputsViewModel selectOutputsViewModel, IEnumerable<BitcoinBasedTxOutput> outputs)
         {
             Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
 
-            var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
-
-            switch (selectFromViewModel.AddressSettingType)
+            switch (selectOutputsViewModel?.SelectAddressFrom)
             {
-                case SelectOutputsViewModel.SettingType.Init:
+                case SelectAddressFrom.Init:
                     Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
                     break;
 
-                case SelectOutputsViewModel.SettingType.Change:
+                case SelectAddressFrom.Change:
                     Navigation.PopAsync();
                     break;
 
-                case SelectOutputsViewModel.SettingType.InitFromSearch:
+                case SelectAddressFrom.InitSearch:
                     Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     break;
 
-                case SelectOutputsViewModel.SettingType.ChangeFromSearch:
+                case SelectAddressFrom.ChangeSearch:
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     Navigation.PopAsync();
                     break;
@@ -349,14 +347,14 @@ namespace atomex.ViewModel.SendViewModels
             };
 
             var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
-            selectFromViewModel.AddressSettingType = SelectOutputsViewModel.SettingType.Change;
+            selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             await Navigation.PushAsync(new FromOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
         }
 
         protected async override Task ToClick()
         {
-            SelectToViewModel.AddressSettingType = SelectAddressViewModel.SettingType.Change;
+            SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }

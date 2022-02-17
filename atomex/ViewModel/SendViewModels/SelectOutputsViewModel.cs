@@ -26,15 +26,7 @@ namespace atomex.ViewModel.SendViewModels
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
 
-        public enum SettingType
-        {
-            Init,
-            Change,
-            InitFromSearch,
-            ChangeFromSearch
-        }
-
-        public SettingType AddressSettingType { get; set; }
+        public SelectAddressFrom SelectAddressFrom { get; set; }
         private ObservableCollection<OutputViewModel> InitialOutputs { get; set; }
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string SearchPattern { get; set; }
@@ -42,7 +34,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public decimal SelectedFromBalance { get; set; }
         public BitcoinBasedConfig Currency { get; }
         private BitcoinBasedAccount Account { get; }
-        public Action<IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
+        public Action<SelectOutputsViewModel, IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
         public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config, INavigation navigation)
         {
@@ -54,7 +46,7 @@ namespace atomex.ViewModel.SendViewModels
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 
             SelectAll = Outputs.Aggregate(true, (result, output) => result && output.IsSelected);
-            AddressSettingType = SettingType.Init;
+            SelectAddressFrom = SelectAddressFrom.Init;
 
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
@@ -223,10 +215,10 @@ namespace atomex.ViewModel.SendViewModels
         public ICommand BackCommand => _backCommand ??= new Command(() =>
         {
             SearchPattern = string.Empty;
-            if (AddressSettingType == SettingType.InitFromSearch)
-                AddressSettingType = SettingType.Init;
-            if (AddressSettingType == SettingType.ChangeFromSearch)
-                AddressSettingType = SettingType.Change;
+            if (SelectAddressFrom == SelectAddressFrom.InitSearch)
+                SelectAddressFrom = SelectAddressFrom.Init;
+            if (SelectAddressFrom == SelectAddressFrom.ChangeSearch)
+                SelectAddressFrom = SelectAddressFrom.Change;
         });
 
         private ICommand _confirmOutputsCommand;
@@ -240,7 +232,7 @@ namespace atomex.ViewModel.SendViewModels
                 .Where(output => output.IsSelected)
                 .Select(o => o.Output);
 
-            ConfirmAction?.Invoke(outputs);
+            ConfirmAction?.Invoke(this, outputs);
         }
 
         private void SelectAllOutputs()
@@ -294,10 +286,10 @@ namespace atomex.ViewModel.SendViewModels
 
         private async Task OnSearchButtonClicked()
         {
-            if (AddressSettingType == SettingType.Init)
-                AddressSettingType = SettingType.InitFromSearch;
-            if (AddressSettingType == SettingType.Change)
-                AddressSettingType = SettingType.ChangeFromSearch;
+            if (SelectAddressFrom == SelectAddressFrom.Init)
+                SelectAddressFrom = SelectAddressFrom.InitSearch;
+            if (SelectAddressFrom == SelectAddressFrom.Change)
+                SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
             await Navigation.PushAsync(new SearchOutputsPage(this));
         }

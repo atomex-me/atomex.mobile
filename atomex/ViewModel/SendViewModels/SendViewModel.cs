@@ -11,6 +11,7 @@ using atomex.Views.Send;
 using Atomex;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using Atomex.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Rg.Plugins.Popup.Services;
@@ -273,55 +274,53 @@ namespace atomex.ViewModel.SendViewModels
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, Message?.Text, AppResources.AcceptButton);
         }
 
-        protected void ConfirmFromAddress(string address, decimal balance)
+        protected void ConfirmFromAddress(SelectAddressViewModel selectAddressViewModel, WalletAddressViewModel walletAddressViewModel)
         {
-            From = address;
-            SelectedFromBalance = balance;
+            From = walletAddressViewModel?.Address;
+            SelectedFromBalance = walletAddressViewModel?.Balance ?? 0;
 
-            var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
-
-            switch (selectFromViewModel.AddressSettingType)
+            switch (selectAddressViewModel.SelectAddressFrom)
             {
-                case SelectAddressViewModel.SettingType.Init:
+                case SelectAddressFrom.Init:
                     Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
                     break;
 
-                case SelectAddressViewModel.SettingType.Change:
+                case SelectAddressFrom.Change:
                     Navigation.PopAsync();
                     break;
 
-                case SelectAddressViewModel.SettingType.InitFromSearch:
+                case SelectAddressFrom.InitSearch:
                     Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     break;
 
-                case SelectAddressViewModel.SettingType.ChangeFromSearch:
+                case SelectAddressFrom.ChangeSearch:
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     Navigation.PopAsync();
                     break;
             }
         }
 
-        protected void ConfirmToAddress(string address, decimal _)
+        protected void ConfirmToAddress(SelectAddressViewModel selectAddressViewModel, WalletAddressViewModel walletAddressViewModel)
         {
-            To = address;
+            To = walletAddressViewModel?.Address;
 
-            switch (SelectToViewModel.AddressSettingType)
+            switch (selectAddressViewModel.SelectAddressFrom)
             {
-                case SelectAddressViewModel.SettingType.Init:
+                case SelectAddressFrom.Init:
                     Navigation.PushAsync(new SendPage(this));
                     break;
 
-                case SelectAddressViewModel.SettingType.Change:
+                case SelectAddressFrom.Change:
                     Navigation.PopAsync();
                     break;
 
-                case SelectAddressViewModel.SettingType.InitFromSearch:
+                case SelectAddressFrom.InitSearch:
                     Navigation.PushAsync(new SendPage(this));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     break;
 
-                case SelectAddressViewModel.SettingType.ChangeFromSearch:
+                case SelectAddressFrom.ChangeSearch:
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     Navigation.PopAsync();
                     break;

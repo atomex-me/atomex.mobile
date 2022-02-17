@@ -531,7 +531,7 @@ namespace atomex.ViewModel
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
 
-                var (isSuccess, isRunSuccess) = await tx.FillOperationsAsync(
+                var (isSuccess, isRunSuccess, hasReveal) = await tx.FillOperationsAsync(
                     securePublicKey: securePublicKey,
                     tezosConfig: _tezosConfig,
                     headOffset: TezosConfig.HeadOffset,

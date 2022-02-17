@@ -117,8 +117,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.SelectOutputCommand, Source={x:Reference BindingContextPage}}"
-                                                          CommandParameter="{Binding .}"
-                                                          Tapped="OnItemTapped"/>
+                                                          CommandParameter="{Binding .}"/>
                                 </Grid.GestureRecognizers>
                                 <input:CheckBox Grid.RowSpan="2"
                                                 BoxSizeRequest="18"

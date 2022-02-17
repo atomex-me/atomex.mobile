@@ -7,6 +7,7 @@
     x:Name="BindingContextPage"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -42,13 +43,18 @@
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding MyAddresses}"
-                      SelectionMode="None"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding SelectedAddress}"
+                      BackgroundColor="Transparent"
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalOptions="Fill"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                      Command="{Binding SelectAddressCommand}"/>
+                </ListView.Behaviors>
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
                                  Binding="{Binding MyAddresses.Count}"
@@ -59,7 +65,7 @@
                 </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0"
                                   Padding="16,5">
@@ -72,11 +78,6 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
-                                                          CommandParameter="{Binding .}"
-                                                          Tapped="OnItemTapped"/>
-                                </Grid.GestureRecognizers>
                                 <Label Grid.ColumnSpan="2"
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
@@ -131,7 +132,7 @@
                                     </Image.GestureRecognizers>
                                 </Image>
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

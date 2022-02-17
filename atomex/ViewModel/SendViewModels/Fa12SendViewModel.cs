@@ -27,7 +27,7 @@ namespace atomex.ViewModel.SendViewModels
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
-            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, true)
+            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, SelectAddressMode.SendFrom)
             {
                 ConfirmAction = ConfirmFromAddress
             };
@@ -49,14 +49,14 @@ namespace atomex.ViewModel.SendViewModels
         protected override async Task FromClick()
         {
             var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
-            selectFromViewModel.AddressSettingType = SelectAddressViewModel.SettingType.Change;
+            selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             await Navigation.PushAsync(new FromAddressPage(selectFromViewModel));
         }
 
         protected override async Task ToClick()
         {
-            SelectToViewModel.AddressSettingType = SelectAddressViewModel.SettingType.Change;
+            SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
             await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
         }

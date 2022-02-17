@@ -2020,5 +2020,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("BiometricAuthEnabled", resourceCulture);
             }
         }
+        
+        internal static string AmountToFeeRatioToolTip {
+            get {
+                return ResourceManager.GetString("AmountToFeeRatioToolTip", resourceCulture);
+            }
+        }
     }
 }

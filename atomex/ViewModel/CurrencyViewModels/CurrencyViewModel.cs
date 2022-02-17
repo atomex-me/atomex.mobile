@@ -9,7 +9,6 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
-using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain;

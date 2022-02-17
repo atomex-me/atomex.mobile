@@ -172,7 +172,7 @@ namespace atomex
         {
             if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
-                conversionViewModel.SetFromCurrency(currencyCode);
+                //conversionViewModel.SetFromCurrency(currencyCode);
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
                 CurrentPage = NavigationConversionPage;
 

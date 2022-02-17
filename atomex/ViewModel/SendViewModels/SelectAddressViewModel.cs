@@ -7,6 +7,7 @@ using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Views.Send;
+using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
@@ -19,23 +20,30 @@ using ZXing;
 
 namespace atomex.ViewModel.SendViewModels
 {
+    public enum SelectAddressFrom
+    {
+        Init,
+        Change,
+        InitSearch,
+        ChangeSearch
+    }
+
+    public enum SelectAddressMode
+    {
+        SendFrom,
+        ReceiveTo,
+        ChangeRedeemAddress
+    }
+
     public class SelectAddressViewModel : BaseViewModel
     {
         protected IToastService ToastService { get; set; }
         protected INavigation Navigation { get; set; }
         protected CurrencyConfig Currency { get; set; }
 
-        public enum SettingType
-        {
-            Init,
-            Change,
-            InitFromSearch,
-            ChangeFromSearch
-        }
-
-        public Action<string, decimal> ConfirmAction { get; set; }
-        public bool UseToSelectFrom { get; set; }
-        public SettingType AddressSettingType { get; set; }
+        public Action<SelectAddressViewModel, WalletAddressViewModel> ConfirmAction { get; set; }
+        public SelectAddressMode SelectAddressMode { get; set; }
+        public SelectAddressFrom SelectAddressFrom { get; set; }
         private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
         [Reactive] public string SearchPattern { get; set; }
@@ -54,7 +62,14 @@ namespace atomex.ViewModel.SendViewModels
 
         [Reactive] public Message Message { get; set; }
 
-        public SelectAddressViewModel(IAccount account, CurrencyConfig currency, INavigation navigation, bool useToSelectFrom = false, string tokenContract = null)
+        public SelectAddressViewModel(
+            IAccount account,
+            CurrencyConfig currency,
+            INavigation navigation,
+            SelectAddressMode mode = SelectAddressMode.ReceiveTo,
+            string selectedAddress = null,
+            decimal? selectedTokenId = null,
+            string tokenContract = null)
         {
             ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
             Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
@@ -160,9 +175,9 @@ namespace atomex.ViewModel.SendViewModels
                     this.RaisePropertyChanged(nameof(Message));
                 });
 
-            UseToSelectFrom = useToSelectFrom;
+            SelectAddressMode = mode;
             IsMyAddressesTab = false;
-            AddressSettingType = SettingType.Init;
+            SelectAddressFrom = SelectAddressFrom.Init;
 
             var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(
@@ -170,12 +185,44 @@ namespace atomex.ViewModel.SendViewModels
                   currency: currency,
                   tokenContract: tokenContract)
                 .WaitForResult()
-                .Where(address => !useToSelectFrom || address.Balance != 0)
+                .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
                 .OrderByDescending(address => address.Balance);
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
 
             InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
+
+            SelectedAddress = selectedAddress != null
+                ? MyAddresses.FirstOrDefault(vm =>
+                    vm.Address == selectedAddress && (selectedTokenId == null || vm.TokenId == selectedTokenId))
+                : SelectAddressMode == SelectAddressMode.SendFrom
+                    ? SelectDefaultAddress()
+                : null;
+        }
+
+        public WalletAddressViewModel SelectDefaultAddress()
+        {
+            if (Currency is TezosConfig or EthereumConfig)
+            {
+                var activeAddressViewModel = MyAddresses
+                    .Where(vm => vm.HasActivity && vm.AvailableBalance > 0)
+                    .MaxByOrDefault(vm => vm.AvailableBalance);
+
+                if (activeAddressViewModel != null)
+                {
+                    SelectedAddress = activeAddressViewModel;
+                }
+                else
+                {
+                    SelectedAddress = MyAddresses.FirstOrDefault(vm => vm.IsFreeAddress) ?? MyAddresses.FirstOrDefault();
+                }
+            }
+            else
+            {
+                SelectedAddress = MyAddresses.FirstOrDefault(vm => vm.IsFreeAddress) ?? MyAddresses.FirstOrDefault();
+            }
+
+            return SelectedAddress;
         }
 
         private ReactiveCommand<Unit, Unit> _changeSortTypeCommand;
@@ -186,26 +233,14 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> ChangeSortDirectionCommand => _changeSortDirectionCommand ??=
             (_changeSortDirectionCommand = ReactiveCommand.Create(() => { SortIsAscending = !SortIsAscending; }));
 
-        private ReactiveCommand<Unit, Unit> _confirmCommand;
-        public ReactiveCommand<Unit, Unit> ConfirmCommand => _confirmCommand ??=
-            (_confirmCommand = ReactiveCommand.Create(() =>
-            {
-                if (!Currency.IsValidAddress(ToAddress))
-                {
-                    Message.Type = MessageType.Error;
-                    Message.RelatedTo = RelatedTo.Address;
-                    Message.Text = AppResources.InvalidAddressError;
-                    this.RaisePropertyChanged(nameof(Message));
+        private ICommand _confirmCommand;
+        public ICommand ConfirmCommand => _confirmCommand ??= new Command(ConfirmExternalAddress);
 
-                    return;
-                }
-
-                ConfirmAction?.Invoke(ToAddress, 0m);
-            }));
-
-        private ReactiveCommand<WalletAddressViewModel, Unit> _selectAddressCommand;
-        public ReactiveCommand<WalletAddressViewModel, Unit> SelectAddressCommand => _selectAddressCommand ??=
-            (_selectAddressCommand = ReactiveCommand.Create<WalletAddressViewModel>(SelectAddress));
+        private ICommand _selectAddressCommand;
+        public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command(() =>
+        {
+            ConfirmAction?.Invoke(this, SelectedAddress);
+        });
 
         private ReactiveCommand<Unit, Unit> _pasteCommand;
         public ReactiveCommand<Unit, Unit> PasteCommand =>
@@ -252,10 +287,10 @@ namespace atomex.ViewModel.SendViewModels
         public ICommand BackCommand => _backCommand ??= new Command(() =>
             {
                 SearchPattern = string.Empty;
-                if (AddressSettingType == SettingType.InitFromSearch)
-                    AddressSettingType = SettingType.Init;
-                if (AddressSettingType == SettingType.ChangeFromSearch)
-                    AddressSettingType = SettingType.Change;
+                if (SelectAddressFrom == SelectAddressFrom.InitSearch)
+                    SelectAddressFrom = SelectAddressFrom.Init;
+                if (SelectAddressFrom == SelectAddressFrom.ChangeSearch)
+                    SelectAddressFrom = SelectAddressFrom.Change;
             });
 
         private ICommand _validateAddressCommand;
@@ -275,15 +310,6 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
-        }
-
-        private void SelectAddress(WalletAddressViewModel address)
-        {
-            SelectedAddress = address;
-            var selectedAddress = SelectedAddress?.WalletAddress?.Address;
-            var balance = SelectedAddress?.WalletAddress?.AvailableBalance();
-
-            ConfirmAction?.Invoke(selectedAddress, balance ?? 0m);
         }
 
         private async Task OnScanResult()
@@ -314,7 +340,7 @@ namespace atomex.ViewModel.SendViewModels
 
                 await Navigation.PopAsync();
 
-                ConfirmAction?.Invoke(ToAddress, 0m);
+                ConfirmExternalAddress();
             });
         }
 
@@ -337,10 +363,10 @@ namespace atomex.ViewModel.SendViewModels
 
         private async Task OnSearchButtonClicked()
         {
-            if (AddressSettingType == SettingType.Init)
-                AddressSettingType = SettingType.InitFromSearch;
-            if (AddressSettingType == SettingType.Change)
-                AddressSettingType = SettingType.ChangeFromSearch;
+            if (SelectAddressFrom == SelectAddressFrom.Init)
+                SelectAddressFrom = SelectAddressFrom.InitSearch;
+            if (SelectAddressFrom == SelectAddressFrom.Change)
+                SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
             await Navigation.PushAsync(new SearchAddressPage(this));
         }
@@ -381,6 +407,28 @@ namespace atomex.ViewModel.SendViewModels
                 Message.Text = AppResources.InvalidAddressError;
                 this.RaisePropertyChanged(nameof(Message));
             }
+        }
+
+        private void ConfirmExternalAddress()
+        {
+            if (!Currency.IsValidAddress(ToAddress))
+            {
+                Message.Type = MessageType.Error;
+                Message.RelatedTo = RelatedTo.Address;
+                Message.Text = AppResources.InvalidAddressError;
+                this.RaisePropertyChanged(nameof(Message));
+
+                return;
+            }
+
+            var selectedAddress = new WalletAddressViewModel
+            {
+                Address = ToAddress,
+                AvailableBalance = 0,
+                TokenId = 0
+            };
+
+            ConfirmAction?.Invoke(this, selectedAddress);
         }
     }
 }
