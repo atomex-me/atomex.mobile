@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
@@ -161,8 +162,8 @@ namespace atomex.ViewModel.SendViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
             var ethQuote = quotesProvider.GetQuote(Currency.FeeCurrencyName, BaseCurrencyCode);
 
-            AmountInBase = Amount * (quote?.Bid ?? 0m);
-            FeeInBase = Fee * (ethQuote?.Bid ?? 0m);
+            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+            FeeInBase = Fee.SafeMultiply(ethQuote?.Bid ?? 0m);
             TotalAmountInBase = AmountInBase + FeeInBase;
         }
 

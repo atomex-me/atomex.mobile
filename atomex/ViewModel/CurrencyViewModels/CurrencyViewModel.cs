@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
@@ -238,15 +239,13 @@ namespace atomex.ViewModel.CurrencyViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Price = quote.Bid;
+            TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0m);
+            AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0m);
+            UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0m);
+
             OnPropertyChanged(nameof(Price));
-
-            TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
             OnPropertyChanged(nameof(TotalAmountInBase));
-
-            AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
             OnPropertyChanged(nameof(AvailableAmountInBase));
-
-            UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
             OnPropertyChanged(nameof(UnconfirmedAmountInBase));
 
             AmountUpdated?.Invoke(this, EventArgs.Empty);

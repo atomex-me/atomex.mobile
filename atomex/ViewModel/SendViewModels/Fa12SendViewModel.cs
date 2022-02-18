@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -209,8 +210,8 @@ namespace atomex.ViewModel.SendViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
             var xtzQuote = quotesProvider.GetQuote("XTZ", BaseCurrencyCode);
 
-            AmountInBase = Amount * (quote?.Bid ?? 0m);
-            FeeInBase = Fee * (xtzQuote?.Bid ?? 0m);
+            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+            FeeInBase = Fee.SafeMultiply(xtzQuote?.Bid ?? 0m);
             TotalAmountInBase = AmountInBase + FeeInBase;
         }
 

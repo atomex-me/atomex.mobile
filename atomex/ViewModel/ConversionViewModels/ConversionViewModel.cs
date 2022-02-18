@@ -674,7 +674,7 @@ namespace atomex.ViewModel
                 return defaultAmountInBase;
 
             var quote = provider.GetQuote(currency, baseCurrency);
-            return amount * (quote?.Bid ?? 0m);
+            return amount.SafeMultiply(quote?.Bid ?? 0m);
         }
 
         private void UpdateFromAmountInBase() => FromViewModel.AmountInBase = TryGetAmountInBase(

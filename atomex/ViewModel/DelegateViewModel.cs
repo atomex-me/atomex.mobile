@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Views.Popup;
 using Atomex;
@@ -771,13 +772,13 @@ namespace atomex.ViewModel
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+            if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
 
             if (quote != null)
-                FeeInBase = Fee * quote.Bid;
+                FeeInBase = Fee.SafeMultiply(quote.Bid);
         }
 
         private ICommand _selectDelegationCommand;

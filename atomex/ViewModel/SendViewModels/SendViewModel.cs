@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Popup;
@@ -390,8 +391,8 @@ namespace atomex.ViewModel.SendViewModels
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
-            AmountInBase = Amount * (quote?.Bid ?? 0m);
-            FeeInBase = Fee * (quote?.Bid ?? 0m);
+            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+            FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0m);
             TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
         }
 
