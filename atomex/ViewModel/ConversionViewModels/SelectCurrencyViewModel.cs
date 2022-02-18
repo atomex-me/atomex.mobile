@@ -61,7 +61,7 @@ namespace atomex.ViewModel.ConversionViewModels
                 {
                     return $"from {outputs.Count()} outputs";
                 })
-                .ToPropertyEx(this, vm => vm.SelectedAddressDescription);
+                .ToPropertyExInMainThread(this, vm => vm.SelectedAddressDescription);
 
 
             this.WhenAnyValue(vm => vm.SelectedOutputs)
@@ -134,7 +134,7 @@ namespace atomex.ViewModel.ConversionViewModels
 
                     return $"{prefix} {address.Address.TruncateAddress()}";
                 })
-                .ToPropertyEx(this, vm => vm.SelectedAddressDescription);
+                .ToPropertyExInMainThread(this, vm => vm.SelectedAddressDescription);
 
             this.WhenAnyValue(vm => vm.SelectedAddress)
                 .WhereNotNull()
@@ -280,7 +280,7 @@ namespace atomex.ViewModel.ConversionViewModels
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
-                .Subscribe(i =>
+                .SubscribeInMainThread(i =>
                 {
                     CurrencySelected?.Invoke(i);
                 });

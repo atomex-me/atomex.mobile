@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -30,7 +31,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
-                .Subscribe(outputs =>
+                .SubscribeInMainThread(outputs =>
                 {
                     From = outputs.ToList().Count != 1
                         ? $"{outputs.ToList().Count} outputs"

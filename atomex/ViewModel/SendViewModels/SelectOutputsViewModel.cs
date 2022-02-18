@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Views.Send;
@@ -51,7 +52,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(vm => vm.Outputs)
                 .WhereNotNull()
                 .Take(1)
-                .Subscribe(async outputs =>
+                .SubscribeInMainThread(async outputs =>
                 {
                     var addresses = (await Account
                         .GetAddressesAsync())
@@ -77,8 +78,7 @@ namespace atomex.ViewModel.SendViewModels
                 .Where(_ => !_selectFromList)
                 .Throttle(TimeSpan.FromMilliseconds(1))
                 .Skip(1)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(_ =>
+                .SubscribeInMainThread(_ =>
                 {
                     if (Outputs == null)
                         return;
@@ -87,22 +87,11 @@ namespace atomex.ViewModel.SendViewModels
                     UpdateSelectedStats();
                 });
 
-            this.WhenAnyValue(vm => vm.SortIsAscending)
-                .Where(_ => Outputs != null)
-                .Subscribe(sortIsAscending =>
-                {
-                    Outputs = sortIsAscending
-                        ? new ObservableCollection<OutputViewModel>(
-                            Outputs.OrderBy(output => output.Balance))
-                        : new ObservableCollection<OutputViewModel>(
-                            Outputs.OrderByDescending(output => output.Balance));
-                });
-
             this.WhenAnyValue(
                     vm => vm.SortByBalance,
                     vm => vm.SortIsAscending,
                     vm => vm.SearchPattern)
-                .Subscribe(value =>
+                .SubscribeInMainThread(value =>
                 {
                     var (item1, item2, item3) = value;
 

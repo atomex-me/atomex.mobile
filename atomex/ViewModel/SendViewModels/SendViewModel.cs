@@ -157,7 +157,7 @@ namespace atomex.ViewModel.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee
                 )
-                .Subscribe(_ => Message.Text = string.Empty);
+                .SubscribeInMainThread(_ => Message.Text = string.Empty);
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -165,7 +165,7 @@ namespace atomex.ViewModel.SendViewModels
                     (amount, fee) => amount + fee
                 )
                 .Select(totalAmount => totalAmount.ToString())
-                .ToPropertyEx(this, vm => vm.TotalAmountString);
+                .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -175,7 +175,7 @@ namespace atomex.ViewModel.SendViewModels
                  )
                 .WhereNotNull()
                 .Select(_ => Unit.Default)
-                .InvokeCommand(updateAmountCommand);
+                .InvokeCommandInMainThread(updateAmountCommand);
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -185,15 +185,15 @@ namespace atomex.ViewModel.SendViewModels
 
             this.WhenAnyValue(vm => vm.Fee)
                 .Select(_ => Unit.Default)
-                .InvokeCommand(updateFeeCommand);
+                .InvokeCommandInMainThread(updateFeeCommand);
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
                 .Where(useDefaultFee => useDefaultFee)
                 .Select(_ => Unit.Default)
-                .InvokeCommand(updateAmountCommand);
+                .InvokeCommandInMainThread(updateAmountCommand);
 
             this.WhenAnyValue(vm => vm.Fee)
-                .Subscribe(fee =>
+                .SubscribeInMainThread(fee =>
                 {
                     FeeString = fee.ToString(CultureInfo.InvariantCulture);
                     this.RaisePropertyChanged(nameof(FeeString));
@@ -391,9 +391,12 @@ namespace atomex.ViewModel.SendViewModels
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
-            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
-            FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0m);
-            TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+                FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0m);
+                TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
+            });
         }
 
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text)

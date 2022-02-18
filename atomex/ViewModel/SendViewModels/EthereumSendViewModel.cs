@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -33,15 +34,16 @@ namespace atomex.ViewModel.SendViewModels
             var updateGasPriceCommand = ReactiveCommand.CreateFromTask(UpdateGasPrice);
 
             this.WhenAnyValue(vm => vm.GasPrice)
-                .Subscribe(_ => Message.Text = string.Empty);
+                .SubscribeInMainThread(_ => Message.Text = string.Empty);
 
             this.WhenAnyValue(vm => vm.GasPrice)
-                .Subscribe(gasPrice => GasPriceString = gasPrice.ToString(CultureInfo.InvariantCulture));
+                .Select(gasPrice => gasPrice.ToString(CultureInfo.CurrentCulture))
+                .ToPropertyExInMainThread(this, vm => vm.GasPriceString);
 
             this.WhenAnyValue(vm => vm.GasPrice)
                 .Where(_ => !string.IsNullOrEmpty(From))
                 .Select(_ => Unit.Default)
-                .InvokeCommand(updateGasPriceCommand);
+                .InvokeCommandInMainThread(updateGasPriceCommand);
 
             this.WhenAnyValue(vm => vm.GasPrice)
                 .Select(_ => Unit.Default)
@@ -49,7 +51,7 @@ namespace atomex.ViewModel.SendViewModels
 
             this.WhenAnyValue(vm => vm.GasPrice)
                .Where(_ => !string.IsNullOrEmpty(From))
-               .Subscribe(_ =>
+               .SubscribeInMainThread(_ =>
                {
                    Fee = Currency.GetFeeAmount(GasLimit, GasPrice);
                    OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
@@ -61,7 +63,7 @@ namespace atomex.ViewModel.SendViewModels
                     (amount, fee) => Currency.IsToken ? amount : amount + fee
                 )
                 .Select(totalAmount => totalAmount.ToString(CultureInfo.InvariantCulture))
-                .ToPropertyEx(this, vm => vm.TotalAmountString);
+                .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
             SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, SelectAddressMode.SendFrom)
             {

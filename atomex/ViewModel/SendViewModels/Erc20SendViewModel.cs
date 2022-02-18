@@ -11,6 +11,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Ethereum;
 using ReactiveUI;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -162,9 +163,12 @@ namespace atomex.ViewModel.SendViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
             var ethQuote = quotesProvider.GetQuote(Currency.FeeCurrencyName, BaseCurrencyCode);
 
-            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
-            FeeInBase = Fee.SafeMultiply(ethQuote?.Bid ?? 0m);
-            TotalAmountInBase = AmountInBase + FeeInBase;
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+                FeeInBase = Fee.SafeMultiply(ethQuote?.Bid ?? 0m);
+                TotalAmountInBase = AmountInBase + FeeInBase;
+            });
         }
 
         protected override Task<Error> Send(CancellationToken cancellationToken = default)

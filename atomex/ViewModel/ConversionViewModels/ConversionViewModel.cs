@@ -206,7 +206,7 @@ namespace atomex.ViewModel
             // FromCurrencyViewModel changed => Update ToCurrencies
             this.WhenAnyValue(vm => vm.FromViewModel.CurrencyViewModel)
                 .WhereNotNull()
-                .Subscribe(c =>
+                .SubscribeInMainThread(c =>
                 {
                     ToCurrencies = FromCurrencies
                         ?.Where(fc => Symbols.SymbolByCurrencies(fc.Currency, c.Currency) != null)
@@ -215,7 +215,7 @@ namespace atomex.ViewModel
 
             // ToCurrencies list changed => check & update ToViewModel and ToCurrencyViewModelItem
             this.WhenAnyValue(vm => vm.ToCurrencies)
-                .Subscribe(c =>
+                .SubscribeInMainThread(c =>
                 {
                     if (ToViewModel.CurrencyViewModel == null)
                         return;
@@ -233,7 +233,7 @@ namespace atomex.ViewModel
                 });
 
             this.WhenAnyValue(vm => vm.ToCurrencyViewModelItem)
-                .Subscribe(i =>
+                .SubscribeInMainThread(i =>
                 {
                     // if To currency not selected or To currency is Bitcoin based
                     if (i == null || Atomex.Currencies.IsBitcoinBased(i.CurrencyViewModel.Currency.Name))
@@ -254,7 +254,7 @@ namespace atomex.ViewModel
                     vm => vm.FromViewModel.CurrencyViewModel,
                     vm => vm.ToViewModel.CurrencyViewModel)
                 .WhereAllNotNull()
-                .Subscribe(t =>
+                .SubscribeInMainThread(t =>
                 {
                     var symbol = Symbols.SymbolByCurrencies(t.Item1.Currency, t.Item2.Currency);
 
@@ -284,33 +284,33 @@ namespace atomex.ViewModel
             // From Amount changed => update FromViewModel.AmountInBase
             //this.WhenAnyValue(vm => vm.FromViewModel.AmountString)
             this.WhenAnyValue(vm => vm.FromViewModel.Amount)
-                .Subscribe(amount => UpdateFromAmountInBase());
+                .SubscribeInMainThread(amount => UpdateFromAmountInBase());
 
             // To Amount changed => update ToViewModel.AmountInBase
             //this.WhenAnyValue(vm => vm.ToViewModel.AmountString)
             this.WhenAnyValue(vm => vm.ToViewModel.Amount)
-                .Subscribe(amount => UpdateToAmountInBase());
+                .SubscribeInMainThread(amount => UpdateToAmountInBase());
 
             // EstimatedPaymentFee changed => update EstimatedPaymentFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedPaymentFee)
-                .Subscribe(amount => UpdateEstimatedPaymentFeeInBase());
+                .SubscribeInMainThread(amount => UpdateEstimatedPaymentFeeInBase());
 
             // EstimatedRedeemFee changed => update EstimatedRedeemFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedRedeemFee)
-                .Subscribe(amount => UpdateEstimatedRedeemFeeInBase());
+                .SubscribeInMainThread(amount => UpdateEstimatedRedeemFeeInBase());
 
             // RewardForRedeem changed => update RewardForRedeemInBase
             this.WhenAnyValue(vm => vm.RewardForRedeem)
-                .Subscribe(amount => UpdateRewardForRedeemInBase());
+                .SubscribeInMainThread(amount => UpdateRewardForRedeemInBase());
 
             // RewardForRedeem changed => update HasRewardForRedeem
             this.WhenAnyValue(vm => vm.RewardForRedeem)
                 .Select(r => r > 0)
-                .ToPropertyEx(this, vm => vm.HasRewardForRedeem);
+                .ToPropertyExInMainThread(this, vm => vm.HasRewardForRedeem);
 
             // EstimatedMakerNetworkFee changed => update EstimatedMakerNetworkFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedMakerNetworkFee)
-                .Subscribe(amount => UpdateEstimatedMakerNetworkFeeInBase());
+                .SubscribeInMainThread(amount => UpdateEstimatedMakerNetworkFeeInBase());
 
             // If fees in base currency changed => update TotalNetworkFeeInBase
             this.WhenAnyValue(
@@ -320,19 +320,18 @@ namespace atomex.ViewModel
                     vm => vm.EstimatedMakerNetworkFeeInBase,
                     vm => vm.RewardForRedeemInBase)
                 .Throttle(TimeSpan.FromMilliseconds(1))
-                .Subscribe(t => UpdateTotalNetworkFeeInBase());
+                .SubscribeInMainThread(t => UpdateTotalNetworkFeeInBase());
 
             // AmountInBase or EstimatedTotalNetworkFeeInBase changed => check the ratio of the fee to the amount
             this.WhenAnyValue(
                     vm => vm.FromViewModel.AmountInBase,
                     vm => vm.EstimatedTotalNetworkFeeInBase)
-                .Subscribe(t => CheckAmountToFeeRatio());
+                .SubscribeInMainThread(t => CheckAmountToFeeRatio());
 
             this.WhenAnyValue(
                     vm => vm.IsInsufficientFunds,
                     vm => vm.IsNoLiquidity)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(t =>
+                .SubscribeInMainThread(t =>
                 {
                     FromViewModel.IsAmountValid = !IsInsufficientFunds && !IsNoLiquidity;
                     ToViewModel.IsAmountValid = !IsInsufficientFunds && !IsNoLiquidity;
@@ -347,8 +346,7 @@ namespace atomex.ViewModel
                     vm => vm.ToViewModel.IsAmountValid,
                     vm => vm.FromViewModel.AmountInBase)
                 .Throttle(TimeSpan.FromMilliseconds(1))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(t =>
+                .SubscribeInMainThread(t =>
                 {
                     var estimatedTotalNetworkFeeInBase = EstimatedTotalNetworkFeeInBase;
                     var amountInBase = FromViewModel.AmountInBase;
@@ -368,19 +366,19 @@ namespace atomex.ViewModel
 
             this.WhenAnyValue(vm => vm.AmountValidationMessageType)
                 .Select(t => t == MessageType.Warning)
-                .ToPropertyEx(this, vm => vm.IsAmountValidationWarning);
+                .ToPropertyExInMainThread(this, vm => vm.IsAmountValidationWarning);
 
             this.WhenAnyValue(vm => vm.AmountValidationMessageType)
                 .Select(t => t == MessageType.Error)
-                .ToPropertyEx(this, vm => vm.IsAmountValidationError);
+                .ToPropertyExInMainThread(this, vm => vm.IsAmountValidationError);
 
             this.WhenAnyValue(vm => vm.MessageType)
                 .Select(t => t == MessageType.Warning)
-                .ToPropertyEx(this, vm => vm.IsWarning);
+                .ToPropertyExInMainThread(this, vm => vm.IsWarning);
 
             this.WhenAnyValue(vm => vm.MessageType)
                 .Select(t => t == MessageType.Error)
-                .ToPropertyEx(this, vm => vm.IsError);
+                .ToPropertyExInMainThread(this, vm => vm.IsError);
 
             SubscribeToServices();
         }

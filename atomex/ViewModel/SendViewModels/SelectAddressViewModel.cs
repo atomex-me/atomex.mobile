@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Views.Send;
@@ -95,7 +96,7 @@ namespace atomex.ViewModel.SendViewModels
                     vm => vm.SortByBalance,
                     vm => vm.SortIsAscending,
                     vm => vm.SearchPattern)
-                .Subscribe(value =>
+                .SubscribeInMainThread(value =>
                 {
                     var (item1, item2, item3) = value;
 

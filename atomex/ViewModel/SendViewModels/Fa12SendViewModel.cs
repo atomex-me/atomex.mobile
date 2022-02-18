@@ -17,6 +17,7 @@ using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -210,9 +211,12 @@ namespace atomex.ViewModel.SendViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
             var xtzQuote = quotesProvider.GetQuote("XTZ", BaseCurrencyCode);
 
-            AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
-            FeeInBase = Fee.SafeMultiply(xtzQuote?.Bid ?? 0m);
-            TotalAmountInBase = AmountInBase + FeeInBase;
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
+                FeeInBase = Fee.SafeMultiply(xtzQuote?.Bid ?? 0m);
+                TotalAmountInBase = AmountInBase + FeeInBase;
+            });
         }
 
         protected override async Task<Error> Send(CancellationToken cancellationToken = default)
