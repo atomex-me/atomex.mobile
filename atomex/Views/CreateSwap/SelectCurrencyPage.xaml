@@ -5,16 +5,16 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Class="atomex.Views.CreateSwap.SelectCurrencyPage"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
     x:Name="BindingContextPage"
-    Title="{helpers:Translate CreateSwapPageTitle}"
-    Style="{DynamicResource MainBackgroundStyle}">
+    Title="{helpers:Translate CreateSwapPageTitle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"
                    Style="{DynamicResource CreateSwapTitleStyle}"
                    HorizontalTextAlignment="Start"
@@ -37,17 +37,17 @@
             </Label>
             <ListView ItemsSource="{Binding Currencies}"
                       SelectionMode="Single"
-                      SelectedItem="{Binding SelectedCurrency}"
+                      SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                      BackgroundColor="Transparent"
                       SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                       VerticalOptions="FillAndExpand"
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0">
                                 <Grid.RowDefinitions>
@@ -134,7 +134,7 @@
                                     </Image.GestureRecognizers>
                                 </Image>
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>            

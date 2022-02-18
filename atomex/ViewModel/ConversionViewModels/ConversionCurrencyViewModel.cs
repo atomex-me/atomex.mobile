@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Reactive.Linq;
 using System.Windows.Input;
 using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI;

@@ -73,7 +73,7 @@ namespace atomex.ViewModel.ConversionViewModels
                     var totalAmount = currency.SatoshiToCoin(totalAmountInSatoshi);
                     return totalAmount;
                 })
-                .ToPropertyEx(this, vm => vm.SelectedBalance);
+                .ToPropertyExInMainThread(this, vm => vm.SelectedBalance);
 
             AvailableOutputs = availableOutputs ?? throw new ArgumentNullException(nameof(availableOutputs));
             SelectedOutputs = selectedOutputs ?? availableOutputs;
@@ -142,7 +142,7 @@ namespace atomex.ViewModel.ConversionViewModels
                 {
                     return address.Balance;
                 })
-                .ToPropertyEx(this, vm => vm.SelectedBalance);
+                .ToPropertyExInMainThread(this, vm => vm.SelectedBalance);
 
             AvailableAddresses = availableAddresses ?? throw new ArgumentNullException(nameof(availableAddresses));
             SelectedAddress = selectedAddress ?? availableAddresses.MaxByOrDefault(w => w.Balance);
@@ -280,7 +280,7 @@ namespace atomex.ViewModel.ConversionViewModels
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
-                .SubscribeInMainThread(i =>
+                .Subscribe(i =>
                 {
                     CurrencySelected?.Invoke(i);
                 });

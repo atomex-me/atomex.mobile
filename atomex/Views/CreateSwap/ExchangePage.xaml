@@ -92,15 +92,7 @@
                            FontSize="12"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"
-                           Text="{Binding FromViewModel.Address}">
-                        <!--<Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding FromViewModel.CurrencyViewModel.AvailableAmount, StringFormat='{0:0.######}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"/>
-                            </FormattedString>
-                        </Label.FormattedText>-->
-                    </Label>
+                           Text="{Binding FromViewModel.Address}"/>
                     <Button Grid.Row="1"
                             Grid.Column="1"
                             Text="{helpers:Translate MaxButton}"
@@ -272,21 +264,6 @@
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                         </StackLayout>
                     </Frame>
-                    <Label Grid.Row="4"
-                           Grid.ColumnSpan="2"
-                           Margin="18,10,0,0"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="12"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                        <!--<Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="mOv2g4...sd3Dz"/>
-                                <Span Text=" / "/>
-                                <Span Text="0.05 ETH"/>
-                            </FormattedString>
-                        </Label.FormattedText>-->
-                    </Label>
                     <custom:CustomEntry Grid.Row="3"
                                         Grid.ColumnSpan="2"
                                         Grid.Column="1"
@@ -305,6 +282,20 @@
                         </custom:CustomEntry.Behaviors>
                     </custom:CustomEntry>
                     <Label Grid.Row="3"
+                           Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           Text="{helpers:Translate ChooseToCurrency}"
+                           VerticalTextAlignment="Center"
+                           Padding="15,0"
+                           FontSize="20"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Grid.Row="3"
                            Grid.Column="1"
                            Grid.ColumnSpan="2"
                            Grid.RowSpan="2"
@@ -320,6 +311,14 @@
                         </Label.GestureRecognizers>
                     </Label>
                     <Label Grid.Row="4"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding ToViewModel.Address}"
+                           Margin="18,10,0,0"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"/>
+                    <Label Grid.Row="4"
                            Grid.Column="2"
                            Margin="15,0"
                            Text="{Binding ToViewModel.AmountInBase, StringFormat='${0:f2}'}"
@@ -329,20 +328,6 @@
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Grid.Row="3"
-                           Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
-                           Text="{helpers:Translate ChooseToCurrency}"
-                           VerticalTextAlignment="Center"
-                           Padding="15,0"
-                           FontSize="20"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}"/>
                         </Label.GestureRecognizers>
