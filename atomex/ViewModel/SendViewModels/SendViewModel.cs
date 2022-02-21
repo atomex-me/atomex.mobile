@@ -393,9 +393,17 @@ namespace atomex.ViewModel.SendViewModels
 
             Device.InvokeOnMainThreadAsync(() =>
             {
-                AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
-                FeeInBase = Fee.SafeMultiply(quote?.Bid ?? 0m);
-                TotalAmountInBase = (Amount + Fee) * (quote?.Bid ?? 0m);
+                
+                try
+                {
+                    AmountInBase = Amount * (quote?.Bid ?? 0m);
+                    FeeInBase = Fee * (quote?.Bid ?? 0m);
+                    TotalAmountInBase = (AmountInBase + FeeInBase) * (quote?.Bid ?? 0m);
+                }
+                catch(Exception e)
+                {
+                    Log.Error(e, "OnQuotesUpdatedEventHandler error");
+                }
             });
         }
 

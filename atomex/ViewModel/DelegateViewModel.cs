@@ -778,7 +778,7 @@ namespace atomex.ViewModel
             var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
 
             if (quote != null)
-                FeeInBase = Fee.SafeMultiply(quote.Bid);
+                FeeInBase = Fee * quote.Bid;
         }
 
         private ICommand _selectDelegationCommand;

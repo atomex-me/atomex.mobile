@@ -213,8 +213,8 @@ namespace atomex.ViewModel.SendViewModels
 
             Device.InvokeOnMainThreadAsync(() =>
             {
-                AmountInBase = Amount.SafeMultiply(quote?.Bid ?? 0m);
-                FeeInBase = Fee.SafeMultiply(xtzQuote?.Bid ?? 0m);
+                AmountInBase = Amount * (quote?.Bid ?? 0m);
+                FeeInBase = Fee * (xtzQuote?.Bid ?? 0m);
                 TotalAmountInBase = AmountInBase + FeeInBase;
             });
         }

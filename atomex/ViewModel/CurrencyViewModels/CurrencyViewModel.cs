@@ -239,9 +239,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Price = quote.Bid;
-            TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0m);
-            AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0m);
-            UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0m);
+            TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
+            AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
+            UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
 
             OnPropertyChanged(nameof(Price));
             OnPropertyChanged(nameof(TotalAmountInBase));
