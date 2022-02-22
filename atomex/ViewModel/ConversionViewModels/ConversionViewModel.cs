@@ -30,6 +30,7 @@ using atomex.Common;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Wallet.BitcoinBased;
 using Atomex.ViewModels;
+using atomex.Models;
 
 namespace atomex.ViewModel
 {

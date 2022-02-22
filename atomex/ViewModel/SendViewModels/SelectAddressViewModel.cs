@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.Services;
 using atomex.Views.Send;

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
@@ -178,7 +179,7 @@ namespace atomex.ViewModel.SendViewModels
             return account.SendAsync(
                 from: From,
                 to: To,
-                amount: Amount,
+                amount: AmountToSend,
                 gasLimit: GasLimit,
                 gasPrice: GasPrice,
                 useDefaultFee: UseDefaultFee,

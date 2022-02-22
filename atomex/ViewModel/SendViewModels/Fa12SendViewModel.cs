@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -245,7 +246,7 @@ namespace atomex.ViewModel.SendViewModels
             return await tokenAccount.SendAsync(
                 from: tokenAddress.Address,
                 to: To,
-                amount: Amount,
+                amount: AmountToSend,
                 fee: Fee,
                 useDefaultFee: UseDefaultFee,
                 cancellationToken: cancellationToken);

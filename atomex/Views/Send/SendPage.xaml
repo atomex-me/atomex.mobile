@@ -291,6 +291,79 @@
                     </Image>
                 </StackLayout>
             </StackLayout>
+            <StackLayout Margin="16,12,16,0">
+                <StackLayout.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                        <Binding Path="RecommendedMaxAmountWarning.RelatedTo"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringEnumEqualsConverter}"
+                                 ConverterParameter="Amount"/>
+                        <Binding Path="RecommendedMaxAmountWarning.Text"
+                                 Mode="OneWay"
+                                 Converter="{StaticResource StringToBool}"/>
+                    </MultiBinding>                   
+                </StackLayout.IsVisible>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowRecommendedMaxAmountTooltip}"/>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding RecommendedMaxAmountWarning.Text}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="#FFA800"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Regular'}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Image WidthRequest="12"
+                           HeightRequest="12"
+                           Source="ic_question"
+                           HorizontalOptions="End"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
+                                         Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__error"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
+                                         Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question__warning"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Regular'}"
+                                         Value="True">
+                                <Setter Property="Source"
+                                        Value="ic_question"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </StackLayout>
+            </StackLayout>
             <Frame Padding="0"
                    Margin="16,16,16,0"
                    HeightRequest="56"
@@ -547,11 +620,11 @@
                         HeightRequest="44"
                         HorizontalOptions="FillAndExpand"
                         FontFamily="{DynamicResource RegularFont}"
-                        Command="{Binding ConfirmationCommand}">
+                        Command="{Binding NextCommand}">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
-                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBool}}"
-                                     Value="True">
+                                     Binding="{Binding CanSend}"
+                                     Value="False">
                             <Setter Property="BackgroundColor"
                                     Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
                             <Setter Property="TextColor"
@@ -562,7 +635,7 @@
                                     Value="False"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
-                                     Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}"
+                                     Binding="{Binding CanSend}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
                                     Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>

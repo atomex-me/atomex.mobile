@@ -2020,5 +2020,47 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("BiometricAuthEnabled", resourceCulture);
             }
         }
+        
+        internal static string AmountToFeeRatioToolTip {
+            get {
+                return ResourceManager.GetString("AmountToFeeRatioToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendRecommendation {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendRecommendation", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendRecommendationDetails {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendRecommendationDetails", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendWithActiveSwaps {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendWithActiveSwaps", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendWithActiveSwapsDetails {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendWithActiveSwapsDetails", resourceCulture);
+            }
+        }
+        
+        internal static string SendEnteredAmountMenu {
+            get {
+                return ResourceManager.GetString("SendEnteredAmountMenu", resourceCulture);
+            }
+        }
+        
+        internal static string SendRecommendedAmountMenu {
+            get {
+                return ResourceManager.GetString("SendRecommendedAmountMenu", resourceCulture);
+            }
+        }
     }
 }

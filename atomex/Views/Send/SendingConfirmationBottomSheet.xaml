@@ -25,7 +25,9 @@
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Label Text="{helpers:Translate ReviewButton}"
-                   Style="{DynamicResource CreateSwapTitleStyle}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                   FontFamily="{DynamicResource RegularFont}"
+                   FontSize="30"
                    Padding="0,20"
                    HorizontalTextAlignment="Start"/>
             <Grid HorizontalOptions="Fill"
@@ -335,18 +337,8 @@
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                             HorizontalOptions="FillAndExpand"
                             FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding SendCommand}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding IsLoading}"
-                                         Value="True">
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
-                                <Setter Property="Text"
-                                        Value=""/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
+                            Command="{Binding NextCommand}"
+                            IsEnabled="{Binding CanSend}"/>
                     <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
                                        RelativeLayout.WidthConstraint="24"

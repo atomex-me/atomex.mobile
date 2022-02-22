@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -322,7 +323,7 @@ namespace atomex.ViewModel.SendViewModels
             return Account.SendAsync(
                 from: Outputs,
                 to: To,
-                amount: Amount,
+                amount: AmountToSend,
                 fee: Fee,
                 dustUsagePolicy: DustUsagePolicy.AddToFee,
                 cancellationToken: cancellationToken);

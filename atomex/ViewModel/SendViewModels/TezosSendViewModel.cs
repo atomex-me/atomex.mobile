@@ -1,25 +1,42 @@
 ﻿using System;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
+using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
     public class TezosSendViewModel : SendViewModel
     {
+        private ReactiveCommand<MaxAmountEstimation, MaxAmountEstimation> CheckAmountCommand;
+
+        [Reactive] public bool HasTokens { get; set; }
+        [Reactive] public bool HasActiveSwaps { get; set; }
+
         public TezosSendViewModel(
             IAtomexApp app,
             CurrencyViewModel currencyViewModel)
             : base(app, currencyViewModel)
         {
+            CheckAmountCommand = ReactiveCommand.Create<MaxAmountEstimation, MaxAmountEstimation>(estimation => estimation);
+
+            CheckAmountCommand.Throttle(TimeSpan.FromMilliseconds(1))
+                .SubscribeInMainThread(estimation => CheckAmount(estimation));
+
             SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, SelectAddressMode.SendFrom)
             {
                 ConfirmAction = ConfirmFromAddress
@@ -29,7 +46,44 @@ namespace atomex.ViewModel.SendViewModels
             {
                 ConfirmAction = ConfirmToAddress
             };
+
+            if (Currency.Name == "XTZ")
+            {
+                CheckTokensAsync();
+                CheckActiveSwapsAsync();
+            }
         }
+
+        private async void CheckTokensAsync()
+        {
+            var account = App.Account
+                .GetCurrencyAccount<TezosAccount>(Currency.Name);
+
+            var unpsentTokens = await account
+                .GetUnspentTokenAddressesAsync()
+                .ConfigureAwait(false);
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                HasTokens = unpsentTokens.Any(); // todo: use tokens count to calculate reserved fee more accurately
+
+            }).ConfigureAwait(false);
+        }
+
+        private async void CheckActiveSwapsAsync()
+        {
+            var activeSwaps = (await App.Account
+                .GetSwapsAsync()
+                .ConfigureAwait(false))
+                .Where(s => s.IsActive && (s.SoldCurrency == Currency.Name || s.PurchasedCurrency == Currency.Name));
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                HasActiveSwaps = activeSwaps.Any(); // todo: use swaps count to calculate reserved fee more accurately
+
+            }).ConfigureAwait(false);
+        }
+
 
         protected override async Task FromClick()
         {
@@ -58,28 +112,12 @@ namespace atomex.ViewModel.SendViewModels
                         from: From,
                         to: To,
                         type: BlockchainTransactionType.Output,
-                        reserve: UseDefaultFee);
+                        reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
-                    Fee = maxAmountEstimation.Fee;
+                    SetFeeFromString(maxAmountEstimation.Fee.ToString());
 
-                if (maxAmountEstimation.Error != null)
-                {
-                    ShowMessage(
-                        messageType: MessageType.Error,
-                        element: RelatedTo.Amount,
-                        text: maxAmountEstimation.Error.Description);
-
-                    return;
-                }
-
-                var availableAmount = maxAmountEstimation.Amount + maxAmountEstimation.Fee;
-
-                if (Amount + Fee > availableAmount)
-                    ShowMessage(
-                        messageType: MessageType.Error,
-                        element: RelatedTo.Amount,
-                        text: AppResources.InsufficientFunds);
+                CheckAmountCommand?.Execute(maxAmountEstimation).Subscribe();
             }
             catch (Exception e)
             {
@@ -101,37 +139,9 @@ namespace atomex.ViewModel.SendViewModels
                             from: From,
                             to: To,
                             type: BlockchainTransactionType.Output,
-                            reserve: UseDefaultFee);
+                            reserve: false);
 
-                    if (maxAmountEstimation.Error != null)
-                    {
-                        ShowMessage(
-                            messageType: MessageType.Error,
-                            element: RelatedTo.Amount,
-                            text: maxAmountEstimation.Error.Description);
-
-                        return;
-                    }
-
-                    var availableAmount = maxAmountEstimation.Amount + maxAmountEstimation.Fee;
-
-                    if (Amount + Fee > availableAmount)
-                    {
-                        ShowMessage(
-                            messageType: MessageType.Error,
-                            element: RelatedTo.Amount,
-                            text: AppResources.InsufficientFunds);
-
-                        return;
-                    }
-
-                    if (Fee < maxAmountEstimation.Fee)
-                    {
-                        ShowMessage(
-                            messageType: MessageType.Error,
-                            element: RelatedTo.Fee,
-                            text: AppResources.LowFees);
-                    }
+                    CheckAmountCommand?.Execute(maxAmountEstimation).Subscribe();
                 }
             }
             catch (Exception e)
@@ -152,10 +162,10 @@ namespace atomex.ViewModel.SendViewModels
                         from: From,
                         to: To,
                         type: BlockchainTransactionType.Output,
-                        reserve: UseDefaultFee);
+                        reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
-                    Fee = maxAmountEstimation.Fee;
+                    SetFeeFromString(maxAmountEstimation.Fee.ToString());
 
                 if (maxAmountEstimation.Error != null)
                 {
@@ -163,38 +173,34 @@ namespace atomex.ViewModel.SendViewModels
                         messageType: MessageType.Error,
                         element: RelatedTo.Amount,
                         text: maxAmountEstimation.Error.Description);
-
-                    Amount = 0;
-                    AmountString = Amount.ToString();
-                    this.RaisePropertyChanged(nameof(AmountString));
+                    SetAmountFromString("0");
 
                     return;
                 }
 
-                if (UseDefaultFee)
-                {
-                    Amount = maxAmountEstimation.Amount > 0
-                        ? maxAmountEstimation.Amount
-                        : 0;
-                }
-                else
-                {
-                    var availableAmount = maxAmountEstimation.Amount + maxAmountEstimation.Fee;
+                var (fa12TransferFee, _) = await App.Account
+                   .GetCurrencyAccount<Fa12Account>("TZBTC")
+                   .EstimateTransferFeeAsync(From);
 
-                    Amount = availableAmount - Fee > 0
-                        ? availableAmount - Fee
-                        : 0;
+                var maxAmount = UseDefaultFee
+                    ? maxAmountEstimation.Amount
+                    : maxAmountEstimation.Amount + maxAmountEstimation.Fee - Fee;
 
-                    if (Fee < maxAmountEstimation.Fee)
-                        ShowMessage(
-                            messageType: MessageType.Error,
-                            element: RelatedTo.Fee,
-                            text: AppResources.LowFees);
-                }
+                RecommendedMaxAmount = HasActiveSwaps
+                    ? Math.Max(maxAmount - maxAmountEstimation.Reserved, 0)
+                    : HasTokens
+                        ? Math.Max(maxAmount - fa12TransferFee, 0)
+                        : maxAmount;
 
-                AmountString = Amount.ToString();
+                var amount = maxAmount > 0
+                    ? HasActiveSwaps
+                        ? RecommendedMaxAmount
+                        : maxAmount
+                    : 0;
 
-                this.RaisePropertyChanged(nameof(AmountString));
+                SetAmountFromString(amount.ToString());
+
+                CheckAmountCommand?.Execute(maxAmountEstimation).Subscribe();
             }
             catch (Exception e)
             {
@@ -202,14 +208,124 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        protected override Task<Error> Send(CancellationToken cancellationToken = default)
+        private async void CheckAmount(MaxAmountEstimation maxAmountEstimation)
         {
+            if (maxAmountEstimation.Error != null)
+            {
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Amount,
+                    text: maxAmountEstimation.Error.Description,
+                    tooltipText: maxAmountEstimation.Error.Details);
+
+                return;
+            }
+
+            if (Amount + Fee > maxAmountEstimation.Amount + maxAmountEstimation.Fee)
+            {
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Amount,
+                    text: AppResources.InsufficientFunds);
+                
+                return;
+            }
+
+            if (Fee < maxAmountEstimation.Fee)
+            {
+                ShowMessage(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.Amount,
+                    text: AppResources.LowFees);
+                
+                return;
+            }
+
+            var (fa12TransferFee, _) = await App.Account
+                .GetCurrencyAccount<Fa12Account>("TZBTC")
+                .EstimateTransferFeeAsync(From);
+
+            var maxAmount = UseDefaultFee
+                ? maxAmountEstimation.Amount
+                : maxAmountEstimation.Amount + maxAmountEstimation.Fee - Fee;
+
+            RecommendedMaxAmount = HasActiveSwaps
+                ? Math.Max(maxAmount - maxAmountEstimation.Reserved, 0)
+                : HasTokens
+                    ? Math.Max(maxAmount - fa12TransferFee, 0)
+                    : maxAmount;
+
+            if (HasActiveSwaps && Amount > RecommendedMaxAmount)
+            {
+                SetRecommededAmountWarning(
+                    MessageType.Error,
+                    RelatedTo.Amount,
+                    string.Format(
+                        AppResources.MaxAmountToSendWithActiveSwaps,
+                        RecommendedMaxAmount,
+                        Currency.Name),
+                    string.Format(
+                        AppResources.MaxAmountToSendWithActiveSwapsDetails,
+                        RecommendedMaxAmount,
+                        Currency.Name));
+                ShowAdditionalConfirmation = false;
+
+                return;
+            }
+
+            if (HasActiveSwaps && Amount == RecommendedMaxAmount)
+            {
+                SetRecommededAmountWarning(
+                    MessageType.Warning,
+                    RelatedTo.Amount,
+                    string.Format(
+                        AppResources.MaxAmountToSendWithActiveSwaps,
+                        RecommendedMaxAmount,
+                        Currency.Name),
+                    string.Format(
+                        AppResources.MaxAmountToSendWithActiveSwapsDetails,
+                        RecommendedMaxAmount,
+                        Currency.Name));
+                ShowAdditionalConfirmation = false;
+
+                return;
+            }
+            if (!HasActiveSwaps && HasTokens && Amount >= RecommendedMaxAmount)
+            {
+                SetRecommededAmountWarning(
+                    MessageType.Regular,
+                    RelatedTo.Amount,
+                    string.Format(
+                        AppResources.MaxAmountToSendRecommendation,
+                        RecommendedMaxAmount,
+                        Currency.Name),
+                    string.Format(
+                        AppResources.MaxAmountToSendRecommendationDetails,
+                        RecommendedMaxAmount,
+                        Currency.Name));
+                ShowAdditionalConfirmation = true;
+
+                return;
+            }
+            if (!HasActiveSwaps)
+            {
+                SetRecommededAmountWarning(
+                    MessageType.Regular,
+                    RelatedTo.Amount,
+                    null,
+                    null);
+                ShowAdditionalConfirmation = false;
+            }
+        }
+
+        protected override Task<Error> Send(CancellationToken cancellationToken = default)
+        {            
             var account = App.Account.GetCurrencyAccount<TezosAccount>(Currency.Name);
 
             return account.SendAsync(
                 from: From,
                 to: To,
-                amount: Amount,
+                amount: AmountToSend,
                 fee: Fee,
                 useDefaultFee: UseDefaultFee,
                 cancellationToken: cancellationToken);

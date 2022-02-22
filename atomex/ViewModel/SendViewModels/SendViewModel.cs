@@ -4,7 +4,9 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Popup;
@@ -21,25 +23,11 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel.SendViewModels
 {
-    public enum MessageType
+    public enum SendStage
     {
-        Warning,
-        Error
-    }
-
-    public enum RelatedTo
-    {
-        Amount,
-        Fee,
-        Address,
-        Core
-    }
-
-    public class Message
-    {
-        public MessageType Type { get; set; }
-        public RelatedTo RelatedTo { get; set; }
-        public string Text { get; set; }
+        Edit,
+        Confirmation,
+        AdditionalConfirmation
     }
 
     public abstract class SendViewModel : BaseViewModel
@@ -119,6 +107,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public decimal FeeInBase { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }
 
+        [Reactive] public SendStage Stage { get; set; }
         [Reactive] public Message Message { get; set; }
         [Reactive] public bool IsLoading { get; set; }
 
@@ -136,6 +125,20 @@ namespace atomex.ViewModel.SendViewModels
         protected abstract Task FromClick();
         protected abstract Task ToClick();
 
+        [Reactive] public decimal RecommendedMaxAmount { get; set; }
+        [Reactive] public Message RecommendedMaxAmountWarning { get; set; }
+        public bool ShowAdditionalConfirmation { get; set; }
+        [Reactive] public bool UseRecommendedAmount { get; set; }
+        [Reactive] public bool UseEnteredAmount { get; set; }
+        [Reactive] public bool CanSend { get; set; }
+
+        public decimal AmountToSend => UseRecommendedAmount && (RecommendedMaxAmount < Amount)
+            ? RecommendedMaxAmount
+            : Amount;
+
+        [Reactive] public string SendRecommendedAmountMenu { get; set; }
+        [Reactive] public string SendEnteredAmountMenu { get; set; }
+
         public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
         {
             App = app ?? throw new ArgumentNullException(nameof(AtomexApp));
@@ -145,7 +148,7 @@ namespace atomex.ViewModel.SendViewModels
             Navigation = currencyViewModel?.Navigation;
 
             Message = new Message();
-            Message.RelatedTo = RelatedTo.Amount;
+            RecommendedMaxAmountWarning = new Message();
             UseDefaultFee = true;
 
             var updateAmountCommand = ReactiveCommand.CreateFromTask(UpdateAmount);
@@ -157,7 +160,11 @@ namespace atomex.ViewModel.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee
                 )
-                .SubscribeInMainThread(_ => Message.Text = string.Empty);
+                .SubscribeInMainThread(_ =>
+                {
+                    Message.Text = string.Empty;
+                    this.RaisePropertyChanged(nameof(Message));
+                });
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -188,18 +195,125 @@ namespace atomex.ViewModel.SendViewModels
                 .InvokeCommandInMainThread(updateFeeCommand);
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
-                .Where(useDefaultFee => useDefaultFee)
+                .Where(useDefaultFee => useDefaultFee && !string.IsNullOrEmpty(From))
                 .Select(_ => Unit.Default)
                 .InvokeCommandInMainThread(updateAmountCommand);
 
-            this.WhenAnyValue(vm => vm.Fee)
-                .SubscribeInMainThread(fee =>
+            var canSendObservable1 = this.WhenAnyValue(
+                vm => vm.Amount,
+                vm => vm.To,
+                vm => vm.Message,
+                vm => vm.RecommendedMaxAmountWarning);
+
+            var canSendObservable2 = this.WhenAnyValue(
+                vm => vm.UseRecommendedAmount,
+                vm => vm.UseEnteredAmount,
+                vm => vm.Stage);
+
+            canSendObservable1.CombineLatest(canSendObservable2)
+                .Throttle(TimeSpan.FromMilliseconds(1))
+                .SubscribeInMainThread(_ =>
                 {
-                    FeeString = fee.ToString(CultureInfo.InvariantCulture);
-                    this.RaisePropertyChanged(nameof(FeeString));
+                    if (Stage == SendStage.Edit)
+                    {
+                        CanSend = To != null &&
+                                  Amount > 0 &&
+                                  string.IsNullOrEmpty(Message.Text) &&
+                                  (string.IsNullOrEmpty(RecommendedMaxAmountWarning.Text) || (RecommendedMaxAmountWarning != null && RecommendedMaxAmountWarning.Type != MessageType.Error) &&
+                                  !IsLoading);
+                    }
+                    else if (Stage == SendStage.Confirmation)
+                    {
+                        CanSend = true;
+                    }
+                    else
+                    {
+                        CanSend = UseRecommendedAmount || UseEnteredAmount;
+                    }
+                });
+
+            this.WhenAnyValue(vm => vm.Stage)
+                .SubscribeInMainThread(s =>
+                {
+                    UseRecommendedAmount = false;
+                    UseEnteredAmount = false;
+                });
+
+            this.WhenAnyValue(vm => vm.RecommendedMaxAmount)
+                .SubscribeInMainThread(a =>
+                {
+                    SendRecommendedAmountMenu = string.Format(
+                        AppResources.SendRecommendedAmountMenu,
+                        RecommendedMaxAmount,
+                        Currency.Name);
+                });
+
+            this.WhenAnyValue(vm => vm.Amount)
+                .SubscribeInMainThread(a =>
+                {
+                    SendEnteredAmountMenu = string.Format(
+                        AppResources.SendEnteredAmountMenu,
+                        Amount,
+                        Currency.Name);
                 });
 
             SubscribeToServices();
+        }
+
+        public void SetAmountFromString(string value)
+        {
+            if (value == AmountString)
+            {
+                this.RaisePropertyChanged(nameof(AmountString));
+                return;
+            }
+
+            string temp = value.Replace(",", ".");
+            if (!decimal.TryParse(
+                s: temp,
+                style: NumberStyles.AllowDecimalPoint,
+                provider: CultureInfo.InvariantCulture,
+                result: out var amount))
+            {
+                AmountString = "0";
+            }
+            else
+            {
+                if (amount > long.MaxValue)
+                    AmountString = long.MaxValue.ToString();
+                else
+                    AmountString = value;
+            }
+
+            this.RaisePropertyChanged(nameof(AmountString));
+        }
+
+        public void SetFeeFromString(string value)
+        {
+            if (value == FeeString)
+            {
+                this.RaisePropertyChanged(nameof(FeeString));
+                return;
+            }
+
+            string temp = value.Replace(",", ".");
+            if (!decimal.TryParse(
+                s: temp,
+                style: NumberStyles.AllowDecimalPoint,
+                provider: CultureInfo.InvariantCulture,
+                result: out var amount))
+            {
+                FeeString = "0";
+            }
+            else
+            {
+                if (amount > long.MaxValue)
+                    FeeString = long.MaxValue.ToString();
+                else
+                    FeeString = value;
+            }
+
+            this.RaisePropertyChanged(nameof(FeeString));
         }
 
         private void SubscribeToServices()
@@ -208,9 +322,12 @@ namespace atomex.ViewModel.SendViewModels
                 App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        private ReactiveCommand<Unit, Unit> _sendCommand;
-        public ReactiveCommand<Unit, Unit> SendCommand =>
-            _sendCommand ??= (_sendCommand = ReactiveCommand.CreateFromTask(SendButtonClicked));
+
+        private ICommand _closeConfirmationCommand;
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
+        {
+            Stage = PopupNavigation.Instance.PopupStack.Count <= 1 ? SendStage.Edit : Stage;
+        });
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
         public ReactiveCommand<Unit, Unit> MaxCommand =>
@@ -221,6 +338,13 @@ namespace atomex.ViewModel.SendViewModels
                 this.RaisePropertyChanged(nameof(Message));
             }));
 
+        private ReactiveCommand<Unit, Unit> _showRecommendedMaxAmountTooltip;
+        public ReactiveCommand<Unit, Unit> ShowRecommendedMaxAmountTooltip =>
+            _showRecommendedMaxAmountTooltip ??= (_showRecommendedMaxAmountTooltip = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.Warning, RecommendedMaxAmountWarning?.TooltipText, AppResources.AcceptButton);
+            }));
+
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
             (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
@@ -229,11 +353,11 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
 
-        private ReactiveCommand<Unit, Unit> _confirmationCommand;
-        public ReactiveCommand<Unit, Unit> ConfirmationCommand => _confirmationCommand ??=
-            (_confirmationCommand = ReactiveCommand.CreateFromTask(SendingConfirmation));
+        private ReactiveCommand<Unit, Unit> _nextCommand;
+        public ReactiveCommand<Unit, Unit> NextCommand => _nextCommand ??=
+            (_nextCommand = ReactiveCommand.CreateFromTask(OnNextCommand));
 
-        private async Task SendingConfirmation()
+        private async Task OnNextCommand()
         {
             if (string.IsNullOrEmpty(To))
                 ShowMessage(
@@ -269,10 +393,80 @@ namespace atomex.ViewModel.SendViewModels
 
             this.RaisePropertyChanged(nameof(Message));
 
-            if (string.IsNullOrEmpty(Message?.Text))
-                await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
+            if (!string.IsNullOrEmpty(Message?.Text)) return;
+
+            if ((Stage == SendStage.Confirmation && !ShowAdditionalConfirmation) ||
+                Stage == SendStage.AdditionalConfirmation)
+            {
+                try
+                {
+                    IsLoading = true;
+                    this.RaisePropertyChanged(nameof(IsLoading));
+        
+                    var error = await Send();
+
+                    if (error != null)
+                    {
+                        IsLoading = false;
+                        this.RaisePropertyChanged(nameof(IsLoading));
+                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                            new PopupViewModel
+                            {
+                                Type = PopupType.Error,
+                                Title = AppResources.Error,
+                                Body = error.Description,
+                                ButtonText = AppResources.AcceptButton
+                            }));
+                        return;
+                    }
+
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
+
+                    await PopupNavigation.Instance.PopAsync();
+
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Success,
+                            Title = AppResources.Success,
+                            Body = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencySentToAddress, Amount, CurrencyCode, To),
+                            ButtonText = AppResources.AcceptButton
+                        }));
+
+                    for (int i = Navigation.NavigationStack.Count; i > 2; i--)
+                        Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Transaction send error.");
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
+                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                        new PopupViewModel
+                        {
+                            Type = PopupType.Error,
+                            Title = AppResources.Error,
+                            Body = AppResources.SendingTransactionError,
+                            ButtonText = AppResources.AcceptButton
+                        }));
+                }
+                finally
+                {
+                    Stage = SendStage.Edit;
+                }
+            }
+            else if (Stage == SendStage.Confirmation && ShowAdditionalConfirmation)
+            {
+                Stage = SendStage.AdditionalConfirmation;
+                await PopupNavigation.Instance.PushAsync(new WarningConfirmationBottomSheet(this));
+                _ = PopupNavigation.Instance.RemovePageAsync(PopupNavigation.Instance.PopupStack[PopupNavigation.Instance.PopupStack.Count - 2], false);
+            }
             else
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, Message?.Text, AppResources.AcceptButton);
+            {
+                Stage = SendStage.Confirmation;
+                await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
+            } 
         }
 
         protected void ConfirmFromAddress(SelectAddressViewModel selectAddressViewModel, WalletAddressViewModel walletAddressViewModel)
@@ -328,62 +522,6 @@ namespace atomex.ViewModel.SendViewModels
             }
         }
 
-        private async Task SendButtonClicked()
-        {
-            IsLoading = true;
-            this.RaisePropertyChanged(nameof(IsLoading));
-            try
-            {
-                var error = await Send();
-
-                if (error != null)
-                {
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Error,
-                            Title = AppResources.Error,
-                            Body = error.Description,
-                            ButtonText = AppResources.AcceptButton
-                        }));
-                    return;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Transaction send error.");
-                IsLoading = false;
-                this.RaisePropertyChanged(nameof(IsLoading));
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Error,
-                        Title = AppResources.Error,
-                        Body = AppResources.SendingTransactionError,
-                        ButtonText = AppResources.AcceptButton
-                    }));
-            }
-
-            IsLoading = false;
-            this.RaisePropertyChanged(nameof(IsLoading));
-
-            await PopupNavigation.Instance.PopAsync();
-
-            await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                new PopupViewModel
-                {
-                    Type = PopupType.Success,
-                    Title = AppResources.Success,
-                    Body = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencySentToAddress, Amount, CurrencyCode, To),
-                    ButtonText = AppResources.AcceptButton
-                }));
-
-            for (int i = Navigation.NavigationStack.Count; i > 2; i--)
-                Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
-        }
-
         protected virtual void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not ICurrencyQuotesProvider quotesProvider)
@@ -407,13 +545,24 @@ namespace atomex.ViewModel.SendViewModels
             });
         }
 
-        protected void ShowMessage(MessageType messageType, RelatedTo element, string text)
+        protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             Message.Type = messageType;
             Message.RelatedTo = element;
             Message.Text = text;
+            Message.TooltipText = tooltipText;
 
             this.RaisePropertyChanged(nameof(Message));
+        }
+
+        protected void SetRecommededAmountWarning(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
+        {
+            RecommendedMaxAmountWarning.Type = messageType;
+            RecommendedMaxAmountWarning.RelatedTo = element;
+            RecommendedMaxAmountWarning.Text = text;
+            RecommendedMaxAmountWarning.TooltipText = tooltipText;
+
+            this.RaisePropertyChanged(nameof(RecommendedMaxAmountWarning));
         }
     }
 }

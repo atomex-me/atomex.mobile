@@ -1073,4 +1073,22 @@
     <data name="AmountToFeeRatioToolTip" xml:space="preserve">
         <value>The commission does not depend on the conversion amount and is determined only by the current network fees. The larger the convertible amount, the smaller the commission to amount ratio. Atomex blocks the conversion if the commission exceeds 75% of the conversion amount</value>
     </data>
+    <data name="MaxAmountToSendRecommendation" xml:space="preserve">
+        <value>We recommend to send no more than {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendRecommendationDetails" xml:space="preserve">
+        <value>You have tokens that require {1}. Sending this will not leave enough {1} to send or exchange your tokens. We recommend to send no more than {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwaps" xml:space="preserve">
+        <value>Maximum available amount to send is {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwapsDetails" xml:space="preserve">
+        <value>You have swaps in process. Your app requires {1} to process them. Safe maximum amount to send is {0} {1}</value>
+    </data>
+    <data name="SendEnteredAmountMenu" xml:space="preserve">
+        <value>Send maximum amount {0} {1} anyway</value>
+    </data>
+    <data name="SendRecommendedAmountMenu" xml:space="preserve">
+        <value>Send recommended amount {0} {1}</value>
+    </data>
 </root>

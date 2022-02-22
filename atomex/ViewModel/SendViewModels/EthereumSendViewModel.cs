@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -37,8 +38,10 @@ namespace atomex.ViewModel.SendViewModels
                 .SubscribeInMainThread(_ => Message.Text = string.Empty);
 
             this.WhenAnyValue(vm => vm.GasPrice)
-                .Select(gasPrice => gasPrice.ToString(CultureInfo.CurrentCulture))
-                .ToPropertyExInMainThread(this, vm => vm.GasPriceString);
+                .SubscribeInMainThread(gasPrice =>
+                {
+                    GasPriceString = gasPrice.ToString(CultureInfo.InvariantCulture);
+                });
 
             this.WhenAnyValue(vm => vm.GasPrice)
                 .Where(_ => !string.IsNullOrEmpty(From))
@@ -276,7 +279,7 @@ namespace atomex.ViewModel.SendViewModels
             return account.SendAsync(
                 from: From,
                 to: To,
-                amount: Amount,
+                amount: AmountToSend,
                 gasLimit: GasLimit,
                 gasPrice: GasPrice,
                 useDefaultFee: UseDefaultFee,

@@ -3,9 +3,9 @@ using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.Send
 {
-    public partial class SendingConfirmationBottomSheet : PopupPage
+    public partial class WarningConfirmationBottomSheet : PopupPage
     {
-        public SendingConfirmationBottomSheet(SendViewModel sendViewModel)
+        public WarningConfirmationBottomSheet(SendViewModel sendViewModel)
         {
             InitializeComponent();
             BindingContext = sendViewModel;

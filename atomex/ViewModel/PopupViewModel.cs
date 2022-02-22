@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
@@ -22,11 +21,6 @@ namespace atomex.ViewModel
         public string ButtonText { get; set; }
 
         private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await ClosePopup());
-
-        private async Task ClosePopup()
-        {
-            await PopupNavigation.Instance.PopAsync();
-        }
+        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await PopupNavigation.Instance.PopAsync());
     }
 }
