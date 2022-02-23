@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
@@ -43,6 +44,13 @@ namespace atomex.ViewModel.SendViewModels
 
                     SelectedFromBalance = Config.SatoshiToCoin(totalOutputsSatoshi);
                 });
+
+            this.WhenAnyValue(vm => vm.FeeRate)
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
+
+            this.WhenAnyValue(vm => vm.UseDefaultFee)
+                .Where(useDefaultFee => !useDefaultFee)
+                .SubscribeInMainThread((useDefaultFee) => { _ = UpdateFee(); });
 
             var outputs = Account.GetAvailableOutputsAsync()
                 .WaitForResult()
@@ -130,7 +138,7 @@ namespace atomex.ViewModel.SendViewModels
                     }
 
                     var feeVal = Config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
-                    Fee = feeVal;
+                    SetFeeFromString(feeVal.ToString());
                 }
                 else
                 {
@@ -164,8 +172,6 @@ namespace atomex.ViewModel.SendViewModels
 
                     FeeRate = transactionParams.FeeRate;
                 }
-
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
             catch (Exception e)
             {
@@ -209,8 +215,6 @@ namespace atomex.ViewModel.SendViewModels
                 }
 
                 FeeRate = transactionParams.FeeRate;
-
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
             catch (Exception e)
             {
@@ -233,9 +237,7 @@ namespace atomex.ViewModel.SendViewModels
                             messageType: MessageType.Error,
                             element: RelatedTo.Amount,
                             text: AppResources.InsufficientFunds);
-                        Amount = 0;
-                        AmountString = Amount.ToString();
-                        this.RaisePropertyChanged(nameof(AmountString));
+                        SetAmountFromString("0");
 
                         return;
                     }
@@ -250,14 +252,13 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (maxAmountEstimation.Amount > 0)
                     {
-                        Amount = maxAmountEstimation.Amount;
-                        AmountString = Amount.ToString();
-                        this.RaisePropertyChanged(nameof(AmountString));
+                        SetAmountFromString(maxAmountEstimation.Amount.ToString());
 
                         return;
                     }
 
-                    Fee = maxAmountEstimation.Fee;
+                    var fee = maxAmountEstimation.Fee;
+                    SetFeeFromString(fee.ToString());
                 }
                 else
                 {
@@ -279,16 +280,14 @@ namespace atomex.ViewModel.SendViewModels
                             messageType: MessageType.Error,
                             element: RelatedTo.Amount,
                             text: AppResources.InsufficientFunds);
-                        Amount = 0;
-                        AmountString = Amount.ToString();
-                        this.RaisePropertyChanged(nameof(AmountString));
+                        SetAmountFromString("0");
 
                         return;
                     }
 
                     if (Amount != maxAmount)
                     {
-                        Amount = maxAmount;
+                        SetAmountFromString(maxAmount.ToString());
                     }
                     else
                     {
@@ -304,13 +303,8 @@ namespace atomex.ViewModel.SendViewModels
                         }
                     }
 
-                    AmountString = Amount.ToString();                        
-
                     FeeRate = transactionParams.FeeRate;
                 }
-
-                this.RaisePropertyChanged(nameof(AmountString));
-                OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty);
             }
             catch (Exception e)
             {

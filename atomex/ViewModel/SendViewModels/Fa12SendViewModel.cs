@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
@@ -15,8 +13,6 @@ using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
 
@@ -39,14 +35,6 @@ namespace atomex.ViewModel.SendViewModels
             {
                 ConfirmAction = ConfirmToAddress
             };
-
-            this.WhenAnyValue(
-                vm => vm.Amount,
-                vm => vm.Fee,
-                (amount, fee) => Currency.IsToken ? amount : amount + fee
-            )
-            .Select(totalAmount => totalAmount.ToString(CultureInfo.InvariantCulture))
-            .ToPropertyEx(this, vm => vm.TotalAmountString);
         }
 
         protected override async Task FromClick()
@@ -78,14 +66,15 @@ namespace atomex.ViewModel.SendViewModels
                         reserve: false);
 
                 if (UseDefaultFee && maxAmountEstimation.Fee > 0)
-                    Fee = maxAmountEstimation.Fee;
+                    SetFeeFromString(maxAmountEstimation.Fee.ToString());
 
                 if (maxAmountEstimation.Error != null)
                 {
                     ShowMessage(
                         messageType: MessageType.Error,
                         element: RelatedTo.Amount,
-                        text: maxAmountEstimation.Error.Description);
+                        text: maxAmountEstimation.Error.Description,
+                        tooltipText: maxAmountEstimation.Error.Details);
                     return;
                 }
 
@@ -130,6 +119,7 @@ namespace atomex.ViewModel.SendViewModels
                         ShowMessage(
                             messageType: MessageType.Error,
                             element: RelatedTo.Amount,
+                            tooltipText: maxAmountEstimation.Error.Details,
                             text: maxAmountEstimation.Error.Description);
                         return;
                     }
@@ -177,26 +167,23 @@ namespace atomex.ViewModel.SendViewModels
                     ShowMessage(
                         messageType: MessageType.Error,
                         element: RelatedTo.Amount,
+                        tooltipText: maxAmountEstimation.Error.Details,
                         text: maxAmountEstimation.Error.Description);
-                    Amount = 0;
-                    AmountString = Amount.ToString();
-                    this.RaisePropertyChanged(nameof(AmountString));
+                    SetAmountFromString("0");
 
                     return;
                 }
 
-                Amount = maxAmountEstimation.Amount > 0
+                var amount = maxAmountEstimation.Amount > 0
                     ? maxAmountEstimation.Amount
                     : 0;
+                SetAmountFromString(amount.ToString());
 
                 if (Fee < maxAmountEstimation.Fee)
                     ShowMessage(
                         messageType: MessageType.Error,
                         element: RelatedTo.Fee,
                         text: AppResources.LowFees);
-
-                AmountString = Amount.ToString();
-                this.RaisePropertyChanged(nameof(AmountString));
             }
             catch (Exception e)
             {

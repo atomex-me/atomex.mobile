@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
@@ -10,7 +9,6 @@ using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Ethereum;
-using ReactiveUI;
 using Serilog;
 using Xamarin.Forms;
 
@@ -57,7 +55,8 @@ namespace atomex.ViewModel.SendViewModels
                     ShowMessage(
                         messageType: MessageType.Error,
                         element: RelatedTo.Amount,
-                        text: maxAmountEstimation.Error.Description);
+                        text: maxAmountEstimation.Error.Description,
+                        tooltipText: maxAmountEstimation.Error.Details);
                     return;
                 }
 
@@ -95,7 +94,8 @@ namespace atomex.ViewModel.SendViewModels
                         ShowMessage(
                             messageType: MessageType.Error,
                             element: RelatedTo.Amount,
-                            text: maxAmountEstimation.Error.Description);
+                            text: maxAmountEstimation.Error.Description,
+                            tooltipText: maxAmountEstimation.Error.Details);
                         return;
                     }
 
@@ -135,20 +135,17 @@ namespace atomex.ViewModel.SendViewModels
                     ShowMessage(
                         messageType: MessageType.Error,
                         element: RelatedTo.Amount,
-                        text: maxAmountEstimation.Error.Description);
-                    Amount = 0;
-                    AmountString = Amount.ToString();
-                    this.RaisePropertyChanged(nameof(AmountString));
+                        text: maxAmountEstimation.Error.Description,
+                        tooltipText: maxAmountEstimation.Error.Details);
+                    SetAmountFromString("0");
 
                     return;
                 }
 
-                Amount = maxAmountEstimation.Amount > 0
+                var amount = maxAmountEstimation.Amount > 0
                     ? maxAmountEstimation.Amount
                     : 0;
-
-                AmountString = Amount.ToString();
-                this.RaisePropertyChanged(nameof(AmountString));
+                SetAmountFromString(amount.ToString());
             }
             catch (Exception e)
             {

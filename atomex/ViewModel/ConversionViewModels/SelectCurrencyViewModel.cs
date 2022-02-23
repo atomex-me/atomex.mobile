@@ -88,7 +88,8 @@ namespace atomex.ViewModel.ConversionViewModels
 
             foreach (var output in sourceWithOutputs.SelectedOutputs)
             {
-                var selectedOutput = AvailableOutputs.FirstOrDefault(o => o.TxId == output.TxId && o.Index == output.Index && o.Value == output.Value);
+                var selectedOutput = AvailableOutputs
+                   .FirstOrDefault(o => o.TxId == output.TxId && o.Index == output.Index && o.Value == output.Value);
 
                 if (selectedOutput == null)
                 {
@@ -153,7 +154,8 @@ namespace atomex.ViewModel.ConversionViewModels
             if (source is not SelectCurrencyWithAddressViewModelItem sourceWithAddress)
                 return;
 
-            var address = AvailableAddresses.FirstOrDefault(a => a.Address == sourceWithAddress.ShortAddressDescription);
+            var address = AvailableAddresses
+                .FirstOrDefault(a => a.Address == sourceWithAddress.ShortAddressDescription);
 
             if (address != null)
                 SelectedAddress = address;
@@ -224,7 +226,8 @@ namespace atomex.ViewModel.ConversionViewModels
                 {
                     ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
                     {
-                        itemWithAddress.SelectedAddress = itemWithAddress.AvailableAddresses
+                        itemWithAddress.SelectedAddress = itemWithAddress
+                            .AvailableAddresses
                             .FirstOrDefault(a => a.Address == walletAddressViewModel.Address) ?? itemWithAddress.SelectedAddress;
 
                         if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.Init)

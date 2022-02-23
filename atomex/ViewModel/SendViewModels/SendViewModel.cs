@@ -169,8 +169,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(
                     vm => vm.Amount,
                     vm => vm.Fee,
-                    (amount, fee) => amount + fee
-                )
+                    (amount, fee) => Currency.IsToken ? amount : amount + fee)
                 .Select(totalAmount => totalAmount.ToString())
                 .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
