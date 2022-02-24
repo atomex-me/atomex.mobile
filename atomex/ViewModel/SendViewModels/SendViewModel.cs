@@ -476,7 +476,7 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
                     break;
 
                 case SelectAddressFrom.Change:
@@ -484,7 +484,7 @@ namespace atomex.ViewModel.SendViewModels
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     break;
 

@@ -90,14 +90,14 @@ namespace atomex.ViewModel.SendViewModels
             var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new FromAddressPage(selectFromViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(selectFromViewModel));
         }
 
         protected override async Task ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
         }
 
         protected override async Task UpdateAmount()

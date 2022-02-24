@@ -213,7 +213,7 @@ namespace atomex.ViewModel.ConversionViewModels
                     }
                 };
 
-                await _navigation.PushAsync(new FromOutputsPage(selectOutputsViewModel));
+                await _navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
             }
             else if (i is SelectCurrencyWithAddressViewModelItem itemWithAddress)
             {
@@ -244,7 +244,7 @@ namespace atomex.ViewModel.ConversionViewModels
                     }
                 };
 
-                await _navigation.PushAsync(new FromAddressPage(selectAddressViewModel));
+                await _navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
             }
         });
 

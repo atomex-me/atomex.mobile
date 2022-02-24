@@ -3,9 +3,9 @@ using Xamarin.Forms;
 
 namespace atomex.Views.Send
 {
-    public partial class FromOutputsPage : ContentPage
+    public partial class SelectOutputsPage : ContentPage
     {
-        public FromOutputsPage(SelectOutputsViewModel selectOutputsViewModel)
+        public SelectOutputsPage(SelectOutputsViewModel selectOutputsViewModel)
         {
             InitializeComponent();
             BindingContext = selectOutputsViewModel;

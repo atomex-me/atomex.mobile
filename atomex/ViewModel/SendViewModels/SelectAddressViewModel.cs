@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -24,16 +25,23 @@ namespace atomex.ViewModel.SendViewModels
 {
     public enum SelectAddressFrom
     {
+        [Description("Init")]
         Init,
+        [Description("Change")]
         Change,
+        [Description("InitSearch")]
         InitSearch,
+        [Description("ChangeSearch")]
         ChangeSearch
     }
 
     public enum SelectAddressMode
     {
+        [Description("SendFrom")]
         SendFrom,
+        [Description("ReceiveTo")]
         ReceiveTo,
+        [Description("ChangeRedeemAddress")]
         ChangeRedeemAddress
     }
 
@@ -78,19 +86,19 @@ namespace atomex.ViewModel.SendViewModels
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             Message = new Message();
 
-            this.WhenAnyValue(vm => vm.IsMyAddressesTab)
+            this.WhenAnyValue(
+                vm => vm.IsMyAddressesTab,
+                vm => vm.SelectAddressMode)
                 .Subscribe(value =>
                 {
-                    if (IsMyAddressesTab)
-                    {
-                        ToolbarIcon = "ic_search";
-                        ToolbarCommand = SearchCommand;
-                    }
-                    else
-                    {
-                        ToolbarIcon = "ic_qr";
-                        ToolbarCommand = ScanCommand;
-                    }
+                    ToolbarIcon = SelectAddressMode == SelectAddressMode.SendFrom ||
+                        SelectAddressMode == SelectAddressMode.ReceiveTo && IsMyAddressesTab
+                            ? "ic_search"
+                            : "ic_qr";
+                    ToolbarCommand = SelectAddressMode == SelectAddressMode.SendFrom ||
+                        SelectAddressMode == SelectAddressMode.ReceiveTo && IsMyAddressesTab
+                            ? SearchCommand
+                            : ScanCommand;
                 });
 
             this.WhenAnyValue(

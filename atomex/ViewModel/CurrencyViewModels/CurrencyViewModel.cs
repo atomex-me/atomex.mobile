@@ -344,12 +344,12 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (Currency is BitcoinBasedConfig)
             {
                 var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                await Navigation.PushAsync(new FromOutputsPage(selectOutputsViewModel));
+                await Navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
             }
             else
             {
                 var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                await Navigation.PushAsync(new FromAddressPage(selectAddressViewModel));
+                await Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
             }
         }
 

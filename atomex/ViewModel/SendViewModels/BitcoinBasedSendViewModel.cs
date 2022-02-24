@@ -90,7 +90,7 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectOutputsViewModel?.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
                     break;
 
                 case SelectAddressFrom.Change:
@@ -98,7 +98,7 @@ namespace atomex.ViewModel.SendViewModels
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
                     Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                     break;
 
@@ -345,14 +345,14 @@ namespace atomex.ViewModel.SendViewModels
             var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new FromOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
+            await Navigation.PushAsync(new SelectOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
         }
 
         protected async override Task ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new ToAddressPage(SelectToViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
         }
     }
 }

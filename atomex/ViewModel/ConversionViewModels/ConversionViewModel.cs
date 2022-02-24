@@ -22,7 +22,6 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
 using System.Reactive.Linq;
 using Rg.Plugins.Popup.Services;
-using Xamarin.Essentials;
 using ZXing;
 using atomex.ViewModel.ConversionViewModels;
 using atomex.ViewModel.SendViewModels;
@@ -118,21 +117,6 @@ namespace atomex.ViewModel
 
         [Reactive] public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
         private Dictionary<long, SwapViewModel> _cachedSwaps;
-
-        public enum SelectAddressType
-        {
-            From,
-            To,
-            Redeem
-        }
-
-        [Reactive] public SelectAddressType CurrentSelection { get; set; }
-        [Reactive] public string AddressPageTitle { get; set; }
-
-        [Reactive] public Result ScanResult { get; set; }
-        [Reactive] public bool IsScanning { get; set; }
-        [Reactive] public bool IsAnalyzing { get; set; }
-
         [Reactive] public bool IsAllSwapsShowed { get; set; }
         private int _swapNumberPerPage = 3;
 
@@ -322,7 +306,7 @@ namespace atomex.ViewModel
                     vm => vm.RewardForRedeemInBase)
                 .Throttle(TimeSpan.FromMilliseconds(1))
                 .SubscribeInMainThread(t => UpdateTotalNetworkFeeInBase());
-
+            
             // AmountInBase or EstimatedTotalNetworkFeeInBase changed => check the ratio of the fee to the amount
             this.WhenAnyValue(
                     vm => vm.FromViewModel.AmountInBase,
@@ -382,6 +366,8 @@ namespace atomex.ViewModel
                 .ToPropertyExInMainThread(this, vm => vm.IsError);
 
             SubscribeToServices();
+
+            GetSwaps();
         }
 
         public async void MaxClicked()
@@ -468,7 +454,6 @@ namespace atomex.ViewModel
                 navigation: Navigation,
                 mode: SelectAddressMode.ChangeRedeemAddress,
                 selectedAddress: RedeemFromAddress)
-                //selectedAddress: RedeemFromAddress)
             {
                 //BackAction = () => { App.DialogService.Show(this); },
                 //ConfirmAction = walletAddressViewModel =>
@@ -863,31 +848,6 @@ namespace atomex.ViewModel
             }
         }
 
-        private async void SetBindingsOnAddressesPage()
-        {
-            await Device.InvokeOnMainThreadAsync(() =>
-            {
-                if (CurrentSelection == SelectAddressType.From)
-                {
-                    //FoundAddress = FromAddresses
-                    AddressPageTitle = AppResources.SendFrom;
-                    return;
-                }
-                if (CurrentSelection == SelectAddressType.To)
-                {
-                    //FoundAddress = MyAddresses
-                    AddressPageTitle = AppResources.ChooseAnAddress;
-                    return;
-                }
-                if (CurrentSelection == SelectAddressType.Redeem)
-                {
-                    //FoundAddress = MyAddresses ?
-                    AddressPageTitle = AppResources.ChangeRedeemAddress;
-                    return;
-                }
-            });
-        }
-
         //private ICommand _totalFeeCommand;
         //public ICommand TotalFeeCommand => _totalFeeCommand ??= new Command(async () => await OnTotalFeeTapped());
         
@@ -917,78 +877,6 @@ namespace atomex.ViewModel
         //    await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
         //}
 
-        private ICommand _createNewSwapCommand;
-        public ICommand CreateNewSwapCommand => _createNewSwapCommand ??= new Command(async () => await OnCreateSwapButtonClicked());
-
-        private async Task OnCreateSwapButtonClicked()
-        {
-            await Navigation.PushAsync(new ExchangePage(this));
-        }
-
-        private ICommand _searchAddressCommand;
-        public ICommand SearchAddressCommand => _searchAddressCommand ??= new Command<string>((value) => OnSearchEntryTextChanged(value));
-
-        private void OnSearchEntryTextChanged(string value)
-        {
-            try
-            {
-                Console.WriteLine("Search");
-                //if (CurrentSelection == SelectAddressType.From)
-                //    FoundAddressesList = FromAddresses;
-                //else if (CurrentSelection == SelectAddressType.To)
-                //    FoundAddressesList = ToAddresses;
-                //else (CurrentSelection == SelectAddressType.Redeem)
-                //    FoundAddressesList = ??;
-                
-                //if (string.IsNullOrEmpty(value))
-                //    FoundAddressesList = AddressesList;
-                //else
-                //    FoundAddressesList = AddressesList.Where(x => x.Name.ToLower().Contains(value.ToLower())).ToList();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
-        }
-
-        private ICommand _showFromAddressesCommand;
-        public ICommand ShowFromAddressesCommand => _showFromAddressesCommand ??= new Command(async () => await ShowFromAddresses());
-
-
-        private async Task ShowFromAddresses()
-        {
-            //if (FromCurrencyViewModel == null)
-            //    return;
-
-            //CurrentSelection = SelectAddressType.From;
-
-            //if (FromCurrencyViewModel.Currency is BitcoinBasedConfig)
-            //{
-            //    await Navigation.PushAsync(new BitcoinBasedAddressesPage(this));
-            //    return;
-            //}
-
-            //await Navigation.PushAsync(new Views.CreateSwap.AddressesPage(this));
-        }
-
-        private ICommand _showToAddressesCommand;
-        public ICommand ShowToAddressesCommand => _showToAddressesCommand ??= new Command(async () => await ShowToAddresses());
-
-        private async Task ShowToAddresses()
-        {
-            CurrentSelection = SelectAddressType.To;
-            await PopupNavigation.Instance.PopAsync();
-            //await Navigation.PushAsync(new Views.CreateSwap.AddressesPage(this));
-        }
-
-        private ICommand _showRedeemAddressesCommand;
-        public ICommand ShowRedeemAddressesCommand => _showRedeemAddressesCommand ??= new Command(async () => await ShowRedeemAddresses());
-
-        private async Task ShowRedeemAddresses()
-        {
-            CurrentSelection = SelectAddressType.Redeem;
-            //await Navigation.PushAsync(new Views.CreateSwap.AddressesPage(this));
-        }
 
         private ICommand _editToAddressCommand;
         public ICommand EditToAddressCommand => _editToAddressCommand ??= new Command(async () => await EditToAddresses());
@@ -1005,59 +893,6 @@ namespace atomex.ViewModel
         {
             await PopupNavigation.Instance.PopAsync();
             await Navigation.PushAsync(new ExternalAddressPage(this));
-        }
-
-        private ICommand _scanAddressCommand;
-        public ICommand ScanAddressCommand => _scanAddressCommand ??= new Command(async () => await OnScanButtonClicked());
-
-        private ICommand _scanResultCommand;
-        public ICommand ScanResultCommand => _scanResultCommand ??= new Command(async () => await OnScanResult());
-
-        private async Task OnScanButtonClicked()
-        {
-            Console.WriteLine("Scan");
-
-            PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
-
-            if (permissions != PermissionStatus.Granted)
-                permissions = await Permissions.RequestAsync<Permissions.Camera>();
-            if (permissions != PermissionStatus.Granted)
-                return;
-
-            IsScanning = IsAnalyzing = true;
-
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
-            await Navigation.PushAsync(new ScanningQrPage(this));
-        }
-
-        private async Task OnScanResult()
-        {
-            IsScanning = IsAnalyzing = false;
-            this.RaisePropertyChanged(nameof(IsScanning));
-            this.RaisePropertyChanged(nameof(IsAnalyzing));
-
-            if (ScanResult == null)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PopAsync();
-                });
-                return;
-            }
-
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                int indexOfChar = ScanResult.Text.IndexOf(':');
-                //if (indexOfChar == -1)
-                //    To = ScanResult.Text;
-                //else
-                //    To = ScanResult.Text.Substring(indexOfChar + 1);
-                await Navigation.PopAsync();
-            });
         }
 
         private ICommand _showAllSwapsCommand;
