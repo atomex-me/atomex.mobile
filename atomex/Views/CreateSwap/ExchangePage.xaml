@@ -344,12 +344,11 @@
                                      Mode="OneWay"
                                      Converter="{StaticResource NullToBoolean}"/>
                             <Binding Path="UseRedeemAddress"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource NullToBoolean}"/>
+                                     Mode="OneWay"/>
                         </MultiBinding>
                     </StackLayout.IsVisible>
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowRedeemAddressesCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ChangeRedeemAddress}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate ChangeRedeemAddress}"
                            HorizontalTextAlignment="Start"
@@ -392,7 +391,7 @@
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal">
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TotalFeeCommand}"/>
+                            <TapGestureRecognizer Command="{Binding EstNetworkFeeFeeCommand}"/>
                         </StackLayout.GestureRecognizers>
                         <Label HorizontalTextAlignment="Start"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -413,7 +412,7 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout VerticalOptions="End"
-                             Margin="20">
+                             Margin="16,24">
                     <StackLayout.IsVisible>
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"
@@ -425,7 +424,13 @@
                         </MultiBinding>
                     </StackLayout.IsVisible>
                     <Button Text="{helpers:Translate ExchangeLabel}"
-                            Style="{DynamicResource MainButtonStyle}"
+                            CornerRadius="8"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                            FontSize="17"
+                            HeightRequest="44"
+                            HorizontalOptions="FillAndExpand"
+                            FontFamily="{DynamicResource RegularFont}"
                             Command="{Binding ConvertCommand}"/>
                 </StackLayout>
             </StackLayout>
@@ -451,14 +456,14 @@
         <ListView.FooterTemplate>
             <DataTemplate>
                 <StackLayout>
-                    <Button Text="Show all"
+                    <Button Text="{helpers:Translate ShowAll}"
                             BackgroundColor="Transparent"
                             BorderWidth="2"
                             BorderColor="{AppThemeBinding Dark='#1FFFFFFF', Light='#1F000000'}"
                             TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                            Padding="15,0"
-                            Margin="15,0"
-                            HeightRequest="50"
+                            Padding="16,0"
+                            Margin="16,0"
+                            HeightRequest="44"
                             Command="{Binding BindingContext.ShowAllSwapsCommand, Source={x:Reference BindingContextPage}}">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button"

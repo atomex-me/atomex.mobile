@@ -12,8 +12,6 @@
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
-            <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -232,18 +230,20 @@
                             Command="{Binding MaxCommand}"/>
                 </Grid>
             </Frame>
-            <StackLayout Margin="16,12,16,0">
-                <StackLayout.IsVisible>
-                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                        <Binding Path="Message.RelatedTo"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringEnumEqualsConverter}"
-                                 ConverterParameter="Amount"/>
-                        <Binding Path="Message.Text"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringToBool}"/>
-                    </MultiBinding>                   
-                </StackLayout.IsVisible>
+            <StackLayout Margin="16,12,16,0"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                              Value="Amount"/>
+                            <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Message.Text}"
@@ -255,14 +255,14 @@
                            VerticalOptions="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                         Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
                                 <Setter Property="TextColor"
                                         Value="#FFA800"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                         Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                             </DataTrigger>
@@ -276,14 +276,14 @@
                            VerticalOptions="Center">
                         <Image.Triggers>
                             <DataTrigger TargetType="Image"
-                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                            Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
                                 <Setter Property="Source"
                                         Value="ic_question__error"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
-                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                            Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
                                 <Setter Property="Source"
                                         Value="ic_question__warning"/>
                             </DataTrigger>
@@ -291,18 +291,20 @@
                     </Image>
                 </StackLayout>
             </StackLayout>
-            <StackLayout Margin="16,12,16,0">
-                <StackLayout.IsVisible>
-                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                        <Binding Path="RecommendedMaxAmountWarning.RelatedTo"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringEnumEqualsConverter}"
-                                 ConverterParameter="Amount"/>
-                        <Binding Path="RecommendedMaxAmountWarning.Text"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringToBool}"/>
-                    </MultiBinding>                   
-                </StackLayout.IsVisible>
+            <StackLayout Margin="16,12,16,0"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.RelatedTo}"
+                                              Value="Amount"/>
+                            <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.Text, Converter={StaticResource StringToBool}}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </StackLayout.Triggers>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ShowRecommendedMaxAmountTooltip}"/>
                 </StackLayout.GestureRecognizers>
@@ -316,20 +318,20 @@
                            VerticalOptions="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Warning">
                                 <Setter Property="TextColor"
                                         Value="#FFA800"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Error">
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Regular'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Regular">
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                             </DataTrigger>
@@ -343,20 +345,20 @@
                            VerticalOptions="Center">
                         <Image.Triggers>
                             <DataTrigger TargetType="Image"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Error">
                                 <Setter Property="Source"
                                         Value="ic_question__error"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Warning">
                                 <Setter Property="Source"
                                         Value="ic_question__warning"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
-                                         Binding="{Binding RecommendedMaxAmountWarning.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Regular'}"
-                                         Value="True">
+                                         Binding="{Binding RecommendedMaxAmountWarning.Type}"
+                                         Value="Regular">
                                 <Setter Property="Source"
                                         Value="ic_question"/>
                             </DataTrigger>
@@ -417,18 +419,20 @@
                     </Label>
                 </Grid>
             </Frame>
-            <StackLayout Margin="16,12,16,0">
-                <StackLayout.IsVisible>
-                    <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                        <Binding Path="Message.RelatedTo"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringEnumEqualsConverter}"
-                                 ConverterParameter="Fee"/>
-                        <Binding Path="Message.Text"
-                                 Mode="OneWay"
-                                 Converter="{StaticResource StringToBool}"/>
-                    </MultiBinding>                   
-                </StackLayout.IsVisible>
+            <StackLayout Margin="16,12,16,0"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                              Value="Fee"/>
+                            <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Message.Text}"
@@ -440,14 +444,14 @@
                            VerticalOptions="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                         Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
                                 <Setter Property="TextColor"
                                         Value="#FFA800"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                         Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                             </DataTrigger>
@@ -461,14 +465,14 @@
                            VerticalOptions="Center">
                         <Image.Triggers>
                             <DataTrigger TargetType="Image"
-                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                            Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
                                 <Setter Property="Source"
                                         Value="ic_question__error"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
-                                            Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                            Value="True">
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
                                 <Setter Property="Source"
                                         Value="ic_question__warning"/>
                             </DataTrigger>

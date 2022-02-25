@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -24,7 +25,9 @@ namespace atomex.ViewModel.ConversionViewModels
 {
     public enum SelectCurrencyType
     {
+        [Description("From")]
         From,
+        [Description("To")]
         To
     }
 

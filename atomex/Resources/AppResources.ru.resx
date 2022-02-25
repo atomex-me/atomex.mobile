@@ -697,6 +697,9 @@
     <data name="ChangeRedeemAddress" xml:space="preserve">
         <value>Изменить адрес выкупа</value>
     </data>
+    <data name="ShowAll" xml:space="preserve">
+        <value>Показать все</value>
+    </data>
 
     <!-- Tezos tokens list, token info Pages -->
     <data name="TezosTokensListPageTitle" xml:space="preserve">

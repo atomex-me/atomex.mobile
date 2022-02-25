@@ -1,18 +1,27 @@
-﻿namespace atomex.Models
+﻿using System.ComponentModel;
+
+namespace atomex.Models
 {
     public enum MessageType
     {
+        [Description("Warning")]
         Warning,
+        [Description("Error")]
         Error,
+        [Description("Regular")]
         Regular
     }
 
     public enum RelatedTo
     {
+        [Description("Amount")]
         Amount,
+        [Description("Fee")]
         Fee,
+        [Description("Address")]
         Address,
-        Core
+        [Description("All")]
+        All
     }
 
     public class Message

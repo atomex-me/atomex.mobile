@@ -8,11 +8,6 @@
     xmlns:custom="clr-namespace:atomex.CustomElements"
     x:Name="BindingContextPage"
     Title="{helpers:Translate CreateSwapPageTitle}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"
@@ -22,14 +17,14 @@
                    Margin="0,20">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
-                                 Binding="{Binding Type, Mode=OneWay, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='From'}"
-                                 Value="True">
+                                 Binding="{Binding Type}"
+                                 Value="From">
                         <Setter Property="Text"
                                 Value="{helpers:Translate SendFrom}"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Label"
-                                 Binding="{Binding Type, Mode=OneWay, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='From'}"
-                                 Value="False">
+                                 Binding="{Binding Type}"
+                                 Value="To">
                         <Setter Property="Text"
                                 Value="{helpers:Translate ReceiveTo}"/>
                     </DataTrigger>

@@ -28,6 +28,7 @@ using Atomex.Blockchain.BitcoinBased;
 using Atomex.Wallet.BitcoinBased;
 using Atomex.ViewModels;
 using atomex.Models;
+using atomex.Views.Send;
 
 namespace atomex.ViewModel
 {
@@ -445,7 +446,7 @@ namespace atomex.ViewModel
             var feeCurrency = FromCurrencies
                 !.First(c => c.Currency.Name == feeCurrencyName)
                 .Currency;
-
+            
             var selectAddressViewModel = new SelectAddressViewModel(
                 account: _app.Account,
                 currency: feeCurrency,
@@ -453,15 +454,14 @@ namespace atomex.ViewModel
                 mode: SelectAddressMode.ChangeRedeemAddress,
                 selectedAddress: RedeemFromAddress)
             {
-                //BackAction = () => { App.DialogService.Show(this); },
-                //ConfirmAction = walletAddressViewModel =>
-                //{
-                //    RedeemFromAddress = walletAddressViewModel.Address;
-                //    App.DialogService.Close();
-                //}
+                ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                {
+                    RedeemFromAddress = walletAddressViewModel.Address;
+                    Navigation.PopAsync();
+                }
             };
 
-            //App.DialogService.Show(selectAddressViewModel);
+            await Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
         });
 
         private async Task<SelectCurrencyViewModelItem> CreateFromCurrencyViewModelItemAsync(
@@ -846,34 +846,32 @@ namespace atomex.ViewModel
             }
         }
 
-        //private ICommand _totalFeeCommand;
-        //public ICommand TotalFeeCommand => _totalFeeCommand ??= new Command(async () => await OnTotalFeeTapped());
-        
-        //private async Task OnTotalFeeTapped()
-        //{
-        //    string message = string.Format(
-        //           CultureInfo.InvariantCulture,
-        //           AppResources.TotalNetworkFeeDetail,
-        //           AppResources.PaymentFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedPaymentFee} {FromCurrencyViewModel.FeeCurrencyCode}"),
-        //           FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
-        //           HasRewardForRedeem ?
-        //               AppResources.RewardForRedeemLabel :
-        //               AppResources.RedeemFeeLabel,
-        //           HasRewardForRedeem ?
-        //               FormattableString.Invariant($"{RewardForRedeem} {ToCurrencyViewModel.FeeCurrencyCode}") :
-        //               FormattableString.Invariant($"{EstimatedRedeemFee} {ToCurrencyViewModel.FeeCurrencyCode}"),
-        //           HasRewardForRedeem ?
-        //               FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}") :
-        //               FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
-        //           AppResources.MakerFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromCurrencyViewModel.CurrencyCode}"),
-        //           FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
-        //           AppResources.TotalNetworkFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
+        private ICommand _estNetworkFeeFeeCommand;
+        public ICommand EstNetworkFeeFeeCommand => _estNetworkFeeFeeCommand ??= new Command(async () =>
+        {
+            string message = string.Format(
+                CultureInfo.InvariantCulture,
+                AppResources.TotalNetworkFeeDetail,
+                AppResources.PaymentFeeLabel,
+                FormattableString.Invariant($"{EstimatedPaymentFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
+                HasRewardForRedeem
+                    ? AppResources.RewardForRedeemLabel
+                    : AppResources.RedeemFeeLabel,
+                HasRewardForRedeem
+                    ? FormattableString.Invariant($"{RewardForRedeem} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}")
+                    : FormattableString.Invariant($"{EstimatedRedeemFee} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                HasRewardForRedeem
+                    ? FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}")
+                    : FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
+                AppResources.MakerFeeLabel,
+                FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                AppResources.TotalNetworkFeeLabel,
+                FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
 
-        //    await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
-        //}
+            await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
+        });
 
         private ICommand _showAllSwapsCommand;
         public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(ShowAllSwaps);

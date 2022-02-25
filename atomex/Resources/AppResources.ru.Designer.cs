@@ -1319,6 +1319,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ShowAll {
+            get {
+                return ResourceManager.GetString("ShowAll", resourceCulture);
+            }
+        }
+        
         internal static string TezosTokensListPageTitle {
             get {
                 return ResourceManager.GetString("TezosTokensListPageTitle", resourceCulture);

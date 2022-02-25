@@ -15,7 +15,6 @@
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
-            <converters:StringEnumEqualsConverter x:Key="StringEnumEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -49,19 +48,19 @@
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ChangeRedeemAddress">
                         <Setter Property="Text"
-                                Value="Change redeem address"/>
+                                Value="{helpers:Translate ChangeRedeemAddress}"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="EnterExternalAddress">
                         <Setter Property="Text"
-                                Value="Enter an external address"/>
+                                Value="{helpers:Translate EnterAnExternalAddress}"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ChooseMyAddress">
                         <Setter Property="Text"
-                                Value="Choose my address"/>
+                                Value="{helpers:Translate ChooseAnAddress}"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -260,18 +259,20 @@
                                      IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </Frame>
-                <StackLayout Margin="16,0">
-                    <StackLayout.IsVisible>
-                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                            <Binding Path="Message.RelatedTo"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource StringEnumEqualsConverter}"
-                                     ConverterParameter="Address"/>
-                            <Binding Path="Message.Text"
-                                     Mode="OneWay"
-                                     Converter="{StaticResource StringToBool}"/>
-                        </MultiBinding>                   
-                    </StackLayout.IsVisible>
+                <StackLayout Margin="16,0"
+                             IsVisible="False">
+                    <StackLayout.Triggers>
+                        <MultiTrigger TargetType="StackLayout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                                  Value="Address"/>
+                                <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                                  Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </MultiTrigger>
+                    </StackLayout.Triggers>
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <Label Text="{Binding Message.Text}"
@@ -283,14 +284,14 @@
                                VerticalOptions="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                             Value="True">
+                                             Binding="{Binding Message.Type}"
+                                             Value="Warning">
                                     <Setter Property="TextColor"
                                             Value="#FFA800"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                             Value="True">
+                                             Binding="{Binding Message.Type}"
+                                             Value="Error">
                                     <Setter Property="TextColor"
                                             Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                                 </DataTrigger>
@@ -304,14 +305,14 @@
                                VerticalOptions="Center">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
-                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Error'}"
-                                             Value="True">
+                                             Binding="{Binding Message.Type}"
+                                             Value="Error">
                                     <Setter Property="Source"
                                             Value="ic_question__error"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
-                                             Binding="{Binding Message.Type, Converter={StaticResource StringEnumEqualsConverter}, ConverterParameter='Warning'}"
-                                             Value="True">
+                                             Binding="{Binding Message.Type}"
+                                             Value="Warning">
                                     <Setter Property="Source"
                                             Value="ic_question__warning"/>
                                 </DataTrigger>
@@ -332,6 +333,12 @@
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ChooseMyAddress">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="ChangeRedeemAddress">
                         <Setter Property="IsVisible"
                                 Value="True"/>
                     </DataTrigger>
