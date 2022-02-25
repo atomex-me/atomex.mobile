@@ -18,24 +18,35 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
-                 HorizontalOptions="FillAndExpand">
+                 HorizontalOptions="FillAndExpand"
+                 Spacing="0">
         <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="0"
                               HorizontalOptions="FillAndExpand"
-                              HeightRequest="170"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
-            <StackLayout>
+            <controls:CustomFrame.HeightRequest>
+                <OnPlatform x:TypeArguments="x:Double">
+                    <OnPlatform.Platforms>
+                        <On Platform="iOS" Value="196" />
+                        <On Platform="Android" Value="171" />
+                    </OnPlatform.Platforms>
+                </OnPlatform>
+            </controls:CustomFrame.HeightRequest>
+            <StackLayout Spacing="0">
                 <Label Text="{helpers:Translate ReceiveTo}"
                        FontSize="16"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Start"
-                       Margin="10,10,20,10"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                       Margin="24"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                             BackgroundColor="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
                 <StackLayout Orientation="Horizontal"
+                             Margin="24"
                              Spacing="0">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowToAddressesCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ChooseMyAddressCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate MyAddresses}"
                            FontFamily="{DynamicResource RegularFont}"
@@ -44,18 +55,17 @@
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
-                           HorizontalOptions="FillAndExpand"
-                           Margin="10,20"/>
+                           HorizontalOptions="FillAndExpand"/>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"
-                           Margin="10,20"/>
+                           HorizontalOptions="End"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
-                             Spacing="0">
+                             Spacing="0"
+                             Margin="24">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ExternalAddressCommand}"/>
+                        <TapGestureRecognizer Command="{Binding EnterExternalAddressCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate ExternalAddress}"
                            FontFamily="{DynamicResource RegularFont}"
@@ -64,13 +74,11 @@
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
-                           HorizontalOptions="FillAndExpand"
-                           Margin="10,20"/>
+                           HorizontalOptions="FillAndExpand"/>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"
-                           Margin="10,20"/>
+                           HorizontalOptions="End"/>
                 </StackLayout>
             </StackLayout>
         </controls:CustomFrame>

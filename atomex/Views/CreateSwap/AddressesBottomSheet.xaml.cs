@@ -1,19 +1,14 @@
-﻿using atomex.ViewModel;
+﻿using atomex.ViewModel.ConversionViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.CreateSwap
 {
     public partial class AddressesBottomSheet : PopupPage
     {
-        public AddressesBottomSheet()
+        public AddressesBottomSheet(SelectCurrencyViewModel selectCurrencyViewModel)
         {
             InitializeComponent();
-        }
-
-        public AddressesBottomSheet(ConversionViewModel conversionViewModel)
-        {
-            InitializeComponent();
-            BindingContext = conversionViewModel;
+            BindingContext = selectCurrencyViewModel;
         }
     }
 }

@@ -42,7 +42,11 @@ namespace atomex.ViewModel.SendViewModels
         [Description("ReceiveTo")]
         ReceiveTo,
         [Description("ChangeRedeemAddress")]
-        ChangeRedeemAddress
+        ChangeRedeemAddress,
+        [Description("EnterExternalAddress")]
+        EnterExternalAddress,
+        [Description("ChooseMyAddress")]
+        ChooseMyAddress
     }
 
     public class SelectAddressViewModel : BaseViewModel
@@ -86,19 +90,25 @@ namespace atomex.ViewModel.SendViewModels
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             Message = new Message();
 
+
+            SelectAddressMode = mode;
+            IsMyAddressesTab = false;
+            SelectAddressFrom = SelectAddressFrom.Init;
+
             this.WhenAnyValue(
                 vm => vm.IsMyAddressesTab,
                 vm => vm.SelectAddressMode)
                 .Subscribe(value =>
                 {
-                    ToolbarIcon = SelectAddressMode == SelectAddressMode.SendFrom ||
-                        SelectAddressMode == SelectAddressMode.ReceiveTo && IsMyAddressesTab
-                            ? "ic_search"
-                            : "ic_qr";
-                    ToolbarCommand = SelectAddressMode == SelectAddressMode.SendFrom ||
-                        SelectAddressMode == SelectAddressMode.ReceiveTo && IsMyAddressesTab
-                            ? SearchCommand
-                            : ScanCommand;
+                    ToolbarIcon = SelectAddressMode == SelectAddressMode.ReceiveTo && !IsMyAddressesTab ||
+                        SelectAddressMode == SelectAddressMode.EnterExternalAddress
+                            ? "ic_qr"
+                            : "ic_search";
+
+                    ToolbarCommand = SelectAddressMode == SelectAddressMode.ReceiveTo && !IsMyAddressesTab ||
+                        SelectAddressMode == SelectAddressMode.EnterExternalAddress
+                            ? ScanCommand
+                            : SearchCommand;
                 });
 
             this.WhenAnyValue(
@@ -184,10 +194,6 @@ namespace atomex.ViewModel.SendViewModels
                     Message.Text = string.Empty;
                     this.RaisePropertyChanged(nameof(Message));
                 });
-
-            SelectAddressMode = mode;
-            IsMyAddressesTab = false;
-            SelectAddressFrom = SelectAddressFrom.Init;
 
             var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(
@@ -308,6 +314,12 @@ namespace atomex.ViewModel.SendViewModels
         {
             ValidateAddress(ToAddress);
         });
+
+        public void SetAddressMode(SelectAddressMode selectAddressMode)
+        {
+            SelectAddressMode = selectAddressMode;
+            this.RaisePropertyChanged(nameof(SelectAddressMode));
+        }
 
         protected async void OnCopyClicked(string value)
         {

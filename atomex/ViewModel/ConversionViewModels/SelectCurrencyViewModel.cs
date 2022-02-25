@@ -7,6 +7,7 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.ViewModel.SendViewModels;
+using atomex.Views.CreateSwap;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
@@ -16,6 +17,7 @@ using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.ConversionViewModels
@@ -169,6 +171,7 @@ namespace atomex.ViewModel.ConversionViewModels
         [Reactive] public ObservableCollection<SelectCurrencyViewModelItem> Currencies { get; set; }
         [Reactive] public SelectCurrencyViewModelItem SelectedCurrency { get; set; }
         [Reactive] public SelectCurrencyType Type { get; set; }
+        private SelectAddressViewModel _selectAddressViewModel;
 
         private ICommand _changeAddressesCommand;
         public ICommand ChangeAddressesCommand => _changeAddressesCommand ??= ReactiveCommand.Create<SelectCurrencyViewModelItem>(async i =>
@@ -217,7 +220,7 @@ namespace atomex.ViewModel.ConversionViewModels
             }
             else if (i is SelectCurrencyWithAddressViewModelItem itemWithAddress)
             {
-                var selectAddressViewModel = new SelectAddressViewModel(
+                _selectAddressViewModel = new SelectAddressViewModel(
                     account: _account,
                     currency: currency,
                     navigation: _navigation,
@@ -244,8 +247,26 @@ namespace atomex.ViewModel.ConversionViewModels
                     }
                 };
 
-                await _navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                _ = Type == SelectCurrencyType.From
+                    ? _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel))
+                    : PopupNavigation.Instance.PushAsync(new AddressesBottomSheet(this));
             }
+        });
+
+        private ICommand _enterExternalAddressCommand;
+        public ICommand EnterExternalAddressCommand => _enterExternalAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        {
+            _selectAddressViewModel?.SetAddressMode(SelectAddressMode.EnterExternalAddress);
+            _ = PopupNavigation.Instance.PopAsync();
+            await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
+        });
+
+        private ICommand _chooseMyAddressCommand;
+        public ICommand ChooseMyAddressCommand => _chooseMyAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        {
+            _selectAddressViewModel?.SetAddressMode(SelectAddressMode.ChooseMyAddress);
+            _ = PopupNavigation.Instance.PopAsync();
+            await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
         });
 
         private readonly IAccount _account;

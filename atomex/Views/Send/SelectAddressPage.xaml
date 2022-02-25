@@ -27,10 +27,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Style="{DynamicResource CreateSwapTitleStyle}"
+            <Label FontFamily="{DynamicResource RegularFont}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    HorizontalTextAlignment="Start"
                    FontSize="30"
-                   Margin="0,20">
+                   Margin="16,32,16,0">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding SelectAddressMode}"
@@ -49,6 +50,18 @@
                                  Value="ChangeRedeemAddress">
                         <Setter Property="Text"
                                 Value="Change redeem address"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="EnterExternalAddress">
+                        <Setter Property="Text"
+                                Value="Enter an external address"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="ChooseMyAddress">
+                        <Setter Property="Text"
+                                Value="Choose my address"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -181,6 +194,12 @@
                         <Setter Property="IsVisible"
                                 Value="True"/>
                     </MultiTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="EnterExternalAddress">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
                 </StackLayout.Triggers>
                 <Frame Padding="0"
                        HeightRequest="56"
@@ -304,14 +323,18 @@
             <StackLayout Spacing="5"
                          IsVisible="False">
                 <StackLayout.Triggers>
-                    <MultiTrigger TargetType="StackLayout">
-                        <MultiTrigger.Conditions>
-                            <BindingCondition Binding="{Binding SelectAddressMode}"
-                                              Value="SendFrom"/>
-                        </MultiTrigger.Conditions>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="SendFrom">
                         <Setter Property="IsVisible"
                                 Value="True"/>
-                    </MultiTrigger>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding SelectAddressMode}"
+                                 Value="ChooseMyAddress">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding SelectAddressMode}"
@@ -486,7 +509,7 @@
                         <Binding Path="IsMyAddressesTab"
                                  Mode="OneWay"
                                  Converter="{StaticResource InverseBool}"/>
-                    </MultiBinding>                   
+                    </MultiBinding>
                 </StackLayout.IsVisible>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ConfirmButton}"

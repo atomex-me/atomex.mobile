@@ -21,8 +21,6 @@ using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
 using System.Reactive.Linq;
-using Rg.Plugins.Popup.Services;
-using ZXing;
 using atomex.ViewModel.ConversionViewModels;
 using atomex.ViewModel.SendViewModels;
 using atomex.Common;
@@ -876,24 +874,6 @@ namespace atomex.ViewModel
 
         //    await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
         //}
-
-
-        private ICommand _editToAddressCommand;
-        public ICommand EditToAddressCommand => _editToAddressCommand ??= new Command(async () => await EditToAddresses());
-
-        private async Task EditToAddresses()
-        {
-            await PopupNavigation.Instance.PushAsync(new AddressesBottomSheet(this));
-        }
-
-        private ICommand _externalAddressCommand;
-        public ICommand ExternalAddressCommand => _externalAddressCommand ??= new Command(async () => await EnterExternalAddress());
-
-        private async Task EnterExternalAddress()
-        {
-            await PopupNavigation.Instance.PopAsync();
-            await Navigation.PushAsync(new ExternalAddressPage(this));
-        }
 
         private ICommand _showAllSwapsCommand;
         public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(ShowAllSwaps);

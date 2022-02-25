@@ -126,7 +126,7 @@
                                        WidthRequest="24"
                                        HeightRequest="24"
                                        Margin="10,0,20,0"
-                                       VerticalOptions="CenterAndExpand"
+                                       VerticalOptions="FillAndExpand"
                                        Source="ic_edit">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.ChangeAddressesCommand, Source={x:Reference BindingContextPage}}"
