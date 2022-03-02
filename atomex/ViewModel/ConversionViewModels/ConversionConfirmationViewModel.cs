@@ -15,6 +15,8 @@ using ReactiveUI;
 using Serilog;
 using Xamarin.Forms;
 using atomex.Common;
+using Rg.Plugins.Popup.Services;
+using atomex.Views.Popup;
 
 namespace atomex.ViewModel
 {
@@ -23,16 +25,7 @@ namespace atomex.ViewModel
         private static readonly TimeSpan SwapTimeout = TimeSpan.FromSeconds(60);
         private static readonly TimeSpan SwapCheckInterval = TimeSpan.FromSeconds(3);
         public event EventHandler OnSuccess;
-
-        private IAtomexApp AtomexApp { get; }
-        private INavigation Navigation { get; }
-        public IFromSource From { get; }
-
-        public ConversionConfirmationViewModel(IAtomexApp app, INavigation navigation)
-        {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
-        }
+        public event EventHandler OnError;
 
         private readonly IAtomexApp _app;
         public IFromSource FromSource { get; set; }
@@ -79,12 +72,6 @@ namespace atomex.ViewModel
         public decimal EstimatedMakerNetworkFee { get; set; }
         public decimal EstimatedTotalNetworkFeeInBase { get; set; }
 
-        private ICommand _backCommand;
-        public ICommand BackCommand => _backCommand ??= ReactiveCommand.Create(() =>
-        {
-            //App.DialogService.Close();
-        });
-
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
 
@@ -97,41 +84,60 @@ namespace atomex.ViewModel
         {
             try
             {
-                //App.DialogService.Show(
-                //    MessageViewModel.Message(title: "Sending, please wait", withProgressBar: true));
-
                 var error = await ConvertAsync();
 
                 if (error != null)
                 {
                     if (error.Code == Errors.PriceHasChanged)
                     {
-                        //App.DialogService.Show(MessageViewModel.Message(
-                        //    title: Resources.SvFailed,
-                        //    text: error.Description,
-                        //    backAction: () => App.DialogService.Show(this)));
+                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                            new PopupViewModel
+                            {
+                                Type = PopupType.Error,
+                                Title = AppResources.Error,
+                                Body = AppResources.PriceChangedError,
+                                ButtonText = AppResources.AcceptButton
+                            }));
                     }
                     else
                     {
-                        //App.DialogService.Show(MessageViewModel.Error(
-                            //text: error.Description,
-                            //backAction: () => App.DialogService.Show(this)));
+                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                            new PopupViewModel
+                            {
+                                Type = PopupType.Error,
+                                Title = AppResources.Error,
+                                Body = error.Description,
+                                ButtonText = AppResources.AcceptButton
+                            }));
                     }
 
+                    OnError?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
-                //App.DialogService.Show(MessageViewModel.Success(
-                //    text: Resources.SvOrderMatched,
-                //    nextAction: () => App.DialogService.Close()));
+                OnSuccess?.Invoke(this, new ErrorEventArgs(new Error(Errors.RequestError, string.Empty)));
 
-                OnSuccess?.Invoke(this, EventArgs.Empty);
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
+                    {
+                        Type = PopupType.Success,
+                        Title = AppResources.Success,
+                        Body = AppResources.OrderMatched,
+                        ButtonText = AppResources.AcceptButton
+                    }));
             }
             catch (Exception e)
             {
-                //App.DialogService.Show(MessageViewModel.Error(
-                //    text: "An error has occurred while sending swap.",
-                //    backAction: () => App.DialogService.Show(this)));
+                OnError?.Invoke(this, EventArgs.Empty);
+
+                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
+                    new PopupViewModel
+                    {
+                        Type = PopupType.Error,
+                        Title = AppResources.Error,
+                        Body = "An error has occurred while sending swap",
+                        ButtonText = AppResources.AcceptButton
+                    }));
 
                 Log.Error(e, "Swap error.");
             }
@@ -294,34 +300,5 @@ namespace atomex.ViewModel
 
             return string.Join(". ", descriptions) + ". Please update your balance and try again!";
         }
-
-        //private ICommand _totalFeeCommand;
-        //public ICommand TotalFeeCommand => _totalFeeCommand ??= new Command(async () => await OnTotalFeeTapped());
-
-        //private async Task OnTotalFeeTapped()
-        //{
-        //    string message = string.Format(
-        //           CultureInfo.InvariantCulture,
-        //           AppResources.TotalNetworkFeeDetail,
-        //           AppResources.PaymentFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedPaymentFee} {FromCurrencyViewModel.FeeCurrencyCode}"),
-        //           FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
-        //           HasRewardForRedeem ?
-        //               AppResources.RewardForRedeemLabel :
-        //               AppResources.RedeemFeeLabel,
-        //           HasRewardForRedeem ?
-        //               FormattableString.Invariant($"{RewardForRedeem} {ToCurrencyViewModel.FeeCurrencyCode}") :
-        //               FormattableString.Invariant($"{EstimatedRedeemFee} {ToCurrencyViewModel.FeeCurrencyCode}"),
-        //           HasRewardForRedeem ?
-        //               FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}") :
-        //               FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
-        //           AppResources.MakerFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromCurrencyViewModel.CurrencyCode}"),
-        //           FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
-        //           AppResources.TotalNetworkFeeLabel,
-        //           FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
-
-        //    await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
-        //}
     }
 }

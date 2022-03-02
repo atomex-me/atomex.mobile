@@ -1094,4 +1094,8 @@
     <data name="SendRecommendedAmountMenu" xml:space="preserve">
         <value>Send recommended amount {0} {1}</value>
     </data>
+    <data name="OrderMatched" xml:space="preserve">
+        <value>Swap successfully created.
+NOTE: Do not sign out or close the application until the swap is completed, otherwise it may result in a loss of funds.</value>
+    </data>
 </root>

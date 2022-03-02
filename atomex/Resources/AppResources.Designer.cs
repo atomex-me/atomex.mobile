@@ -2068,5 +2068,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("SendRecommendedAmountMenu", resourceCulture);
             }
         }
+        
+        internal static string OrderMatched {
+            get {
+                return ResourceManager.GetString("OrderMatched", resourceCulture);
+            }
+        }
     }
 }

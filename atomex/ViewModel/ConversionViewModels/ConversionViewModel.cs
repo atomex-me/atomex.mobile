@@ -90,6 +90,7 @@ namespace atomex.ViewModel
         [Reactive] public string QuoteCurrencyCode { get; set; }
         [Reactive] public string PriceFormat { get; set; }
         [Reactive] public bool IsAmountValid { get; set; }
+        [Reactive] public bool IsLoading { get; set; }
 
         public AmountType _amountType;
 
@@ -910,13 +911,6 @@ namespace atomex.ViewModel
 
                         Navigation.PushAsync(new SwapInfoPage(swapViewModel));
 
-                        int pageNumber = Navigation.NavigationStack.Count;
-
-                        for (int i = pageNumber - 2; i > 0; i--)
-                        {
-                            Navigation.RemovePage(Navigation.NavigationStack[i]);
-                        }
-
                         Swaps.Add(swapViewModel);
 
                         var groups = !IsAllSwapsShowed
@@ -1124,15 +1118,24 @@ namespace atomex.ViewModel
             };
 
             viewModel.OnSuccess += OnSuccessConvertion;
+            viewModel.OnError += OnErrorConvertion;
 
             //App.DialogService.Show(viewModel);
         }
 
-        private void OnSuccessConvertion(object? sender, EventArgs e)
+        private void OnSuccessConvertion(object sender, EventArgs e)
         {
             // todo: check!!
+            IsLoading = false;
+            this.RaisePropertyChanged(nameof(IsLoading));
             FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
             _ = EstimateSwapParamsAsync();
+        }
+
+        private void OnErrorConvertion(object sender, EventArgs e)
+        {
+            IsLoading = false;
+            this.RaisePropertyChanged(nameof(IsLoading));
         }
     }
 }
