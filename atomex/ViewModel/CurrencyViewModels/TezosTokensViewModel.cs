@@ -9,6 +9,7 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
+using atomex.Views.Send;
 using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Common;
@@ -448,10 +449,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 navigation: Navigation,
                 tokenType: TokenContract.Contract.GetContractType(),
                 from: null,
-                tokenContract: TokenContract,
+                tokenContract: TokenContract?.Contract?.Address,
                 tokenId: 0);
 
-            await Navigation.PushAsync(new SendTokenPage(sendViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(sendViewModel.SelectFromViewModel));
         }
 
         private async Task OnSendButtonClicked(object obj)
@@ -466,10 +467,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 navigation: Navigation,
                 tokenType: TokenContract.Contract.GetContractType(),
                 from: token.Address,
-                tokenContract: TokenContract,
+                tokenContract: TokenContract?.Contract?.Address,
                 tokenId: token.TokenBalance.TokenId);
 
-            await Navigation.PushAsync(new SendTokenPage(sendViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(sendViewModel.SelectFromViewModel));
         }
 
         private async Task OnReceiveButtonClicked()

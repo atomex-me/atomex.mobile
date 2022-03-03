@@ -51,7 +51,7 @@
                     </Frame.GestureRecognizers>
                 </Frame>
                 <Image Grid.RowSpan="2"
-                       Source="{Binding CurrencyViewModel.CurrencyCode}"
+                       Source="{Binding CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -84,7 +84,7 @@
                         <FormattedString>
                             <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                            <Span Text="{Binding CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                     <Label.GestureRecognizers>
@@ -116,7 +116,7 @@
                 </Frame>
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
-                       Source="{Binding CurrencyViewModel.CurrencyCode}"
+                       Source="{Binding CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -605,7 +605,7 @@
                         <Span Text=": "/>
                         <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
                         <Span Text=" "/>
-                        <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"/>
+                        <Span Text="{Binding FeeCurrencyCode}"/>
                         <Span Text=" "/>
                         <Span Text="{Binding FeeInBase, StringFormat='(${0:0.00})'}"/>
                     </FormattedString>

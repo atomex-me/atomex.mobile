@@ -12,6 +12,12 @@ namespace atomex.Views.Send
             BindingContext = sendViewModel;
         }
 
+        public SendPage(TezosTokensSendViewModel sendViewModel)
+        {
+            InitializeComponent();
+            BindingContext = sendViewModel;
+        }
+
         private void AmountEntryFocus(object sender, EventArgs args)
         {
             AmountEntry.Focus();

@@ -1811,6 +1811,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string InvalidTokenContract {
+            get {
+                return ResourceManager.GetString("InvalidTokenContract", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidFromAddress {
+            get {
+                return ResourceManager.GetString("InvalidFromAddress", resourceCulture);
+            }
+        }
+        
+        internal static string InsufficientChainFundsWithDetails {
+            get {
+                return ResourceManager.GetString("InsufficientChainFundsWithDetails", resourceCulture);
+            }
+        }
+        
         internal static string CommissionLessThanZeroError {
             get {
                 return ResourceManager.GetString("CommissionLessThanZeroError", resourceCulture);

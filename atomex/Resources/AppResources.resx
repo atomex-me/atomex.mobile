@@ -962,6 +962,15 @@
     <data name="InvalidAddressError" xml:space="preserve">
         <value>Address is invalid</value>
     </data>
+    <data name="InvalidTokenContract" xml:space="preserve">
+        <value>Invalid token contract address</value>
+    </data>
+    <data name="InvalidFromAddress" xml:space="preserve">
+        <value>Invalid 'From' address</value>
+    </data>
+    <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
+        <value>Insufficient {0} to cover token transfer fee. Minimum {1} is required</value>
+    </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
         <value>Commission must be a positive value</value>
     </data>

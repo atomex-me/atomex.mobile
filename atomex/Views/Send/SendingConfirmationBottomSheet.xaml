@@ -52,7 +52,7 @@
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
                 <Image Grid.RowSpan="2"
-                       Source="{Binding CurrencyViewModel.CurrencyCode}"
+                       Source="{Binding CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -78,7 +78,7 @@
                         <FormattedString>
                             <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                            <Span Text="{Binding CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -92,7 +92,7 @@
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
-                       Source="{Binding CurrencyViewModel.CurrencyCode}"
+                       Source="{Binding CurrencyCode}"
                        WidthRequest="22"
                        HeightRequest="22"
                        VerticalOptions="Center"
@@ -155,7 +155,7 @@
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"
+                                <Span Text="{Binding CurrencyCode}"
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" / "
@@ -186,7 +186,7 @@
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.FeeCurrencyCode}"
+                                <Span Text="{Binding FeeCurrencyCode}"
                                       FontSize="14"
                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Span Text=" / "
@@ -299,7 +299,7 @@
                             <FormattedString>
                                 <Span Text="{Binding TotalAmountString}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                                <Span Text="{Binding CurrencyCode}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -308,12 +308,12 @@
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="End"
-                           IsVisible="{Binding CurrencyViewModel.Currency.IsToken}">
+                           IsVisible="{Binding IsToken}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding Fee, StringFormat='+ {0:0.#########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyViewModel.Currency.FeeCurrencyName}"/>
+                                <Span Text="{Binding FeeCurrencyCode}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

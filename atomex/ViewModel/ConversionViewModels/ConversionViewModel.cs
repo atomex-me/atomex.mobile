@@ -365,9 +365,10 @@ namespace atomex.ViewModel
                 .Select(t => t == MessageType.Error)
                 .ToPropertyExInMainThread(this, vm => vm.IsError);
 
-            SubscribeToServices();
+            this.WhenAnyValue(vm => vm.IsAllSwapsShowed)
+                .Subscribe(_ => GetSwaps());
 
-            GetSwaps();
+            SubscribeToServices();
         }
 
         public async void MaxClicked()
@@ -875,12 +876,7 @@ namespace atomex.ViewModel
         });
 
         private ICommand _showAllSwapsCommand;
-        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(ShowAllSwaps);
-
-        private void ShowAllSwaps()
-        {
-            IsAllSwapsShowed = true;
-        }
+        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(() => IsAllSwapsShowed = true);
 
         private ICommand _selectSwapCommand;
         public ICommand SelectSwapCommand => _selectSwapCommand ??= new Command<SwapViewModel>(async (value) => await OnSwapTapped(value));

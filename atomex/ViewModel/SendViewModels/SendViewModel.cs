@@ -114,6 +114,7 @@ namespace atomex.ViewModel.SendViewModels
         public string CurrencyCode => CurrencyViewModel.CurrencyCode;
         public string FeeCurrencyCode => CurrencyViewModel.FeeCurrencyCode;
         public string BaseCurrencyCode => CurrencyViewModel.BaseCurrencyCode;
+        public bool IsToken => CurrencyViewModel.Currency.IsToken;
 
         public string AmountEntryPlaceholderString => $"{AppResources.EnterAmountLabel}, {CurrencyCode}";
         public string FeeEntryPlaceholderString => $"{AppResources.FeeLabel}, {FeeCurrencyCode}";

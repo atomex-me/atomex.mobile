@@ -11,6 +11,12 @@ namespace atomex.Views.Send
             BindingContext = sendViewModel;
         }
 
+        public SendingConfirmationBottomSheet(TezosTokensSendViewModel sendViewModel)
+        {
+            InitializeComponent();
+            BindingContext = sendViewModel;
+        }
+
         protected override void OnDisappearing()
         {
             var vm = (SendViewModel)BindingContext;
