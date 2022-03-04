@@ -19,11 +19,18 @@ namespace atomex.Views.Send
 
         protected override void OnDisappearing()
         {
-            var vm = (SendViewModel)BindingContext;
-            if (vm.CloseConfirmationCommand.CanExecute(null))
-                vm.CloseConfirmationCommand.Execute(null);
+            if (BindingContext is SendViewModel)
+            {
+                var sendViewModel = (SendViewModel)BindingContext;
+                if (sendViewModel.CloseConfirmationCommand.CanExecute(null))
+                    sendViewModel.CloseConfirmationCommand.Execute(null);
 
-            base.OnDisappearing();
+                return;
+            }
+
+            var tezosTokenSendViewModel = (TezosTokensSendViewModel)BindingContext;
+            if (tezosTokenSendViewModel.CloseConfirmationCommand.CanExecute(null))
+                tezosTokenSendViewModel.CloseConfirmationCommand.Execute(null);
         }
     }
 }

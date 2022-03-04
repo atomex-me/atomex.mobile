@@ -12,6 +12,8 @@
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:NullToBooleanInvertConverter x:Key="NullToBoolInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -52,14 +54,32 @@
                 </Frame>
                 <Image Grid.RowSpan="2"
                        Source="{Binding CurrencyCode}"
-                       WidthRequest="22"
-                       HeightRequest="22"
-                       VerticalOptions="Center"
-                       Margin="20,0,10,0">
+                       Margin="10,0"
+                       WidthRequest="28"
+                       HeightRequest="28"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                     </Image.GestureRecognizers>
                 </Image>
+                <Frame Grid.RowSpan="2"
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding TokenPreview}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
                 <Label Grid.Column="1"
                        Text="{Binding From}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -117,14 +137,33 @@
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
                        Source="{Binding CurrencyCode}"
-                       WidthRequest="22"
-                       HeightRequest="22"
-                       VerticalOptions="Center"
-                       Margin="20,0,10,0">
+                       Margin="10,0"
+                       WidthRequest="28"
+                       HeightRequest="28"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
                     </Image.GestureRecognizers>
                 </Image>
+                <Frame Grid.Row="2"
+                       Grid.RowSpan="2"
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding TokenPreview}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
                 <Label Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="1"

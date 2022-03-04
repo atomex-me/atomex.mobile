@@ -322,7 +322,6 @@ namespace atomex.ViewModel.SendViewModels
                 App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-
         private ICommand _closeConfirmationCommand;
         public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
         {

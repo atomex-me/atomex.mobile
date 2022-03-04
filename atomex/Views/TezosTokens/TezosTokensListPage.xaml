@@ -4,20 +4,23 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
              x:Name="BindingContextPage"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              Title="{helpers:Translate TezosTokensListPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource AdditionalBackgroundStyle}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding TokensContracts}"
-                  SelectionMode="None"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding TokenContract}"
+                  ItemSelected="ItemSelected"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
                   IsPullToRefreshEnabled="True"
                   RefreshCommand="{Binding UpdateTokensCommand}"
                   IsRefreshing="{Binding IsLoading}"
-                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand">
+                  BackgroundColor="Transparent"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}">
             <ListView.Header>
                 <Grid ColumnSpacing="0"
                       RowSpacing="0">
@@ -32,8 +35,7 @@
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                              Tapped="OnItemTapped"/>
+                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"/>
                     </Grid.GestureRecognizers>
                     <Image Grid.RowSpan="2"
                            WidthRequest="40"
@@ -91,7 +93,7 @@
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid ColumnSpacing="0"
                               RowSpacing="0">
                             <Grid.RowDefinitions>
@@ -102,11 +104,6 @@
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectTokenContractCommand, Source={x:Reference BindingContextPage}}"
-                                                      Tapped="OnItemTapped"
-                                                      CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
                             <Frame Grid.RowSpan="2"
                                    Padding="0"
                                    Margin="10,0"
@@ -136,7 +133,7 @@
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="Start"/>
                         </Grid>
-                    </ViewCell>
+                    </custom:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>

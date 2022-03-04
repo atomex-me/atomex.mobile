@@ -6,7 +6,15 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.Views.Send.SendingConfirmationBottomSheet">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:NullToBooleanInvertConverter x:Key="NullToBoolInvert"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
             PositionIn="Bottom"
@@ -51,12 +59,38 @@
                        CornerRadius="8"
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
-                <Image Grid.RowSpan="2"
-                       Source="{Binding CurrencyCode}"
-                       WidthRequest="22"
-                       HeightRequest="22"
-                       VerticalOptions="Center"
-                       Margin="20,0,10,0"/>
+                <Frame Grid.RowSpan="2"
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding CurrencyCode}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
+                <Frame Grid.RowSpan="2"
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding TokenPreview}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
                 <Label Grid.Column="1"
                        Text="{Binding From}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -90,13 +124,40 @@
                        CornerRadius="8"
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
-                <Image Grid.Row="2"
+                <Frame Grid.Row="2"
                        Grid.RowSpan="2"
-                       Source="{Binding CurrencyCode}"
-                       WidthRequest="22"
-                       HeightRequest="22"
-                       VerticalOptions="Center"
-                       Margin="20,0,10,0"/>
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding CurrencyCode}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
+                <Frame Grid.Row="2"
+                       Grid.RowSpan="2"
+                       Padding="0"
+                       CornerRadius="14"
+                       Margin="10,0"
+                       HasShadow="False"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       IsClippedToBounds="True"
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image Source="{Binding TokenPreview}"
+                           WidthRequest="28"
+                           HeightRequest="28"/>
+                </Frame>
                 <Label Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="1"
@@ -136,7 +197,7 @@
 
             </Grid>
             <StackLayout Padding="0,8,0,16"
-                         Spacing="2">
+                         Spacing="4">
                 <StackLayout Orientation="Horizontal"
                              Spacing="4">
                     <Label Text="{helpers:Translate AmountLabel}"
@@ -201,7 +262,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="4"
-                             IsVisible="{Binding IsBtcBased, FallbackValue='False'}">
+                             IsVisible="{Binding IsBtcBased, FallbackValue='False', TargetNullValue='False'}">
                     <Label Text="{helpers:Translate FeeRateLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Start"
@@ -227,7 +288,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="4"
-                             IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                             IsVisible="{Binding IsEthBased, FallbackValue='False', TargetNullValue='False'}">
                     <Label Text="{helpers:Translate GasPriceLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Start"
@@ -253,7 +314,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="4"
-                             IsVisible="{Binding IsEthBased, FallbackValue='False'}">
+                             IsVisible="{Binding IsEthBased, FallbackValue='False', TargetNullValue='False'}">
                     <Label Text="{helpers:Translate GasLimitLabel}"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Start"
@@ -276,6 +337,49 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4">
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding TokenId, TargetNullValue='0', FallbackValue='0'}"
+                                     Value="0">
+                            <Setter Property="IsVisible"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                    <Label Text="{helpers:Translate TokenId}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           Text="{Binding TokenId}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4"
+                             IsVisible="{Binding TokenContract, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
+                    <Label Text="{helpers:Translate TokenContract}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           Text="{Binding TokenContract}"
+                           WidthRequest="150"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center"
+                           LineBreakMode="MiddleTruncation"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="EndAndExpand"/>
                 </StackLayout>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>

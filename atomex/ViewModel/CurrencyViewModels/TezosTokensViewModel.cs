@@ -58,6 +58,8 @@ namespace atomex.ViewModel.CurrencyViewModels
             get => _tokenContract;
             set
             {
+                if (value == null) return;
+
                 _tokenContract = value;
                 OnPropertyChanged(nameof(TokenContract));
                 OnPropertyChanged(nameof(HasTokenContract));
@@ -68,6 +70,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 OnPropertyChanged(nameof(TokenContractIconUrl));
                 OnPropertyChanged(nameof(IsConvertable));
 
+                Navigation.PushAsync(new TokenPage(this));
                 TokenContractChanged(TokenContract);
             }
         }
@@ -323,9 +326,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _selectTransferCommand;
         public ICommand SelectTransferCommand => _selectTransferCommand ??= new Command<TezosTokenTransferViewModel>(async (value) => await OnTransferTapped(value));
 
-        private ICommand _selectTokenContractCommand;
-        public ICommand SelectTokenContractCommand => _selectTokenContractCommand ??= new Command<TezosTokenContractViewModel>((value) => OnTokenContractTapped(value));
-
         private ICommand _sendPageCommand;
         public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
 
@@ -432,22 +432,22 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PushAsync(new TransactionInfoPage(transfer));
         }
 
-        private async void OnTokenContractTapped(TezosTokenContractViewModel token)
-        {
-            if (token == null)
-                return;
-
-            TokenContract = token;
-
-            await Navigation.PushAsync(new TokenPage(this));
-        }
-
         private async Task OnSendButtonClicked()
         {
+            string tokenPreviewUrl = HasTokenContract ? TokenContractIconUrl : string.Empty;
+
+            var tokenPreview = new UriImageSource
+            {
+                Uri = new Uri(tokenPreviewUrl),
+                CachingEnabled = true,
+                CacheValidity = new TimeSpan(5, 0, 0, 0)
+            };
+
             var sendViewModel = new TezosTokensSendViewModel(
                 app: _app,
                 navigation: Navigation,
                 tokenType: TokenContract.Contract.GetContractType(),
+                tokenPreview: tokenPreview,
                 from: null,
                 tokenContract: TokenContract?.Contract?.Address,
                 tokenId: 0);
@@ -466,11 +466,12 @@ namespace atomex.ViewModel.CurrencyViewModels
                 app: _app,
                 navigation: Navigation,
                 tokenType: TokenContract.Contract.GetContractType(),
+                tokenPreview: token.TokenPreview,
                 from: token.Address,
                 tokenContract: TokenContract?.Contract?.Address,
                 tokenId: token.TokenBalance.TokenId);
 
-            await Navigation.PushAsync(new SelectAddressPage(sendViewModel.SelectFromViewModel));
+            await Navigation.PushAsync(new SelectAddressPage(sendViewModel.SelectToViewModel));
         }
 
         private async Task OnReceiveButtonClicked()

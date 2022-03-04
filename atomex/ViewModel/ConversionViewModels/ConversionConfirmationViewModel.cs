@@ -13,7 +13,6 @@ using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using Serilog;
-using Xamarin.Forms;
 using atomex.Common;
 using Rg.Plugins.Popup.Services;
 using atomex.Views.Popup;
