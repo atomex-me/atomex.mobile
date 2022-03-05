@@ -28,7 +28,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private const string Fa12 = "FA12";
 
         public INavigation Navigation { get; set; }
-
         public INavigationService NavigationService { get; set; }
 
         private IToastService ToastService { get; set; }
@@ -70,8 +69,38 @@ namespace atomex.ViewModel.CurrencyViewModels
                 OnPropertyChanged(nameof(TokenContractIconUrl));
                 OnPropertyChanged(nameof(IsConvertable));
 
-                Navigation.PushAsync(new TokenPage(this));
                 TokenContractChanged(TokenContract);
+                Navigation.PushAsync(new TokenPage(this));
+            }
+        }
+
+        private TezosTokenTransferViewModel _tokenTransfer;
+        public TezosTokenTransferViewModel TokenTransfer
+        {
+            get => _tokenTransfer;
+            set
+            {
+                if (value == null) return;
+
+                _tokenTransfer = value;
+                OnPropertyChanged(nameof(TokenTransfer));
+
+                Navigation.PushAsync(new TransactionInfoPage(TokenTransfer));
+            }
+        }
+
+        private TezosTokenViewModel _token;
+        public TezosTokenViewModel Token
+        {
+            get => _token;
+            set
+            {
+                if (value == null) return;
+
+                _token = value;
+                OnPropertyChanged(nameof(Token));
+
+                Navigation.PushAsync(new TokenInfoPage(Token));
             }
         }
 
@@ -88,13 +117,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string BalanceFormat { get; set; }
         public string BalanceCurrencyCode { get; set; }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -105,12 +127,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
@@ -321,10 +337,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
         private ICommand _selectTezosCurrencyCommand;
-        public ICommand SelectTezosCurrencyCommand => _selectTezosCurrencyCommand ??= new Command(async (value) => await OnTezosTapped());
-
-        private ICommand _selectTransferCommand;
-        public ICommand SelectTransferCommand => _selectTransferCommand ??= new Command<TezosTokenTransferViewModel>(async (value) => await OnTransferTapped(value));
+        public ICommand SelectTezosCurrencyCommand => _selectTezosCurrencyCommand ??= new Command((value) => Navigation.PushAsync(new CurrencyPage(TezosViewModel)));
 
         private ICommand _sendPageCommand;
         public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
@@ -406,30 +419,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                 tokenContract: TokenContract?.Contract?.Address);
 
             await Navigation.PushAsync(new AddressesPage(addressesViewModel));
-        }
-
-        private async Task OnTezosTapped()
-        {
-            await Navigation.PushAsync(new CurrencyPage(TezosViewModel));
-        }
-
-        private ICommand _selectTokenCommand;
-        public ICommand SelectTokenCommand => _selectTokenCommand ??= new Command<TezosTokenViewModel>(async (value) => await OnTokenTapped(value));
-
-        private async Task OnTokenTapped(TezosTokenViewModel token)
-        {
-            if (token == null)
-                return;
-
-            await Navigation.PushAsync(new TokenInfoPage(token));
-        }
-
-        private async Task OnTransferTapped(TezosTokenTransferViewModel transfer)
-        {
-            if (transfer == null)
-                return;
-
-            await Navigation.PushAsync(new TransactionInfoPage(transfer));
         }
 
         private async Task OnSendButtonClicked()

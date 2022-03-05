@@ -390,8 +390,6 @@ namespace atomex.ViewModel.SendViewModels
                     element: RelatedTo.Amount,
                     text: AppResources.AvailableFundsError);
 
-            this.RaisePropertyChanged(nameof(Message));
-
             if (!string.IsNullOrEmpty(Message?.Text)) return;
 
             if ((Stage == SendStage.Confirmation && !ShowAdditionalConfirmation) ||
@@ -422,7 +420,8 @@ namespace atomex.ViewModel.SendViewModels
                     IsLoading = false;
                     this.RaisePropertyChanged(nameof(IsLoading));
 
-                    await PopupNavigation.Instance.PopAsync();
+                    if (PopupNavigation.Instance.PopupStack.Count > 0)
+                        await PopupNavigation.Instance.PopAsync();
 
                     await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                         new PopupViewModel
@@ -433,7 +432,10 @@ namespace atomex.ViewModel.SendViewModels
                             ButtonText = AppResources.AcceptButton
                         }));
 
-                    for (int i = Navigation.NavigationStack.Count; i > 2; i--)
+                    var navStackCount = Currency?.Name == "XTZ"
+                        ? 3
+                        : 2;
+                    for (int i = Navigation.NavigationStack.Count; i > navStackCount; i--)
                         Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
                 }
                 catch (Exception e)
@@ -530,7 +532,6 @@ namespace atomex.ViewModel.SendViewModels
 
             Device.InvokeOnMainThreadAsync(() =>
             {
-                
                 try
                 {
                     AmountInBase = Amount * (quote?.Bid ?? 0m);

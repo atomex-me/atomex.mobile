@@ -171,11 +171,25 @@
                         </RelativeLayout.GestureRecognizers>
                         <Button Text="{helpers:Translate UpdateTokenButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="120"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateTokensCommand}"/>
+                                Command="{Binding UpdateTokensCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"

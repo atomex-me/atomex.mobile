@@ -240,6 +240,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(
                     vm => vm.Amount,
                     vm => vm.To,
+                    vm => vm.Fee,
                     vm => vm.Message,
                     vm => vm.ConfirmStage)
                 .Throttle(TimeSpan.FromMilliseconds(1))
@@ -384,7 +385,6 @@ namespace atomex.ViewModel.SendViewModels
 
             if (TokenContract == null || From == null)
             {
-
                 ShowMessage(
                     messageType: MessageType.Error,
                     element: RelatedTo.All,
@@ -475,7 +475,8 @@ namespace atomex.ViewModel.SendViewModels
                     IsLoading = false;
                     this.RaisePropertyChanged(nameof(IsLoading));
 
-                    await PopupNavigation.Instance.PopAsync();
+                    if (PopupNavigation.Instance.PopupStack.Count > 0)
+                        await PopupNavigation.Instance.PopAsync();
 
                     await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                         new PopupViewModel
@@ -486,9 +487,8 @@ namespace atomex.ViewModel.SendViewModels
                             ButtonText = AppResources.AcceptButton
                         }));
 
-                    for (int i = Navigation.NavigationStack.Count; i > 2; i--)
+                    for (int i = Navigation.NavigationStack.Count; i > 3; i--)
                         Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
-
                 }
                 catch (Exception e)
                 {
@@ -557,15 +557,6 @@ namespace atomex.ViewModel.SendViewModels
                         messageType: MessageType.Error,
                         element: RelatedTo.All,
                         text: AppResources.InsufficientFunds);
-                    return;
-                }
-
-                if (Amount <= 0)
-                {
-                    ShowMessage(
-                        messageType: MessageType.Error,
-                        element: RelatedTo.Amount,
-                        text: AppResources.AmountLessThanZeroError);
                     return;
                 }
 
@@ -638,7 +629,7 @@ namespace atomex.ViewModel.SendViewModels
                     {
                         ShowMessage(
                             messageType: MessageType.Error,
-                            element: RelatedTo.Amount,
+                            element: RelatedTo.All,
                             text: string.Format(AppResources.InsufficientChainFundsWithDetails, "XTZ", estimatedFee));
                         return;
                     }
@@ -654,7 +645,7 @@ namespace atomex.ViewModel.SendViewModels
                     {
                         ShowMessage(
                             messageType: MessageType.Error,
-                            element: RelatedTo.Amount,
+                            element: RelatedTo.All,
                             text: string.Format(AppResources.InsufficientChainFunds, "XTZ"));
                         return;
                     }
@@ -724,6 +715,21 @@ namespace atomex.ViewModel.SendViewModels
                         element: RelatedTo.All,
                         text: AppResources.InsufficientFunds);
                     SetAmountFromString("0");
+                    return;
+                }
+
+                var tokenAccount = App.Account
+                    .GetTezosTokenAccount<TezosTokenAccount>(fromTokenAddress.Currency, TokenContract, TokenId);
+
+                var (estimatedFee, isEnougth) = await tokenAccount
+                    .EstimateTransferFeeAsync(From);
+
+                if (!isEnougth)
+                {
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        element: RelatedTo.All,
+                        text: string.Format(AppResources.InsufficientChainFundsWithDetails, "XTZ", estimatedFee));
                     return;
                 }
 

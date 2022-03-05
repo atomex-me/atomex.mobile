@@ -274,67 +274,6 @@
                 <StackLayout.Triggers>
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
-                            <BindingCondition Binding="{Binding Message.RelatedTo}"
-                                              Value="Amount"/>
-                            <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                              Value="True"/>
-                        </MultiTrigger.Conditions>
-                        <Setter Property="IsVisible"
-                                Value="True"/>
-                    </MultiTrigger>
-                </StackLayout.Triggers>
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="FillAndExpand">
-                    <Label Text="{Binding Message.Text}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="#FFA800"
-                           HorizontalTextAlignment="Start"
-                           HorizontalOptions="StartAndExpand"
-                           VerticalOptions="Center">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type}"
-                                         Value="Warning">
-                                <Setter Property="TextColor"
-                                        Value="#FFA800"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding Message.Type}"
-                                         Value="Error">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Image WidthRequest="12"
-                           HeightRequest="12"
-                           Source="ic_question"
-                           HorizontalOptions="End"
-                           Margin="0,0,30,0"
-                           VerticalOptions="Center">
-                        <Image.Triggers>
-                            <DataTrigger TargetType="Image"
-                                         Binding="{Binding Message.Type}"
-                                         Value="Error">
-                                <Setter Property="Source"
-                                        Value="ic_question__error"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Image"
-                                         Binding="{Binding Message.Type}"
-                                         Value="Warning">
-                                <Setter Property="Source"
-                                        Value="ic_question__warning"/>
-                            </DataTrigger>
-                        </Image.Triggers>
-                    </Image>
-                </StackLayout>
-            </StackLayout>
-            <StackLayout Margin="16,12,16,0"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <MultiTrigger TargetType="StackLayout">
-                        <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.RelatedTo}"
                                               Value="Amount"/>
                             <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.Text, Converter={StaticResource StringToBool}}"
@@ -400,6 +339,67 @@
                                          Value="Regular">
                                 <Setter Property="Source"
                                         Value="ic_question"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Margin="16,12,16,0"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                              Value="Amount"/>
+                            <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding Message.Text}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="#FFA800"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
+                                <Setter Property="TextColor"
+                                        Value="#FFA800"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Image WidthRequest="12"
+                           HeightRequest="12"
+                           Source="ic_question"
+                           HorizontalOptions="End"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
+                                <Setter Property="Source"
+                                        Value="ic_question__error"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
+                                <Setter Property="Source"
+                                        Value="ic_question__warning"/>
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -572,6 +572,67 @@
                     </Label>
                 </Grid>
             </Frame>
+            <StackLayout Margin="16,12,16,0"
+                         IsVisible="False">
+                <StackLayout.Triggers>
+                    <MultiTrigger TargetType="StackLayout">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                              Value="All"/>
+                            <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                              Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </MultiTrigger>
+                </StackLayout.Triggers>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding Message.Text}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="#FFA800"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
+                                <Setter Property="TextColor"
+                                        Value="#FFA800"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Image WidthRequest="12"
+                           HeightRequest="12"
+                           Source="ic_question"
+                           HorizontalOptions="End"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
+                                <Setter Property="Source"
+                                        Value="ic_question__error"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
+                                <Setter Property="Source"
+                                        Value="ic_question__warning"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </StackLayout>
+            </StackLayout>
             <input:CheckBox Text="{helpers:Translate UseDefaultFeeLabel}"
                             Margin="16,4"
                             BoxSizeRequest="18"
