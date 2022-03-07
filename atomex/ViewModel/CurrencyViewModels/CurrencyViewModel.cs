@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
@@ -103,13 +102,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             set { _portfolioPercent = value; OnPropertyChanged(nameof(PortfolioPercent)); }
         }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -120,12 +112,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
@@ -138,6 +124,19 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 _transactions = value;
                 OnPropertyChanged(nameof(Transactions));
+            }
+        }
+
+        private TransactionViewModel _selectedTransaction;
+        public TransactionViewModel SelectedTransaction
+        {
+            get => _selectedTransaction;
+            set
+            {
+                if (value == null) return;
+                _selectedTransaction = value;
+
+                Navigation.PushAsync(new TransactionInfoPage(_selectedTransaction));
             }
         }
 

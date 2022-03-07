@@ -4,10 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Class="atomex.Views.CreateSwap.SelectCurrencyPage"
-    xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:custom="clr-namespace:atomex.CustomElements"
-    x:Name="BindingContextPage"
-    Title="{helpers:Translate CreateSwapPageTitle}">
+    x:Name="BindingContextPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"

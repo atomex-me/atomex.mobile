@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             x:Name="BindingContextPage"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
              Title="{Binding Currency.Description}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -23,8 +23,11 @@
     </ContentPage.ToolbarItems>
     <ListView ItemsSource="{Binding GroupedTransactions}"
               Style="{DynamicResource TxListViewStyle}"
-              SelectionMode="None"
+              SelectionMode="Single"
+              SelectedItem="{Binding SelectedTransaction}"
+              ItemSelected="ItemSelected"
               CachingStrategy="RetainElement"
+              BackgroundColor="Transparent"
               RefreshCommand="{Binding UpdateCurrencyCommand}"
               IsRefreshing="{Binding IsLoading}"
               Footer="">
@@ -144,11 +147,25 @@
                                     HorizontalOptions="Center">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="80"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateCurrencyCommand}"/>
+                                Command="{Binding UpdateCurrencyCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"
@@ -181,16 +198,11 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
                           VerticalOptions="Center"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectTransactionCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnTxItemTapped"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -638,7 +650,7 @@
                                Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
-                </ViewCell>
+                </controls:CustomViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

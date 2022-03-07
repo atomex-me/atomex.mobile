@@ -8,7 +8,6 @@
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateSwap.ExchangePage"
-             Title="{helpers:Translate CreateSwapPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
      <ContentPage.Resources>
         <ResourceDictionary>
