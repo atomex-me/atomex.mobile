@@ -117,6 +117,7 @@ namespace atomex.ViewModel
 
         [Reactive] public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
         private Dictionary<long, SwapViewModel> _cachedSwaps;
+        [Reactive] public bool CanShowMoreSwaps { get; set; }
         [Reactive] public bool IsAllSwapsShowed { get; set; }
         private int _swapNumberPerPage = 3;
 
@@ -125,8 +126,8 @@ namespace atomex.ViewModel
             _app = app ?? throw new ArgumentNullException(nameof(app));
 
             _cachedSwaps = new Dictionary<long, SwapViewModel>();
-            IsAllSwapsShowed = false;
-
+            Swaps = new ObservableCollection<SwapViewModel>();
+            GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>();
             CanExchange = true;
 
             FromViewModel = new ConversionCurrencyViewModel
@@ -187,7 +188,8 @@ namespace atomex.ViewModel
                     _amountType = AmountType.Purchased;
                 }
             };
-
+            GetSwaps();
+            IsAllSwapsShowed = false;
             // FromCurrencyViewModel changed => Update ToCurrencies
             this.WhenAnyValue(vm => vm.FromViewModel.CurrencyViewModel)
                 .WhereNotNull()
@@ -365,9 +367,28 @@ namespace atomex.ViewModel
                 .Select(t => t == MessageType.Error)
                 .ToPropertyExInMainThread(this, vm => vm.IsError);
 
-            this.WhenAnyValue(vm => vm.IsAllSwapsShowed)
-                .Subscribe(_ => GetSwaps());
+            this.WhenAnyValue(vm => vm.Swaps)
+                .Subscribe(swaps => CanShowMoreSwaps = swaps.Count > _swapNumberPerPage);
 
+            this.WhenAnyValue(vm => vm.IsAllSwapsShowed)
+                .Subscribe(flag =>
+                {
+                    var groups = !flag
+                        ? Swaps
+                           .OrderByDescending(p => p.LocalTime.Date)
+                           .Take(_swapNumberPerPage)
+                           .GroupBy(p => p.LocalTime.Date)
+                           .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                        : Swaps
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+                    this.RaisePropertyChanged(nameof(GroupedSwaps));
+                });
+
+            
             SubscribeToServices();
         }
 
@@ -876,7 +897,11 @@ namespace atomex.ViewModel
         });
 
         private ICommand _showAllSwapsCommand;
-        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(() => IsAllSwapsShowed = true);
+        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(() =>
+        {
+            IsAllSwapsShowed = true;
+            CanShowMoreSwaps = false;
+        });
 
         private ICommand _selectSwapCommand;
         public ICommand SelectSwapCommand => _selectSwapCommand ??= new Command<SwapViewModel>(async (value) => await OnSwapTapped(value));
@@ -940,39 +965,24 @@ namespace atomex.ViewModel
                 var swaps = await _app.Account
                     .GetSwapsAsync();
 
+                if (swaps == null)
+                    return;
+
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    Swaps = new ObservableCollection<SwapViewModel>();
-
-                    if (swaps == null)
-                        return;
-
                     _cachedSwaps.Clear();
-
+                    var swps = new ObservableCollection<SwapViewModel>();
                     foreach (var swap in swaps)
                     {
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(swap, Currencies);
 
                         long.TryParse(swapViewModel.Id, out long id);
                         _cachedSwaps.Add(id, swapViewModel);
-                        Swaps.Add(swapViewModel);
+                        swps.Add(swapViewModel);
                     }
-
-                    var groups = !IsAllSwapsShowed
-                        ? Swaps
-                           .OrderByDescending(p => p.LocalTime.Date)
-                           .Take(_swapNumberPerPage)
-                           .GroupBy(p => p.LocalTime.Date)
-                           .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))))
-                        : Swaps
-                            .GroupBy(p => p.LocalTime.Date)
-                            .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
-
-                    GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
-
+                
+                    Swaps = new ObservableCollection<SwapViewModel>(swps);
                     this.RaisePropertyChanged(nameof(Swaps));
-                    this.RaisePropertyChanged(nameof(GroupedSwaps));
                 });
             }
             catch(Exception e)

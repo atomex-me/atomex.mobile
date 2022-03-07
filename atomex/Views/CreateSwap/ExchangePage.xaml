@@ -464,22 +464,8 @@
                             Padding="16,0"
                             Margin="16,0"
                             HeightRequest="44"
-                            Command="{Binding BindingContext.ShowAllSwapsCommand, Source={x:Reference BindingContextPage}}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding BindingContext.IsAllSwapsShowed, Source={x:Reference BindingContextPage}}"
-                                         Value="True">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding BindingContext.Swaps.Count, Source={x:Reference BindingContextPage}}"
-                                         Value="0">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
+                            IsVisible="{Binding BindingContext.CanShowMoreSwaps, Source={x:Reference BindingContextPage}}"
+                            Command="{Binding BindingContext.ShowAllSwapsCommand, Source={x:Reference BindingContextPage}}"/>
                     <Label Text="{helpers:Translate SwapHistoryText}"
                             BackgroundColor="Transparent"
                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
