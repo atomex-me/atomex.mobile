@@ -114,6 +114,18 @@ namespace atomex.ViewModel
         [Reactive] public bool IsNoLiquidity { get; set; }
         [Reactive] public bool IsInsufficientFunds { get; set; }
 
+        private SwapViewModel _selectedSwap;
+        public SwapViewModel SelectedSwap
+        {
+            get => _selectedSwap;
+            set
+            {
+                if (value == null) return;
+                _selectedSwap = value;
+
+                Navigation.PushAsync(new SwapInfoPage(_selectedSwap));
+            }
+        }
 
         [Reactive] public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
         private Dictionary<long, SwapViewModel> _cachedSwaps;
@@ -902,15 +914,6 @@ namespace atomex.ViewModel
             IsAllSwapsShowed = true;
             CanShowMoreSwaps = false;
         });
-
-        private ICommand _selectSwapCommand;
-        public ICommand SelectSwapCommand => _selectSwapCommand ??= new Command<SwapViewModel>(async (value) => await OnSwapTapped(value));
-
-        private async Task OnSwapTapped(SwapViewModel swap)
-        {
-            if (swap != null)
-                await Navigation.PushAsync(new SwapInfoPage(swap));
-        }
 
         private async void OnSwapEventHandler(object sender, SwapEventArgs args)
         {

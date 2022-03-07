@@ -7,7 +7,6 @@
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
-             x:Name="BindingContextPage"
              x:Class="atomex.Views.CreateSwap.ExchangePage"
              Title="{helpers:Translate CreateSwapPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
@@ -21,13 +20,14 @@
     </ContentPage.Resources>
     <ListView ItemsSource="{Binding GroupedSwaps}"
               IsGroupingEnabled="True"
-              SelectionMode="None"
+              SelectionMode="Single"
+              SelectedItem="{Binding SelectedSwap}"
+              ItemSelected="ItemSelected"
               HasUnevenRows="True"
               SeparatorVisibility="Default"
               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-              CachingStrategy="RecycleElement"
-              Footer="">
+              BackgroundColor="Transparent"
+              CachingStrategy="RecycleElement">
         <ListView.Header>
             <StackLayout>
                 <Label Text="{helpers:Translate ExchangePageTitle}"
@@ -453,33 +453,31 @@
                     </ViewCell>
             </DataTemplate>
         </ListView.GroupHeaderTemplate>
-        <ListView.FooterTemplate>
-            <DataTemplate>
-                <StackLayout>
-                    <Button Text="{helpers:Translate ShowAll}"
-                            BackgroundColor="Transparent"
-                            BorderWidth="2"
-                            BorderColor="{AppThemeBinding Dark='#1FFFFFFF', Light='#1F000000'}"
-                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
-                            Padding="16,0"
-                            Margin="16,0"
-                            HeightRequest="44"
-                            IsVisible="{Binding BindingContext.CanShowMoreSwaps, Source={x:Reference BindingContextPage}}"
-                            Command="{Binding BindingContext.ShowAllSwapsCommand, Source={x:Reference BindingContextPage}}"/>
-                    <Label Text="{helpers:Translate SwapHistoryText}"
-                            BackgroundColor="Transparent"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Padding="20,10"
-                            FontSize="14"
-                            VerticalTextAlignment="Center"
-                            HorizontalTextAlignment="Center"/>
-                </StackLayout>
-            </DataTemplate>
-        </ListView.FooterTemplate>
+        <ListView.Footer>
+            <StackLayout>
+                <Button Text="{helpers:Translate ShowAll}"
+                        BackgroundColor="Transparent"
+                        BorderWidth="2"
+                        BorderColor="{AppThemeBinding Dark='#1FFFFFFF', Light='#1F000000'}"
+                        TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                        Padding="16,0"
+                        Margin="16,0"
+                        HeightRequest="44"
+                        IsVisible="{Binding CanShowMoreSwaps}"
+                        Command="{Binding ShowAllSwapsCommand}"/>
+                <Label Text="{helpers:Translate SwapHistoryText}"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                        FontFamily="{DynamicResource RegularFont}"
+                        Padding="20,10"
+                        FontSize="14"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"/>
+            </StackLayout>
+        </ListView.Footer>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid Padding="8"
                           RowSpacing="0"
                           ColumnSpacing="5">
@@ -515,11 +513,6 @@
                             <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectSwapCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnItemTapped"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
                         <Image Source="{Binding FromCurrencyCode}"
                                Grid.RowSpan="2"
                                WidthRequest="32"
@@ -656,7 +649,7 @@
                             </lottie:AnimationView.IsVisible>
                         </lottie:AnimationView>
                     </Grid>
-                </ViewCell>
+                </custom:CustomViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
