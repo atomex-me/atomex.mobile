@@ -20,16 +20,14 @@
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Label Text="{helpers:Translate ConfirmationLabel}"
-                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                   FontFamily="{DynamicResource RegularFont}"
-                   FontSize="30"
-                   Padding="0,20"
-                   HorizontalTextAlignment="Start"/>
+                   Style="{DynamicResource TitleTextStyle}"
+                   Padding="0,20"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="8">

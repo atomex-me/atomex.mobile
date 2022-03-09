@@ -28,16 +28,14 @@
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Label Text="{helpers:Translate ReviewButton}"
-                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                   FontFamily="{DynamicResource RegularFont}"
-                   FontSize="30"
-                   Padding="0,20"
-                   HorizontalTextAlignment="Start"/>
+                   Style="{DynamicResource TitleTextStyle}"
+                   Padding="0,20"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="8">
@@ -59,22 +57,14 @@
                        CornerRadius="8"
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
-                <Frame Grid.RowSpan="2"
-                       Padding="0"
-                       CornerRadius="14"
+                <Image Grid.RowSpan="2"
+                       Source="{Binding CurrencyCode}"
                        Margin="10,0"
-                       HasShadow="False"
+                       WidthRequest="28"
+                       HeightRequest="28"
                        VerticalOptions="CenterAndExpand"
                        HorizontalOptions="EndAndExpand"
-                       IsClippedToBounds="True"
-                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
-                    </Frame.GestureRecognizers>
-                    <Image Source="{Binding CurrencyCode}"
-                           WidthRequest="28"
-                           HeightRequest="28"/>
-                </Frame>
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}"/>
                 <Frame Grid.RowSpan="2"
                        Padding="0"
                        CornerRadius="14"
@@ -84,9 +74,6 @@
                        HorizontalOptions="EndAndExpand"
                        IsClippedToBounds="True"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
-                    </Frame.GestureRecognizers>
                     <Image Source="{Binding TokenPreview}"
                            WidthRequest="28"
                            HeightRequest="28"/>
@@ -124,23 +111,15 @@
                        CornerRadius="8"
                        BackgroundColor="Transparent"
                        BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
-                <Frame Grid.Row="2"
+                <Image Grid.Row="2"
                        Grid.RowSpan="2"
-                       Padding="0"
-                       CornerRadius="14"
+                       Source="{Binding CurrencyCode}"
                        Margin="10,0"
-                       HasShadow="False"
+                       WidthRequest="28"
+                       HeightRequest="28"
                        VerticalOptions="CenterAndExpand"
                        HorizontalOptions="EndAndExpand"
-                       IsClippedToBounds="True"
-                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
-                    </Frame.GestureRecognizers>
-                    <Image Source="{Binding CurrencyCode}"
-                           WidthRequest="28"
-                           HeightRequest="28"/>
-                </Frame>
+                       IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}"/>
                 <Frame Grid.Row="2"
                        Grid.RowSpan="2"
                        Padding="0"
@@ -151,9 +130,6 @@
                        HorizontalOptions="EndAndExpand"
                        IsClippedToBounds="True"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
-                    </Frame.GestureRecognizers>
                     <Image Source="{Binding TokenPreview}"
                            WidthRequest="28"
                            HeightRequest="28"/>

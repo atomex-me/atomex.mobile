@@ -651,12 +651,12 @@
     </Style>
 
     <!-- Create swap Page -->
-    <Style x:Key="CreateSwapTitleStyle" TargetType="Label">
+    <Style x:Key="TitleTextStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
         <Setter Property="FontSize" Value="28"/>
-        <Setter Property="Padding" Value="20,20,20,0"/>
-        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="16,32,16,8"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
     </Style>
     <Style x:Key="EstimatedLabelStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>

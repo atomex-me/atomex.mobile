@@ -809,7 +809,7 @@ namespace atomex.ViewModel
             });
         }
 
-        protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs? args)
+        protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
         {
             try
             {
@@ -926,7 +926,7 @@ namespace atomex.ViewModel
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
 
-                        Navigation.PushAsync(new SwapInfoPage(swapViewModel));
+                        //Navigation.PushAsync(new SwapInfoPage(swapViewModel));
 
                         Swaps.Add(swapViewModel);
 

@@ -9,10 +9,7 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"
-                   Style="{DynamicResource CreateSwapTitleStyle}"
-                   HorizontalTextAlignment="Start"
-                   FontSize="30"
-                   Margin="0,20">
+                   Style="{DynamicResource TitleTextStyle}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Type}"

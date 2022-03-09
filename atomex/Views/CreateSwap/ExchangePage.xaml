@@ -28,10 +28,9 @@
               BackgroundColor="Transparent"
               CachingStrategy="RecycleElement">
         <ListView.Header>
-            <StackLayout>
+            <StackLayout Spacing="0">
                 <Label Text="{helpers:Translate ExchangePageTitle}"
-                       Style="{DynamicResource CreateSwapTitleStyle}"
-                       HorizontalTextAlignment="Start"/>
+                       Style="{DynamicResource TitleTextStyle}"/>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
                       RowSpacing="4"
@@ -91,6 +90,8 @@
                            FontSize="12"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            IsVisible="{Binding FromViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"
+                           MaxLines="1"
+                           LineBreakMode="MiddleTruncation"
                            Text="{Binding FromViewModel.Address}"/>
                     <Button Grid.Row="1"
                             Grid.Column="1"
@@ -313,11 +314,12 @@
                         </Label.GestureRecognizers>
                     </Label>
                     <Label Grid.Row="4"
-                           Grid.ColumnSpan="2"
                            Text="{Binding ToViewModel.Address}"
                            Margin="18,10,0,0"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="12"
+                           MaxLines="1"
+                           LineBreakMode="MiddleTruncation"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}"/>
                     <Label Grid.Row="4"
@@ -336,6 +338,9 @@
                     </Label>
                 </Grid>
                 <StackLayout Orientation="Horizontal"
+                             Padding="18,0,0,10"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
                              Spacing="0">
                     <StackLayout.IsVisible>
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
@@ -356,14 +361,14 @@
                            HorizontalTextAlignment="Start"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontFamily="{DynamicResource RegularFont}"
-                           FontSize="16"
-                           Padding="20,10,10,10"/>
+                           FontSize="16"/>
                     <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__black}"
+                           Margin="10,0"
                            HeightRequest="12"
                            WidthRequest="12"/>
                 </StackLayout>
                 <StackLayout Spacing="2"
-                             Padding="20,0">
+                             Padding="17,0">
                     <StackLayout.IsVisible>
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"

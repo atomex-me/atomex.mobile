@@ -15,14 +15,10 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Spacing="0"
-                     VerticalOptions="FillAndExpand">
+        <StackLayout VerticalOptions="FillAndExpand">
             <Label Text="{helpers:Translate SendFrom}"
-                   Style="{DynamicResource CreateSwapTitleStyle}"
-                   HorizontalTextAlignment="Start"
-                   FontSize="30"
-                   Margin="0,20"/>
-            <StackLayout Spacing="5">
+                   Style="{DynamicResource TitleTextStyle}"/>
+            <StackLayout Spacing="6">
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand"
                              Margin="16,0"
@@ -90,7 +86,6 @@
                         </ImageButton>
                     </StackLayout>
                 </StackLayout>
-            
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             <ListView ItemsSource="{Binding Outputs}"
                       SelectionMode="None"

@@ -116,7 +116,7 @@ namespace atomex.ViewModel.ConversionViewModels
         public IEnumerable<WalletAddress> AvailableAddresses { get; set; }
         [Reactive] public WalletAddress SelectedAddress { get; set; }
         [Reactive] public bool IsNew { get; set; }
-        public override string ShortAddressDescription => SelectedAddress?.Address?.TruncateAddress();
+        public override string ShortAddressDescription => SelectedAddress?.Address;
         public override IFromSource FromSource => SelectedAddress?.Address != null
             ? new FromAddress(SelectedAddress.Address)
             : null;

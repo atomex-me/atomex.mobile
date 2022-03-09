@@ -27,11 +27,9 @@
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Label Text="{helpers:Translate Warning}"
-                   TextColor="#FF7A00"
-                   FontSize="30"
-                   FontFamily="{DynamicResource RefularFont}"
+                   Style="{DynamicResource TitleTextStyle}"
                    Padding="0,20"
-                   HorizontalTextAlignment="Start"/>
+                   TextColor="#FF7A00"/>
             <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    FontSize="14"

@@ -26,11 +26,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label FontFamily="{DynamicResource RegularFont}"
-                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                   HorizontalTextAlignment="Start"
-                   FontSize="30"
-                   Margin="16,32,16,0">
+            <Label Style="{DynamicResource TitleTextStyle}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding SelectAddressMode}"

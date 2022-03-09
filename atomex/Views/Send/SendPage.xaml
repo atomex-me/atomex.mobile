@@ -21,14 +21,11 @@
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
             <Label Text="{helpers:Translate SendPageTitle}"
-                   Style="{DynamicResource CreateSwapTitleStyle}"
-                   Padding="0,20"
-                   Margin="16,0"
-                   HorizontalTextAlignment="Start"/>
+                   Style="{DynamicResource TitleTextStyle}"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="8"
-                  Margin="16,0">
+                  Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
@@ -216,7 +213,7 @@
                        HorizontalOptions="Center"/>
             </Grid>
             <Frame Padding="0"
-                   Margin="16,8,16,0"
+                   Margin="16,0"
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
