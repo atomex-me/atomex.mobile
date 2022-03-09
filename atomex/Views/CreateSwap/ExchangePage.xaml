@@ -194,6 +194,9 @@
                                  HeightRequest="18"
                                  HorizontalOptions="End"
                                  Orientation="Horizontal">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AvailableAmountCommand}"/>
+                        </StackLayout.GestureRecognizers>
                         <StackLayout.IsVisible>
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="FromViewModel.CurrencyViewModel"
@@ -213,7 +216,7 @@
                                 <FormattedString>
                                     <Span Text="{helpers:Translate Available}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding EstimatedMaxAmount, StringFormat='{0:0.#########}'}"/>
+                                    <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.#########}'}"/>
                                     <Span Text=" "/>
                                     <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"/>
                                 </FormattedString>
@@ -379,11 +382,11 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate EstimatedPriceLabel}"/>
                                 <Span Text=" 1 "/>
-                                <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"/>
+                                <Span Text="{Binding BaseCurrencyCode}"/>
                                 <Span Text=" = "/>
                                 <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding ToViewModel.CurrencyViewModel.CurrencyCode}"/>
+                                <Span Text="{Binding QuoteCurrencyCode}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -422,6 +425,8 @@
                                      Converter="{StaticResource NullToBoolean}"/>
                         </MultiBinding>
                     </StackLayout.IsVisible>
+
+                    
                     <Button Text="{helpers:Translate ExchangeLabel}"
                             CornerRadius="8"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
@@ -430,7 +435,34 @@
                             HeightRequest="44"
                             HorizontalOptions="FillAndExpand"
                             FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding ConvertCommand}"/>
+                            Command="{Binding ConvertCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding CanExchange}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
+                                <Setter Property="Opacity"
+                                        Value="0.5"/>
+                                <Setter Property="IsEnabled"
+                                        Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding CanExchange}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                                <Setter Property="Opacity"
+                                        Value="1"/>
+                                <Setter Property="IsEnabled"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
                 </StackLayout>
             </StackLayout>
         </ListView.Header>

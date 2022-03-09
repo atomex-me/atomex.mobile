@@ -2092,5 +2092,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("OrderMatched", resourceCulture);
             }
         }
+        
+        internal static string AvailableAmountDexTooltip {
+            get {
+                return ResourceManager.GetString("AvailableAmountDexTooltip", resourceCulture);
+            }
+        }
     }
 }

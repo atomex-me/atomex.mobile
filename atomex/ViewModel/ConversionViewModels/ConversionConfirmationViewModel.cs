@@ -24,7 +24,6 @@ namespace atomex.ViewModel
         private static readonly TimeSpan SwapTimeout = TimeSpan.FromSeconds(60);
         private static readonly TimeSpan SwapCheckInterval = TimeSpan.FromSeconds(3);
         public event EventHandler OnSuccess;
-        public event EventHandler OnError;
 
         private readonly IAtomexApp _app;
         public IFromSource FromSource { get; set; }
@@ -45,8 +44,7 @@ namespace atomex.ViewModel
                     if (network != null)
                         return fromOutputs.Outputs
                             .First()
-                            .DestinationAddress(network)
-                            .TruncateAddress();
+                            .DestinationAddress(network);
                 }
 
                 return null;
@@ -54,14 +52,12 @@ namespace atomex.ViewModel
         }
 
         public string ToAddress { get; set; }
-        public string ToAddressDescription => ToAddress?.TruncateAddress();
         public string RedeemFromAddress { get; set; }
 
         public CurrencyViewModel FromCurrencyViewModel { get; set; }
         public CurrencyViewModel ToCurrencyViewModel { get; set; }
         public string BaseCurrencyCode { get; set; }
         public string QuoteCurrencyCode { get; set; }
-        public string PriceFormat { get; set; }
         public decimal Amount { get; set; }
         public decimal AmountInBase { get; set; }
         public decimal TargetAmount { get; set; }
@@ -70,6 +66,8 @@ namespace atomex.ViewModel
         public decimal EstimatedOrderPrice { get; set; }
         public decimal EstimatedMakerNetworkFee { get; set; }
         public decimal EstimatedTotalNetworkFeeInBase { get; set; }
+
+        public bool IsLoading { get; set; }
 
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
@@ -83,10 +81,16 @@ namespace atomex.ViewModel
         {
             try
             {
+                IsLoading = true;
+                this.RaisePropertyChanged(nameof(IsLoading));
+
                 var error = await ConvertAsync();
 
                 if (error != null)
                 {
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
+
                     if (error.Code == Errors.PriceHasChanged)
                     {
                         await PopupNavigation.Instance.PushAsync(new CompletionPopup(
@@ -109,12 +113,16 @@ namespace atomex.ViewModel
                                 ButtonText = AppResources.AcceptButton
                             }));
                     }
-
-                    OnError?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
-                OnSuccess?.Invoke(this, new ErrorEventArgs(new Error(Errors.RequestError, string.Empty)));
+                IsLoading = false;
+                this.RaisePropertyChanged(nameof(IsLoading));
+
+                OnSuccess?.Invoke(this, EventArgs.Empty);
+
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    await PopupNavigation.Instance.PopAsync();
 
                 await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                     new PopupViewModel
@@ -127,7 +135,8 @@ namespace atomex.ViewModel
             }
             catch (Exception e)
             {
-                OnError?.Invoke(this, EventArgs.Empty);
+                IsLoading = false;
+                this.RaisePropertyChanged(nameof(IsLoading));
 
                 await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                     new PopupViewModel

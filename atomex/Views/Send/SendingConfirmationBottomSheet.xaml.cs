@@ -22,15 +22,15 @@ namespace atomex.Views.Send
             if (BindingContext is SendViewModel)
             {
                 var sendViewModel = (SendViewModel)BindingContext;
-                if (sendViewModel.CloseConfirmationCommand.CanExecute(null))
-                    sendViewModel.CloseConfirmationCommand.Execute(null);
+                if (sendViewModel.UndoConfirmStageCommand.CanExecute(null))
+                    sendViewModel.UndoConfirmStageCommand.Execute(null);
 
                 return;
             }
 
             var tezosTokenSendViewModel = (TezosTokensSendViewModel)BindingContext;
-            if (tezosTokenSendViewModel.CloseConfirmationCommand.CanExecute(null))
-                tezosTokenSendViewModel.CloseConfirmationCommand.Execute(null);
+            if (tezosTokenSendViewModel.UndoConfirmStageCommand.CanExecute(null))
+                tezosTokenSendViewModel.UndoConfirmStageCommand.Execute(null);
         }
     }
 }

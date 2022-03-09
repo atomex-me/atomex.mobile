@@ -29,6 +29,7 @@ using Atomex.Wallet.BitcoinBased;
 using Atomex.ViewModels;
 using atomex.Models;
 using atomex.Views.Send;
+using Rg.Plugins.Popup.Services;
 
 namespace atomex.ViewModel
 {
@@ -90,11 +91,12 @@ namespace atomex.ViewModel
         [Reactive] public string QuoteCurrencyCode { get; set; }
         [Reactive] public string PriceFormat { get; set; }
         [Reactive] public bool IsAmountValid { get; set; }
-        [Reactive] public bool IsLoading { get; set; }
 
         public AmountType _amountType;
 
         private decimal _estimatedOrderPrice;
+
+        //[Reactive] public Message Message { get; set; }
 
         [Reactive] public decimal EstimatedPrice { get; set; }
         [Reactive] public decimal EstimatedMaxFromAmount { get; set; }
@@ -200,8 +202,10 @@ namespace atomex.ViewModel
                     _amountType = AmountType.Purchased;
                 }
             };
+
             GetSwaps();
             IsAllSwapsShowed = false;
+
             // FromCurrencyViewModel changed => Update ToCurrencies
             this.WhenAnyValue(vm => vm.FromViewModel.CurrencyViewModel)
                 .WhereNotNull()
@@ -264,11 +268,9 @@ namespace atomex.ViewModel
 
             // AmountStrings, FromCurrencyViewModel or ToCurrencyViewModel changed => estimate swap price and target amount
             this.WhenAnyValue(
-                    //vm => vm.FromViewModel.AmountString,
                     vm => vm.FromViewModel.Amount,
                     vm => vm.FromViewModel.CurrencyViewModel,
                     vm => vm.FromViewModel.Address,
-                    //vm => vm.ToViewModel.AmountString,
                     vm => vm.ToViewModel.Amount,
                     vm => vm.ToViewModel.CurrencyViewModel,
                     vm => vm.ToViewModel.Address,
@@ -281,12 +283,10 @@ namespace atomex.ViewModel
                 });
 
             // From Amount changed => update FromViewModel.AmountInBase
-            //this.WhenAnyValue(vm => vm.FromViewModel.AmountString)
             this.WhenAnyValue(vm => vm.FromViewModel.Amount)
                 .SubscribeInMainThread(amount => UpdateFromAmountInBase());
 
             // To Amount changed => update ToViewModel.AmountInBase
-            //this.WhenAnyValue(vm => vm.ToViewModel.AmountString)
             this.WhenAnyValue(vm => vm.ToViewModel.Amount)
                 .SubscribeInMainThread(amount => UpdateToAmountInBase());
 
@@ -428,14 +428,6 @@ namespace atomex.ViewModel
 
                 if (swapParams == null)
                     return;
-
-                //if (swapParams.Error != null) {
-                //    TODO: warning?
-                //}
-
-                //FromViewModel.AmountString = Math.Min(swapParams.Amount, EstimatedMaxFromAmount)
-                //    //.TruncateDecimal(FromViewModel.CurrencyViewModel!.Currency.Digits)
-                //    .ToString();
 
                 FromViewModel.SetAmountFromString(Math.Min(swapParams.Amount, EstimatedMaxFromAmount).ToString());
             }
@@ -839,12 +831,10 @@ namespace atomex.ViewModel
                     {
                         if (_amountType == AmountType.Sold)
                         {
-                            //ToViewModel.AmountString = "0";
                             ToViewModel.SetAmountFromString("0");
                         }
                         else
                         {
-                            //FromViewModel.AmountString = "0";
                             FromViewModel.SetAmountFromString("0");
                         }
 
@@ -859,12 +849,10 @@ namespace atomex.ViewModel
 
                     if (_amountType == AmountType.Sold)
                     {
-                        //ToViewModel.AmountString = swapPriceEstimation.ToAmount.ToString();
                         ToViewModel.SetAmountFromString(swapPriceEstimation.ToAmount.ToString());
                     }
                     else
                     {
-                        //FromViewModel.AmountString = swapPriceEstimation.FromAmount.ToString();
                         FromViewModel.SetAmountFromString(swapPriceEstimation.FromAmount.ToString());
                     }
 
@@ -872,7 +860,6 @@ namespace atomex.ViewModel
                     EstimatedMaxFromAmount = swapPriceEstimation.MaxFromAmount;
                     EstimatedMaxToAmount = swapPriceEstimation.MaxToAmount;
                     IsNoLiquidity = swapPriceEstimation.IsNoLiquidity;
-
                 });
             }
             catch (Exception e)
@@ -882,38 +869,44 @@ namespace atomex.ViewModel
         }
 
         private ICommand _estNetworkFeeFeeCommand;
-        public ICommand EstNetworkFeeFeeCommand => _estNetworkFeeFeeCommand ??= new Command(async () =>
-        {
-            string message = string.Format(
-                CultureInfo.InvariantCulture,
-                AppResources.TotalNetworkFeeDetail,
-                AppResources.PaymentFeeLabel,
-                FormattableString.Invariant($"{EstimatedPaymentFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
-                FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
-                HasRewardForRedeem
-                    ? AppResources.RewardForRedeemLabel
-                    : AppResources.RedeemFeeLabel,
-                HasRewardForRedeem
-                    ? FormattableString.Invariant($"{RewardForRedeem} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}")
-                    : FormattableString.Invariant($"{EstimatedRedeemFee} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
-                HasRewardForRedeem
-                    ? FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}")
-                    : FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
-                AppResources.MakerFeeLabel,
-                FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
-                FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
-                AppResources.TotalNetworkFeeLabel,
-                FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
+        public ICommand EstNetworkFeeFeeCommand => _estNetworkFeeFeeCommand ??=
+            ReactiveCommand.Create(async () =>
+            {
+                string message = string.Format(
+                    CultureInfo.InvariantCulture,
+                    AppResources.TotalNetworkFeeDetail,
+                    AppResources.PaymentFeeLabel,
+                    FormattableString.Invariant($"{EstimatedPaymentFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                    FormattableString.Invariant($"{EstimatedPaymentFeeInBase:(0.00$)}"),
+                    HasRewardForRedeem
+                        ? AppResources.RewardForRedeemLabel
+                        : AppResources.RedeemFeeLabel,
+                    HasRewardForRedeem
+                        ? FormattableString.Invariant($"{RewardForRedeem} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}")
+                        : FormattableString.Invariant($"{EstimatedRedeemFee} {ToViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                    HasRewardForRedeem
+                        ? FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}")
+                        : FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
+                    AppResources.MakerFeeLabel,
+                    FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                    FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
+                    AppResources.TotalNetworkFeeLabel,
+                    FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
 
-            await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
-        });
+                await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
+            });
+
+        private ICommand _availableAmountCommand;
+        public ICommand AvailableAmountCommand => _availableAmountCommand ??=
+            ReactiveCommand.Create(async () => await Application.Current.MainPage.DisplayAlert(string.Empty, AppResources.AvailableAmountDexTooltip, AppResources.AcceptButton));
 
         private ICommand _showAllSwapsCommand;
-        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??= new Command(() =>
-        {
-            IsAllSwapsShowed = true;
-            CanShowMoreSwaps = false;
-        });
+        public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??=
+            ReactiveCommand.Create(() =>
+            {
+                IsAllSwapsShowed = true;
+                CanShowMoreSwaps = false;
+            });
 
         private async void OnSwapEventHandler(object sender, SwapEventArgs args)
         {
@@ -1018,10 +1011,10 @@ namespace atomex.ViewModel
                 return;
             }
 
-            //if (RedeemFromAddress == null)
-            //{
-            //    return;
-            //}
+            if (RedeemFromAddress == null)
+            {
+                return;
+            }
 
             if (FromViewModel.Amount <= 0)
             {
@@ -1114,7 +1107,6 @@ namespace atomex.ViewModel
 
                 BaseCurrencyCode = BaseCurrencyCode,
                 QuoteCurrencyCode = QuoteCurrencyCode,
-                PriceFormat = PriceFormat!,
                 Amount = FromViewModel.Amount,
                 AmountInBase = FromViewModel.AmountInBase,
                 TargetAmount = ToViewModel.Amount,
@@ -1127,24 +1119,15 @@ namespace atomex.ViewModel
             };
 
             viewModel.OnSuccess += OnSuccessConvertion;
-            viewModel.OnError += OnErrorConvertion;
-
-            //App.DialogService.Show(viewModel);
+            
+            _ = PopupNavigation.Instance.PushAsync(new ExchangeConfirmationBottomSheet(viewModel));
         }
 
         private void OnSuccessConvertion(object sender, EventArgs e)
         {
             // todo: check!!
-            IsLoading = false;
-            this.RaisePropertyChanged(nameof(IsLoading));
             FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
             _ = EstimateSwapParamsAsync();
-        }
-
-        private void OnErrorConvertion(object sender, EventArgs e)
-        {
-            IsLoading = false;
-            this.RaisePropertyChanged(nameof(IsLoading));
         }
     }
 }

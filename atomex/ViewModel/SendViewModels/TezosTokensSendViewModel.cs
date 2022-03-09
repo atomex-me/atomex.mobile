@@ -311,10 +311,6 @@ namespace atomex.ViewModel.SendViewModels
         private ReactiveCommand<Unit, Unit> _maxCommand;
         public ReactiveCommand<Unit, Unit> MaxCommand => _maxCommand ??= ReactiveCommand.Create(OnMaxClick);
 
-        private ReactiveCommand<Unit, Unit> _undoConfirmStageCommand;
-        public ReactiveCommand<Unit, Unit> UndoConfirmStageCommand => _undoConfirmStageCommand ??=
-            (_undoConfirmStageCommand = ReactiveCommand.Create(() => { ConfirmStage = false; }));
-
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
             (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
@@ -323,11 +319,8 @@ namespace atomex.ViewModel.SendViewModels
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
 
-        private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
-        {
-            ConfirmStage = false;
-        });
+        private ICommand _undoConfirmStageCommand;
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => { ConfirmStage = false; });
 
         private async Task FromClick()
         {

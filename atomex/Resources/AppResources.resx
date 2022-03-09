@@ -1107,4 +1107,7 @@
         <value>Swap successfully created.
 NOTE: Do not sign out or close the application until the swap is completed, otherwise it may result in a loss of funds.</value>
     </data>
+    <data name="AvailableAmountDexTooltip" xml:space="preserve">
+        <value>The limit applies to a single trade. In case you require more liquidity make multiple trades</value>
+    </data>
 </root>
