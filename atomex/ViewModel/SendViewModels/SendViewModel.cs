@@ -326,6 +326,8 @@ namespace atomex.ViewModel.SendViewModels
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
         {
             Stage = PopupNavigation.Instance.PopupStack.Count <= 1 ? SendStage.Edit : Stage;
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                PopupNavigation.Instance.PopAsync();
         });
 
         private ReactiveCommand<Unit, Unit> _maxCommand;

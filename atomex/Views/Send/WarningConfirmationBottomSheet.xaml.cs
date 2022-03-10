@@ -16,8 +16,6 @@ namespace atomex.Views.Send
             var vm = (SendViewModel)BindingContext;
             if (vm.UndoConfirmStageCommand.CanExecute(null))
                 vm.UndoConfirmStageCommand.Execute(null);
-
-            base.OnDisappearing();
         }
     }
 }

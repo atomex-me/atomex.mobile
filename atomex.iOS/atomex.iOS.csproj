@@ -302,6 +302,9 @@
     <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\ic_question__warning.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -497,6 +500,7 @@
     <Folder Include="Assets.xcassets\ic_search.imageset\" />
     <Folder Include="Assets.xcassets\ic_question__error.imageset\" />
     <Folder Include="Assets.xcassets\ic_question__warning.imageset\" />
+    <Folder Include="Assets.xcassets\ic_swipe__indicator.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

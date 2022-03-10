@@ -320,7 +320,13 @@ namespace atomex.ViewModel.SendViewModels
             (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => { ConfirmStage = false; });
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
+            {
+                ConfirmStage = false;
+
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    PopupNavigation.Instance.PopAsync();
+            });
 
         private async Task FromClick()
         {

@@ -7,6 +7,7 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.Views.Send.WarningConfirmationBottomSheet">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
@@ -20,12 +21,22 @@
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnDisappearing"
+                                                ClosingEdge="100"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
+            <Image Source="ic_swipe__indicator"
+                   WidthRequest="22"
+                   HeightRequest="3"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
             <Label Text="{helpers:Translate Warning}"
                    Style="{DynamicResource TitleTextStyle}"
                    Padding="0,20"

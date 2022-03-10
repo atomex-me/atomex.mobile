@@ -10,5 +10,15 @@ namespace atomex.Views.CreateSwap
             InitializeComponent();
             BindingContext = selectCurrencyViewModel;
         }
+
+        public void OnClose()
+        {
+            if (BindingContext is SelectCurrencyViewModel)
+            {
+                var sendViewModel = (SelectCurrencyViewModel)BindingContext;
+                if (sendViewModel.CloseBottomSheetCommand.CanExecute(null))
+                    sendViewModel.CloseBottomSheetCommand.Execute(null);
+            }
+        }
     }
 }

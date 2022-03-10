@@ -16,6 +16,7 @@ using Serilog;
 using atomex.Common;
 using Rg.Plugins.Popup.Services;
 using atomex.Views.Popup;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -71,6 +72,13 @@ namespace atomex.ViewModel
 
         private ICommand _nextCommand;
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
+
+        private ICommand _undoConfirmStageCommand;
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                PopupNavigation.Instance.PopAsync();
+        });
 
         public ConversionConfirmationViewModel(IAtomexApp app)
         {

@@ -6,7 +6,8 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     x:Class="atomex.Views.CreateSwap.AddressesBottomSheet"
-    xmlns:controls="clr-namespace:atomex.CustomElements">
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
             PositionIn="Bottom"
@@ -20,8 +21,13 @@
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand"
                  Spacing="0">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="100"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="0"
+                              Padding="16"
                               HorizontalOptions="FillAndExpand"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
             <controls:CustomFrame.HeightRequest>
@@ -33,17 +39,22 @@
                 </OnPlatform>
             </controls:CustomFrame.HeightRequest>
             <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="22"
+                       HeightRequest="3"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
                 <Label Text="{helpers:Translate ReceiveTo}"
                        FontSize="16"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Start"
-                       Margin="24"/>
+                       Margin="8,24"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                              BackgroundColor="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
                 <StackLayout Orientation="Horizontal"
-                             Margin="24"
+                             Margin="8,24"
                              Spacing="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ChooseMyAddressCommand}"/>
@@ -63,7 +74,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
-                             Margin="24">
+                             Margin="8,24">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EnterExternalAddressCommand}"/>
                     </StackLayout.GestureRecognizers>

@@ -260,7 +260,8 @@ namespace atomex.ViewModel.ConversionViewModels
         public ICommand EnterExternalAddressCommand => _enterExternalAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.EnterExternalAddress);
-            _ = PopupNavigation.Instance.PopAsync();
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
             await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
         });
 
@@ -268,8 +269,16 @@ namespace atomex.ViewModel.ConversionViewModels
         public ICommand ChooseMyAddressCommand => _chooseMyAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.ChooseMyAddress);
-            _ = PopupNavigation.Instance.PopAsync();
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
             await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
+        });
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
         });
 
         private readonly IAccount _account;
