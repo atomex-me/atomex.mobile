@@ -74,29 +74,12 @@ namespace atomex.ViewModel
         [Reactive] public ConversionCurrencyViewModel ToViewModel { get; set; }
         [Reactive] public SelectCurrencyViewModelItem FromCurrencyViewModelItem { get; set; }
         [Reactive] public SelectCurrencyViewModelItem ToCurrencyViewModelItem { get; set; }
-
-        [Reactive] public string AmountValidationMessage { get; set; }
-        [Reactive] public string AmountValidationMessageToolTip { get; set; }
-        [Reactive] public MessageType AmountValidationMessageType { get; set; }
-        [ObservableAsProperty] public bool IsAmountValidationWarning { get; }
-        [ObservableAsProperty] public bool IsAmountValidationError { get; }
-
-        [Reactive] public string Message { get; set; }
-        [Reactive] public string MessageToolTip { get; set; }
-        [Reactive] public MessageType MessageType { get; set; }
-        [ObservableAsProperty] public bool IsWarning { get; }
-        [ObservableAsProperty] public bool IsError { get; }
-
         [Reactive] public string BaseCurrencyCode { get; set; }
         [Reactive] public string QuoteCurrencyCode { get; set; }
-        [Reactive] public string PriceFormat { get; set; }
-        [Reactive] public bool IsAmountValid { get; set; }
 
         public AmountType _amountType;
 
         private decimal _estimatedOrderPrice;
-
-        //[Reactive] public Message Message { get; set; }
 
         [Reactive] public decimal EstimatedPrice { get; set; }
         [Reactive] public decimal EstimatedMaxFromAmount { get; set; }
@@ -111,8 +94,11 @@ namespace atomex.ViewModel
         [Reactive] public decimal RewardForRedeem { get; set; }
         [Reactive] public decimal RewardForRedeemInBase { get; set; }
         [ObservableAsProperty] public bool HasRewardForRedeem { get; }
-        [Reactive] public bool CanExchange { get; set; }
         [Reactive] public ObservableCollection<SwapViewModel> Swaps { get; set; }
+
+        [Reactive] public Message Message { get; set; }
+        [Reactive] public Message AmountToFeeRatioWarning { get; set; }
+        [Reactive] public bool CanExchange { get; set; }
         [Reactive] public bool IsNoLiquidity { get; set; }
         [Reactive] public bool IsInsufficientFunds { get; set; }
 
@@ -142,6 +128,8 @@ namespace atomex.ViewModel
             _cachedSwaps = new Dictionary<long, SwapViewModel>();
             Swaps = new ObservableCollection<SwapViewModel>();
             GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>();
+            Message = new Message();
+            AmountToFeeRatioWarning = new Message();
             CanExchange = true;
 
             FromViewModel = new ConversionCurrencyViewModel
@@ -206,6 +194,20 @@ namespace atomex.ViewModel
             GetSwaps();
             IsAllSwapsShowed = false;
 
+            this.WhenAnyValue(
+                vm => vm.FromViewModel.Amount,
+                vm => vm.FromViewModel.CurrencyViewModel,
+                vm => vm.ToViewModel.Amount,
+                vm => vm.ToViewModel.CurrencyViewModel
+            )
+            .SubscribeInMainThread(_ =>
+            {
+                AmountToFeeRatioWarning.Text = string.Empty;
+                Message.Text = string.Empty;
+                this.RaisePropertyChanged(nameof(Message));
+                this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
+            });
+
             // FromCurrencyViewModel changed => Update ToCurrencies
             this.WhenAnyValue(vm => vm.FromViewModel.CurrencyViewModel)
                 .WhereNotNull()
@@ -261,7 +263,6 @@ namespace atomex.ViewModel
                 {
                     var symbol = Symbols.SymbolByCurrencies(t.Item1.Currency, t.Item2.Currency);
 
-                    PriceFormat = symbol != null ? Currencies.GetByName(symbol.Quote).Format : null;
                     BaseCurrencyCode = symbol?.Base;
                     QuoteCurrencyCode = symbol?.Quote;
                 });
@@ -334,6 +335,17 @@ namespace atomex.ViewModel
                 {
                     FromViewModel.IsAmountValid = !IsInsufficientFunds && !IsNoLiquidity;
                     ToViewModel.IsAmountValid = !IsInsufficientFunds && !IsNoLiquidity;
+
+                    if (IsInsufficientFunds)
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.All,
+                            text: AppResources.InsufficientFunds);
+                    if (IsNoLiquidity)
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.All,
+                            text: AppResources.NoLiquidityError);
                 });
 
             this.WhenAnyValue(
@@ -363,22 +375,6 @@ namespace atomex.ViewModel
                         isGoodAmountToFeeRatio;
                 });
 
-            this.WhenAnyValue(vm => vm.AmountValidationMessageType)
-                .Select(t => t == MessageType.Warning)
-                .ToPropertyExInMainThread(this, vm => vm.IsAmountValidationWarning);
-
-            this.WhenAnyValue(vm => vm.AmountValidationMessageType)
-                .Select(t => t == MessageType.Error)
-                .ToPropertyExInMainThread(this, vm => vm.IsAmountValidationError);
-
-            this.WhenAnyValue(vm => vm.MessageType)
-                .Select(t => t == MessageType.Warning)
-                .ToPropertyExInMainThread(this, vm => vm.IsWarning);
-
-            this.WhenAnyValue(vm => vm.MessageType)
-                .Select(t => t == MessageType.Error)
-                .ToPropertyExInMainThread(this, vm => vm.IsError);
-
             this.WhenAnyValue(vm => vm.Swaps)
                 .Subscribe(swaps => CanShowMoreSwaps = swaps.Count > _swapNumberPerPage);
 
@@ -400,7 +396,6 @@ namespace atomex.ViewModel
                     this.RaisePropertyChanged(nameof(GroupedSwaps));
                 });
 
-            
             SubscribeToServices();
         }
 
@@ -643,19 +638,22 @@ namespace atomex.ViewModel
                         EstimatedRedeemFee = 0;
                         RewardForRedeem = 0;
                         EstimatedMakerNetworkFee = 0;
-                        AmountValidationMessage = string.Empty;
+                        
                         return;
                     }
 
                     if (swapParams.Error != null)
                     {
-                        AmountValidationMessageType = MessageType.Error;
-                        AmountValidationMessage = swapParams.Error.Description;
-                        AmountValidationMessageToolTip = swapParams.Error.Details;
+                        ShowMessage(
+                            messageType: MessageType.Error,
+                            element: RelatedTo.All,
+                            text: swapParams.Error.Description,
+                            tooltipText: swapParams.Error.Details);
                     }
                     else
                     {
-                        AmountValidationMessage = string.Empty;
+                        Message.Text = string.Empty;
+                        this.RaisePropertyChanged(nameof(Message));
                     }
 
                     EstimatedPaymentFee = swapParams.PaymentFee;
@@ -761,7 +759,6 @@ namespace atomex.ViewModel
             ToCurrencyViewModelItem = null;
 
             OnSwapEventHandler(this, args: null);
-            //OnQuotesUpdatedEventHandler(this, args: null); ??
         }
 
         private void CheckAmountToFeeRatio()
@@ -771,28 +768,39 @@ namespace atomex.ViewModel
 
             if (amountInBase != 0 && estimatedTotalNetworkFeeInBase / amountInBase > 0.3m)
             {
-                MessageType = MessageType.Error;
-                Message = string.Format(
+                var message = string.Format(
                     provider: CultureInfo.CurrentCulture,
                     format: AppResources.TooHighNetworkFee,
                     arg0: FormattableString.Invariant($"{estimatedTotalNetworkFeeInBase:$0.00}"),
                     arg1: FormattableString.Invariant($"{estimatedTotalNetworkFeeInBase / amountInBase:0.00%}"));
-                MessageToolTip = AppResources.AmountToFeeRatioToolTip;
+
+                SetAmountToFeeRationWarning(
+                    messageType: MessageType.Error,
+                    element: RelatedTo.All,
+                    text: message,
+                    tooltipText: AppResources.AmountToFeeRatioToolTip);
+
+                return;
             }
-            else if (amountInBase != 0 && estimatedTotalNetworkFeeInBase / amountInBase > 0.1m)
+            if (amountInBase != 0 && estimatedTotalNetworkFeeInBase / amountInBase > 0.1m)
             {
-                MessageType = MessageType.Warning;
-                Message = string.Format(
+                var message = string.Format(
                     provider: CultureInfo.CurrentCulture,
                     format: AppResources.SufficientNetworkFee,
                     arg0: FormattableString.Invariant($"{estimatedTotalNetworkFeeInBase:$0.00}"),
                     arg1: FormattableString.Invariant($"{estimatedTotalNetworkFeeInBase / amountInBase:0.00%}"));
-                MessageToolTip = AppResources.AmountToFeeRatioToolTip;
+
+                SetAmountToFeeRationWarning(
+                    messageType: MessageType.Warning,
+                    element: RelatedTo.All,
+                    text: message,
+                    tooltipText: AppResources.AmountToFeeRatioToolTip);
+
+                return;
             }
-            else
-            {
-                Message = string.Empty;
-            }
+
+            AmountToFeeRatioWarning.Text = string.Empty;
+            this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
         }
 
         protected async void OnBaseQuotesUpdatedEventHandler(object sender, EventArgs args)
@@ -868,8 +876,8 @@ namespace atomex.ViewModel
             }
         }
 
-        private ICommand _estNetworkFeeFeeCommand;
-        public ICommand EstNetworkFeeFeeCommand => _estNetworkFeeFeeCommand ??=
+        private ICommand _estNetworkFeeTooltipCommand;
+        public ICommand EstNetworkFeeTooltipCommand => _estNetworkFeeTooltipCommand ??=
             ReactiveCommand.Create(async () =>
             {
                 string message = string.Format(
@@ -896,9 +904,25 @@ namespace atomex.ViewModel
                 await Application.Current.MainPage.DisplayAlert(AppResources.NetworkFee, message, AppResources.AcceptButton);
             });
 
-        private ICommand _availableAmountCommand;
-        public ICommand AvailableAmountCommand => _availableAmountCommand ??=
+        private ICommand _availableAmountTooltipCommand;
+        public ICommand AvailableAmountTooltipCommand => _availableAmountTooltipCommand ??=
             ReactiveCommand.Create(async () => await Application.Current.MainPage.DisplayAlert(string.Empty, AppResources.AvailableAmountDexTooltip, AppResources.AcceptButton));
+
+        private ICommand _messageTooltipCommand;
+        public ICommand MessageTooltipCommand => _messageTooltipCommand ??=
+            ReactiveCommand.Create(async () =>
+                {
+                    if (!string.IsNullOrEmpty(Message.TooltipText))
+                        await Application.Current.MainPage.DisplayAlert(string.Empty, Message.TooltipText, AppResources.AcceptButton);
+                }); 
+
+        private ICommand _amountToFeeRatioTooltipCommand;
+        public ICommand AmountToFeeRatioTooltipCommand => _amountToFeeRatioTooltipCommand ??=
+            ReactiveCommand.Create(async () =>
+                {
+                    if (!string.IsNullOrEmpty(AmountToFeeRatioWarning.TooltipText))
+                    await Application.Current.MainPage.DisplayAlert(string.Empty, AmountToFeeRatioWarning.TooltipText, AppResources.AcceptButton);
+                });
 
         private ICommand _showAllSwapsCommand;
         public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??=
@@ -925,9 +949,7 @@ namespace atomex.ViewModel
                     {
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
-
                         //Navigation.PushAsync(new SwapInfoPage(swapViewModel));
-
                         Swaps.Add(swapViewModel);
 
                         var groups = !IsAllSwapsShowed
@@ -1128,6 +1150,26 @@ namespace atomex.ViewModel
             // todo: check!!
             FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
             _ = EstimateSwapParamsAsync();
+        }
+
+        protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
+        {
+            Message.Type = messageType;
+            Message.RelatedTo = element;
+            Message.Text = text;
+            Message.TooltipText = tooltipText;
+
+            this.RaisePropertyChanged(nameof(Message));
+        }
+
+        protected void SetAmountToFeeRationWarning(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
+        {
+            AmountToFeeRatioWarning.Type = messageType;
+            AmountToFeeRatioWarning.RelatedTo = element;
+            AmountToFeeRatioWarning.Text = text;
+            AmountToFeeRatioWarning.TooltipText = tooltipText;
+
+            this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
         }
     }
 }

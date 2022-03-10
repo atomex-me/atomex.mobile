@@ -79,6 +79,13 @@
     </Style>
 
     <!-- Labels -->
+    <Style x:Key="TitleTextStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="Padding" Value="16,32,16,8"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+    </Style>
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
         <Setter Property="Margin" Value="15,0,0,0"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
@@ -651,13 +658,6 @@
     </Style>
 
     <!-- Create swap Page -->
-    <Style x:Key="TitleTextStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-        <Setter Property="FontSize" Value="28"/>
-        <Setter Property="Padding" Value="16,32,16,8"/>
-        <Setter Property="HorizontalTextAlignment" Value="Start"/>
-    </Style>
     <Style x:Key="EstimatedLabelStyle" TargetType="Span">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>

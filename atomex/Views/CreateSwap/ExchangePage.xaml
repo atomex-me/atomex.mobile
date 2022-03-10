@@ -15,6 +15,7 @@
             <converters:NullToBooleanInvertConverter x:Key="NullToBooleanInvert"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
             <converters:EqualsConverter x:Key="EqualsConverter"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ListView ItemsSource="{Binding GroupedSwaps}"
@@ -135,7 +136,6 @@
                     <custom:CustomEntry Grid.Column="1"
                                         Grid.ColumnSpan="2"
                                         Keyboard="Numeric"
-                                        Placeholder="Enter amount"
                                         Text="{Binding FromViewModel.AmountString}"
                                         Style="{DynamicResource EntryStyle}"
                                         FontSize="24"
@@ -147,6 +147,20 @@
                             <behaviors:EventToCommandBehavior EventName="Focused"
                                                               Command="{Binding FromViewModel.RaiseGotInputFocusCommand}"/>
                         </custom:CustomEntry.Behaviors>
+                        <custom:CustomEntry.Triggers>
+                            <DataTrigger TargetType="custom:CustomEntry"
+                                         Binding="{Binding FromViewModel.IsAmountValid}"
+                                         Value="False">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="custom:CustomEntry"
+                                         Binding="{Binding FromViewModel.IsAmountValid}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                            </DataTrigger>
+                        </custom:CustomEntry.Triggers>
                     </custom:CustomEntry>
                     <Label Grid.Column="1"
                            Grid.ColumnSpan="2"
@@ -196,7 +210,7 @@
                                  HorizontalOptions="End"
                                  Orientation="Horizontal">
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AvailableAmountCommand}"/>
+                            <TapGestureRecognizer Command="{Binding AvailableAmountTooltipCommand}"/>
                         </StackLayout.GestureRecognizers>
                         <StackLayout.IsVisible>
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
@@ -271,7 +285,6 @@
                                         Grid.ColumnSpan="2"
                                         Grid.Column="1"
                                         Keyboard="Numeric"
-                                        Placeholder="Enter amount"
                                         Text="{Binding ToViewModel.AmountString}"
                                         Style="{DynamicResource EntryStyle}"                                    
                                         FontSize="24"
@@ -279,6 +292,20 @@
                                         VerticalTextAlignment="End"
                                         Margin="5,0,15,5"
                                         IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                        <custom:CustomEntry.Triggers>
+                            <DataTrigger TargetType="custom:CustomEntry"
+                                         Binding="{Binding ToViewModel.IsAmountValid}"
+                                         Value="False">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="custom:CustomEntry"
+                                         Binding="{Binding FromViewModel.IsAmountValid}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                            </DataTrigger>
+                        </custom:CustomEntry.Triggers>
                         <custom:CustomEntry.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
                                                               Command="{Binding ToViewModel.RaiseGotInputFocusCommand}"/>
@@ -398,7 +425,7 @@
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal">
                         <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EstNetworkFeeFeeCommand}"/>
+                            <TapGestureRecognizer Command="{Binding EstNetworkFeeTooltipCommand}"/>
                         </StackLayout.GestureRecognizers>
                         <Label HorizontalTextAlignment="Start"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -418,8 +445,138 @@
                                HeightRequest="12"/>
                     </StackLayout>
                 </StackLayout>
+                <StackLayout Margin="16,12,16,0"
+                             IsVisible="False">
+                    <StackLayout.Triggers>
+                        <MultiTrigger TargetType="StackLayout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding AmountToFeeRatioWarning.RelatedTo}"
+                                                  Value="All"/>
+                                <BindingCondition Binding="{Binding AmountToFeeRatioWarning.Text, Converter={StaticResource StringToBool}}"
+                                                  Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </MultiTrigger>
+                    </StackLayout.Triggers>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AmountToFeeRatioTooltipCommand}"/>
+                    </StackLayout.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="{Binding AmountToFeeRatioWarning.Text}"
+                               FontSize="12"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="#FFA800"
+                               HorizontalTextAlignment="Start"
+                               HorizontalOptions="StartAndExpand"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                             Value="Warning">
+                                    <Setter Property="TextColor"
+                                            Value="#FFA800"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                             Value="Error">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Image WidthRequest="12"
+                               HeightRequest="12"
+                               Source="ic_question"
+                               HorizontalOptions="End"
+                               Margin="0,0,30,0"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding AmountToFeeRatioWarning.TooltipText, Converter={StaticResource StringToBool}}">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                             Value="Error">
+                                    <Setter Property="Source"
+                                            Value="ic_question__error"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding AmountToFeeRatioWarning.Type}"
+                                             Value="Warning">
+                                    <Setter Property="Source"
+                                            Value="ic_question__warning"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Margin="16,12,16,0"
+                             IsVisible="False">
+                    <StackLayout.Triggers>
+                        <MultiTrigger TargetType="StackLayout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                                  Value="All"/>
+                                <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                                  Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </MultiTrigger>
+                    </StackLayout.Triggers>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MessageTooltipCommand}"/>
+                    </StackLayout.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
+                        <Label Text="{Binding Message.Text}"
+                               FontSize="12"
+                               FontFamily="{DynamicResource RegularFont}"
+                               TextColor="#FFA800"
+                               HorizontalTextAlignment="Start"
+                               HorizontalOptions="StartAndExpand"
+                               VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Message.Type}"
+                                             Value="Warning">
+                                    <Setter Property="TextColor"
+                                            Value="#FFA800"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Message.Type}"
+                                             Value="Error">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Image WidthRequest="12"
+                               HeightRequest="12"
+                               Source="ic_question"
+                               HorizontalOptions="End"
+                               Margin="0,0,30,0"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding Message.TooltipText, Converter={StaticResource StringToBool}}">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding Message.Type}"
+                                             Value="Error">
+                                    <Setter Property="Source"
+                                            Value="ic_question__error"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding Message.Type}"
+                                             Value="Warning">
+                                    <Setter Property="Source"
+                                            Value="ic_question__warning"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                    </StackLayout>
+                </StackLayout>
                 <StackLayout VerticalOptions="End"
-                             Margin="16,24">
+                             Margin="16">
                     <StackLayout.IsVisible>
                         <MultiBinding Converter="{StaticResource AllTrueConverter}">
                             <Binding Path="FromViewModel.CurrencyViewModel"
@@ -430,8 +587,6 @@
                                      Converter="{StaticResource NullToBoolean}"/>
                         </MultiBinding>
                     </StackLayout.IsVisible>
-
-                    
                     <Button Text="{helpers:Translate ExchangeLabel}"
                             CornerRadius="8"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
@@ -690,4 +845,3 @@
         </ListView.ItemTemplate>
     </ListView>
 </ContentPage>
-
