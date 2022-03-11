@@ -27,7 +27,7 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="16"
+                              Padding="16,8,16,16"
                               HorizontalOptions="FillAndExpand"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
             <controls:CustomFrame.HeightRequest>
@@ -40,8 +40,8 @@
             </controls:CustomFrame.HeightRequest>
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
-                       WidthRequest="22"
-                       HeightRequest="3"
+                       WidthRequest="35"
+                       HeightRequest="4"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label Text="{helpers:Translate ReceiveTo}"

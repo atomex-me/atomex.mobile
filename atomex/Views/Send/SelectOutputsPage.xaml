@@ -185,7 +185,7 @@
                         Grid.Row="1"
                         Text="{helpers:Translate ConfirmButton}"
                         Margin="16,14"
-                        CornerRadius="8"
+                        CornerRadius="22"
                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                         FontSize="17"

@@ -433,7 +433,7 @@ namespace atomex.ViewModel
         }
 
         private ICommand _convertCommand;
-        public ICommand ConvertCommand => _convertCommand ??= ReactiveCommand.Create(OnConvertClickAsync);
+        public ICommand ConvertCommand => _convertCommand ??= ReactiveCommand.Create(OnConvertClick);
 
         private ICommand _swapCurrenciesCommand;
         public ICommand SwapCurrenciesCommand => _swapCurrenciesCommand ??= ReactiveCommand.Create(async () =>
@@ -1009,34 +1009,13 @@ namespace atomex.ViewModel
             }
         }
 
-        private async Task OnConvertClickAsync()
+        private async Task OnConvertClick()
         {
-            if (FromViewModel.CurrencyViewModel == null)
-            {
-                // TODO: warning
+            if (FromViewModel.CurrencyViewModel == null ||
+                ToViewModel.CurrencyViewModel == null ||
+                FromCurrencyViewModelItem?.FromSource == null ||
+                ToAddress == null)
                 return;
-            }
-
-            if (ToViewModel.CurrencyViewModel == null)
-            {
-                // TODO: warning
-                return;
-            }
-
-            if (FromCurrencyViewModelItem?.FromSource == null)
-            {
-                return;
-            }
-
-            if (ToAddress == null)
-            {
-                return;
-            }
-
-            if (RedeemFromAddress == null)
-            {
-                return;
-            }
 
             if (FromViewModel.Amount <= 0)
             {

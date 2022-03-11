@@ -200,7 +200,7 @@
                        HeightRequest="56"
                        BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                       CornerRadius="5"
+                       CornerRadius="8"
                        Margin="16,0"
                        HasShadow="False">
                     <Grid HorizontalOptions="Fill"
@@ -213,7 +213,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <custom:CustomEntry Placeholder="Paste an address"
+                        <custom:CustomEntry Placeholder="{helpers:Translate ExternalAddress}"
                                             Text="{Binding ToAddress, Mode=TwoWay}"
                                             Style="{DynamicResource EntryStyle}"
                                             FontSize="16"
@@ -517,7 +517,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ConfirmButton}"
                         Margin="16,14"
-                        CornerRadius="8"
+                        CornerRadius="22"
                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                         FontSize="17"

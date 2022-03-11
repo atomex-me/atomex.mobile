@@ -45,20 +45,21 @@
                                     <RowDefinition Height="40" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1.5*" />
-                                    <ColumnDefinition Width="3.5*" />
-                                    <ColumnDefinition Width="3.5*" />
-                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="6*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="62" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.RowSpan="2"
-                                       WidthRequest="22"
-                                       HeightRequest="22"
-                                       Margin="10,0"
+                                       WidthRequest="28"
+                                       HeightRequest="28"
+                                       Margin="16,0"
                                        VerticalOptions="CenterAndExpand"
+                                       HorizontalOptions="Start"
                                        Source="{Binding CurrencyViewModel.CurrencyCode}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding CurrencyViewModel.Currency.Description}"
-                                       FontFamily="{DynamicResource RegularFont}"
+                                       FontFamily="{DynamicResource BoldFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                        FontSize="20"
                                        Margin="0,3"
@@ -83,7 +84,7 @@
                                        Text="{Binding SelectedAddressDescription}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       Margin="10,2"
+                                       Margin="0,2"
                                        FontSize="12"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="End"/>
@@ -91,7 +92,6 @@
                                        Grid.Column="2"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       Margin="10,0"
                                        FontSize="12"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="End">
@@ -113,9 +113,7 @@
                                 </Label>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="3"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
-                                       Margin="10,0,20,0"
+                                       Margin="16,0,22,0"
                                        VerticalOptions="FillAndExpand"
                                        Source="ic_edit">
                                     <Image.GestureRecognizers>

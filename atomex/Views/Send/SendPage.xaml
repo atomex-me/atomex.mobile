@@ -217,7 +217,7 @@
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                   CornerRadius="5"
+                   CornerRadius="8"
                    HasShadow="False">
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
@@ -407,7 +407,7 @@
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                   CornerRadius="5"
+                   CornerRadius="8"
                    HasShadow="False"
                    IsVisible="False">
                 <Frame.Triggers>
@@ -521,7 +521,7 @@
                    HeightRequest="56"
                    BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                   CornerRadius="5"
+                   CornerRadius="8"
                    HasShadow="False"
                    IsVisible="False">
                 <Frame.Triggers>
@@ -714,7 +714,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ReviewButton}"
                         Margin="16,14"
-                        CornerRadius="8"
+                        CornerRadius="22"
                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                         TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                         FontSize="17"

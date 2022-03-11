@@ -27,14 +27,14 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="16"
+                              Padding="16,8,16,16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Image Source="ic_swipe__indicator"
-                   WidthRequest="22"
-                   HeightRequest="3"
+                   WidthRequest="35"
+                   HeightRequest="4"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
             <Label Text="{helpers:Translate Warning}"
@@ -88,7 +88,7 @@
             <StackLayout VerticalOptions="EndAndExpand">
                 <RelativeLayout HeightRequest="44">
                     <Button Text="{helpers:Translate SendButton}"
-                            CornerRadius="8"
+                            CornerRadius="22"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                             TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                             FontSize="17"

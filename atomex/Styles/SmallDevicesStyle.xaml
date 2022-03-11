@@ -81,7 +81,7 @@
     <!-- Labels -->
     <Style x:Key="TitleTextStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="Padding" Value="16,32,16,8"/>
         <Setter Property="HorizontalTextAlignment" Value="Start"/>
