@@ -128,18 +128,6 @@ namespace atomex.ViewModel
                 this.RaisePropertyChanged(nameof(IsLoading));
 
                 OnSuccess?.Invoke(this, EventArgs.Empty);
-
-                if (PopupNavigation.Instance.PopupStack.Count > 0)
-                    await PopupNavigation.Instance.PopAsync();
-
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Success,
-                        Title = AppResources.Success,
-                        Body = AppResources.OrderMatched,
-                        ButtonText = AppResources.AcceptButton
-                    }));
             }
             catch (Exception e)
             {

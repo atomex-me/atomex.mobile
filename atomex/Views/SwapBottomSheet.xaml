@@ -1,22 +1,56 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-             xmlns:converters="clr-namespace:atomex.Converters"
-             x:Class="atomex.SwapInfoPage"
-             x:Name="BindingContextPage"
-             Title="{helpers:Translate SwapInfoPageTitle}"
-             Style="{DynamicResource MainBackgroundStyle}">
-    <ContentPage.Resources>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    x:Class="atomex.Views.SwapBottomSheet"
+    x:Name="BindingContextPage"
+    Title="{helpers:Translate SwapInfoPageTitle}"
+    Style="{DynamicResource MainBackgroundStyle}">
+    <pages:PopupPage.Resources>
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter" /> 
             <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
             <converters:NullToBooleanInvertConverter x:Key="NullToBooleanInvert"/>
         </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.Content>
+    </pages:PopupPage.Resources>
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+    <StackLayout.Behaviors>
+        <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                            ClosingEdge="100"
+                                            ClosingTimeInMs="300"/>
+    </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="0,8"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="556"
+                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+        <StackLayout Spacing="0">
+        <Image Source="ic_swipe__indicator"
+               WidthRequest="35"
+               HeightRequest="4"
+               Margin="0,0,0,20"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
         <ScrollView>
             <StackLayout Spacing="0"
                          Padding="0,20">
@@ -1176,5 +1210,7 @@
                 </StackLayout>
             </StackLayout>
         </ScrollView>
-    </ContentPage.Content>
-</ContentPage>
+        </StackLayout>
+    </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

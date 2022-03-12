@@ -8,6 +8,7 @@ using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Abstract;
 using Atomex.Core;
+using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
@@ -279,26 +280,25 @@ namespace atomex
         }
 
         private ICommand _openInExplorerCommand;
-        public ICommand OpenInExplorerCommand => _openInExplorerCommand ??= new Command<string>((value) => OpenInExplorer(value));
-
-        private void OpenInExplorer(string uri)
+        public ICommand OpenInExplorerCommand => _openInExplorerCommand ??= new Command<string>((value) =>
         {
-            if (!string.IsNullOrEmpty(uri))
+            if (!string.IsNullOrEmpty(value))
             {
-                Launcher.OpenAsync(new Uri(uri));
+                Launcher.OpenAsync(new Uri(value));
             }
-        }
+        });
 
         private ICommand _expandStatusCommand;
-        public ICommand ExpandStatusCommand => _expandStatusCommand ??= new Command<string>((value) => OnStatusClicked(value));
+        public ICommand ExpandStatusCommand => _expandStatusCommand ??= new Command<string>((value) =>
+            ExpandedStatus = ExpandedStatus == value ? string.Empty : value
+        );
 
-        private void OnStatusClicked(string status)
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
         {
-            if (ExpandedStatus == status)
-                ExpandedStatus = string.Empty;
-            else
-                ExpandedStatus = status;
-        }
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
+        });
     }
 }
 

@@ -1,11 +1,12 @@
 ﻿using System;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
-    public partial class SwapInfoPage : ContentPage
+    public partial class SwapBottomSheet : PopupPage
     {
-        public SwapInfoPage(SwapViewModel swapViewModel)
+        public SwapBottomSheet(SwapViewModel swapViewModel)
         {
             InitializeComponent();
             BindingContext = swapViewModel;
@@ -24,6 +25,16 @@ namespace atomex
             VisualStateManager.GoToState(DetailsButton, state);
             VisualStateManager.GoToState(ProgressTab, state);
             VisualStateManager.GoToState(DetailsTab, state);
+        }
+
+        public void OnClose()
+        {
+            if (BindingContext is SwapViewModel)
+            {
+                var swapViewModel = (SwapViewModel)BindingContext;
+                if (swapViewModel.CloseBottomSheetCommand.CanExecute(null))
+                    swapViewModel.CloseBottomSheetCommand.Execute(null);
+            }
         }
     }
 }

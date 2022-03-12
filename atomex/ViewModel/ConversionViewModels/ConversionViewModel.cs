@@ -30,6 +30,7 @@ using Atomex.ViewModels;
 using atomex.Models;
 using atomex.Views.Send;
 using Rg.Plugins.Popup.Services;
+using atomex.Views;
 
 namespace atomex.ViewModel
 {
@@ -111,7 +112,7 @@ namespace atomex.ViewModel
                 if (value == null) return;
                 _selectedSwap = value;
 
-                Navigation.PushAsync(new SwapInfoPage(_selectedSwap));
+                _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(_selectedSwap));
             }
         }
 
@@ -935,7 +936,11 @@ namespace atomex.ViewModel
                     {
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
-                        Navigation.PushAsync(new SwapInfoPage(swapViewModel));
+                        
+                        if (PopupNavigation.Instance.PopupStack.Count > 0)
+                            _ = PopupNavigation.Instance.PopAsync();
+                        _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(swapViewModel));
+
                         Swaps.Add(swapViewModel);
 
                         var groups = !IsAllSwapsShowed
