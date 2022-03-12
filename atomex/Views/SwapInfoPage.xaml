@@ -19,10 +19,9 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0"
-                         Padding="0,20,0,0">
+                         Padding="0,20">
                 <Image WidthRequest="40"
-                       HeightRequest="40"
-                       Margin="20">
+                       HeightRequest="40">
                     <Image.Triggers>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding State}"
@@ -57,8 +56,9 @@
                     </Image.Triggers>
                 </Image>
                 <Label Text="{Binding StateStringI18n}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="22"
+                       FontFamily="{DynamicResource BoldFont}"
+                       FontSize="24"
+                       Padding="24,12"
                        HorizontalTextAlignment="Center">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
@@ -94,9 +94,9 @@
                     </Label.Triggers>
                 </Label>
                 <Label Text="{Binding StateDescription}"
-                       Padding="10"
+                       Padding="24,0"
                        FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
+                       FontSize="12"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        HorizontalTextAlignment="Center"
                        IsVisible="False">
@@ -123,178 +123,144 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-                <Grid Margin="20,10"
+                <Grid Margin="24,32"
                       ColumnSpacing="0"
-                      RowSpacing="5">
+                      RowSpacing="8">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="80" />
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="15" />
+                        <RowDefinition Height="48" />
+                        <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
-  
                     <Image Source="{Binding FromCurrencyCode}"
-                           Margin="0,10"/>
+                           HorizontalOptions="Center"/>
                     <Image Source="ConvertArrow"
                            Grid.Column="1"
-                           Grid.RowSpan="3"
-                           WidthRequest="24"
+                           WidthRequest="20"
                            VerticalOptions="CenterAndExpand"/>
                     <Image Grid.Column="2"
                            Source="{Binding ToCurrencyCode}"
-                           Margin="0,10"/>
+                           HorizontalOptions="Center"/>
                     <Label Grid.Row="1"
-                           Text="{Binding FromCurrencyCode}"
                            FontFamily="{DynamicResource RegularFont}"
-                           FontSize="16"
+                           FontSize="12"
                            HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="End"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                    <Label Text="{Binding ToCurrencyCode}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="16"
+                           VerticalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding FromAmount}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding FromCurrencyCode}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label FontFamily="{DynamicResource RegularFont}"
+                           FontSize="12"
                            Grid.Row="1"
                            Grid.Column="2"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                    <Label Grid.Row="2"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="12"
-                           Text="{Binding FromAmount}"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Start"/>
-                    <Label Grid.Row="2"
-                           Grid.Column="2"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="12"
-                           Text="{Binding ToAmount}"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Start"/>
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding ToAmount}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding ToCurrencyCode}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                 </Grid>
 
-                <Grid HorizontalOptions="FillAndExpand"
+                <!--Tabs switcher-->
+                <Grid Margin="14,0"
+                      HorizontalOptions="FillAndExpand"
                       ColumnSpacing="0"
-                      RowSpacing="0"
-                      BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
+                      RowSpacing="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="36" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
-                    <Button CornerRadius="0"
-                            Text="{helpers:Translate ProgressTab}"
-                            FontFamily="{DynamicResource BoldFont}"
-                            FontSize="14"
+                    <Frame Grid.ColumnSpan="2"
+                           CornerRadius="18"
+                           HasShadow="False"
+                           Padding="0"
+                           BackgroundColor="{AppThemeBinding Dark='#14DCECFF', Light='#0F002041'}"/>
+                    <Button CornerRadius="16"
+                            Padding="0"
+                            Margin="2"
                             Clicked="OnButtonClicked"
                             CommandParameter="SwapProgress"
-                            x:Name="SwapProgressButton"
-                            BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
+                            x:Name="ProgressButton"
+                            Text="{helpers:Translate ProgressTab}"
+                            FontFamily="{DynamicResource RegularFont}"
+                            FontSize="14"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                            BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="SwapInfoStates">
                                 <VisualState Name="SwapProgress">
                                     <VisualState.Setters>
                                         <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState Name="SwapDetails">
                                     <VisualState.Setters>
                                         <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                                Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Button>
                     <Button Grid.Column="1"
-                            CornerRadius="0"
+                            CornerRadius="16"
+                            Padding="0"
+                            Margin="2"
                             Text="{helpers:Translate DetailsTab}"
-                            FontFamily="{DynamicResource BoldFont}"
+                            FontFamily="{DynamicResource RegularFont}"
                             FontSize="14"
                             Clicked="OnButtonClicked"
                             CommandParameter="SwapDetails"
-                            x:Name="SwapDetailsButton"
-                            BackgroundColor="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}">
+                            x:Name="DetailsButton"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                            BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="SwapInfoStates">
                                 <VisualState Name="SwapProgress">
                                     <VisualState.Setters>
                                         <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                                Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState Name="SwapDetails">
                                     <VisualState.Setters>
                                         <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </Button>
-                    <StackLayout Grid.Row="1"
-                                 x:Name="ProgressUnderline"
-                                 Style="{DynamicResource SeparatorStyle}"
-                                 VerticalOptions="End">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup Name="SwapInfoStates">
-                                <VisualState Name="SwapProgress">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                        <Setter Property="HeightRequest"
-                                                Value="2"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState Name="SwapDetails">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}"/>
-                                        <Setter Property="HeightRequest"
-                                                Value="1"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </StackLayout>
-                    <StackLayout Grid.Row="1"
-                                 Grid.Column="1"
-                                 x:Name="DetailsUnderline"
-                                 Style="{DynamicResource SeparatorStyle}"
-                                 VerticalOptions="End">
-                        <VisualStateManager.VisualStateGroups>
-                             <VisualStateGroup Name="SwapInfoStates">
-                                <VisualState Name="SwapProgress">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark='#0FFFFFFF', Light='#E3F2FD'}"/>
-                                        <Setter Property="HeightRequest"
-                                                Value="1"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState Name="SwapDetails">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                        <Setter Property="HeightRequest"
-                                                Value="2"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </StackLayout>
                 </Grid>
-                <StackLayout Padding="10,20"
+
+                <!--Progress tab-->
+                <StackLayout Padding="24,32"
                              x:Name="ProgressTab">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup Name="SwapInfoStates">
@@ -313,22 +279,21 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
                     <Grid HorizontalOptions="FillAndExpand"
-                          Padding="20,0"
-                          ColumnSpacing="0"
-                          RowSpacing="0"
+                          ColumnSpacing="20"
+                          RowSpacing="8"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="24" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
-                               WidthRequest="16"
-                               HeightRequest="16"
+                               WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -341,8 +306,8 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Image WidthRequest="16"
-                               HeightRequest="16"
+                        <Image WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -409,8 +374,8 @@
                                 </MultiTrigger>
                             </Image.Triggers>
                         </Image>
-                        <lottie:AnimationView WidthRequest="16"
-                                              HeightRequest="16"
+                        <lottie:AnimationView WidthRequest="24"
+                                              HeightRequest="24"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
                                               AnimationSource="AssetOrBundle"
                                               ImageAssetsFolder="Assets/Animations"
@@ -463,9 +428,8 @@
                         </Image>
                         <Label Text="{helpers:Translate Initialization}"
                                Grid.Column="1"
-                               Padding="10,0"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="18"
+                               FontFamily="{DynamicResource BoldFont}"
+                               FontSize="20"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start">
                             <Label.GestureRecognizers>
@@ -475,8 +439,7 @@
                         </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
-                                     Spacing="0"
-                                     Padding="10,0">
+                                     Spacing="0">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Initialization"/>
@@ -491,7 +454,7 @@
                             </StackLayout.Triggers>
                             <Label Text="{Binding InitStatusDesc}"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="12"
+                                   FontSize="14"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    VerticalTextAlignment="Start"/>
                         </StackLayout>
@@ -499,7 +462,6 @@
                                      Grid.Column="1"
                                      Spacing="0"
                                      BackgroundColor="Transparent"
-                                     Padding="10,0,5,0"
                                      BindableLayout.ItemsSource="{Binding InitStatusMessages}"
                                      IsVisible="False">
                             <StackLayout.Triggers>
@@ -517,95 +479,12 @@
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
-                                                 Padding="0,2">
+                                                 Padding="0,4">
                                         <StackLayout Spacing="0"
                                                      Orientation="Horizontal">
-                                            <Image Source="Tick"
-                                                   Margin="0,2,8,0"
-                                                   VerticalOptions="Start"
-                                                   WidthRequest="10"
-                                                   HeightRequest="10">
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image"
-                                                                 Binding="{Binding IsCompleted}"
-                                                                 Value="True">
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </DataTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Initialization"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Canceled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Initialization"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Unsettled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Initialization"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Refunded"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <lottie:AnimationView WidthRequest="10"
-                                                                  HeightRequest="10"
-                                                                  Margin="0,2,8,0"
-                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
-                                                                  AnimationSource="AssetOrBundle"
-                                                                  ImageAssetsFolder="Assets/Animations"
-                                                                  AutoPlay="True"
-                                                                  RepeatMode="Infinite"
-                                                                  Speed="1"
-                                                                  VerticalOptions="Start"
-                                                                  HorizontalOptions="Center"
-                                                                  IsVisible="False">
-                                                <lottie:AnimationView.Triggers>
-                                                    <MultiTrigger TargetType="lottie:AnimationView">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Initialization"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="In Progress"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </lottie:AnimationView.Triggers>
-                                            </lottie:AnimationView>
                                             <Label FontFamily="{DynamicResource RegularFont}"
                                                    Text="{Binding Description}"
-                                                   FontSize="12"
+                                                   FontSize="14"
                                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                    VerticalTextAlignment="Start"
                                                    IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
@@ -613,7 +492,7 @@
                                                          Orientation="Horizontal"
                                                          IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
@@ -626,7 +505,7 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
@@ -636,7 +515,7 @@
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
                                                                   TextDecorations="Underline"
-                                                                  TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
+                                                                  TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
                                                                                           CommandParameter="{Binding ExplorerLink.Url}"/>
@@ -645,6 +524,18 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
+                                                <Image Source="ic_export"
+                                                       VerticalOptions="Center"
+                                                       HorizontalOptions="EndAndExpand"
+                                                       WidthRequest="10"
+                                                       HeightRequest="10"
+                                                       Margin="12,0,0,0"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
@@ -682,22 +573,21 @@
                         </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
-                          Padding="20,0"
-                          ColumnSpacing="0"
-                          RowSpacing="0"
+                          ColumnSpacing="20"
+                          RowSpacing="8"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="24" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
-                               WidthRequest="16"
-                               HeightRequest="16"
+                               WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -710,8 +600,8 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Image WidthRequest="16"
-                               HeightRequest="16"
+                        <Image WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -794,8 +684,8 @@
                                 </MultiTrigger>
                             </Image.Triggers>
                         </Image>
-                        <lottie:AnimationView WidthRequest="16"
-                                              HeightRequest="16"
+                        <lottie:AnimationView WidthRequest="24"
+                                              HeightRequest="24"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
                                               AnimationSource="AssetOrBundle"
                                               ImageAssetsFolder="Assets/Animations"
@@ -864,10 +754,9 @@
                         </Image>
                         <Label Text="{helpers:Translate Exchanging}"
                                Grid.Column="1"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="18"
+                               FontFamily="{DynamicResource BoldFont}"
+                               FontSize="20"
                                BackgroundColor="Transparent"
-                               Padding="10,0,5,0"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start">
                             <Label.GestureRecognizers>
@@ -877,8 +766,7 @@
                         </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
-                                     Spacing="0"
-                                     Padding="10,0">
+                                     Spacing="0">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Exchanging"/>
@@ -893,14 +781,13 @@
                             </StackLayout.Triggers>
                             <Label Text="{Binding ExchangeStatusDesc}"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="12"
+                                   FontSize="14"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    VerticalTextAlignment="Start"/>
                         </StackLayout>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
                                      Spacing="0"
-                                     Padding="10,0"
                                      BindableLayout.ItemsSource="{Binding ExchangeStatusMessages}"
                                      IsVisible="False">
                             <StackLayout.Triggers>
@@ -918,104 +805,22 @@
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
-                                                 Padding="0,2">
+                                                 Padding="0,4">
                                         <StackLayout Spacing="0"
-                                                     Orientation="Horizontal">
-                                            <Image Source="Tick"
-                                                   Margin="0,2,8,0"
-                                                   VerticalOptions="Start"
-                                                   WidthRequest="10"
-                                                   HeightRequest="10"
-                                                   IsVisible="False">
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image"
-                                                                 Binding="{Binding IsCompleted}"
-                                                                 Value="True">
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </DataTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Exchanging"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Canceled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Exchanging"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Unsettled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Exchanging"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Refunded"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <lottie:AnimationView WidthRequest="10"
-                                                                  HeightRequest="10"
-                                                                  Margin="0,2,8,0"
-                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
-                                                                  AnimationSource="AssetOrBundle"
-                                                                  ImageAssetsFolder="Assets/Animations"
-                                                                  AutoPlay="True"
-                                                                  RepeatMode="Infinite"
-                                                                  Speed="1"
-                                                                  VerticalOptions="Start"
-                                                                  HorizontalOptions="Center"
-                                                                  IsVisible="False">
-                                                <lottie:AnimationView.Triggers>
-                                                    <MultiTrigger TargetType="lottie:AnimationView">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Exchanging"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="In Progress"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </lottie:AnimationView.Triggers>
-                                            </lottie:AnimationView>
+                                                     Orientation="Horizontal"
+                                                     HorizontalOptions="FillAndExpand">
                                             <Label FontFamily="{DynamicResource RegularFont}"
                                                    Text="{Binding Description}"
-                                                   FontSize="12"
+                                                   FontSize="14"
                                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                    VerticalTextAlignment="Start"
                                                    IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
+                                                         HorizontalOptions="FillAndExpand" 
                                                          IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
@@ -1028,7 +833,7 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
@@ -1038,7 +843,7 @@
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
                                                                   TextDecorations="Underline"
-                                                                  TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
+                                                                  TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
                                                                                           CommandParameter="{Binding ExplorerLink.Url}"/>
@@ -1047,6 +852,18 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
+                                                <Image Source="ic_export"
+                                                       VerticalOptions="Center"
+                                                       HorizontalOptions="EndAndExpand"
+                                                       WidthRequest="10"
+                                                       HeightRequest="10"
+                                                       Margin="12,0,0,0"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
@@ -1084,22 +901,21 @@
                         </StackLayout>
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
-                          Padding="20,0"
-                          ColumnSpacing="0"
-                          RowSpacing="0"
+                          ColumnSpacing="20"
+                          RowSpacing="8"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="24" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="10" />
                         </Grid.ColumnDefinitions>
                         <Image Source="ic_status__empty"
-                               WidthRequest="16"
-                               HeightRequest="16"
+                               WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -1112,8 +928,8 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <Image WidthRequest="16"
-                               HeightRequest="16"
+                        <Image WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="Start"
                                HorizontalOptions="Center"
                                IsVisible="False">
@@ -1152,8 +968,8 @@
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
-                        <lottie:AnimationView WidthRequest="16"
-                                              HeightRequest="16"
+                        <lottie:AnimationView WidthRequest="24"
+                                              HeightRequest="24"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
                                               AnimationSource="AssetOrBundle"
                                               ImageAssetsFolder="Assets/Animations"
@@ -1177,9 +993,8 @@
                         </lottie:AnimationView>
                         <Label Text="{helpers:Translate Completion}"
                                Grid.Column="1"
-                               Padding="10,0"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="18"
+                               FontFamily="{DynamicResource BoldFont}"
+                               FontSize="20"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                VerticalTextAlignment="Start">
                             <Label.GestureRecognizers>
@@ -1189,8 +1004,7 @@
                         </Label>
                         <StackLayout Grid.Row="1"
                                      Grid.Column="1"
-                                     Spacing="0"
-                                     Padding="10,0">
+                                     Spacing="0">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
                                                       CommandParameter="Completion"/>
@@ -1205,7 +1019,7 @@
                             </StackLayout.Triggers>
                             <Label Text="{Binding CompletionStatusDesc}"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="12"
+                                   FontSize="14"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    VerticalTextAlignment="Start"/>
                         </StackLayout>
@@ -1213,7 +1027,6 @@
                                      Grid.Column="1"
                                      Spacing="0"
                                      BackgroundColor="Transparent"
-                                     Padding="10,0,5,0"
                                      BindableLayout.ItemsSource="{Binding CompletionStatusMessages}"
                                      IsVisible="False">
                             <StackLayout.Triggers>
@@ -1231,104 +1044,21 @@
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Spacing="0"
-                                                 Padding="0,2">
+                                                 Padding="0,4">
                                         <StackLayout Spacing="0"
                                                      Orientation="Horizontal">
-                                            <Image Source="Tick"
-                                                   Margin="0,2,8,0"
-                                                   VerticalOptions="Start"
-                                                   WidthRequest="10"
-                                                   HeightRequest="10"
-                                                   IsVisible="False">
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image"
-                                                                 Binding="{Binding IsCompleted}"
-                                                                 Value="True">
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </DataTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Completion"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Canceled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Completion"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Unsettled"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                    <MultiTrigger TargetType="Image">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Completion"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Refunded"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="Source"
-                                                                Value="ic_close__red"/>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <lottie:AnimationView WidthRequest="10"
-                                                                  HeightRequest="10"
-                                                                  Margin="0,2,6,0"
-                                                                  Animation="{AppThemeBinding Dark=loader__white.json, Light=loader_light__blue.json}"
-                                                                  AnimationSource="AssetOrBundle"
-                                                                  ImageAssetsFolder="Assets/Animations"
-                                                                  AutoPlay="True"
-                                                                  RepeatMode="Infinite"
-                                                                  Speed="1"
-                                                                  VerticalOptions="Start"
-                                                                  HorizontalOptions="Center"
-                                                                  IsVisible="False">
-                                                <lottie:AnimationView.Triggers>
-                                                    <MultiTrigger TargetType="lottie:AnimationView">
-                                                        <MultiTrigger.Conditions>
-                                                            <BindingCondition Binding="{Binding IsCompleted}"
-                                                                              Value="False"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.Status, Source={x:Reference BindingContextPage}}"
-                                                                              Value="Completion"/>
-                                                            <BindingCondition Binding="{Binding BindingContext.State, Source={x:Reference BindingContextPage}}"
-                                                                              Value="In Progress"/>
-                                                        </MultiTrigger.Conditions>
-                                                        <Setter Property="IsVisible"
-                                                                Value="True"/>
-                                                    </MultiTrigger>
-                                                </lottie:AnimationView.Triggers>
-                                            </lottie:AnimationView>
                                             <Label FontFamily="{DynamicResource RegularFont}"
                                                    Text="{Binding Description}"
-                                                   FontSize="12"
+                                                   FontSize="14"
                                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                    VerticalTextAlignment="Start"
                                                    IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                             <StackLayout Spacing="0"
                                                          Orientation="Horizontal"
+                                                         HorizontalOptions="FillAndExpand"
                                                          IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
@@ -1341,7 +1071,7 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                                 <Label FontFamily="{DynamicResource RegularFont}"
-                                                       FontSize="12"
+                                                       FontSize="14"
                                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                                        VerticalTextAlignment="Start"
                                                        IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
@@ -1351,7 +1081,7 @@
                                                             <Span Text=" "/>
                                                             <Span Text="{Binding ExplorerLink.Text}"
                                                                   TextDecorations="Underline"
-                                                                  TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}">
+                                                                  TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                 <Span.GestureRecognizers>
                                                                     <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
                                                                                           CommandParameter="{Binding ExplorerLink.Url}"/>
@@ -1360,6 +1090,18 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
+                                                <Image Source="ic_export"
+                                                       VerticalOptions="Center"
+                                                       HorizontalOptions="EndAndExpand"
+                                                       WidthRequest="10"
+                                                       HeightRequest="10"
+                                                       Margin="12,0,0,0"
+                                                       IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                              CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
                                             </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
@@ -1398,7 +1140,8 @@
                     </Grid>
                 </StackLayout>
 
-                <StackLayout Padding="20"
+                <!--Details tab-->
+                <StackLayout Padding="16,24"
                              x:Name="DetailsTab">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup Name="SwapInfoStates">
@@ -1416,9 +1159,8 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <StackLayout Orientation="Horizontal"
-                                 Padding="20,5">
-                        <Label Text="{helpers:Translate Price, StringFormat='{0}:'}"
+                    <StackLayout>
+                        <Label Text="{helpers:Translate Price}"
                                FontFamily="{DynamicResource RegularFont}"
                                FontSize="14"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -1426,11 +1168,10 @@
                                HorizontalTextAlignment="Start"/>
                         <Label Text="{Binding Price}"
                                FontFamily="{DynamicResource RegularFont}"
-                               FontSize="14"
+                               FontSize="16"
                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               HorizontalOptions="FillAndExpand"
                                VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="End"/>
+                               HorizontalTextAlignment="Start"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

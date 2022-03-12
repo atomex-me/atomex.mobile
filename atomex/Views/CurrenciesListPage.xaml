@@ -63,7 +63,7 @@
                             </Label>
                             <Label Grid.Row="1"
                                    Grid.Column="1"
-                                   Text="{Binding Price, StringFormat='{0:f2} $'}"
+                                   Text="{Binding Price, StringFormat='${0:f2}'}"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontFamily="{DynamicResource LightFont}"
                                    FontSize="10"
@@ -72,7 +72,7 @@
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Row="1"
                                     Grid.Column="2"
-                                    Text="{Binding AvailableAmountInBase, StringFormat='{0:f2} $'}"
+                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                     FontFamily="{DynamicResource LightFont}"
                                     TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                     FontSize="10"

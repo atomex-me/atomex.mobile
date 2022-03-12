@@ -20,12 +20,10 @@ namespace atomex
 
         private void SetVisualState(string state)
         {
-            VisualStateManager.GoToState(SwapProgressButton, state);
-            VisualStateManager.GoToState(ProgressUnderline, state);
-            VisualStateManager.GoToState(SwapDetailsButton, state);
-            VisualStateManager.GoToState(DetailsUnderline, state);
+            VisualStateManager.GoToState(ProgressButton, state);
+            VisualStateManager.GoToState(DetailsButton, state);
             VisualStateManager.GoToState(ProgressTab, state);
-            VisualStateManager.GoToState(DetailsTab, state);       
+            VisualStateManager.GoToState(DetailsTab, state);
         }
     }
 }

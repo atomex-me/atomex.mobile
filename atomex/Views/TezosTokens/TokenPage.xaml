@@ -99,7 +99,16 @@
                         <Button Text="{helpers:Translate SendButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding SendPageCommand}"
-                                IsVisible="{Binding IsFa12}"/>
+                                IsVisible="{Binding IsFa12}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding Balance}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
@@ -482,7 +491,16 @@
                         <Button Text="{helpers:Translate SendButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding SendPageCommand}"
-                                IsVisible="{Binding IsFa12}"/>
+                                IsVisible="{Binding IsFa12}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding Balance}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"

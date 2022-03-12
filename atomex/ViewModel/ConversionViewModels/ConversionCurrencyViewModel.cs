@@ -17,7 +17,7 @@ namespace atomex.ViewModel.ConversionViewModels
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string Address { get; set; }
 
-        public decimal Amount;
+        [Reactive] public decimal Amount { get; set; }
         public string AmountString
         {
             get => Amount.ToString();

@@ -107,7 +107,16 @@
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
                         <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"/>
+                                                    Command="{Binding SendPageCommand}">
+                            <controls:LeftRoundedButton.Triggers>
+                                <DataTrigger TargetType="controls:LeftRoundedButton"
+                                             Binding="{Binding TotalAmount}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </controls:LeftRoundedButton.Triggers>
+                        </controls:LeftRoundedButton>
                         <Button Text="{helpers:Translate ReceiveButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ReceivePageCommand}"/>

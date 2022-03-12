@@ -284,7 +284,7 @@
                                     </DataTrigger>
                                 </controls:CustomEntry.Triggers>
                             </controls:CustomEntry>
-                            <Label Text="{Binding FeeInBase, StringFormat='({0:0.##} $)'}"
+                            <Label Text="{Binding FeeInBase, StringFormat='(${0:0.##})'}"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontFamily="{DynamicResource LightFont}"
                                    FontSize="12"

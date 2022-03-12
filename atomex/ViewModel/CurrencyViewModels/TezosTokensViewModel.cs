@@ -423,6 +423,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnSendButtonClicked()
         {
+            if (Balance <= 0) return;
+
             string tokenPreviewUrl = HasTokenContract ? TokenContractIconUrl : string.Empty;
 
             var tokenPreview = new UriImageSource

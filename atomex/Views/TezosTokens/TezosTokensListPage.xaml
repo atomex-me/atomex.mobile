@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
-             x:Name="BindingContextPage"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              Title="{helpers:Translate TezosTokensListPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}"
@@ -35,23 +34,23 @@
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"/>
+                        <TapGestureRecognizer Command="{Binding SelectTezosCurrencyCommand}"/>
                     </Grid.GestureRecognizers>
                     <Image Grid.RowSpan="2"
                            WidthRequest="40"
                            HeightRequest="40"
                            Margin="10,0"
                            VerticalOptions="CenterAndExpand"
-                           Source="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"/>
+                           Source="{Binding TezosViewModel.CurrencyCode}"/>
                     <Label Grid.Column="1"
-                           Text="{Binding BindingContext.TezosViewModel.Currency.Description, Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.Currency.Description}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="Start"/>
                     <Label Grid.Column="2"
-                           Text="{Binding BindingContext.TezosViewModel.TotalAmount, Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.TotalAmount}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            Margin="10,0"
@@ -59,17 +58,17 @@
                            HorizontalTextAlignment="End">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding BindingContext.TezosViewModel.TotalAmount, StringFormat='{0:0.#####}', Source={x:Reference BindingContextPage}}"
+                                <Span Text="{Binding TezosViewModel.TotalAmount, StringFormat='{0:0.#####}'}"
                                       FontSize="14"/>
                                 <Span Text=" " /> 
-                                <Span Text="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"
+                                <Span Text="{Binding TezosViewModel.CurrencyCode}"
                                       FontSize="12"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Label Grid.Row="1"
                            Grid.Column="1"
-                           Text="{Binding BindingContext.TezosViewModel.Price, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.Price, StringFormat='${0:f2}'}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="10"
@@ -78,7 +77,7 @@
                            HorizontalTextAlignment="Start"/>
                     <Label Grid.Row="1"
                            Grid.Column="2"
-                           Text="{Binding BindingContext.TezosViewModel.AvailableAmountInBase, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.AvailableAmountInBase, StringFormat='${0:f2}'}"
                            FontFamily="{DynamicResource LightFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontSize="10"

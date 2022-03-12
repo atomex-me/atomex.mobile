@@ -60,7 +60,9 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Grid HorizontalOptions="FillAndExpand"
+            <!--Tabs switcher-->
+            <Grid Margin="14,12"
+                  HorizontalOptions="FillAndExpand"
                   ColumnSpacing="0"
                   RowSpacing="0"
                   IsVisible="False">
@@ -73,43 +75,57 @@
                     </DataTrigger>
                 </Grid.Triggers>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="36" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
-                <Button CornerRadius="0"
+                <Frame Grid.ColumnSpan="2"
+                       CornerRadius="18"
+                       HasShadow="False"
+                       Padding="0"
+                       BackgroundColor="{AppThemeBinding Dark='#14DCECFF', Light='#0F002041'}"/>
+                <Button CornerRadius="16"
+                        Padding="0"
+                        Margin="2"
                         Text="{helpers:Translate ExternalAddress}"
                         FontFamily="{DynamicResource RegularFont}"
                         FontSize="14"
                         Command="{Binding ChangeAddressesTabCommand}"
-                        BackgroundColor="Transparent">
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
                     <Button.CommandParameter>
                         <x:Boolean>False</x:Boolean>
                     </Button.CommandParameter>
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsMyAddressesTab}"
-                                     Value="True">
+                                     Value="False">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsMyAddressesTab}"
-                                     Value="False">
+                                     Value="True">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                    Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="Transparent"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
                 <Button Grid.Column="1"
-                        CornerRadius="0"
+                        CornerRadius="16"
+                        Padding="0"
+                        Margin="2"
                         Text="{helpers:Translate MyAddresses}"
                         FontFamily="{DynamicResource RegularFont}"
                         FontSize="14"
-                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"
                         Command="{Binding ChangeAddressesTabCommand}">
                     <Button.CommandParameter>
                         <x:Boolean>True</x:Boolean>
@@ -119,64 +135,23 @@
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="True">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="False">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                            <Setter Property="BackgroundColor"
+                                    Value="Transparent"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <StackLayout Grid.Row="1"
-                             Style="{DynamicResource SeparatorStyle}"
-                             VerticalOptions="End">
-                    <StackLayout.Triggers>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding IsMyAddressesTab}"
-                                     Value="True">
-                            <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
-                            <Setter Property="HeightRequest"
-                                    Value="1"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding IsMyAddressesTab}"
-                                     Value="False">
-                            <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                            <Setter Property="HeightRequest"
-                                            Value="2"/>
-                        </DataTrigger>
-                    </StackLayout.Triggers>
-                </StackLayout>
-                <StackLayout Grid.Row="1"
-                             Grid.Column="1"
-                             Style="{DynamicResource SeparatorStyle}"
-                             VerticalOptions="End">
-                    <StackLayout.Triggers>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding IsMyAddressesTab}"
-                                     Value="False">
-                            <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"/>
-                            <Setter Property="HeightRequest"
-                                            Value="1"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding IsMyAddressesTab}"
-                                     Value="True">
-                            <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                            <Setter Property="HeightRequest"
-                                            Value="2"/>
-                        </DataTrigger>
-                    </StackLayout.Triggers>
-                </StackLayout>
             </Grid>
-            <StackLayout Spacing="15"
-                         Margin="0,20"
+            <StackLayout Spacing="16"
+                         Margin="16,12"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <MultiTrigger TargetType="StackLayout">
@@ -201,7 +176,6 @@
                        BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                        CornerRadius="8"
-                       Margin="16,0"
                        HasShadow="False">
                     <Grid HorizontalOptions="Fill"
                           ColumnSpacing="0"
@@ -255,8 +229,7 @@
                                      IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
                 </Frame>
-                <StackLayout Margin="16,0"
-                             IsVisible="False">
+                <StackLayout IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
                             <MultiTrigger.Conditions>

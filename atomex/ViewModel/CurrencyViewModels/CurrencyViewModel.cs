@@ -339,6 +339,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnSendButtonClicked()
         {
+            if (TotalAmount <= 0) return;
+
             var sendViewModel = SendViewModelCreator.CreateViewModel(AtomexApp, this);
             if (Currency is BitcoinBasedConfig)
             {

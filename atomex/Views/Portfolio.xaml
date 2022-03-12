@@ -25,7 +25,7 @@
                                      VerticalOptions="Center"
                                      Spacing="0">
                             <Label Style="{DynamicResource TotalAmountLabelStyle}"
-                                   Text="{Binding PortfolioValue, StringFormat='{0:0.00} $'}"/>
+                                   Text="{Binding PortfolioValue, StringFormat='${0:0.00}'}"/>
                         </StackLayout>
                     </RelativeLayout>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"/>
@@ -88,14 +88,14 @@
                         </Label>
                         <Label Grid.Row="1"
                                Grid.Column="1"
-                               Text="{Binding Price, StringFormat='{0:f2} $'}"
+                               Text="{Binding Price, StringFormat='${0:f2}'}"
                                VerticalOptions="Start"
                                FontFamily="{DynamicResource LightFont}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="10"/>
                         <Label Grid.Row="1"
                                Grid.Column="3"
-                               Text="{Binding AvailableAmountInBase, StringFormat='{0:f2} $'}"
+                               Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                FontFamily="{DynamicResource LightFont}"
                                VerticalOptions="Start"
                                HorizontalOptions="End"

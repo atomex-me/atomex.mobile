@@ -194,20 +194,6 @@ namespace atomex.ViewModel
             GetSwaps();
             IsAllSwapsShowed = false;
 
-            this.WhenAnyValue(
-                vm => vm.FromViewModel.Amount,
-                vm => vm.FromViewModel.CurrencyViewModel,
-                vm => vm.ToViewModel.Amount,
-                vm => vm.ToViewModel.CurrencyViewModel
-            )
-            .SubscribeInMainThread(_ =>
-            {
-                AmountToFeeRatioWarning.Text = string.Empty;
-                Message.Text = string.Empty;
-                this.RaisePropertyChanged(nameof(Message));
-                this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
-            });
-
             // FromCurrencyViewModel changed => Update ToCurrencies
             this.WhenAnyValue(vm => vm.FromViewModel.CurrencyViewModel)
                 .WhereNotNull()
@@ -267,7 +253,7 @@ namespace atomex.ViewModel
                     QuoteCurrencyCode = symbol?.Quote;
                 });
 
-            // AmountStrings, FromCurrencyViewModel or ToCurrencyViewModel changed => estimate swap price and target amount
+            // Amount, FromCurrencyViewModel or ToCurrencyViewModel changed => estimate swap price and target amount
             this.WhenAnyValue(
                     vm => vm.FromViewModel.Amount,
                     vm => vm.FromViewModel.CurrencyViewModel,
@@ -949,7 +935,7 @@ namespace atomex.ViewModel
                     {
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
-                        //Navigation.PushAsync(new SwapInfoPage(swapViewModel));
+                        Navigation.PushAsync(new SwapInfoPage(swapViewModel));
                         Swaps.Add(swapViewModel);
 
                         var groups = !IsAllSwapsShowed
@@ -1020,7 +1006,7 @@ namespace atomex.ViewModel
             if (FromViewModel.Amount <= 0)
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    AppResources.Error,
+                    AppResources.Warning,
                     AppResources.AmountLessThanZeroError,
                     AppResources.AcceptButton);
                 return;
@@ -1029,7 +1015,7 @@ namespace atomex.ViewModel
             if (!FromViewModel.IsAmountValid || !ToViewModel.IsAmountValid)
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    AppResources.Error,
+                    AppResources.Warning,
                     AppResources.BigAmount,
                     AppResources.AcceptButton);
                 return;
@@ -1038,7 +1024,7 @@ namespace atomex.ViewModel
             if (EstimatedPrice <= 0)
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    AppResources.Error,
+                    AppResources.Warning,
                     AppResources.NoLiquidityError,
                     AppResources.AcceptButton);
                 return;
@@ -1091,7 +1077,7 @@ namespace atomex.ViewModel
                     arg1: FromViewModel.CurrencyViewModel.Currency.Name);
 
                 await Application.Current.MainPage.DisplayAlert(
-                    AppResources.Error,
+                    AppResources.Warning,
                     message,
                     AppResources.AcceptButton);
 
@@ -1127,7 +1113,9 @@ namespace atomex.ViewModel
         private void OnSuccessConvertion(object sender, EventArgs e)
         {
             // todo: check!!
-            FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
+            //FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
+            //_ = EstimateSwapParamsAsync();
+            FromViewModel.SetAmountFromString("0");
             _ = EstimateSwapParamsAsync();
         }
 
