@@ -5,11 +5,6 @@ namespace atomex
 {
     public partial class Portfolio : ContentPage
     {
-        public Portfolio()
-        {
-            InitializeComponent();
-        }
-
         public Portfolio(PortfolioViewModel portfolioViewModel)
         {
             InitializeComponent();

@@ -72,7 +72,7 @@
         <value>Минимальная сумма</value>
     </data>
     <data name="TotalAmountInclFees" xml:space="preserve">
-        <value>Total (incl. fees)</value>
+        <value>Всего (вкл. коммиссию)</value>
     </data>
     <data name="ToLabel" xml:space="preserve">
         <value>На адрес</value>
@@ -428,6 +428,9 @@
     <data name="SelectedOfTotal" xml:space="preserve">
         <value>{0} из {1} выбрано</value>
     </data>
+    <data name="AddressesNotFound" xml:space="preserve">
+        <value>Адреса не найдены</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -628,12 +631,6 @@
     </data>
     <data name="SelectCurrenciesLabel" xml:space="preserve">
         <value>Выбрать валюту</value>
-    </data>
-    <data name="SwapFrom" xml:space="preserve">
-        <value>Из</value>
-    </data>
-    <data name="SwapTo" xml:space="preserve">
-        <value>В</value>
     </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Расчетная цена</value>
@@ -846,7 +843,7 @@
         <value>{0} {1} отправлено на адрес {2}</value>
     </data>
     <data name="SuccessSending" xml:space="preserve">
-        <value>Sending was successful</value>
+        <value>Отправка прошла успешно</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>этого слова нет в списке для выбранного языка</value>
@@ -963,13 +960,13 @@
         <value>Неверный адрес</value>
     </data>
     <data name="InvalidTokenContract" xml:space="preserve">
-        <value>Invalid token contract address</value>
+        <value>Неверный адрес контракта токена</value>
     </data>
     <data name="InvalidFromAddress" xml:space="preserve">
-        <value>Invalid 'From' address</value>
+        <value>Неверный 'From' адрес</value>
     </data>
     <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
-        <value>Insufficient {0} to cover token transfer fee. Minimum {1} is required</value>
+        <value>Недостаточно {0} для покрытия комиссии за перевод токенов. Требуется минимум {1}</value>
     </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
         <value>Комиссия должна быть больше нуля</value>
@@ -1083,31 +1080,31 @@
         <value>Авторизация по биометрии включена</value>
     </data>
     <data name="AmountToFeeRatioToolTip" xml:space="preserve">
-        <value>The commission does not depend on the conversion amount and is determined only by the current network fees. The larger the convertible amount, the smaller the commission to amount ratio. Atomex blocks the conversion if the commission exceeds 75% of the conversion amount</value>
+        <value>Комиссия не зависит от суммы конвертации и определяется только текущей комиссией сети. Чем больше сумма конвертации, тем меньше соотношение комиссии к сумме. Atomex блокирует конвертацию, если комиссия превышает 75% от суммы конвертации</value>
     </data>
     <data name="MaxAmountToSendRecommendation" xml:space="preserve">
-        <value>We recommend to send no more than {0} {1}</value>
+        <value>Рекомендуем отправлять не более {0} {1}</value>
     </data>
     <data name="MaxAmountToSendRecommendationDetails" xml:space="preserve">
-        <value>You have tokens that require {1}. Sending this will not leave enough {1} to send or exchange your tokens. We recommend to send no more than {0} {1}</value>
+        <value>У вас есть токены, требующие {1}. Отправив такую сумму, вы не оставите достаточно {1} для отправки или обмена ваших токенов. Рекомендуем отправлять не более {0} {1}</value>
     </data>
     <data name="MaxAmountToSendWithActiveSwaps" xml:space="preserve">
-        <value>Maximum available amount to send is {0} {1}</value>
+        <value>Максимально возможная сумма для отправки составляет {0} {1}</value>
     </data>
     <data name="MaxAmountToSendWithActiveSwapsDetails" xml:space="preserve">
-        <value>You have swaps in process. Your app requires {1} to process them. Safe maximum amount to send is {0} {1}</value>
+        <value>У вас есть активные свопы. Приложению требуется {1} для их обработки. Безопасная максимальная сумма для отправки составляет {0} {1}</value>
     </data>
     <data name="SendEnteredAmountMenu" xml:space="preserve">
-        <value>Send maximum amount {0} {1} anyway</value>
+        <value>Отправить максимальную сумму {0} {1}</value>
     </data>
     <data name="SendRecommendedAmountMenu" xml:space="preserve">
-        <value>Send recommended amount {0} {1}</value>
+        <value>Отправить рекомендуемую сумму {0} {1}</value>
     </data>
     <data name="OrderMatched" xml:space="preserve">
-        <value>Swap successfully created.
-NOTE: Do not sign out or close the application until the swap is completed, otherwise it may result in a loss of funds.</value>
+        <value>Своп успешно создан.
+ПРИМЕЧАНИЕ: Не выходите из приложения и не закрывайте его до завершения свопа, иначе это может привести к потере средств</value>
     </data>
     <data name="AvailableAmountDexTooltip" xml:space="preserve">
-        <value>The limit applies to a single trade. In case you require more liquidity make multiple trades</value>
+        <value>Лимит применяется к одной сделке. Если вам требуется больше ликвидности, совершайте несколько сделок</value>
     </data>
 </root>

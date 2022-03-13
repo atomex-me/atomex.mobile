@@ -334,31 +334,16 @@
                            HorizontalOptions="FillAndExpand"/>
                     <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                             BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
-                            WidthRequest="132"
+                            Text="{Binding SortButtonName}"
                             HeightRequest="32"
                             HorizontalOptions="End"
                             CornerRadius="16"
+                            Padding="14,6"
                             FontSize="14"
-                            Padding="0"
                             Margin="0,10"
                             FontFamily="{DynamicResource RegularFont}"
                             Command="{Binding ChangeSortTypeCommand}"
-                            TextTransform="Lowercase">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value="Sort by balance"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding SortByBalance}"
-                                         Value="False">
-                                <Setter Property="Text"
-                                        Value="Sort by date"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
+                            TextTransform="Lowercase"/>
                     <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
                                  Padding="6"
                                  Margin="0,10"

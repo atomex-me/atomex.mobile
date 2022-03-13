@@ -821,6 +821,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string AddressesNotFound {
+            get {
+                return ResourceManager.GetString("AddressesNotFound", resourceCulture);
+            }
+        }
+        
         internal static string ReceivePageTitle {
             get {
                 return ResourceManager.GetString("ReceivePageTitle", resourceCulture);
@@ -1184,18 +1190,6 @@ namespace atomex.Resources {
         internal static string SelectCurrenciesLabel {
             get {
                 return ResourceManager.GetString("SelectCurrenciesLabel", resourceCulture);
-            }
-        }
-        
-        internal static string SwapFrom {
-            get {
-                return ResourceManager.GetString("SwapFrom", resourceCulture);
-            }
-        }
-        
-        internal static string SwapTo {
-            get {
-                return ResourceManager.GetString("SwapTo", resourceCulture);
             }
         }
         

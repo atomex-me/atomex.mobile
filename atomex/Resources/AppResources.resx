@@ -428,6 +428,9 @@
     <data name="SelectedOfTotal" xml:space="preserve">
         <value>{0} of {1} selected</value>
     </data>
+    <data name="AddressesNotFound" xml:space="preserve">
+        <value>Addresses not found</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -628,12 +631,6 @@
     </data>
     <data name="SelectCurrenciesLabel" xml:space="preserve">
         <value>Select currencies</value>
-    </data>
-    <data name="SwapFrom" xml:space="preserve">
-        <value>From</value>
-    </data>
-    <data name="SwapTo" xml:space="preserve">
-        <value>To</value>
     </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Est. price</value>

@@ -64,6 +64,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public string ToAddress { get; set; }
         [Reactive] public bool SortIsAscending { get; set; }
         [Reactive] public bool SortByBalance { get; set; }
+        [Reactive] public string SortButtonName { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
 
         [Reactive] public Result ScanResult { get; set; }
@@ -94,6 +95,9 @@ namespace atomex.ViewModel.SendViewModels
             SelectAddressMode = mode;
             IsMyAddressesTab = false;
             SelectAddressFrom = SelectAddressFrom.Init;
+            SortButtonName = SortByBalance
+                    ? AppResources.SortByBalanceButton
+                    : AppResources.SortByDateButton;
 
             this.WhenAnyValue(
                 vm => vm.IsMyAddressesTab,
@@ -243,7 +247,13 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<Unit, Unit> _changeSortTypeCommand;
         public ReactiveCommand<Unit, Unit> ChangeSortTypeCommand => _changeSortTypeCommand ??=
-            (_changeSortTypeCommand = ReactiveCommand.Create(() => { SortByBalance = !SortByBalance; }));
+            (_changeSortTypeCommand = ReactiveCommand.Create(() =>
+            {
+                SortByBalance = !SortByBalance;
+                SortButtonName = SortByBalance
+                    ? AppResources.SortByBalanceButton
+                    : AppResources.SortByDateButton; 
+            }));
 
         private ReactiveCommand<Unit, Unit> _changeSortDirectionCommand;
         public ReactiveCommand<Unit, Unit> ChangeSortDirectionCommand => _changeSortDirectionCommand ??=

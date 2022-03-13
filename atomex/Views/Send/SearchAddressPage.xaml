@@ -151,7 +151,7 @@
                        HeightRequest="45"
                        Margin="20,40,20,10"
                        VerticalOptions="Start"/>
-                <Label Text="No addresses found"
+                <Label Text="{helpers:Translate AddressesNotFound}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        FontSize="18"
