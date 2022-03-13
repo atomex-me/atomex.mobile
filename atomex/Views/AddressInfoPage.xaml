@@ -34,7 +34,7 @@
                     </DataTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding IsUpdating}"
-                                 Value="True">
+                                 Value="False">
                         <Setter Property="Opacity"
                                 Value="1"/>
                     </DataTrigger>

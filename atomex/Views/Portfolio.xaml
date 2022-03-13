@@ -48,7 +48,6 @@
                         </Grid.ColumnDefinitions>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.SelectCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnItemTapped"
                                                   CommandParameter="{Binding .}"/>
                         </Grid.GestureRecognizers>
                         <Image Grid.RowSpan="2"

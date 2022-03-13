@@ -177,7 +177,8 @@ namespace atomex.ViewModel
         }
 
         private ICommand _showReceiveAddressesCommand;
-        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(async () => await OnShowReceiveAddressesClicked());
+        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(async () =>
+            await Navigation.PushAsync(new ReceiveAddressesPage(this)));
 
         private ICommand _selectAddressCommand;
         public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<WalletAddressViewModel>(async (address) => await OnAddressClicked(address));
@@ -226,11 +227,6 @@ namespace atomex.ViewModel
             await Task.Delay(1000);
 
             IsLoading = false;
-        }
-
-        async Task OnShowReceiveAddressesClicked()
-        {
-            await Navigation.PushAsync(new AddressesListPage(this));
         }
     }
 }

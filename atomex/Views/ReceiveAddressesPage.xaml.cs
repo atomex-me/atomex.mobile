@@ -1,39 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using atomex.ViewModel;
-using atomex.ViewModel.SendViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views
 {
-    public partial class AddressesListPage : ContentPage
+    public partial class ReceiveAddressesPage : ContentPage
     {
         Color selectedItemBackgroundColor;
 
-        public AddressesListPage(ReceiveViewModel receiveViewModel)
+        public ReceiveAddressesPage(ReceiveViewModel receiveViewModel)
         {
             InitializeComponent();
-            BindingContext = receiveViewModel;
-            SetColors();
-        }
-
-
-        public AddressesListPage(SendViewModel sendViewModel)
-        {
-            InitializeComponent();
-            BindingContext = sendViewModel;
-            SetColors();
-        }
-
-        public AddressesListPage(TezosTokensSendViewModel tezosTokensSendViewModel)
-        {
-            InitializeComponent();
-            BindingContext = tezosTokensSendViewModel;
-            SetColors();
-        }
-
-        private void SetColors()
-        {
             string selectedColorName = "ListViewSelectedBackgroundColor";
 
             if (Application.Current.RequestedTheme == OSAppTheme.Dark)
@@ -41,7 +19,10 @@ namespace atomex.Views
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
             selectedItemBackgroundColor = (Color)selectedColor;
-        }
+        
+            BindingContext = receiveViewModel;
+            
+        }   
 
         private async void OnItemTapped(object sender, EventArgs args)
         {

@@ -30,10 +30,13 @@
         </StackLayout>
         <StackLayout Style="{StaticResource SeparatorStyle}"/>
         <ListView ItemsSource="{Binding Addresses}"
+                  SelectedItem="{Binding SelectedAddress}"
+                  ItemSelected="ItemSelected"
                   SeparatorVisibility="Default"
+                  BackgroundColor="Transparent"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                   HasUnevenRows="True"
-                  SelectionMode="None"
+                  SelectionMode="Single"
                   VerticalOptions="FillAndExpand"
                   Footer="">
             <ListView.ItemTemplate>
@@ -44,18 +47,13 @@
                               VerticalOptions="Center"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                               Padding="20,0">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectAddressCommand, Source={x:Reference BindingContextPage}}"
-                                                      Tapped="OnItemTapped"
-                                                      CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="6*" />
+                                <ColumnDefinition Width="4*" />
                                 <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
                             <Label Grid.RowSpan="2"
@@ -69,7 +67,7 @@
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Column="1"
                                    FontFamily="{DynamicResource BoldFont}"
-                                   Text="{Binding Balance, StringFormat='{0:0.######}'}"
+                                   Text="{Binding Balance, StringFormat='{0:0.#########}'}"
                                    FontSize="14"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    VerticalTextAlignment="Center"
@@ -86,7 +84,7 @@
                             <Label Grid.Column="1"
                                    Grid.Row="1"
                                    FontFamily="{DynamicResource BoldFont}"
-                                   Text="{Binding TokenBalance, StringFormat='{0:0.######}', TargetNullValue=''}"
+                                   Text="{Binding TokenBalance, StringFormat='{0:0.#########}', TargetNullValue=''}"
                                    HeightRequest="18"
                                    FontSize="12"
                                    TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
