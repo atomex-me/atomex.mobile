@@ -28,16 +28,9 @@
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16,8,16,16"
+                              HeightRequest="196"
                               HorizontalOptions="FillAndExpand"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
-            <controls:CustomFrame.HeightRequest>
-                <OnPlatform x:TypeArguments="x:Double">
-                    <OnPlatform.Platforms>
-                        <On Platform="iOS" Value="196" />
-                        <On Platform="Android" Value="171" />
-                    </OnPlatform.Platforms>
-                </OnPlatform>
-            </controls:CustomFrame.HeightRequest>
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"

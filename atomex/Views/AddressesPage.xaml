@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
     x:Class="atomex.AddressesPage"
     x:Name="BindingContextPage"
     Title="{helpers:Translate Addresses}"
@@ -41,11 +42,10 @@
                   Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid RowSpacing="0"
                               ColumnSpacing="10"
                               VerticalOptions="Center"
-                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                               Padding="20,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -68,7 +68,7 @@
                             <Label Grid.Column="1"
                                    FontFamily="{DynamicResource BoldFont}"
                                    Text="{Binding Balance, StringFormat='{0:0.#########}'}"
-                                   FontSize="14"
+                                   FontSize="12"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    VerticalTextAlignment="Center"
                                    HorizontalTextAlignment="End">
@@ -107,7 +107,7 @@
                                    WidthRequest="10"
                                    HorizontalOptions="End"/>
                         </Grid>
-                    </ViewCell>
+                    </custom:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
