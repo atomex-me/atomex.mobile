@@ -16,7 +16,6 @@ namespace atomex.ViewModel.ConversionViewModels
 
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string Address { get; set; }
-
         [Reactive] public decimal Amount { get; set; }
         public string AmountString
         {
@@ -87,10 +86,6 @@ namespace atomex.ViewModel.ConversionViewModels
         public ConversionCurrencyViewModel()
         {
             IsAmountValid = true;
-
-            //this.WhenAnyValue(vm => vm.CurrencyViewModel)
-            //    .Select(i => i != null)
-            //    .ToPropertyEx(this, vm => vm.Selected);
         }
 
         public void RaiseGotInputFocus()

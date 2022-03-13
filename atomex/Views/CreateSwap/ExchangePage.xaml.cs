@@ -1,4 +1,5 @@
-﻿using atomex.ViewModel;
+﻿using System;
+using atomex.ViewModel;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateSwap

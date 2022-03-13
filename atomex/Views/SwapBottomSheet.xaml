@@ -42,7 +42,7 @@
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,8"
                               HorizontalOptions="FillAndExpand"
-                              HeightRequest="556"
+                              HeightRequest="640"
                               BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
         <Image Source="ic_swipe__indicator"
@@ -295,6 +295,7 @@
 
                 <!--Progress tab-->
                 <StackLayout Padding="24,32"
+                             BackgroundColor="Transparent"
                              x:Name="ProgressTab">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup Name="SwapInfoStates">
@@ -314,8 +315,7 @@
                     </VisualStateManager.VisualStateGroups>
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="20"
-                          RowSpacing="8"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                          RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
@@ -608,8 +608,7 @@
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="20"
-                          RowSpacing="8"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                          RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
@@ -936,8 +935,7 @@
                     </Grid>
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="20"
-                          RowSpacing="8"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+                          RowSpacing="8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24" />
                             <RowDefinition Height="Auto" />
@@ -1176,6 +1174,7 @@
 
                 <!--Details tab-->
                 <StackLayout Padding="16,24"
+                             BackgroundColor="Transparent"
                              x:Name="DetailsTab">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup Name="SwapInfoStates">

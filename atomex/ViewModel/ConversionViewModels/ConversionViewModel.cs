@@ -936,12 +936,8 @@ namespace atomex.ViewModel
                     {
                         var swapViewModel = SwapViewModelFactory.CreateSwapViewModel(args.Swap, Currencies);
                         _cachedSwaps.Add(args.Swap.Id, swapViewModel);
-                        
-                        if (PopupNavigation.Instance.PopupStack.Count > 0)
-                            _ = PopupNavigation.Instance.PopAsync();
-                        _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(swapViewModel));
-
                         Swaps.Add(swapViewModel);
+                        this.RaisePropertyChanged(nameof(Swaps));
 
                         var groups = !IsAllSwapsShowed
                             ? Swaps
@@ -955,9 +951,11 @@ namespace atomex.ViewModel
                                 .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key, new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
                         GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
-
-                        this.RaisePropertyChanged(nameof(Swaps));
                         this.RaisePropertyChanged(nameof(GroupedSwaps));
+
+                        if (PopupNavigation.Instance.PopupStack.Count > 0)
+                            _ = PopupNavigation.Instance.PopAsync();
+                        _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(swapViewModel));
                     }
                 });
             }
@@ -1117,11 +1115,8 @@ namespace atomex.ViewModel
 
         private void OnSuccessConvertion(object sender, EventArgs e)
         {
-            // todo: check!!
-            //FromViewModel.AmountString = Math.Min(FromViewModel.Amount, EstimatedMaxFromAmount).ToString(); // recalculate amount
-            //_ = EstimateSwapParamsAsync();
             FromViewModel.SetAmountFromString("0");
-            _ = EstimateSwapParamsAsync();
+            ToViewModel.SetAmountFromString("0");
         }
 
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
