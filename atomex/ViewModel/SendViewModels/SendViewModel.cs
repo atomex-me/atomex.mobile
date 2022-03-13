@@ -324,8 +324,11 @@ namespace atomex.ViewModel.SendViewModels
 
         private ICommand _undoConfirmStageCommand;
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
+            Stage = PopupNavigation.Instance.PopupStack.Count <= 1 ? SendStage.Edit : Stage);
+
+        private ICommand _closeConfirmationCommand;
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
         {
-            Stage = PopupNavigation.Instance.PopupStack.Count <= 1 ? SendStage.Edit : Stage;
             if (PopupNavigation.Instance.PopupStack.Count > 0)
                 PopupNavigation.Instance.PopAsync();
         });

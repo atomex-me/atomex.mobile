@@ -13,9 +13,22 @@ namespace atomex.Views.Send
 
         protected override void OnDisappearing()
         {
-            var vm = (SendViewModel)BindingContext;
-            if (vm.UndoConfirmStageCommand.CanExecute(null))
-                vm.UndoConfirmStageCommand.Execute(null);
+            if (BindingContext is SendViewModel)
+            {
+                var vm = (SendViewModel)BindingContext;
+                if (vm.UndoConfirmStageCommand.CanExecute(null))
+                    vm.UndoConfirmStageCommand.Execute(null);
+            }
+        }
+
+        public void OnClose()
+        {
+            if (BindingContext is SendViewModel)
+            {
+                var sendViewModel = (SendViewModel)BindingContext;
+                if (sendViewModel.CloseConfirmationCommand.CanExecute(null))
+                    sendViewModel.CloseConfirmationCommand.Execute(null);
+            }
         }
     }
 }

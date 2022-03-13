@@ -32,5 +32,21 @@ namespace atomex.Views.Send
             if (tezosTokenSendViewModel.UndoConfirmStageCommand.CanExecute(null))
                 tezosTokenSendViewModel.UndoConfirmStageCommand.Execute(null);
         }
+
+        public void OnClose()
+        {
+            if (BindingContext is SendViewModel)
+            {
+                var sendViewModel = (SendViewModel)BindingContext;
+                if (sendViewModel.CloseConfirmationCommand.CanExecute(null))
+                    sendViewModel.CloseConfirmationCommand.Execute(null);
+
+                return;
+            }
+
+            var tezosTokenSendViewModel = (TezosTokensSendViewModel)BindingContext;
+            if (tezosTokenSendViewModel.CloseConfirmationCommand.CanExecute(null))
+                tezosTokenSendViewModel.CloseConfirmationCommand.Execute(null);
+        }
     }
 }

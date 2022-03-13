@@ -22,7 +22,7 @@
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
-            <behavior:SwipeDownToClosePopupPage CloseAction="OnDisappearing"
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="100"
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
