@@ -30,7 +30,7 @@
               CachingStrategy="RecycleElement">
         <ListView.Header>
             <StackLayout Spacing="0">
-                <Label Text="{helpers:Translate ExchangePageTitle}"
+                <Label Text="{helpers:Translate ExchangeLabel}"
                        Style="{DynamicResource TitleTextStyle}"/>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
@@ -581,12 +581,13 @@
                                      Converter="{StaticResource NullToBoolean}"/>
                         </MultiBinding>
                     </StackLayout.IsVisible>
-                    <Button Text="{helpers:Translate ExchangeLabel}"
+                    <Button Text="{helpers:Translate ExchangeButton}"
                             CornerRadius="25"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                             TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                             FontSize="17"
                             HeightRequest="50"
+                            TextTransform="None"
                             HorizontalOptions="FillAndExpand"
                             FontFamily="{DynamicResource RegularFont}"
                             Command="{Binding ConvertCommand}">
@@ -645,6 +646,7 @@
                         TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                         Padding="16,0"
                         Margin="16,0"
+                        TextTransform="None"
                         CornerRadius="25"
                         HeightRequest="50"
                         IsVisible="{Binding CanShowMoreSwaps}"

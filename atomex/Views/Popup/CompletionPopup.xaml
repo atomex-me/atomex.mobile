@@ -63,6 +63,7 @@
                     TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                     FontSize="17"
                     HeightRequest="44"
+                    TextTransform="None"
                     HorizontalOptions="FillAndExpand"
                     FontFamily="{DynamicResource RegularFont}"
                     VerticalOptions="EndAndExpand"

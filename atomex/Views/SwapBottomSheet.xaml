@@ -234,6 +234,7 @@
                                     Text="{helpers:Translate ProgressTab}"
                                     FontFamily="{DynamicResource RegularFont}"
                                     FontSize="14"
+                                    TextTransform="None"
                                     TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                     BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
                                 <VisualStateManager.VisualStateGroups>
@@ -264,6 +265,7 @@
                                     Text="{helpers:Translate DetailsTab}"
                                     FontFamily="{DynamicResource RegularFont}"
                                     FontSize="14"
+                                    TextTransform="None"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapDetails"
                                     x:Name="DetailsButton"

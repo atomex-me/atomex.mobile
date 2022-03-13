@@ -673,10 +673,10 @@
     </data>
 
     <!-- Exchange Pages -->
-    <data name="ExchangePageTitle" xml:space="preserve">
+    <data name="ExchangeLabel" xml:space="preserve">
         <value>Exchange</value>
     </data>
-    <data name="ExchangeLabel" xml:space="preserve">
+    <data name="ExchangeButton" xml:space="preserve">
         <value>Exchange</value>
     </data>
     <data name="ChooseFromCurrency" xml:space="preserve">

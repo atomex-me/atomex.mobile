@@ -27,7 +27,7 @@
         <value>Подтвердить</value>
     </data>
     <data name="ReviewButton" xml:space="preserve">
-        <value>Review</value>
+        <value>Продолжить</value>
     </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>Я понимаю</value>
@@ -673,11 +673,11 @@
     </data>
 
     <!-- Exchange Pages -->
-    <data name="ExchangePageTitle" xml:space="preserve">
-        <value>Обмен</value>
-    </data>
     <data name="ExchangeLabel" xml:space="preserve">
         <value>Обмен</value>
+    </data>
+    <data name="ExchangeButton" xml:space="preserve">
+        <value>Обменять</value>
     </data>
     <data name="ChooseFromCurrency" xml:space="preserve">
         <value>Откуда</value>

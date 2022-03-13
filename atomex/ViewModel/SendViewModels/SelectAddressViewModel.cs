@@ -102,7 +102,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(
                 vm => vm.IsMyAddressesTab,
                 vm => vm.SelectAddressMode)
-                .Subscribe(value =>
+                .SubscribeInMainThread(value =>
                 {
                     ToolbarIcon = SelectAddressMode == SelectAddressMode.ReceiveTo && !IsMyAddressesTab ||
                         SelectAddressMode == SelectAddressMode.EnterExternalAddress
@@ -193,7 +193,7 @@ namespace atomex.ViewModel.SendViewModels
                 });
 
             this.WhenAnyValue(vm => vm.ToAddress)
-                .Subscribe(_ =>
+                .SubscribeInMainThread(_ =>
                 {
                     Message.Text = string.Empty;
                     this.RaisePropertyChanged(nameof(Message));
