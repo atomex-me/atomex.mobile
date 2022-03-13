@@ -428,8 +428,26 @@
                                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
                                 HorizontalOptions="FillAndExpand"
                                 FontFamily="{DynamicResource RegularFont}"
-                                Command="{Binding NextCommand}"
-                                IsEnabled="{Binding CanSend}"/>
+                                Command="{Binding NextCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                    <Setter Property="IsEnabled"
+                                            Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                    <Setter Property="IsEnabled"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
                                            RelativeLayout.WidthConstraint="24"

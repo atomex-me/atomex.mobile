@@ -430,7 +430,7 @@ namespace atomex.ViewModel.SendViewModels
                         {
                             Type = PopupType.Success,
                             Title = AppResources.Success,
-                            Body = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencySentToAddress, Amount, CurrencyCode, To),
+                            Body = string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending),
                             ButtonText = AppResources.AcceptButton
                         }));
 
@@ -538,7 +538,7 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     AmountInBase = Amount * (quote?.Bid ?? 0m);
                     FeeInBase = Fee * (quote?.Bid ?? 0m);
-                    TotalAmountInBase = (AmountInBase + FeeInBase) * (quote?.Bid ?? 0m);
+                    TotalAmountInBase = AmountInBase + FeeInBase;
                 }
                 catch(Exception e)
                 {

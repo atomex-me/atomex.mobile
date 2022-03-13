@@ -65,21 +65,8 @@ namespace atomex.ViewModel
             set
             {
                 _isUpdating = value;
-
-                if (_isUpdating)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsUpdating));
             }
-        }
-
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
         }
 
         private readonly string _tokenContract;

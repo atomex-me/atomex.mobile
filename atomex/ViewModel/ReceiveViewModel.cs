@@ -130,13 +130,6 @@ namespace atomex.ViewModel
 
         public string TokenContract { get; private set; }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -147,12 +140,6 @@ namespace atomex.ViewModel
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }

@@ -64,13 +64,6 @@ namespace atomex
             set { _header = value; OnPropertyChanged(nameof(Header)); }
         }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isPinExist;
         public bool IsPinExist
         {
@@ -88,12 +81,6 @@ namespace atomex
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }

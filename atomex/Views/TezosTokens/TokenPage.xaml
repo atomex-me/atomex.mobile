@@ -643,7 +643,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.RowSpan="2"
                                Padding="0"
@@ -705,10 +705,7 @@
                         <Button Grid.Column="2"
                                 Grid.RowSpan="2"
                                 Text="{helpers:Translate SendButton}"
-                                Style="{DynamicResource TokenActionButtonStyle}"
-                                CornerRadius="15"
-                                HeightRequest="20"
-                                Margin="0,15,10,15"
+                                Style="{DynamicResource TokenFa2SendButtonStyle}"
                                 Command="{Binding BindingContext.SendFa2PageCommand, Source={x:Reference BindingContextPage}}"
                                 CommandParameter="{Binding .}"/>
                     </Grid>

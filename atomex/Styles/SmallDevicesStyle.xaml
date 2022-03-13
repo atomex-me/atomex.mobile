@@ -553,6 +553,21 @@
     <Style x:Key="TokenHeaderLayoutStyle" TargetType="StackLayout" BasedOn="{StaticResource CurrencyHeaderLayoutStyle}"></Style>
     <Style x:Key="TokenActionButtonsLayoutStyle" TargetType="StackLayout" BasedOn="{StaticResource CurrencyActionButtonsLayoutStyle}"></Style>
     <Style x:Key="TokenActionButtonStyle" TargetType="Button" BasedOn="{StaticResource CurrencyActionButtonStyle}"></Style>
+    <Style x:Key="TokenFa2SendButtonStyle" TargetType="Button">
+        <Setter Property="FontSize">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="x:Double" iOS="11" Android="9"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TextTransform" Value="Uppercase"/>
+        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+        <Setter Property="HeightRequest" Value="20"/>
+        <Setter Property="CornerRadius" Value="15"/>
+        <Setter Property="Margin" Value="10,15"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+    </Style>
 
     <!-- TxInfo / SwapInfo / AddressInfo / Confirmations Pages  -->
     <Style x:Key="TxAmountLabelStyle" TargetType="Span">
@@ -656,43 +671,6 @@
         <Setter Property="HorizontalTextAlignment" Value="End"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="14"/>
-    </Style>
-
-    <!-- Create swap Pages -->
-    <Style x:Key="EstimatedLabelStyle" TargetType="Span">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-    </Style>
-    <Style x:Key="EstimatedValueStyle" TargetType="Span">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-    </Style>
-    <Style x:Key="CurrencyCodeLabelStyle" TargetType="Span">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-    </Style>
-    <Style x:Key="InBaseLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-        <Setter Property="FontSize" Value="10"/>
-        <Setter Property="FontFamily" Value="{DynamicResource LightFont}"/>
-    </Style>
-     <Style x:Key="MarketVolumeLabelStyle" TargetType="Span">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
-    </Style>
-    <Style x:Key="MarketVolumeValueStyle" TargetType="Span">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-    </Style>
-    <Style x:Key="ConfirmTxTableStyle" TargetType="TableView">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"/>
-        <Setter Property="RowHeight" Value="55"/>
-        <Setter Property="HeightRequest" Value="220"/>
     </Style>
 
     <!-- Popup -->

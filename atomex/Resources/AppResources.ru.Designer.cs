@@ -875,12 +875,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string DelegatePageTitle {
-            get {
-                return ResourceManager.GetString("DelegatePageTitle", resourceCulture);
-            }
-        }
-        
         internal static string DelegateToBakeryLabel {
             get {
                 return ResourceManager.GetString("DelegateToBakeryLabel", resourceCulture);
@@ -1592,6 +1586,12 @@ namespace atomex.Resources {
         internal static string CurrencySentToAddress {
             get {
                 return ResourceManager.GetString("CurrencySentToAddress", resourceCulture);
+            }
+        }
+        
+        internal static string SuccessSending {
+            get {
+                return ResourceManager.GetString("SuccessSending", resourceCulture);
             }
         }
         

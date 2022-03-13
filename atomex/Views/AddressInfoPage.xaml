@@ -24,8 +24,21 @@
                                IsVisible="{Binding IsUpdating}"/>
             <StackLayout Padding="0,10"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                         Opacity="{Binding Opacity}">
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsUpdating}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="0.3"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsUpdating}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <StackLayout Style="{DynamicResource InfoRowStyle}">
                     <StackLayout Orientation="Horizontal">
                         <StackLayout HorizontalOptions="FillAndExpand">

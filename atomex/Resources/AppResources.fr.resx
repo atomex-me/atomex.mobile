@@ -463,9 +463,6 @@
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegatePageTitle" xml:space="preserve">
-        <value>Déléguer</value>
-    </data>
     <data name="DelegateToBakeryLabel" xml:space="preserve">
         <value>Déléguer au baker</value>
     </data>
@@ -847,6 +844,9 @@
     </data>
     <data name="CurrencySentToAddress" xml:space="preserve">
         <value>{0} {1} sent to {2}</value>
+    </data>
+    <data name="SuccessSending" xml:space="preserve">
+        <value>Sending was successful</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>ce mot n'est pas dans la liste de la langue sélectionnée</value>

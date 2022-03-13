@@ -463,9 +463,6 @@
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegatePageTitle" xml:space="preserve">
-        <value>Делегировать</value>
-    </data>
     <data name="DelegateToBakeryLabel" xml:space="preserve">
         <value>Делегируем бейкеру</value>
     </data>
@@ -837,7 +834,7 @@
         <value>Вы уверены?</value>
     </data>
     <data name="SuccessDelegation" xml:space="preserve">
-        <value>Делегирование успешно</value>
+        <value>Делегировано успешно</value>
     </data>
     <data name="DelegationListWillBeUpdated" xml:space="preserve">
         <value>Список делегирования будет обновлен после включения операции в блок</value>
@@ -847,6 +844,9 @@
     </data>
     <data name="CurrencySentToAddress" xml:space="preserve">
         <value>{0} {1} отправлено на адрес {2}</value>
+    </data>
+    <data name="SuccessSending" xml:space="preserve">
+        <value>Sending was successful</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>этого слова нет в списке для выбранного языка</value>

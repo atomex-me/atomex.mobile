@@ -23,8 +23,21 @@
                                IsVisible="{Binding IsLoading}"/>
             <StackLayout VerticalOptions="FillAndExpand"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                         Opacity="{Binding Opacity}">
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="0.3"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="False">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <Label Text="{helpers:Translate WantToDelegate}"
                        FontFamily="{DynamicResource BlackFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"

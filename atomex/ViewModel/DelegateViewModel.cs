@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using atomex.Common;
 using atomex.Resources;
 using atomex.Views.Popup;
 using Atomex;
@@ -61,13 +60,6 @@ namespace atomex.ViewModel
             set { _isFeeCalculation = value; OnPropertyChanged(nameof(IsFeeCalculation)); }
         }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -78,12 +70,6 @@ namespace atomex.ViewModel
                     return;
                 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
@@ -782,15 +768,10 @@ namespace atomex.ViewModel
         }
 
         private ICommand _selectDelegationCommand;
-        public ICommand SelectDelegationCommand => _selectDelegationCommand ??= new Command<DelegationViewModel>(async (value) => await OnDelegationTapped(value));
-
-        private async Task OnDelegationTapped(DelegationViewModel delegation)
-        {
-            if (delegation.Baker == null)
-                await Navigation.PushAsync(new DelegatePage(this));
-            else
-                await Navigation.PushAsync(new DelegationInfoPage(delegation));
-        }
+        public ICommand SelectDelegationCommand => _selectDelegationCommand ??= new Command<DelegationViewModel>((value) =>
+           _ = value.Baker == null
+                ? Navigation.PushAsync(new DelegatePage(this))
+                : Navigation.PushAsync(new DelegationInfoPage(value)));
     }
 }
 
