@@ -10,5 +10,11 @@ namespace atomex.Views.CreateSwap
             InitializeComponent();
             BindingContext = selectCurrencyViewModel;
         }
+
+        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+                ((ListView)sender).SelectedItem = null;
+        }
     }
 }
