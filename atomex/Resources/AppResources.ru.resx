@@ -1107,4 +1107,16 @@
     <data name="AvailableAmountDexTooltip" xml:space="preserve">
         <value>Лимит применяется к одной сделке. Если вам требуется больше ликвидности, совершайте несколько сделок</value>
     </data>
+    <data name="AddressIsNotAtomex" xml:space="preserve">
+        <value>Внимание: адрес {0} является внешним и не является адресом кошелька Atomex. Убедитесь, что он введен правильно</value>
+    </data>
+    <data name="AddressIsNotAtomexToolTip" xml:space="preserve">
+        <value>Вы можете получать средства на внешний адрес (например, на аппаратный Ledger кошелек). Используя этот механизм, убедитесь, что вы ввели правильный адрес, поскольку ваш кошелек Atomex не будет иметь доступа к закрытому ключу внешнего адреса, и в случае ошибки доступ к средствам может быть потерян</value>
+    </data>
+    <data name="RedeemFromAddressNote" xml:space="preserve">
+        <value>Примечание: транзакция выкупа будет отправлена с адреса {0}</value>
+    </data>
+    <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
+        <value>Транзакция выкупа будет отправлена с адреса {0}, если на нем достаточно средств. В противном случае транзакция будет отправлена внешним сервисом за определенную плату</value>
+    </data>
 </root>

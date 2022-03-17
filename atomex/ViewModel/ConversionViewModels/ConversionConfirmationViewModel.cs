@@ -203,6 +203,8 @@ namespace atomex.ViewModel
                     return new Error(Errors.SwapError, message);
                 }
 
+                var isToBitcoinBased = Currencies.IsBitcoinBased(ToCurrencyViewModel.Currency.Name);
+
                 var order = new Order
                 {
                     Symbol = symbol.Name,
@@ -216,8 +218,14 @@ namespace atomex.ViewModel
 
                     FromAddress = FromSource is FromAddress fromAddress ? fromAddress.Address : null,
                     FromOutputs = FromSource is FromOutputs fromOutputs ? fromOutputs.Outputs.ToList() : null,
-                    ToAddress = ToAddress,
-                    RedeemFromAddress = RedeemFromAddress
+
+                    // for Bitcoin based currencies ToAddress must be Atomex wallet's address!
+                    ToAddress = isToBitcoinBased
+                        ? RedeemFromAddress
+                        : ToAddress,
+                    RedeemFromAddress = isToBitcoinBased
+                        ? ToAddress
+                        : RedeemFromAddress
                 };
 
                 await order.CreateProofOfPossessionAsync(account);

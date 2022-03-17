@@ -232,9 +232,22 @@ namespace atomex.ViewModel.ConversionViewModels
                 {
                     ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
                     {
-                        itemWithAddress.SelectedAddress = itemWithAddress
+                        var selectedAvaialbleAddress = itemWithAddress
                             .AvailableAddresses
-                            .FirstOrDefault(a => a.Address == walletAddressViewModel.Address) ?? itemWithAddress.SelectedAddress;
+                            .FirstOrDefault(a => a?.Address == walletAddressViewModel?.Address);
+
+                        if (Type == SelectCurrencyType.From)
+                        {
+                            itemWithAddress.SelectedAddress = selectedAvaialbleAddress ?? itemWithAddress.SelectedAddress;
+                        }
+                        else
+                        {
+                            itemWithAddress.SelectedAddress = selectedAvaialbleAddress ?? new WalletAddress
+                            {
+                                Address = walletAddressViewModel.Address,
+                                Currency = currency.Name
+                            };
+                        }
 
                         if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.Init)
                         {

@@ -2092,5 +2092,29 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("AvailableAmountDexTooltip", resourceCulture);
             }
         }
+        
+        internal static string AddressIsNotAtomex {
+            get {
+                return ResourceManager.GetString("AddressIsNotAtomex", resourceCulture);
+            }
+        }
+        
+        internal static string AddressIsNotAtomexToolTip {
+            get {
+                return ResourceManager.GetString("AddressIsNotAtomexToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string RedeemFromAddressNote {
+            get {
+                return ResourceManager.GetString("RedeemFromAddressNote", resourceCulture);
+            }
+        }
+        
+        internal static string RedeemFromAddressNoteToolTip {
+            get {
+                return ResourceManager.GetString("RedeemFromAddressNoteToolTip", resourceCulture);
+            }
+        }
     }
 }

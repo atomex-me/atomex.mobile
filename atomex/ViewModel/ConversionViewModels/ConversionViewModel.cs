@@ -99,9 +99,13 @@ namespace atomex.ViewModel
 
         [Reactive] public Message Message { get; set; }
         [Reactive] public Message AmountToFeeRatioWarning { get; set; }
+        [Reactive] public Message ExternalAddressWarning { get; set; }
+        [Reactive] public Message RedeemFromAddressNote { get; set; }
         [Reactive] public bool CanExchange { get; set; }
         [Reactive] public bool IsNoLiquidity { get; set; }
         [Reactive] public bool IsInsufficientFunds { get; set; }
+        [Reactive] public bool IsToAddressExtrenal { get; set; }
+        [Reactive] public bool IsRedeemFromAddressWithMaxBalance { get; set; }
 
         private SwapViewModel _selectedSwap;
         public SwapViewModel SelectedSwap
@@ -131,6 +135,8 @@ namespace atomex.ViewModel
             GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>();
             Message = new Message();
             AmountToFeeRatioWarning = new Message();
+            ExternalAddressWarning = new Message();
+            RedeemFromAddressNote = new Message();
             CanExchange = true;
 
             FromViewModel = new ConversionCurrencyViewModel
@@ -227,18 +233,86 @@ namespace atomex.ViewModel
             this.WhenAnyValue(vm => vm.ToCurrencyViewModelItem)
                 .SubscribeInMainThread(i =>
                 {
-                    // if To currency not selected or To currency is Bitcoin based
-                    if (i == null || Atomex.Currencies.IsBitcoinBased(i.CurrencyViewModel.Currency.Name))
+                    if (i == null || i is not SelectCurrencyWithAddressViewModelItem item || item.SelectedAddress == null)
                     {
                         UseRedeemAddress = false;
                         RedeemFromAddress = null;
+                        IsToAddressExtrenal = false;
+                        IsRedeemFromAddressWithMaxBalance = false;
                         return;
                     }
 
-                    var item = (SelectCurrencyWithAddressViewModelItem)i;
+                    var isBtcBased = Atomex.Currencies.IsBitcoinBased(i.CurrencyViewModel.Currency.Name);
+                    UseRedeemAddress = !isBtcBased;
 
-                    UseRedeemAddress = true;
-                    RedeemFromAddress = item.SelectedAddress?.Address;
+                    if (item.SelectedAddress.KeyIndex != null) // is atomex address
+                    {
+                        RedeemFromAddress = ToAddress;
+                        IsToAddressExtrenal = false;
+                        IsRedeemFromAddressWithMaxBalance = false;
+                    }
+                    else // is external address
+                    {
+                        if (isBtcBased)
+                        {
+                            RedeemFromAddress = _app.Account
+                                .GetCurrencyAccount<BitcoinBasedAccount>(i.CurrencyViewModel.Currency.Name)
+                                .GetFreeInternalAddressAsync()
+                                .WaitForResult()
+                                .Address;
+                        }
+                        else
+                        {
+                            RedeemFromAddress = _app.Account
+                                .GetUnspentAddressesAsync(i.CurrencyViewModel.Currency.FeeCurrencyName)
+                                .WaitForResult()
+                                .MaxByOrDefault(w => w.Balance)
+                                ?.Address;
+                        }
+
+                        IsToAddressExtrenal = true;
+                        IsRedeemFromAddressWithMaxBalance = !isBtcBased;
+                    }
+                });
+
+            this.WhenAnyValue(vm => vm.IsToAddressExtrenal)
+               .SubscribeInMainThread(t =>
+               {
+                   if (IsToAddressExtrenal)
+                   {
+                       ExternalAddressWarning.Type = MessageType.Warning;
+                       ExternalAddressWarning.RelatedTo = RelatedTo.All;
+                       ExternalAddressWarning.Text = string.Format(AppResources.AddressIsNotAtomex, ToAddress);
+                       ExternalAddressWarning.TooltipText = AppResources.AddressIsNotAtomexToolTip;
+                   }
+                   else
+                   {
+                       ExternalAddressWarning.Text = string.Empty;
+                       ExternalAddressWarning.TooltipText = string.Empty;
+                   }
+
+                   this.RaisePropertyChanged(nameof(ExternalAddressWarning));
+               });
+
+            this.WhenAnyValue(
+                    vm => vm.IsRedeemFromAddressWithMaxBalance,
+                    vm => vm.RedeemFromAddress)
+                .SubscribeInMainThread(t =>
+                {
+                    if (IsRedeemFromAddressWithMaxBalance)
+                    {
+                        RedeemFromAddressNote.Type = MessageType.Warning;
+                        RedeemFromAddressNote.RelatedTo = RelatedTo.All;
+                        RedeemFromAddressNote.Text = string.Format(AppResources.RedeemFromAddressNote, RedeemFromAddress);
+                        RedeemFromAddressNote.TooltipText = string.Format(AppResources.RedeemFromAddressNoteToolTip, RedeemFromAddress);
+                    }
+                    else
+                    {
+                        RedeemFromAddressNote.Text = string.Empty;
+                        RedeemFromAddressNote.TooltipText = string.Empty;
+                    }
+
+                    this.RaisePropertyChanged(nameof(RedeemFromAddressNote));
                 });
 
             // FromCurrencyViewModel or ToCurrencyViewModel changed
@@ -895,21 +969,13 @@ namespace atomex.ViewModel
         public ICommand AvailableAmountTooltipCommand => _availableAmountTooltipCommand ??=
             ReactiveCommand.Create(async () => await Application.Current.MainPage.DisplayAlert(string.Empty, AppResources.AvailableAmountDexTooltip, AppResources.AcceptButton));
 
-        private ICommand _messageTooltipCommand;
-        public ICommand MessageTooltipCommand => _messageTooltipCommand ??=
-            ReactiveCommand.Create(async () =>
-                {
-                    if (!string.IsNullOrEmpty(Message.TooltipText))
-                        await Application.Current.MainPage.DisplayAlert(string.Empty, Message.TooltipText, AppResources.AcceptButton);
-                }); 
-
-        private ICommand _amountToFeeRatioTooltipCommand;
-        public ICommand AmountToFeeRatioTooltipCommand => _amountToFeeRatioTooltipCommand ??=
-            ReactiveCommand.Create(async () =>
-                {
-                    if (!string.IsNullOrEmpty(AmountToFeeRatioWarning.TooltipText))
-                    await Application.Current.MainPage.DisplayAlert(string.Empty, AmountToFeeRatioWarning.TooltipText, AppResources.AcceptButton);
-                });
+        private ICommand _showTooltipCommand;
+        public ICommand ShowTooltipCommand => _showTooltipCommand ??=
+            ReactiveCommand.Create<string>(async (tooltipText) =>
+            {
+                if (!string.IsNullOrEmpty(tooltipText))
+                    await Application.Current.MainPage.DisplayAlert(string.Empty, tooltipText, AppResources.AcceptButton);
+            });
 
         private ICommand _showAllSwapsCommand;
         public ICommand ShowAllSwapsCommand => _showAllSwapsCommand ??=
