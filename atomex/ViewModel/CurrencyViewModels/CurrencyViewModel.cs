@@ -332,7 +332,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public virtual ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
         protected ICommand _convertPageCommand;
-        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
+        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(() => NavigationService.ConvertCurrency(Currency));
 
         protected ICommand _addressesPageCommand;
         public virtual ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
@@ -357,11 +357,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private async Task OnReceiveButtonClicked()
         {
             await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, Currency, Navigation)));
-        }
-
-        private async Task OnConvertButtonClicked()
-        {
-            await NavigationService.ConvertCurrency(CurrencyCode);
         }
 
         private async Task OnAddressesButtonClicked()

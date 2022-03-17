@@ -1271,6 +1271,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ExchangePageTitle {
+            get {
+                return ResourceManager.GetString("ExchangePageTitle", resourceCulture);
+            }
+        }
+        
         internal static string ExchangeLabel {
             get {
                 return ResourceManager.GetString("ExchangeLabel", resourceCulture);

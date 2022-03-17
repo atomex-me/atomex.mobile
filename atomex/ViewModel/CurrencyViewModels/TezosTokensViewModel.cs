@@ -349,7 +349,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
         private ICommand _convertPageCommand;
-        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
+        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(OnConvertButtonClicked);
 
         protected ICommand _addressesPageCommand;
         public ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
@@ -474,15 +474,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, Navigation, TokenContract?.Contract?.Address)));
         }
 
-        private async Task OnConvertButtonClicked()
+        private void OnConvertButtonClicked()
         {
-            var currencyCode = _app.Account.Currencies
-               .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress)?.Name;
+            var currency = _app.Account.Currencies
+               .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContractAddress);
 
-            if (currencyCode == null)
+            if (currency == null)
                 return; // msg to user
 
-            await NavigationService.ConvertCurrency(currencyCode);
+            NavigationService.ConvertCurrency(currency);
         }
     }
 }

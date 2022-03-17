@@ -673,6 +673,9 @@
     </data>
 
     <!-- Exchange Pages -->
+    <data name="ExchangePageTitle" xml:space="preserve">
+        <value>DEX</value>
+    </data>
     <data name="ExchangeLabel" xml:space="preserve">
         <value>Exchange</value>
     </data>

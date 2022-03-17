@@ -129,20 +129,20 @@ namespace atomex.ViewModel
         }
 
         private ICommand _selectCurrencyCommand;
-        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<CurrencyViewModel>(async (value) => await OnCurrencyTapped(value));
+        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<CurrencyViewModel>((value) => OnCurrencyTapped(value));
 
-        private async Task OnCurrencyTapped(CurrencyViewModel currency)
+        private void OnCurrencyTapped(CurrencyViewModel currency)
         {
             if (currency == null)
                 return;
 
             if (currency.CurrencyCode == "XTZ")
             {
-                await NavigationService.ShowTezosTokens(CurrenciesViewModel.TezosTokensViewModel);
+                NavigationService.ShowTezosTokens(CurrenciesViewModel.TezosTokensViewModel);
                 return;
             }
 
-            await NavigationService.ShowCurrency(currency);
+            NavigationService.ShowCurrency(currency);
         }
     }
 }
