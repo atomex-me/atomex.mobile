@@ -35,7 +35,7 @@
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
-                                                ClosingEdge="100"
+                                                ClosingEdge="520"
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
@@ -47,12 +47,12 @@
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
                        HeightRequest="4"
-                       Margin="0,0,0,20"
+                       Margin="0,0,0,40"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <ScrollView>
                     <StackLayout Spacing="0"
-                                 Padding="0,20">
+                                 Padding="0,0,0,20">
                         <Image WidthRequest="40"
                                HeightRequest="40">
                             <Image.Triggers>

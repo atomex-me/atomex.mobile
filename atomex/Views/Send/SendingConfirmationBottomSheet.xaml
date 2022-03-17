@@ -30,7 +30,7 @@
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
-                                                ClosingEdge="100"
+                                                ClosingEdge="456"
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
@@ -43,10 +43,11 @@
                        WidthRequest="35"
                        HeightRequest="4"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center"
+                       Margin="0,0,0,20"/>
                 <Label Text="{helpers:Translate ReviewButton}"
                        Style="{DynamicResource TitleTextStyle}"
-                       Padding="0,20"/>
+                       Padding="0,0,0,20"/>
                 <Grid HorizontalOptions="Fill"
                       ColumnSpacing="0"
                       RowSpacing="8">
