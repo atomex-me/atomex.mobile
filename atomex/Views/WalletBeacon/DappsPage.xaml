@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             x:Class="atomex.Views.WalletBeacon.DappsPage"
+             x:Name="BindingContextPage"
+             Title="DappsPage"
+             Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+                <StackLayout 
+                    Orientation="Vertical"
+                    Padding="20"
+                    Spacing="0">
+                    <Frame CornerRadius="10"
+                           HeightRequest="40"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,0,5,0"
+                           Margin="0,0,0,20">
+                        <StackLayout Orientation="Horizontal"
+                                        VerticalOptions="FillAndExpand">
+                            <Label Text="Scan QRCode"
+                                    FontFamily="{DynamicResource RegularFont}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                    FontSize="14"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"/>
+                            <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                                    HorizontalOptions="EndAndExpand"
+                                    VerticalOptions="Center"
+                                    HeightRequest="10"
+                                    WidthRequest="10"/>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ScanQrCodeCommand}"/>
+                            </Frame.GestureRecognizers>
+                        </StackLayout>
+                    </Frame>
+                    <Label Text="DappsDevices"
+                           FontFamily="{DynamicResource LightFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           VerticalTextAlignment="Center"
+                           TextTransform="Uppercase"
+                           Padding="20,5"/>
+                    <StackLayout
+                        Orientation="Vertical"
+                        Spacing="30"
+                        IsVisible="False">
+                        <Image WidthRequest="170"
+                           HeightRequest="156"
+                           Margin="10"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Source="AtomexLogo"/>
+                        <Label Text="No Dapps have been connected"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="20"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           HorizontalOptions="Center"
+                           VerticalTextAlignment="Center"
+                           Padding="20,5"/>
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding DappsInfo.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="True"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                    </StackLayout>
+
+
+
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
