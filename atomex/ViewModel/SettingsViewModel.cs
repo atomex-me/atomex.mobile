@@ -18,12 +18,14 @@ using atomex.Services;
 using atomex.Views;
 using atomex.Views.SettingsOptions;
 using Atomex;
+using atomex.ViewModel.WalletBeacon;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using atomex.Views.WalletBeacon;
 
 namespace atomex.ViewModel
 {
@@ -453,6 +455,9 @@ namespace atomex.ViewModel
         private ICommand _deleteWalletCommand;
         public ICommand DeleteWalletCommand => _deleteWalletCommand ??= new Command<string>((name) => OnWalletTapped(name));
 
+        private ICommand _dappsDevicesCommand;
+        public ICommand ShowDappsDevicesCommand => _dappsDevicesCommand ??= new Command(async () => await OnDappsDevicesClicked());
+        
         private async void SignOut()
         {
             var res = await Application.Current.MainPage.DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
@@ -495,6 +500,11 @@ namespace atomex.ViewModel
         private void OnTelegramTapped()
         {
             Launcher.OpenAsync(new Uri(TelegramUrl));
+        }
+        
+        private async Task OnDappsDevicesClicked()
+        {
+            await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation)));
         }
     }
 }

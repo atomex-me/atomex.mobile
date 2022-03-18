@@ -1,276 +1,344 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:atomex.Helpers"
-             xmlns:custom="clr-namespace:atomex.CustomElements"
-             x:Class="atomex.SettingsPage"
-             x:Name="BindingContextPage"
-             Title="{helpers:Translate SettingsPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    Style="{DynamicResource AdditionalBackgroundStyle}"
+    Title="{helpers:Translate SettingsPageTitle}"
+    x:Class="atomex.SettingsPage"
+    x:Name="BindingContextPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout VerticalOptions="FillAndExpand"
-                         Padding="20"
-                         Spacing="0">
-                <StackLayout Spacing="0"
-                             IsVisible="{Binding BiometricSensorAvailibility}">
-                    <Label Text="{helpers:Translate SecuritySection}"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           VerticalTextAlignment="Center"
-                           TextTransform="Uppercase"
-                           Padding="20,5"/>
-                    <Frame CornerRadius="10"
-                           HeightRequest="40"
-                           Style="{DynamicResource EntryFrameStyle}"
-                           Padding="20,0,5,0"
-                           Margin="0,0,0,20">
-                        <StackLayout Orientation="Horizontal"
-                                     VerticalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate UseBiometricLabel}"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                   FontSize="14"
-                                   VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Center"/>
-                            <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                    IsToggled="{Binding UseBiometric, Mode=TwoWay}"
-                                    HorizontalOptions="EndAndExpand"
-                                    VerticalOptions="Center"/>
+            <StackLayout
+                Padding="20"
+                Spacing="0"
+                VerticalOptions="FillAndExpand">
+                <StackLayout IsVisible="{Binding BiometricSensorAvailibility}" Spacing="0">
+                    <Label
+                        FontFamily="{DynamicResource LightFont}"
+                        FontSize="14"
+                        Padding="20,5"
+                        Text="{helpers:Translate SecuritySection}"
+                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark},
+                                                    Light={StaticResource AdditionalTextColor}}"
+                        TextTransform="Uppercase"
+                        VerticalTextAlignment="Center" />
+                    <Frame
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        Margin="0,0,0,20"
+                        Padding="20,0,5,0"
+                        Style="{DynamicResource EntryFrameStyle}">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <Label
+                                FontFamily="{DynamicResource RegularFont}"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="{helpers:Translate UseBiometricLabel}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                            Light={StaticResource MainTextColor}}"
+                                VerticalTextAlignment="Center" />
+                            <Switch
+                                HorizontalOptions="EndAndExpand"
+                                IsToggled="{Binding UseBiometric, Mode=TwoWay}"
+                                OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark},
+                                                          Light={StaticResource MainButtonBackgroundColor}}"
+                                VerticalOptions="Center" />
                         </StackLayout>
                     </Frame>
+
+                    <Frame
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        Margin="0,0,0,20"
+                        Padding="20,0,5,0"
+                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowDappsDevicesCommand}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <Label
+                                FontFamily="{DynamicResource RegularFont}"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="DappsDevices"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                            Light={StaticResource MainTextColor}}"
+                                VerticalTextAlignment="Center" />
+                            <!--  Text="{helpers:Translate DappsDevices}"  -->
+                        </StackLayout>
+                    </Frame>
+
                 </StackLayout>
-                <Label Text="{helpers:Translate CommonSection}"
-                       FontFamily="{DynamicResource LightFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       Padding="20,5"/>
-                <Frame CornerRadius="10"
-                       HeightRequest="40"
-                       Style="{DynamicResource EntryFrameStyle}"
-                       Margin="0,0,0,20">
+                <Label
+                    FontFamily="{DynamicResource LightFont}"
+                    FontSize="14"
+                    Padding="20,5"
+                    Text="{helpers:Translate CommonSection}"
+                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark},
+                                                Light={StaticResource AdditionalTextColor}}"
+                    TextTransform="Uppercase"
+                    VerticalTextAlignment="Center" />
+                <Frame
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    Margin="0,0,0,20"
+                    Style="{DynamicResource EntryFrameStyle}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}"
-                                              Tapped="OnFrameItemTapped"/>
+                        <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}" Tapped="OnFrameItemTapped" />
                     </Frame.GestureRecognizers>
-                    <StackLayout Spacing="0"
-                                 Orientation="Horizontal">
-                        <Label Text="{helpers:Translate LanguageLabel}"
-                               Style="{DynamicResource OptionLabelStyle}"/>
-                        <Label Text="{Binding Language.Name}"
-                               Style="{DynamicResource OptionValueLabelStyle}"/>
-                        <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                               Margin="10,15,20,15"
-                               HeightRequest="10"
-                               WidthRequest="10"/>
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        <Label Style="{DynamicResource OptionLabelStyle}" Text="{helpers:Translate LanguageLabel}" />
+                        <Label Style="{DynamicResource OptionValueLabelStyle}" Text="{Binding Language.Name}" />
+                        <Image
+                            HeightRequest="10"
+                            Margin="10,15,20,15"
+                            Source="{AppThemeBinding Dark=RightArrow__white,
+                                                     Light=RightArrow__gray}"
+                            WidthRequest="10" />
                     </StackLayout>
                 </Frame>
-                <Label Text="{helpers:Translate CommunitySection}"
-                       FontFamily="{DynamicResource LightFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       Padding="20,5"/>
-                <Grid ColumnSpacing="0"
-                      RowSpacing="0">
+                <Label
+                    FontFamily="{DynamicResource LightFont}"
+                    FontSize="14"
+                    Padding="20,5"
+                    Text="{helpers:Translate CommunitySection}"
+                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark},
+                                                Light={StaticResource AdditionalTextColor}}"
+                    TextTransform="Uppercase"
+                    VerticalTextAlignment="Center" />
+                <Grid ColumnSpacing="0" RowSpacing="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="6.5*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="6.5*" />
+                        <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="39.5"/>
-                        <RowDefinition Height="0.5"/>
-                        <RowDefinition Height="39.5"/>
-                        <RowDefinition Height="0.5"/>
-                        <RowDefinition Height="39.5"/>
-                        <RowDefinition Height="0.5"/>
-                        <RowDefinition Height="39.5"/>
+                        <RowDefinition Height="39.5" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="39.5" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="39.5" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="39.5" />
                     </Grid.RowDefinitions>
-                    <custom:CustomFrame CornerRadius="10,10,0,0"
-                                        Grid.RowSpan="2"
-                                        Grid.ColumnSpan="3"
-                                        Style="{DynamicResource EntryFrameStyle}">
+                    <custom:CustomFrame
+                        CornerRadius="10,10,0,0"
+                        Grid.ColumnSpan="3"
+                        Grid.RowSpan="2"
+                        Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TelegramCommand}"
-                                                  Tapped="OnFrameItemTapped"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}" Tapped="OnFrameItemTapped" />
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
-                    <Image Source="ic_telegram"
-                           Margin="6"/>
-                    <Label Text="{helpers:Translate Telegram}"
-                           Grid.Column="1"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start">
+                    <Image Margin="6" Source="ic_telegram" />
+                    <Label
+                        FontFamily="{DynamicResource RegularFont}"
+                        FontSize="14"
+                        Grid.Column="1"
+                        HorizontalTextAlignment="Start"
+                        Text="{helpers:Translate Telegram}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                    Light={StaticResource MainTextColor}}"
+                        VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TelegramCommand}"/>
+                            <TapGestureRecognizer Command="{Binding TelegramCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                           Grid.Column="2"
-                           Margin="20,15"
-                           HorizontalOptions="End"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="1"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"/>
-                    <custom:CustomFrame CornerRadius="0"
-                                        Grid.Row="2"
-                                        Grid.RowSpan="2"
-                                        Grid.ColumnSpan="3"
-                                        Style="{DynamicResource EntryFrameStyle}">
+                    <Image
+                        Grid.Column="2"
+                        HorizontalOptions="End"
+                        Margin="20,15"
+                        Source="{AppThemeBinding Dark=RightArrow__white,
+                                                 Light=RightArrow__gray}" />
+                    <StackLayout
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1"
+                        Style="{DynamicResource SeparatorStyle}" />
+                    <custom:CustomFrame
+                        CornerRadius="0"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="2"
+                        Grid.RowSpan="2"
+                        Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TwitterCommand}"
-                                                  Tapped="OnFrameItemTapped"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}" Tapped="OnFrameItemTapped" />
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
-                    <Image Grid.Row="2"
-                           Source="ic_twitter"
-                           Margin="6"/>
-                    <Label Text="{helpers:Translate Twitter}"
-                           Grid.Row="2"
-                           Grid.Column="1"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start">
+                    <Image
+                        Grid.Row="2"
+                        Margin="6"
+                        Source="ic_twitter" />
+                    <Label
+                        FontFamily="{DynamicResource RegularFont}"
+                        FontSize="14"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        HorizontalTextAlignment="Start"
+                        Text="{helpers:Translate Twitter}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                    Light={StaticResource MainTextColor}}"
+                        VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TwitterCommand}"/>
+                            <TapGestureRecognizer Command="{Binding TwitterCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                           Grid.Row="2"
-                           Grid.Column="2"
-                           Margin="20,15"
-                           HorizontalOptions="End"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="3"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"/>
-                    <custom:CustomFrame CornerRadius="0"
-                                        Grid.Row="4"
-                                        Grid.RowSpan="2"
-                                        Grid.ColumnSpan="3"
-                                        Style="{DynamicResource EntryFrameStyle}">
+                    <Image
+                        Grid.Column="2"
+                        Grid.Row="2"
+                        HorizontalOptions="End"
+                        Margin="20,15"
+                        Source="{AppThemeBinding Dark=RightArrow__white,
+                                                 Light=RightArrow__gray}" />
+                    <StackLayout
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="3"
+                        Style="{DynamicResource SeparatorStyle}" />
+                    <custom:CustomFrame
+                        CornerRadius="0"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="4"
+                        Grid.RowSpan="2"
+                        Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"
-                                                  Tapped="OnFrameItemTapped"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}" Tapped="OnFrameItemTapped" />
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
-                    <Image Grid.Row="4"
-                           Source="ic_youtube"
-                           Margin="6"/>
-                    <Label Text="{helpers:Translate Youtube}"
-                           Grid.Row="4"
-                           Grid.Column="1"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start">
+                    <Image
+                        Grid.Row="4"
+                        Margin="6"
+                        Source="ic_youtube" />
+                    <Label
+                        FontFamily="{DynamicResource RegularFont}"
+                        FontSize="14"
+                        Grid.Column="1"
+                        Grid.Row="4"
+                        HorizontalTextAlignment="Start"
+                        Text="{helpers:Translate Youtube}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                    Light={StaticResource MainTextColor}}"
+                        VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding YoutubeCommand}"/>
+                            <TapGestureRecognizer Command="{Binding YoutubeCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                           Grid.Row="4"
-                           Grid.Column="2"
-                           Margin="20,15"
-                           HorizontalOptions="End"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Grid.Row="5"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"/>
-                    <custom:CustomFrame CornerRadius="0,0,10,10"
-                                        Grid.Row="6"
-                                        Grid.RowSpan="2"
-                                        Grid.ColumnSpan="3"
-                                        Style="{DynamicResource EntryFrameStyle}">
+                    <Image
+                        Grid.Column="2"
+                        Grid.Row="4"
+                        HorizontalOptions="End"
+                        Margin="20,15"
+                        Source="{AppThemeBinding Dark=RightArrow__white,
+                                                 Light=RightArrow__gray}" />
+                    <StackLayout
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="5"
+                        Style="{DynamicResource SeparatorStyle}" />
+                    <custom:CustomFrame
+                        CornerRadius="0,0,10,10"
+                        Grid.ColumnSpan="3"
+                        Grid.Row="6"
+                        Grid.RowSpan="2"
+                        Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SupportCommand}"
-                                                  Tapped="OnFrameItemTapped"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}" Tapped="OnFrameItemTapped" />
                         </Frame.GestureRecognizers>
                     </custom:CustomFrame>
-                    <Image Grid.Row="6"
-                           Source="ic_support"
-                           Margin="6"/>
-                    <Label Text="{helpers:Translate Support}"
-                           Grid.Row="6"
-                           Grid.Column="1"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start">
+                    <Image
+                        Grid.Row="6"
+                        Margin="6"
+                        Source="ic_support" />
+                    <Label
+                        FontFamily="{DynamicResource RegularFont}"
+                        FontSize="14"
+                        Grid.Column="1"
+                        Grid.Row="6"
+                        HorizontalTextAlignment="Start"
+                        Text="{helpers:Translate Support}"
+                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                    Light={StaticResource MainTextColor}}"
+                        VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SupportCommand}"/>
+                            <TapGestureRecognizer Command="{Binding SupportCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
-                           Grid.Row="6"
-                           Grid.Column="2"
-                           Margin="20,15"
-                           HorizontalOptions="End"/>
+                    <Image
+                        Grid.Column="2"
+                        Grid.Row="6"
+                        HorizontalOptions="End"
+                        Margin="20,15"
+                        Source="{AppThemeBinding Dark=RightArrow__white,
+                                                 Light=RightArrow__gray}" />
                 </Grid>
-                <Label Text="{helpers:Translate AccountSection}"
-                       FontFamily="{DynamicResource LightFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       Padding="20,25,20,5"/>
-                <custom:CustomFrame CornerRadius="10"
-                                    HeightRequest="40"
-                                    Style="{DynamicResource EntryFrameStyle}">
-                    <Button Text="{helpers:Translate SignOut}"
-                            Style="{DynamicResource TransparentButtonStyle}"
-                            CornerRadius="10"
-                            Command="{Binding SignOutCommand}"/>
+                <Label
+                    FontFamily="{DynamicResource LightFont}"
+                    FontSize="14"
+                    Padding="20,25,20,5"
+                    Text="{helpers:Translate AccountSection}"
+                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark},
+                                                Light={StaticResource AdditionalTextColor}}"
+                    TextTransform="Uppercase"
+                    VerticalTextAlignment="Center" />
+                <custom:CustomFrame
+                    CornerRadius="10"
+                    HeightRequest="40"
+                    Style="{DynamicResource EntryFrameStyle}">
+                    <Button
+                        Command="{Binding SignOutCommand}"
+                        CornerRadius="10"
+                        Style="{DynamicResource TransparentButtonStyle}"
+                        Text="{helpers:Translate SignOut}" />
                 </custom:CustomFrame>
-                <Label Text="{helpers:Translate WalletsSection}"
-                       FontFamily="{DynamicResource LightFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Center"
-                       TextTransform="Uppercase"
-                       Padding="20,25,20,5"/>
-                <Frame CornerRadius="10"
-                       Style="{DynamicResource EntryFrameStyle}"
-                       Padding="0,5">
-                    <StackLayout BindableLayout.ItemsSource="{Binding Wallets}"
-                                 BackgroundColor="Transparent"
-                                 Spacing="0">
+                <Label
+                    FontFamily="{DynamicResource LightFont}"
+                    FontSize="14"
+                    Padding="20,25,20,5"
+                    Text="{helpers:Translate WalletsSection}"
+                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark},
+                                                Light={StaticResource AdditionalTextColor}}"
+                    TextTransform="Uppercase"
+                    VerticalTextAlignment="Center" />
+                <Frame
+                    CornerRadius="10"
+                    Padding="0,5"
+                    Style="{DynamicResource EntryFrameStyle}">
+                    <StackLayout
+                        BackgroundColor="Transparent"
+                        BindableLayout.ItemsSource="{Binding Wallets}"
+                        Spacing="0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Orientation="Horizontal"
-                                             Padding="20,0"
-                                             HeightRequest="40">
+                                <StackLayout
+                                    HeightRequest="40"
+                                    Orientation="Horizontal"
+                                    Padding="20,0">
                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding Name}"
-                                                              Command="{Binding BindingContext.DeleteWalletCommand, Source={x:Reference BindingContextPage}}"
-                                                              Tapped="OnWalletItemTapped"/>
+                                        <TapGestureRecognizer
+                                            Command="{Binding BindingContext.DeleteWalletCommand, Source={x:Reference BindingContextPage}}"
+                                            CommandParameter="{Binding Name}"
+                                            Tapped="OnWalletItemTapped" />
                                     </StackLayout.GestureRecognizers>
-                                    <Image WidthRequest="20"
-                                           HeightRequest="20"
-                                           Source="{AppThemeBinding Light=Wallet__blue, Dark=Wallet__white}"/>
-                                    <Label Text="{Binding Description}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           Padding="6,0"
-                                           FontSize="12"
-                                           VerticalTextAlignment="Center"/>
-                                    <Image WidthRequest="16"
-                                           HeightRequest="16"
-                                           HorizontalOptions="EndAndExpand"
-                                           Source="ic_delete"/>
+                                    <Image
+                                        HeightRequest="20"
+                                        Source="{AppThemeBinding Light=Wallet__blue,
+                                                                 Dark=Wallet__white}"
+                                        WidthRequest="20" />
+                                    <Label
+                                        FontFamily="{DynamicResource RegularFont}"
+                                        FontSize="12"
+                                        Padding="6,0"
+                                        Text="{Binding Description}"
+                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                                    Light={StaticResource MainTextColor}}"
+                                        VerticalTextAlignment="Center" />
+                                    <Image
+                                        HeightRequest="16"
+                                        HorizontalOptions="EndAndExpand"
+                                        Source="ic_delete"
+                                        WidthRequest="16" />
                                 </StackLayout>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
