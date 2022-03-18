@@ -1,4 +1,5 @@
 ﻿using atomex.ViewModel.SendViewModels;
+using atomex.ViewModel.WalletBeacon;
 using Xamarin.Forms;
 
 namespace atomex
@@ -15,6 +16,12 @@ namespace atomex
         {
             InitializeComponent();
             BindingContext = sendViewModel;
+        }
+        
+        public ScanningQrPage(DappsViewModel dappsViewModel)
+        {
+            InitializeComponent();
+            BindingContext = dappsViewModel;
         }
     }
 }
