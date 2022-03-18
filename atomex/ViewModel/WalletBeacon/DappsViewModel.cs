@@ -22,6 +22,7 @@ using Beacon.Sdk.Beacon;
 using atomex.Views.WalletBeacon;
 using Beacon.Sdk.WalletBeaconClient;
 using Serilog.Extensions.Logging;
+using atomex.Helpers;
 
 namespace atomex.ViewModel.WalletBeacon
 {
@@ -68,26 +69,32 @@ namespace atomex.ViewModel.WalletBeacon
 
     public class DappsViewModel : BaseViewModel
     {
-        const string path = "test1.db";
+        private readonly IWalletBeaconClient walletBeaconClient;
 
         private readonly IAtomexApp _app;
 
         public INavigation Navigation { get; set; }
 
+        
+
         public ObservableCollection<DappInfo> DappsInfo { get; } = new ObservableCollection<DappInfo>();
 
         public DappsViewModel(IAtomexApp app, INavigation navigation)
         {
+            walletBeaconClient = WalletBeaconHelper.WalletBeaconClient;
+
             _app = app ?? throw new ArgumentNullException(nameof(app)); ;
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
 
      
 
-            app = app.UseWalletBeacon();
+            //app = app.UseWalletBeacon();
 
             DeleteCommand = new Command<string>(async (name) => await DeleteAsync(name));
             ScanQrCodeCommand = new Command(async () => await ScanQrCodeAsync());
             OnScanAddressCommand = new Command(async () => await OnScanAddressAsync());
+
+            _ = walletBeaconClient.InitAsync();
         }
 
         public ICommand DeleteCommand { get; } 
