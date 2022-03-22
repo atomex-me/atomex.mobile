@@ -47,6 +47,12 @@ namespace atomex.Views.CreateNewWallet
             }
         }
 
+        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        {
+            var editor = sender as Editor;
+            editor.Text = args.NewTextValue.ToLower();
+        }
+
         protected override void OnDisappearing()
         {
             var vm = (CreateNewWalletViewModel)BindingContext;

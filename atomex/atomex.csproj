@@ -6,17 +6,23 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
-    <PackageReference Include="Plugin.Fingerprint" Version="2.1.3" />
-    <PackageReference Include="Sentry" Version="2.1.1" />
-    <PackageReference Include="Sentry.Serilog" Version="2.1.1" />
+    <PackageReference Include="Plugin.Fingerprint" Version="2.1.4" />
+    <PackageReference Include="Sentry" Version="3.15.0" />
+    <PackageReference Include="Sentry.Serilog" Version="3.15.0" />
     <PackageReference Include="Xam.Plugin.LatestVersion" Version="2.1.0" />
-    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.14" />
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="4.0.11" />
+    <PackageReference Include="ReactiveUI" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
+    <PackageReference Include="Xamarin.Forms.InputKit" Version="3.7.2" />
+    <PackageReference Include="Sentry.Xamarin" Version="1.3.2" />
+    <PackageReference Include="Sentry.Xamarin.Forms" Version="1.3.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -38,6 +44,8 @@
     <Folder Include="Behaviors\" />
     <Folder Include="Views\BuyCurrency\" />
     <Folder Include="Views\TezosTokens\" />
+    <Folder Include="Views\Send\" />
+    <Folder Include="ViewModel\ConversionViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
@@ -84,6 +92,14 @@
     <None Remove="Com.Airbnb.Xamarin.Forms.Lottie" />
     <None Remove="Xamarin.CommunityToolkit" />
     <None Remove="Xamarin.CommunityToolkit.Markup" />
+    <None Remove="ReactiveUI" />
+    <None Remove="ReactiveUI.XamForms" />
+    <None Remove="ReactiveUI.Fody" />
+    <None Remove="Xamarin.Forms.InputKit" />
+    <None Remove="Views\Send\" />
+    <None Remove="ViewModel\ConversionViewModels\" />
+    <None Remove="Sentry.Xamarin" />
+    <None Remove="Sentry.Xamarin.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="**/*" />

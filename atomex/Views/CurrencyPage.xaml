@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             x:Name="BindingContextPage"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
              Title="{Binding Currency.Description}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -23,8 +23,11 @@
     </ContentPage.ToolbarItems>
     <ListView ItemsSource="{Binding GroupedTransactions}"
               Style="{DynamicResource TxListViewStyle}"
-              SelectionMode="None"
+              SelectionMode="Single"
+              SelectedItem="{Binding SelectedTransaction}"
+              ItemSelected="ItemSelected"
               CachingStrategy="RetainElement"
+              BackgroundColor="Transparent"
               RefreshCommand="{Binding UpdateCurrencyCommand}"
               IsRefreshing="{Binding IsLoading}"
               Footer="">
@@ -104,7 +107,16 @@
                     <StackLayout Style="{DynamicResource CurrencyActionButtonsLayoutStyle}">
                         <controls:LeftRoundedButton Text="{helpers:Translate SendButton}"
                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                    Command="{Binding SendPageCommand}"/>
+                                                    Command="{Binding SendPageCommand}">
+                            <controls:LeftRoundedButton.Triggers>
+                                <DataTrigger TargetType="controls:LeftRoundedButton"
+                                             Binding="{Binding TotalAmount}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </controls:LeftRoundedButton.Triggers>
+                        </controls:LeftRoundedButton>
                         <Button Text="{helpers:Translate ReceiveButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding ReceivePageCommand}"/>
@@ -113,8 +125,8 @@
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
                                 Command="{Binding StakingPageCommand}"/>
                         <controls:RightRoundedButton Text="{helpers:Translate ConvertButton}"
-                                                        Style="{DynamicResource CurrencyActionButtonStyle}"
-                                                        Command="{Binding ConvertPageCommand}"/>
+                                                     Style="{DynamicResource CurrencyActionButtonStyle}"
+                                                     Command="{Binding ConvertPageCommand}"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
@@ -144,11 +156,25 @@
                                     HorizontalOptions="Center">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="80"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateCurrencyCommand}"/>
+                                Command="{Binding UpdateCurrencyCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"
@@ -167,7 +193,7 @@
                     <StackLayout HeightRequest="20"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                  Spacing="0">
-                        <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                        <Label Text="{Binding Date, StringFormat='{}{0:MMMM dd, yyyy}'}"
                                BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontFamily="{DynamicResource RegularFont}"
@@ -181,16 +207,11 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
                           VerticalOptions="Center"
                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectTransactionCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnTxItemTapped"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -638,7 +659,7 @@
                                Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
-                </ViewCell>
+                </controls:CustomViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

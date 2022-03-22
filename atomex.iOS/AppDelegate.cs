@@ -11,6 +11,7 @@ using atomex.Services;
 using Serilog.Debugging;
 using Serilog;
 using Serilog.Events;
+using Sentry;
 
 namespace atomex.iOS
 {
@@ -63,6 +64,8 @@ namespace atomex.iOS
 
             LoadApplication(new App());
 
+            Plugin.InputKit.Platforms.iOS.Config.Init();
+
             return base.FinishedLaunching(app, options);
         }
 
@@ -83,20 +86,26 @@ namespace atomex.iOS
         private void StartSentry()
         {
             SelfLog.Enable(m => Log.Error(m));
+            SentrySdk.Init("https://dee6b20f797d4dff97b8bcdbd738a583@newsentry.baking-bad.org/4");
+
+            SentrySdk.ConfigureScope(scope =>
+            {
+                scope.SetTag("platform", "iOS");
+                scope.SetTag("device_token", DeviceToken);
+            });
 
             Log.Logger = new LoggerConfiguration()
-              .Enrich.FromLogContext()
-              .MinimumLevel.Debug()
-              .WriteTo.Sentry(o =>
-              {
-                  o.Dsn = new Sentry.Dsn("https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6");
-                  o.MinimumEventLevel = LogEventLevel.Error;
-                  o.MinimumBreadcrumbLevel = LogEventLevel.Error;
-                  o.AttachStacktrace = true;
-                  o.SendDefaultPii = true;
-                  o.Environment = "iOS: " + DeviceToken;
-              })
-              .CreateLogger();
+                .Enrich.FromLogContext()
+                .MinimumLevel.Debug()
+                .WriteTo.Sentry(o =>
+                {
+                    o.TracesSampleRate = 1.0;
+                    o.MinimumEventLevel = LogEventLevel.Error;
+                    o.MinimumBreadcrumbLevel = LogEventLevel.Error;
+                    o.AttachStacktrace = true;
+                    o.SendDefaultPii = true;
+                    o.InitializeSdk = false;
+                }).CreateLogger();
         }
 
         public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
@@ -108,30 +117,6 @@ namespace atomex.iOS
             var settings = UNNotificationPresentationOptions.Sound | UNNotificationPresentationOptions.Alert;
             completionHandler(settings);
         }
-
-        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-        {
-            switch (response.ActionIdentifier)
-            {
-                case "custom":
-                    // Do something
-                    break;
-                default:
-                    // Take action based on identifier
-                    if (response.IsDefaultAction)
-                    {
-                        // Handle default action...
-                        DependencyService.Get<INotificationManager>().RemoveNotifications();
-                    }
-                    else if (response.IsDismissAction)
-                    {
-                        // Handle dismiss action
-                    }
-                    break;
-            }
-            completionHandler();
-        }
-
 
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)

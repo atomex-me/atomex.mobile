@@ -201,8 +201,22 @@
                     <custom:RightRoundedButton Text="{helpers:Translate ShareButton}"
                                                Style="{DynamicResource ReceiveActionButtonStyle}"
                                                Command="{Binding ShareCommand}"
-                                               IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
-                                               Opacity="{Binding Opacity}"/>
+                                               IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                        <custom:RightRoundedButton.Triggers>
+                            <DataTrigger TargetType="custom:RightRoundedButton"
+                                         Binding="{Binding IsLoading}"
+                                         Value="True">
+                                <Setter Property="Opacity"
+                                        Value="0.3"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="custom:RightRoundedButton"
+                                         Binding="{Binding IsLoading}"
+                                         Value="False">
+                                <Setter Property="Opacity"
+                                        Value="1"/>
+                            </DataTrigger>
+                        </custom:RightRoundedButton.Triggers>
+                    </custom:RightRoundedButton>
                     <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                        RelativeLayout.WidthConstraint="20"

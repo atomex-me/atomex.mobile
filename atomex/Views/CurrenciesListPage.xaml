@@ -3,22 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.CurrenciesListPage"
-             x:Name="BindingContextPage"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              Title="{helpers:Translate WalletsPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding CurrencyViewModels}"
-                  SelectionMode="None"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedCurrency}"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
-                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                  ItemSelected="ItemSelected"
+                  BackgroundColor="Transparent"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand"
                   Footer="">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid ColumnSpacing="0"
                               RowSpacing="0">
                             <Grid.RowDefinitions>
@@ -30,11 +31,6 @@
                                 <ColumnDefinition Width="4*" />
                                 <ColumnDefinition Width="4*" />
                             </Grid.ColumnDefinitions>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                                      Tapped="OnItemTapped"
-                                                      CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
                             <Image Grid.RowSpan="2"
                                    WidthRequest="40"
                                    HeightRequest="40"
@@ -67,7 +63,7 @@
                             </Label>
                             <Label Grid.Row="1"
                                    Grid.Column="1"
-                                   Text="{Binding Price, StringFormat='{0:f2} $'}"
+                                   Text="{Binding Price, StringFormat='${0:f2}'}"
                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    FontFamily="{DynamicResource LightFont}"
                                    FontSize="10"
@@ -75,18 +71,18 @@
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="Start"/>
                             <Label Grid.Row="1"
-                                   Grid.Column="2"
-                                   Text="{Binding AvailableAmountInBase, StringFormat='{0:f2} $'}"
-                                   FontFamily="{DynamicResource LightFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                   FontSize="10"
-                                   Margin="10,3"
-                                   VerticalTextAlignment="Start"
-                                   HorizontalTextAlignment="End" />
+                                    Grid.Column="2"
+                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                                    FontFamily="{DynamicResource LightFont}"
+                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                    FontSize="10"
+                                    Margin="10,3"
+                                    VerticalTextAlignment="Start"
+                                    HorizontalTextAlignment="End" />
                         </Grid>
-                    </ViewCell>
+                    </custom:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>            
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

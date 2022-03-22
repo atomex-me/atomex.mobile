@@ -3,21 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.TezosTokens.TezosTokensListPage"
-             x:Name="BindingContextPage"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              Title="{helpers:Translate TezosTokensListPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource AdditionalBackgroundStyle}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding TokensContracts}"
-                  SelectionMode="None"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding TokenContract}"
+                  ItemSelected="ItemSelected"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
                   IsPullToRefreshEnabled="True"
                   RefreshCommand="{Binding UpdateTokensCommand}"
                   IsRefreshing="{Binding IsLoading}"
-                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand">
+                  BackgroundColor="Transparent"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}">
             <ListView.Header>
                 <Grid ColumnSpacing="0"
                       RowSpacing="0">
@@ -32,24 +34,23 @@
                         <ColumnDefinition Width="4*" />
                     </Grid.ColumnDefinitions>
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTezosCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                              Tapped="OnItemTapped"/>
+                        <TapGestureRecognizer Command="{Binding SelectTezosCurrencyCommand}"/>
                     </Grid.GestureRecognizers>
                     <Image Grid.RowSpan="2"
                            WidthRequest="40"
                            HeightRequest="40"
                            Margin="10,0"
                            VerticalOptions="CenterAndExpand"
-                           Source="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"/>
+                           Source="{Binding TezosViewModel.CurrencyCode}"/>
                     <Label Grid.Column="1"
-                           Text="{Binding BindingContext.TezosViewModel.Currency.Description, Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.Currency.Description}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="14"
                            VerticalTextAlignment="End"
                            HorizontalTextAlignment="Start"/>
                     <Label Grid.Column="2"
-                           Text="{Binding BindingContext.TezosViewModel.TotalAmount, Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.TotalAmount}"
                            FontFamily="{DynamicResource RegularFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            Margin="10,0"
@@ -57,17 +58,17 @@
                            HorizontalTextAlignment="End">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding BindingContext.TezosViewModel.TotalAmount, StringFormat='{0:0.#####}', Source={x:Reference BindingContextPage}}"
+                                <Span Text="{Binding TezosViewModel.TotalAmount, StringFormat='{0:0.#####}'}"
                                       FontSize="14"/>
                                 <Span Text=" " /> 
-                                <Span Text="{Binding BindingContext.TezosViewModel.CurrencyCode, Source={x:Reference BindingContextPage}}"
+                                <Span Text="{Binding TezosViewModel.CurrencyCode}"
                                       FontSize="12"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Label Grid.Row="1"
                            Grid.Column="1"
-                           Text="{Binding BindingContext.TezosViewModel.Price, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.Price, StringFormat='${0:f2}'}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="10"
@@ -76,7 +77,7 @@
                            HorizontalTextAlignment="Start"/>
                     <Label Grid.Row="1"
                            Grid.Column="2"
-                           Text="{Binding BindingContext.TezosViewModel.AvailableAmountInBase, StringFormat='{0:f2} $', Source={x:Reference BindingContextPage}}"
+                           Text="{Binding TezosViewModel.AvailableAmountInBase, StringFormat='${0:f2}'}"
                            FontFamily="{DynamicResource LightFont}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            FontSize="10"
@@ -91,7 +92,7 @@
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid ColumnSpacing="0"
                               RowSpacing="0">
                             <Grid.RowDefinitions>
@@ -102,11 +103,6 @@
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="8*" />
                             </Grid.ColumnDefinitions>
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.SelectTokenContractCommand, Source={x:Reference BindingContextPage}}"
-                                                      Tapped="OnItemTapped"
-                                                      CommandParameter="{Binding .}"/>
-                            </Grid.GestureRecognizers>
                             <Frame Grid.RowSpan="2"
                                    Padding="0"
                                    Margin="10,0"
@@ -136,7 +132,7 @@
                                    VerticalTextAlignment="Start"
                                    HorizontalTextAlignment="Start"/>
                         </Grid>
-                    </ViewCell>
+                    </custom:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
@@ -174,11 +170,25 @@
                         </RelativeLayout.GestureRecognizers>
                         <Button Text="{helpers:Translate UpdateTokenButton}"
                                 Style="{DynamicResource CurrencyActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="120"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateTokensCommand}"/>
+                                Command="{Binding UpdateTokensCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=50}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"

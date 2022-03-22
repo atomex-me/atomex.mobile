@@ -26,6 +26,9 @@
     <data name="ConfirmButton" xml:space="preserve">
         <value>Onaylamak</value>
     </data>
+    <data name="ReviewButton" xml:space="preserve">
+        <value>Review</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>Anlıyorum</value>
     </data>
@@ -68,6 +71,9 @@
     <data name="MinimumAmountLabel" xml:space="preserve">
         <value>Minimum miktar</value>
     </data>
+    <data name="TotalAmountInclFees" xml:space="preserve">
+        <value>Total (incl. fees)</value>
+    </data>
     <data name="ToLabel" xml:space="preserve">
         <value>Adrese</value>
     </data>
@@ -85,6 +91,21 @@
     </data>
     <data name="IdLabel" xml:space="preserve">
         <value>Id</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Mevcut</value>
+    </data>
+    <data name="Total" xml:space="preserve">
+        <value>Total</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>Kimden</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>Adrese</value>
+    </data>
+    <data name="New" xml:space="preserve">
+        <value>New</value>
     </data>
     
     <!-- Start Page -->
@@ -372,7 +393,45 @@
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>İşlemi onaylayın</value>
     </data>
-    
+
+    <!-- Addresses Pages -->
+    <data name="SendFrom" xml:space="preserve">
+        <value>Send from</value>
+    </data>
+    <data name="ReceiveTo" xml:space="preserve">
+        <value>Receive to</value>
+    </data>
+    <data name="ChooseAnAddress" xml:space="preserve">
+        <value>Choose an address</value>
+    </data>
+    <data name="MyAddresses" xml:space="preserve">
+        <value>My addresses</value>
+    </data>
+    <data name="SortByBalanceButton" xml:space="preserve">
+        <value>Sort by balance</value>
+    </data>
+    <data name="SortByDateButton" xml:space="preserve">
+        <value>Sort by date</value>
+    </data>
+    <data name="ExternalAddress" xml:space="preserve">
+        <value>External address</value>
+    </data>
+    <data name="EnterAnExternalAddress" xml:space="preserve">
+        <value>Enter an external address</value>
+    </data>
+    <data name="SaveToMyAddresses" xml:space="preserve">
+        <value>Save to my addresses</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="SelectedOfTotal" xml:space="preserve">
+        <value>{0} of {1} selected</value>
+    </data>
+    <data name="AddressesNotFound" xml:space="preserve">
+        <value>Addresses not found</value>
+    </data>
+
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
         <value>Teslim almak</value>
@@ -407,14 +466,8 @@
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegatePageTitle" xml:space="preserve">
-        <value>Temsilci</value>
-    </data>
     <data name="DelegateToBakeryLabel" xml:space="preserve">
         <value>Bekera yetki verme</value>
-    </data>
-    <data name="Available" xml:space="preserve">
-        <value>Mevcut</value>
     </data>
     <data name="Balance" xml:space="preserve">
         <value>Denge</value>
@@ -438,12 +491,6 @@
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
         <value>Yetki vermek istediğinizden emin misiniz?</value>
-    </data>
-    <data name="FromLabel" xml:space="preserve">
-        <value>Kimden</value>
-    </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>Adrese</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>URI'yi Kopyala ve Kapat</value>
@@ -585,12 +632,6 @@
     <data name="SelectCurrenciesLabel" xml:space="preserve">
         <value>Para birimini seçin</value>
     </data>
-    <data name="SwapFrom" xml:space="preserve">
-        <value>From</value>
-    </data>
-    <data name="SwapTo" xml:space="preserve">
-        <value>To</value>
-    </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Tahmin edilen fiyat</value>
     </data>
@@ -629,6 +670,32 @@
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Yeni swap oluştur</value>
+    </data>
+
+    <!-- Exchange Pages -->
+    <data name="ExchangePageTitle" xml:space="preserve">
+        <value>DEX</value>
+    </data>
+    <data name="ExchangeLabel" xml:space="preserve">
+        <value>Exchange</value>
+    </data>
+    <data name="ExchangeButton" xml:space="preserve">
+        <value>Exchange</value>
+    </data>
+    <data name="ChooseFromCurrency" xml:space="preserve">
+        <value>Choose From</value>
+    </data>
+    <data name="ChooseToCurrency" xml:space="preserve">
+        <value>Choose To</value>
+    </data>
+    <data name="ExchangeHistory" xml:space="preserve">
+        <value>Exchange History</value>
+    </data>
+    <data name="ChangeRedeemAddress" xml:space="preserve">
+        <value>Change redeem address</value>
+    </data>
+    <data name="ShowAll" xml:space="preserve">
+        <value>Show all</value>
     </data>
 
     <!-- Tezos tokens list, token info Pages -->
@@ -778,6 +845,9 @@
     <data name="CurrencySentToAddress" xml:space="preserve">
         <value>{0} {1} sent to {2}</value>
     </data>
+    <data name="SuccessSending" xml:space="preserve">
+        <value>Sending was successful</value>
+    </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>bu kelime seçilen dilin listesinde yok</value>
     </data>
@@ -892,6 +962,15 @@
     <data name="InvalidAddressError" xml:space="preserve">
         <value>Yanlış adres</value>
     </data>
+    <data name="InvalidTokenContract" xml:space="preserve">
+        <value>Invalid token contract address</value>
+    </data>
+    <data name="InvalidFromAddress" xml:space="preserve">
+        <value>Invalid 'From' address</value>
+    </data>
+    <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
+        <value>Insufficient {0} to cover token transfer fee. Minimum {1} is required</value>
+    </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
         <value>Komisyon sıfırdan üstün olmalıdır</value>
     </data>
@@ -1002,5 +1081,45 @@
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
         <value>Biometric authentication enabled</value>
+    </data>
+    <data name="AmountToFeeRatioToolTip" xml:space="preserve">
+        <value>The commission does not depend on the conversion amount and is determined only by the current network fees. The larger the convertible amount, the smaller the commission to amount ratio. Atomex blocks the conversion if the commission exceeds 75% of the conversion amount</value>
+    </data>
+    <data name="MaxAmountToSendRecommendation" xml:space="preserve">
+        <value>We recommend to send no more than {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendRecommendationDetails" xml:space="preserve">
+        <value>You have tokens that require {1}. Sending this will not leave enough {1} to send or exchange your tokens. We recommend to send no more than {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwaps" xml:space="preserve">
+        <value>Maximum available amount to send is {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwapsDetails" xml:space="preserve">
+        <value>You have swaps in process. Your app requires {1} to process them. Safe maximum amount to send is {0} {1}</value>
+    </data>
+    <data name="SendEnteredAmountMenu" xml:space="preserve">
+        <value>Send maximum amount {0} {1} anyway</value>
+    </data>
+    <data name="SendRecommendedAmountMenu" xml:space="preserve">
+        <value>Send recommended amount {0} {1}</value>
+    </data>
+    <data name="OrderMatched" xml:space="preserve">
+        <value>Swap successfully created.
+NOTE: Do not sign out or close the application until the swap is completed, otherwise it may result in a loss of funds.</value>
+    </data>
+    <data name="AvailableAmountDexTooltip" xml:space="preserve">
+        <value>The limit applies to a single trade. In case you require more liquidity make multiple trades</value>
+    </data>
+    <data name="AddressIsNotAtomex" xml:space="preserve">
+        <value>Warning: address {0} is extrenal and is not an Atomex wallet's address. Make sure it's entered correctly</value>
+    </data>
+    <data name="AddressIsNotAtomexToolTip" xml:space="preserve">
+        <value>You can receive funds to an extrenal address (eg hardware wallet like Ledger). Using this mechanism make sure that you enter the correct address, because your Atomex wallet will not have access to the private key of the extrenal address and in case of an error access to the funds may be lost</value>
+    </data>
+    <data name="RedeemFromAddressNote" xml:space="preserve">
+        <value>Note: the redeem transaction will be sent from the address {0}</value>
+    </data>
+    <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
+        <value>The redeem transaction will be sent from the address {0} if it has enough funds. Otherwise the transaction will be sent by an extrenal service for a fee</value>
     </data>
 </root>

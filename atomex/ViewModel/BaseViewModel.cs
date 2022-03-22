@@ -1,19 +1,12 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using ReactiveUI;
 
 namespace atomex.ViewModel
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : ReactiveObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.RaisePropertyChanged(name);
         }
     }
 }

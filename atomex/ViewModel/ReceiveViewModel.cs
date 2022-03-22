@@ -9,6 +9,7 @@ using atomex.Views;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
+using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -33,11 +34,12 @@ namespace atomex.ViewModel
                 _currency = value;
                 OnPropertyChanged(nameof(Currency));
 
+                // get all addresses with tokens (if exists)
                 var tokenAddresses = Currencies.HasTokens(_currency.Name)
-                    ? AtomexApp.Account
-                        .GetCurrencyAccount<ILegacyCurrencyAccount>(_currency.Name)
-                        .GetUnspentTokenAddressesAsync()
-                        .WaitForResult()
+                    ? (AtomexApp.Account
+                        .GetCurrencyAccount(_currency.Name) as IHasTokens)
+                        ?.GetUnspentTokenAddressesAsync()
+                        .WaitForResult() ?? new List<WalletAddress>()
                     : new List<WalletAddress>();
 
                 // get all active addresses
@@ -57,8 +59,8 @@ namespace atomex.ViewModel
                     .GroupBy(w => w.Address)
                     .Select(g =>
                     {
-                        // main address
-                        var address = g.FirstOrDefault(w => w.Currency == _currency.Name);
+                            // main address
+                            var address = g.FirstOrDefault(w => w.Currency == _currency.Name);
 
                         var isFreeAddress = address?.Address == freeAddress.Address;
 
@@ -128,13 +130,6 @@ namespace atomex.ViewModel
 
         public string TokenContract { get; private set; }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -145,12 +140,6 @@ namespace atomex.ViewModel
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
@@ -188,7 +177,8 @@ namespace atomex.ViewModel
         }
 
         private ICommand _showReceiveAddressesCommand;
-        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(async () => await OnShowReceiveAddressesClicked());
+        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(async () =>
+            await Navigation.PushAsync(new ReceiveAddressesPage(this)));
 
         private ICommand _selectAddressCommand;
         public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<WalletAddressViewModel>(async (address) => await OnAddressClicked(address));
@@ -237,11 +227,6 @@ namespace atomex.ViewModel
             await Task.Delay(1000);
 
             IsLoading = false;
-        }
-
-        async Task OnShowReceiveAddressesClicked()
-        {
-            await Navigation.PushAsync(new AddressesListPage(this));
         }
     }
 }

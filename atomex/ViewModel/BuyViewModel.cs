@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,10 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-
 
 namespace atomex.ViewModel
 {
@@ -111,43 +112,62 @@ namespace atomex.ViewModel
 
         public string GetDefaultAddress(string currency)
         {
+            // get all addresses with tokens (if exists)
+            var tokenAddresses = Atomex.Currencies.HasTokens(currency)
+                ? (AtomexApp.Account
+                    .GetCurrencyAccount(currency) as IHasTokens)
+                    ?.GetUnspentTokenAddressesAsync()
+                    .WaitForResult() ?? new List<WalletAddress>()
+                : new List<WalletAddress>();
+
+            // get all active addresses
+            var activeAddresses = AtomexApp.Account
+                .GetUnspentAddressesAsync(currency)
+                .WaitForResult()
+                .ToList();
+
+            // get free external address
+            var freeAddress = AtomexApp.Account
+                .GetFreeExternalAddressAsync(currency)
+                .WaitForResult();
+
+            List<WalletAddressViewModel> fromAddressList = new List<WalletAddressViewModel>();
+
+            fromAddressList = activeAddresses
+                .Concat(tokenAddresses)
+                .Concat(new WalletAddress[] { freeAddress })
+                .GroupBy(w => w.Address)
+                .Select(g =>
+                {
+                    // main address
+                    var address = g.FirstOrDefault(w => w.Currency == currency);
+
+                    var isFreeAddress = address?.Address == freeAddress.Address;
+
+                    var hasTokens = g.Any(w => w.Currency != currency);
+
+                    return new WalletAddressViewModel
+                    {
+                        Address = g.Key,
+                        HasActivity = address?.HasActivity ?? hasTokens,
+                        AvailableBalance = address?.AvailableBalance() ?? 0m,
+                        CurrencyCode = currency,
+                        IsFreeAddress = isFreeAddress,
+                    };
+                })
+                .ToList();
+
             if (currency == "ETH" || currency == "XTZ")
             {
-                var account = AtomexApp.Account.GetCurrencyAccount<ILegacyCurrencyAccount>(currency);
+                var activeAddressViewModel = fromAddressList
+                    .Where(vm => vm.HasActivity && vm.AvailableBalance > 0)
+                    .MaxByOrDefault(vm => vm.AvailableBalance);
 
-                var activeTokenAddresses = account
-                    .GetUnspentTokenAddressesAsync()
-                    .WaitForResult()
-                    .ToList();
-
-                var activeAddresses = AtomexApp.Account
-                    .GetUnspentAddressesAsync(currency)
-                    .WaitForResult()
-                    .ToList();
-
-                activeTokenAddresses
-                    .ForEach(a => a.Balance = activeAddresses
-                    .Find(b => b.Address == a.Address)?.Balance ?? 0m);
-
-                activeAddresses = activeAddresses
-                    .Where(a => activeTokenAddresses
-                    .FirstOrDefault(b => b.Address == a.Address) == null)
-                    .ToList();
-
-                var receiveAddress = activeTokenAddresses
-                    .Concat(activeAddresses)
-                    .OrderByDescending(w => w.AvailableBalance())
-                    .FirstOrDefault(w => w.HasActivity);
-
-                if (receiveAddress != null)
-                    return receiveAddress.Address;
+                if (activeAddressViewModel != null)
+                    return activeAddressViewModel.Address;
             }
 
-            return AtomexApp.Account
-                .GetFreeExternalAddressAsync(currency)
-                .WaitForResult()
-                .Address;
+            return fromAddressList.First(vm => vm.IsFreeAddress).Address;
         }
     }
 }
-

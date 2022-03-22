@@ -14,12 +14,25 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout>
-            <StackLayout Opacity="{Binding Opacity}"
-                         Padding="20,0"
+            <StackLayout Padding="20,0"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          VerticalOptions="CenterAndExpand"
                          IsVisible="{Binding IsLocked, Converter={StaticResource InverseBool}, TargetNullValue=True, FallbackValue=True}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="0.3"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="False">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <Image WidthRequest="30"
                        HeightRequest="30"
                        HorizontalOptions="CenterAndExpand"

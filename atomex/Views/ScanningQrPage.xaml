@@ -8,7 +8,7 @@
     <Grid VerticalOptions="FillAndExpand"
           HorizontalOptions="FillAndExpand">
         <zxing:ZXingScannerView Result="{Binding ScanResult, Mode=TwoWay}"
-                                ScanResultCommand="{Binding OnScanAddressCommand}"
+                                ScanResultCommand="{Binding ScanResultCommand}"
                                 IsScanning="{Binding IsScanning}"
                                 IsAnalyzing="{Binding IsAnalyzing}"/>
         <zxing:ZXingDefaultOverlay TopText="{helpers:Translate ScannerTopOverlayText}"

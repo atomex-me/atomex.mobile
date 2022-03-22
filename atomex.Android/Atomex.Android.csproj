@@ -15,7 +15,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
@@ -57,7 +57,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile.Forms">
@@ -65,15 +65,6 @@
     </PackageReference>
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
-      <Version>3.1.6</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration">
-      <Version>3.1.6</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions">
-      <Version>3.1.6</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
       <Version>28.0.0.3</Version>
@@ -100,10 +91,10 @@
       <Version>2.2.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material">
-      <Version>1.0.0.1</Version>
+      <Version>1.4.0.4</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>2.0.0.10</Version>
+      <Version>2.0.0.14</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Messaging">
       <Version>121.0.1</Version>
@@ -113,6 +104,18 @@
     </PackageReference>
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
       <Version>4.0.11</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.XamForms">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>3.7.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -767,6 +770,110 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\ic_close__red.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_copy.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_swap.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_copy.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_swap.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_edit.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_edit.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_sort__down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_sort__up.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_sort__down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_sort__up.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_qr.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_qr.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_arrow__down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_close.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_arrow__down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_close.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_search.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_search.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_question__error.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_question__warning.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_question__error.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_question__warning.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_swipe__indicator.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_swipe__indicator.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_export.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_export.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
