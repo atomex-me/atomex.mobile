@@ -506,7 +506,7 @@
                         </Image>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Margin="16,12,16,0"
+                <!--<StackLayout Margin="16,12,16,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
@@ -571,8 +571,8 @@
                             </Image.Triggers>
                         </Image>
                     </StackLayout>
-                </StackLayout>
-                <StackLayout Margin="16,12,16,0"
+                </StackLayout>-->
+                <!--<StackLayout Margin="16,12,16,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
@@ -637,7 +637,7 @@
                             </Image.Triggers>
                         </Image>
                     </StackLayout>
-                </StackLayout>
+                </StackLayout>-->
                 <StackLayout Margin="16,12,16,0"
                              IsVisible="False">
                     <StackLayout.Triggers>

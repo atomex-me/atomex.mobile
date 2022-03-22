@@ -181,7 +181,7 @@
                        HasShadow="False">
                     <Grid HorizontalOptions="Fill"
                           ColumnSpacing="0"
-                          RowSpacing="8">
+                          RowSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -210,9 +210,10 @@
                                 FontSize="12"
                                 TextTransform="None"
                                 HeightRequest="28"
-                                Padding="7,0"
-                                Margin="16,0"
+                                Padding="10,0"
+                                Margin="16,10"
                                 CornerRadius="14"
+                                HorizontalOptions="End"
                                 VerticalOptions="Center"
                                 Command="{Binding PasteCommand}"
                                 IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>

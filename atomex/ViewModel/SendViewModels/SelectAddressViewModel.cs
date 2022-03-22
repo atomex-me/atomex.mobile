@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -76,6 +77,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public ReactiveCommand<Unit, Unit> ToolbarCommand { get; set; }
 
         [Reactive] public Message Message { get; set; }
+        private bool _pasted;
 
         public SelectAddressViewModel(
             IAccount account,
@@ -193,6 +195,7 @@ namespace atomex.ViewModel.SendViewModels
                 });
 
             this.WhenAnyValue(vm => vm.ToAddress)
+                .Where(_ => !_pasted)
                 .SubscribeInMainThread(_ =>
                 {
                     Message.Text = string.Empty;
@@ -407,6 +410,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             if (Clipboard.HasText)
             {
+                _pasted = true;
                 var text = await Clipboard.GetTextAsync();
                 ToAddress = text;
                 ValidateAddress(ToAddress);
@@ -415,6 +419,7 @@ namespace atomex.ViewModel.SendViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
             }
+            _pasted = false;
         }
 
         private async Task OnCopyButtonClicked(WalletAddressViewModel address)
