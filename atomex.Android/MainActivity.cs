@@ -5,16 +5,15 @@ using Android.OS;
 using Atomex.Common;
 using atomex.Common.FileSystem;
 using Plugin.Fingerprint;
-using Serilog.Debugging;
-using Serilog;
-using Serilog.Events;
-using Sentry;
-using Log = Serilog.Log;
 using Android.Views;
 using Xamarin.Forms;
 using Firebase.Messaging;
 using Android.Gms.Extensions;
 using System.Threading.Tasks;
+using Serilog.Debugging;
+using Serilog;
+using Serilog.Events;
+using Sentry;
 
 namespace atomex.Droid
 {
@@ -52,7 +51,7 @@ namespace atomex.Droid
 
             App.FileSystem = Device.Android;
             _ = GetDeviceToken();
-            
+
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidUnhandledExceptionRaiser;
 
             LoadApplication(new App());
@@ -71,67 +70,42 @@ namespace atomex.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        // clicked on push message
-        //protected override void OnNewIntent(Intent intent)
-        //{
-        //    if (intent.HasExtra("SomeSpecialKey"))
-        //    {
-        //        CreateNotificationFromIntent(intent);
-        //    }
-        //    CreateNotificationFromIntent(intent);
-        //    OnNotificationClicked(intent);
-        //}
-
-        //void CreateNotificationFromIntent(Intent intent)
-        //{
-        //    // intent.Extras == null in Background
-        //    if (intent?.Extras != null)
-        //    {
-        //        if (intent.Extras.ContainsKey(AndroidNotificationManager.AlertKey))
-        //        {
-        //            if (intent.Extras.GetString(AndroidNotificationManager.AlertKey) == "true" &&
-        //                intent.Extras.ContainsKey(AndroidNotificationManager.SwapIdKey))
-        //            {
-        //                DependencyService.Get<INotificationManager>().ReceiveNotification(
-        //                    "Atomex",
-        //                    string.Format("Login to the application to complete the swap transaction {0}", intent.Extras.GetString(AndroidNotificationManager.SwapIdKey)));
-        //            }
-        //        }
-        //    }
-        //}
-
-        //void OnNotificationClicked(Intent intent)
-        //{
-        //    if (intent.Action == "Swap" && intent.HasExtra("swapId"))
-        //    {
-        //        /// Do something now that you know the user clicked on the notification...
-        //    }
-        //}
-
         private async Task GetDeviceToken()
         {
             string token = (await FirebaseMessaging.Instance.GetToken()).ToString();
             App.DeviceToken = token;
-            StartSentry();
+            //StartSentry();
         }
 
         private void StartSentry()
         {
             SelfLog.Enable(m => Log.Error(m));
+            SentrySdk.Init("https://newsentry.baking-bad.org/api/4/?sentry_key=dee6b20f797d4dff97b8bcdbd738a583");
+
+            //SentryXamarin.Init(o =>
+            //{
+            //    o.Dsn = "https://newsentry.baking-bad.org/api/4/?sentry_key=dee6b20f797d4dff97b8bcdbd738a583";
+            //    o.Debug = true;
+            //});
+
+            SentrySdk.ConfigureScope(scope =>
+            {
+                scope.SetTag("platform", "android");
+                scope.SetTag("device_token", App.DeviceToken);
+            });
 
             Log.Logger = new LoggerConfiguration()
-              .Enrich.FromLogContext()
-              .MinimumLevel.Debug()
-              .WriteTo.Sentry(o =>
-              {
-                  o.Dsn = new Dsn("https://ac38520134554ae18e8db1d94c9b51bc@sentry.baking-bad.org/6");
-                  o.MinimumEventLevel = LogEventLevel.Error;
-                  o.MinimumBreadcrumbLevel = LogEventLevel.Error;
-                  o.AttachStacktrace = true;
-                  o.SendDefaultPii = true;
-                  o.Environment = "Android: " + App.DeviceToken;
-              })
-              .CreateLogger();
+                .Enrich.FromLogContext()
+                .MinimumLevel.Debug()
+                .WriteTo.Sentry(o =>
+                {
+                    o.TracesSampleRate = 1.0;
+                    o.MinimumEventLevel = LogEventLevel.Error;
+                    o.MinimumBreadcrumbLevel = LogEventLevel.Error;
+                    o.AttachStacktrace = true;
+                    o.SendDefaultPii = true;
+                    o.InitializeSdk = false;
+                }).CreateLogger();
         }
     }
 }

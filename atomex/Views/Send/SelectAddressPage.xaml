@@ -210,7 +210,7 @@
                                 FontSize="12"
                                 TextTransform="None"
                                 HeightRequest="28"
-                                Padding="10,0"
+                                Padding="7,0"
                                 Margin="16,0"
                                 CornerRadius="14"
                                 VerticalOptions="Center"

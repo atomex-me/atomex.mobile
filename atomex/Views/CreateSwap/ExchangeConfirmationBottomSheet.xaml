@@ -81,7 +81,7 @@
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="End"
                        Padding="16,0"
-                       FontFamily="{DynamicResource RegularFont}"
+                       FontFamily="{DynamicResource BoldFont}"
                        FontSize="20"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                 <Label Grid.Row="1"
@@ -133,7 +133,7 @@
                        Text="{Binding TargetAmount}"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="End"
-                       FontFamily="{DynamicResource RegularFont}"
+                       FontFamily="{DynamicResource BoldFont}"
                        FontSize="20"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                 <Label Grid.Row="3"
