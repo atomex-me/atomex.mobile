@@ -666,14 +666,18 @@
                                VerticalTextAlignment="End"
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Balance}"
-                                             Value="1">
+                                <MultiTrigger TargetType="Label">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Balance}"
+                                                          Value="1"/>
+                                        <BindingCondition Binding="{Binding TokenBalance.Decimals}"
+                                                          Value="0"/>
+                                    </MultiTrigger.Conditions>
                                     <Setter Property="Grid.RowSpan"
                                             Value="2"/>
                                     <Setter Property="VerticalTextAlignment"
                                             Value="Center"/>
-                                </DataTrigger>
+                                </MultiTrigger>
                             </Label.Triggers>
                         </Label>
                         <Label Grid.Column="1"
@@ -683,12 +687,16 @@
                                VerticalTextAlignment="Start"
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Balance}"
-                                             Value="1">
+                                <MultiTrigger TargetType="Label">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Balance}"
+                                                          Value="1"/>
+                                        <BindingCondition Binding="{Binding TokenBalance.Decimals}"
+                                                          Value="0"/>
+                                    </MultiTrigger.Conditions>
                                     <Setter Property="IsVisible"
                                             Value="False"/>
-                                </DataTrigger>
+                                </MultiTrigger>
                             </Label.Triggers>
                             <Label.FormattedText>
                                 <FormattedString>
