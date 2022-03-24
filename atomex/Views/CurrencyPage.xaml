@@ -55,17 +55,11 @@
                     </Label>
                     <Label FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
+                           Text="{Binding AvailableAmountInBase, StringFormat='${0:0.##}'}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="Start"
                            HorizontalOptions="Center"
-                           IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding AvailableAmountInBase, StringFormat='{0:0.##}'}"/>
-                                <Span Text=" $"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                           IsVisible="{Binding IsLoading, Mode=OneWay, Converter={StaticResource InverseBool}}"/>
                     <StackLayout Spacing="0"
                                  Orientation="Horizontal"
                                  HorizontalOptions="CenterAndExpand">
@@ -90,16 +84,10 @@
                                HorizontalOptions="Center"/>
                         <Label FontFamily="{DynamicResource RegularFont}"
                                FontSize="12"
+                               Text="{Binding UnconfirmedAmountInBase, StringFormat='({0:0.##}$)'}"
                                TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                                VerticalTextAlignment="Center"
-                               HorizontalOptions="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding UnconfirmedAmountInBase, StringFormat='({0:0.##}'}"/>
-                                    <Span Text=" $)"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
+                               HorizontalOptions="Center"/>
                     </StackLayout>
                     <Label Text="{helpers:Translate BalanceUpdatingLabel}"
                            Style="{DynamicResource RefreshLabelStyle}"

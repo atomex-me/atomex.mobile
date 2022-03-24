@@ -232,18 +232,10 @@
                             <DataTrigger TargetType="Button"
                                          Binding="{Binding IsLoading}"
                                          Value="True">
+                                <Setter Property="Text"
+                                        Value=""/>
                                 <Setter Property="IsEnabled"
                                         Value="False"/>
-                                <Setter Property="Opacity"
-                                        Value="0.7"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding IsLoading}"
-                                         Value="False">
-                                <Setter Property="IsEnabled"
-                                        Value="True"/>
-                                <Setter Property="Opacity"
-                                        Value="1"/>
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>

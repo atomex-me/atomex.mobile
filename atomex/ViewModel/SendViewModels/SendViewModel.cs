@@ -400,17 +400,18 @@ namespace atomex.ViewModel.SendViewModels
             if ((Stage == SendStage.Confirmation && !ShowAdditionalConfirmation) ||
                 Stage == SendStage.AdditionalConfirmation)
             {
+                if (IsLoading)
+                    return;
+
+                IsLoading = true;
+                this.RaisePropertyChanged(nameof(IsLoading));
+
                 try
                 {
-                    IsLoading = true;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-        
                     var error = await Send();
 
                     if (error != null)
                     {
-                        IsLoading = false;
-                        this.RaisePropertyChanged(nameof(IsLoading));
                         await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                             new PopupViewModel
                             {
@@ -421,9 +422,6 @@ namespace atomex.ViewModel.SendViewModels
                             }));
                         return;
                     }
-
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
 
                     if (PopupNavigation.Instance.PopupStack.Count > 0)
                         await PopupNavigation.Instance.PopAsync();
@@ -446,8 +444,6 @@ namespace atomex.ViewModel.SendViewModels
                 catch (Exception e)
                 {
                     Log.Error(e, "Transaction send error.");
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
                     await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                         new PopupViewModel
                         {
@@ -459,6 +455,8 @@ namespace atomex.ViewModel.SendViewModels
                 }
                 finally
                 {
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
                     Stage = SendStage.Edit;
                 }
             }

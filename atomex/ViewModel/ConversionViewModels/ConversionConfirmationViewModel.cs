@@ -87,18 +87,18 @@ namespace atomex.ViewModel
 
         private async void Send()
         {
+            if (IsLoading)
+                return;
+
+            IsLoading = true;
+            this.RaisePropertyChanged(nameof(IsLoading));
+
             try
             {
-                IsLoading = true;
-                this.RaisePropertyChanged(nameof(IsLoading));
-
                 var error = await ConvertAsync();
 
                 if (error != null)
                 {
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-
                     if (error.Code == Errors.PriceHasChanged)
                     {
                         await PopupNavigation.Instance.PushAsync(new CompletionPopup(
@@ -123,17 +123,10 @@ namespace atomex.ViewModel
                     }
                     return;
                 }
-
-                IsLoading = false;
-                this.RaisePropertyChanged(nameof(IsLoading));
-
                 OnSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                IsLoading = false;
-                this.RaisePropertyChanged(nameof(IsLoading));
-
                 await PopupNavigation.Instance.PushAsync(new CompletionPopup(
                     new PopupViewModel
                     {
@@ -144,6 +137,11 @@ namespace atomex.ViewModel
                     }));
 
                 Log.Error(e, "Swap error.");
+            }
+            finally
+            {
+                IsLoading = false;
+                this.RaisePropertyChanged(nameof(IsLoading));
             }
         }
 

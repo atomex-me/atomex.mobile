@@ -16,7 +16,15 @@ namespace atomex.Services
     {
         public static async Task<bool> SendTokenToServerAsync(string deviceToken, string fileSystem, IAtomexApp atomexApp, CancellationToken cancellationToken = default)
         {
-            string token = await GetAuthToken(atomexApp, cancellationToken);
+            string token = null;
+            try
+            {
+                token = await GetAuthToken(atomexApp, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Get auth token error");
+            }
 
             if (token == null)
                 return false;

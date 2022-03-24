@@ -120,6 +120,9 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     FeeRate = await Config.GetFeeRateAsync();
 
+                    if (To == null)
+                        return;
+
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeRateAsync(
                         availableOutputs: Outputs,
                         to: To,

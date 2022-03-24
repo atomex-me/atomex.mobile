@@ -177,40 +177,46 @@ namespace atomex.ViewModel
             {
                 _useBiometric = value;
 
-                if (_useBiometric)
+                await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+                    OnPropertyChanged(nameof(UseBiometric));
 
-                    if (availability == FingerprintAvailability.Available)
+                    if (Navigation == null) return;
+
+                    if (_useBiometric)
                     {
-                        await Navigation.PushAsync(new AuthPage(this));
-                    }
-                    else if (availability == FingerprintAvailability.NoPermission ||
-                        availability == FingerprintAvailability.NoFingerprint ||
-                        availability == FingerprintAvailability.Denied)
-                    {
-                        _useBiometric = false;
-                        await Application.Current.MainPage.DisplayAlert("", AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                        var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+
+                        if (availability == FingerprintAvailability.Available)
+                        {
+                            await Navigation?.PushAsync(new AuthPage(this));
+                        }
+                        else if (availability == FingerprintAvailability.NoPermission ||
+                            availability == FingerprintAvailability.NoFingerprint ||
+                            availability == FingerprintAvailability.Denied)
+                        {
+                            _useBiometric = false;
+                            await Application.Current.MainPage.DisplayAlert("", AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                        }
+                        else
+                        {
+                            _useBiometric = false;
+                            await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.ImpossibleEnableBiometric, AppResources.AcceptButton);
+                        }
                     }
                     else
                     {
-                        _useBiometric = false;
-                        await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.ImpossibleEnableBiometric, AppResources.AcceptButton);
+                        try
+                        {
+                            await SecureStorage.SetAsync(WalletName, string.Empty);
+                        }
+                        catch (Exception ex)
+                        {
+                            await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
+                            Log.Error(ex, AppResources.NotSupportSecureStorage);
+                        }
                     }
-                }
-                else
-                {
-                    try
-                    {
-                        await SecureStorage.SetAsync(WalletName, string.Empty);
-                    }
-                    catch (Exception ex)
-                    {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
-                        Log.Error(ex, AppResources.NotSupportSecureStorage);
-                    }
-                }
-                OnPropertyChanged(nameof(UseBiometric));
+                });
             }
         }
 
