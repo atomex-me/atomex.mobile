@@ -360,19 +360,16 @@ namespace atomex.ViewModel.CurrencyViewModels
         private async Task UpdateTokens()
         {
             _cancellation = new CancellationTokenSource();
+            IsLoading = true;
 
             try
             {
-                IsLoading = true;
-
                 var scanner = new HdWalletScanner(_app.Account);
-
                 await scanner.ScanAsync(
                     currency: TezosConfig.Xtz,
                     skipUsed: true,
                     cancellationToken: _cancellation.Token);
-
-                await TezosViewModel.UpdateTransactionsAsync();
+                await TezosViewModel?.UpdateTransactionsAsync();
 
                 var tezosAccount = _app.Account
                     .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
@@ -389,21 +386,19 @@ namespace atomex.ViewModel.CurrencyViewModels
                         _app.Account
                             .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
                             .ReloadBalances();
-
-                IsLoading = false;
                 ToastService?.Show(AppResources.Tokens + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (OperationCanceledException)
             {
                 Log.Debug("Wallet update operation canceled");
-                IsLoading = false;
             }
             catch (Exception e)
             {
                 Log.Error(e, "WalletViewModel.OnUpdateClick");
-                IsLoading = false;
                 // todo: message to user!?
             }
+
+            IsLoading = false;
         }
 
         private async Task OnAddressesButtonClicked()

@@ -379,13 +379,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         public async Task UpdateCurrencyAsync()
         {
             Cancellation = new CancellationTokenSource();
+            IsLoading = true;
 
             try
             {
-                IsLoading = true;
-
                 var scanner = new HdWalletScanner(AtomexApp.Account);
-
                 await scanner.ScanAsync(
                     currency: Currency.Name,
                     skipUsed: true,
@@ -393,14 +391,14 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 await UpdateTransactionsAsync();
 
-                IsLoading = false;
-
                 ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
             catch (Exception e)
             {
                 Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
             }
+
+            IsLoading = false;
         }
 
         private ICommand _unconfirmedAmountTappedCommand;
