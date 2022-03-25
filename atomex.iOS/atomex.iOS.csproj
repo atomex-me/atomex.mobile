@@ -308,6 +308,18 @@
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_send.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_send.imageset\ic_send.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -505,6 +517,12 @@
     <Folder Include="Assets.xcassets\ic_question__warning.imageset\" />
     <Folder Include="Assets.xcassets\ic_swipe__indicator.imageset\" />
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
+    <Folder Include="Assets.xcassets\ic_menu.imageset\" />
+    <Folder Include="Assets.xcassets\ic_filters.imageset\" />
+    <Folder Include="Assets.xcassets\ic_send.imageset\" />
+    <Folder Include="Assets.xcassets\ic_receive.imageset\" />
+    <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
+    <Folder Include="Assets.xcassets\ic_update.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

@@ -11,7 +11,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class CurrenciesViewModel : BaseViewModel
     {
-        private IAtomexApp AtomexApp { get; }
+        private IAtomexApp _app { get; }
         public INavigation Navigation { get; set; }
 
         private CurrencyViewModel _selectedCurrency;
@@ -38,7 +38,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             get
             {
-                return AtomexApp.Account.Currencies;
+                return _app.Account.Currencies;
             }
         }
 
@@ -48,7 +48,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public CurrenciesViewModel(IAtomexApp app, bool restore = false)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             TezosTokensViewModel = new TezosTokensViewModel(app, restore);
             CurrencyViewModels = new List<CurrencyViewModel>();
             _ = FillCurrenciesAsync(restore);
@@ -71,7 +71,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             await Task.WhenAll(Currencies.Select(c =>
             {
-                var currency = CurrencyViewModelCreator.CreateViewModel(AtomexApp, c);
+                var currency = CurrencyViewModelCreator.CreateViewModel(_app, c);
 
                 if (currency.CurrencyCode == TezosConfig.Xtz)
                     TezosTokensViewModel.TezosViewModel = currency;

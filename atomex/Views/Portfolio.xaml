@@ -6,9 +6,201 @@
              x:Class="atomex.Portfolio"
              x:Name="BindingContextPage"
              Title="{helpers:Translate PortfolioPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             BackgroundColor="{AppThemeBinding Dark='##11233C', Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
-        <CollectionView ItemsSource="{Binding CurrenciesViewModel.CurrencyViewModels}"
+        <ListView ItemsSource="{Binding CurrencyViewModels}"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="Default"
+                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                  VerticalOptions="FillAndExpand"
+                  BackgroundColor="Transparent"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedCurrency}"
+                  Footer="">
+            <ListView.Header>
+                <StackLayout>
+                    <Label Text="Total Balance"
+                           TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
+                           Margin="16,56,16,6"
+                           FontSize="12"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                    <StackLayout Margin="16,0"
+                                 Spacing="10"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding PortfolioValue, StringFormat='${0:f2}'}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="30"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"/>
+                        <Image Source="ic_update"
+                               WidthRequest="16"
+                               HeightRequest="21"
+                               VerticalOptions="Center"/>
+                    </StackLayout>
+                    <Grid RowSpacing="4"
+                          ColumnSpacing="24"
+                          HorizontalOptions="CenterAndExpand"
+                          Margin="16,24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="56" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ImageButton Padding="21"
+                                     Margin="0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     Source="ic_send"/>
+                        <Label Grid.Row="1"
+                               Text="{helpers:Translate SendButton}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"/>
+                        <ImageButton Grid.Column="1"
+                                     Padding="21"
+                                     Margin="0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     Source="ic_receive"/>
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{helpers:Translate ReceiveButton}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"/>
+                        <ImageButton Grid.Column="2"
+                                     Padding="19"
+                                     Margin="0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark='#01A299', Light='#01A299'}"
+                                     Source="ic_exchange"/>
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{helpers:Translate ExchangeButton}"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               FontSize="14"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"/>
+                    </Grid>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Coins &amp; Tokens"
+                               TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                               FontSize="14"
+                               FontFamily="{DynamicResource RegularFont}"
+                               Margin="16,14"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"/>
+                        <Image Source="ic_filters"
+                               Margin="20,0"
+                               HorizontalOptions="EndAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               HeightRequest="16"
+                               WidthRequest="16">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ManageAssetsCommand}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="16,0"/>
+                </StackLayout>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid RowSpacing="4"
+                              ColumnSpacing="16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36" />
+                                <RowDefinition Height="36" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="6*" />
+                                <ColumnDefinition Width="30" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.RowSpan="2"
+                                   Source="{Binding CurrencyCode}"
+                                   HeightRequest="24"
+                                   WidthRequest="24"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Currency.Description}"
+                                   FontSize="16"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="End"/>
+                            <Label Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding Price, StringFormat='${0:f2}'}"
+                                   FontSize="12"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource MainTextColor}}"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Start"/>
+                            <Label Grid.Column="2"
+                                   FontSize="14"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   HorizontalTextAlignment="End"
+                                   VerticalTextAlignment="End">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding CurrencyCode}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
+                                   Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                                   FontSize="12"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   HorizontalTextAlignment="End"
+                                   VerticalTextAlignment="Start"/>
+                            <Image Grid.RowSpan="2"
+                                   Grid.Column="3"
+                                   Source="ic_menu"
+                                   WidthRequest="4"
+                                   HeightRequest="16"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="StartAndExpand"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--<CollectionView ItemsSource="{Binding CurrenciesViewModel.CurrencyViewModels}"
                         SelectionMode="None"
                         BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                         Footer="">
@@ -103,6 +295,6 @@
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>            
+        </CollectionView>-->            
     </ContentPage.Content>
 </ContentPage>
