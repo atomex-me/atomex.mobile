@@ -9,7 +9,6 @@ using atomex.CustomElements;
 using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Helpers;
-using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.TezosTokens;
@@ -76,7 +75,7 @@ namespace atomex
             MainViewModel.SettingsViewModel.Navigation = NavigationSettingsPage.Navigation;
             MainViewModel.CurrenciesViewModel.SetNavigation(NavigationWalletsListPage.Navigation, this);
             MainViewModel.ConversionViewModel.Navigation = NavigationConversionPage.Navigation;
-            MainViewModel.PortfolioViewModel.NavigationService = this;
+            MainViewModel.PortfolioViewModel.Navigation = NavigationPortfolioPage.Navigation;
             MainViewModel.BuyViewModel.Navigation = NavigationBuyPage.Navigation;
 
             SetAppTheme();

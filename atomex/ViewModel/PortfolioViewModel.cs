@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.ViewModel.SendViewModels;
 using atomex.Views;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Common;
 using ReactiveUI;
@@ -16,6 +20,16 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
+    public enum CurrencyActionType
+    {
+        [Description("Show")]
+        Show,
+        [Description("Send")]
+        Send,
+        [Description("Receive")]
+        Receive
+    }
+
     public class PortfolioCurrency : BaseViewModel
     {
         public CurrencyViewModel CurrencyViewModel { get; set; }
@@ -30,16 +44,24 @@ namespace atomex.ViewModel
                     OnChanged?.Invoke(CurrencyViewModel.CurrencyCode, flag);
                 });
         }
+
+        private ICommand _toggleCommand;
+        public ICommand ToggleCommand => _toggleCommand ??= new Command(() => IsSelected = !IsSelected);
     }
 
     public class PortfolioViewModel : BaseViewModel
     {
         private IAtomexApp _app { get; }
-        public INavigationService NavigationService { get; set; }
 
+        [Reactive] public INavigation Navigation { get; set; }
         [Reactive] public IList<PortfolioCurrency> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
+
         [Reactive] public decimal PortfolioValue { get; set; }
+
+        public CurrencyActionType SelectCurrencyUseCase { get; set; }
+        [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
+
 
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
 
@@ -48,6 +70,57 @@ namespace atomex.ViewModel
             _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             GetCurrencies();
 
+            this.WhenAnyValue(vm => vm.Navigation)
+                .WhereNotNull()
+                .SubscribeInMainThread(nav =>
+                {
+                    UserCurrencies
+                        .Select(c =>
+                        {
+                            c.Navigation = nav;
+                            return c;
+                        })
+                        .ToList();
+                });
+
+
+            this.WhenAnyValue(vm => vm.SelectedCurrency)
+                .WhereNotNull()
+                .SubscribeInMainThread(c =>
+                {
+                    switch (SelectCurrencyUseCase)
+                    {
+                        case CurrencyActionType.Show:
+                            Navigation?.PushAsync(new CurrencyPage(c));
+                            break;
+                        case CurrencyActionType.Send:
+                            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                                _ = PopupNavigation.Instance.PopAsync();
+                            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c);
+                            if (c.Currency is BitcoinBasedConfig)
+                            {
+                                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                                Navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                            }
+                            else
+                            {
+                                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                                Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                            }
+                            SelectCurrencyUseCase = CurrencyActionType.Show;
+                            break;
+                        case CurrencyActionType.Receive:
+                            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                                _ = PopupNavigation.Instance.PopAsync();
+                            var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, Navigation);
+                            // todo: receive bottom sheet
+                            SelectCurrencyUseCase = CurrencyActionType.Show;
+                            break;
+                        default:
+                            Navigation?.PushAsync(new CurrencyPage(c));
+                            break;
+                    }
+                });
             SubscribeToUpdates();
         }
 
@@ -153,6 +226,45 @@ namespace atomex.ViewModel
         {
             if (PopupNavigation.Instance.PopupStack.Count > 0)
                 _ = PopupNavigation.Instance.PopAsync();
+        });
+
+
+        private ICommand _sendCommand;
+        public ICommand SendCommand => _sendCommand ??= new Command(() =>
+        {
+            SelectCurrencyUseCase = CurrencyActionType.Send;
+            var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
+            var selectCurrencyViewModel =
+                new SelectCurrencyViewModel(CurrencyActionType.Send, currencies)
+                {
+                    OnSelected = currencyViewModel =>
+                    {
+                        SelectedCurrency = currencyViewModel;
+                        SelectCurrencyUseCase = CurrencyActionType.Send;
+                    }
+                };
+
+            SelectCurrencyUseCase = CurrencyActionType.Show;
+            _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+        });
+
+        private ICommand _receiveCommand;
+        public ICommand ReceiveCommand => _receiveCommand ??= new Command(() =>
+        {
+            SelectCurrencyUseCase = CurrencyActionType.Receive;
+            var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
+            var selectCurrencyViewModel =
+                new SelectCurrencyViewModel(CurrencyActionType.Receive, currencies)
+                {
+                    OnSelected = currencyViewModel =>
+                    {
+                        SelectedCurrency = currencyViewModel;
+                        SelectCurrencyUseCase = CurrencyActionType.Receive;
+                    }
+                };
+
+            SelectCurrencyUseCase = CurrencyActionType.Show;
+            _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
     }
 }

@@ -144,7 +144,7 @@ namespace atomex.ViewModel
                 MaxClicked = MaxClicked,
                 SelectCurrencyClicked = async () =>
                 {
-                    var selectCurrencyViewModel = new SelectCurrencyViewModel(
+                    var selectCurrencyViewModel = new ConversionViewModels.SelectCurrencyViewModel(
                         account: _app.Account,
                         navigation: Navigation,
                         type: SelectCurrencyType.From,
@@ -173,7 +173,7 @@ namespace atomex.ViewModel
             {
                 SelectCurrencyClicked = async () =>
                 {
-                    var selectCurrencyViewModel = new SelectCurrencyViewModel(
+                    var selectCurrencyViewModel = new ConversionViewModels.SelectCurrencyViewModel(
                         account: _app.Account,
                         navigation: Navigation,
                         type: SelectCurrencyType.To,

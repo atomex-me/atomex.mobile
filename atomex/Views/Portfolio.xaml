@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Portfolio"
              x:Name="BindingContextPage"
              Title="{helpers:Translate PortfolioPageTitle}"
-             BackgroundColor="{AppThemeBinding Dark='##11233C', Light={StaticResource MainBackgroundColor}}">
+             BackgroundColor="{AppThemeBinding Dark='#11233C', Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding UserCurrencies}"
                   HasUnevenRows="True"
@@ -15,6 +16,7 @@
                   VerticalOptions="FillAndExpand"
                   BackgroundColor="Transparent"
                   SelectionMode="Single"
+                  ItemSelected="ItemSelected"
                   SelectedItem="{Binding SelectedCurrency}"
                   Footer="">
             <ListView.Header>
@@ -61,6 +63,7 @@
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
                                      BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     Command="{Binding SendCommand}"
                                      Source="ic_send"/>
                         <Label Grid.Row="1"
                                Text="{helpers:Translate SendButton}"
@@ -78,6 +81,7 @@
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
                                      BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     Command="{Binding ReceiveCommand}"
                                      Source="ic_receive"/>
                         <Label Grid.Row="1"
                                Grid.Column="1"
@@ -132,7 +136,7 @@
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid RowSpacing="4"
                               ColumnSpacing="16">
                             <Grid.RowDefinitions>
@@ -196,105 +200,9 @@
                                    VerticalOptions="CenterAndExpand"
                                    HorizontalOptions="StartAndExpand"/>
                         </Grid>
-                    </ViewCell>
+                    </controls:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
-        <!--<CollectionView ItemsSource="{Binding CurrenciesViewModel.CurrencyViewModels}"
-                        SelectionMode="None"
-                        BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                        Footer="">
-            <CollectionView.Header>
-                <StackLayout Spacing="0">
-                    <RelativeLayout Style="{DynamicResource PortfolioChartStyle}">
-                        <chart:ChartView Chart="{Binding PortfolioChart}"
-                                         x:Name="PortfolioChart"
-                                         BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
-                                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"/>
-                        <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Height, Factor=1}"
-                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToView, ElementName=PortfolioChart, Property=Width, Factor=1}"
-                                     VerticalOptions="Center"
-                                     Spacing="0">
-                            <Label Style="{DynamicResource TotalAmountLabelStyle}"
-                                   Text="{Binding PortfolioValue, StringFormat='${0:0.00}'}"/>
-                        </StackLayout>
-                    </RelativeLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-            </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10,0"
-                          RowSpacing="3"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="25" />
-                            <RowDefinition Height="25" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*" />
-                            <ColumnDefinition Width="3.5*" />
-                            <ColumnDefinition Width="1.5*" />
-                            <ColumnDefinition Width="3.5*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectCurrencyCommand, Source={x:Reference BindingContextPage}}"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
-                        <Image Grid.RowSpan="2"
-                               HeightRequest="30"
-                               WidthRequest="30"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               Source="{Binding CurrencyCode}"/>
-                        <Label Grid.Column="1"
-                               Text="{Binding Currency.Description}"
-                               FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               FontSize="14"
-                               VerticalTextAlignment="End"/>
-                        <Label Grid.RowSpan="2"
-                               Grid.Column="2"
-                               Text="{Binding PortfolioPercent, StringFormat='{0:P2}'}"
-                               FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Center"
-                               FontSize="12"/>
-                        <Label Grid.Column="3"
-                               FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               HorizontalOptions="End"
-                               VerticalTextAlignment="End">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding TotalAmount, StringFormat='{0:0.####}'}"
-                                          FontSize="14"/>
-                                    <Span Text=" " /> 
-                                    <Span Text="{Binding CurrencyCode}"
-                                          FontSize="12"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="{Binding Price, StringFormat='${0:f2}'}"
-                               VerticalOptions="Start"
-                               FontFamily="{DynamicResource LightFont}"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               FontSize="10"/>
-                        <Label Grid.Row="1"
-                               Grid.Column="3"
-                               Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                               FontFamily="{DynamicResource LightFont}"
-                               VerticalOptions="Start"
-                               HorizontalOptions="End"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               FontSize="10"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->            
+        </ListView>            
     </ContentPage.Content>
 </ContentPage>
