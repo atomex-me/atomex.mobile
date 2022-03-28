@@ -95,13 +95,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             set { _price = value; OnPropertyChanged(nameof(Price)); }
         }
 
-        private decimal _portfolioPercent;
-        public decimal PortfolioPercent
-        {
-            get => _portfolioPercent;
-            set { _portfolioPercent = value; OnPropertyChanged(nameof(PortfolioPercent)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {

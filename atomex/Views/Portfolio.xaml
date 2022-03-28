@@ -8,7 +8,7 @@
              Title="{helpers:Translate PortfolioPageTitle}"
              BackgroundColor="{AppThemeBinding Dark='##11233C', Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding CurrencyViewModels}"
+        <ListView ItemsSource="{Binding UserCurrencies}"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"

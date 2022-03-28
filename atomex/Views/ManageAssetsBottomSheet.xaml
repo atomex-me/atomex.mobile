@@ -46,7 +46,7 @@
                        Margin="16,0,16,26"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"/>
-                <ListView ItemsSource="{Binding CurrencyViewModels}"
+                <ListView ItemsSource="{Binding AllCurrencies}"
                           HasUnevenRows="True"
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
@@ -60,13 +60,21 @@
                             <ViewCell Height="60">
                                 <StackLayout Orientation="Horizontal"
                                              Spacing="0">
-                                    <Image Source="{Binding CurrencyCode}"
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout"
+                                                     Binding="{Binding IsSelected}"
+                                                     Value="False">
+                                            <Setter Property="Opacity"
+                                                    Value="0.5"/>
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <Image Source="{Binding CurrencyViewModel.CurrencyCode}"
                                            HeightRequest="28"
                                            WidthRequest="28"
                                            Margin="16,0"
                                            VerticalOptions="Center"
                                            HorizontalOptions="Start"/>
-                                    <Label Text="{Binding Currency.Description}"
+                                    <Label Text="{Binding CurrencyViewModel.Currency.Description}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"
                                            TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
@@ -81,18 +89,33 @@
                                            VerticalTextAlignment="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding CurrencyViewModel.TotalAmount, StringFormat='{0:0.#########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyCode}"/>
+                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Switch OnColor="{AppThemeBinding Dark='#6101A299', Light={StaticResource MainButtonBackgroundColor}}"
-                                            ThumbColor="{AppThemeBinding Dark='#01A299', Light={StaticResource MainButtonBackgroundColor}}"
-                                            IsToggled="True"
+                                    <Switch OnColor="{AppThemeBinding Dark='#6101A299', Light='#6101A299'}"
+                                            ThumbColor="{AppThemeBinding Dark='#01A299', Light='#01A299'}"
+                                            IsToggled="{Binding IsSelected, Mode=TwoWay}"
                                             Margin="16,0"
                                             HorizontalOptions="End"
-                                            VerticalOptions="Center"/>
+                                            VerticalOptions="Center">
+                                        <Switch.Triggers>
+                                            <DataTrigger TargetType="Switch"
+                                                         Binding="{Binding IsSelected}"
+                                                         Value="False">
+                                                <Setter Property="ThumbColor"
+                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#61DCECFF'}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Switch"
+                                                         Binding="{Binding IsSelected}"
+                                                         Value="True">
+                                                <Setter Property="ThumbColor"
+                                                        Value="{AppThemeBinding Dark='#01A299', Light='#01A299'}"/>
+                                            </DataTrigger>
+                                        </Switch.Triggers>
+                                    </Switch>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
