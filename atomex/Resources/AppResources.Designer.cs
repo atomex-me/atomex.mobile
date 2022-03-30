@@ -851,6 +851,30 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MyCurrencyAddresses {
+            get {
+                return ResourceManager.GetString("MyCurrencyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string ReceivingCurrencyAddress {
+            get {
+                return ResourceManager.GetString("ReceivingCurrencyAddress", resourceCulture);
+            }
+        }
+        
+        internal static string CopyAddress {
+            get {
+                return ResourceManager.GetString("CopyAddress", resourceCulture);
+            }
+        }
+        
+        internal static string Copied {
+            get {
+                return ResourceManager.GetString("Copied", resourceCulture);
+            }
+        }
+        
         internal static string DelegationListPageTitle {
             get {
                 return ResourceManager.GetString("DelegationListPageTitle", resourceCulture);

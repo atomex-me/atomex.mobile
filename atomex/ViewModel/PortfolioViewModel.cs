@@ -74,10 +74,10 @@ namespace atomex.ViewModel
                 .WhereNotNull()
                 .SubscribeInMainThread(nav =>
                 {
-                    UserCurrencies
+                    AllCurrencies
                         .Select(c =>
                         {
-                            c.Navigation = nav;
+                            c.CurrencyViewModel.Navigation = nav;
                             return c;
                         })
                         .ToList();
@@ -100,12 +100,12 @@ namespace atomex.ViewModel
                             if (c.Currency is BitcoinBasedConfig)
                             {
                                 var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                                Navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                                Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
                             }
                             else
                             {
                                 var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                                Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                                Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
                             }
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             break;
@@ -113,7 +113,7 @@ namespace atomex.ViewModel
                             if (PopupNavigation.Instance.PopupStack.Count > 0)
                                 _ = PopupNavigation.Instance.PopAsync();
                             var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, Navigation);
-                            // todo: receive bottom sheet
+                            _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             break;
                         default:

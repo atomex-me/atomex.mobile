@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+    xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
+    x:Class="atomex.Views.ReceiveBottomSheet">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="448"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="0,14"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="558"
+                              BackgroundColor="{AppThemeBinding Dark='#11233C', Light={StaticResource MainBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       Margin="0,0,0,40"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <Label Text="{Binding ReceivingCurrencyAddressLabel}"
+                       TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                       FontSize="24"
+                       FontFamily="{DynamicResource RegularFont}"
+                       Margin="24,0,24,24"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+                <StackLayout Spacing="0">
+                    <zxing:ZXingBarcodeImageView BarcodeValue="{Binding SelectedAddress.Address, FallbackValue='Atomex'}"
+                                                 BarcodeFormat="QR_CODE"
+                                                 Margin="0">
+                    <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                        <zxcm:EncodingOptions Width="150"
+                                              Height="150"
+                                              Margin="0"/>
+                    </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                </zxing:ZXingBarcodeImageView>
+                </StackLayout>
+                <Label Text="{Binding SelectedAddress.Address}"
+                       TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       LineBreakMode="CharacterWrap"
+                       HorizontalTextAlignment="Center"
+                       FontSize="16"
+                       Margin="24,24,24,4"/>
+                <Label TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       HorizontalTextAlignment="Center"
+                       FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding SelectedAddress.CurrencyCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Frame HasShadow="False"
+                       CornerRadius="25"
+                       HeightRequest="50"
+                       WidthRequest="200"
+                       Margin="24,12,24,45"
+                       Padding="20,0"
+                       HorizontalOptions="Center">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Frame.Triggers>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding IsCopied}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#20439E', Light={StaticResource MainButtonBackgroundColor}}"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Frame"
+                                     Binding="{Binding IsCopied}"
+                                     Value="True">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark='#01A299', Light={StaticResource SuccessTextColor}}"/>
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <StackLayout Spacing="10"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="Center">
+                        <Image HeightRequest="18"
+                               WidthRequest="18"
+                               VerticalOptions="Center">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding IsCopied}"
+                                             Value="False">
+                                    <Setter Property="Source"
+                                            Value="ic_copy"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                                             Binding="{Binding IsCopied}"
+                                             Value="True">
+                                    <Setter Property="Source"
+                                            Value="ic_tick"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                        <Label Text="{Binding CopyButtonName}"
+                               VerticalTextAlignment="Center"
+                               FontFamily="{DynamicResource RegularFont}"
+                               FontSize="17">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsCopied}"
+                                             Value="False">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding IsCopied}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark='#F7000E22', Light='#F7000E22'}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Button Text="{Binding MyCurrencyAddressesLabel}"
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
+                        TextColor="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonTextColor}}"
+                        FontSize="17"
+                        HeightRequest="50"
+                        TextTransform="None"
+                        Margin="70,12,70,45"
+                        HorizontalOptions="FillAndExpand"
+                        FontFamily="{DynamicResource RegularFont}"
+                        Command="{Binding ShowReceiveAddressesCommand}"/>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>
+

@@ -445,6 +445,15 @@
     <data name="ShareButton" xml:space="preserve">
         <value>Поделиться</value>
     </data>
+    <data name="MyCurrencyAddresses" xml:space="preserve">
+        <value>Мои {0} адреса</value>
+    </data>
+    <data name="ReceivingCurrencyAddress" xml:space="preserve">
+        <value>Ваш {0} адрес</value>
+    </data>
+    <data name="CopyAddress" xml:space="preserve">
+        <value>Скопировать адрес</value>
+    </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">
@@ -455,6 +464,9 @@
     </data>
     <data name="NotDelegated" xml:space="preserve">
         <value>Не делегировано</value>
+    </data>
+    <data name="Copied" xml:space="preserve">
+        <value>Скопировано</value>
     </data>
     
     <!-- Baker list Page -->

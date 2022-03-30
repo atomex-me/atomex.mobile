@@ -445,6 +445,18 @@
     <data name="ShareButton" xml:space="preserve">
         <value>Share</value>
     </data>
+    <data name="MyCurrencyAddresses" xml:space="preserve">
+        <value>My {0} addresses</value>
+    </data>
+    <data name="ReceivingCurrencyAddress" xml:space="preserve">
+        <value>Your receiving {0} address</value>
+    </data>
+    <data name="CopyAddress" xml:space="preserve">
+        <value>Copy address</value>
+    </data>
+    <data name="Copied" xml:space="preserve">
+        <value>Copied</value>
+    </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">

@@ -320,6 +320,8 @@
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -523,6 +525,7 @@
     <Folder Include="Assets.xcassets\ic_receive.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\ic_update.imageset\" />
+    <Folder Include="Assets.xcassets\ic_tick.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
