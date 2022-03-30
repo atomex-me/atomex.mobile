@@ -270,6 +270,9 @@
     <data name="ReceiveButton" xml:space="preserve">
         <value>Recevoir</value>
     </data>
+    <data name="BuyButton" xml:space="preserve">
+        <value>Buy</value>
+    </data>
     <data name="ConvertButton" xml:space="preserve">
         <value>Échanger</value>
     </data>

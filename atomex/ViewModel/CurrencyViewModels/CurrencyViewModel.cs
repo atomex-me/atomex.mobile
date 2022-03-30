@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,11 +19,23 @@ using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
+    public enum ActiveTab
+    {
+        [Description("Activity")]
+        Activity,
+        [Description("Collectibles")]
+        Collectibles,
+        [Description("Addresses")]
+        Addresses
+    }
+
     public class CurrencyViewModel : BaseViewModel
     {
         protected IAtomexApp AtomexApp { get; set; }
@@ -148,6 +162,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private CancellationTokenSource Cancellation { get; set; }
 
+        [Reactive] public ActiveTab CurrencyActiveTab { get; set; }
+
         public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
@@ -161,6 +177,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                 _ = UpdateTransactionsAsync();
 
             _ = UpdateBalanceAsync();
+
+            CurrencyActiveTab = ActiveTab.Activity;
         }
 
         public void SubscribeToUpdates(IAccount account)
@@ -401,6 +419,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
         }
+
+        private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
+        public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand =>
+            _changeCurrencyTabCommand ??= (_changeCurrencyTabCommand = ReactiveCommand.Create<string>((value) =>
+            {
+                Enum.TryParse(value, out ActiveTab selectedTab);
+                CurrencyActiveTab = selectedTab;
+            }));
 
         #region IDisposable Support
         private bool _disposedValue;

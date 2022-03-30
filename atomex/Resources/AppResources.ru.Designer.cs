@@ -521,6 +521,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string BuyButton {
+            get {
+                return ResourceManager.GetString("BuyButton", resourceCulture);
+            }
+        }
+        
         internal static string ConvertButton {
             get {
                 return ResourceManager.GetString("ConvertButton", resourceCulture);

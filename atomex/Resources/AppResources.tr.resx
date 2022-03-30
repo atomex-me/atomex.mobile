@@ -270,6 +270,9 @@
     <data name="ReceiveButton" xml:space="preserve">
         <value>Teslim almak</value>
     </data>
+    <data name="BuyButton" xml:space="preserve">
+        <value>Buy</value>
+    </data>
     <data name="ConvertButton" xml:space="preserve">
         <value>Değiş tokuş</value>
     </data>
