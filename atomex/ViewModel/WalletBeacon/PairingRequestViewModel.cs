@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Beacon.Sdk;
 using Beacon.Sdk.Beacon;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.WalletBeacon
 {
-    public class ConfirmDappViewModel : BaseViewModel
+    public class PairingRequestViewModel : BaseViewModel
     {
         public INavigation Navigation { get; }
 
+        private readonly IWalletBeaconClient _walletBeaconClient;
+
         public P2PPairingRequest PairingRequest { get; }
 
-        public ConfirmDappViewModel(INavigation navigation, P2PPairingRequest pairingRequest)
+        public PairingRequestViewModel(INavigation navigation, IWalletBeaconClient walletBeaconClient, P2PPairingRequest pairingRequest)
         {
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
+            _walletBeaconClient = walletBeaconClient ?? throw new ArgumentNullException(nameof(walletBeaconClient));
             PairingRequest = pairingRequest ?? throw new ArgumentNullException(nameof(pairingRequest));
 
             ConnectCommand = new Command(async () => await ConnectAsync());
@@ -25,7 +29,7 @@ namespace atomex.ViewModel.WalletBeacon
         public ICommand ConnectCommand { get; }
         private async Task ConnectAsync()
         {
-
+            await _walletBeaconClient.AddPeerAsync(PairingRequest);
         }
 
         public ICommand CancelCommand { get; }
