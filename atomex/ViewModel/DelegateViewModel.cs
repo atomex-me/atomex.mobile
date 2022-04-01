@@ -568,6 +568,11 @@ namespace atomex.ViewModel
                 await tezosAccount.AddressLocker
                     .LockAsync(WalletAddressViewModel.Address);
 
+                // temporary fix: check operation sequence
+                await TezosOperationsSequencer
+                    .WaitAsync(WalletAddressViewModel.Address, tezosAccount)
+                    .ConfigureAwait(false);
+
                 var tx = new TezosTransaction
                 {
                     StorageLimit = _tezosConfig.StorageLimit,
