@@ -21,7 +21,8 @@ namespace atomex.ViewModel.TransactionViewModels
             Transaction = tx ?? throw new ArgumentNullException(nameof(tx));
             Id = tx.Hash;
             State = Transaction.State;
-            Type = GetType(Transaction.Type);
+            //Type = GetType(Transaction.Type);
+            Type = Transaction.Type;
             From = tx.From;
             To = tx.To;
             Amount = GetAmount(tx);

@@ -69,8 +69,8 @@
     <!--<Color x:Key="DisabledButtonTextColorDark">#f6f6f6</Color>-->
     <Color x:Key="DisabledButtonTextColorDark">#3e4a5b</Color>
 
-    <Color x:Key="MainTextColorDark">#f6f6f6</Color>
-    <Color x:Key="AdditionalTextColorDark">#9dafbe</Color>
+    <Color x:Key="MainTextColorDark">#F7DCECFF</Color>
+    <Color x:Key="AdditionalTextColorDark">#61DCECFF</Color>
     <Color x:Key="HintTextColorDark">#298ad4</Color>
     <Color x:Key="ErrorTextColorDark">#E1457C</Color>
     <Color x:Key="WarningTextColorDark">#f29c1f</Color>

@@ -11,17 +11,17 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
-    public enum TransactionType
-    {
-        Input,
-        Output,
-        SwapPayment,
-        SwapRedeem,
-        SwapRefund,
-        TokenCall,
-        SwapCall,
-        TokenApprove
-    }
+    //public enum TransactionType
+    //{
+    //    Input,
+    //    Output,
+    //    SwapPayment,
+    //    SwapRedeem,
+    //    SwapRefund,
+    //    TokenCall,
+    //    SwapCall,
+    //    TokenApprove
+    //}
 
     public class TransactionViewModel : BaseViewModel
     {
@@ -31,8 +31,8 @@ namespace atomex.ViewModel.TransactionViewModels
         public string Id { get; set; }
         public CurrencyConfig Currency { get; set; }
         public BlockchainTransactionState State { get; set; }
-        //public BlockchainTransactionType Type { get; set; }
-        public TransactionType Type { get; set; }
+        public BlockchainTransactionType Type { get; set; }
+        //public TransactionType Type { get; set; }
 
         public string Description { get; set; }
         public decimal Amount { get; set; }
@@ -59,8 +59,8 @@ namespace atomex.ViewModel.TransactionViewModels
             Id = Transaction.Id;
             Currency = currencyConfig;
             State = Transaction.State;
-            Type = GetType(Transaction.Type);
-            //Type = Transaction.Type;
+            //Type = GetType(Transaction.Type);
+            Type = Transaction.Type;
             Amount = amount;
 
             TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
@@ -83,6 +83,8 @@ namespace atomex.ViewModel.TransactionViewModels
                 netAmount: netAmount,
                 amountDigits: currencyConfig.Digits,
                 currencyCode: currencyConfig.Name);
+
+            
         }
 
         public static string GetDescription(
@@ -94,71 +96,71 @@ namespace atomex.ViewModel.TransactionViewModels
         {
             if (type.HasFlag(BlockchainTransactionType.SwapPayment))
             {
-                 return $"Swap payment {Math.Abs(amount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
+                 return $"{AppResources.TxSwapPayment} {Math.Abs(amount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else if (type.HasFlag(BlockchainTransactionType.SwapRefund))
             {
-                return $"Swap refund {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
+                return $"{AppResources.TxSwapRefund} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
             {
-                return $"Swap redeem {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
+                return $"{AppResources.TxSwapRedeem} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else if (type.HasFlag(BlockchainTransactionType.TokenApprove))
             {
-                return $"Token approve";
+                return $"{AppResources.TxTokenApprove}";
             }
             else if (type.HasFlag(BlockchainTransactionType.TokenCall))
             {
-                return $"Token call";
+                return $"{AppResources.TxTokenCall}";
             }
             else if (type.HasFlag(BlockchainTransactionType.SwapCall))
             {
-                return $"Token swap call";
+                return $"{AppResources.TxSwapCall}";
             }
             else if (amount <= 0)
             {
-                return $"Sent {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
+                return $"{AppResources.TxSent} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else if (amount > 0)
             {
-                return $"Received {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
+                return $"{AppResources.TxReceived} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
             else
             {
-                return "Unknown transaction";
+                return $"{AppResources.TxUnknown}";
             }
         }
 
-        public static TransactionType GetType(BlockchainTransactionType type)
-        {
-            if (type.HasFlag(BlockchainTransactionType.SwapPayment))
-                return TransactionType.SwapPayment;
+        //public static TransactionType GetType(BlockchainTransactionType type)
+        //{
+        //    if (type.HasFlag(BlockchainTransactionType.SwapPayment))
+        //        return TransactionType.SwapPayment;
 
-            if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
-                return TransactionType.SwapRedeem;
+        //    if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
+        //        return TransactionType.SwapRedeem;
 
-            if (type.HasFlag(BlockchainTransactionType.SwapRefund))
-                return TransactionType.SwapRefund;
+        //    if (type.HasFlag(BlockchainTransactionType.SwapRefund))
+        //        return TransactionType.SwapRefund;
 
-            if (type.HasFlag(BlockchainTransactionType.SwapCall))
-                return TransactionType.SwapCall;
+        //    if (type.HasFlag(BlockchainTransactionType.SwapCall))
+        //        return TransactionType.SwapCall;
 
-            if (type.HasFlag(BlockchainTransactionType.TokenCall))
-                return TransactionType.TokenCall;
+        //    if (type.HasFlag(BlockchainTransactionType.TokenCall))
+        //        return TransactionType.TokenCall;
 
-            if (type.HasFlag(BlockchainTransactionType.TokenApprove))
-                return TransactionType.TokenApprove;
+        //    if (type.HasFlag(BlockchainTransactionType.TokenApprove))
+        //        return TransactionType.TokenApprove;
 
-            if (type.HasFlag(BlockchainTransactionType.Input) &&
-                type.HasFlag(BlockchainTransactionType.Output))
-                return TransactionType.Output;
+        //    if (type.HasFlag(BlockchainTransactionType.Input) &&
+        //        type.HasFlag(BlockchainTransactionType.Output))
+        //        return TransactionType.Output;
 
-            if (type.HasFlag(BlockchainTransactionType.Input))
-                return TransactionType.Input;
+        //    if (type.HasFlag(BlockchainTransactionType.Input))
+        //        return TransactionType.Input;
 
-            return TransactionType.Output;
-        }
+        //    return TransactionType.Output;
+        //}
 
         private ICommand _copyTxIdCommand;
         public ICommand CopyTxIdCommand => _copyTxIdCommand ??= new Command(async () => await OnCopyIdButtonClicked());

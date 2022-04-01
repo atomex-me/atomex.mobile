@@ -30,16 +30,16 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             try
             {
-                if (AtomexApp.Account == null)
+                if (_app.Account == null)
                     return;
 
                 var fa12currency = Currency as Fa12Config;
 
-                var tezosConfig = AtomexApp.Account
+                var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                var transactions = (await AtomexApp.Account
+                var transactions = (await _app.Account
                     .GetCurrencyAccount<Fa12Account>(Currency.Name)
                     .DataRepository
                     .GetTezosTokenTransfersAsync(fa12currency.TokenContractAddress)
@@ -74,28 +74,28 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
 
-        public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+        //public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
         public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private async Task OnReceiveButtonClicked()
         {
             var fa12currency = Currency as Fa12Config;
-            var tezosConfig = AtomexApp.Account
+            var tezosConfig = _app.Account
                 .Currencies
                 .GetByName(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
         }
 
         private async Task OnAddressesButtonClicked()
         {
             var fa12currency = Currency as Fa12Config;
-            var tezosConfig = AtomexApp.Account
+            var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
         }
 
     }

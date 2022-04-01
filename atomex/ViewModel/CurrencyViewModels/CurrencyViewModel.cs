@@ -11,6 +11,7 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
+using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain;
@@ -21,6 +22,7 @@ using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Forms;
 
@@ -38,9 +40,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
     public class CurrencyViewModel : BaseViewModel
     {
-        protected IAtomexApp AtomexApp { get; set; }
-
-        protected IAccount Account { get; set; }
+        protected IAtomexApp _app { get; set; }
+        protected IAccount _account { get; set; }
 
         public INavigation Navigation { get; set; }
 
@@ -166,12 +167,12 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             ToastService = DependencyService.Get<IToastService>();
 
-            SubscribeToUpdates(AtomexApp.Account);
-            SubscribeToRatesProvider(AtomexApp.QuotesProvider);
+            SubscribeToUpdates(_app.Account);
+            SubscribeToRatesProvider(_app.QuotesProvider);
 
             if (loadTransaction)
                 _ = UpdateTransactionsAsync();
@@ -183,9 +184,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public void SubscribeToUpdates(IAccount account)
         {
-            Account = account;
-            Account.BalanceUpdated += OnBalanceChangedEventHandler;
-            Account.UnconfirmedTransactionAdded += UnconfirmedTxAddedEventHandler;
+            _account = account;
+            _account.BalanceUpdated += OnBalanceChangedEventHandler;
+            _account.UnconfirmedTransactionAdded += UnconfirmedTxAddedEventHandler;
         }
 
         public void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
@@ -214,7 +215,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                var balance = await AtomexApp.Account
+                var balance = await _app.Account
                     .GetBalanceAsync(Currency.Name)
                     .ConfigureAwait(false);
 
@@ -282,10 +283,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             try
             {
-                if (AtomexApp.Account == null)
+                if (_app.Account == null)
                     return;
 
-                var transactions = (await AtomexApp.Account
+                var transactions = (await _app.Account
                         .GetTransactionsAsync(Currency.Name))
                         .ToList();
 
@@ -315,14 +316,14 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
-            if (AtomexApp.Account == null)
+            if (_app.Account == null)
                 return;
 
             try
             {
                 var txId = $"{args.Transaction.Id}:{Currency.Name}";
 
-                var isRemoved = await AtomexApp.Account
+                var isRemoved = await _app.Account
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)
@@ -336,11 +337,32 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation.PopAsync();
         }
 
-        protected ICommand _sendPageCommand;
-        public ICommand SendPageCommand => _sendPageCommand ??= new Command(async () => await OnSendButtonClicked());
+        private ICommand _receiveCommand;
+        public ICommand ReceiveCommand => _receiveCommand ??= new Command(() =>
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
+            var receiveViewModel = new ReceiveViewModel(_app, Currency, Navigation);
+            _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
+        });
 
-        protected ICommand _receivePageCommand;
-        public virtual ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
+        private ICommand _sendCommand;
+        public ICommand SendCommand => _sendCommand ??= new Command(() =>
+        {
+            if (AvailableAmount <= 0) return;
+
+            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this);
+            if (Currency is BitcoinBasedConfig)
+            {
+                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+            }
+            else
+            {
+                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
+            }
+        });
 
         protected ICommand _convertPageCommand;
         public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(() => NavigationService.ConvertCurrency(Currency));
@@ -348,31 +370,9 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected ICommand _addressesPageCommand;
         public virtual ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
-        private async Task OnSendButtonClicked()
-        {
-            if (TotalAmount <= 0) return;
-
-            var sendViewModel = SendViewModelCreator.CreateViewModel(AtomexApp, this);
-            if (Currency is BitcoinBasedConfig)
-            {
-                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                await Navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
-            }
-            else
-            {
-                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                await Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
-            }
-        }
-
-        private async Task OnReceiveButtonClicked()
-        {
-            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, Currency, Navigation)));
-        }
-
         private async Task OnAddressesButtonClicked()
         {
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(AtomexApp, Currency, Navigation)));
+            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation)));
         }
 
         private ICommand _selectTransactionCommand;
@@ -394,7 +394,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             try
             {
-                var scanner = new HdWalletScanner(AtomexApp.Account);
+                var scanner = new HdWalletScanner(_app.Account);
                 await scanner.ScanAsync(
                     currency: Currency.Name,
                     skipUsed: true,
@@ -437,17 +437,17 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (disposing)
                 {
-                    if (Account != null)
+                    if (_account != null)
                     {
-                        Account.BalanceUpdated -= OnBalanceChangedEventHandler;
-                        Account.UnconfirmedTransactionAdded -= UnconfirmedTxAddedEventHandler;
+                        _account.BalanceUpdated -= OnBalanceChangedEventHandler;
+                        _account.UnconfirmedTransactionAdded -= UnconfirmedTxAddedEventHandler;
                     }
 
                     if (QuotesProvider != null)
                         QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
                 }
 
-                Account = null;
+                _account = null;
                 Currency = null;
 
                 _disposedValue = true;

@@ -13,7 +13,41 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <RelativeLayout>
+        <StackLayout Spacing="0">
+            <Label Text="Address info"
+                   Style="{DynamicResource TitleTextStyle}"/>
+            <StackLayout Spacing="0"
+                         Orientation="Horizontal"
+                         Padding="16,0"
+                         HeightRequest="96">
+                <StackLayout HorizontalOptions="StartAndExpand">
+                    <Label Text="{helpers:Translate AddressLabel}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <Label Text="{Binding SelectedAddress.Address}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           FontSize="16"/>
+                </StackLayout>
+                <Image Source="ic_copy"
+                       WidthRequest="15"
+                       HeightRequest="18"/>
+            </StackLayout>
+            <StackLayout Spacing="0"
+                         Padding="16,0"
+                         HeightRequest="96">
+                <Label Text="{helpers:Translate Path}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                <Label Text="{Binding SelectedAddress.Path}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"/>
+            </StackLayout>
+        </StackLayout>
+        <!--<RelativeLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
 	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
                                RelativeLayout.WidthConstraint="50"
@@ -100,6 +134,6 @@
                         Command="{Binding SelectedAddress.ExportKeyCommand}"/>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
-        </RelativeLayout>
+        </RelativeLayout>-->
     </ContentPage.Content>
 </ContentPage>

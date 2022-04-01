@@ -21,7 +21,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task OnStakingButtonClicked()
         {
-            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(AtomexApp, Navigation)));
+            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(_app, Navigation)));
         }
     }
 }
