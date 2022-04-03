@@ -13,6 +13,7 @@ using Atomex.Core;
 using Atomex.Cryptography;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
+using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -66,8 +67,6 @@ namespace atomex.ViewModel
         private readonly IAtomexApp _app;
 
         public CurrencyConfig Currency { get; set; }
-
-        private CancellationTokenSource _cancellation;
 
         private bool _isUpdating;
         public bool IsUpdating
@@ -341,6 +340,13 @@ namespace atomex.ViewModel
             }
             IsUpdating = false;
         }
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
+        });
     }
 }
 

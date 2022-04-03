@@ -397,7 +397,7 @@
         <value>İşlemi onaylayın</value>
     </data>
 
-    <!-- Addresses Pages -->
+    <!-- Select address Pages -->
     <data name="SendFrom" xml:space="preserve">
         <value>Send from</value>
     </data>
@@ -1077,7 +1077,7 @@
         <value>Swap geçmişi, cihazınızda yerel olarak depolanır. Bu, başka bir cihazda gerçekleştirilen işlemleri görmeyeceğiniz anlamına gelir.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Özel anahtarı panoya kopyalamak, cüzdanınızdaki tüm madeni paralarınızın kaybolmasına neden olabilir. {0} için özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
+        <value>Özel anahtarı panoya kopyalamak, cüzdanınızdaki tüm madeni paralarınızın kaybolmasına neden olabilir. Özel anahtarı kopyalamak istediğinizden emin misiniz?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Özel anahtar kopyalandı</value>

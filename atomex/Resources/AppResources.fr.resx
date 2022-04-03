@@ -397,7 +397,7 @@
         <value>Confirmer la transaction</value>
     </data>
 
-    <!-- Addresses Pages -->
+    <!-- Select address Pages -->
     <data name="SendFrom" xml:space="preserve">
         <value>Send from</value>
     </data>
@@ -1077,7 +1077,7 @@
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans votre portefeuille. Êtes-vous sûr de vouloir copier la clé privée pour {0}?</value>
+        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans votre portefeuille. Êtes-vous sûr de vouloir copier la clé privée?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Clé privée copiée</value>

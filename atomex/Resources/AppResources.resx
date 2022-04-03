@@ -397,7 +397,7 @@
         <value>Confirm transaction</value>
     </data>
 
-    <!-- Addresses Pages -->
+    <!-- Select address Pages -->
     <data name="SendFrom" xml:space="preserve">
         <value>Send from</value>
     </data>
@@ -1077,7 +1077,7 @@
         <value>Swap history is stored locally on your device. This means that you do not see the swap operations that were performed with another device.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Copying the private key to the clipboard may result in the loss of all your coins in the wallet. Are you sure you want to copy the private key for {0}</value>
+        <value>Copying the private key to the clipboard may result in the loss of all your coins in the wallet. Are you sure you want to copy the private key?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Private key copied</value>

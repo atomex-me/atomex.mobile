@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    x:Class="atomex.Views.ExportKeyBottomSheet">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="260"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="16,8,16,16"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="360"
+                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0,0,0,20"/>
+                <Label Text="{helpers:Translate CopyingPrivateKeyWarning}"
+                       Style="{DynamicResource TitleTextStyle}"
+                       Padding="0,0,0,20"
+                       TextColor="#FF7A00"/>
+                <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="14"
+                       LineHeight="1.25"
+                       FontFamily="{DynamicResource RegularFont}"
+                       HorizontalTextAlignment="Start"/>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="12"
+                      HorizontalOptions="CenterAndExpand"
+                      VerticalOptions="EndAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="158" />
+                        <ColumnDefinition Width="158" />
+                    </Grid.ColumnDefinitions>
+                    <Frame HasShadow="False"
+                           CornerRadius="25"
+                           Padding="0"
+                           HorizontalOptions="Center">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark='#20439E', Light={StaticResource MainButtonBackgroundColor}}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark='#01A299', Light={StaticResource SuccessTextColor}}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <StackLayout Spacing="10"
+                                     Orientation="Horizontal"
+                                     HorizontalOptions="Center">
+                            <Image HeightRequest="18"
+                                   WidthRequest="18"
+                                   VerticalOptions="Center">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="Source"
+                                                Value="ic_copy"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="Source"
+                                                Value="ic_tick"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <Label Text="{Binding CopyButtonName}"
+                                   VerticalTextAlignment="Center"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   FontSize="17">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="False">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsCopied}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark='#F7000E22', Light='#F7000E22'}"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1"
+                           HasShadow="False"
+                           Padding="0"
+                           CornerRadius="25"
+                           HorizontalOptions="Center">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark='#20439E', Light={StaticResource MainButtonBackgroundColor}}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsCopied}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark='#01A299', Light={StaticResource SuccessTextColor}}"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <Label Text="{Binding CopyButtonName}"
+                               TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               FontFamily="{DynamicResource RegularFont}"
+                               FontSize="17"/>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

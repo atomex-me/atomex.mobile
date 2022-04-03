@@ -10,10 +10,7 @@
              Title="{Binding Currency.Description}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+            <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -279,7 +276,16 @@
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           IsGroupingEnabled="True"
                           HasUnevenRows="True"
-                          Footer="">
+                          Footer=""
+                          IsVisible="False">
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding CurrencyActiveTab}"
+                                     Value="Activity">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
                             <ViewCell Height="36">
