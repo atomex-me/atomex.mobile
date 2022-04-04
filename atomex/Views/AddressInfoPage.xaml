@@ -20,7 +20,7 @@
                    Padding="0,32"/>
             <StackLayout Spacing="0"
                          Orientation="Horizontal"
-                         HeightRequest="96">
+                         HeightRequest="76">
                 <StackLayout HorizontalOptions="StartAndExpand">
                     <Label Text="{helpers:Translate AddressLabel}"
                            FontFamily="{DynamicResource RegularFont}"
@@ -37,8 +37,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Spacing="0"
-                         Padding="16,0"
-                         HeightRequest="96">
+                         HeightRequest="76">
                 <Label Text="{helpers:Translate Path}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
@@ -50,7 +49,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Spacing="0"
-                         HeightRequest="96">
+                         HeightRequest="76">
                 <Label Text="{helpers:Translate Type}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
@@ -63,7 +62,7 @@
             </StackLayout>
             <StackLayout Spacing="0"
                          Orientation="Horizontal"
-                         HeightRequest="96">
+                         HeightRequest="76">
                 <StackLayout HorizontalOptions="StartAndExpand">
                     <Label Text="{helpers:Translate Balance, StringFormat='{0:0.#########}'}"
                            FontFamily="{DynamicResource RegularFont}"
@@ -84,7 +83,7 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
             </StackLayout>
             <StackLayout Spacing="0"
-                         HeightRequest="96"
+                         HeightRequest="76"
                          IsVisible="{Binding SelectedAddress.TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
                 <Label Text="{helpers:Translate TokenBalance}"
                        FontFamily="{DynamicResource RegularFont}"

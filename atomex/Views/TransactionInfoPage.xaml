@@ -6,438 +6,485 @@
              Title="{helpers:Translate TransactionInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ScrollView>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         HeightRequest="60"
-                         Margin="20,5,20,0">
-                <Image Style="{DynamicResource TxImageStyle}">
-                    <Image.Triggers>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="Input">
-                            <Setter Property="Source"
-                                    Value="ic_input"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="Output">
-                            <Setter Property="Source"
-                                    Value="ic_output"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="SwapPayment">
-                            <Setter Property="Source"
-                                    Value="ic_payment"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="SwapRedeem">
-                            <Setter Property="Source"
-                                    Value="ic_redeem"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="SwapRefund">
-                            <Setter Property="Source"
-                                    Value="ic_refund"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="SwapCall">
+        <StackLayout Spacing="0"
+                     Margin="16,36,16,10">
+            <Image Grid.Column="1"
+                   WidthRequest="40"
+                   HeightRequest="40"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image"
+                                    Binding="{Binding State}"
+                                    Value="Confirmed">
                         <Setter Property="Source"
-                                Value="ic_approve"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="TokenCall">
-                            <Setter Property="Source"
-                                    Value="ic_approve"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image"
-                                     Binding="{Binding Type}"
-                                     Value="TokenApprove">
-                            <Setter Property="Source"
-                                    Value="ic_approve"/>
-                        </DataTrigger>
-                    </Image.Triggers>
-                </Image>
-                <Label Text="{Binding Amount}"
-                        VerticalTextAlignment="Center"
-                        Padding="10,0">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="Input">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="Output">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="SwapPayment">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="SwapRedeem">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="SwapRefund">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='+{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="SwapCall">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="TokenCall">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Type}"
-                                     Value="TokenApprove">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                            <Setter Property="FormattedText">
-                                <Setter.Value>
-                                    <FormattedString>
-                                        <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
-                                              Style="{DynamicResource TxAmountLabelStyle}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"
-                                              Style="{DynamicResource TxAmountCodeLabelStyle}"/>
-                                    </FormattedString>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Frame CornerRadius="8"
-                       Padding="2"
-                       Margin="0,15"
-                       HasShadow="False"
-                       HorizontalOptions="EndAndExpand">
-                    <Frame.Triggers>
-                        <DataTrigger TargetType="Frame"
-                                     Binding="{Binding State}"
-                                     Value="Confirmed">
-                            <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource TxConfirmedStateColor}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Frame"
-                                     Binding="{Binding State}"
-                                     Value="Pending">
-                            <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource TxPendingStateColor}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Frame"
-                                     Binding="{Binding State}"
-                                     Value="Failed">
-                            <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource TxFailedStateColor}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Frame"
-                                     Binding="{Binding State}"
-                                     Value="Unconfirmed">
-                            <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource TxUnconfirmedStateColor}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Frame"
-                                     Binding="{Binding State}"
-                                     Value="Unknown">
-                            <Setter Property="BackgroundColor"
-                                    Value="{DynamicResource TxUnknownStateColor}"/>
-                        </DataTrigger>
-                    </Frame.Triggers>
-                    <Label Padding="10,0"
-                           Style="{DynamicResource TxStateLabelStyle}"
-                           Text="{Binding State}" />
-                </Frame>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <StackLayout Style="{DynamicResource InfoRowStyle}">
+                                Value="SwapCompleted"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Image"
+                                    Binding="{Binding State}"
+                                    Value="Pending">
+                        <Setter Property="Source"
+                                Value="ic_status__pending"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Image"
+                                    Binding="{Binding State}"
+                                    Value="Failed">
+                        <Setter Property="Source"
+                                Value="SwapCanceled"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Image"
+                                    Binding="{Binding State}"
+                                    Value="Unconfirmed">
+                        <Setter Property="Source"
+                                Value="ic_status__pending"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Image"
+                                    Binding="{Binding State}"
+                                    Value="Unknown">
+                        <Setter Property="Source"
+                                Value="ic_status__pending"/>
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <Label Text="{Binding State}"
+                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                   FontFamily="{DynamicResource RegularFont}"
+                   FontSize="24"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,16"/>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Description}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding Description}"
-                       Style="{DynamicResource InfoRowTextStyle}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}">
-                <StackLayout Orientation="Horizontal">
-                    <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{helpers:Translate TransactionId}"
-                               Style="{DynamicResource InfoRowTitleStyle}"/>
-                        <Label Text="{Binding Id}"
-                               Style="{DynamicResource InfoRowTextStyle}"
-                               LineBreakMode="MiddleTruncation"/>
-                    </StackLayout>
-                    <ImageButton Source="Copy"
-                                 Style="{DynamicResource InfoImageButtonStyle}"
-                                 Command="{Binding CopyTxIdCommand}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}">
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Description}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"/>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate AmountLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding CurrencyCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate TransactionId}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Id}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"
+                       LineBreakMode="MiddleTruncation">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Image Grid.Column="1"
+                       Grid.Row="1"
+                       Source="ic_export"
+                       VerticalOptions="Start"
+                       Margin="0,2,40,0"
+                       HeightRequest="12"
+                       WidthRequest="12">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Grid.Column="2"
+                       Grid.RowSpan="2"
+                       Source="ic_copy"
+                       WidthRequest="25"
+                       HeightRequest="30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyTxIdCommand}"
+                                              CommandParameter="{Binding Id}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <StackLayout Grid.Row="2"
+                             Grid.ColumnSpan="3"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate TransactionTime}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding LocalTime, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
-                       Style="{DynamicResource InfoRowTextStyle}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding LocalTime,  StringFormat='{}{0:dddd, dd MMMM}'}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"/>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="6"
+                  IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
                                  Binding="{Binding From, FallbackValue={Null}}"
                                  Value="{Null}">
                         <Setter Property="IsVisible"
                                 Value="False"/>
                     </DataTrigger>
-                </StackLayout.Triggers>
-                <StackLayout Orientation="Horizontal">
-                    <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{helpers:Translate FromLabel}"
-                               Style="{DynamicResource InfoRowTitleStyle}"/>
-                        <Label Text="{Binding From}"
-                               Style="{DynamicResource InfoRowTextStyle}"
-                               LineBreakMode="MiddleTruncation"/>
-                    </StackLayout>
-                    <ImageButton Source="Copy"
-                                 Style="{DynamicResource InfoImageButtonStyle}"
-                                 Command="{Binding CopyFromAddressCommand}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate FromLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding From}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"
+                       LineBreakMode="MiddleTruncation">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
+                                              CommandParameter="{Binding From}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Image Grid.Column="1"
+                       Grid.Row="1"
+                       Source="ic_export"
+                       VerticalOptions="Start"
+                       Margin="0,2,40,0"
+                       HeightRequest="12"
+                       WidthRequest="12">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
+                                              CommandParameter="{Binding From}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Grid.Column="2"
+                       Grid.RowSpan="2"
+                       Source="ic_copy"
+                       WidthRequest="25"
+                       HeightRequest="30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
+                                              CommandParameter="{Binding From}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <StackLayout Grid.Row="2"
+                             Grid.ColumnSpan="3"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="6"
+                  IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
                                  Binding="{Binding To, FallbackValue={Null}}"
                                  Value="{Null}">
                         <Setter Property="IsVisible"
                                 Value="False"/>
                     </DataTrigger>
-                </StackLayout.Triggers>
-                <StackLayout Orientation="Horizontal">
-                    <StackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="{helpers:Translate ToLabel}"
-                               Style="{DynamicResource InfoRowTitleStyle}"/>
-                        <Label Text="{Binding To}"
-                               Style="{DynamicResource InfoRowTextStyle}"
-                               LineBreakMode="MiddleTruncation"/>
-                    </StackLayout>
-                    <ImageButton Source="Copy"
-                                 Style="{DynamicResource InfoImageButtonStyle}"
-                                 Command="{Binding CopyToAddressCommand}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding GasPrice, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <Label Text="{helpers:Translate GasPriceLabel}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding GasPrice}"
-                       Style="{DynamicResource InfoRowTextStyle}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding GasLimit, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <Label Text="{helpers:Translate GasLimitLabel}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding GasLimit}"
-                       Style="{DynamicResource InfoRowTextStyle}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding GasUsed, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <Label Text="{helpers:Translate GasUsedLabel}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding GasUsed}"
-                       Style="{DynamicResource InfoRowTextStyle}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate ToLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding To}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"
+                       LineBreakMode="MiddleTruncation">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
+                                              CommandParameter="{Binding To}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Image Grid.Column="1"
+                       Grid.Row="1"
+                       Source="ic_export"
+                       VerticalOptions="Start"
+                       Margin="0,2,40,0"
+                       HeightRequest="12"
+                       WidthRequest="12">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
+                                              CommandParameter="{Binding To}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Image Grid.Column="2"
+                       Grid.RowSpan="2"
+                       Source="ic_copy"
+                       WidthRequest="25"
+                       HeightRequest="30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
+                                              CommandParameter="{Binding To}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <StackLayout Grid.Row="2"
+                             Grid.ColumnSpan="3"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
                                  Binding="{Binding Fee, FallbackValue={Null}}"
                                  Value="{Null}">
                         <Setter Property="IsVisible"
                                 Value="False"/>
                     </DataTrigger>
-                </StackLayout.Triggers>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate FeeLabel}"
-                       Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding Fee}"
-                       Style="{DynamicResource InfoRowTextStyle}">
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Fee} "/>
+                            <Span Text="{Binding Fee}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding Currency.FeeCode}"></Span>
+                            <Span Text="{Binding Currency.FeeCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Style="{DynamicResource InfoRowStyle}"
-                         IsVisible="False">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding IsInternal, FallbackValue={Null}}"
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0"
+                  IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{Binding GasPrice, FallbackValue={Null}}"
                                  Value="{Null}">
                         <Setter Property="IsVisible"
                                 Value="False"/>
                     </DataTrigger>
-                </StackLayout.Triggers>
-                <Label Text="{helpers:Translate IsInternalLabel}"
-                      Style="{DynamicResource InfoRowTitleStyle}"/>
-                <Label Text="{Binding IsInternal}"
-                       Style="{DynamicResource InfoRowTextStyle}">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsInternal}"
-                                     Value="True">
-                            <Setter Property="Text"
-                                    Value="{helpers:Translate Yes}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding IsInternal}"
-                                     Value="False">
-                            <Setter Property="Text"
-                                    Value="{helpers:Translate No}"/>
-                        </DataTrigger>
-                    </Label.Triggers>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate GasPriceLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding GasPrice}"/>
+                            <Span Text=" "/>
+                            <Span Text="GWEI"/>
+                        </FormattedString>
+                    </Label.FormattedText>
                 </Label>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <Button Text="{helpers:Translate ShowInExplorerButton}"
-                    Style="{DynamicResource TransparentButtonStyle}"
-                    Command="{Binding ShowInExplorerCommand}"/>
-            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <Button Text="{helpers:Translate DeleteButton}"
-                    Style="{DynamicResource TransparentButtonStyle}"
-                    TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
-                    IsVisible="{Binding CanBeRemoved}"
-                    Command="{Binding DeleteTxCommand}"/>
-            <StackLayout Style="{DynamicResource SeparatorStyle}"
-                         IsVisible="{Binding CanBeRemoved}"/>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0"
+                  IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{Binding GasLimit, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate GasLimitLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding GasLimit}"/>
+                            <Span Text=" "/>
+                            <Span Text="GAS"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0"
+                  IsVisible="False">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid"
+                                 Binding="{Binding GasUsed, FallbackValue={Null}}"
+                                 Value="{Null}">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate GasUsedLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       Padding="0,0,0,6"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding GasUsed}"/>
+                            <Span Text=" "/>
+                            <Span Text="GAS"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <StackLayout Grid.Row="2"
+                             Style="{DynamicResource SeparatorStyle}"/>
+            </Grid>
         </StackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,28 +1,16 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Reactive;
 using atomex.Resources;
 using atomex.Services;
 using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
+using ReactiveUI;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
-    //public enum TransactionType
-    //{
-    //    Input,
-    //    Output,
-    //    SwapPayment,
-    //    SwapRedeem,
-    //    SwapRefund,
-    //    TokenCall,
-    //    SwapCall,
-    //    TokenApprove
-    //}
-
     public class TransactionViewModel : BaseViewModel
     {
         public event EventHandler<TransactionEventArgs> RemoveClicked;
@@ -32,7 +20,6 @@ namespace atomex.ViewModel.TransactionViewModels
         public CurrencyConfig Currency { get; set; }
         public BlockchainTransactionState State { get; set; }
         public BlockchainTransactionType Type { get; set; }
-        //public TransactionType Type { get; set; }
 
         public string Description { get; set; }
         public decimal Amount { get; set; }
@@ -42,10 +29,10 @@ namespace atomex.ViewModel.TransactionViewModels
         public DateTime Time { get; set; }
         public DateTime LocalTime => Time.ToLocalTime();
         public string TxExplorerUri { get; set; }
+        public string AddressExplorerUri { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public bool CanBeRemoved { get; set; }
-
 
         private IToastService ToastService;
 
@@ -59,11 +46,11 @@ namespace atomex.ViewModel.TransactionViewModels
             Id = Transaction.Id;
             Currency = currencyConfig;
             State = Transaction.State;
-            //Type = GetType(Transaction.Type);
             Type = Transaction.Type;
             Amount = amount;
 
             TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
+            AddressExplorerUri = $"{Currency.AddressExplorerUri}";
 
             ToastService = DependencyService.Get<IToastService>();
 
@@ -83,8 +70,6 @@ namespace atomex.ViewModel.TransactionViewModels
                 netAmount: netAmount,
                 amountDigits: currencyConfig.Digits,
                 currencyCode: currencyConfig.Name);
-
-            
         }
 
         public static string GetDescription(
@@ -132,86 +117,30 @@ namespace atomex.ViewModel.TransactionViewModels
             }
         }
 
-        //public static TransactionType GetType(BlockchainTransactionType type)
-        //{
-        //    if (type.HasFlag(BlockchainTransactionType.SwapPayment))
-        //        return TransactionType.SwapPayment;
-
-        //    if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
-        //        return TransactionType.SwapRedeem;
-
-        //    if (type.HasFlag(BlockchainTransactionType.SwapRefund))
-        //        return TransactionType.SwapRefund;
-
-        //    if (type.HasFlag(BlockchainTransactionType.SwapCall))
-        //        return TransactionType.SwapCall;
-
-        //    if (type.HasFlag(BlockchainTransactionType.TokenCall))
-        //        return TransactionType.TokenCall;
-
-        //    if (type.HasFlag(BlockchainTransactionType.TokenApprove))
-        //        return TransactionType.TokenApprove;
-
-        //    if (type.HasFlag(BlockchainTransactionType.Input) &&
-        //        type.HasFlag(BlockchainTransactionType.Output))
-        //        return TransactionType.Output;
-
-        //    if (type.HasFlag(BlockchainTransactionType.Input))
-        //        return TransactionType.Input;
-
-        //    return TransactionType.Output;
-        //}
-
-        private ICommand _copyTxIdCommand;
-        public ICommand CopyTxIdCommand => _copyTxIdCommand ??= new Command(async () => await OnCopyIdButtonClicked());
-
-        private ICommand _copyFromAddressCommand;
-        public ICommand CopyFromAddressCommand => _copyFromAddressCommand ??= new Command(async () => await OnCopyFromAddressButtonClicked());
-
-        private ICommand _copyToAddressCommand;
-        public ICommand CopyToAddressCommand => _copyToAddressCommand ??= new Command(async () => await OnCopyToAddressButtonClicked());
-
-        private ICommand _showInExplorerCommand;
-        public ICommand ShowInExplorerCommand => _showInExplorerCommand ??= new Command(() => OnShowInExplorerClicked());
-
-        private ICommand _deleteTxCommand;
-        public ICommand DeleteTxCommand => _deleteTxCommand ??= new Command(async () => await OnDeleteTxButtonClicked());
-
-        private async Task OnDeleteTxButtonClicked()
-        {
-            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
-
-            if (!res) return;
-                RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));
-        }
-
-        private void OnShowInExplorerClicked()
-        {
-            Launcher.OpenAsync(new Uri(TxExplorerUri));
-        }
-
-        private async Task OnCopyIdButtonClicked()
+        private ReactiveCommand<string, Unit> _copyTxIdCommand;
+        public ReactiveCommand<string, Unit> CopyTxIdCommand => _copyTxIdCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) =>
         {
             try
-            { 
-                await Clipboard.SetTextAsync(Id);
+            {
+                await Clipboard.SetTextAsync(value);
 
                 if (ToastService == null)
                     ToastService = DependencyService.Get<IToastService>();
 
                 ToastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
             }
-            catch(Exception)
+            catch (Exception)
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
-        }
+        });
 
-        private async Task OnCopyFromAddressButtonClicked()
+        private ReactiveCommand<string, Unit> _copyAddressCommand;
+        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) =>
         {
             try
             {
-                await Clipboard.SetTextAsync(From);
+                await Clipboard.SetTextAsync(value);
 
                 if (ToastService == null)
                     ToastService = DependencyService.Get<IToastService>();
@@ -222,23 +151,21 @@ namespace atomex.ViewModel.TransactionViewModels
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
-        }
+        });
 
-        private async Task OnCopyToAddressButtonClicked()
+        private ReactiveCommand<Unit, Unit> _showTxInExplorerCommand;
+        public ReactiveCommand<Unit, Unit> ShowTxInExplorerCommand => _showTxInExplorerCommand ??= ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(TxExplorerUri)));
+
+        private ReactiveCommand<string, Unit> _showAddressInExplorerCommand;
+        public ReactiveCommand<string, Unit> ShowAddressInExplorerCommand => _showAddressInExplorerCommand ??= ReactiveCommand.CreateFromTask<string>((value) => Launcher.OpenAsync(new Uri($"{AddressExplorerUri}{value}")));
+
+        private ReactiveCommand<Unit, Unit> _deleteTxCommand;
+        public ReactiveCommand<Unit, Unit> DeleteTxCommand => _deleteTxCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
-            try
-            {
-                await Clipboard.SetTextAsync(To);
+            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
 
-                if (ToastService == null)
-                    ToastService = DependencyService.Get<IToastService>();
-
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
+            if (!res) return;
+            RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));
+        });
     }
 }

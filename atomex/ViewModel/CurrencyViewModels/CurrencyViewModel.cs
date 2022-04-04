@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
@@ -44,109 +45,29 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected IAccount _account { get; set; }
 
         public INavigation Navigation { get; set; }
-
         public INavigationService NavigationService { get; set; }
-
         public IToastService ToastService { get; set; }
 
         public CurrencyConfig Currency { get; set; }
-
         public event EventHandler AmountUpdated;
-
         private ICurrencyQuotesProvider QuotesProvider { get; set; }
 
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
 
-        private decimal _totalAmount;
-        public decimal TotalAmount
-        {
-            get => _totalAmount;
-            set { _totalAmount = value; OnPropertyChanged(nameof(TotalAmount)); }
-        }
-
-        private decimal _totalAmountInBase;
-        public decimal TotalAmountInBase
-        {
-            get => _totalAmountInBase;
-            set { _totalAmountInBase = value; OnPropertyChanged(nameof(TotalAmountInBase)); }
-        }
-
-        private decimal _availableAmount;
-        public decimal AvailableAmount
-        {
-            get => _availableAmount;
-            set { _availableAmount = value; OnPropertyChanged(nameof(AvailableAmount)); }
-        }
-
-        private decimal _availableAmountInBase;
-        public decimal AvailableAmountInBase
-        {
-            get => _availableAmountInBase;
-            set { _availableAmountInBase = value; OnPropertyChanged(nameof(AvailableAmountInBase)); }
-        }
-
-        private decimal _unconfirmedAmount;
-        public decimal UnconfirmedAmount
-        {
-            get => _unconfirmedAmount;
-            set { _unconfirmedAmount = value; OnPropertyChanged(nameof(UnconfirmedAmount)); }
-        }
-
-        private decimal _unconfirmedAmountInBase;
-        public decimal UnconfirmedAmountInBase
-        {
-            get => _unconfirmedAmountInBase;
-            set { _unconfirmedAmountInBase = value; OnPropertyChanged(nameof(UnconfirmedAmountInBase)); }
-        }
-
+        [Reactive] public decimal TotalAmount { get; set; }
+        [Reactive] public decimal TotalAmountInBase { get; set; }
+        [Reactive] public decimal AvailableAmount { get; set; }
+        [Reactive] public decimal AvailableAmountInBase { get; set; }
+        [Reactive] public decimal UnconfirmedAmount { get; set; }
+        [Reactive] public decimal UnconfirmedAmountInBase { get; set; }
         public bool HasUnconfirmedAmount => UnconfirmedAmount != 0;
+        [Reactive] public decimal Price { get; set; }
 
-        private decimal _price;
-        public decimal Price
-        {
-            get => _price;
-            set { _price = value; OnPropertyChanged(nameof(Price)); }
-        }
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private ObservableCollection<TransactionViewModel> _transactions;
-        public ObservableCollection<TransactionViewModel> Transactions
-        {
-            get => _transactions;
-            set
-            {
-                _transactions = value;
-                OnPropertyChanged(nameof(Transactions));
-            }
-        }
-
-        private TransactionViewModel _selectedTransaction;
-        public TransactionViewModel SelectedTransaction
-        {
-            get => _selectedTransaction;
-            set
-            {
-                if (value == null) return;
-                _selectedTransaction = value;
-
-                Navigation.PushAsync(new TransactionInfoPage(_selectedTransaction));
-            }
-        }
+        [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
+        [Reactive] public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
+        [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
         public class Grouping<K, T> : ObservableCollection<T>
         {
@@ -159,10 +80,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
-
-        private CancellationTokenSource Cancellation { get; set; }
-
+        [Reactive] public bool IsLoading { get; set; }
         [Reactive] public ActiveTab CurrencyActiveTab { get; set; }
 
         public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
@@ -178,6 +96,11 @@ namespace atomex.ViewModel.CurrencyViewModels
                 _ = UpdateTransactionsAsync();
 
             _ = UpdateBalanceAsync();
+
+            this.WhenAnyValue(vm => vm.SelectedTransaction)
+                .WhereNotNull()
+                .SubscribeInMainThread(t =>
+                    Navigation?.PushAsync(new TransactionInfoPage(t)));
 
             CurrencyActiveTab = ActiveTab.Activity;
         }
@@ -219,15 +142,12 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .GetBalanceAsync(Currency.Name)
                     .ConfigureAwait(false);
 
-                TotalAmount = balance.Confirmed;
-                OnPropertyChanged(nameof(TotalAmount));
-
-                AvailableAmount = balance.Available;
-                OnPropertyChanged(nameof(AvailableAmount));
-
-                UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
-                OnPropertyChanged(nameof(UnconfirmedAmount));
-                OnPropertyChanged(nameof(HasUnconfirmedAmount));
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    TotalAmount = balance.Confirmed;
+                    AvailableAmount = balance.Available;
+                    UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
+                });
 
                 UpdateQuotesInBaseCurrency(QuotesProvider);
             }
@@ -249,15 +169,13 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
-            Price = quote.Bid;
-            TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
-            AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
-            UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
-
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(TotalAmountInBase));
-            OnPropertyChanged(nameof(AvailableAmountInBase));
-            OnPropertyChanged(nameof(UnconfirmedAmountInBase));
+            Device.InvokeOnMainThreadAsync(() =>
+            {
+                Price = quote.Bid;
+                TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
+                AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
+                UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
+            });
 
             AmountUpdated?.Invoke(this, EventArgs.Empty);
         }
@@ -303,9 +221,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                             }));
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-
-                    OnPropertyChanged(nameof(Transactions));
-                    OnPropertyChanged(nameof(GroupedTransactions));
                 });
             }
             catch (Exception e)
@@ -334,7 +249,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Log.Error(e, "Transaction remove error");
             }
 
-            await Navigation.PopAsync();
+            await Navigation?.PopAsync();
         }
 
         private ICommand _receiveCommand;
@@ -367,29 +282,16 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected ICommand _convertPageCommand;
         public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(() => NavigationService.ConvertCurrency(Currency));
 
-        protected ICommand _addressesPageCommand;
-        public virtual ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
-
-        private async Task OnAddressesButtonClicked()
-        {
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation)));
-        }
-
-        private ICommand _selectTransactionCommand;
-        public ICommand SelectTransactionCommand => _selectTransactionCommand ??= new Command<TransactionViewModel>(async (tx) => await OnTxItemTapped(tx));
-
-        async Task OnTxItemTapped(TransactionViewModel tx)
-        {
-            if (tx != null)
-                await Navigation.PushAsync(new TransactionInfoPage(tx));
-        }
+        private ReactiveCommand<Unit, Unit> _addressesPageCommand;
+        public ReactiveCommand<Unit, Unit> AddressesPageCommand =>
+            _addressesPageCommand ??= (_addressesPageCommand = ReactiveCommand.CreateFromTask(() => Navigation?.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation)))));
 
         private ICommand _updateCurrencyCommand;
         public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrencyAsync());
 
         public async Task UpdateCurrencyAsync()
         {
-            Cancellation = new CancellationTokenSource();
+            var cancellation = new CancellationTokenSource();
             IsLoading = true;
 
             try
@@ -398,7 +300,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 await scanner.ScanAsync(
                     currency: Currency.Name,
                     skipUsed: true,
-                    cancellationToken: Cancellation.Token);
+                    cancellationToken: cancellation.Token);
 
                 await UpdateTransactionsAsync();
 

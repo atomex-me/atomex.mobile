@@ -76,7 +76,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         //public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
-        public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
+        //public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private async Task OnReceiveButtonClicked()
         {
