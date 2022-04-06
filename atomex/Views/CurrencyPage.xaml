@@ -25,7 +25,7 @@
                        HeightRequest="98"
                        WidthRequest="98"
                        HorizontalOptions="Center"
-                       BackgroundColor="{AppThemeBinding Dark='#1AC4DEFF', Light='#1AC4DEFF'}">
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
                     <Image Source="{Binding CurrencyCode}"
                            Margin="30"/>
                 </Frame>
@@ -33,7 +33,7 @@
                              Spacing="10"
                              Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand">
-                    <Label TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                    <Label TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontSize="24"
                            FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Center"
@@ -52,14 +52,14 @@
                            VerticalOptions="Center"/>
                 </StackLayout>
                 <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                       TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        FontSize="14"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        Margin="16,4,16,12"/>
                 <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                       TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        FontSize="14"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
@@ -92,7 +92,7 @@
                                  HeightRequest="56"
                                  WidthRequest="56"
                                  HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                  Command="{Binding SendCommand}"
                                  Source="ic_send"/>
                     <Label Grid.Row="1"
@@ -110,7 +110,7 @@
                                  HeightRequest="56"
                                  WidthRequest="56"
                                  HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                  Command="{Binding ReceiveCommand}"
                                  Source="ic_receive"/>
                     <Label Grid.Row="1"
@@ -129,7 +129,7 @@
                                  HeightRequest="56"
                                  WidthRequest="56"
                                  HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark='#01A299', Light='#01A299'}"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
                                  Source="ic_exchange"/>
                     <Label Grid.Row="1"
                            Grid.Column="2"
@@ -147,7 +147,7 @@
                                  HeightRequest="56"
                                  WidthRequest="56"
                                  HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#29DCECFF'}"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
                                  Source="ic_card"/>
                     <Label Grid.Row="1"
                            Grid.Column="3"
@@ -176,7 +176,7 @@
                            CornerRadius="18"
                            HasShadow="False"
                            Padding="0"
-                           BackgroundColor="{AppThemeBinding Dark='#14DCECFF', Light='#0F002041'}"/>
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
                     <Button CornerRadius="16"
                             Padding="0"
                             Margin="2"
@@ -184,8 +184,6 @@
                             FontFamily="{DynamicResource RegularFont}"
                             TextTransform="None"
                             FontSize="14"
-                            TextColor="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"
-                            BackgroundColor="Transparent"
                             Command="{Binding ChangeCurrencyTabCommand}"
                             CommandParameter="Activity">
                         <Button.Triggers>
@@ -195,13 +193,13 @@
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Button"
                                          Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
                                          Value="True">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                 <Setter Property="BackgroundColor"
                                         Value="Transparent"/>
                             </DataTrigger>
@@ -224,13 +222,13 @@
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Button"
                                          Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
                                          Value="True">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                 <Setter Property="BackgroundColor"
                                         Value="Transparent"/>
                             </DataTrigger>
@@ -253,20 +251,19 @@
                                 <Setter Property="TextColor"
                                         Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Button"
                                          Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Addresses'}"
                                          Value="True">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                 <Setter Property="BackgroundColor"
                                         Value="Transparent"/>
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
                 </Grid>
-
                 <ListView ItemsSource="{Binding GroupedTransactions}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedTransaction}"
@@ -275,8 +272,11 @@
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           IsGroupingEnabled="True"
+                          VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
+                          RowHeight="48"
                           Footer=""
+                          x:Name="TransactionsListView"
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -293,7 +293,7 @@
                                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                              Spacing="0">
                                     <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
-                                           TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                            FontFamily="{DynamicResource RegularFont}"
                                            Padding="16,0"
                                            FontSize="12"

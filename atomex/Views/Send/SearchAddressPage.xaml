@@ -32,7 +32,7 @@
                                     VerticalOptions="FillAndExpand"
                                     HorizontalOptions="FillAndExpand"/>
                 <ImageButton Source="ic_close"
-                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                              Padding="7"
                              WidthRequest="24"
                              HeightRequest="24"
@@ -107,7 +107,7 @@
                                        Padding="5,0"
                                        Margin="0,6"
                                        HasShadow="False"
-                                       BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                                        CornerRadius="4"
                                        IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
                                     <Label FontFamily="{DynamicResource RegularFont}"

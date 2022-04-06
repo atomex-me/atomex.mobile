@@ -90,7 +90,6 @@
     <Compile Include="CustomElements\CustomFrameRenderer.cs" />
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
-    <Compile Include="CustomElements\CustomTabbedPageRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
   </ItemGroup>
   <ItemGroup>

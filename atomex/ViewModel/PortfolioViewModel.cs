@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using atomex.Common;
@@ -62,13 +63,16 @@ namespace atomex.ViewModel
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
-
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
 
         public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             GetCurrencies();
+
+            this.WhenAnyValue(vm => vm.AllCurrencies)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ => SubscribeToUpdates());
 
             this.WhenAnyValue(vm => vm.Navigation)
                 .WhereNotNull()
@@ -82,7 +86,6 @@ namespace atomex.ViewModel
                         })
                         .ToList();
                 });
-
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
@@ -120,17 +123,12 @@ namespace atomex.ViewModel
                             Navigation?.PushAsync(new CurrencyPage(c));
                             break;
                     }
-                });
-            SubscribeToUpdates();
+                });   
         }
 
         private void SubscribeToUpdates()
         {
-            AllCurrencies.ForEachDo(c =>
-            {
-                c.CurrencyViewModel.AmountUpdated += OnAmountUpdatedEventHandler;
-            });
-
+            AllCurrencies.ForEachDo(c => c.CurrencyViewModel.AmountUpdated += OnAmountUpdatedEventHandler);
             OnAmountUpdatedEventHandler(this, EventArgs.Empty);
         }
 
@@ -157,7 +155,7 @@ namespace atomex.ViewModel
                     .Select(c =>
                     {
                         var currency = CurrencyViewModelCreator.CreateViewModel(_app, c);
-                        currency.AmountUpdated += OnAmountUpdatedEventHandler;
+                        //currency.AmountUpdated += OnAmountUpdatedEventHandler;
                         var vm = new PortfolioCurrency
                         {
                             CurrencyViewModel = currency,
@@ -172,8 +170,6 @@ namespace atomex.ViewModel
                     .Where(c => c.IsSelected)
                     .Select(vm => vm.CurrencyViewModel)
                     .ToList();
-
-                var a = UserCurrencies;
             }
             catch (Exception ex)
             {
@@ -215,8 +211,8 @@ namespace atomex.ViewModel
             }
         }
 
-        private ICommand _manageAssetsCommand;
-        public ICommand ManageAssetsCommand => _manageAssetsCommand ??= new Command(() =>
+        private ReactiveCommand<Unit, Unit> _manageAssetsCommand;
+        public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??= ReactiveCommand.Create(() =>
         {
             _ = PopupNavigation.Instance.PushAsync(new ManageAssetsBottomSheet(this));
         });
@@ -229,8 +225,8 @@ namespace atomex.ViewModel
         });
 
 
-        private ICommand _sendCommand;
-        public ICommand SendCommand => _sendCommand ??= new Command(() =>
+        private ReactiveCommand<Unit, Unit> _sendCommand;
+        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
         {
             SelectCurrencyUseCase = CurrencyActionType.Send;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
@@ -248,8 +244,8 @@ namespace atomex.ViewModel
             _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
-        private ICommand _receiveCommand;
-        public ICommand ReceiveCommand => _receiveCommand ??= new Command(() =>
+        private ReactiveCommand<Unit, Unit> _receiveCommand;
+        public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(() =>
         {
             SelectCurrencyUseCase = CurrencyActionType.Receive;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);

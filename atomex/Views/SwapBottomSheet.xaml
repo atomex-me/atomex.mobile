@@ -42,7 +42,7 @@
                               Padding="0,8"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="620"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -224,7 +224,7 @@
                                    CornerRadius="18"
                                    HasShadow="False"
                                    Padding="0"
-                                   BackgroundColor="{AppThemeBinding Dark='#14DCECFF', Light='#0F002041'}"/>
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
                             <Button CornerRadius="16"
                                     Padding="0"
                                     Margin="2"
@@ -234,9 +234,7 @@
                                     Text="{helpers:Translate ProgressTab}"
                                     FontFamily="{DynamicResource RegularFont}"
                                     FontSize="14"
-                                    TextTransform="None"
-                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                    BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
+                                    TextTransform="None">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
@@ -244,13 +242,13 @@
                                                 <Setter Property="TextColor"
                                                         Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
                                                         Value="Transparent"/>
                                             </VisualState.Setters>
@@ -268,15 +266,13 @@
                                     TextTransform="None"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapDetails"
-                                    x:Name="DetailsButton"
-                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                    BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
+                                    x:Name="DetailsButton">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
                                                         Value="Transparent"/>
                                             </VisualState.Setters>
@@ -284,9 +280,9 @@
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                      Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>

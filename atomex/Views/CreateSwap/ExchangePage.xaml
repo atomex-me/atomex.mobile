@@ -54,13 +54,13 @@
                            HorizontalOptions="FillAndExpand"
                            HasShadow="False"
                            CornerRadius="16"
-                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource AdditionalBackgroundColor}}"
-                           BorderColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}">
+                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
+                           BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding FromViewModel.SelectCurrencyCommand}"/>
                         </Frame.GestureRecognizers>
                     </Frame>
-                    <Frame BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource MainBackgroundColor}}"
+                    <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
                            BorderColor="Transparent"
                            Padding="5"
                            HasShadow="False"
@@ -98,7 +98,7 @@
                     <Button Grid.Row="1"
                             Grid.Column="1"
                             Text="{helpers:Translate MaxButton}"
-                            BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                            BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                             BackgroundColor="Transparent"
                             BorderWidth="1"
                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -243,8 +243,8 @@
                            HorizontalOptions="FillAndExpand"
                            HasShadow="False"
                            CornerRadius="16"
-                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource AdditionalBackgroundColor}}"
-                           BorderColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource AdditionalBackgroundColor}}">
+                           BackgroundColor="{AppThemeBinding Dark='Transparent', Light={StaticResource FrameBackgroundColor}}"
+                           BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light='Transparent'}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToViewModel.SelectCurrencyCommand}"/>
                         </Frame.GestureRecognizers>
@@ -256,7 +256,7 @@
                            HasShadow="False"
                            CornerRadius="20"
                            VerticalOptions="End"
-                           BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light={StaticResource MainBackgroundColor}}"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBackgroundColorDark}, Light={StaticResource ActionElementBackgroundColor}}"
                            BorderColor="Transparent"
                            IsVisible="{Binding ToViewModel.CurrencyViewModel, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                         <Frame.GestureRecognizers>
@@ -463,7 +463,7 @@
                         <Label Text="{Binding AmountToFeeRatioWarning.Text}"
                                FontSize="12"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="#FFA800"
+                               TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                HorizontalTextAlignment="Start"
                                HorizontalOptions="StartAndExpand"
                                VerticalOptions="Center">
@@ -472,7 +472,7 @@
                                              Binding="{Binding AmountToFeeRatioWarning.Type}"
                                              Value="Warning">
                                     <Setter Property="TextColor"
-                                            Value="#FFA800"/>
+                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding AmountToFeeRatioWarning.Type}"
@@ -538,7 +538,7 @@
                                              Binding="{Binding RedeemFromAddressNote.Type}"
                                              Value="Warning">
                                     <Setter Property="TextColor"
-                                            Value="#FFA800"/>
+                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding RedeemFromAddressNote.Type}"
@@ -595,7 +595,7 @@
                         <Label Text="{Binding ExternalAddressWarning.Text}"
                                FontSize="12"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="#FFA800"
+                               TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                HorizontalTextAlignment="Start"
                                HorizontalOptions="StartAndExpand"
                                VerticalOptions="Center">
@@ -604,7 +604,7 @@
                                              Binding="{Binding ExternalAddressWarning.Type}"
                                              Value="Warning">
                                     <Setter Property="TextColor"
-                                            Value="#FFA800"/>
+                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding ExternalAddressWarning.Type}"
@@ -661,7 +661,7 @@
                         <Label Text="{Binding Message.Text}"
                                FontSize="12"
                                FontFamily="{DynamicResource RegularFont}"
-                               TextColor="#FFA800"
+                               TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                HorizontalTextAlignment="Start"
                                HorizontalOptions="StartAndExpand"
                                VerticalOptions="Center">
@@ -670,7 +670,7 @@
                                              Binding="{Binding Message.Type}"
                                              Value="Warning">
                                     <Setter Property="TextColor"
-                                            Value="#FFA800"/>
+                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Message.Type}"
@@ -731,9 +731,9 @@
                                          Binding="{Binding CanExchange}"
                                          Value="False">
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
                                 <Setter Property="Opacity"
                                         Value="0.5"/>
                                 <Setter Property="IsEnabled"
@@ -777,7 +777,7 @@
         <ListView.Footer>
             <StackLayout>
                 <Button Text="{helpers:Translate ShowAll}"
-                        BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#F7DCECFF'}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
                         TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
                         Padding="16,0"
                         Margin="16,0"

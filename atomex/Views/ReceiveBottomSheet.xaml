@@ -38,7 +38,7 @@
                               Padding="0,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="558"
-                              BackgroundColor="{AppThemeBinding Dark='#11233C', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -47,7 +47,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label Text="{Binding ReceivingCurrencyAddressLabel}"
-                       TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="24"
                        FontFamily="{DynamicResource RegularFont}"
                        Margin="24,0,24,24"
@@ -65,13 +65,13 @@
                 </zxing:ZXingBarcodeImageView>
                 </StackLayout>
                 <Label Text="{Binding SelectedAddress.Address}"
-                       TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        LineBreakMode="CharacterWrap"
                        HorizontalTextAlignment="Center"
                        FontSize="16"
                        Margin="24,24,24,4"/>
-                <Label TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                <Label TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Center"
                        FontSize="16">
@@ -98,13 +98,13 @@
                                      Binding="{Binding IsCopied}"
                                      Value="False">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#20439E', Light={StaticResource MainButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding IsCopied}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#01A299', Light={StaticResource SuccessTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"/>
                         </DataTrigger>
                     </Frame.Triggers>
                     <StackLayout Spacing="10"
@@ -137,13 +137,13 @@
                                              Binding="{Binding IsCopied}"
                                              Value="False">
                                     <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding IsCopied}"
                                              Value="True">
                                     <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark='#F7000E22', Light='#F7000E22'}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -152,7 +152,7 @@
                 <Button Text="{Binding MyCurrencyAddressesLabel}"
                         BackgroundColor="Transparent"
                         BorderColor="Transparent"
-                        TextColor="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonTextColor}}"
+                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
                         FontSize="17"
                         HeightRequest="50"
                         TextTransform="None"

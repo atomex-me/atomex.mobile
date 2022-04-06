@@ -32,7 +32,7 @@
                                     VerticalOptions="FillAndExpand"
                                     HorizontalOptions="FillAndExpand"/>
                 <ImageButton Source="ic_close"
-                             BackgroundColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                              Padding="7"
                              WidthRequest="24"
                              HeightRequest="24"
@@ -82,8 +82,8 @@
                                                 IsChecked="{Binding IsSelected}"
                                                 IsEnabled="False"
                                                 Type="Material"
-                                                Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                                IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"/>
+                                                Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                                IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
@@ -152,7 +152,7 @@
                   VerticalOptions="EndAndExpand"
                   ColumnSpacing="0"
                   RowSpacing="0"
-                  BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1" />
                     <RowDefinition Height="36" />

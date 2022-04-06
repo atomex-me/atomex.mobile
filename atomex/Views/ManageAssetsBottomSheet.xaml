@@ -29,7 +29,7 @@
                               Padding="0,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="558"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -38,7 +38,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label Text="Manage assets"
-                       TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="30"
                        FontFamily="{DynamicResource RegularFont}"
                        Margin="16,0,16,26"
@@ -77,12 +77,12 @@
                                     <Label Text="{Binding CurrencyViewModel.Currency.Description}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"/>
                                     <Label FontSize="14"
                                            FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            HorizontalOptions="EndAndExpand"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Center">
@@ -94,8 +94,7 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Switch OnColor="{AppThemeBinding Dark='#6101A299', Light='#6101A299'}"
-                                            ThumbColor="{AppThemeBinding Dark='#01A299', Light='#01A299'}"
+                                    <Switch OnColor="{AppThemeBinding Dark={StaticResource SwitchBackgroundColorDark}, Light={StaticResource SwitchBackgroundColor}}"
                                             IsToggled="{Binding IsSelected, Mode=TwoWay}"
                                             Margin="16,0"
                                             HorizontalOptions="End"
@@ -105,13 +104,13 @@
                                                          Binding="{Binding IsSelected}"
                                                          Value="False">
                                                 <Setter Property="ThumbColor"
-                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#61DCECFF'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource InactiveThumbColorDark}, Light={StaticResource InactiveThumbColor}}"/>
                                             </DataTrigger>
                                             <DataTrigger TargetType="Switch"
                                                          Binding="{Binding IsSelected}"
                                                          Value="True">
                                                 <Setter Property="ThumbColor"
-                                                        Value="{AppThemeBinding Dark='#01A299', Light='#01A299'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveThumbColorDark}, Light={StaticResource ActiveThumbColor}}"/>
                                             </DataTrigger>
                                         </Switch.Triggers>
                                     </Switch>

@@ -29,7 +29,7 @@
                               Padding="16,8,16,16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="448"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Image Source="ic_swipe__indicator"
                    WidthRequest="35"
@@ -61,7 +61,7 @@
                        HasShadow="False"
                        CornerRadius="16"
                        BackgroundColor="Transparent"
-                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
+                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"/>
                 <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"
                        VerticalOptions="End"
                        HorizontalOptions="End"
@@ -110,7 +110,7 @@
                        HasShadow="False"
                        CornerRadius="16"
                        BackgroundColor="Transparent"
-                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
+                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"/>
                 <Image Grid.Row="2"
                        Source="{Binding ToCurrencyViewModel.CurrencyCode}"
                        Margin="22,0,8,0"
@@ -164,15 +164,15 @@
                        HorizontalOptions="Center"
                        IsClippedToBounds="True"
                        HasShadow="False"
-                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"
-                       BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
                 <StackLayout Grid.Row="4"
                              Grid.ColumnSpan="3"
                              HeightRequest="8"
                              WidthRequest="40"
                              Margin="0,-114,0,114"
                              HorizontalOptions="Center"
-                             BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
                 <Image Grid.ColumnSpan="3"
                        Source="ic_arrow__down"
                        HeightRequest="14"

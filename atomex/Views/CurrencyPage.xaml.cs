@@ -9,6 +9,10 @@ namespace atomex
         {
             InitializeComponent();
             BindingContext = currencyViewModel;
+
+            TransactionsListView.HeightRequest =
+                currencyViewModel.Transactions.Count * TransactionsListView.RowHeight +
+                currencyViewModel.GroupedTransactions.Count * 0.75 * TransactionsListView.RowHeight;
         }
 
         private void ItemSelected(object sender, SelectedItemChangedEventArgs e)

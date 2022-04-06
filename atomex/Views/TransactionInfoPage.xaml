@@ -58,7 +58,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -75,15 +75,15 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="16"
                        VerticalTextAlignment="Start"/>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -107,15 +107,15 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -161,16 +161,16 @@
                                               CommandParameter="{Binding Id}"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <StackLayout Grid.Row="2"
-                             Grid.ColumnSpan="3"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -187,8 +187,8 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="16"
                        VerticalTextAlignment="Start"/>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -204,7 +204,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -252,9 +252,9 @@
                                               CommandParameter="{Binding From}"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <StackLayout Grid.Row="2"
-                             Grid.ColumnSpan="3"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -270,7 +270,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -318,9 +318,9 @@
                                               CommandParameter="{Binding To}"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <StackLayout Grid.Row="2"
-                             Grid.ColumnSpan="3"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
@@ -335,7 +335,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -359,8 +359,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -376,7 +376,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -400,8 +400,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -417,7 +417,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -441,8 +441,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -458,7 +458,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="1" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -482,8 +482,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <StackLayout Grid.Row="2"
-                             Style="{DynamicResource SeparatorStyle}"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
             </Grid>
         </StackLayout>
     </ScrollView>

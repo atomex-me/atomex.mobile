@@ -27,10 +27,10 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="16,8,16,16"
+                              Padding="0,8,0,16"
                               HeightRequest="196"
                               HorizontalOptions="FillAndExpand"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource AdditionalBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -44,11 +44,12 @@
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Start"
-                       Margin="8,0,8,24"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             BackgroundColor="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                       Margin="24,0,24,24"/>
+                <Line HeightRequest="0.5"
+                      HorizontalOptions="FillAndExpand"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
                 <StackLayout Orientation="Horizontal"
-                             Margin="8,24"
+                             Margin="24"
                              Spacing="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ChooseMyAddressCommand}"/>
@@ -68,7 +69,7 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
-                             Margin="8,24">
+                             Margin="24">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EnterExternalAddressCommand}"/>
                     </StackLayout.GestureRecognizers>

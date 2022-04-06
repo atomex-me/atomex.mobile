@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Portfolio"
              x:Name="BindingContextPage"
              Title="{helpers:Translate PortfolioPageTitle}"
-             BackgroundColor="{AppThemeBinding Dark='#11233C', Light={StaticResource MainBackgroundColor}}">
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding UserCurrencies}"
                   HasUnevenRows="True"
@@ -22,7 +21,7 @@
             <ListView.Header>
                 <StackLayout>
                     <Label Text="Total Balance"
-                           TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalBackgroundColor}}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                            Margin="16,56,16,6"
                            FontSize="12"
                            FontFamily="{DynamicResource RegularFont}"
@@ -62,7 +61,7 @@
                                      HeightRequest="56"
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                      Command="{Binding SendCommand}"
                                      Source="ic_send"/>
                         <Label Grid.Row="1"
@@ -80,7 +79,7 @@
                                      HeightRequest="56"
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark='#20439E', Light='#20439E'}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                      Command="{Binding ReceiveCommand}"
                                      Source="ic_receive"/>
                         <Label Grid.Row="1"
@@ -99,7 +98,7 @@
                                      HeightRequest="56"
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark='#01A299', Light='#01A299'}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
                                      Source="ic_exchange"/>
                         <Label Grid.Row="1"
                                Grid.Column="2"
@@ -113,7 +112,7 @@
                     </Grid>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Coins &amp; Tokens"
-                               TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource AdditionalTextColor}}"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="14"
                                FontFamily="{DynamicResource RegularFont}"
                                Margin="16,14"
@@ -122,7 +121,7 @@
                         <Image Source="ic_filters"
                                Margin="20,0"
                                HorizontalOptions="EndAndExpand"
-                               VerticalOptions="CenterAndExpand"
+                               VerticalOptions="FillAndExpand"
                                HeightRequest="16"
                                WidthRequest="16">
                             <Image.GestureRecognizers>
@@ -159,7 +158,7 @@
                                    Text="{Binding Currency.Description}"
                                    FontSize="16"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="End"/>
                             <Label Grid.Column="1"
@@ -167,13 +166,13 @@
                                    Text="{Binding Price, StringFormat='${0:f2}'}"
                                    FontSize="12"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark='#61DCECFF', Light={StaticResource MainTextColor}}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start"/>
                             <Label Grid.Column="2"
                                    FontSize="14"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
                                 <Label.FormattedText>
@@ -189,7 +188,7 @@
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                    FontSize="12"
                                    FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>
                             <Image Grid.RowSpan="2"

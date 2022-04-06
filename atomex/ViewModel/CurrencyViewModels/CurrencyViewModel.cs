@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
@@ -167,7 +166,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
         {
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+            var quote = quotesProvider?.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Device.InvokeOnMainThreadAsync(() =>
             {
@@ -175,9 +174,9 @@ namespace atomex.ViewModel.CurrencyViewModels
                 TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
                 AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
                 UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
-            });
 
-            AmountUpdated?.Invoke(this, EventArgs.Empty);
+                AmountUpdated?.Invoke(this, EventArgs.Empty);
+            });
         }
 
         private async void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
@@ -252,83 +251,77 @@ namespace atomex.ViewModel.CurrencyViewModels
             await Navigation?.PopAsync();
         }
 
-        private ICommand _receiveCommand;
-        public ICommand ReceiveCommand => _receiveCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-            var receiveViewModel = new ReceiveViewModel(_app, Currency, Navigation);
-            _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
-        });
-
-        private ICommand _sendCommand;
-        public ICommand SendCommand => _sendCommand ??= new Command(() =>
-        {
-            if (AvailableAmount <= 0) return;
-
-            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this);
-            if (Currency is BitcoinBasedConfig)
+        private ReactiveCommand<Unit, Unit> _receiveCommand;
+        public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(() =>
             {
-                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
-            }
-            else
-            {
-                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
-            }
-        });
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    _ = PopupNavigation.Instance.PopAsync();
+                var receiveViewModel = new ReceiveViewModel(_app, Currency, Navigation);
+                _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
+            });
 
-        protected ICommand _convertPageCommand;
-        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(() => NavigationService.ConvertCurrency(Currency));
+        private ReactiveCommand<Unit, Unit> _sendCommand;
+        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
+            {
+                if (AvailableAmount <= 0) return;
+
+                var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this);
+                if (Currency is BitcoinBasedConfig)
+                {
+                    var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                    Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                }
+                else
+                {
+                    var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                    Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                }
+            });
+
+        protected ReactiveCommand<Unit, Unit> _convertPageCommand;
+        public ReactiveCommand<Unit, Unit> ConvertPageCommand => _convertPageCommand ??= ReactiveCommand.Create(() =>
+            NavigationService.ConvertCurrency(Currency));
 
         private ReactiveCommand<Unit, Unit> _addressesPageCommand;
-        public ReactiveCommand<Unit, Unit> AddressesPageCommand =>
-            _addressesPageCommand ??= (_addressesPageCommand = ReactiveCommand.CreateFromTask(() => Navigation?.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation)))));
+        public ReactiveCommand<Unit, Unit> AddressesPageCommand => _addressesPageCommand ??= ReactiveCommand.CreateFromTask(() =>
+            Navigation?.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation))));
 
-        private ICommand _updateCurrencyCommand;
-        public ICommand UpdateCurrencyCommand => _updateCurrencyCommand ??= new Command(async () => await UpdateCurrencyAsync());
-
-        public async Task UpdateCurrencyAsync()
-        {
-            var cancellation = new CancellationTokenSource();
-            IsLoading = true;
-
-            try
+        private ReactiveCommand<Unit, Unit> _updateCurrencyCommand;
+        public ReactiveCommand<Unit, Unit> UpdateCurrencyCommand => _updateCurrencyCommand ??= ReactiveCommand.CreateFromTask(async () =>
             {
-                var scanner = new HdWalletScanner(_app.Account);
-                await scanner.ScanAsync(
-                    currency: Currency.Name,
-                    skipUsed: true,
-                    cancellationToken: cancellation.Token);
+                var cancellation = new CancellationTokenSource();
+                IsLoading = true;
 
-                await UpdateTransactionsAsync();
+                try
+                {
+                    var scanner = new HdWalletScanner(_app.Account);
+                    await scanner.ScanAsync(
+                        currency: Currency.Name,
+                        skipUsed: true,
+                        cancellationToken: cancellation.Token);
 
-                ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
-            }
+                    await UpdateTransactionsAsync();
 
-            IsLoading = false;
-        }
+                    ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
+                }
 
-        private ICommand _unconfirmedAmountTappedCommand;
-        public ICommand UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= new Command(() => UnconfirmedAmountTapped());
+                IsLoading = false;
+            });
 
-        private void UnconfirmedAmountTapped()
-        {
-            ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-        }
+        private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
+        public ReactiveCommand<Unit, Unit> UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= ReactiveCommand.Create(() =>
+            ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString()));
 
         private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
-        public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand =>
-            _changeCurrencyTabCommand ??= (_changeCurrencyTabCommand = ReactiveCommand.Create<string>((value) =>
+        public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand => _changeCurrencyTabCommand ??= ReactiveCommand.Create<string>((value) =>
             {
                 Enum.TryParse(value, out ActiveTab selectedTab);
                 CurrencyActiveTab = selectedTab;
-            }));
+            });
 
         #region IDisposable Support
         private bool _disposedValue;

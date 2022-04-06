@@ -4,6 +4,11 @@
                     xmlns:controls="clr-namespace:atomex.CustomElements"
                     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
                     x:Class="atomex.Styles.SmallDevicesStyle">
+    <Style TargetType="NavigationPage">
+       <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource NavigationBarBackgroundColorDark}, Light={StaticResource NavigationBarBackgroundColor}}"/>
+       <Setter Property="BarTextColor" Value="{AppThemeBinding Dark={StaticResource NavigationBarTextColorDark}, Light={StaticResource NavigationBarTextColor}}"/>
+    </Style>
+
     <Style TargetType="Editor">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
@@ -680,7 +685,6 @@
     <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
-        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBorderColorDark}, Light={StaticResource DisabledButtonBorderColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
     </Style>
     <Style x:Key="EnableBiometricTextStyle" TargetType="Label">

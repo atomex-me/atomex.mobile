@@ -51,38 +51,38 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             TezosTokensViewModel = new TezosTokensViewModel(app, restore);
             CurrencyViewModels = new List<CurrencyViewModel>();
-            _ = FillCurrenciesAsync(restore);
+            //_ = FillCurrenciesAsync(restore);
         }
 
-        public void SetNavigation(INavigation navigation, INavigationService navigationService = null)
-        {
-            Navigation = navigation;
-            foreach (var c in CurrencyViewModels)
-            {
-                c.Navigation = navigation;
-                c.NavigationService = navigationService;
-            }
+        //public void SetNavigation(INavigation navigation, INavigationService navigationService = null)
+        //{
+        //    Navigation = navigation;
+        //    foreach (var c in CurrencyViewModels)
+        //    {
+        //        c.Navigation = navigation;
+        //        c.NavigationService = navigationService;
+        //    }
 
-            TezosTokensViewModel.Navigation = navigation;
-            TezosTokensViewModel.NavigationService = navigationService;
-        }
+        //    TezosTokensViewModel.Navigation = navigation;
+        //    TezosTokensViewModel.NavigationService = navigationService;
+        //}
 
-        private async Task FillCurrenciesAsync(bool restore)
-        {
-            await Task.WhenAll(Currencies.Select(c =>
-            {
-                var currency = CurrencyViewModelCreator.CreateViewModel(_app, c);
+        //private async Task FillCurrenciesAsync(bool restore)
+        //{
+        //    await Task.WhenAll(Currencies.Select(c =>
+        //    {
+        //        var currency = CurrencyViewModelCreator.CreateViewModel(_app, c);
 
-                if (currency.CurrencyCode == TezosConfig.Xtz)
-                    TezosTokensViewModel.TezosViewModel = currency;
+        //        if (currency.CurrencyCode == TezosConfig.Xtz)
+        //            TezosTokensViewModel.TezosViewModel = currency;
 
-                CurrencyViewModels.Add(currency);
+        //        CurrencyViewModels.Add(currency);
 
-                if (restore)
-                    _ = currency.UpdateCurrencyAsync();
+        //        if (restore)
+        //            _ = currency.UpdateCurrencyAsync();
 
-                return Task.CompletedTask;
-            }));
-        }
+        //        return Task.CompletedTask;
+        //    }));
+        //}
     }
 }

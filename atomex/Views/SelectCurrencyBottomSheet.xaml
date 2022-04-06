@@ -29,7 +29,7 @@
                               Padding="0,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="558"
-                              BackgroundColor="{AppThemeBinding Dark='#11233C', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -37,7 +37,7 @@
                        Margin="0,0,0,40"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
-                <Label TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                <Label TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="30"
                        FontFamily="{DynamicResource RegularFont}"
                        Margin="16,0,16,26"
@@ -82,12 +82,12 @@
                                     <Label Text="{Binding Currency.Description}"
                                            FontSize="16"
                                            FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"/>
                                     <Label FontSize="14"
                                            FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainTextColor}}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            HorizontalOptions="EndAndExpand"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Center"

@@ -43,8 +43,7 @@
                        HorizontalOptions="FillAndExpand"
                        HasShadow="False"
                        CornerRadius="8"
-                       BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F002041'}"
-                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='Transparent'}">
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                     </Frame.GestureRecognizers>
@@ -125,8 +124,7 @@
                        HorizontalOptions="FillAndExpand"
                        HasShadow="False"
                        CornerRadius="8"
-                       BackgroundColor="{AppThemeBinding Dark='#0FDCECFF', Light='#0F000E22'}"
-                       BorderColor="{AppThemeBinding Dark='#05DCECFF', Light='#Transparent'}">
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
                     </Frame.GestureRecognizers>
@@ -215,7 +213,7 @@
             <Frame Padding="0"
                    Margin="16,0"
                    HeightRequest="56"
-                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                    CornerRadius="8"
                    HasShadow="False">
@@ -252,7 +250,7 @@
                     </Label>
                     <Button Grid.Column="2"
                             Text="{helpers:Translate MaxButton}"
-                            BorderColor="{AppThemeBinding Dark='#29C4DEFF', Light='#1F000E22'}"
+                            BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                             BackgroundColor="Transparent"
                             BorderWidth="1"
                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -296,7 +294,7 @@
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Warning">
                                 <Setter Property="TextColor"
-                                        Value="#FFA800"/>
+                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
@@ -360,7 +358,7 @@
                     <Label Text="{Binding Message.Text}"
                            FontSize="14"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="#FFA800"
+                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -369,7 +367,7 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="TextColor"
-                                        Value="#FFA800"/>
+                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
@@ -405,7 +403,7 @@
             <Frame Padding="0"
                    Margin="16,16,16,0"
                    HeightRequest="56"
-                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                    CornerRadius="8"
                    HasShadow="False"
@@ -474,7 +472,7 @@
                     <Label Text="{Binding Message.Text}"
                            FontSize="14"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="#FFA800"
+                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -483,7 +481,7 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="TextColor"
-                                        Value="#FFA800"/>
+                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
@@ -519,7 +517,7 @@
             <Frame Padding="0"
                    Margin="16,12,16,0"
                    HeightRequest="56"
-                   BorderColor="{AppThemeBinding Dark='#29DCECFF', Light='LightGray'}"
+                   BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                    CornerRadius="8"
                    HasShadow="False"
@@ -588,7 +586,7 @@
                     <Label Text="{Binding Message.Text}"
                            FontSize="14"
                            FontFamily="{DynamicResource RegularFont}"
-                           TextColor="#FFA800"
+                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -597,7 +595,7 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="TextColor"
-                                        Value="#FFA800"/>
+                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
@@ -636,8 +634,8 @@
                             TextFontSize="16"
                             IsChecked="{Binding UseDefaultFee}"
                             Type="Material"
-                            Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                            IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
+                            Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                            IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"
                             TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
             <Label FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Start"
@@ -710,7 +708,7 @@
             </Label>
             <StackLayout VerticalOptions="EndAndExpand"
                          Spacing="0"
-                         BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                         BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColor}}">
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ReviewButton}"
                         Margin="16,14"
@@ -728,9 +726,9 @@
                                      Binding="{Binding CanSend}"
                                      Value="False">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
                             <Setter Property="Opacity"
                                     Value="0.5"/>
                             <Setter Property="IsEnabled"

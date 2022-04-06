@@ -29,13 +29,13 @@
                                     IsChecked="{Binding SelectAll, Mode=TwoWay}"
                                     CheckChangedCommand="{Binding SelectAllCommand, Mode=TwoWay}"
                                     Type="Material"
-                                    Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                    IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"
+                                    Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                    IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"
                                     TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                     <StackLayout HorizontalOptions="EndAndExpand"
                                  Orientation="Horizontal">
-                        <Button TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                        <Button TextColor="{AppThemeBinding Dark={StaticResource ActionBarButtonTextColorDark}, Light={StaticResource ActionBarButtonTextColor}}"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                                 Text="{Binding SortButtonName}"
                                 HeightRequest="32"
                                 HorizontalOptions="End"
@@ -46,7 +46,7 @@
                                 FontFamily="{DynamicResource RegularFont}"
                                 Command="{Binding ChangeSortTypeCommand}"
                                 TextTransform="Lowercase"/>
-                        <ImageButton BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#E3F2FD'}"
+                        <ImageButton BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                                      Padding="6"
                                      Margin="0,10"
                                      HorizontalOptions="End"
@@ -59,13 +59,13 @@
                                              Binding="{Binding SortIsAscending}"
                                              Value="True">
                                     <Setter Property="Source"
-                                            Value="ic_sort__up"/>
+                                            Value="ic_sort__down"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="ImageButton"
                                              Binding="{Binding SortIsAscending}"
                                              Value="False">
                                     <Setter Property="Source"
-                                            Value="ic_sort__down"/>
+                                            Value="ic_sort__up"/>
                                 </DataTrigger>
                             </ImageButton.Triggers>
                         </ImageButton>
@@ -104,8 +104,8 @@
                                                 IsChecked="{Binding IsSelected}"
                                                 IsEnabled="False"
                                                 Type="Material"
-                                                Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                                IconColor="{AppThemeBinding Dark='#F7000E22', Light={StaticResource MainButtonTextColor}}"/>
+                                                Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                                IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
@@ -154,7 +154,7 @@
                   VerticalOptions="EndAndExpand"
                   ColumnSpacing="0"
                   RowSpacing="0"
-                  BackgroundColor="{AppThemeBinding Dark='#12FFFFFF', Light='Transparent'}">
+                  BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1" />
                     <RowDefinition Height="36" />
