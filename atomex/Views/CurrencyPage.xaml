@@ -12,6 +12,7 @@
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" /> 
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -160,7 +161,7 @@
                            Padding="0"/>
                 </Grid>
                 
-                <Grid Margin="8,20"
+                <Grid Margin="8,20,8,0"
                       HorizontalOptions="FillAndExpand"
                       ColumnSpacing="0"
                       RowSpacing="0">
@@ -275,8 +276,8 @@
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
                           RowHeight="48"
-                          Footer=""
                           x:Name="TransactionsListView"
+                          Footer=""
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -288,7 +289,7 @@
                     </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
-                            <ViewCell Height="36">
+                            <controls:CustomViewCell BindableHeight="{Binding GroupHeight}">
                                 <StackLayout VerticalOptions="FillAndExpand"
                                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                              Spacing="0">
@@ -301,7 +302,7 @@
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
                                 </StackLayout>
-                            </ViewCell>
+                            </controls:CustomViewCell>
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                     <ListView.ItemTemplate>
@@ -411,6 +412,100 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <StackLayout IsVisible="False">
+                    <StackLayout.Triggers>
+                        <MultiTrigger TargetType="StackLayout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding CanShowMoreTxs}"
+                                                  Value="True"/>
+                                <BindingCondition Binding="{Binding CurrencyActiveTab}"
+                                                  Value="Activity"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </MultiTrigger>
+                    </StackLayout.Triggers>
+                    <Button Text="{helpers:Translate ShowAll}"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                            Padding="16,0"
+                            TextTransform="None"
+                            CornerRadius="25"
+                            HeightRequest="50"
+                            Margin="16,0,16,16"
+                            Clicked="ShowAllTxs"/>
+                </StackLayout>
+
+
+                <!--<ListView ItemsSource="{Binding AddressesViewModel.Addresses}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedAddress}"
+                          ItemSelected="ItemSelected"
+                          BackgroundColor="Transparent"
+                          SeparatorVisibility="None"
+                          VerticalScrollBarVisibility="Never"
+                          HasUnevenRows="True"
+                          RowHeight="44"
+                          Footer=""
+                          x:Name="AddressesListView"
+                          IsVisible="False">
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding CurrencyActiveTab}"
+                                     Value="Addresses">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                <Grid Padding="16,0" 
+                                      HorizontalOptions="FillAndExpand"
+                                      ColumnSpacing="0"
+                                      RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="24" />
+                                        <RowDefinition Height="20" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="16" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Address}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="16"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start"
+                                           LineBreakMode="MiddleTruncation"
+                                           Padding="0,0,0,70"/>
+                                    <Label Grid.Row="1"
+                                           Text="{Binding Balance}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           FontFamily="{DynamicResource RegularFont}"
+                                           FontSize="14"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start"
+                                           LineBreakMode="MiddleTruncation"
+                                           Padding="0,0,0,70">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding }"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding }"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Source="RightArrow__gray"
+                                           Margin="8,0"/>
+                                </Grid>
+                            </controls:CustomViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>-->
             </StackLayout>
         </ScrollView>
     </RefreshView>
