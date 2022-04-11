@@ -109,7 +109,7 @@
     <Color x:Key="AdditionalTextColorDark">#61DCECFF</Color>
     <Color x:Key="HintTextColorDark">#298ad4</Color>
     <Color x:Key="ErrorTextColorDark">#E1457C</Color>
-    <Color x:Key="WarningTextColorDark">#f29c1f</Color>
+    <Color x:Key="WarningTextColorDark">#FF7A00</Color>
     <Color x:Key="SuccessTextColorDark">#48C3AD</Color>
 
     <Color x:Key="ErrorFrameBackgroundColorDark">#4E4646</Color>

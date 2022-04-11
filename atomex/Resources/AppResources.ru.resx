@@ -35,6 +35,9 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Удалить</value>
     </data>
+    <data name="CloseButton" xml:space="preserve">
+        <value>Закрыть</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>Основная сеть</value>
     </data>
@@ -317,8 +320,11 @@
     <data name="Key" xml:space="preserve">
         <value>Ключ</value>
     </data>
-    <data name="ExportKeyButton" xml:space="preserve">
-        <value>Экспорт приватного ключа</value>
+    <data name="CopyPrivateKeyButton" xml:space="preserve">
+        <value>Скопировать приватный ключ</value>
+    </data>
+    <data name="CopyKeyButton" xml:space="preserve">
+        <value>Копировать ключ</value>
     </data>
     
     <!-- Transaction Page -->

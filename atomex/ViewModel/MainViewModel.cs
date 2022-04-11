@@ -24,7 +24,7 @@ namespace atomex.ViewModel
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account, string walletName, string appTheme = "light", bool restore = false)
+        public MainViewModel(IAtomexApp app, IAccount account, string walletName, bool restore = false)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()

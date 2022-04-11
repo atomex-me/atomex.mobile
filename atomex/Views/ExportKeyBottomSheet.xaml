@@ -37,11 +37,11 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        Margin="0,0,0,20"/>
-                <Label Text="{helpers:Translate CopyingPrivateKeyWarning}"
+                <Label Text="{helpers:Translate Warning}"
                        Style="{DynamicResource TitleTextStyle}"
                        Padding="0,0,0,20"
-                       TextColor="#FF7A00"/>
-                <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
+                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                <Label Text="{helpers:Translate CopyingPrivateKeyWarning}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"
                        LineHeight="1.25"
@@ -55,15 +55,15 @@
                         <RowDefinition Height="50" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="158" />
-                        <ColumnDefinition Width="158" />
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
                     <Frame HasShadow="False"
                            CornerRadius="25"
                            Padding="0"
-                           HorizontalOptions="Center">
+                           HorizontalOptions="FillAndExpand">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                            <TapGestureRecognizer Command="{Binding ExportKeyCommand}"/>
                         </Frame.GestureRecognizers>
                         <Frame.Triggers>
                             <DataTrigger TargetType="Frame"
@@ -125,25 +125,12 @@
                            HasShadow="False"
                            Padding="0"
                            CornerRadius="25"
-                           HorizontalOptions="Center">
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                           HorizontalOptions="FillAndExpand">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
                         </Frame.GestureRecognizers>
-                        <Frame.Triggers>
-                            <DataTrigger TargetType="Frame"
-                                         Binding="{Binding IsCopied}"
-                                         Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Frame"
-                                         Binding="{Binding IsCopied}"
-                                         Value="True">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"/>
-                            </DataTrigger>
-                        </Frame.Triggers>
-                        <Label Text="{Binding CopyButtonName}"
+                        <Label Text="{helpers:Translate CloseButton}"
                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
                                VerticalTextAlignment="Center"
                                HorizontalTextAlignment="Center"

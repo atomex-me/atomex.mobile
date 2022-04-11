@@ -2,10 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
+using System.Reactive;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
+using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
@@ -13,6 +16,8 @@ using Atomex.Core;
 using Atomex.Cryptography;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
@@ -20,97 +25,166 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
-    public class AddressInfo : BaseViewModel
+    public class AddressViewModel : BaseViewModel
     {
-        public string Address { get; set; }
-        public string Type { get; set; }
-        public string Path { get; set; }
+        private readonly IAtomexApp _app;
+        private IToastService _toastService;
+        public CurrencyConfig Currency { get; set; }
 
-        private string _balance;
-        public string Balance
+        [Reactive] public string Address { get; set; }
+        [Reactive] public string Type { get; set; }
+        [Reactive] public string Path { get; set; }
+        [Reactive] public string Balance { get; set; }
+        [Reactive] public string TokenBalance { get; set; }
+
+        [Reactive] public bool IsUpdating { get; set; }
+        [Reactive] public bool IsCopied { get; set; }
+        [Reactive] public bool ExportKeyConfirm { get; set; }
+        [Reactive] public string CopyButtonName { get; set; }
+
+        public Func<string, Task> UpdateAddress { get; set; }
+
+        public AddressViewModel(IAtomexApp app, CurrencyConfig currency)
         {
-            get => _balance;
-            set
-            {
-                _balance = value;
-                OnPropertyChanged(nameof(Balance));
-            }
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            _toastService = DependencyService.Get<IToastService>();
+            CopyButtonName = AppResources.CopyKeyButton;
         }
 
-        public string TokenBalance { get; set; }
-
-        public Action<string> CopyToClipboard { get; set; }
-        public Action<string> ExportKey { get; set; }
-        public Action<string> UpdateAddress { get; set; }
-
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??= new Command<string>( (s) =>
+        private ReactiveCommand<string, Unit> _copyCommand;
+        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>((s) =>
         {
-            CopyToClipboard?.Invoke(Address);
+            try
+            {
+                Clipboard.SetTextAsync(Address);
+                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+            }
+            catch (Exception)
+            {
+                Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
         });
 
-        private ICommand _exportKeyCommand;
-        public ICommand ExportKeyCommand => _exportKeyCommand ??= new Command<string>((s) =>
+        private ReactiveCommand<string, Unit> _exportKeyCommand;
+        public ReactiveCommand<string, Unit> ExportKeyCommand => _exportKeyCommand ??= ReactiveCommand.CreateFromTask<string>(async (s) =>
         {
-            ExportKey?.Invoke(Address);
+            try
+            {
+                if (!ExportKeyConfirm)
+                {
+                    ExportKeyConfirm = true;
+                    _ = PopupNavigation.Instance.PushAsync(new ExportKeyBottomSheet(this));
+                    return;
+                }
+
+                IsCopied = true;
+                CopyButtonName = AppResources.Copied;
+
+                var walletAddress = await _app.Account
+                    .GetAddressAsync(Currency.Name, Address);
+
+                var hdWallet = _app.Account.Wallet as HdWallet;
+
+                using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
+                    currency: Currency,
+                    keyIndex: walletAddress.KeyIndex,
+                    keyType: walletAddress.KeyType);
+
+                using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
+
+                if (Currencies.IsBitcoinBased(Currency.Name))
+                {
+                    var btcBasedConfig = Currency as BitcoinBasedConfig;
+
+                    var wif = new NBitcoin.Key(unsecuredPrivateKey)
+                        .GetWif(btcBasedConfig.Network)
+                        .ToWif();
+
+                    await Clipboard.SetTextAsync(wif);
+                }
+                else if (Currencies.IsTezosBased(Currency.Name))
+                {
+                    var base58 = unsecuredPrivateKey.Length == 32
+                        ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
+                        : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
+
+                    await Clipboard.SetTextAsync(base58);
+                }
+                else
+                {
+                    var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
+
+                    await Clipboard.SetTextAsync(hex);
+                }
+
+                await Task.Delay(1500);
+
+                IsCopied = false;
+                CopyButtonName = AppResources.CopyKeyButton;
+
+                ExportKeyConfirm = false;
+                if (PopupNavigation.Instance.PopupStack.Count > 0)
+                    _ = PopupNavigation.Instance.PopAsync();
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Private key export error");
+            }
         });
 
-        private ICommand _updateAddressCommand;
-        public ICommand UpdateAddressCommand => _updateAddressCommand ??= new Command<string>((s) =>
+        private ReactiveCommand<string, Unit> _updateAddressCommand;
+        public ReactiveCommand<string, Unit> UpdateAddressCommand => _updateAddressCommand ??= ReactiveCommand.Create<string>(async (s) =>
         {
-            UpdateAddress?.Invoke(Address);
+            if (UpdateAddress == null)
+                return;
+
+            IsUpdating = true;
+            await UpdateAddress(Address);
+            IsUpdating = false;
+        });
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
+        {
+            ExportKeyConfirm = false;
+
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
         });
     }
 
     public class AddressesViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
-
         public CurrencyConfig Currency { get; set; }
 
-        private bool _isUpdating;
-        public bool IsUpdating
-        {
-            get => _isUpdating;
-            set
-            {
-                _isUpdating = value;
-                OnPropertyChanged(nameof(IsUpdating));
-            }
-        }
-
         private readonly string _tokenContract;
-
-        public ObservableCollection<AddressInfo> Addresses { get; set; }
-
-        public bool HasTokens { get; set; }
+        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
+        [Reactive] public bool HasTokens { get; set; }
 
         private IToastService ToastService;
-
         public INavigation Navigation { get; set; }
 
-        private AddressInfo _selectedAddress;
-        public AddressInfo SelectedAddress
-        {
-            get => _selectedAddress;
-            set
-            {
-                if (value == null) return;
-                _selectedAddress = value;
+        [Reactive] public AddressViewModel SelectedAddress { get; set; }
 
-                Navigation.PushAsync(new AddressInfoPage(this));
-            }
-        }
-
-        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
+        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, string tokenContract = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
             ToastService = DependencyService.Get<IToastService>();
             _tokenContract = tokenContract;
 
-            ReloadAddresses();
+            this.WhenAnyValue(vm => vm.SelectedAddress)
+                .WhereNotNull()
+                .SubscribeInMainThread(a =>
+                {
+                    Navigation?.PushAsync(new AddressInfoPage(SelectedAddress));
+                    SelectedAddress = null;
+                });
+
+            ReloadAddresses();     
         }
 
         public async void ReloadAddresses()
@@ -143,22 +217,20 @@ namespace atomex.ViewModel
                        : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
                 });
 
-                Addresses = new ObservableCollection<AddressInfo>(
+                Addresses = new ObservableCollection<AddressViewModel>(
                     addresses.Select(a =>
                     {
                         var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(Currency.Name)
                             ? $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
                             : $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
 
-                        return new AddressInfo
+                        return new AddressViewModel(_app, Currency)
                         {
                             Address = a.Address,
                             Type = KeyTypeToString(a.KeyType),
                             Path = path,
                             Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
-                            CopyToClipboard = OnCopyAddressButtonClicked,
-                            ExportKey = OnExportKeyButtonClicked,
-                            UpdateAddress = OnUpdateButtonClicked
+                            UpdateAddress = UpdateAddress
                         };
                     }));
 
@@ -198,9 +270,6 @@ namespace atomex.ViewModel
                         }
                     }
                 }
-
-                OnPropertyChanged(nameof(Addresses));
-                OnPropertyChanged(nameof(HasTokens));
             }
             catch (Exception e)
             {
@@ -216,90 +285,8 @@ namespace atomex.ViewModel
                 _ => throw new NotSupportedException($"Key type {keyType} not supported.")
             };
 
-        private async void OnCopyAddressButtonClicked(string address)
+        private async Task UpdateAddress(string address)
         {
-            try
-            {
-                await Clipboard.SetTextAsync(address);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
-
-        private async void OnExportKeyButtonClicked(string address)
-        {
-            try
-            {
-                string message = string.Format(
-                  CultureInfo.InvariantCulture,
-                  AppResources.CopyingPrivateKeyWarning,
-                  address);
-
-                var confirm = await Application.Current.MainPage.DisplayAlert(
-                    string.Empty,
-                    message,
-                    AppResources.CopyButton,
-                    AppResources.CancelButton);
-
-                if (confirm)
-                {
-                    var walletAddress = await _app.Account
-                        .GetAddressAsync(Currency.Name, address);
-
-                    var hdWallet = _app.Account.Wallet as HdWallet;
-
-                    using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
-                        currency: Currency,
-                        keyIndex: walletAddress.KeyIndex,
-                        keyType: walletAddress.KeyType);
-
-                    using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
-
-                    if (Currencies.IsBitcoinBased(Currency.Name))
-                    {
-                        var btcBasedConfig = Currency as BitcoinBasedConfig;
-
-                        var wif = new NBitcoin.Key(unsecuredPrivateKey)
-                            .GetWif(btcBasedConfig.Network)
-                            .ToWif();
-
-                        await Clipboard.SetTextAsync(wif);
-                    }
-                    else if (Currencies.IsTezosBased(Currency.Name))
-                    {
-                        var base58 = unsecuredPrivateKey.Length == 32
-                            ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
-                            : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
-
-                        await Clipboard.SetTextAsync(base58);
-                    }
-                    else
-                    {
-                        var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
-
-                        await Clipboard.SetTextAsync(hex);
-                    }
-
-                    await Device.InvokeOnMainThreadAsync(() =>
-                    {
-                        ToastService?.Show(AppResources.PrivateKeyCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Private key export error");
-            }
-        }
-
-
-        private async void OnUpdateButtonClicked(string address)
-        {
-            IsUpdating = true;
-
             try
             {
                 await new HdWalletScanner(_app.Account)
@@ -335,18 +322,10 @@ namespace atomex.ViewModel
             }
             catch (Exception e)
             {
-                Log.Error(e, "AddressesViewModel.OnUpdateButtonClicked");
+                Log.Error(e, "UpdateAddress error");
                 // todo: message to user!?
             }
-            IsUpdating = false;
         }
-
-        private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
     }
 }
 

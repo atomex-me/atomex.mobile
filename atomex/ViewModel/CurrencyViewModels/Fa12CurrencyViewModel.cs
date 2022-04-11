@@ -95,7 +95,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, tezosConfig, fa12currency.TokenContractAddress)));
         }
 
     }

@@ -89,6 +89,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string CloseButton {
+            get {
+                return ResourceManager.GetString("CloseButton", resourceCulture);
+            }
+        }
+        
         internal static string MainNetButton {
             get {
                 return ResourceManager.GetString("MainNetButton", resourceCulture);
@@ -611,9 +617,15 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ExportKeyButton {
+        internal static string CopyPrivateKeyButton {
             get {
-                return ResourceManager.GetString("ExportKeyButton", resourceCulture);
+                return ResourceManager.GetString("CopyPrivateKeyButton", resourceCulture);
+            }
+        }
+        
+        internal static string CopyKeyButton {
+            get {
+                return ResourceManager.GetString("CopyKeyButton", resourceCulture);
             }
         }
         

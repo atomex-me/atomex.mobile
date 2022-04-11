@@ -13,203 +13,191 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Spacing="0"
-                     Padding="16,0">
+        <StackLayout Spacing="0">
             <Label Text="{helpers:Translate AddressInfoPageTitle}"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Padding="0,32"/>
-            <StackLayout Spacing="0"
-                         Orientation="Horizontal"
-                         HeightRequest="76">
-                <StackLayout HorizontalOptions="StartAndExpand">
-                    <Label Text="{helpers:Translate AddressLabel}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                    <Label Text="{Binding SelectedAddress.Address}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="16"/>
-                </StackLayout>
-                <Image Source="ic_copy"
-                       WidthRequest="15"
-                       HeightRequest="18"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Spacing="0"
-                         HeightRequest="76">
+                   Style="{DynamicResource TitleTextStyle}"/>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate AddressLabel}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Address}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       LineBreakMode="MiddleTruncation"
+                       VerticalTextAlignment="Start"
+                       FontSize="16"/>
+                <Image Grid.Column="1"
+                       Grid.RowSpan="3"
+                       Source="ic_copy"
+                       WidthRequest="25"
+                       HeightRequest="30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                              CommandParameter="{Binding Address}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="0"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Path}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label Text="{Binding SelectedAddress.Path}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Path}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="16"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Spacing="0"
-                         HeightRequest="76">
+                       FontSize="16"
+                       VerticalTextAlignment="Start"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="0"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Type}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label Text="{Binding SelectedAddress.Type}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Text="{Binding Type}"
+                       Grid.Row="1"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       FontSize="16"
+                       VerticalTextAlignment="Start"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate Balance}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Balance, StringFormat='{0:0.#########}'}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       LineBreakMode="MiddleTruncation"
+                       VerticalTextAlignment="Start"
                        FontSize="16"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Spacing="0"
-                         Orientation="Horizontal"
-                         HeightRequest="76">
-                <StackLayout HorizontalOptions="StartAndExpand">
-                    <Label Text="{helpers:Translate Balance, StringFormat='{0:0.#########}'}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                    <Label Text="{Binding SelectedAddress.Balance}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="16"/>
-                </StackLayout>
-                <ImageButton Source="ic_update"
-                             HeightRequest="21"
-                             WidthRequest="16"
-                             Margin="20,0"
-                             VerticalOptions="Center"
-                             HorizontalOptions="End"
-                             Command="{Binding SelectedAddress.UpdateAddressCommand}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <StackLayout Spacing="0"
-                         HeightRequest="76"
-                         IsVisible="{Binding SelectedAddress.TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
+                <Image Grid.Column="1"
+                       Grid.RowSpan="2"
+                       Source="ic_update"
+                       Margin="0,30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UpdateAddressCommand}"
+                                              CommandParameter="{Binding Address}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0"
+                  IsVisible="{Binding TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate TokenBalance}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                <Label Text="{Binding SelectedAddress.TokenBalance, StringFormat='{0:0.#########}'}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding TokenBalance, StringFormat='{0:0.#########}'}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       LineBreakMode="MiddleTruncation"
+                       VerticalTextAlignment="Start"
                        FontSize="16"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-            <Label Text="{Binding CopyButtonName}"
-                   VerticalTextAlignment="Center"
-                   FontFamily="{DynamicResource RegularFont}"
-                   TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"
-                   FontSize="17"/>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+            </Grid>
             <Frame HasShadow="False"
                    HeightRequest="50"
                    HorizontalOptions="FillAndExpand"
-                   BackgroundColor="{AppThemeBinding Dark='#20439E', Light={StaticResource MainButtonBackgroundColor}}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
                    CornerRadius="25"
-                   Padding="0">
+                   Padding="0"
+                   Margin="16,32"
+                   VerticalOptions="EndAndExpand">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                    <TapGestureRecognizer Command="{Binding ExportKeyCommand}"
+                                          CommandParameter="{Binding Address}"/>
                 </Frame.GestureRecognizers>
                 <StackLayout Spacing="10"
                              Orientation="Horizontal"
                              HorizontalOptions="Center">
-                    <Image HeightRequest="18"
-                           WidthRequest="15"
+                    <Image HeightRequest="30"
+                           WidthRequest="25"
+                           Source="ic_copy"
                            VerticalOptions="Center"/>
-                    <Label Text="{helpers:Translate ExportKeyButton}"
+                    <Label Text="{helpers:Translate CopyPrivateKeyButton}"
                            VerticalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Dark='#F7DCECFF', Light={StaticResource MainButtonTextColor}}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="17"/>
                 </StackLayout>
             </Frame>
         </StackLayout>
-        <!--<RelativeLayout>
-            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
-                               RelativeLayout.WidthConstraint="50"
-                               RelativeLayout.HeightConstraint="50"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               BackgroundColor="Transparent"
-                               IsRunning="{Binding IsUpdating}"
-                               IsVisible="{Binding IsUpdating}"/>
-            <StackLayout Padding="0,10"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding IsUpdating}"
-                                 Value="True">
-                        <Setter Property="Opacity"
-                                Value="0.3"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding IsUpdating}"
-                                 Value="False">
-                        <Setter Property="Opacity"
-                                Value="1"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate AddressLabel}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.Address}"
-                                   Style="{DynamicResource InfoRowTextStyle}"
-                                   LineBreakMode="MiddleTruncation"/>
-                        </StackLayout>
-                        <ImageButton Source="Copy"
-                                     Style="{DynamicResource InfoImageButtonStyle}"
-                                     Command="{Binding SelectedAddress.CopyCommand}"/>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <Label Text="{helpers:Translate Path}"
-                           Style="{DynamicResource InfoRowTitleStyle}"/>
-                    <Label Text="{Binding SelectedAddress.Path}"
-                           Style="{DynamicResource InfoRowTextStyle}"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <Label Text="{helpers:Translate Type}"
-                           Style="{DynamicResource InfoRowTitleStyle}"/>
-                    <Label Text="{Binding SelectedAddress.Type}"
-                           Style="{DynamicResource InfoRowTextStyle}"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate Balance}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.Balance}"
-                                   Style="{DynamicResource InfoRowTextStyle}"/>
-                        </StackLayout>
-                        <ImageButton Source="ic_redeem"
-                                     Style="{DynamicResource InfoImageButtonStyle}"
-                                     Command="{Binding SelectedAddress.UpdateAddressCommand}"/>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                 <StackLayout Style="{DynamicResource InfoRowStyle}"
-                              IsVisible="{Binding SelectedAddress.TokenBalance,Mode=OneWay, Converter={StaticResource StringToBool}}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate TokenBalance}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.TokenBalance}"
-                                   Style="{DynamicResource InfoRowTextStyle}"/>
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <Button Text="{helpers:Translate ExportKeyButton}"
-                        Style="{DynamicResource TransparentButtonStyle}"
-                        TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
-                        Command="{Binding SelectedAddress.ExportKeyCommand}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-        </RelativeLayout>-->
     </ContentPage.Content>
 </ContentPage>

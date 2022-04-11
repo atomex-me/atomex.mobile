@@ -5,7 +5,7 @@ namespace atomex.Views
 {
     public partial class ExportKeyBottomSheet : PopupPage
     {
-        public ExportKeyBottomSheet(AddressesViewModel addressesViewModel)
+        public ExportKeyBottomSheet(AddressViewModel addressesViewModel)
         {
             InitializeComponent();
             BindingContext = addressesViewModel;
@@ -13,9 +13,9 @@ namespace atomex.Views
 
         public void OnClose()
         {
-            if (BindingContext is AddressesViewModel)
+            if (BindingContext is AddressViewModel)
             {
-                var vm = (AddressesViewModel)BindingContext;
+                var vm = (AddressViewModel)BindingContext;
                 if (vm.CloseBottomSheetCommand.CanExecute(null))
                     vm.CloseBottomSheetCommand.Execute(null);
             }

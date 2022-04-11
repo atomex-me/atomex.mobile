@@ -35,6 +35,9 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Sil</value>
     </data>
+    <data name="CloseButton" xml:space="preserve">
+        <value>Close</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>Ana ağ</value>
     </data>
@@ -317,8 +320,11 @@
     <data name="Key" xml:space="preserve">
         <value>Anahtar</value>
     </data>
-    <data name="ExportKeyButton" xml:space="preserve">
-        <value>Özel anahtarın ihracati</value>
+    <data name="CopyPrivateKeyButton" xml:space="preserve">
+        <value>Copy private key</value>
+    </data>
+    <data name="CopyKeyButton" xml:space="preserve">
+        <value>Copy key</value>
     </data>
     
     <!-- Transaction Page -->

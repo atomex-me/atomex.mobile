@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -142,8 +143,8 @@ namespace atomex.ViewModel
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
         }
 
-        private ICommand _showReceiveAddressesCommand;
-        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(() =>
+        private ReactiveCommand<Unit, Unit> _showReceiveAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= ReactiveCommand.Create(() =>
             {
                 var selectAddressViewModel = new SelectAddressViewModel(
                     account: _app.Account,
@@ -168,8 +169,8 @@ namespace atomex.ViewModel
                 _navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
             });
 
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??= new Command(async () =>
+        private ReactiveCommand<Unit, Unit> _copyCommand;
+        public ReactiveCommand<Unit, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
             if (SelectedAddress != null)
             {
@@ -209,7 +210,7 @@ namespace atomex.ViewModel
         //});
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
         {
             if (PopupNavigation.Instance.PopupStack.Count > 0)
                 _ = PopupNavigation.Instance.PopAsync();

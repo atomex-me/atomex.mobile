@@ -267,8 +267,7 @@
                 </Grid>
                 <ListView ItemsSource="{Binding GroupedTransactions}"
                           SelectionMode="Single"
-                          SelectedItem="{Binding SelectedTransaction}"
-                          ItemSelected="ItemSelected"
+                          SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                           BackgroundColor="Transparent"
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
@@ -437,17 +436,17 @@
                 </StackLayout>
 
 
-                <!--<ListView ItemsSource="{Binding AddressesViewModel.Addresses}"
+                <ListView ItemsSource="{Binding AddressesViewModel.Addresses}"
                           SelectionMode="Single"
-                          SelectedItem="{Binding SelectedAddress}"
-                          ItemSelected="ItemSelected"
+                          SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
                           BackgroundColor="Transparent"
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
-                          HasUnevenRows="True"
-                          RowHeight="44"
-                          Footer=""
                           x:Name="AddressesListView"
+                          HasUnevenRows="True"
+                          RowHeight="64"
+                          Footer=""
+                          Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -460,7 +459,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid Padding="16,0" 
+                                <Grid Padding="16,10" 
                                       HorizontalOptions="FillAndExpand"
                                       ColumnSpacing="0"
                                       RowSpacing="0">
@@ -469,17 +468,16 @@
                                         <RowDefinition Height="20" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="8*" />
+                                        <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{Binding Address}"
                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                                            FontFamily="{DynamicResource RegularFont}"
                                            FontSize="16"
-                                           VerticalTextAlignment="Center"
+                                           VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation"
-                                           Padding="0,0,0,70"/>
+                                           LineBreakMode="MiddleTruncation"/>
                                     <Label Grid.Row="1"
                                            Text="{Binding Balance}"
                                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -487,25 +485,19 @@
                                            FontSize="14"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation"
-                                           Padding="0,0,0,70">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding }"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding }"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+                                           LineBreakMode="MiddleTruncation"/>
                                     <Image Grid.Column="1"
                                            Grid.RowSpan="2"
+                                           HorizontalOptions="End"
+                                           WidthRequest="11"
+                                           HeightRequest="11"
                                            Source="RightArrow__gray"
-                                           Margin="8,0"/>
+                                           Margin="8,16"/>
                                 </Grid>
                             </controls:CustomViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>-->
+                </ListView>
             </StackLayout>
         </ScrollView>
     </RefreshView>

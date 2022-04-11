@@ -410,7 +410,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             var addressesViewModel = new AddressesViewModel(
                 app: _app,
                 currency: tezosConfig,
-                navigation: Navigation,
                 tokenContract: TokenContract?.Contract?.Address);
 
             await Navigation.PushAsync(new AddressesPage(addressesViewModel));

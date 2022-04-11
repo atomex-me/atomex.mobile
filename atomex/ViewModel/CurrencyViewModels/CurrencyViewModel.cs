@@ -46,7 +46,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
 
-        public INavigation Navigation { get; set; }
+        [Reactive] public INavigation Navigation { get; set; }
         public INavigationService NavigationService { get; set; }
         public IToastService ToastService { get; set; }
 
@@ -89,7 +89,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        [Reactive] public bool IsLoading { get; set; }
+        [Reactive] public bool IsRefreshing { get; set; }
         [Reactive] public ActiveTab CurrencyActiveTab { get; set; }
 
         public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
@@ -111,11 +111,22 @@ namespace atomex.ViewModel.CurrencyViewModels
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
                 .SubscribeInMainThread(t =>
-                    Navigation?.PushAsync(new TransactionInfoPage(t)));
+                {
+                    Navigation?.PushAsync(new TransactionInfoPage(t));
+                    SelectedTransaction = null;
+                });
 
             this.WhenAnyValue(vm => vm.Transactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(txs => CanShowMoreTxs = txs.Count > TxsNumberPerPage);
+
+            this.WhenAnyValue(vm => vm.Navigation)
+                .WhereNotNull()
+                .Where(_ => AddressesViewModel != null)
+                .SubscribeInMainThread(nav =>
+                {
+                    AddressesViewModel.Navigation = nav;
+                });
 
             GetAddresses();
             CurrencyActiveTab = ActiveTab.Activity;
@@ -123,7 +134,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected void GetAddresses()
         {
-            //AddressesViewModel = new AddressesViewModel(_app, Currency, Navigation);
+            AddressesViewModel = new AddressesViewModel(_app, Currency);
         }
 
         public void SubscribeToUpdates(IAccount account)
@@ -315,16 +326,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> ConvertPageCommand => _convertPageCommand ??= ReactiveCommand.Create(() =>
             NavigationService.ConvertCurrency(Currency));
 
-        private ReactiveCommand<Unit, Unit> _addressesPageCommand;
-        public ReactiveCommand<Unit, Unit> AddressesPageCommand => _addressesPageCommand ??= ReactiveCommand.CreateFromTask(() =>
-            Navigation?.PushAsync(new AddressesPage(new AddressesViewModel(_app, Currency, Navigation))));
-
-        private ReactiveCommand<Unit, Unit> _updateCurrencyCommand;
-        public ReactiveCommand<Unit, Unit> UpdateCurrencyCommand => _updateCurrencyCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        private ReactiveCommand<Unit, Unit> _refreshCommand;
+        public ReactiveCommand<Unit, Unit> RefreshCommand => _refreshCommand ??= ReactiveCommand.CreateFromTask(async () =>
             {
                 var cancellation = new CancellationTokenSource();
-                IsLoading = true;
-
+                IsRefreshing = true;
                 try
                 {
                     var scanner = new HdWalletScanner(_app.Account);
@@ -342,7 +348,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
                 }
 
-                IsLoading = false;
+                IsRefreshing = false;
             });
 
         private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
