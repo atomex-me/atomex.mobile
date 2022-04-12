@@ -4,6 +4,7 @@
              x:Class="atomex.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:behavior="clr-namespace:atomex.Behaviors"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -50,7 +51,27 @@
                     <Image Source="ic_update"
                            WidthRequest="16"
                            HeightRequest="21"
-                           VerticalOptions="Center"/>
+                           VerticalOptions="Center">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding RefreshCommand}"/>
+                        </Image.GestureRecognizers>
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding IsRefreshing}"
+                                         Value="True">
+                                <DataTrigger.EnterActions>
+                                    <behavior:AnimationTrigger Action="Start" />
+                                </DataTrigger.EnterActions>                                
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image"
+                                         Binding="{Binding IsRefreshing}"
+                                         Value="False">
+                                <DataTrigger.EnterActions>
+                                    <behavior:AnimationTrigger  Action="Stop" />  
+                                </DataTrigger.EnterActions>                                
+                            </DataTrigger>                    
+                        </Image.Triggers>
+                    </Image>
                 </StackLayout>
                 <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -272,6 +293,7 @@
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           IsGroupingEnabled="True"
+                          CachingStrategy="RecycleElement"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
                           RowHeight="48"

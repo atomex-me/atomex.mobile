@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
 using atomex.Services;
@@ -326,8 +327,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> ConvertPageCommand => _convertPageCommand ??= ReactiveCommand.Create(() =>
             NavigationService.ConvertCurrency(Currency));
 
-        private ReactiveCommand<Unit, Unit> _refreshCommand;
-        public ReactiveCommand<Unit, Unit> RefreshCommand => _refreshCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand => _refreshCommand ??= new Command(async () =>
             {
                 var cancellation = new CancellationTokenSource();
                 IsRefreshing = true;
