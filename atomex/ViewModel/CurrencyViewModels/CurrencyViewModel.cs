@@ -78,6 +78,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public bool IsAllTxsShowed { get; set; }
         public int TxsNumberPerPage = 3;
 
+        public bool CanBuy { get; set; }
+
         public class Grouping<K, T> : ObservableCollection<T>
         {
             public double GroupHeight { get; set; } = DefaultGroupHeight;
@@ -124,13 +126,11 @@ namespace atomex.ViewModel.CurrencyViewModels
             this.WhenAnyValue(vm => vm.Navigation)
                 .WhereNotNull()
                 .Where(_ => AddressesViewModel != null)
-                .SubscribeInMainThread(nav =>
-                {
-                    AddressesViewModel.Navigation = nav;
-                });
+                .SubscribeInMainThread(nav => AddressesViewModel.Navigation = nav);
 
             GetAddresses();
             CurrencyActiveTab = ActiveTab.Activity;
+            CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
         }
 
         protected void GetAddresses()
@@ -323,9 +323,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                 }
             });
 
-        protected ReactiveCommand<Unit, Unit> _convertPageCommand;
-        public ReactiveCommand<Unit, Unit> ConvertPageCommand => _convertPageCommand ??= ReactiveCommand.Create(() =>
+        protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
+        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
             NavigationService.ConvertCurrency(Currency));
+
+        protected ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
+        public ReactiveCommand<Unit, Unit> BuyCurrencyCommand => _buyCurrencyCommand ??= ReactiveCommand.Create(() =>
+            NavigationService.BuyCurrency(Currency));
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand => _refreshCommand ??= new Command(async () =>

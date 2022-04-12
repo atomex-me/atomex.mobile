@@ -55,6 +55,7 @@ namespace atomex.ViewModel
         private IAtomexApp _app { get; }
 
         [Reactive] public INavigation Navigation { get; set; }
+        [Reactive] public INavigationService NavigationService { get; set; }
         [Reactive] public IList<PortfolioCurrency> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
 
@@ -82,6 +83,19 @@ namespace atomex.ViewModel
                         .Select(c =>
                         {
                             c.CurrencyViewModel.Navigation = nav;
+                            return c;
+                        })
+                        .ToList();
+                });
+
+            this.WhenAnyValue(vm => vm.NavigationService)
+                .WhereNotNull()
+                .SubscribeInMainThread(service =>
+                {
+                    AllCurrencies
+                        .Select(c =>
+                        {
+                            c.CurrencyViewModel.NavigationService = service;
                             return c;
                         })
                         .ToList();

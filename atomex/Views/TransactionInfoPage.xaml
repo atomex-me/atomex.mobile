@@ -182,7 +182,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
-                       Text="{Binding LocalTime,  StringFormat='{}{0:dddd, dd MMMM}'}"
+                       Text="{Binding LocalTime,  StringFormat='{}{0:MMMM dd yyyy, HH:mm}'}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="16"

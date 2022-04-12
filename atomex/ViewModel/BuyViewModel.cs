@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Views.BuyCurrency;
@@ -11,6 +12,8 @@ using Atomex.Core;
 using Atomex.Cryptography;
 using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -19,78 +22,54 @@ namespace atomex.ViewModel
     public class BuyViewModel : BaseViewModel
     {
         private IAtomexApp AtomexApp { get; }
-
         public INavigation Navigation { get; set; }
 
-        private bool _isLoading;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
-        }
+        [Reactive] public bool IsLoading { get; set; }
 
-        private Network _network;
-        public Network Network
-        {
-            get => _network;
-            set
-            {
-                _network = value;
-                OnPropertyChanged(nameof(Network));
-            }
-        }
-
-        private string _url;
-        public string Url
-        {
-            get => _url;
-            set { _url = value; OnPropertyChanged(nameof(Url)); }
-        }
+        [Reactive] public Network Network { get; set; }
+        [Reactive] public string Url { get; set; }
 
         private string _userId;
-
         private string[] _redirectedUrls = { "https://widget.wert.io/terms-and-conditions",
                                              "https://widget.wert.io/privacy-policy",
                                              "https://support.wert.io/",
                                              "https://sandbox.wert.io/terms-and-conditions",
                                              "https://sandbox.wert.io/privacy-policy" };
 
-        public ObservableCollection<string> Currencies { get; } = new ObservableCollection<string> { "BTC", "ETH", "XTZ" };
+        public static ObservableCollection<string> Currencies { get; } = new ObservableCollection<string> { "BTC", "ETH", "XTZ" };
+        public ObservableCollection<string> AvailableCurrencies { get; set; }
 
         public BuyViewModel(IAtomexApp app)
         {
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            AvailableCurrencies = new ObservableCollection<string>(Currencies);
             IsLoading = true;
             _userId = GetUserId();
             Network = app.Account.Network;
         }
 
-
-        private ICommand _selectCurrencyCommand;
-        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<string>(async (value) => await LoadWebView(value));
+        private ReactiveCommand<string, Unit> _selectCurrencyCommand;
+        public ReactiveCommand<string, Unit> SelectCurrencyCommand => _selectCurrencyCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) => await LoadWebView(value));
 
         private async Task LoadWebView(string currency)
         {
             string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
             string address = GetDefaultAddress(currency);
-
-            var baseUri = _network == Network.MainNet
+            var baseUri = Network == Network.MainNet
                 ? "https://widget.wert.io/atomex"
                 : "https://sandbox.wert.io/01F298K3HP4DY326AH1NS3MM3M";
 
             Url = $"{baseUri}/widget" +
                 $"?commodity={currency}" +
                 $"&address={address}" +
-                $"&click_id=user:{_userId}/network:{_network}" +
+                $"&click_id=user:{_userId}/network:{Network}" +
                 $"&theme={appTheme}";
-
-            OnPropertyChanged(nameof(Url));
 
             await Navigation.PushAsync(new BuyPage(this));
         }
 
         private ICommand _canExecuteCommand;
-        public ICommand CanExecuteCommand => _canExecuteCommand ??= new Command<WebNavigatingEventArgs>((args) => CanExecute(args));
+        public ICommand CanExecuteCommand => _canExecuteCommand ??= ReactiveCommand.Create<WebNavigatingEventArgs>((args) => CanExecute(args));
 
         private void CanExecute(WebNavigatingEventArgs args)
         {
@@ -101,6 +80,12 @@ namespace atomex.ViewModel
                 Launcher.OpenAsync(new Uri(args.Url));
                 args.Cancel = true;
             }
+        }
+
+        public void BuyCurrency(CurrencyConfig currency)
+        {
+            if (currency != null)
+                _ = LoadWebView(currency.Name);
         }
 
         private string GetUserId()

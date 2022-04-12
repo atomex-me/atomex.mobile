@@ -18,7 +18,7 @@
                    VerticalTextAlignment="End"/>
             <StackLayout Spacing="0"
                          Margin="20">
-                <FlexLayout BindableLayout.ItemsSource="{Binding Currencies, Mode=OneWay}"
+                <FlexLayout BindableLayout.ItemsSource="{Binding AvailableCurrencies, Mode=OneWay}"
                             BackgroundColor="Transparent"
                             Direction="Row"
                             Wrap="Wrap"

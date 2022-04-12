@@ -9,7 +9,6 @@ using atomex.ViewModel;
 using atomex.Helpers;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using NavigationPage = Xamarin.Forms.NavigationPage;
-using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.CreateSwap;
 using Atomex.Core;
 
@@ -65,6 +64,7 @@ namespace atomex
             MainViewModel.SettingsViewModel.Navigation = NavigationSettingsPage.Navigation;
             MainViewModel.ConversionViewModel.Navigation = NavigationConversionPage.Navigation;
             MainViewModel.PortfolioViewModel.Navigation = NavigationPortfolioPage.Navigation;
+            MainViewModel.PortfolioViewModel.NavigationService = this;
             MainViewModel.BuyViewModel.Navigation = NavigationBuyPage.Navigation;
 
             Children.Add(NavigationPortfolioPage);
@@ -125,27 +125,14 @@ namespace atomex
             }
         }
 
-        public void ShowCurrency(CurrencyViewModel currencyViewModel)
+        public void BuyCurrency(CurrencyConfig currency)
         {
-            //if (currencyViewModel == null)
-            //    return;
-
-            //NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-            //CurrentPage = NavigationWalletsListPage;
-
-            //NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
-        }
-
-
-        public void ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel)
-        {
-            if (tezosTokensViewModel == null)
-                return;
-
-            //NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-            //CurrentPage = NavigationWalletsListPage;
-
-            //NavigationWalletsListPage.PushAsync(new TezosTokensListPage(tezosTokensViewModel));
+            if (NavigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
+            {
+                _ = NavigationBuyPage.Navigation.PopToRootAsync(false);
+                CurrentPage = NavigationBuyPage;
+                buyViewModel.BuyCurrency(currency);
+            }
         }
     }
 }
