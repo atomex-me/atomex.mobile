@@ -42,7 +42,7 @@ namespace atomex.ViewModel
         [Reactive] public bool ExportKeyConfirm { get; set; }
         [Reactive] public string CopyButtonName { get; set; }
 
-        public Func<string, Task> UpdateAddress { get; set; }
+        public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
 
         public AddressViewModel(IAtomexApp app, CurrencyConfig currency)
         {
@@ -141,8 +141,11 @@ namespace atomex.ViewModel
                 return;
 
             IsUpdating = true;
-            await UpdateAddress(Address);
+            var updatedViewModel = await UpdateAddress(Address);
             IsUpdating = false;
+
+            Balance = updatedViewModel?.Balance;
+            TokenBalance = updatedViewModel?.TokenBalance;
         });
 
         private ICommand _closeBottomSheetCommand;
@@ -197,7 +200,8 @@ namespace atomex.ViewModel
         {
             try
             {
-                if (_currency.Name != args.Currency) return;
+                if (_currency.Name != args.Currency)
+                    return;
                 await ReloadAddresses();
             }
             catch (Exception e)
@@ -304,7 +308,7 @@ namespace atomex.ViewModel
                 _ => throw new NotSupportedException($"Key type {keyType} not supported.")
             };
 
-        private async Task UpdateAddress(string address)
+        private async Task<AddressViewModel> UpdateAddress(string address)
         {
             try
             {
@@ -334,6 +338,8 @@ namespace atomex.ViewModel
                 { 
                     _toastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
                 });
+
+                return Addresses.FirstOrDefault(a => a.Address == address);
             }
             catch (OperationCanceledException)
             {
@@ -344,6 +350,8 @@ namespace atomex.ViewModel
                 Log.Error(e, "UpdateAddress error");
                 // todo: message to user!?
             }
+
+            return null;
         }
     }
 }
