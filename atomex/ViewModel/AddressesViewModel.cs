@@ -28,8 +28,8 @@ namespace atomex.ViewModel
     public class AddressViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
+        private CurrencyConfig _currency;
         private IToastService _toastService;
-        public CurrencyConfig Currency { get; set; }
 
         [Reactive] public string Address { get; set; }
         [Reactive] public string Type { get; set; }
@@ -47,7 +47,7 @@ namespace atomex.ViewModel
         public AddressViewModel(IAtomexApp app, CurrencyConfig currency)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
             _toastService = DependencyService.Get<IToastService>();
             CopyButtonName = AppResources.CopyKeyButton;
         }
@@ -82,20 +82,20 @@ namespace atomex.ViewModel
                 CopyButtonName = AppResources.Copied;
 
                 var walletAddress = await _app.Account
-                    .GetAddressAsync(Currency.Name, Address);
+                    .GetAddressAsync(_currency.Name, Address);
 
                 var hdWallet = _app.Account.Wallet as HdWallet;
 
                 using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
-                    currency: Currency,
+                    currency: _currency,
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
 
                 using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
 
-                if (Currencies.IsBitcoinBased(Currency.Name))
+                if (Currencies.IsBitcoinBased(_currency.Name))
                 {
-                    var btcBasedConfig = Currency as BitcoinBasedConfig;
+                    var btcBasedConfig = _currency as BitcoinBasedConfig;
 
                     var wif = new NBitcoin.Key(unsecuredPrivateKey)
                         .GetWif(btcBasedConfig.Network)
@@ -103,7 +103,7 @@ namespace atomex.ViewModel
 
                     await Clipboard.SetTextAsync(wif);
                 }
-                else if (Currencies.IsTezosBased(Currency.Name))
+                else if (Currencies.IsTezosBased(_currency.Name))
                 {
                     var base58 = unsecuredPrivateKey.Length == 32
                         ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
@@ -158,13 +158,13 @@ namespace atomex.ViewModel
     public class AddressesViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
-        public CurrencyConfig Currency { get; set; }
+        private CurrencyConfig _currency { get; set; }
 
         private readonly string _tokenContract;
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         [Reactive] public bool HasTokens { get; set; }
 
-        private IToastService ToastService;
+        private IToastService _toastService;
         public INavigation Navigation { get; set; }
 
         [Reactive] public AddressViewModel SelectedAddress { get; set; }
@@ -172,8 +172,8 @@ namespace atomex.ViewModel
         public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, string tokenContract = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            ToastService = DependencyService.Get<IToastService>();
+            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
+            _toastService = DependencyService.Get<IToastService>();
             _tokenContract = tokenContract;
 
             this.WhenAnyValue(vm => vm.SelectedAddress)
@@ -184,15 +184,34 @@ namespace atomex.ViewModel
                     SelectedAddress = null;
                 });
 
-            ReloadAddresses();     
+            _ = ReloadAddresses();
+            SubscribeToServices();
         }
 
-        public async void ReloadAddresses()
+        private void SubscribeToServices()
+        {
+            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+        }
+
+        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                if (_currency.Name != args.Currency) return;
+                await ReloadAddresses();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Reload addresses event handler error");
+            }
+        }
+
+        public async Task ReloadAddresses()
         {
             try
             {
                 var account = _app.Account
-                    .GetCurrencyAccount(Currency.Name);
+                    .GetCurrencyAccount(_currency.Name);
 
                 var addresses = (await account
                     .GetAddressesAsync())
@@ -220,21 +239,21 @@ namespace atomex.ViewModel
                 Addresses = new ObservableCollection<AddressViewModel>(
                     addresses.Select(a =>
                     {
-                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(Currency.Name)
-                            ? $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                            : $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
+                            ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
+                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
 
-                        return new AddressViewModel(_app, Currency)
+                        return new AddressViewModel(_app, _currency)
                         {
                             Address = a.Address,
                             Type = KeyTypeToString(a.KeyType),
                             Path = path,
-                            Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
+                            Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {_currency.Name}",
                             UpdateAddress = UpdateAddress
                         };
                     }));
 
-                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
+                if (_currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
                     HasTokens = true;
 
@@ -290,9 +309,9 @@ namespace atomex.ViewModel
             try
             {
                 await new HdWalletScanner(_app.Account)
-                    .ScanAddressAsync(Currency.Name, address);
+                    .ScanAddressAsync(_currency.Name, address);
 
-                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
+                if (_currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
                     // update tezos token balance
                     var tezosAccount = _app.Account
@@ -309,11 +328,11 @@ namespace atomex.ViewModel
                                 .ReloadBalances();
                 }
 
-                ReloadAddresses();
+                await ReloadAddresses();
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 { 
-                    ToastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                    _toastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
                 });
             }
             catch (OperationCanceledException)

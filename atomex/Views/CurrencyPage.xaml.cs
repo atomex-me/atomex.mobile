@@ -12,20 +12,14 @@ namespace atomex
             BindingContext = currencyViewModel;
 
             TransactionsListView.HeightRequest = currencyViewModel.IsAllTxsShowed
-                ? currencyViewModel.Transactions.Count * TransactionsListView.RowHeight +
-                    currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2
+                ? currencyViewModel.Transactions?.Count * TransactionsListView.RowHeight +
+                    currencyViewModel.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TransactionsListView.RowHeight / 2 ?? 0
                 : currencyViewModel.TxsNumberPerPage * TransactionsListView.RowHeight +
-                    currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2;
+                    currencyViewModel.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TransactionsListView.RowHeight / 2 ?? 0;
 
-            AddressesListView.HeightRequest = currencyViewModel.AddressesViewModel.Addresses.Count * AddressesListView.RowHeight;
-        }
-
-        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-                ((ListView)sender).SelectedItem = null;
+            AddressesListView.HeightRequest = currencyViewModel.AddressesViewModel?.Addresses?.Count * AddressesListView.RowHeight ?? 0;
         }
 
         private void ShowAllTxs(object sender, EventArgs args)
@@ -34,9 +28,9 @@ namespace atomex
             {
                 var vm = (CurrencyViewModel)BindingContext;
                 vm.ShowAllTxs();
-                TransactionsListView.HeightRequest = vm.Transactions.Count * TransactionsListView.RowHeight +
-                    vm.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2;
+                TransactionsListView.HeightRequest = vm.Transactions?.Count * TransactionsListView.RowHeight +
+                    vm.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TransactionsListView.RowHeight / 2 ?? 0;
             }
         }
     }

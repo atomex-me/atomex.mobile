@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.AddressInfoPage"
     Title="{helpers:Translate AddressInfoPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
@@ -139,6 +140,22 @@
                         <TapGestureRecognizer Command="{Binding UpdateAddressCommand}"
                                               CommandParameter="{Binding Address}"/>
                     </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding IsUpdating}"
+                                     Value="True">
+                            <DataTrigger.EnterActions>
+                                <behavior:AnimationTrigger Action="Start" />  
+                            </DataTrigger.EnterActions>                                
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding IsUpdating}"
+                                     Value="False">
+                            <DataTrigger.EnterActions>
+                                <behavior:AnimationTrigger  Action="Stop" />  
+                            </DataTrigger.EnterActions>                                
+                        </DataTrigger>                    
+                    </Image.Triggers>
                 </Image>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="2"

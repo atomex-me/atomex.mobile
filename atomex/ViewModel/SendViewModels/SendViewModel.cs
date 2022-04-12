@@ -435,10 +435,7 @@ namespace atomex.ViewModel.SendViewModels
                             ButtonText = AppResources.AcceptButton
                         }));
 
-                    var navStackCount = Currency?.Name == "XTZ"
-                        ? 3
-                        : 2;
-                    for (int i = Navigation.NavigationStack.Count; i > navStackCount; i--)
+                    for (int i = Navigation.NavigationStack.Count; i > 2; i--)
                         Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
                 }
                 catch (Exception e)
