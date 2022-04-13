@@ -23,11 +23,5 @@ namespace atomex.Views.TezosTokens
             TokensListView.IsVisible = false;
             TransfersListView.IsVisible = true;
         }
-
-        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-                ((ListView)sender).SelectedItem = null;
-        }
     }
 }

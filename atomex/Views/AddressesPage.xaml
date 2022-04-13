@@ -32,7 +32,6 @@
         <StackLayout Style="{StaticResource SeparatorStyle}"/>
         <ListView ItemsSource="{Binding Addresses}"
                   SelectedItem="{Binding SelectedAddress}"
-                  ItemSelected="ItemSelected"
                   SeparatorVisibility="Default"
                   BackgroundColor="Transparent"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"

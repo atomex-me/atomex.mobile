@@ -15,8 +15,7 @@
                   VerticalOptions="FillAndExpand"
                   BackgroundColor="Transparent"
                   SelectionMode="Single"
-                  ItemSelected="ItemSelected"
-                  SelectedItem="{Binding SelectedCurrency}"
+                  SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
                   Footer="">
             <ListView.Header>
                 <StackLayout>

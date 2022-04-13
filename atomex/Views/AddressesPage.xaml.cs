@@ -10,11 +10,5 @@ namespace atomex
             InitializeComponent();
             BindingContext = addressesViewModel;
         }
-
-        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-                ((ListView)sender).SelectedItem = null;
-        }
     }
 }

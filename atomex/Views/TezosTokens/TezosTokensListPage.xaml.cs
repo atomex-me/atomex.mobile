@@ -10,11 +10,5 @@ namespace atomex.Views.TezosTokens
             InitializeComponent();
             BindingContext = tezosTokensViewModel;
         }
-
-        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-                ((ListView)sender).SelectedItem = null;
-        }
     }
 }

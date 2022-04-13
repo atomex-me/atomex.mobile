@@ -10,8 +10,7 @@
     <ContentPage.Content>
         <ListView ItemsSource="{Binding TokensContracts}"
                   SelectionMode="Single"
-                  SelectedItem="{Binding TokenContract}"
-                  ItemSelected="ItemSelected"
+                  SelectedItem="{Binding TokenContract, Mode=TwoWay}"
                   CachingStrategy="RetainElement"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"

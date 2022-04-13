@@ -71,6 +71,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 TokenContractChanged(TokenContract);
                 Navigation.PushAsync(new TokenPage(this));
+                TokenContract = null;
             }
         }
 
@@ -86,6 +87,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 OnPropertyChanged(nameof(TokenTransfer));
 
                 Navigation.PushAsync(new TransactionInfoPage(TokenTransfer));
+                TokenTransfer = null;
             }
         }
 
@@ -101,6 +103,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 OnPropertyChanged(nameof(Token));
 
                 Navigation.PushAsync(new TokenInfoPage(Token));
+                Token = null;
             }
         }
 

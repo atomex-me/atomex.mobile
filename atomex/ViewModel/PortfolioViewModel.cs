@@ -109,6 +109,7 @@ namespace atomex.ViewModel
                     {
                         case CurrencyActionType.Show:
                             Navigation?.PushAsync(new CurrencyPage(c));
+                            SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Send:
                             if (PopupNavigation.Instance.PopupStack.Count > 0)
@@ -125,6 +126,7 @@ namespace atomex.ViewModel
                                 Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
                             }
                             SelectCurrencyUseCase = CurrencyActionType.Show;
+                            SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Receive:
                             if (PopupNavigation.Instance.PopupStack.Count > 0)
@@ -132,9 +134,11 @@ namespace atomex.ViewModel
                             var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, Navigation);
                             _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
+                            SelectedCurrency = null;
                             break;
                         default:
                             Navigation?.PushAsync(new CurrencyPage(c));
+                            SelectedCurrency = null;
                             break;
                     }
                 });   

@@ -107,19 +107,8 @@ namespace atomex.ViewModel
         [Reactive] public bool IsToAddressExtrenal { get; set; }
         [Reactive] public bool IsRedeemFromAddressWithMaxBalance { get; set; }
 
-        private SwapViewModel _selectedSwap;
-        public SwapViewModel SelectedSwap
-        {
-            get => _selectedSwap;
-            set
-            {
-                if (value == null) return;
-                _selectedSwap = value;
-
-                _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(_selectedSwap));
-            }
-        }
-
+        
+        [Reactive] public SwapViewModel SelectedSwap { get; set; }
         [Reactive] public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
         private Dictionary<long, SwapViewModel> _cachedSwaps;
         [Reactive] public bool CanShowMoreSwaps { get; set; }
@@ -439,11 +428,19 @@ namespace atomex.ViewModel
                         isGoodAmountToFeeRatio;
                 });
 
+            this.WhenAnyValue(vm => vm.SelectedSwap)
+                .WhereNotNull()
+                .SubscribeInMainThread(s =>
+                {
+                    _ = PopupNavigation.Instance.PushAsync(new SwapBottomSheet(s));
+                    SelectedSwap = null;
+                });
+
             this.WhenAnyValue(vm => vm.Swaps)
-                .Subscribe(swaps => CanShowMoreSwaps = swaps.Count > _swapNumberPerPage);
+                .SubscribeInMainThread(swaps => CanShowMoreSwaps = swaps.Count > _swapNumberPerPage);
 
             this.WhenAnyValue(vm => vm.IsAllSwapsShowed)
-                .Subscribe(flag =>
+                .SubscribeInMainThread(flag =>
                 {
                     var groups = !flag
                         ? Swaps
