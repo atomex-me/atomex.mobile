@@ -11,6 +11,12 @@ using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using NavigationPage = Xamarin.Forms.NavigationPage;
 using atomex.Views.CreateSwap;
 using Atomex.Core;
+using Xamarin.CommunityToolkit.UI.Views.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.Extensions;
+using System;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex
 {
@@ -97,22 +103,6 @@ namespace atomex
             StartViewModel startViewModel = new StartViewModel(MainViewModel.AtomexApp);
             Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
             startViewModel.Navigation = Application.Current.MainPage.Navigation;
-
-            string navBarBackgroundColorName = "NavigationBarBackgroundColor";
-            string navBarTextColorName = "NavigationBarTextColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-            {
-                navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
-                navBarTextColorName = "NavigationBarTextColorDark";
-            }
-
-            Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor);
-            Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor);
-
-            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
-            ((NavigationPage)Application.Current.MainPage).BackgroundColor = (Color)navBarColor;
-            ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
         public void ConvertCurrency(CurrencyConfig currency)
@@ -133,6 +123,94 @@ namespace atomex
                 CurrentPage = NavigationBuyPage;
                 buyViewModel.BuyCurrency(currency);
             }
+        }
+
+        public async void DisplaySnackBar(
+            MessageType messageType,
+            string text,
+            string buttonText = "OK",
+            int duration = 3000)
+        {
+            string snackBarBgColorName;
+            string snackBarTextColorName;
+            Color backgroundColor = Color.White;
+            Color textColor = Color.Black;
+
+            switch (messageType)
+            {
+                case MessageType.Error:
+                    snackBarBgColorName = "ErrorSnackBarBgColor";
+                    snackBarTextColorName = "ErrorSnackBarTextColor";
+                    break;
+
+                case MessageType.Warning:
+                    snackBarBgColorName = "WarningSnackBarBgColor";
+                    snackBarTextColorName = "WarningSnackBarTextColor";
+                    break;
+
+                case MessageType.Success:
+                    snackBarBgColorName = "SuccessSnackBarBgColor";
+                    snackBarTextColorName = "SuccessSnackBarTextColor";
+                    break;
+
+                case MessageType.Regular:
+                    snackBarBgColorName = "RegularSnackBarBgColor";
+                    snackBarTextColorName = "RegularSnackBarTextColor";
+                    break;
+
+                default:
+                    snackBarBgColorName = "RegularSnackBarBgColor";
+                    snackBarTextColorName = "RegularSnackBarTextColor";
+                    break;
+            }
+
+            snackBarBgColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? snackBarBgColorName + "Dark"
+                : snackBarBgColorName;
+            snackBarTextColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? snackBarTextColorName + "Dark"
+                : snackBarTextColorName;
+
+            Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
+            backgroundColor = (Color)bgColor;
+            Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
+            textColor = (Color)txtColor;
+
+            var messageOptions = new MessageOptions
+            {
+                Foreground = textColor,
+                Font = Font.SystemFontOfSize(14),
+                Padding = new Thickness(20, 14),
+                Message = text
+            };
+
+            var actionOptions = new List<SnackBarActionOptions>
+            {
+                new SnackBarActionOptions
+                {
+                    ForegroundColor = textColor,
+                    BackgroundColor = Color.Transparent,
+                    Font = Font.SystemFontOfSize(17),
+                    Text = buttonText,
+                    Padding = new Thickness(20, 16),
+                    Action = () => 
+                    {
+                        return Task.CompletedTask;
+                    }
+                }
+            };
+
+            var options = new SnackBarOptions
+            {
+                MessageOptions = messageOptions,
+                Duration = TimeSpan.FromMilliseconds(duration),
+                BackgroundColor = backgroundColor,
+                IsRtl = false,
+                CornerRadius = 4,
+                Actions = actionOptions
+            };            
+
+            var result = await this.DisplaySnackBarAsync(options);
         }
     }
 }

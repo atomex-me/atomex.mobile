@@ -12,10 +12,9 @@ namespace atomex.Views.SettingsOptions
         public LanguagesPage(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
-            string selectedColorName = "ListViewSelectedBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "MainButtonBackgroundColorDark";
+            string selectedColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? "MainButtonBackgroundColorDark"
+                : "ListViewSelectedBackgroundColor";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
             selectedItemBackgroundColor = (Color)selectedColor;
@@ -26,10 +25,9 @@ namespace atomex.Views.SettingsOptions
         public LanguagesPage(StartViewModel startViewModel)
         {
             InitializeComponent();
-            string selectedColorName = "ListViewSelectedBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "MainButtonBackgroundColorDark";
+            string selectedColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? "MainButtonBackgroundColorDark"
+                : "ListViewSelectedBackgroundColor";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
             selectedItemBackgroundColor = (Color)selectedColor;

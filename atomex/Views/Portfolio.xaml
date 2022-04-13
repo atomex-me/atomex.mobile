@@ -98,6 +98,7 @@
                                      WidthRequest="56"
                                      HorizontalOptions="Center"
                                      BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
+                                     Command="{Binding ExchangeCommand}"
                                      Source="ic_exchange"/>
                         <Label Grid.Row="1"
                                Grid.Column="2"

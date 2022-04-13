@@ -21,6 +21,7 @@ using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using ZXing;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -440,7 +441,7 @@ namespace atomex.ViewModel.SendViewModels
             if (!Currency.IsValidAddress(address))
             {
                 Message.Type = MessageType.Error;
-                Message.RelatedTo = RelatedTo.Address;
+                Message.RelatedElement = RelatedTo.Address;
                 Message.Text = AppResources.InvalidAddressError;
                 this.RaisePropertyChanged(nameof(Message));
             }
@@ -451,7 +452,7 @@ namespace atomex.ViewModel.SendViewModels
             if (!Currency.IsValidAddress(ToAddress))
             {
                 Message.Type = MessageType.Error;
-                Message.RelatedTo = RelatedTo.Address;
+                Message.RelatedElement = RelatedTo.Address;
                 Message.Text = AppResources.InvalidAddressError;
                 this.RaisePropertyChanged(nameof(Message));
 

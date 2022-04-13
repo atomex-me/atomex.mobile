@@ -232,7 +232,7 @@
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding Message.RelatedTo}"
+                                <BindingCondition Binding="{Binding Message.RelatedElement}"
                                                   Value="Address"/>
                                 <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
                                                   Value="True"/>

@@ -49,6 +49,16 @@
     <Color x:Key="WarningTextColor">#f29c1f</Color>
     <Color x:Key="SuccessTextColor">#008B00</Color>
 
+    <Color x:Key="RegularSnackBarBgColor">#2762BD</Color>
+    <Color x:Key="ErrorSnackBarBgColor">#E1457C</Color>
+    <Color x:Key="WarningSnackBarBgColor">#FF7A00</Color>
+    <Color x:Key="SuccessSnackBarBgColor">#48C3AD</Color>
+
+    <Color x:Key="RegularSnackBarTextColor">#FFFFFF</Color>
+    <Color x:Key="ErrorSnackBarTextColor">#FFFFFF</Color>
+    <Color x:Key="WarningSnackBarTextColor">#F7000E22</Color>
+    <Color x:Key="SuccessSnackBarTextColor">#F7000E22</Color>
+
     <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
     <Color x:Key="WarningFrameBackgroundColor">#FFFBCE</Color>
     <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
@@ -111,6 +121,16 @@
     <Color x:Key="ErrorTextColorDark">#E1457C</Color>
     <Color x:Key="WarningTextColorDark">#FF7A00</Color>
     <Color x:Key="SuccessTextColorDark">#48C3AD</Color>
+
+    <Color x:Key="RegularSnackBarBgColorDark">#c4deff</Color>
+    <Color x:Key="ErrorSnackBarBgColorDark">#E1457C</Color>
+    <Color x:Key="WarningSnackBarBgColorDark">#FF7A00</Color>
+    <Color x:Key="SuccessSnackBarBgColorDark">#48C3AD</Color>
+
+    <Color x:Key="RegularSnackBarTextColorDark">#F7000E22</Color>
+    <Color x:Key="ErrorSnackBarTextColorDark">#FFFFFF</Color>
+    <Color x:Key="WarningSnackBarTextColorDark">#F7000E22</Color>
+    <Color x:Key="SuccessSnackBarTextColorDark">#F7000E22</Color>
 
     <Color x:Key="ErrorFrameBackgroundColorDark">#4E4646</Color>
     <Color x:Key="WarningFrameBackgroundColorDark">#747568</Color>

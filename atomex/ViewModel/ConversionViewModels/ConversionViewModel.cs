@@ -31,6 +31,7 @@ using atomex.Models;
 using atomex.Views.Send;
 using Rg.Plugins.Popup.Services;
 using atomex.Views;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel
 {
@@ -273,7 +274,7 @@ namespace atomex.ViewModel
                    if (IsToAddressExtrenal)
                    {
                        ExternalAddressWarning.Type = MessageType.Warning;
-                       ExternalAddressWarning.RelatedTo = RelatedTo.All;
+                       ExternalAddressWarning.RelatedElement = RelatedTo.All;
                        ExternalAddressWarning.Text = string.Format(AppResources.AddressIsNotAtomex, ToAddress);
                        ExternalAddressWarning.TooltipText = AppResources.AddressIsNotAtomexToolTip;
                    }
@@ -294,7 +295,7 @@ namespace atomex.ViewModel
                     if (IsRedeemFromAddressWithMaxBalance)
                     {
                         RedeemFromAddressNote.Type = MessageType.Warning;
-                        RedeemFromAddressNote.RelatedTo = RelatedTo.All;
+                        RedeemFromAddressNote.RelatedElement = RelatedTo.All;
                         RedeemFromAddressNote.Text = string.Format(AppResources.RedeemFromAddressNote, RedeemFromAddress);
                         RedeemFromAddressNote.TooltipText = string.Format(AppResources.RedeemFromAddressNoteToolTip, RedeemFromAddress);
                     }
@@ -1188,7 +1189,7 @@ namespace atomex.ViewModel
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             Message.Type = messageType;
-            Message.RelatedTo = element;
+            Message.RelatedElement = element;
             Message.Text = text;
             Message.TooltipText = tooltipText;
 
@@ -1198,7 +1199,7 @@ namespace atomex.ViewModel
         protected void SetAmountToFeeRationWarning(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             AmountToFeeRatioWarning.Type = messageType;
-            AmountToFeeRatioWarning.RelatedTo = element;
+            AmountToFeeRatioWarning.RelatedElement = element;
             AmountToFeeRatioWarning.Text = text;
             AmountToFeeRatioWarning.TooltipText = tooltipText;
 

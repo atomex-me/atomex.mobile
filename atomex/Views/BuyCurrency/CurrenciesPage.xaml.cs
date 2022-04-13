@@ -12,11 +12,9 @@ namespace atomex.Views.BuyCurrency
         public CurrenciesPage(BuyViewModel buyViewModel)
         {
             InitializeComponent();
-
-            string selectedColorName = "ListViewSelectedBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "ListViewSelectedBackgroundColorDark";
+            string selectedColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? "ListViewSelectedBackgroundColorDark"
+                : "ListViewSelectedBackgroundColor";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
             selectedItemBackgroundColor = (Color)selectedColor;

@@ -23,6 +23,7 @@
     <PackageReference Include="Xamarin.Forms.InputKit" Version="3.7.2" />
     <PackageReference Include="Sentry.Xamarin" Version="1.3.2" />
     <PackageReference Include="Sentry.Xamarin.Forms" Version="1.3.2" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -109,5 +110,7 @@
   <ItemGroup>
     <Content Remove="configuration.json" />
     <Content Remove="obj\Debug\netstandard2.0\atomex.csprojAssemblyReference.cache" />
+    <Content Remove="Views\Portfolio.xaml" />
+    <Content Remove="Views\Portfolio.xaml" />
   </ItemGroup>
 </Project>

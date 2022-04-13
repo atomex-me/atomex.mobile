@@ -19,6 +19,7 @@ using NBitcoin;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {

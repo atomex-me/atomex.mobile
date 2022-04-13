@@ -24,6 +24,7 @@ using ReactiveUI.Fody.Helpers;
 using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -904,7 +905,7 @@ namespace atomex.ViewModel.SendViewModels
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             Message.Type = messageType;
-            Message.RelatedTo = element;
+            Message.RelatedElement = element;
             Message.Text = text;
             Message.TooltipText = tooltipText;
 

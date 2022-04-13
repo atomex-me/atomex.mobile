@@ -11,6 +11,7 @@ using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Ethereum;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {

@@ -13,7 +13,6 @@
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" /> 
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"

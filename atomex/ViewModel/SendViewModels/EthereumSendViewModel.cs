@@ -20,6 +20,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {

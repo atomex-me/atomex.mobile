@@ -18,6 +18,7 @@ using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
@@ -47,7 +48,7 @@ namespace atomex.ViewModel
         }
 
         private ICommand _toggleCommand;
-        public ICommand ToggleCommand => _toggleCommand ??= new Command(() => IsSelected = !IsSelected);
+        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() => IsSelected = !IsSelected);
     }
 
     public class PortfolioViewModel : BaseViewModel
@@ -236,7 +237,7 @@ namespace atomex.ViewModel
         });
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
         {
             if (PopupNavigation.Instance.PopupStack.Count > 0)
                 _ = PopupNavigation.Instance.PopAsync();
@@ -279,6 +280,12 @@ namespace atomex.ViewModel
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
             _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+        });
+
+        private ReactiveCommand<Unit, Unit> _exchangeCommand;
+        public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() =>
+        {
+            
         });
     }
 }
