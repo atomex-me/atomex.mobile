@@ -283,9 +283,6 @@ namespace atomex.ViewModel
         });
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
-        public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() =>
-        {
-            
-        });
+        public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => NavigationService.Exchange());
     }
 }

@@ -65,6 +65,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public decimal TotalAmountInBase { get; set; }
         [Reactive] public decimal AvailableAmount { get; set; }
         [Reactive] public decimal AvailableAmountInBase { get; set; }
+        [Reactive] public decimal DailyChangePercent { get; set; }
         [Reactive] public decimal UnconfirmedAmount { get; set; }
         [Reactive] public decimal UnconfirmedAmountInBase { get; set; }
         public bool HasUnconfirmedAmount => UnconfirmedAmount != 0;
@@ -205,10 +206,11 @@ namespace atomex.ViewModel.CurrencyViewModels
             Device.InvokeOnMainThreadAsync(() =>
             {
                 Price = quote.Bid;
+                DailyChangePercent = quote.DailyChangePercent;
                 TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
                 AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
                 UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
-
+                
                 AmountUpdated?.Invoke(this, EventArgs.Empty);
             });
         }

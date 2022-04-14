@@ -332,6 +332,7 @@ namespace atomex.ViewModel.ConversionViewModels
                 .Subscribe(i =>
                 {
                     CurrencySelected?.Invoke(i);
+                    SelectedCurrency = null;
                 });
         }
     }

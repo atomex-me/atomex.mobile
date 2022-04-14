@@ -3,6 +3,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.Tezos;
+using atomex.Resources;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
@@ -19,9 +20,8 @@ namespace atomex.ViewModel.TransactionViewModels
             _tezosConfig = tezosConfig;
 
             Transaction = tx ?? throw new ArgumentNullException(nameof(tx));
-            Id = tx.Hash;
+            Id = tx.Id;
             State = Transaction.State;
-            //Type = GetType(Transaction.Type);
             Type = Transaction.Type;
             From = tx.From;
             To = tx.To;
@@ -29,9 +29,11 @@ namespace atomex.ViewModel.TransactionViewModels
             AmountFormat = $"F{Math.Min(tx.Token.Decimals, MaxAmountDecimals)}";
             CurrencyCode = tx.Token.Symbol;
             Time = tx.CreationTime ?? DateTime.UtcNow;
-            Alias = tx.Alias;
+            Alias = tx.GetAlias();
+            Direction = Amount <= 0 ? AppResources.ToLabel : AppResources.FromLabel;
 
             TxExplorerUri = $"{_tezosConfig.TxExplorerUri}{Id}";
+            AddressExplorerUri = $"{_tezosConfig.AddressExplorerUri}";
 
             Description = GetDescription(
                 type: tx.Type,

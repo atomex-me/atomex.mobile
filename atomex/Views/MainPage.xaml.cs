@@ -125,6 +125,16 @@ namespace atomex
             }
         }
 
+        public void Exchange()
+        {
+            if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
+            {
+                _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
+                CurrentPage = NavigationConversionPage;
+                conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
+            }
+        }
+
         public async void DisplaySnackBar(
             MessageType messageType,
             string text,

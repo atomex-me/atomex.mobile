@@ -10,6 +10,7 @@ using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
+using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;

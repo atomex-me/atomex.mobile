@@ -7,6 +7,7 @@ namespace atomex
     {
         void ConvertCurrency(CurrencyConfig currencyConfig);
         void BuyCurrency(CurrencyConfig currencyConfig);
+        void Exchange();
         void DisplaySnackBar(MessageType messageType, string text, string btnTxt = "OK", int duration = 3000);
     }
 }

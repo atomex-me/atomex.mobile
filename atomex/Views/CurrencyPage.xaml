@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -79,20 +80,46 @@
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        Margin="16,4,16,12"/>
-                <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       FontSize="14"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding CurrencyCode, StringFormat='1 {0} ='}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding Price, StringFormat='${0:f2}'}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <StackLayout Spacing="6"
+                             Orientation="Horizontal"
+                             HorizontalOptions="CenterAndExpand">
+                    <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding CurrencyCode, StringFormat='1 {0} ='}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding Price, StringFormat='${0:f2}'}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                           FontSize="14"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="True">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                <Setter Property="Text"
+                                        Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="False">
+                                <Setter Property="TextColor"
+                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </StackLayout>
                 <Grid RowSpacing="4"
                       ColumnSpacing="24"
                       HorizontalOptions="CenterAndExpand"

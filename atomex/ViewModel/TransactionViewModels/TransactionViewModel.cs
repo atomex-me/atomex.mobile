@@ -32,6 +32,7 @@ namespace atomex.ViewModel.TransactionViewModels
         public string AddressExplorerUri { get; set; }
         public string From { get; set; }
         public string To { get; set; }
+        public string Direction { get; set; }
         public bool CanBeRemoved { get; set; }
 
         private IToastService ToastService;
@@ -48,6 +49,7 @@ namespace atomex.ViewModel.TransactionViewModels
             State = Transaction.State;
             Type = Transaction.Type;
             Amount = amount;
+            Direction = amount <= 0 ? AppResources.ToLabel : AppResources.FromLabel;
 
             TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
             AddressExplorerUri = $"{Currency.AddressExplorerUri}";
