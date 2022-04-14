@@ -260,6 +260,9 @@
     <data name="MainWalletLabel" xml:space="preserve">
         <value>Основной кошелек</value>
     </data>
+    <data name="TotalBalance" xml:space="preserve">
+        <value>Общий баланс</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">

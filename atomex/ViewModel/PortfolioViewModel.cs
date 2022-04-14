@@ -18,7 +18,6 @@ using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {

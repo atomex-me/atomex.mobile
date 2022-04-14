@@ -25,7 +25,7 @@
                   Footer="">
             <ListView.Header>
                 <StackLayout>
-                    <Label Text="Total Balance"
+                    <Label Text="{helpers:Translate TotalBalance}"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                            Margin="16,56,16,6"
                            FontSize="12"

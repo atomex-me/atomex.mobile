@@ -260,6 +260,9 @@
     <data name="MainWalletLabel" xml:space="preserve">
         <value>Portefeuille principal</value>
     </data>
+    <data name="TotalBalance" xml:space="preserve">
+        <value>Total Balance</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">

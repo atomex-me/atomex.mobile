@@ -478,7 +478,7 @@
                     </StackLayout.Triggers>
                     <Button Text="{helpers:Translate ShowAll}"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
                             Padding="16,0"
                             TextTransform="None"
                             CornerRadius="25"
