@@ -92,6 +92,7 @@
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
     <Compile Include="CustomElements\CustomTabbedPageRenderer.cs" />
     <None Include="EntitlementsDev.plist" />
+    <None Include="Resources\lib\libsodium.a" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -466,6 +467,7 @@
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
     <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
     <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
+    <Folder Include="Resources\lib\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
@@ -484,5 +486,11 @@
     <BundleResource Include="Assets\Animations\failed-completion_light.json" />
     <BundleResource Include="Assets\Animations\successful-completion_dark.json" />
     <BundleResource Include="Assets\Animations\successful-completion_light.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="..\..\..\libsodium-1.0.18\libsodium-ios\lib\libsodium.a">
+      <Kind>Static</Kind>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
   </ItemGroup>
 </Project>
