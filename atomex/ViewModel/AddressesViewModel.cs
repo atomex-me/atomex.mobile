@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Services;
@@ -25,8 +24,20 @@ namespace atomex.ViewModel
         public string Address { get; set; }
         public string Type { get; set; }
         public string Path { get; set; }
-        public string Balance { get; set; }
+
+        private string _balance;
+        public string Balance
+        {
+            get => _balance;
+            set
+            {
+                _balance = value;
+                OnPropertyChanged(nameof(Balance));
+            }
+        }
+
         public string TokenBalance { get; set; }
+
         public Action<string> CopyToClipboard { get; set; }
         public Action<string> ExportKey { get; set; }
         public Action<string> UpdateAddress { get; set; }
@@ -54,7 +65,7 @@ namespace atomex.ViewModel
     {
         private readonly IAtomexApp _app;
 
-        public CurrencyConfig Currency {get; set;}
+        public CurrencyConfig Currency { get; set; }
 
         private CancellationTokenSource _cancellation;
 
@@ -65,21 +76,8 @@ namespace atomex.ViewModel
             set
             {
                 _isUpdating = value;
-
-                if (_isUpdating)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsUpdating));
             }
-        }
-
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
         }
 
         private readonly string _tokenContract;
@@ -92,7 +90,18 @@ namespace atomex.ViewModel
 
         public INavigation Navigation { get; set; }
 
-        public AddressInfo SelectedAddress { get; set; }
+        private AddressInfo _selectedAddress;
+        public AddressInfo SelectedAddress
+        {
+            get => _selectedAddress;
+            set
+            {
+                if (value == null) return;
+                _selectedAddress = value;
+
+                Navigation.PushAsync(new AddressInfoPage(this));
+            }
+        }
 
         public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
         {
@@ -208,18 +217,6 @@ namespace atomex.ViewModel
                 _ => throw new NotSupportedException($"Key type {keyType} not supported.")
             };
 
-        private ICommand _selectAddressCommand;
-        public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<AddressInfo>(async (item) => await OnAddressItemTapped(item));
-
-        async Task OnAddressItemTapped(AddressInfo address)
-        {
-            if (address != null)
-            {
-                SelectedAddress = address;
-                await Navigation.PushAsync(new AddressInfoPage(this));
-            }
-        }
-
         private async void OnCopyAddressButtonClicked(string address)
         {
             try
@@ -304,12 +301,10 @@ namespace atomex.ViewModel
         {
             IsUpdating = true;
 
-            _cancellation = new CancellationTokenSource();
-
             try
             {
                 await new HdWalletScanner(_app.Account)
-                    .ScanAddressAsync(Currency.Name, address, _cancellation.Token);
+                    .ScanAddressAsync(Currency.Name, address);
 
                 if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
@@ -344,7 +339,6 @@ namespace atomex.ViewModel
                 Log.Error(e, "AddressesViewModel.OnUpdateButtonClicked");
                 // todo: message to user!?
             }
-
             IsUpdating = false;
         }
     }

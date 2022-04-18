@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using atomex.ViewModel.CurrencyViewModels;
 using Xamarin.Forms;
 
@@ -7,20 +6,10 @@ namespace atomex.Views.TezosTokens
 {
     public partial class TokenPage : ContentPage
     {
-        Color selectedItemBackgroundColor;
-
         public TokenPage(TezosTokensViewModel tezosTokensViewModel)
         {
             InitializeComponent();
             BindingContext = tezosTokensViewModel;
-
-            string selectedColorName = "ListViewSelectedBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "ListViewSelectedBackgroundColorDark";
-
-            Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
-            selectedItemBackgroundColor = (Color)selectedColor;
         }
 
         private void OnTokensButtonClicked(object sender, EventArgs e)
@@ -35,17 +24,10 @@ namespace atomex.Views.TezosTokens
             TransfersListView.IsVisible = true;
         }
 
-        private async void OnListItemTapped(object sender, EventArgs args)
+        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Grid selectedItem = (Grid)sender;
-            selectedItem.IsEnabled = false;
-            Color initColor = selectedItem.BackgroundColor;
-            selectedItem.BackgroundColor = selectedItemBackgroundColor;
-
-            await Task.Delay(500);
-
-            selectedItem.BackgroundColor = initColor;
-            selectedItem.IsEnabled = true;
+            if (e.SelectedItem != null)
+                ((ListView)sender).SelectedItem = null;
         }
     }
 }

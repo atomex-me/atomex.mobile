@@ -15,9 +15,22 @@
     <ScrollView x:Name="Page">
         <RelativeLayout>
             <StackLayout Padding="30"
-                         Opacity="{Binding Opacity}"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="True">
+                        <Setter Property="Opacity"
+                                Value="0.3"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsLoading}"
+                                 Value="False">
+                        <Setter Property="Opacity"
+                                Value="1"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
                 <Image WidthRequest="170"
                        HeightRequest="156"
                        Margin="10"

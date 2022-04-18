@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.TezosTokens;
+using atomex.Views.CreateSwap;
+using Atomex.Core;
 
 namespace atomex
 {
@@ -53,7 +55,7 @@ namespace atomex
                 Title = AppResources.WalletsTab
             };
 
-            NavigationConversionPage = new NavigationPage(new ConversionsListPage(MainViewModel.ConversionViewModel))
+            NavigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
             {
                 IconImageSource = "NavBarConversion",
                 Title = AppResources.ConversionTab
@@ -167,39 +169,37 @@ namespace atomex
             ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
         }
 
-        public async Task ConvertCurrency(string currencyCode)
+        public void ConvertCurrency(CurrencyConfig currency)
         {
             if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
-                conversionViewModel.SetFromCurrency(currencyCode);
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
                 CurrentPage = NavigationConversionPage;
-
-                await NavigationConversionPage.PushAsync(new Views.CreateSwap.CurrenciesPage(conversionViewModel));
+                conversionViewModel.SetFromCurrency(currency);
             }
         }
 
-        public async Task ShowCurrency(CurrencyViewModel currencyViewModel)
+        public void ShowCurrency(CurrencyViewModel currencyViewModel)
         {
             if (currencyViewModel == null)
                 return;
 
-            _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
+            NavigationWalletsListPage.Navigation.PopToRootAsync(false);
             CurrentPage = NavigationWalletsListPage;
 
-            await NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
+            NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
         }
 
 
-        public async Task ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel)
+        public void ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel)
         {
             if (tezosTokensViewModel == null)
                 return;
 
-            _ = NavigationWalletsListPage.Navigation.PopToRootAsync(false);
+            NavigationWalletsListPage.Navigation.PopToRootAsync(false);
             CurrentPage = NavigationWalletsListPage;
 
-            await NavigationWalletsListPage.PushAsync(new TezosTokensListPage(tezosTokensViewModel));
+            NavigationWalletsListPage.PushAsync(new TezosTokensListPage(tezosTokensViewModel));
         }
     }
 }

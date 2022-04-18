@@ -26,6 +26,9 @@
     <data name="ConfirmButton" xml:space="preserve">
         <value>Подтвердить</value>
     </data>
+    <data name="ReviewButton" xml:space="preserve">
+        <value>Продолжить</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>Я понимаю</value>
     </data>
@@ -68,6 +71,9 @@
     <data name="MinimumAmountLabel" xml:space="preserve">
         <value>Минимальная сумма</value>
     </data>
+    <data name="TotalAmountInclFees" xml:space="preserve">
+        <value>Всего (вкл. коммиссию)</value>
+    </data>
     <data name="ToLabel" xml:space="preserve">
         <value>На адрес</value>
     </data>
@@ -85,6 +91,21 @@
     </data>
     <data name="IdLabel" xml:space="preserve">
         <value>Id</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Доступно</value>
+    </data>
+    <data name="Total" xml:space="preserve">
+        <value>Всего</value>
+    </data>
+    <data name="FromLabel" xml:space="preserve">
+        <value>От</value>
+    </data>
+    <data name="ToLabel" xml:space="preserve">
+        <value>На адрес</value>
+    </data>
+    <data name="New" xml:space="preserve">
+        <value>Новый</value>
     </data>
     
     <!-- Start Page -->
@@ -372,7 +393,45 @@
     <data name="ConfirmTransactionLabel" xml:space="preserve">
         <value>Подтвердите транзакцию</value>
     </data>
-    
+
+    <!-- Addresses Pages -->
+    <data name="SendFrom" xml:space="preserve">
+        <value>Отправить</value>
+    </data>
+    <data name="ReceiveTo" xml:space="preserve">
+        <value>Получить</value>
+    </data>
+    <data name="ChooseAnAddress" xml:space="preserve">
+        <value>Выберите адрес</value>
+    </data>
+    <data name="MyAddresses" xml:space="preserve">
+        <value>Мои адреса</value>
+    </data>
+    <data name="SortByBalanceButton" xml:space="preserve">
+        <value>Сорт. по балансу</value>
+    </data>
+    <data name="SortByDateButton" xml:space="preserve">
+        <value>Сорт. по дате</value>
+    </data>
+    <data name="ExternalAddress" xml:space="preserve">
+        <value>Внешний адрес</value>
+    </data>
+    <data name="EnterAnExternalAddress" xml:space="preserve">
+        <value>Введите внешний адрес</value>
+    </data>
+    <data name="SaveToMyAddresses" xml:space="preserve">
+        <value>Сохранить в мои адреса</value>
+    </data>
+    <data name="SelectAll" xml:space="preserve">
+        <value>Выбрать все</value>
+    </data>
+    <data name="SelectedOfTotal" xml:space="preserve">
+        <value>{0} из {1} выбрано</value>
+    </data>
+    <data name="AddressesNotFound" xml:space="preserve">
+        <value>Адреса не найдены</value>
+    </data>
+
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
         <value>Получить</value>
@@ -407,14 +466,8 @@
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegatePageTitle" xml:space="preserve">
-        <value>Делегировать</value>
-    </data>
     <data name="DelegateToBakeryLabel" xml:space="preserve">
         <value>Делегируем бейкеру</value>
-    </data>
-    <data name="Available" xml:space="preserve">
-        <value>Доступно</value>
     </data>
     <data name="Balance" xml:space="preserve">
         <value>Баланс</value>
@@ -438,12 +491,6 @@
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
         <value>Вы уверены, что хотите делегировать?</value>
-    </data>
-    <data name="FromLabel" xml:space="preserve">
-        <value>От</value>
-    </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>На адрес</value>
     </data>
     <data name="CopyAndExitButton" xml:space="preserve">
         <value>Копировать URI и закрыть</value>
@@ -585,12 +632,6 @@
     <data name="SelectCurrenciesLabel" xml:space="preserve">
         <value>Выбрать валюту</value>
     </data>
-    <data name="SwapFrom" xml:space="preserve">
-        <value>Из</value>
-    </data>
-    <data name="SwapTo" xml:space="preserve">
-        <value>В</value>
-    </data>
     <data name="EstimatedPriceLabel" xml:space="preserve">
         <value>Расчетная цена</value>
     </data>
@@ -629,6 +670,32 @@
     </data>
     <data name="CreateSwapButton" xml:space="preserve">
         <value>Создать новый своп</value>
+    </data>
+
+    <!-- Exchange Pages -->
+    <data name="ExchangePageTitle" xml:space="preserve">
+        <value>DEX</value>
+    </data>
+    <data name="ExchangeLabel" xml:space="preserve">
+        <value>Обмен</value>
+    </data>
+    <data name="ExchangeButton" xml:space="preserve">
+        <value>Обменять</value>
+    </data>
+    <data name="ChooseFromCurrency" xml:space="preserve">
+        <value>Откуда</value>
+    </data>
+    <data name="ChooseToCurrency" xml:space="preserve">
+        <value>Куда</value>
+    </data>
+    <data name="ExchangeHistory" xml:space="preserve">
+        <value>История обмена</value>
+    </data>
+    <data name="ChangeRedeemAddress" xml:space="preserve">
+        <value>Изменить адрес выкупа</value>
+    </data>
+    <data name="ShowAll" xml:space="preserve">
+        <value>Показать все</value>
     </data>
 
     <!-- Tezos tokens list, token info Pages -->
@@ -767,7 +834,7 @@
         <value>Вы уверены?</value>
     </data>
     <data name="SuccessDelegation" xml:space="preserve">
-        <value>Делегирование успешно</value>
+        <value>Делегировано успешно</value>
     </data>
     <data name="DelegationListWillBeUpdated" xml:space="preserve">
         <value>Список делегирования будет обновлен после включения операции в блок</value>
@@ -777,6 +844,9 @@
     </data>
     <data name="CurrencySentToAddress" xml:space="preserve">
         <value>{0} {1} отправлено на адрес {2}</value>
+    </data>
+    <data name="SuccessSending" xml:space="preserve">
+        <value>Отправка прошла успешно</value>
     </data>
     <data name="isNotInWordlist" xml:space="preserve">
         <value>этого слова нет в списке для выбранного языка</value>
@@ -892,6 +962,15 @@
     <data name="InvalidAddressError" xml:space="preserve">
         <value>Неверный адрес</value>
     </data>
+    <data name="InvalidTokenContract" xml:space="preserve">
+        <value>Неверный адрес контракта токена</value>
+    </data>
+    <data name="InvalidFromAddress" xml:space="preserve">
+        <value>Неверный 'From' адрес</value>
+    </data>
+    <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
+        <value>Недостаточно {0} для покрытия комиссии за перевод токенов. Требуется минимум {1}</value>
+    </data>
     <data name="CommissionLessThanZeroError" xml:space="preserve">
         <value>Комиссия должна быть больше нуля</value>
     </data>
@@ -1002,5 +1081,45 @@
     </data>
     <data name="BiometricAuthEnabled" xml:space="preserve">
         <value>Авторизация по биометрии включена</value>
+    </data>
+    <data name="AmountToFeeRatioToolTip" xml:space="preserve">
+        <value>Комиссия не зависит от суммы конвертации и определяется только текущей комиссией сети. Чем больше сумма конвертации, тем меньше соотношение комиссии к сумме. Atomex блокирует конвертацию, если комиссия превышает 75% от суммы конвертации</value>
+    </data>
+    <data name="MaxAmountToSendRecommendation" xml:space="preserve">
+        <value>Рекомендуем отправлять не более {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendRecommendationDetails" xml:space="preserve">
+        <value>У вас есть токены, требующие {1}. Отправив такую сумму, вы не оставите достаточно {1} для отправки или обмена ваших токенов. Рекомендуем отправлять не более {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwaps" xml:space="preserve">
+        <value>Максимально возможная сумма для отправки составляет {0} {1}</value>
+    </data>
+    <data name="MaxAmountToSendWithActiveSwapsDetails" xml:space="preserve">
+        <value>У вас есть активные свопы. Приложению требуется {1} для их обработки. Безопасная максимальная сумма для отправки составляет {0} {1}</value>
+    </data>
+    <data name="SendEnteredAmountMenu" xml:space="preserve">
+        <value>Отправить максимальную сумму {0} {1}</value>
+    </data>
+    <data name="SendRecommendedAmountMenu" xml:space="preserve">
+        <value>Отправить рекомендуемую сумму {0} {1}</value>
+    </data>
+    <data name="OrderMatched" xml:space="preserve">
+        <value>Своп успешно создан.
+ПРИМЕЧАНИЕ: Не выходите из приложения и не закрывайте его до завершения свопа, иначе это может привести к потере средств</value>
+    </data>
+    <data name="AvailableAmountDexTooltip" xml:space="preserve">
+        <value>Лимит применяется к одной сделке. Если вам требуется больше ликвидности, совершайте несколько сделок</value>
+    </data>
+    <data name="AddressIsNotAtomex" xml:space="preserve">
+        <value>Внимание: адрес {0} является внешним и не является адресом кошелька Atomex. Убедитесь, что он введен правильно</value>
+    </data>
+    <data name="AddressIsNotAtomexToolTip" xml:space="preserve">
+        <value>Вы можете получать средства на внешний адрес (например, на аппаратный Ledger кошелек). Используя этот механизм, убедитесь, что вы ввели правильный адрес, поскольку ваш кошелек Atomex не будет иметь доступа к закрытому ключу внешнего адреса, и в случае ошибки доступ к средствам может быть потерян</value>
+    </data>
+    <data name="RedeemFromAddressNote" xml:space="preserve">
+        <value>Примечание: транзакция выкупа будет отправлена с адреса {0}</value>
+    </data>
+    <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
+        <value>Транзакция выкупа будет отправлена с адреса {0}, если на нем достаточно средств. В противном случае транзакция будет отправлена внешним сервисом за определенную плату</value>
     </data>
 </root>

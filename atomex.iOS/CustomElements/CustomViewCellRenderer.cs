@@ -14,18 +14,10 @@ namespace atomex.iOS.CustomElements
             var cell = base.GetCell(item, reusableCell, tv);
             var view = item as CustomViewCell;
 
-            //cell.BackgroundColor = view.BackgroundColor.ToUIColor();
-
-            //cell.BackgroundView = new UIView
-            //{
-            //    BackgroundColor = view.BackgroundColor.ToUIColor()
-            //};
-
             cell.SelectedBackgroundView = new UIView
             {
                 BackgroundColor = view.SelectedBackgroundColor.ToUIColor(),
             };
-
             return cell;
         }
     }

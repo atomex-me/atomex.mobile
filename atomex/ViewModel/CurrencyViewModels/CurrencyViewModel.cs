@@ -9,6 +9,7 @@ using atomex.Resources;
 using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
+using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain;
 using Atomex.Common;
@@ -31,7 +32,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public INavigationService NavigationService { get; set; }
 
-        protected IToastService ToastService { get; set; }
+        public IToastService ToastService { get; set; }
 
         public CurrencyConfig Currency { get; set; }
 
@@ -101,13 +102,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             set { _portfolioPercent = value; OnPropertyChanged(nameof(PortfolioPercent)); }
         }
 
-        private float _opacity = 1f;
-        public float Opacity
-        {
-            get => _opacity;
-            set { _opacity = value; OnPropertyChanged(nameof(Opacity)); }
-        }
-
         private bool _isLoading = false;
         public bool IsLoading
         {
@@ -118,12 +112,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                     return;
 
                 _isLoading = value;
-
-                if (_isLoading)
-                    Opacity = 0.3f;
-                else
-                    Opacity = 1f;
-
                 OnPropertyChanged(nameof(IsLoading));
             }
         }
@@ -136,6 +124,19 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 _transactions = value;
                 OnPropertyChanged(nameof(Transactions));
+            }
+        }
+
+        private TransactionViewModel _selectedTransaction;
+        public TransactionViewModel SelectedTransaction
+        {
+            get => _selectedTransaction;
+            set
+            {
+                if (value == null) return;
+                _selectedTransaction = value;
+
+                Navigation.PushAsync(new TransactionInfoPage(_selectedTransaction));
             }
         }
 
@@ -237,15 +238,13 @@ namespace atomex.ViewModel.CurrencyViewModels
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Price = quote.Bid;
-            OnPropertyChanged(nameof(Price));
-
             TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
-            OnPropertyChanged(nameof(TotalAmountInBase));
-
             AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
-            OnPropertyChanged(nameof(AvailableAmountInBase));
-
             UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
+
+            OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(TotalAmountInBase));
+            OnPropertyChanged(nameof(AvailableAmountInBase));
             OnPropertyChanged(nameof(UnconfirmedAmountInBase));
 
             AmountUpdated?.Invoke(this, EventArgs.Empty);
@@ -333,24 +332,31 @@ namespace atomex.ViewModel.CurrencyViewModels
         public virtual ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
 
         protected ICommand _convertPageCommand;
-        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(async () => await OnConvertButtonClicked());
+        public ICommand ConvertPageCommand => _convertPageCommand ??= new Command(() => NavigationService.ConvertCurrency(Currency));
 
         protected ICommand _addressesPageCommand;
         public virtual ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
         private async Task OnSendButtonClicked()
         {
-            await Navigation.PushAsync(new SendPage(SendViewModelCreator.CreateViewModel(AtomexApp, this)));
+            if (TotalAmount <= 0) return;
+
+            var sendViewModel = SendViewModelCreator.CreateViewModel(AtomexApp, this);
+            if (Currency is BitcoinBasedConfig)
+            {
+                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                await Navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+            }
+            else
+            {
+                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                await Navigation.PushAsync(new SelectAddressPage(selectAddressViewModel));
+            }
         }
 
         private async Task OnReceiveButtonClicked()
         {
             await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, Currency, Navigation)));
-        }
-
-        private async Task OnConvertButtonClicked()
-        {
-            await NavigationService.ConvertCurrency(CurrencyCode);
         }
 
         private async Task OnAddressesButtonClicked()

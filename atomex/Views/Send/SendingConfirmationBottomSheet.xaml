@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    x:Class="atomex.Views.Send.SendingConfirmationBottomSheet">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:NullToBooleanInvertConverter x:Key="NullToBoolInvert"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="456"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="16,8,16,16"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="556"
+                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0,0,0,20"/>
+                <Label Text="{helpers:Translate ReviewButton}"
+                       Style="{DynamicResource TitleTextStyle}"
+                       Padding="0,0,0,20"/>
+                <Grid HorizontalOptions="Fill"
+                      ColumnSpacing="0"
+                      RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           HorizontalOptions="FillAndExpand"
+                           HasShadow="False"
+                           CornerRadius="8"
+                           BackgroundColor="Transparent"
+                           BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
+                    <Image Grid.RowSpan="2"
+                           Source="{Binding CurrencyCode}"
+                           Margin="10,0"
+                           WidthRequest="28"
+                           HeightRequest="28"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}"/>
+                    <Frame Grid.RowSpan="2"
+                           Padding="0"
+                           CornerRadius="14"
+                           Margin="10,0"
+                           HasShadow="False"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           IsClippedToBounds="True"
+                           IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                        <Image Source="{Binding TokenPreview}"
+                               WidthRequest="28"
+                               HeightRequest="28"/>
+                    </Frame>
+                    <Label Grid.Column="1"
+                           Text="{Binding From}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="End"
+                           LineBreakMode="MiddleTruncation"
+                           Padding="0,0,20,0"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding SelectedFromBalance}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SelectedFromBalance}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding CurrencyCode}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Frame Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           HorizontalOptions="FillAndExpand"
+                           HasShadow="False"
+                           CornerRadius="8"
+                           BackgroundColor="Transparent"
+                           BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
+                    <Image Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Source="{Binding CurrencyCode}"
+                           Margin="10,0"
+                           WidthRequest="28"
+                           HeightRequest="28"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}"/>
+                    <Frame Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Padding="0"
+                           CornerRadius="14"
+                           Margin="10,0"
+                           HasShadow="False"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           IsClippedToBounds="True"
+                           IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
+                        <Image Source="{Binding TokenPreview}"
+                               WidthRequest="28"
+                               HeightRequest="28"/>
+                    </Frame>
+                    <Label Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Grid.Column="1"
+                           Text="{Binding To}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center"
+                           Padding="0,0,20,0"
+                           LineHeight="1.25"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                    <Frame WidthRequest="40"
+                           HeightRequest="40"
+                           CornerRadius="20"
+                           Margin="0,70,0,-70"
+                           Grid.ColumnSpan="2"
+                           Padding="0"
+                           HorizontalOptions="Center"
+                           IsClippedToBounds="True"
+                           HasShadow="False"
+                           BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"
+                           BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                    <StackLayout Grid.Row="4"
+                                 HeightRequest="8"
+                                 WidthRequest="40"
+                                 Margin="0,-104,0,104"
+                                 Grid.ColumnSpan="2"
+                                 HorizontalOptions="Center"
+                                 BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                    <Image Grid.ColumnSpan="2"
+                           Source="ic_arrow__down"
+                           HeightRequest="14"
+                           WidthRequest="14"
+                           Margin="0,70,0,-70"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"/>
+
+                </Grid>
+                <StackLayout Padding="0,8,0,16"
+                             Spacing="4">
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4">
+                        <Label Text="{helpers:Translate AmountLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding CurrencyCode}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" / "
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Span Text="{Binding AmountInBase, StringFormat='${0:0.00}'}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4">
+                        <Label Text="{helpers:Translate FeeLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Fee,StringFormat='{0:0.#########}'}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding FeeCurrencyCode}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" / "
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Span Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4"
+                                 IsVisible="{Binding IsBtcBased, FallbackValue='False', TargetNullValue='False'}">
+                        <Label Text="{helpers:Translate FeeRateLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding FeeRateCode}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4"
+                                 IsVisible="{Binding IsEthBased, FallbackValue='False', TargetNullValue='False'}">
+                        <Label Text="{helpers:Translate GasPriceLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding GasPrice, StringFormat='{0:0}'}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding GasPriceCode}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4"
+                                 IsVisible="{Binding IsEthBased, FallbackValue='False', TargetNullValue='False'}">
+                        <Label Text="{helpers:Translate GasLimitLabel}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="EndAndExpand">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding GasLimit, StringFormat='{0:0}'}"
+                                          FontSize="14"
+                                          TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding GasLimitCode}"
+                                          FontSize="12"
+                                          TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TokenId, TargetNullValue='0', FallbackValue='0'}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Label Text="{helpers:Translate TokenId}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               Text="{Binding TokenId}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="4"
+                                 IsVisible="{Binding TokenContract, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
+                        <Label Text="{helpers:Translate TokenContract}"
+                               FontFamily="{DynamicResource RegularFont}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               Text="{Binding TokenContract}"
+                               WidthRequest="150"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="MiddleTruncation"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                <StackLayout Orientation="Horizontal"
+                             Spacing="4"
+                             Margin="0,16">
+                    <Label Text="{helpers:Translate TotalAmountInclFees}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start"
+                           FontSize="14"
+                           Padding="0,5"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                    <StackLayout HorizontalOptions="EndAndExpand">
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               FontSize="24"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="End">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalAmountString}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding CurrencyCode}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label FontFamily="{DynamicResource RegularFont}"
+                               FontSize="17"
+                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="End"
+                               IsVisible="{Binding IsToken}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Fee, StringFormat='+ {0:0.#########}'}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding FeeCurrencyCode}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding TotalAmountInBase, StringFormat='${0:0.00}'}"
+                                FontSize="12"
+                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                FontFamily="{DynamicResource RegularFont}"
+                                HorizontalTextAlignment="End"
+                                VerticalTextAlignment="Start"
+                                HorizontalOptions="EndAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <RelativeLayout HeightRequest="44">
+                        <Button Text="{helpers:Translate SendButton}"
+                                CornerRadius="22"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                FontSize="17"
+                                TextTransform="None"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding NextCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                    <Setter Property="IsEnabled"
+                                            Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                    <Setter Property="IsEnabled"
+                                            Value="True"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                                           RelativeLayout.WidthConstraint="24"
+                                           RelativeLayout.HeightConstraint="24"
+                                           Color="#92C8F9"
+                                           BackgroundColor="Transparent"
+                                           IsRunning="{Binding IsLoading}"
+                                           IsVisible="{Binding IsLoading}"/>
+                    </RelativeLayout>
+                </StackLayout>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

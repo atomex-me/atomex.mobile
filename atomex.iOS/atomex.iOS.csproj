@@ -139,7 +139,6 @@
     <ImageAsset Include="Assets.xcassets\LTC.imageset\LTC.pdf" />
     <ImageAsset Include="Assets.xcassets\XTZ.imageset\XTZ.pdf" />
     <ImageAsset Include="Assets.xcassets\USDT.imageset\USDT.pdf" />
-    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick.pdf" />
     <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\CustomBakerLogo.imageset\CustomBakerIcon.png" />
     <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC.pdf" />
@@ -181,59 +180,44 @@
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-1.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Lock.imageset\Password.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2.pdf" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\sort_white.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows-1.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_approve.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_approve.imageset\TxApprove.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_approve.imageset\checked__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_approve.imageset\TxApprove-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_input.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_input.imageset\Down-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_input.imageset\Down-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_input.imageset\Down-arrow-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_output.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_output.imageset\Up-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_output.imageset\Up-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_output.imageset\Up-arrow-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_payment.imageset\Right-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_payment.imageset\Right-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_payment.imageset\Right-arrow-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_redeem.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_redeem.imageset\Spin-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_redeem.imageset\Spin-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_redeem.imageset\Spin-arrow-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_refund.imageset\Refresh-arrow-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_support.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question_2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSDT.png" />
@@ -255,15 +239,11 @@
     <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf" />
@@ -275,27 +255,60 @@
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\ic_copy--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy.imageset\ic_copy.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\sort-down__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down--light-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\ic_question__warning.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error__light.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -306,7 +319,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="ZXing.Net.Mobile.Forms">
       <Version>2.4.1</Version>
@@ -315,13 +328,25 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp">
-      <Version>1.68.2.1</Version>
+      <Version>2.80.3</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>2.0.0.10</Version>
+      <Version>2.0.0.14</Version>
     </PackageReference>
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie">
-      <Version>4.0.10</Version>
+      <Version>4.0.11</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.XamForms">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI">
+      <Version>17.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms.InputKit">
+      <Version>3.7.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -468,6 +493,20 @@
     <Folder Include="Assets.xcassets\ic_line__full.imageset\" />
     <Folder Include="Assets.xcassets\ic_close__red.imageset\" />
     <Folder Include="Resources\lib\" />
+    <Folder Include="Assets.xcassets\ScanTest.imageset\" />
+    <Folder Include="Assets.xcassets\ic_edit.imageset\" />
+    <Folder Include="Assets.xcassets\ic_copy.imageset\" />
+    <Folder Include="Assets.xcassets\ic_swap.imageset\" />
+    <Folder Include="Assets.xcassets\ic_sort__up.imageset\" />
+    <Folder Include="Assets.xcassets\ic_sort__down.imageset\" />
+    <Folder Include="Assets.xcassets\ic_qr.imageset\" />
+    <Folder Include="Assets.xcassets\ic_arrow__down.imageset\" />
+    <Folder Include="Assets.xcassets\ic_close.imageset\" />
+    <Folder Include="Assets.xcassets\ic_search.imageset\" />
+    <Folder Include="Assets.xcassets\ic_question__error.imageset\" />
+    <Folder Include="Assets.xcassets\ic_question__warning.imageset\" />
+    <Folder Include="Assets.xcassets\ic_swipe__indicator.imageset\" />
+    <Folder Include="Assets.xcassets\ic_export.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

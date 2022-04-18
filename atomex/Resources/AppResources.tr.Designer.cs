@@ -71,6 +71,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ReviewButton {
+            get {
+                return ResourceManager.GetString("ReviewButton", resourceCulture);
+            }
+        }
+        
         internal static string UnderstandButton {
             get {
                 return ResourceManager.GetString("UnderstandButton", resourceCulture);
@@ -155,6 +161,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string TotalAmountInclFees {
+            get {
+                return ResourceManager.GetString("TotalAmountInclFees", resourceCulture);
+            }
+        }
+        
         internal static string ToLabel {
             get {
                 return ResourceManager.GetString("ToLabel", resourceCulture);
@@ -188,6 +200,30 @@ namespace atomex.Resources {
         internal static string IdLabel {
             get {
                 return ResourceManager.GetString("IdLabel", resourceCulture);
+            }
+        }
+        
+        internal static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        internal static string FromLabel {
+            get {
+                return ResourceManager.GetString("FromLabel", resourceCulture);
+            }
+        }
+        
+        internal static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
             }
         }
         
@@ -719,6 +755,78 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SendFrom {
+            get {
+                return ResourceManager.GetString("SendFrom", resourceCulture);
+            }
+        }
+        
+        internal static string ReceiveTo {
+            get {
+                return ResourceManager.GetString("ReceiveTo", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseAnAddress {
+            get {
+                return ResourceManager.GetString("ChooseAnAddress", resourceCulture);
+            }
+        }
+        
+        internal static string MyAddresses {
+            get {
+                return ResourceManager.GetString("MyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SortByBalanceButton {
+            get {
+                return ResourceManager.GetString("SortByBalanceButton", resourceCulture);
+            }
+        }
+        
+        internal static string SortByDateButton {
+            get {
+                return ResourceManager.GetString("SortByDateButton", resourceCulture);
+            }
+        }
+        
+        internal static string ExternalAddress {
+            get {
+                return ResourceManager.GetString("ExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string EnterAnExternalAddress {
+            get {
+                return ResourceManager.GetString("EnterAnExternalAddress", resourceCulture);
+            }
+        }
+        
+        internal static string SaveToMyAddresses {
+            get {
+                return ResourceManager.GetString("SaveToMyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        internal static string SelectedOfTotal {
+            get {
+                return ResourceManager.GetString("SelectedOfTotal", resourceCulture);
+            }
+        }
+        
+        internal static string AddressesNotFound {
+            get {
+                return ResourceManager.GetString("AddressesNotFound", resourceCulture);
+            }
+        }
+        
         internal static string ReceivePageTitle {
             get {
                 return ResourceManager.GetString("ReceivePageTitle", resourceCulture);
@@ -773,21 +881,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string DelegatePageTitle {
-            get {
-                return ResourceManager.GetString("DelegatePageTitle", resourceCulture);
-            }
-        }
-        
         internal static string DelegateToBakeryLabel {
             get {
                 return ResourceManager.GetString("DelegateToBakeryLabel", resourceCulture);
-            }
-        }
-        
-        internal static string Available {
-            get {
-                return ResourceManager.GetString("Available", resourceCulture);
             }
         }
         
@@ -830,12 +926,6 @@ namespace atomex.Resources {
         internal static string WantToDelegate {
             get {
                 return ResourceManager.GetString("WantToDelegate", resourceCulture);
-            }
-        }
-        
-        internal static string FromLabel {
-            get {
-                return ResourceManager.GetString("FromLabel", resourceCulture);
             }
         }
         
@@ -1103,18 +1193,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string SwapFrom {
-            get {
-                return ResourceManager.GetString("SwapFrom", resourceCulture);
-            }
-        }
-        
-        internal static string SwapTo {
-            get {
-                return ResourceManager.GetString("SwapTo", resourceCulture);
-            }
-        }
-        
         internal static string EstimatedPriceLabel {
             get {
                 return ResourceManager.GetString("EstimatedPriceLabel", resourceCulture);
@@ -1190,6 +1268,54 @@ namespace atomex.Resources {
         internal static string CreateSwapButton {
             get {
                 return ResourceManager.GetString("CreateSwapButton", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangePageTitle {
+            get {
+                return ResourceManager.GetString("ExchangePageTitle", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangeLabel {
+            get {
+                return ResourceManager.GetString("ExchangeLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangeButton {
+            get {
+                return ResourceManager.GetString("ExchangeButton", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseFromCurrency {
+            get {
+                return ResourceManager.GetString("ChooseFromCurrency", resourceCulture);
+            }
+        }
+        
+        internal static string ChooseToCurrency {
+            get {
+                return ResourceManager.GetString("ChooseToCurrency", resourceCulture);
+            }
+        }
+        
+        internal static string ExchangeHistory {
+            get {
+                return ResourceManager.GetString("ExchangeHistory", resourceCulture);
+            }
+        }
+        
+        internal static string ChangeRedeemAddress {
+            get {
+                return ResourceManager.GetString("ChangeRedeemAddress", resourceCulture);
+            }
+        }
+        
+        internal static string ShowAll {
+            get {
+                return ResourceManager.GetString("ShowAll", resourceCulture);
             }
         }
         
@@ -1463,6 +1589,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SuccessSending {
+            get {
+                return ResourceManager.GetString("SuccessSending", resourceCulture);
+            }
+        }
+        
         internal static string isNotInWordlist {
             get {
                 return ResourceManager.GetString("isNotInWordlist", resourceCulture);
@@ -1679,6 +1811,24 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string InvalidTokenContract {
+            get {
+                return ResourceManager.GetString("InvalidTokenContract", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidFromAddress {
+            get {
+                return ResourceManager.GetString("InvalidFromAddress", resourceCulture);
+            }
+        }
+        
+        internal static string InsufficientChainFundsWithDetails {
+            get {
+                return ResourceManager.GetString("InsufficientChainFundsWithDetails", resourceCulture);
+            }
+        }
+        
         internal static string CommissionLessThanZeroError {
             get {
                 return ResourceManager.GetString("CommissionLessThanZeroError", resourceCulture);
@@ -1892,6 +2042,84 @@ namespace atomex.Resources {
         internal static string BiometricAuthEnabled {
             get {
                 return ResourceManager.GetString("BiometricAuthEnabled", resourceCulture);
+            }
+        }
+        
+        internal static string AmountToFeeRatioToolTip {
+            get {
+                return ResourceManager.GetString("AmountToFeeRatioToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendRecommendation {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendRecommendation", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendRecommendationDetails {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendRecommendationDetails", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendWithActiveSwaps {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendWithActiveSwaps", resourceCulture);
+            }
+        }
+        
+        internal static string MaxAmountToSendWithActiveSwapsDetails {
+            get {
+                return ResourceManager.GetString("MaxAmountToSendWithActiveSwapsDetails", resourceCulture);
+            }
+        }
+        
+        internal static string SendEnteredAmountMenu {
+            get {
+                return ResourceManager.GetString("SendEnteredAmountMenu", resourceCulture);
+            }
+        }
+        
+        internal static string SendRecommendedAmountMenu {
+            get {
+                return ResourceManager.GetString("SendRecommendedAmountMenu", resourceCulture);
+            }
+        }
+        
+        internal static string OrderMatched {
+            get {
+                return ResourceManager.GetString("OrderMatched", resourceCulture);
+            }
+        }
+        
+        internal static string AvailableAmountDexTooltip {
+            get {
+                return ResourceManager.GetString("AvailableAmountDexTooltip", resourceCulture);
+            }
+        }
+        
+        internal static string AddressIsNotAtomex {
+            get {
+                return ResourceManager.GetString("AddressIsNotAtomex", resourceCulture);
+            }
+        }
+        
+        internal static string AddressIsNotAtomexToolTip {
+            get {
+                return ResourceManager.GetString("AddressIsNotAtomexToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string RedeemFromAddressNote {
+            get {
+                return ResourceManager.GetString("RedeemFromAddressNote", resourceCulture);
+            }
+        }
+        
+        internal static string RedeemFromAddressNoteToolTip {
+            get {
+                return ResourceManager.GetString("RedeemFromAddressNoteToolTip", resourceCulture);
             }
         }
     }

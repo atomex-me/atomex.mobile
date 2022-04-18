@@ -12,7 +12,7 @@
                      VerticalOptions="CenterAndExpand">
             <Label Text="{helpers:Translate SelectCurrencyToBuyLabel}"
                    FontSize="20"
-                   FontFamily="{DynamicResource RegularFont}"
+                   FontFamily="{DynamicResource BoldFont}"
                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="End"/>

@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    x:Class="atomex.Views.CreateSwap.ExchangeConfirmationBottomSheet">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="348"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="16,8,16,16"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="448"
+                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+        <StackLayout Spacing="0">
+            <Image Source="ic_swipe__indicator"
+                   WidthRequest="35"
+                   HeightRequest="4"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="0,0,0,20"/>
+            <Label Text="{helpers:Translate ConfirmationLabel}"
+                   Style="{DynamicResource TitleTextStyle}"
+                   Padding="0,0,0,20"/>
+            <Grid HorizontalOptions="Fill"
+                  ColumnSpacing="0"
+                  RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Frame Grid.RowSpan="2"
+                       Grid.ColumnSpan="3"
+                       HorizontalOptions="FillAndExpand"
+                       HasShadow="False"
+                       CornerRadius="16"
+                       BackgroundColor="Transparent"
+                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"/>
+                <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"
+                       VerticalOptions="End"
+                       HorizontalOptions="End"
+                       Margin="22,0,8,0"
+                       WidthRequest="28"
+                       HeightRequest="28"/>
+                <Label Grid.Column="1"
+                       Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End"
+                       Padding="0,2"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                <Label Grid.Column="2"
+                       Text="{Binding Amount}"
+                       HorizontalTextAlignment="End"
+                       VerticalTextAlignment="End"
+                       Padding="16,0"
+                       FontFamily="{DynamicResource BoldFont}"
+                       FontSize="20"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding FromAddressDescription}"
+                       Padding="22,0"
+                       LineBreakMode="MiddleTruncation"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       FontSize="12"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                <Label Grid.Row="1"
+                       Grid.Column="2"
+                       Text="{Binding AmountInBase, StringFormat='${0:f2}'}"
+                       HorizontalTextAlignment="End"
+                       VerticalTextAlignment="Start"
+                       Padding="16,0"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                <Frame Grid.Row="2"
+                       Grid.RowSpan="2"
+                       Grid.ColumnSpan="3"
+                       HorizontalOptions="FillAndExpand"
+                       HasShadow="False"
+                       CornerRadius="16"
+                       BackgroundColor="Transparent"
+                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F000E22'}"/>
+                <Image Grid.Row="2"
+                       Source="{Binding ToCurrencyViewModel.CurrencyCode}"
+                       Margin="22,0,8,0"
+                       VerticalOptions="EndAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       WidthRequest="28"
+                       HeightRequest="28"/>
+                <Label Grid.Row="2"
+                       Grid.Column="1"
+                       Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                       FontFamily="{DynamicResource RegularFont}"
+                       Padding="0,2"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                <Label Grid.Row="2"
+                       Grid.Column="2"
+                       Padding="16,0"
+                       Text="{Binding TargetAmount}"
+                       HorizontalTextAlignment="End"
+                       VerticalTextAlignment="End"
+                       FontFamily="{DynamicResource BoldFont}"
+                       FontSize="20"
+                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                <Label Grid.Row="3"
+                       Grid.ColumnSpan="2"
+                       Padding="22,0"
+                       Text="{Binding ToAddress}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       LineBreakMode="MiddleTruncation"
+                       FontSize="12"
+                       FontFamily="{DynamicResource RegularFont}"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                <Label Grid.Row="3"
+                       Grid.Column="2"
+                       Text="{Binding TargetAmountInBase, StringFormat='${0:f2}'}"
+                       HorizontalTextAlignment="End"
+                       VerticalTextAlignment="Start"
+                       Padding="16,0"
+                       FontFamily="{DynamicResource RegularFont}"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                <Frame WidthRequest="40"
+                       HeightRequest="40"
+                       CornerRadius="20"
+                       Margin="0,80,0,-70"
+                       Grid.ColumnSpan="3"
+                       Padding="0"
+                       HorizontalOptions="Center"
+                       IsClippedToBounds="True"
+                       HasShadow="False"
+                       BorderColor="{AppThemeBinding Dark='#0FC4DEFF', Light='#0F002041'}"
+                       BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                <StackLayout Grid.Row="4"
+                             Grid.ColumnSpan="3"
+                             HeightRequest="8"
+                             WidthRequest="40"
+                             Margin="0,-114,0,114"
+                             HorizontalOptions="Center"
+                             BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}"/>
+                <Image Grid.ColumnSpan="3"
+                       Source="ic_arrow__down"
+                       HeightRequest="14"
+                       WidthRequest="14"
+                       Margin="0,80,0,-70"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Grid>
+            <StackLayout Spacing="2"
+                         Padding="20,0">
+                <Label HorizontalTextAlignment="Start"
+                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                        FontFamily="{DynamicResource RegularFont}"
+                        FontSize="12">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{helpers:Translate EstimatedPriceLabel}"/>
+                            <Span Text=" 1 "/>
+                            <Span Text="{Binding BaseCurrencyCode}"/>
+                            <Span Text=" = "/>
+                            <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding QuoteCurrencyCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <StackLayout Spacing="0"
+                             Orientation="Horizontal">
+                    <Label HorizontalTextAlignment="Start"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout VerticalOptions="EndAndExpand">
+                <RelativeLayout HeightRequest="44">
+                    <Button Text="{helpers:Translate ConfirmButton}"
+                            CornerRadius="22"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                            FontSize="17"
+                            TextTransform="None"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            HorizontalOptions="FillAndExpand"
+                            FontFamily="{DynamicResource RegularFont}"
+                            Command="{Binding NextCommand}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsLoading}"
+                                         Value="True">
+                                <Setter Property="IsEnabled"
+                                        Value="False"/>
+                                <Setter Property="Opacity"
+                                        Value="0.7"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsLoading}"
+                                         Value="False">
+                                <Setter Property="IsEnabled"
+                                        Value="True"/>
+                                <Setter Property="Opacity"
+                                        Value="1"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                                       RelativeLayout.WidthConstraint="24"
+                                       RelativeLayout.HeightConstraint="24"
+                                       Color="#92C8F9"
+                                       BackgroundColor="Transparent"
+                                       IsRunning="{Binding IsLoading}"
+                                       IsVisible="{Binding IsLoading}"/>
+                </RelativeLayout>
+            </StackLayout>
+        </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

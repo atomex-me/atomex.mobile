@@ -20,7 +20,6 @@
            Margin="20,0"
            HasShadow="False"
            HorizontalOptions="FillAndExpand"
-           HeightRequest="400"
            VerticalOptions="Center"
            BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
         <StackLayout Padding="20">
@@ -56,9 +55,17 @@
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                    FontSize="14"
                    HorizontalTextAlignment="Center"
-                   FontFamily="{DynamicResource RegularFont}"/>
+                   FontFamily="{DynamicResource RegularFont}"
+                   Padding="0,0,0,20"/>
             <Button Text="{Binding ButtonText}"
-                    Style="{DynamicResource MainButtonStyle}"
+                    CornerRadius="22"
+                    BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                    TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                    FontSize="17"
+                    HeightRequest="44"
+                    TextTransform="None"
+                    HorizontalOptions="FillAndExpand"
+                    FontFamily="{DynamicResource RegularFont}"
                     VerticalOptions="EndAndExpand"
                     Command="{Binding CancelCommand}">
                 <Button.Triggers>

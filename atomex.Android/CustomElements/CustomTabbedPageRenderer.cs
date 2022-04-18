@@ -1,39 +1,33 @@
 ﻿using Android.Content;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android.AppCompat;
-
 using atomex.CustomElements;
 using atomex.Droid.CustomElements;
-using Google.Android.Material.BottomNavigation;
 using Xamarin.Forms.Platform.Android;
 using Android.Views;
 using System.Threading.Tasks;
+using Google.Android.Material.Navigation;
 
 [assembly: ExportRenderer(typeof(CustomTabbedPage), typeof(CustomTabbedPageRenderer))]
 namespace atomex.Droid.CustomElements
 {
-    public class CustomTabbedPageRenderer : TabbedPageRenderer, BottomNavigationView.IOnNavigationItemSelectedListener, BottomNavigationView.IOnNavigationItemReselectedListener
+    public class CustomTabbedPageRenderer : TabbedPageRenderer, NavigationBarView.IOnItemSelectedListener, NavigationBarView.IOnItemReselectedListener
     {
         public CustomTabbedPageRenderer(Context context)
             : base(context)
         {
         }
 
-        private TabbedPage _page;
+        private TabbedPage tabbedPage;
 
         protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {
             base.OnElementChanged(e);
 
             if (e.NewElement != null)
-            {
-                _page = (TabbedPage)e.NewElement;
-            }
+                tabbedPage = (TabbedPage)e.NewElement;
             else
-            {
-                _page = (TabbedPage)e.OldElement;
-            }
+                tabbedPage = (TabbedPage)e.OldElement;
 
             if (e.OldElement == null && e.NewElement != null)
             {
@@ -45,25 +39,23 @@ namespace atomex.Droid.CustomElements
                         for (int j = 0; j <= viewGroup.ChildCount - 1; j++)
                         {
                             var childRelativeLayoutView = viewGroup.GetChildAt(j);
-                            if (childRelativeLayoutView is BottomNavigationView bottomNavigationView)
-                            {
-                                bottomNavigationView.SetOnNavigationItemReselectedListener(this);
-                            }
+                            if (childRelativeLayoutView is NavigationBarView bottomNavigationView)
+                                bottomNavigationView.SetOnItemReselectedListener(this);
                         }
                     }
                 }
             }
         }
 
-        private async Task PopToRoot()
+        public void OnNavigationItemReselected(IMenuItem item)
         {
-            await _page.CurrentPage.Navigation.PopToRootAsync();
+            if (tabbedPage?.CurrentPage.Navigation.NavigationStack.Count > 1)
+                _ = PopToRoot();
         }
 
-        void BottomNavigationView.IOnNavigationItemReselectedListener.OnNavigationItemReselected(IMenuItem item)
+        private async Task PopToRoot()
         {
-            if (_page.CurrentPage.Navigation.NavigationStack.Count > 1)
-                _ = PopToRoot();
+            await tabbedPage.CurrentPage.Navigation.PopToRootAsync();
         }
     }
 }

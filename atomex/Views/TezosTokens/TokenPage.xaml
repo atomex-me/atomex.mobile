@@ -5,8 +5,10 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Name="BindingContextPage"
-             Title="{Binding TokenContractName}">
+             Title="{Binding TokenContractName}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
@@ -24,10 +26,13 @@
     <StackLayout Spacing="0">
         <ListView ItemsSource="{Binding GroupedTransfers}"
                   Style="{DynamicResource TxListViewStyle}"
-                  SelectionMode="None"
+                  SelectedItem="{Binding TokenTransfer}"
+                  ItemSelected="ItemSelected"
+                  SelectionMode="Single"
                   CachingStrategy="RetainElement"
                   RefreshCommand="{Binding UpdateTokensCommand}"
                   IsRefreshing="{Binding IsLoading}"
+                  BackgroundColor="Transparent"
                   x:Name="TransfersListView"
                   Footer=""
                   IsVisible="{Binding IsFa12}">
@@ -94,7 +99,16 @@
                         <Button Text="{helpers:Translate SendButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding SendPageCommand}"
-                                IsVisible="{Binding IsFa12}"/>
+                                IsVisible="{Binding IsFa12}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding Balance}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
@@ -103,8 +117,22 @@
                             <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
                                                          Style="{DynamicResource TokenActionButtonStyle}"
                                                          Command="{Binding UpdateTokensCommand}"
-                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
-                                                         Opacity="{Binding Opacity}"/>
+                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                                <controls:RightRoundedButton.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsLoading}"
+                                                 Value="True">
+                                        <Setter Property="Opacity"
+                                                Value="0.3"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsLoading}"
+                                                 Value="False">
+                                        <Setter Property="Opacity"
+                                                Value="1"/>
+                                    </DataTrigger>
+                                </controls:RightRoundedButton.Triggers>
+                            </controls:RightRoundedButton>
                             <ActivityIndicator Style="{DynamicResource UpdateActivityIndicatorStyle}"
                                                IsRunning="{Binding IsLoading}"/>
                         </RelativeLayout>
@@ -177,11 +205,25 @@
                                     HorizontalOptions="Center">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="80"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateTokensCommand}"/>
+                                Command="{Binding UpdateTokensCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"
@@ -200,7 +242,7 @@
                     <StackLayout HeightRequest="20"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                  Spacing="0">
-                        <Label Text="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"
+                        <Label Text="{Binding Date, StringFormat='{}{0:MMMM dd, yyyy}'}"
                                BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontFamily="{DynamicResource RegularFont}"
@@ -214,16 +256,10 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
-                          VerticalOptions="Center"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectTransferCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnListItemTapped"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
+                          VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -405,16 +441,19 @@
                                Padding="3,0"
                                IsVisible="{Binding Alias, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
                     </Grid>
-                </ViewCell>
+                </custom:CustomViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
     <ListView ItemsSource="{Binding Tokens}"
               Style="{DynamicResource TxListViewStyle}"
-              SelectionMode="None"
+              SelectionMode="Single"
+              SelectedItem="{Binding Token}"
+              ItemSelected="ItemSelected"
               CachingStrategy="RetainElement"
               RefreshCommand="{Binding UpdateTokensCommand}"
               IsRefreshing="{Binding IsLoading}"
+              BackgroundColor="Transparent"
               x:Name="TokensListView"
               IsGroupingEnabled="False"
               Footer=""
@@ -452,7 +491,16 @@
                         <Button Text="{helpers:Translate SendButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding SendPageCommand}"
-                                IsVisible="{Binding IsFa12}"/>
+                                IsVisible="{Binding IsFa12}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding Balance}"
+                                             Value="0">
+                                    <Setter Property="Opacity"
+                                            Value="0.7"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Text="{helpers:Translate ConvertButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
                                 Command="{Binding ConvertPageCommand}"
@@ -464,8 +512,22 @@
                             <controls:RightRoundedButton Text="{helpers:Translate UpdateButton}"
                                                          Style="{DynamicResource TokenActionButtonStyle}"
                                                          Command="{Binding UpdateTokensCommand}"
-                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
-                                                         Opacity="{Binding Opacity}"/>
+                                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                                <controls:RightRoundedButton.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsLoading}"
+                                                 Value="True">
+                                        <Setter Property="Opacity"
+                                                Value="0.3"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsLoading}"
+                                                 Value="False">
+                                        <Setter Property="Opacity"
+                                                Value="1"/>
+                                    </DataTrigger>
+                                </controls:RightRoundedButton.Triggers>
+                            </controls:RightRoundedButton>
                             <ActivityIndicator Style="{DynamicResource UpdateActivityIndicatorStyle}"
                                                IsRunning="{Binding IsLoading}"/>
                         </RelativeLayout>
@@ -537,11 +599,25 @@
                                     HorizontalOptions="Center">
                         <Button Text="{helpers:Translate UpdateButton}"
                                 Style="{DynamicResource TokenActionButtonStyle}"
-                                Opacity="{Binding Opacity}"
                                 CornerRadius="20"
                                 RelativeLayout.WidthConstraint="80"
                                 RelativeLayout.HeightConstraint="40"
-                                Command="{Binding UpdateTokensCommand}"/>
+                                Command="{Binding UpdateTokensCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Opacity"
+                                            Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="1"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0, Constant=30}"
 	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0, Constant=10}"
                                            RelativeLayout.WidthConstraint="20"
@@ -556,16 +632,10 @@
         </ListView.Header>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                     <Grid RowSpacing="0"
                           ColumnSpacing="0"
-                          VerticalOptions="Center"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding BindingContext.SelectTokenCommand, Source={x:Reference BindingContextPage}}"
-                                                  Tapped="OnListItemTapped"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
+                          VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -573,7 +643,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.RowSpan="2"
                                Padding="0"
@@ -596,14 +666,18 @@
                                VerticalTextAlignment="End"
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Balance}"
-                                             Value="1">
+                                <MultiTrigger TargetType="Label">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Balance}"
+                                                          Value="1"/>
+                                        <BindingCondition Binding="{Binding TokenBalance.Decimals}"
+                                                          Value="0"/>
+                                    </MultiTrigger.Conditions>
                                     <Setter Property="Grid.RowSpan"
                                             Value="2"/>
                                     <Setter Property="VerticalTextAlignment"
                                             Value="Center"/>
-                                </DataTrigger>
+                                </MultiTrigger>
                             </Label.Triggers>
                         </Label>
                         <Label Grid.Column="1"
@@ -613,12 +687,16 @@
                                VerticalTextAlignment="Start"
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Balance}"
-                                             Value="1">
+                                <MultiTrigger TargetType="Label">
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Balance}"
+                                                          Value="1"/>
+                                        <BindingCondition Binding="{Binding TokenBalance.Decimals}"
+                                                          Value="0"/>
+                                    </MultiTrigger.Conditions>
                                     <Setter Property="IsVisible"
                                             Value="False"/>
-                                </DataTrigger>
+                                </MultiTrigger>
                             </Label.Triggers>
                             <Label.FormattedText>
                                 <FormattedString>
@@ -635,14 +713,11 @@
                         <Button Grid.Column="2"
                                 Grid.RowSpan="2"
                                 Text="{helpers:Translate SendButton}"
-                                Style="{DynamicResource TokenActionButtonStyle}"
-                                CornerRadius="15"
-                                HeightRequest="20"
-                                Margin="0,15,10,15"
+                                Style="{DynamicResource TokenFa2SendButtonStyle}"
                                 Command="{Binding BindingContext.SendFa2PageCommand, Source={x:Reference BindingContextPage}}"
                                 CommandParameter="{Binding .}"/>
                     </Grid>
-                </ViewCell>
+                </custom:CustomViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Abstract;
@@ -13,8 +12,27 @@ namespace atomex.ViewModel.CurrencyViewModels
     public class CurrenciesViewModel : BaseViewModel
     {
         private IAtomexApp AtomexApp { get; }
-
         public INavigation Navigation { get; set; }
+
+        private CurrencyViewModel _selectedCurrency;
+        public CurrencyViewModel SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                if (value == null) return;
+
+                _selectedCurrency = value;
+
+                if (_selectedCurrency.CurrencyCode == TezosConfig.Xtz)
+                {
+                    Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
+                    return;
+                }
+
+                Navigation.PushAsync(new CurrencyPage(_selectedCurrency));
+            }
+        }
 
         private ICurrencies Currencies
         {
@@ -65,31 +83,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 return Task.CompletedTask;
             }));
-        }
-
-        private ICommand _selectCurrencyCommand;
-        public ICommand SelectCurrencyCommand => _selectCurrencyCommand ??= new Command<CurrencyViewModel>(async (value) => await OnCurrencyTapped(value));
-
-        private async Task OnCurrencyTapped(CurrencyViewModel currency)
-        {
-            if (currency == null)
-                return;
-
-            if (currency.CurrencyCode == TezosConfig.Xtz)
-            {
-                await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
-                return;
-            }
-            
-            await Navigation.PushAsync(new CurrencyPage(currency));
-        }
-
-        private ICommand _showTezosTokensCommand;
-        public ICommand ShowTezosTokensCommand => _showTezosTokensCommand ??= new Command<CurrencyViewModel>(async (value) => await ShowTezosTokens());
-
-        private async Task ShowTezosTokens()
-        {
-            await Navigation.PushAsync(new TezosTokensListPage(TezosTokensViewModel));
         }
     }
 }
