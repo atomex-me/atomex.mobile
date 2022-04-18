@@ -71,6 +71,87 @@
                     </StackLayout>
 
 
+                       <Frame CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Padding="20,5"
+                           IsVisible="True">
+                        <StackLayout BindableLayout.ItemsSource="{Binding DappsInfo}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                     VerticalOptions="FillAndExpand"
+                                     Spacing="15">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <xct:Expander>
+                                         <xct:Expander.Header>
+                                              <Grid ColumnSpacing="0"
+                                                        RowSpacing="0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="30" />
+                                                        <RowDefinition Height="30" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="7*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="1"
+                                                            Text="{Binding Address}"
+                                                            FontFamily="{DynamicResource RegularFont}"
+                                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                            FontSize="18"
+                                                            VerticalTextAlignment="End"
+                                                            HorizontalTextAlignment="Start"/>
+                                                    <Label Grid.Column="1"
+                                                            Grid.Row="1"
+                                                            Text="{Binding Network}"
+                                                            FontFamily="{DynamicResource LightFont}"
+                                                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                            FontSize="16"
+                                                            Margin="0,3"
+                                                            VerticalTextAlignment="Start"
+                                                            HorizontalTextAlignment="Start"/>
+                                                    <Image Grid.Column="2"
+                                                            Grid.RowSpan="2"
+                                                            Source="ic_delete"
+                                                            WidthRequest="20"
+                                                            HeightRequest="20"
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="Center">
+                                                            <Image.GestureRecognizers>
+                                                                <TapGestureRecognizer CommandParameter="{Binding Address}"
+                                                                                      Command="{Binding BindingContext.DeleteCommand, Source={x:Reference BindingContextPage}}"/>
+                                                            </Image.GestureRecognizers>
+                                                    </Image>
+                                                </Grid>
+                                            </xct:Expander.Header>
+
+                                        <StackLayout Spacing="10"
+                                                     VerticalOptions="FillAndExpand"
+                                                     Orientation="Vertical">
+                                            <Label Text="Permissions"
+                                                   FontFamily="{DynamicResource RegularFont}"
+                                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                   FontSize="15"
+                                                   Margin="10, 5"
+                                                   VerticalTextAlignment="Start"
+                                                   HorizontalTextAlignment="Start"/>
+                                           
+                                        </StackLayout>
+
+
+                                    </xct:Expander>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding DappsInfo.Count}"
+                                         Value="0">
+                                <Setter Property="IsVisible"
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
 
                 </StackLayout>
         </ScrollView>
