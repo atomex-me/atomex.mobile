@@ -501,10 +501,27 @@ namespace atomex.ViewModel
         {
             Launcher.OpenAsync(new Uri(TelegramUrl));
         }
-        
+
         private async Task OnDappsDevicesClicked()
         {
-            await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation)));
+            var walletBeaconClient = WalletBeaconHelper.WalletBeaconClient;
+
+            Console.WriteLine($"1 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
+
+            if (!walletBeaconClient.LoggedIn)
+                await walletBeaconClient.InitAsync().ConfigureAwait(false);
+            
+            walletBeaconClient.Connect();
+
+            Console.WriteLine($"2 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation, walletBeaconClient)));
+            });
+
+            
+            //await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation, walletBeaconClient)));
         }
     }
 }
