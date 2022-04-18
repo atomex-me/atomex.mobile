@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    x:Class="atomex.Views.WalletBeacon.ConnectDappPage"
+    x:Name="BindingContextPage"
+    Title="Connect Dapp"
+    Style="{DynamicResource AdditionalBackgroundStyle}">
+    <ContentPage.Content>
+        <ScrollView>
+                <StackLayout 
+                    Orientation="Vertical"
+                    Padding="20"
+                    Spacing="0">
+
+                    <Frame CornerRadius="10"
+                           Style="{DynamicResource EntryFrameStyle}"
+                           Margin="0,0,0,20"
+                           Padding="20,0,5,0"
+                           IsVisible="True">
+                        <StackLayout 
+                            BindableLayout.ItemsSource="{Binding Permissions}"
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                            VerticalOptions="FillAndExpand"
+                            Spacing="5">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout
+                                        VerticalOptions="FillAndExpand"
+                                        Orientation="Horizontal"
+                                        Spacing="0">
+                                        <Label
+                                            Text="{Binding Scope}"
+                                            FontFamily="{DynamicResource RegularFont}"
+                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                            FontSize="18"
+                                            Margin="5, 5"
+                                            VerticalTextAlignment="Start"
+                                            HorizontalTextAlignment="Start"/>
+                                        <CheckBox  IsChecked="{Binding IsChecked}" Color="Red" HorizontalOptions="End"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        Margin="0,0,0,20"
+                        Padding="20,0,5,0"
+                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ConnectCommand}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <Label
+                                FontFamily="{DynamicResource RegularFont}"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Connect"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                            Light={StaticResource MainTextColor}}"
+                                VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame
+                        CornerRadius="10"
+                        HeightRequest="40"
+                        Margin="0,0,0,20"
+                        Padding="20,0,5,0"
+                        Style="{DynamicResource EntryFrameStyle}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <Label
+                                FontFamily="{DynamicResource RegularFont}"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                Text="Cancel"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark},
+                                                            Light={StaticResource MainTextColor}}"
+                                VerticalTextAlignment="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
