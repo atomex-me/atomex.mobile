@@ -42,7 +42,7 @@ namespace atomex.ViewModel.WalletBeacon
         private async Task SignAsync()
         {
             var account = _app.Account.GetCurrencyAccount<TezosAccount>("XTZ");//.Account.GetCurrencyAccount<TezosAccount>(Currency.Name);
-            Atomex.Wallet.Abstract.ICurrencyAccount account =_app.Account.GetCurrencyAccount(TezosConfig.Xtz);
+            //Atomex.Wallet.Abstract.ICurrencyAccount account =_app.Account.GetCurrencyAccount(TezosConfig.Xtz);
         }
 
         public ICommand CancelCommand { get; }
