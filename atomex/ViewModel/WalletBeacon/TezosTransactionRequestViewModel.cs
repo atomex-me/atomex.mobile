@@ -18,17 +18,23 @@ namespace atomex.ViewModel.WalletBeacon
     {
         private readonly IAtomexApp _app;
         private readonly IWalletBeaconClient _walletBeaconClient;
+        private readonly string _receiverId;
 
         public TezosTransactionRequestViewModel(
             IAtomexApp app,
             IWalletBeaconClient walletBeaconClient,
+            string receiverId,
             INavigation navigation,
-            PartialTezosTransactionOperation operation)
+            OperationRequest operationRequest,
+            PartialTezosTransactionOperation transactionOperation)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _walletBeaconClient = walletBeaconClient ?? throw new ArgumentNullException(nameof(walletBeaconClient));
+            _receiverId = receiverId ?? throw new ArgumentNullException(nameof(receiverId));
+
             Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
-            Operation = operation ?? throw new ArgumentNullException(nameof(operation));
+            OperationRequest = operationRequest ?? throw new ArgumentNullException(nameof(operationRequest));
+            TransactionOperation = transactionOperation ?? throw new ArgumentNullException(nameof(transactionOperation));
 
             SignCommand = new Command(async () => await SignAsync());
             CancelCommand = new Command(async () => await CancelAsync());
@@ -36,18 +42,34 @@ namespace atomex.ViewModel.WalletBeacon
 
         public INavigation Navigation { get; }
 
-        public PartialTezosTransactionOperation Operation { get; }
+        public OperationRequest OperationRequest { get; }
+        public PartialTezosTransactionOperation TransactionOperation { get; }
 
         public ICommand SignCommand { get; }
         private async Task SignAsync()
         {
-            var account = _app.Account.GetCurrencyAccount<TezosAccount>("XTZ");//.Account.GetCurrencyAccount<TezosAccount>(Currency.Name);
-            //Atomex.Wallet.Abstract.ICurrencyAccount account =_app.Account.GetCurrencyAccount(TezosConfig.Xtz);
+            if (!decimal.TryParse(TransactionOperation.Amount, out var amount))
+                return;
+
+            var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+         
+            var permissionInfo = await _walletBeaconClient.TryReadPermissionInfo(OperationRequest.SourceAddress, OperationRequest.Network);
+
+            if (permissionInfo != null)
+            {
+                await account.SendAsync(permissionInfo.PublicKey, TransactionOperation.Destination, amount, 1000);
+
+                var response = new OperationResponse(
+                            id: OperationRequest!.Id,
+                            senderId: _walletBeaconClient.SenderId,
+                            transactionHash: "transactionHash");
+
+                await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);
+            }
         }
 
         public ICommand CancelCommand { get; }
         private async Task CancelAsync() => await Navigation.PopAsync();
-
 
         private static async Task<string> MakeTransactionAsync(Key key, string destination, long amount)
         {
