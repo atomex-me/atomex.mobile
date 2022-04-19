@@ -129,7 +129,6 @@
     <Compile Include="Common\AndroidFileSystem.cs" />
     <Compile Include="Services\AndroidNotificationManager.cs" />
     <Compile Include="Services\FirebaseMessService.cs" />
-    <Compile Include="Services\ToastService.cs" />
     <Compile Include="CustomElements\CustomFrameRenderer.cs" />
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />

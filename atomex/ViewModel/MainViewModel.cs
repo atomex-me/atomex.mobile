@@ -8,13 +8,11 @@ using System.Linq;
 using atomex.Services;
 using Atomex.Services;
 using Atomex.Services.Abstract;
-using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
         public PortfolioViewModel PortfolioViewModel { get; set; }
@@ -24,7 +22,11 @@ namespace atomex.ViewModel
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account, string walletName, bool restore = false)
+        public MainViewModel(
+            IAtomexApp app,
+            IAccount account,
+            string walletName,
+            bool restore = false)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -46,11 +48,10 @@ namespace atomex.ViewModel
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
-            CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
-            SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp, restore);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
+            SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }

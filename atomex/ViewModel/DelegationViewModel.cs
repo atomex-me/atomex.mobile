@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Atomex.Blockchain.Tezos;
 using Xamarin.Essentials;
@@ -9,7 +8,7 @@ namespace atomex.ViewModel
 {
     public class DelegationViewModel
     {
-        public INavigation Navigation { get; set; }
+        private INavigationService _navigationService { get; set; }
 
         public BakerData Baker { get; set; }
         public string Address { get; set; }
@@ -20,10 +19,10 @@ namespace atomex.ViewModel
 
         public DelegateViewModel DelegateViewModel;
 
-        public DelegationViewModel(DelegateViewModel delegateViewModel, INavigation navigation)
+        public DelegationViewModel(DelegateViewModel delegateViewModel, INavigationService navigationService)
         {
-            DelegateViewModel = delegateViewModel;
-            Navigation = navigation;
+            DelegateViewModel = delegateViewModel ?? throw new ArgumentNullException(nameof(DelegateViewModel));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService)); 
         }
 
         private ICommand _checkRewardsCommand;
@@ -38,14 +37,14 @@ namespace atomex.ViewModel
         }
 
         private ICommand _changeBakerCommand;
-        public ICommand ChangeBakerCommand => _changeBakerCommand ??= new Command(async (item) => await OnChangeBakerButtonClicked());
+        public ICommand ChangeBakerCommand => _changeBakerCommand ??= new Command((item) => OnChangeBakerButtonClicked());
 
-        private async Task OnChangeBakerButtonClicked()
+        private void OnChangeBakerButtonClicked()
         {
             if (!string.IsNullOrEmpty(Address))
             {
                 DelegateViewModel.SetWalletAddress(Address);
-                await Navigation.PushAsync(new DelegatePage(DelegateViewModel));
+                _navigationService?.ShowPage(new DelegatePage(DelegateViewModel), TabNavigation.Portfolio);
             }
         }
     }

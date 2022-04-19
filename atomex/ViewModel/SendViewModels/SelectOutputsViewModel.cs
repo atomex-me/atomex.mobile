@@ -8,8 +8,8 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
-using atomex.Services;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
@@ -24,25 +24,27 @@ namespace atomex.ViewModel.SendViewModels
 {
     public class SelectOutputsViewModel : BaseViewModel
     {
-        protected IToastService ToastService { get; set; }
-        protected INavigation Navigation { get; set; }
+        protected INavigationService _navigationService { get; set; }
 
         public SelectAddressFrom SelectAddressFrom { get; set; }
-        private ObservableCollection<OutputViewModel> InitialOutputs { get; set; }
+        private ObservableCollection<OutputViewModel> _initialOutputs { get; set; }
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public string TotalSelectedString { get; set; }
         [Reactive] public decimal SelectedFromBalance { get; set; }
         public BitcoinBasedConfig Currency { get; }
-        private BitcoinBasedAccount Account { get; }
+        private BitcoinBasedAccount _account { get; }
         public Action<SelectOutputsViewModel, IEnumerable<BitcoinBasedTxOutput>> ConfirmAction { get; set; }
 
-        public SelectOutputsViewModel(IEnumerable<OutputViewModel> outputs, BitcoinBasedAccount account, BitcoinBasedConfig config, INavigation navigation)
+        public SelectOutputsViewModel(
+            IEnumerable<OutputViewModel> outputs,
+            BitcoinBasedAccount account,
+            BitcoinBasedConfig config,
+            INavigationService navigationService)
         {
-            Account = account ?? throw new ArgumentNullException(nameof(Account));
+            _account = account ?? throw new ArgumentNullException(nameof(_account));
             Currency = config ?? throw new ArgumentNullException(nameof(Currency));
-            ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
 
             Outputs = new ObservableCollection<OutputViewModel>(outputs);
 
@@ -57,7 +59,7 @@ namespace atomex.ViewModel.SendViewModels
                 .Take(1)
                 .SubscribeInMainThread(async outputs =>
                 {
-                    var addresses = (await Account
+                    var addresses = (await _account
                         .GetAddressesAsync())
                         .Where(address => outputs.FirstOrDefault(o => o.Address == address.Address) != null)
                         .ToList();
@@ -72,7 +74,7 @@ namespace atomex.ViewModel.SendViewModels
                     Outputs = new ObservableCollection<OutputViewModel>(
                         outputsWithAddresses.OrderByDescending(output => output.Balance));
 
-                    InitialOutputs = new ObservableCollection<OutputViewModel>(Outputs);
+                    _initialOutputs = new ObservableCollection<OutputViewModel>(Outputs);
 
                     UpdateSelectedStats();
                 });
@@ -101,7 +103,7 @@ namespace atomex.ViewModel.SendViewModels
                     if (Outputs == null) return;
 
                     var outputViewModels = new ObservableCollection<OutputViewModel>(
-                        InitialOutputs
+                        _initialOutputs
                             .Where(output => output.Address.ToLower().Contains(item3?.ToLower() ?? string.Empty)));
 
                     if (!item1)
@@ -201,7 +203,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<Unit, Unit> _searchCommand;
         public ReactiveCommand<Unit, Unit> SearchCommand =>
-            _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
+            _searchCommand ??= (_searchCommand = ReactiveCommand.Create(OnSearchButtonClicked));
 
         private ReactiveCommand<Unit, Unit> _clearSearchAddressCommand;
         public ReactiveCommand<Unit, Unit> ClearSearchAddressCommand =>
@@ -227,7 +229,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private void ConfirmOutputs()
         {
-            var outputs = InitialOutputs
+            var outputs = _initialOutputs
                 .Where(output => output.IsSelected)
                 .Select(o => o.Output);
 
@@ -275,22 +277,22 @@ namespace atomex.ViewModel.SendViewModels
             if (output != null)
             {
                 await Clipboard.SetTextAsync(output.Address);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 
-        private async Task OnSearchButtonClicked()
+        private void OnSearchButtonClicked()
         {
             if (SelectAddressFrom == SelectAddressFrom.Init)
                 SelectAddressFrom = SelectAddressFrom.InitSearch;
             if (SelectAddressFrom == SelectAddressFrom.Change)
                 SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
-            await Navigation.PushAsync(new SearchOutputsPage(this));
+            _navigationService?.ShowPage(new SearchOutputsPage(this), TabNavigation.Portfolio);
         }
     }
 

@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Resources;
-using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -18,18 +17,17 @@ using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
-using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
     public class DelegateViewModel : BaseViewModel
     {
-        private IAtomexApp AtomexApp { get; }
-
-        public INavigation Navigation { get; set; }
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; }
 
         private readonly TezosConfig _tezosConfig; 
 
@@ -168,7 +166,7 @@ namespace atomex.ViewModel
 
                 OnPropertyChanged(nameof(Fee));
                 OnPropertyChanged(nameof(FeeString));
-                OnQuotesUpdatedEventHandler(AtomexApp.QuotesProvider, EventArgs.Empty);
+                OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
             }
         }
 
@@ -267,17 +265,17 @@ namespace atomex.ViewModel
             {
                 if (string.IsNullOrEmpty(Address))
                 {
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyAddressError, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.EmptyAddressError, AppResources.AcceptButton);
                     return;
                 }
                 if (!_tezosConfig.IsValidAddress(Address))
                 {
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.InvalidAddressError, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.InvalidAddressError, AppResources.AcceptButton);
                     return;
                 }
                 if (Fee <= 0)
                 {
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CommissionLessThanZeroError, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CommissionLessThanZeroError, AppResources.AcceptButton);
                     return;
                 }
 
@@ -285,37 +283,37 @@ namespace atomex.ViewModel
 
                 if (result.HasError)
                 {
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(AppResources.Error, result.Error.Description, AppResources.AcceptButton);
                     return;
                 }
 
                 if (BakerViewModel.IsFull)
                 {
-                    var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    var res = await _navigationService?.ShowAlert(AppResources.Warning, AppResources.BakerIsOverdelegatedWarning, AppResources.AcceptButton, AppResources.CancelButton);
                     if (!res) return;
                 }
 
                 if (BakerViewModel.MinDelegation > WalletAddressViewModel.AvailableBalance)
                 {
-                    var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
+                    var res = await _navigationService?.ShowAlert(AppResources.Warning, AppResources.DelegationLimitWarning, AppResources.AcceptButton, AppResources.CancelButton);
                     if (!res) return;
                 }
 
-                await Navigation.PushAsync(new DelegationConfirmationPage(this));
+                _navigationService?.ShowPage(new DelegationConfirmationPage(this), TabNavigation.Portfolio);
             }
             catch (Exception e)
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.DelegationValidationError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.DelegationValidationError, AppResources.AcceptButton);
                 Log.Error(e, "Delegation validation error");
             }
         }
 
-        public DelegateViewModel(IAtomexApp app, INavigation navigation)
+        public DelegateViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation)); ;
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService)); ;
 
-            _tezosConfig = AtomexApp.Account.Currencies.Get<TezosConfig>("XTZ");
+            _tezosConfig = _app.Account.Currencies.Get<TezosConfig>("XTZ");
             FeeCurrencyCode = _tezosConfig.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
@@ -338,7 +336,7 @@ namespace atomex.ViewModel
                 await Task.Run(async () =>
                 {
                     bakers = (await BbApi
-                        .GetBakers(AtomexApp.Account.Network)
+                        .GetBakers(_app.Account.Network)
                         .ConfigureAwait(false))
                         .Select(x => new BakerViewModel
                         {
@@ -371,7 +369,7 @@ namespace atomex.ViewModel
 
         private async Task PrepareWallet(CancellationToken cancellationToken = default)
         {
-            FromAddressList = (await AtomexApp.Account
+            FromAddressList = (await _app.Account
                 .GetUnspentAddressesAsync(_tezosConfig.Name, cancellationToken).ConfigureAwait(false))
                 .OrderByDescending(x => x.Balance)
                 .Select(w => new WalletAddressViewModel
@@ -401,9 +399,9 @@ namespace atomex.ViewModel
         }
 
         private ICommand _showBakersCommand;
-        public ICommand ShowBakersCommand => _showBakersCommand ??= new Command(async () => await ShowBakersList());
+        public ICommand ShowBakersCommand => _showBakersCommand ??= new Command(ShowBakersList);
 
-        private async Task ShowBakersList()
+        private void ShowBakersList()
         {
             var bakersListPage = new BakerListPage(this);
 
@@ -415,22 +413,22 @@ namespace atomex.ViewModel
             };
 
 
-            await Navigation.PushAsync(bakersListPage);
+            _navigationService?.ShowPage(bakersListPage, TabNavigation.Portfolio);
         }
 
         public Action<BakerViewModel> OnBakerSelected;
 
         private ICommand _selectBakerCommand;
-        public ICommand SelectBakerCommand => _selectBakerCommand ??= new Command<BakerViewModel>(async (item) => await BakerSelected(item));
+        public ICommand SelectBakerCommand => _selectBakerCommand ??= new Command<BakerViewModel>((item) => BakerSelected(item));
 
-        private async Task BakerSelected(BakerViewModel baker)
+        private void BakerSelected(BakerViewModel baker)
         {
             if (baker == null)
                 return;
 
             OnBakerSelected.Invoke(baker);
 
-            await Navigation.PopAsync();
+            _navigationService?.ClosePage(TabNavigation.Portfolio);
         }
         private ICommand _searchBakersCommand;
         public ICommand SearchBakersCommand => _searchBakersCommand ??= new Command<string>((value) => OnSearchBarTextChanged(value));
@@ -509,12 +507,12 @@ namespace atomex.ViewModel
                     OperationType = OperationType.Delegation
                 };
 
-                var walletAddress = AtomexApp.Account
+                var walletAddress = _app.Account
                     .GetCurrencyAccount(TezosConfig.Xtz)
                     .GetAddressAsync(WalletAddressViewModel.Address)
                     .WaitForResult();
 
-                using var securePublicKey = AtomexApp.Account.Wallet.GetPublicKey(
+                using var securePublicKey = _app.Account.Wallet.GetPublicKey(
                     currency: _tezosConfig,
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
@@ -557,11 +555,11 @@ namespace atomex.ViewModel
 
         private async Task<Result<string>> Delegate()
         {
-            var wallet = (HdWallet)AtomexApp.Account.Wallet;
+            var wallet = (HdWallet)_app.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
             var tezos = _tezosConfig;
 
-            var tezosAccount = AtomexApp.Account
+            var tezosAccount = _app.Account
                 .GetCurrencyAccount<TezosAccount>("XTZ");
 
             try
@@ -584,12 +582,12 @@ namespace atomex.ViewModel
                     OperationType = OperationType.Delegation
                 };
 
-                var walletAddress = AtomexApp.Account
+                var walletAddress = _app.Account
                     .GetCurrencyAccount(TezosConfig.Xtz)
                     .GetAddressAsync(WalletAddressViewModel.Address)
                     .WaitForResult();
 
-                using var securePublicKey = AtomexApp.Account.Wallet.GetPublicKey(
+                using var securePublicKey = _app.Account.Wallet.GetPublicKey(
                     currency: _tezosConfig,
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
@@ -636,44 +634,23 @@ namespace atomex.ViewModel
                 if (result.Error != null)
                 {
                     IsLoading = false;
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Error,
-                            Title = AppResources.Error,
-                            Body = result.Error.Description,
-                            ButtonText = AppResources.AcceptButton
-                        }));
+                    _navigationService?.DisplaySnackBar(MessageType.Error, result.Error.Description);
                     return;
                 }
                 await LoadDelegationInfoAsync();
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Success,
-                        Title = AppResources.SuccessDelegation,
-                        Body = AppResources.DelegationListWillBeUpdated,
-                        ButtonText = AppResources.AcceptButton
-                    }));
+                _navigationService?.DisplaySnackBar(MessageType.Success, AppResources.SuccessDelegation);
 
                 await Clipboard.SetTextAsync(result.Value);
                 for (var i = 1; i < 3; i++)
                 {
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                 }
-                await Navigation.PopAsync();
+                _navigationService?.ClosePage(TabNavigation.Portfolio);
             }
             catch (Exception e)
             {
                 IsLoading = false;
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Error,
-                        Title = AppResources.Error,
-                        Body = AppResources.DelegationError,
-                        ButtonText = AppResources.AcceptButton
-                    }));
+                _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.DelegationError);
                 Log.Error(e, "Delegation error");
             }
         }
@@ -685,7 +662,7 @@ namespace atomex.ViewModel
             {
                 var rpc = new Rpc(_tezosConfig.RpcNodeUri);
 
-                var addresses = await AtomexApp.Account
+                var addresses = await _app.Account
                     .GetUnspentAddressesAsync(_tezosConfig.Name)
                     .ConfigureAwait(false);
 
@@ -697,7 +674,7 @@ namespace atomex.ViewModel
 
                 var headLevel = head.Value;
 
-                decimal currentCycle = AtomexApp.Account.Network == Network.MainNet ?
+                decimal currentCycle = _app.Account.Network == Network.MainNet ?
                     Math.Floor((headLevel - 1) / 4096) :
                     Math.Floor((headLevel - 1) / 2048);
 
@@ -707,7 +684,7 @@ namespace atomex.ViewModel
 
                     if (accountResult == null || accountResult.HasError || accountResult.Value?.DelegateAddress == null)
                     {
-                        delegations.Add(new DelegationViewModel(this, Navigation)
+                        delegations.Add(new DelegationViewModel(this, _navigationService)
                         {
                             Address = wa.Address,
                             Balance = wa.Balance
@@ -718,14 +695,14 @@ namespace atomex.ViewModel
                     var account = accountResult.Value;
 
                     var baker = await BbApi
-                        .GetBaker(account.DelegateAddress, AtomexApp.Account.Network)
+                        .GetBaker(account.DelegateAddress, _app.Account.Network)
                         .ConfigureAwait(false) ?? new BakerData { Address = account.DelegateAddress };
 
-                    decimal txCycle = AtomexApp.Account.Network == Network.MainNet ?
+                    decimal txCycle = _app.Account.Network == Network.MainNet ?
                         Math.Floor((account.DelegationLevel - 1) / 4096) :
                         Math.Floor((account.DelegationLevel - 1) / 2048);
 
-                    delegations.Add(new DelegationViewModel(this, Navigation)
+                    delegations.Add(new DelegationViewModel(this, _navigationService)
                     {
                         Baker = baker,
                         Address = wa.Address,
@@ -753,8 +730,8 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            if (AtomexApp.HasQuotesProvider)
-                AtomexApp.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
@@ -770,9 +747,12 @@ namespace atomex.ViewModel
 
         private ICommand _selectDelegationCommand;
         public ICommand SelectDelegationCommand => _selectDelegationCommand ??= new Command<DelegationViewModel>((value) =>
-           _ = value.Baker == null
-                ? Navigation.PushAsync(new DelegatePage(this))
-                : Navigation.PushAsync(new DelegationInfoPage(value)));
+        {
+            if (value.Baker == null)
+                _navigationService?.ShowPage(new DelegatePage(this), TabNavigation.Portfolio);
+            else
+                _navigationService?.ShowPage(new DelegationInfoPage(value), TabNavigation.Portfolio);
+        });
     }
 }
 

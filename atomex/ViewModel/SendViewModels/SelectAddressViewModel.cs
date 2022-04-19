@@ -9,7 +9,6 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Services;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Common;
@@ -53,14 +52,13 @@ namespace atomex.ViewModel.SendViewModels
 
     public class SelectAddressViewModel : BaseViewModel
     {
-        protected IToastService ToastService { get; set; }
-        protected INavigation Navigation { get; set; }
-        protected CurrencyConfig Currency { get; set; }
+        protected INavigationService _navigationService { get; set; }
+        protected CurrencyConfig _currency { get; set; }
 
         public Action<SelectAddressViewModel, WalletAddressViewModel> ConfirmAction { get; set; }
         public SelectAddressMode SelectAddressMode { get; set; }
         public SelectAddressFrom SelectAddressFrom { get; set; }
-        private ObservableCollection<WalletAddressViewModel> InitialMyAddresses { get; set; }
+        private ObservableCollection<WalletAddressViewModel> _initialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public string ToAddress { get; set; }
@@ -83,15 +81,14 @@ namespace atomex.ViewModel.SendViewModels
         public SelectAddressViewModel(
             IAccount account,
             CurrencyConfig currency,
-            INavigation navigation,
+            INavigationService navigationService,
             SelectAddressMode mode = SelectAddressMode.ReceiveTo,
             string selectedAddress = null,
             decimal? selectedTokenId = null,
             string tokenContract = null)
         {
-            ToastService = DependencyService.Get<IToastService>() ?? throw new ArgumentNullException(nameof(ToastService));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
             Message = new Message();
 
 
@@ -129,7 +126,7 @@ namespace atomex.ViewModel.SendViewModels
                     if (MyAddresses == null) return;
 
                     var myAddresses = new ObservableCollection<WalletAddressViewModel>(
-                        InitialMyAddresses
+                        _initialMyAddresses
                             .Where(addressViewModel => addressViewModel.WalletAddress.Address.ToLower()
                                 .Contains(item3?.ToLower() ?? string.Empty)));
 
@@ -214,7 +211,7 @@ namespace atomex.ViewModel.SendViewModels
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
 
-            InitialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
+            _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
 
             SelectedAddress = selectedAddress != null
                 ? MyAddresses.FirstOrDefault(vm =>
@@ -226,7 +223,7 @@ namespace atomex.ViewModel.SendViewModels
 
         public WalletAddressViewModel SelectDefaultAddress()
         {
-            if (Currency is TezosConfig or EthereumConfig)
+            if (_currency is TezosConfig or EthereumConfig)
             {
                 var activeAddressViewModel = MyAddresses
                     .Where(vm => vm.HasActivity && vm.AvailableBalance > 0)
@@ -286,7 +283,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<Unit, Unit> _searchCommand;
         public ReactiveCommand<Unit, Unit> SearchCommand =>
-            _searchCommand ??= (_searchCommand = ReactiveCommand.CreateFromTask(OnSearchButtonClicked));
+            _searchCommand ??= (_searchCommand = ReactiveCommand.Create(OnSearchButtonClicked));
 
         private ReactiveCommand<Unit, Unit> _clearToAddressCommand;
         public ReactiveCommand<Unit, Unit> ClearToAddressCommand =>
@@ -311,7 +308,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private ICommand _scanResultCommand;
         public ICommand ScanResultCommand =>
-            _scanResultCommand ??= new Command(async () => await OnScanResult());
+            _scanResultCommand ??= new Command(OnScanResult);
 
         private ICommand _backCommand;
         public ICommand BackCommand => _backCommand ??= new Command(() =>
@@ -340,15 +337,15 @@ namespace atomex.ViewModel.SendViewModels
             if (!string.IsNullOrEmpty(value))
             {
                 await Clipboard.SetTextAsync(value);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 
-        private async Task OnScanResult()
+        private void OnScanResult()
         {
             IsScanning = false;
             IsAnalyzing = false;
@@ -357,16 +354,16 @@ namespace atomex.ViewModel.SendViewModels
 
             if (ScanResult == null)
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
-                Device.BeginInvokeOnMainThread(async () =>
+                _navigationService?.ShowAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    await Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                 });
 
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 int indexOfChar = ScanResult.Text.IndexOf(':');
                 if (indexOfChar == -1)
@@ -374,7 +371,7 @@ namespace atomex.ViewModel.SendViewModels
                 else
                     ToAddress = ScanResult.Text.Substring(indexOfChar + 1);
 
-                await Navigation.PopAsync();
+                _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                 ConfirmExternalAddress();
             });
@@ -394,17 +391,17 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsScanning));
             this.RaisePropertyChanged(nameof(IsAnalyzing));
 
-            await Navigation.PushAsync(new ScanningQrPage(this));
+            _navigationService?.ShowPage(new ScanningQrPage(this), TabNavigation.Portfolio);
         }
 
-        private async Task OnSearchButtonClicked()
+        private void OnSearchButtonClicked()
         {
             if (SelectAddressFrom == SelectAddressFrom.Init)
                 SelectAddressFrom = SelectAddressFrom.InitSearch;
             if (SelectAddressFrom == SelectAddressFrom.Change)
                 SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
-            await Navigation.PushAsync(new SearchAddressPage(this));
+            _navigationService?.ShowPage(new SearchAddressPage(this), TabNavigation.Portfolio);
         }
 
         private async Task OnPasteButtonClicked()
@@ -418,7 +415,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.EmptyClipboard, AppResources.AcceptButton);
             }
             _pasted = false;
         }
@@ -428,17 +425,17 @@ namespace atomex.ViewModel.SendViewModels
             if (address != null)
             {
                 await Clipboard.SetTextAsync(address.Address);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         }
 
         private void ValidateAddress(string address)
         {
-            if (!Currency.IsValidAddress(address))
+            if (!_currency.IsValidAddress(address))
             {
                 Message.Type = MessageType.Error;
                 Message.RelatedElement = RelatedTo.Address;
@@ -449,7 +446,7 @@ namespace atomex.ViewModel.SendViewModels
 
         private void ConfirmExternalAddress()
         {
-            if (!Currency.IsValidAddress(ToAddress))
+            if (!_currency.IsValidAddress(ToAddress))
             {
                 Message.Type = MessageType.Error;
                 Message.RelatedElement = RelatedTo.Address;

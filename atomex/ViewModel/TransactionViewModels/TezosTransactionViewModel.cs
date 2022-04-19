@@ -10,9 +10,11 @@ namespace atomex.ViewModel.TransactionViewModels
         public bool IsInternal { get; set; }
         public string Alias { get; set; }
 
-
-        public TezosTransactionViewModel(TezosTransaction tx, TezosConfig tezosConfig)
-            : base(tx, tezosConfig, GetAmount(tx, tezosConfig), GetFee(tx))
+        public TezosTransactionViewModel(
+            TezosTransaction tx,
+            TezosConfig tezosConfig,
+            INavigationService navigationService)
+            : base(tx, tezosConfig, GetAmount(tx, tezosConfig), GetFee(tx), navigationService)
         {
             From = tx.From;
             To = tx.To;

@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Reactive;
 using atomex.Resources;
-using atomex.Services;
 using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
 using ReactiveUI;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
     public class TransactionViewModel : BaseViewModel
     {
+        private INavigationService _navigationService { get; set; }
+
         public event EventHandler<TransactionEventArgs> RemoveClicked;
+        public Action<string> CopyAddress { get; set; }
+        public Action<string> CopyTxId { get; set; }
 
         public IBlockchainTransaction Transaction { get; set; }
         public string Id { get; set; }
@@ -35,13 +37,16 @@ namespace atomex.ViewModel.TransactionViewModels
         public string Direction { get; set; }
         public bool CanBeRemoved { get; set; }
 
-        private IToastService ToastService;
-
         public TransactionViewModel()
         {
         }
 
-        public TransactionViewModel(IBlockchainTransaction tx, CurrencyConfig currencyConfig, decimal amount, decimal fee)
+        public TransactionViewModel(
+            IBlockchainTransaction tx,
+            CurrencyConfig currencyConfig,
+            decimal amount,
+            decimal fee,
+            INavigationService navigationService)
         {
             Transaction = tx ?? throw new ArgumentNullException(nameof(tx));
             Id = Transaction.Id;
@@ -53,8 +58,6 @@ namespace atomex.ViewModel.TransactionViewModels
 
             TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
             AddressExplorerUri = $"{Currency.AddressExplorerUri}";
-
-            ToastService = DependencyService.Get<IToastService>();
 
             var netAmount = amount + fee;
         
@@ -72,6 +75,8 @@ namespace atomex.ViewModel.TransactionViewModels
                 netAmount: netAmount,
                 amountDigits: currencyConfig.Digits,
                 currencyCode: currencyConfig.Name);
+
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
         }
 
         public static string GetDescription(
@@ -120,40 +125,10 @@ namespace atomex.ViewModel.TransactionViewModels
         }
 
         private ReactiveCommand<string, Unit> _copyTxIdCommand;
-        public ReactiveCommand<string, Unit> CopyTxIdCommand => _copyTxIdCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) =>
-        {
-            try
-            {
-                await Clipboard.SetTextAsync(value);
-
-                if (ToastService == null)
-                    ToastService = DependencyService.Get<IToastService>();
-
-                ToastService?.Show(AppResources.TransactionIdCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        });
+        public ReactiveCommand<string, Unit> CopyTxIdCommand => _copyTxIdCommand ??= ReactiveCommand.Create<string>((value) => CopyTxId.Invoke(value));
 
         private ReactiveCommand<string, Unit> _copyAddressCommand;
-        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) =>
-        {
-            try
-            {
-                await Clipboard.SetTextAsync(value);
-
-                if (ToastService == null)
-                    ToastService = DependencyService.Get<IToastService>();
-
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        });
+        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??= ReactiveCommand.Create<string>((value) => CopyAddress.Invoke(value));
 
         private ReactiveCommand<Unit, Unit> _showTxInExplorerCommand;
         public ReactiveCommand<Unit, Unit> ShowTxInExplorerCommand => _showTxInExplorerCommand ??= ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(TxExplorerUri)));
@@ -164,7 +139,7 @@ namespace atomex.ViewModel.TransactionViewModels
         private ReactiveCommand<Unit, Unit> _deleteTxCommand;
         public ReactiveCommand<Unit, Unit> DeleteTxCommand => _deleteTxCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
-            var res = await Application.Current.MainPage.DisplayAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
+            var res = await _navigationService?.ShowAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
 
             if (!res) return;
             RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Atomex;
 using Atomex.Core;
 using Xamarin.Forms;
@@ -11,17 +10,19 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsStakingAvailable => CurrencyCode == "XTZ";
 
         public TezosCurrencyViewModel(
-             IAtomexApp app, CurrencyConfig currency)
-            : base(app, currency)
+             IAtomexApp app,
+             CurrencyConfig currency,
+             INavigationService navigationService)
+            : base(app, currency, navigationService)
         {
         }
 
         private ICommand _stakingPageCommand;
-        public ICommand StakingPageCommand => _stakingPageCommand ??= new Command(async () => await OnStakingButtonClicked());
+        public ICommand StakingPageCommand => _stakingPageCommand ??= new Command(OnStakingButtonClicked);
 
-        private async Task OnStakingButtonClicked()
+        private void OnStakingButtonClicked()
         {
-            await Navigation.PushAsync(new DelegationsListPage(new DelegateViewModel(_app, Navigation)));
+            _navigationService?.ShowPage(new DelegationsListPage(new DelegateViewModel(_app, _navigationService)), TabNavigation.Portfolio);
         }
     }
 }

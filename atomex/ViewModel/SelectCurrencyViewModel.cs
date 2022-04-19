@@ -6,20 +6,26 @@ using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class SelectCurrencyViewModel : BaseViewModel
     {
+        private INavigationService _navigationService { get; set; }
+
         public CurrencyActionType Type { get; set; }
         public ObservableCollection<CurrencyViewModel> Currencies { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
         public Action<CurrencyViewModel> OnSelected { get; set; }
 
-        public SelectCurrencyViewModel(CurrencyActionType type, IEnumerable<CurrencyViewModel> currencies)
+        public SelectCurrencyViewModel(
+            CurrencyActionType type,
+            IEnumerable<CurrencyViewModel> currencies,
+            INavigationService navigationService)
         {
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+
             Type = type;
             Currencies = new ObservableCollection<CurrencyViewModel>(currencies);
 
@@ -32,10 +38,6 @@ namespace atomex.ViewModel
         }
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
     }
 }

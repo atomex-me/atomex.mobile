@@ -10,7 +10,6 @@ using atomex.ViewModel.TransactionViewModels;
 using System.Collections.ObjectModel;
 using Atomex.Common;
 using Atomex.Core;
-using System.Windows.Input;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -18,8 +17,10 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
 
         public Fa12CurrencyViewModel(
-           IAtomexApp app, CurrencyConfig currency)
-           : base(app, currency)
+           IAtomexApp app,
+           CurrencyConfig currency,
+           INavigationService navigationService)
+           : base(app, currency, navigationService)
         {
         }
 
@@ -78,24 +79,24 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         //public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
 
-        private async Task OnReceiveButtonClicked()
+        private void OnReceiveButtonClicked()
         {
             var fa12currency = Currency as Fa12Config;
             var tezosConfig = _app.Account
                 .Currencies
                 .GetByName(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            _navigationService?.ShowPage(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, _navigationService, fa12currency.TokenContractAddress)), TabNavigation.Portfolio);
         }
 
-        private async Task OnAddressesButtonClicked()
+        private void OnAddressesButtonClicked()
         {
             var fa12currency = Currency as Fa12Config;
             var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(_app, tezosConfig, fa12currency.TokenContractAddress)));
+            _navigationService?.ShowPage(new AddressesPage(new AddressesViewModel(_app, tezosConfig, _navigationService, fa12currency.TokenContractAddress)), TabNavigation.Portfolio);
         }
 
     }

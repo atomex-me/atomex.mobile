@@ -86,7 +86,6 @@
     <Compile Include="CustomElements\RightRoundedButton.cs" />
     <Compile Include="Common\IosFileSystem.cs" />
     <Compile Include="Services\iOSNotificationManager.cs" />
-    <Compile Include="Services\ToastService.cs" />
     <Compile Include="CustomElements\CustomFrameRenderer.cs" />
     <Compile Include="CustomElements\CustomPickerRenderer.cs" />
     <Compile Include="CustomElements\CustomViewCellRenderer.cs" />
@@ -318,13 +317,13 @@
     <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

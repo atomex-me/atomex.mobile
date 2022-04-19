@@ -27,7 +27,6 @@ namespace atomex
 
         public static double ScreenWidth { get; } = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
         public static double ScreenHeight { get; } = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
-
         public static bool IsSmallScreen { get; } = ScreenWidth <= 360;
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
@@ -77,8 +76,9 @@ namespace atomex
             AtomexApp.Start();
 
             StartViewModel startViewModel = new StartViewModel(AtomexApp);
-            MainPage = new NavigationPage(new StartPage(startViewModel));
-            startViewModel.Navigation = MainPage.Navigation;
+            var mainPage = new StartPage(startViewModel);
+            MainPage = new NavigationPage(mainPage);
+            startViewModel?.SetNavigationService(mainPage);
         }
 
         protected override void OnStart()

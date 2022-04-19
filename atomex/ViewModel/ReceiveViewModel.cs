@@ -16,7 +16,6 @@ using Atomex.ViewModels;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -25,7 +24,7 @@ namespace atomex.ViewModel
     public class ReceiveViewModel : BaseViewModel
     {
         private IAtomexApp _app { get; }
-        public INavigation _navigation { get; set; }
+        private INavigationService _navigationService { get; }
 
         [Reactive] public CurrencyConfig Currency { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
@@ -36,10 +35,10 @@ namespace atomex.ViewModel
         public string TokenContract { get; private set; }
         [Reactive] public bool IsCopied { get; set; }
 
-        public ReceiveViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation)
+        public ReceiveViewModel(IAtomexApp app, CurrencyConfig currency, INavigationService navigation)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigation = navigation ?? throw new ArgumentNullException(nameof(_navigation));
+            _navigationService = navigation ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
 
             this.WhenAnyValue(vm => vm.Currency)
@@ -135,10 +134,14 @@ namespace atomex.ViewModel
             CopyButtonName = AppResources.CopyAddress;
         }
 
-        public ReceiveViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
+        public ReceiveViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService service,
+            string tokenContract = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigation = navigation ?? throw new ArgumentNullException(nameof(_navigation));
+            _navigationService = service ?? throw new ArgumentNullException(nameof(_navigationService));
             TokenContract = tokenContract;
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
         }
@@ -149,7 +152,7 @@ namespace atomex.ViewModel
                 var selectAddressViewModel = new SelectAddressViewModel(
                     account: _app.Account,
                     currency: Currency,
-                    navigation: _navigation,
+                    navigationService: _navigationService,
                     mode: SelectAddressMode.ChooseMyAddress)
                 {
                     ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
@@ -157,16 +160,15 @@ namespace atomex.ViewModel
                         SelectedAddress = walletAddressViewModel;
 
                         if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
-                            _navigation?.RemovePage(_navigation.NavigationStack[_navigation.NavigationStack.Count - 2]);
+                            _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                         
-                        _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(this));
-                        _navigation?.PopAsync();
+                        _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(this));
+                        _navigationService?.ClosePage(TabNavigation.Portfolio);
                     }
                 };
 
-                if (PopupNavigation.Instance.PopupStack.Count > 0)
-                    _ = PopupNavigation.Instance.PopAsync();
-                _navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                _navigationService?.CloseBottomSheet();
+                _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
             });
 
         private ReactiveCommand<Unit, Unit> _copyCommand;
@@ -183,7 +185,7 @@ namespace atomex.ViewModel
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         });
 
@@ -210,11 +212,7 @@ namespace atomex.ViewModel
         //});
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>_navigationService?.CloseBottomSheet());
     }
 }
 

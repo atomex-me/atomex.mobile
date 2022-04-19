@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
-using atomex.Services;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
@@ -24,9 +23,10 @@ using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -46,10 +46,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
-
-        [Reactive] public INavigation Navigation { get; set; }
-        public INavigationService NavigationService { get; set; }
-        public IToastService ToastService { get; set; }
+        protected INavigationService _navigationService { get; set; }
 
         public CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
@@ -96,11 +93,15 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public bool IsRefreshing { get; set; }
         [Reactive] public ActiveTab CurrencyActiveTab { get; set; }
 
-        public CurrencyViewModel(IAtomexApp app, CurrencyConfig currency, bool loadTransaction = true)
+        public CurrencyViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService,
+            bool loadTransaction = true)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            ToastService = DependencyService.Get<IToastService>();
 
             SubscribeToUpdates(_app.Account);
             SubscribeToRatesProvider(_app.QuotesProvider);
@@ -116,18 +117,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(t =>
                 {
-                    Navigation?.PushAsync(new TransactionInfoPage(t));
+                    _navigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
                     SelectedTransaction = null;
                 });
 
             this.WhenAnyValue(vm => vm.Transactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(txs => CanShowMoreTxs = txs.Count > TxsNumberPerPage);
-
-            this.WhenAnyValue(vm => vm.Navigation)
-                .WhereNotNull()
-                .Where(_ => AddressesViewModel != null)
-                .SubscribeInMainThread(nav => AddressesViewModel.Navigation = nav);
 
             GetAddresses();
             CurrencyActiveTab = ActiveTab.Activity;
@@ -136,7 +132,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected void GetAddresses()
         {
-            AddressesViewModel = new AddressesViewModel(_app, Currency);
+            AddressesViewModel = new AddressesViewModel(_app, Currency, _navigationService);
         }
 
         public void SubscribeToUpdates(IAccount account)
@@ -247,12 +243,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
                        transactions.Select(t => TransactionViewModelCreator
-                           .CreateViewModel(t, Currency))
+                           .CreateViewModel(t, Currency, _navigationService))
                            .ToList()
                            .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
                            .ForEachDo(t =>
                             {
                                 t.RemoveClicked += RemoveTransactonEventHandler;
+                                t.CopyAddress = CopyAddress;
+                                t.CopyTxId = CopyTxId;
                             }));
 
                     var groups = !IsAllTxsShowed
@@ -295,16 +293,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Log.Error(e, "Transaction remove error");
             }
 
-            await Navigation?.PopAsync();
+            _navigationService?.ClosePage(TabNavigation.Portfolio);
         }
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
         public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(() =>
             {
-                if (PopupNavigation.Instance.PopupStack.Count > 0)
-                    _ = PopupNavigation.Instance.PopAsync();
-                var receiveViewModel = new ReceiveViewModel(_app, Currency, Navigation);
-                _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
+                var receiveViewModel = new ReceiveViewModel(_app, Currency, _navigationService);
+                _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
             });
 
         private ReactiveCommand<Unit, Unit> _sendCommand;
@@ -312,55 +308,85 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (AvailableAmount <= 0) return;
 
-                var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this);
+                var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
                 if (Currency is BitcoinBasedConfig)
                 {
                     var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                    Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                    _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
                 }
                 else
                 {
                     var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                    Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                    _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
                 }
             });
 
         protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
-            NavigationService.ConvertCurrency(Currency));
+            _navigationService?.GoToExchange(Currency));
 
         protected ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
         public ReactiveCommand<Unit, Unit> BuyCurrencyCommand => _buyCurrencyCommand ??= ReactiveCommand.Create(() =>
-            NavigationService.BuyCurrency(Currency));
+            _navigationService?.GoToBuy(Currency));
 
         private ICommand _refreshCommand;
-        public ICommand RefreshCommand => _refreshCommand ??= new Command(async () =>
+        public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
+
+        public async Task ScanCurrency()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsRefreshing = true;
+            this.RaisePropertyChanged(nameof(IsRefreshing));
+
+            try
             {
-                var cancellation = new CancellationTokenSource();
-                IsRefreshing = true;
-                try
-                {
-                    var scanner = new HdWalletScanner(_app.Account);
-                    await scanner.ScanAsync(
-                        currency: Currency.Name,
-                        skipUsed: true,
-                        cancellationToken: cancellation.Token);
+                var scanner = new HdWalletScanner(_app.Account);
+                await scanner.ScanAsync(
+                    currency: Currency.Name,
+                    skipUsed: true,
+                    cancellationToken: cancellation.Token);
 
-                    await UpdateTransactionsAsync();
+                await UpdateTransactionsAsync();
 
-                    ToastService?.Show(Currency.Description + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
-                }
+                _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
+            }
 
-                IsRefreshing = false;
-            });
+            IsRefreshing = false;
+        }
 
-        private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
-        public ReactiveCommand<Unit, Unit> UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= ReactiveCommand.Create(() =>
-            ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString()));
+        //private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
+        //public ReactiveCommand<Unit, Unit> UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= ReactiveCommand.Create(() =>
+        //    ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString()));
+
+        private void CopyAddress(string value)
+        {
+            if (value != null)
+            {
+                _ = Clipboard.SetTextAsync(value);
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+            }
+            else
+            {
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        private void CopyTxId(string value)
+        {
+            if (value != null)
+            {
+                _ = Clipboard.SetTextAsync(value);
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+            }
+            else
+            {
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
 
         private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
         public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand => _changeCurrencyTabCommand ??= ReactiveCommand.Create<string>((value) =>

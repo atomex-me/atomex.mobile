@@ -14,8 +14,9 @@ namespace atomex.ViewModel.TransactionViewModels
 
         public EthereumERC20TransactionViewModel(
             EthereumTransaction tx,
-            Erc20Config erc20Config)
-            : base(tx, erc20Config, GetAmount(tx, erc20Config), 0)
+            Erc20Config erc20Config,
+            INavigationService navigationService)
+            : base(tx, erc20Config, GetAmount(tx, erc20Config), 0, navigationService)
         {
             From = tx.From;
             To = tx.To;

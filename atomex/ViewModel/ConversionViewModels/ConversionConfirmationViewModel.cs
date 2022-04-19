@@ -14,9 +14,8 @@ using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using Serilog;
 using atomex.Common;
-using Rg.Plugins.Popup.Services;
-using atomex.Views.Popup;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
@@ -27,6 +26,7 @@ namespace atomex.ViewModel
         public event EventHandler OnSuccess;
 
         private readonly IAtomexApp _app;
+        private INavigationService _navigationService { get; set; }
         public IFromSource FromSource { get; set; }
         public string FromAddressDescription
         {
@@ -74,15 +74,12 @@ namespace atomex.ViewModel
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
 
-        public ConversionConfirmationViewModel(IAtomexApp app)
+        public ConversionConfirmationViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
         }
 
         private async void Send()
@@ -100,42 +97,17 @@ namespace atomex.ViewModel
                 if (error != null)
                 {
                     if (error.Code == Errors.PriceHasChanged)
-                    {
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = AppResources.PriceChangedError,
-                                ButtonText = AppResources.AcceptButton
-                            }));
-                    }
+                        _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
                     else
-                    {
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = error.Description,
-                                ButtonText = AppResources.AcceptButton
-                            }));
-                    }
+                        _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
+                    
                     return;
                 }
                 OnSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Error,
-                        Title = AppResources.Error,
-                        Body = "An error has occurred while sending swap",
-                        ButtonText = AppResources.AcceptButton
-                    }));
-
+                _navigationService?.DisplaySnackBar(MessageType.Error, "An error has occurred while sending swap");
                 Log.Error(e, "Swap error.");
             }
             finally

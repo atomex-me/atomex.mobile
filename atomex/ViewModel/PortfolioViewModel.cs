@@ -14,10 +14,8 @@ using Atomex;
 using Atomex.Common;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -53,9 +51,8 @@ namespace atomex.ViewModel
     public class PortfolioViewModel : BaseViewModel
     {
         private IAtomexApp _app { get; }
+        [Reactive] private INavigationService _navigationService { get; set; }
 
-        [Reactive] public INavigation Navigation { get; set; }
-        [Reactive] public INavigationService NavigationService { get; set; }
         [Reactive] public IList<PortfolioCurrency> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
 
@@ -66,40 +63,19 @@ namespace atomex.ViewModel
 
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
 
-        public PortfolioViewModel(IAtomexApp app)
+        public PortfolioViewModel(
+            IAtomexApp app,
+            bool restore = false)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            GetCurrencies();
-
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
-                .SubscribeInMainThread(_ => SubscribeToUpdates());
+                .SubscribeInMainThread(_ => SubscribeToUpdates(restore));
 
-            this.WhenAnyValue(vm => vm.Navigation)
+            this.WhenAnyValue(vm => vm._navigationService)
                 .WhereNotNull()
-                .SubscribeInMainThread(nav =>
-                {
-                    AllCurrencies
-                        .Select(c =>
-                        {
-                            c.CurrencyViewModel.Navigation = nav;
-                            return c;
-                        })
-                        .ToList();
-                });
-
-            this.WhenAnyValue(vm => vm.NavigationService)
-                .WhereNotNull()
-                .SubscribeInMainThread(service =>
-                {
-                    AllCurrencies
-                        .Select(c =>
-                        {
-                            c.CurrencyViewModel.NavigationService = service;
-                            return c;
-                        })
-                        .ToList();
-                });
+                .SubscribeInMainThread(service => GetCurrencies());
 
             this.WhenAnyValue(vm => vm.SelectedCurrency)
                 .WhereNotNull()
@@ -108,45 +84,48 @@ namespace atomex.ViewModel
                     switch (SelectCurrencyUseCase)
                     {
                         case CurrencyActionType.Show:
-                            Navigation?.PushAsync(new CurrencyPage(c));
+                            _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Send:
-                            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                                _ = PopupNavigation.Instance.PopAsync();
-                            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c);
+                            _navigationService?.CloseBottomSheet();
+                            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, c, _navigationService);
                             if (c.Currency is BitcoinBasedConfig)
                             {
                                 var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                                Navigation?.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                                _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
                             }
                             else
                             {
                                 var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                                Navigation?.PushAsync(new SelectAddressPage(selectAddressViewModel));
+                                _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
                             }
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
                         case CurrencyActionType.Receive:
-                            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                                _ = PopupNavigation.Instance.PopAsync();
-                            var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, Navigation);
-                            _ = PopupNavigation.Instance.PushAsync(new ReceiveBottomSheet(receiveViewModel));
+                            var receiveViewModel = new ReceiveViewModel(_app, c?.Currency, _navigationService);
+                            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
                             SelectCurrencyUseCase = CurrencyActionType.Show;
                             SelectedCurrency = null;
                             break;
                         default:
-                            Navigation?.PushAsync(new CurrencyPage(c));
+                            _navigationService?.ShowPage(new CurrencyPage(c), TabNavigation.Portfolio);
                             SelectedCurrency = null;
                             break;
                     }
                 });   
         }
 
-        private void SubscribeToUpdates()
+        private void SubscribeToUpdates(bool restore = false)
         {
-            AllCurrencies.ForEachDo(c => c.CurrencyViewModel.AmountUpdated += OnAmountUpdatedEventHandler);
+            AllCurrencies.ForEachDo(c =>
+                c.CurrencyViewModel.AmountUpdated += OnAmountUpdatedEventHandler);
+
+            if (restore)
+                AllCurrencies.ForEachDo(async c =>
+                    await c.CurrencyViewModel.ScanCurrency());
+
             OnAmountUpdatedEventHandler(this, EventArgs.Empty);
         }
 
@@ -172,8 +151,7 @@ namespace atomex.ViewModel
                 AllCurrencies = _app.Account?.Currencies
                     .Select(c =>
                     {
-                        var currency = CurrencyViewModelCreator.CreateViewModel(_app, c);
-                        //currency.AmountUpdated += OnAmountUpdatedEventHandler;
+                        var currency = CurrencyViewModelCreator.CreateViewModel(_app, c, _navigationService);
                         var vm = new PortfolioCurrency
                         {
                             CurrencyViewModel = currency,
@@ -193,6 +171,11 @@ namespace atomex.ViewModel
             {
                 Log.Error(ex, "Get portfolio currencies error");
             }
+        }
+
+        public void SetNavigationService(INavigationService service)
+        {
+            _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         private void ChangeUserCurrencies(string currency, bool isSelected)
@@ -230,17 +213,10 @@ namespace atomex.ViewModel
         }
 
         private ReactiveCommand<Unit, Unit> _manageAssetsCommand;
-        public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??= ReactiveCommand.Create(() =>
-        {
-            _ = PopupNavigation.Instance.PushAsync(new ManageAssetsBottomSheet(this));
-        });
+        public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??= ReactiveCommand.Create(() => _navigationService?.ShowBottomSheet(new ManageAssetsBottomSheet(this)));
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
 
 
         private ReactiveCommand<Unit, Unit> _sendCommand;
@@ -249,7 +225,10 @@ namespace atomex.ViewModel
             SelectCurrencyUseCase = CurrencyActionType.Send;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
             var selectCurrencyViewModel =
-                new SelectCurrencyViewModel(CurrencyActionType.Send, currencies)
+                new SelectCurrencyViewModel(
+                    CurrencyActionType.Send,
+                    currencies,
+                    _navigationService)
                 {
                     OnSelected = currencyViewModel =>
                     {
@@ -259,7 +238,7 @@ namespace atomex.ViewModel
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            _navigationService?.ShowBottomSheet(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
@@ -268,7 +247,10 @@ namespace atomex.ViewModel
             SelectCurrencyUseCase = CurrencyActionType.Receive;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
             var selectCurrencyViewModel =
-                new SelectCurrencyViewModel(CurrencyActionType.Receive, currencies)
+                new SelectCurrencyViewModel(
+                    CurrencyActionType.Receive,
+                    currencies,
+                    _navigationService)
                 {
                     OnSelected = currencyViewModel =>
                     {
@@ -278,10 +260,10 @@ namespace atomex.ViewModel
                 };
 
             SelectCurrencyUseCase = CurrencyActionType.Show;
-            _ = PopupNavigation.Instance.PushAsync(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
+            _navigationService?.ShowBottomSheet(new SelectCurrencyBottomSheet(selectCurrencyViewModel));
         });
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
-        public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => NavigationService.Exchange());
+        public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => _navigationService?.GoToExchange(null));
     }
 }

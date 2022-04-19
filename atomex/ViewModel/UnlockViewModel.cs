@@ -16,6 +16,8 @@ using Atomex.Common;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -25,92 +27,31 @@ namespace atomex
 {
     public class UnlockViewModel : BaseViewModel
     {
-        public IAtomexApp AtomexApp { get; }
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; set; }
 
-        public INavigation Navigation { get; set; }
-
-        private string _walletName;
-        public string WalletName
-        {
-            get => _walletName;
-            set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
-        }
-
-        private SecureString _storagePassword;
-        public SecureString StoragePassword
-        {
-            get => _storagePassword;
-            set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
-        }
-
-        private SecureString _storagePasswordConfirmation;
-        public SecureString StoragePasswordConfirmation
-        {
-            get => _storagePasswordConfirmation;
-            set { _storagePasswordConfirmation = value; OnPropertyChanged(nameof(StoragePasswordConfirmation)); }
-        }
-
-        private bool _isEnteredStoragePassword = false;
-        public bool IsEnteredStoragePassword
-        {
-            get => _isEnteredStoragePassword;
-            set { _isEnteredStoragePassword = value; OnPropertyChanged(nameof(IsEnteredStoragePassword)); }
-        }
-
-        private string _header;
-        public string Header
-        {
-            get => _header;
-            set { _header = value; OnPropertyChanged(nameof(Header)); }
-        }
-
-        private bool _isPinExist;
-        public bool IsPinExist
-        {
-            get => _isPinExist;
-            set { _isPinExist = value; OnPropertyChanged(nameof(IsPinExist)); }
-        }
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        private bool _isLocked;
-        public bool IsLocked
-        {
-            get => _isLocked;
-            set { _isLocked = value; OnPropertyChanged(nameof(IsLocked)); }
-        }
-
-        private string _warning;
-        public string Warning
-        {
-            get => _warning;
-            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
-        }
+        [Reactive] public string WalletName { get; set; }
+        [Reactive] public SecureString StoragePassword { get; set; }
+        [Reactive] public SecureString StoragePasswordConfirmation { get; set; }
+        [Reactive] public bool IsEnteredStoragePassword { get; set; }
+        [Reactive] public string Header { get; set; }
+        [Reactive] public bool IsPinExist { get; set; }
+        [Reactive] public bool IsLoading { get; set; }
+        [Reactive] public bool IsLocked { get; set; }
+        [Reactive] public string Warning { get; set; }
 
         private CancellationTokenSource Cancellation { get; set; }
 
         private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
         private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
-        private readonly int DefaultAttemptsCount = 5;
+        private const int DefaultAttemptsCount = 5;
 
         private Account _userAccount;
 
-        public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigation navigation)
+        public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigationService navigationService)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             StoragePassword = new SecureString();
             WalletName = wallet?.Name;
             CheckWalletLock();
@@ -129,7 +70,7 @@ namespace atomex
                         StoragePassword.AppendChar(c);
                     }
 
-                    OnPropertyChanged(nameof(StoragePassword));
+                    this.RaisePropertyChanged(nameof(StoragePassword));
 
                     if (StoragePassword.Length == 4)
                         _ = UnlockAsync();
@@ -146,14 +87,14 @@ namespace atomex
                             StoragePassword.AppendChar(c);
                         }
 
-                        OnPropertyChanged(nameof(StoragePassword));
+                        this.RaisePropertyChanged(nameof(StoragePassword));
 
                         if (StoragePassword?.Length == 4)
                         {
                             IsEnteredStoragePassword = true;
 
                             Header = AppResources.ReEnterPin;
-                            OnPropertyChanged(nameof(Header));
+                            this.RaisePropertyChanged(nameof(Header));
                         }
                     }
                 }
@@ -166,7 +107,7 @@ namespace atomex
                             StoragePasswordConfirmation.AppendChar(c);
                         }
 
-                        OnPropertyChanged(nameof(StoragePasswordConfirmation));
+                        this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
 
                         if (StoragePasswordConfirmation?.Length == 4)
                         {
@@ -193,7 +134,7 @@ namespace atomex
                 if (StoragePassword?.Length != 0)
                 {
                     StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                    OnPropertyChanged(nameof(StoragePassword));
+                    this.RaisePropertyChanged(nameof(StoragePassword));
                 }
             }
             else
@@ -201,7 +142,7 @@ namespace atomex
                 if (StoragePasswordConfirmation?.Length != 0)
                 {
                     StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
-                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
+                    this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
                 }
             }
         }
@@ -245,10 +186,10 @@ namespace atomex
             Header = AppResources.SetPinIsteadOfPswd;
             Warning = string.Empty;
 
-            OnPropertyChanged(nameof(Header));
-            OnPropertyChanged(nameof(Warning));
-            OnPropertyChanged(nameof(StoragePassword));
-            OnPropertyChanged(nameof(StoragePasswordConfirmation));
+            this.RaisePropertyChanged(nameof(Header));
+            this.RaisePropertyChanged(nameof(Warning));
+            this.RaisePropertyChanged(nameof(StoragePassword));
+            this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
         }
 
         private bool IsValidStoragePassword()
@@ -273,26 +214,22 @@ namespace atomex
         public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
 
         private ICommand _backCommand;
-        public ICommand BackCommand => _backCommand ??= new Command(() => OnBackButtonTapped());
+        public ICommand BackCommand => _backCommand ??= ReactiveCommand.Create(() =>
+            {
+                _userAccount = null;
+                Cancellation?.Cancel();
+            });
 
         private ICommand _textChangedCommand;
         public ICommand TextChangedCommand => _textChangedCommand ??= new Command<string>((value) => SetPassword(value));
 
         private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
-
-        private async Task OnCancelButtonTapped()
-        {
-            Cancellation?.Cancel();
-            _userAccount = null;
-            await Navigation.PopAsync();
-        }
-
-        private void OnBackButtonTapped()
-        {
-            _userAccount = null;
-            Cancellation?.Cancel();
-        }
+        public ICommand CancelCommand => _cancelCommand ??= ReactiveCommand.Create(() =>
+            {
+                Cancellation?.Cancel();
+                _userAccount = null;
+                _navigationService?.ClosePage();
+            });
 
         private async Task UnlockAsync()
         {
@@ -332,7 +269,7 @@ namespace atomex
                         return Account.LoadFromFile(
                             walletPath,
                             StoragePassword,
-                            AtomexApp.CurrenciesProvider,
+                            _app.CurrenciesProvider,
                             clientType);
                     });
                 }
@@ -361,7 +298,7 @@ namespace atomex
 
                             await Task.Run(() =>
                             {
-                                mainViewModel = new MainViewModel(AtomexApp, account, WalletName);
+                                mainViewModel = new MainViewModel(_app, account, WalletName);
                             });
 
                             Application.Current.MainPage = new MainPage(mainViewModel);
@@ -380,8 +317,8 @@ namespace atomex
                             IsLoading = false;
                             _userAccount = account;
                             StoragePasswordConfirmation = new SecureString();
-                            ClearStoragePswd(); 
-                            await Navigation.PushAsync(new AuthPage(this));
+                            ClearStoragePswd();
+                            _navigationService?.ShowPage(new AuthPage(this));
                         }
                     }
                     catch (Exception ex)
@@ -395,7 +332,7 @@ namespace atomex
                 {
                     IsLoading = false;
                     StoragePassword.Clear();
-                    OnPropertyChanged(nameof(StoragePassword));
+                    this.RaisePropertyChanged(nameof(StoragePassword));
                     UpdateAttemptsCounter();
                     _ = ShakePage();
                 }
@@ -404,7 +341,7 @@ namespace atomex
             {
                 IsLoading = false;
                 StoragePassword.Clear();
-                OnPropertyChanged(nameof(StoragePassword));
+                this.RaisePropertyChanged(nameof(StoragePassword));
                 UpdateAttemptsCounter();
                 _ = ShakePage();
                 Log.Error(e, "Invalid password error");
@@ -417,17 +354,16 @@ namespace atomex
 
             if (authType == "Pin")
             {
-                _header = AppResources.EnterPin;
-                _isPinExist = true;
+                Header = AppResources.EnterPin;
+                IsPinExist = true;
             }
             else
             {
-                _header = AppResources.SetPinIsteadOfPswd;
-                _isPinExist = false;
+                Header = AppResources.SetPinIsteadOfPswd;
+                IsPinExist = false;
             }
-
-            OnPropertyChanged(nameof(Header));
-            OnPropertyChanged(nameof(IsPinExist));
+            this.RaisePropertyChanged(nameof(Header));
+            this.RaisePropertyChanged(nameof(IsPinExist));
         }
 
         private String SecureStringToString(SecureString value)
@@ -631,7 +567,7 @@ namespace atomex
                     }
                     else
                     {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.NotAuthenticated, AppResources.AcceptButton);
+                        await _navigationService?.ShowAlert(AppResources.SorryLabel, AppResources.NotAuthenticated, AppResources.AcceptButton);
                     }
                 }
             }

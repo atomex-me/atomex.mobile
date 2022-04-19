@@ -6,7 +6,7 @@ namespace atomex
 {
     public static class SwapViewModelFactory
     {
-        public static SwapViewModel CreateSwapViewModel(Swap swap, ICurrencies currencies)
+        public static SwapViewModel CreateSwapViewModel(Swap swap, ICurrencies currencies, INavigationService navigationService)
         {
             var soldCurrency = currencies.GetByName(swap.SoldCurrency);
             var purchasedCurrency = currencies.GetByName(swap.PurchasedCurrency);
@@ -32,6 +32,7 @@ namespace atomex
                 Currencies       = currencies
             };
 
+            swapViewModel.SetNavigationService(navigationService);
             swapViewModel.UpdateSwap(swap);
 
             return swapViewModel;

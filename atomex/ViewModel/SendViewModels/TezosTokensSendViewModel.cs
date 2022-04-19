@@ -9,7 +9,6 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Views.Popup;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -21,7 +20,6 @@ using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Forms;
 using static atomex.Models.Message;
@@ -30,8 +28,8 @@ namespace atomex.ViewModel.SendViewModels
 {
     public class TezosTokensSendViewModel : BaseViewModel
     {
-        protected IAtomexApp App { get; }
-        protected INavigation Navigation { get; set; }
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; }
 
         public const string DefaultBaseCurrencyCode = "USD";
         public const string DefaultBaseCurrencyFormat = "$0.00";
@@ -178,18 +176,18 @@ namespace atomex.ViewModel.SendViewModels
 
         public TezosTokensSendViewModel(
             IAtomexApp app,
-            INavigation navigation,
+            INavigationService navigationService,
             string tokenContract,
             decimal tokenId,
             string tokenType,
             UriImageSource tokenPreview,
             string from = null)
         {
-            App = app ?? throw new ArgumentNullException(nameof(App));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Message = new Message();
 
-            var tezosConfig = App.Account
+            var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -236,7 +234,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(
                     vm => vm.Amount,
                     vm => vm.Fee)
-                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(
                     vm => vm.Amount,
@@ -280,9 +278,9 @@ namespace atomex.ViewModel.SendViewModels
             UseDefaultFee = true;
 
             SelectFromViewModel = new SelectAddressViewModel(
-                account: App.Account,
+                account: _app.Account,
                 currency: tezosConfig,
-                navigation: Navigation,
+                navigationService: _navigationService,
                 mode: SelectAddressMode.SendFrom,
                 selectedAddress: from,
                 selectedTokenId: tokenId,
@@ -292,9 +290,9 @@ namespace atomex.ViewModel.SendViewModels
             };
 
             SelectToViewModel = new SelectAddressViewModel(
-                account: App.Account,
+                account: _app.Account,
                 currency: tezosConfig,
-                navigation: Navigation)
+                navigationService: _navigationService)
             {
                 ConfirmAction = ConfirmToAddress
             };
@@ -302,8 +300,8 @@ namespace atomex.ViewModel.SendViewModels
 
         private void SubscribeToServices()
         {
-            if (App.HasQuotesProvider)
-                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private ReactiveCommand<Unit, Unit> _nextCommand;
@@ -314,37 +312,33 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
-            (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
+            (_selectFromCommand = ReactiveCommand.Create(FromClick));
 
         private ReactiveCommand<Unit, Unit> _selectToCommand;
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
-            (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
+            (_selectToCommand = ReactiveCommand.Create(ToClick));
 
         private ICommand _undoConfirmStageCommand;
         public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => ConfirmStage = false);
 
         private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
 
-        private async Task FromClick()
+        private void FromClick()
         {
             SelectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
-            await Navigation.PushAsync(new SelectAddressPage(SelectFromViewModel));
+            _navigationService?.ShowPage(new SelectAddressPage(SelectFromViewModel), TabNavigation.Portfolio);
         }
 
-        private async Task ToClick()
+        private void ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
-            await Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+            _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
         }
 
         private async void OnNextCommand()
         {
-            var tezosConfig = App.Account
+            var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -403,7 +397,7 @@ namespace atomex.ViewModel.SendViewModels
             }
 
             var fromTokenAddress = await GetTokenAddressAsync(
-                account: App.Account,
+                account: _app.Account,
                 address: From,
                 tokenContract: TokenContract,
                 tokenId: TokenId,
@@ -428,7 +422,7 @@ namespace atomex.ViewModel.SendViewModels
                 return;
             }
 
-            var xtzAddress = await App.Account
+            var xtzAddress = await _app.Account
                 .GetAddressAsync(TezosConfig.Xtz, From);
 
             if (xtzAddress == null)
@@ -463,43 +457,18 @@ namespace atomex.ViewModel.SendViewModels
 
                     if (error != null)
                     {
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = error.Description,
-                                ButtonText = AppResources.AcceptButton
-                            }));
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
                         return;
                     }
 
-                    if (PopupNavigation.Instance.PopupStack.Count > 0)
-                        await PopupNavigation.Instance.PopAsync();
-
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Success,
-                            Title = AppResources.Success,
-                            Body = string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending),
-                            ButtonText = AppResources.AcceptButton
-                        }));
-
-                    for (int i = Navigation.NavigationStack.Count; i > 3; i--)
-                        Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
+                    _navigationService?.CloseBottomSheet();
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
+                    //for (int i = Navigation.NavigationStack.Count; i > 3; i--)
+                    //    Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
                 }
                 catch (Exception e)
                 {
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Error,
-                            Title = AppResources.Error,
-                            Body = AppResources.SendingTransactionError,
-                            ButtonText = AppResources.AcceptButton
-                        }));
-
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, AppResources.SendingTransactionError);
                     Log.Error(e, "Tezos tokens transaction send error");
                 }
                 finally
@@ -512,7 +481,7 @@ namespace atomex.ViewModel.SendViewModels
             else
             {
                 ConfirmStage = true;
-                await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
             }
         }
 
@@ -520,7 +489,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                var tezosConfig = App.Account
+                var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -543,7 +512,7 @@ namespace atomex.ViewModel.SendViewModels
                 }
 
                 var fromTokenAddress = await GetTokenAddressAsync(
-                    account: App.Account,
+                    account: _app.Account,
                     address: From!,
                     tokenContract: TokenContract,
                     tokenId: TokenId,
@@ -577,7 +546,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                var tezosConfig = App.Account
+                var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -602,7 +571,7 @@ namespace atomex.ViewModel.SendViewModels
                 if (UseDefaultFee)
                 {
                     var fromTokenAddress = await GetTokenAddressAsync(
-                        account: App.Account,
+                        account: _app.Account,
                         address: From!,
                         tokenContract: TokenContract,
                         tokenId: TokenId,
@@ -617,7 +586,7 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
 
-                    var tokenAccount = App.Account
+                    var tokenAccount = _app.Account
                         .GetTezosTokenAccount<TezosTokenAccount>(fromTokenAddress.Currency, TokenContract, TokenId);
 
                     var (estimatedFee, isEnougth) = await tokenAccount
@@ -636,7 +605,7 @@ namespace atomex.ViewModel.SendViewModels
                 }
                 else
                 {
-                    var xtzAddress = await App.Account
+                    var xtzAddress = await _app.Account
                         .GetAddressAsync(TezosConfig.Xtz, From);
 
                     if (xtzAddress == null)
@@ -679,7 +648,7 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                var tezosConfig = App.Account
+                var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
@@ -700,7 +669,7 @@ namespace atomex.ViewModel.SendViewModels
                 }
 
                 var fromTokenAddress = await GetTokenAddressAsync(
-                    account: App.Account,
+                    account: _app.Account,
                     address: From,
                     tokenContract: TokenContract,
                     tokenId: TokenId,
@@ -716,7 +685,7 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                var tokenAccount = App.Account
+                var tokenAccount = _app.Account
                     .GetTezosTokenAccount<TezosTokenAccount>(fromTokenAddress.Currency, TokenContract, TokenId);
 
                 var (estimatedFee, isEnougth) = await tokenAccount
@@ -749,21 +718,21 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    Navigation.PopAsync();
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -775,21 +744,21 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new SendPage(this));
+                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new SendPage(this));
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    Navigation.PopAsync();
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -830,7 +799,7 @@ namespace atomex.ViewModel.SendViewModels
                 return;
 
             var tokenAddress = await GetTokenAddressAsync(
-                account: App.Account,
+                account: _app.Account,
                 address: From,
                 tokenContract: TokenContract,
                 tokenId: TokenId,
@@ -842,7 +811,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                CurrencyCode = App.Account.Currencies
+                CurrencyCode = _app.Account.Currencies
                     .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract)
                     ?.Name.ToUpper() ?? "TOKENS";
             }
@@ -854,7 +823,7 @@ namespace atomex.ViewModel.SendViewModels
         private async Task<Error> Send(CancellationToken cancellationToken = default)
         {
             var tokenAddress = await GetTokenAddressAsync(
-                account: App.Account,
+                account: _app.Account,
                 address: From,
                 tokenContract: TokenContract,
                 tokenId: TokenId,
@@ -862,11 +831,11 @@ namespace atomex.ViewModel.SendViewModels
 
             if (tokenAddress.Currency == "FA12")
             {
-                var currencyName = App.Account.Currencies
+                var currencyName = _app.Account.Currencies
                     .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract)
                     ?.Name ?? "FA12";
 
-                var tokenAccount = App.Account.GetTezosTokenAccount<Fa12Account>(
+                var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
                     currency: currencyName,
                     tokenContract: TokenContract,
                     tokenId: TokenId);
@@ -881,7 +850,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             else
             {
-                var tokenAccount = App.Account.GetTezosTokenAccount<Fa2Account>(
+                var tokenAccount = _app.Account.GetTezosTokenAccount<Fa2Account>(
                     currency: "FA2",
                     tokenContract: TokenContract,
                     tokenId: TokenId);

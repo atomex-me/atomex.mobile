@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Views.BuyCurrency;
 using Atomex;
@@ -21,11 +20,10 @@ namespace atomex.ViewModel
 {
     public class BuyViewModel : BaseViewModel
     {
-        private IAtomexApp AtomexApp { get; }
-        public INavigation Navigation { get; set; }
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; set; }
 
         [Reactive] public bool IsLoading { get; set; }
-
         [Reactive] public Network Network { get; set; }
         [Reactive] public string Url { get; set; }
 
@@ -41,17 +39,22 @@ namespace atomex.ViewModel
 
         public BuyViewModel(IAtomexApp app)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
             AvailableCurrencies = new ObservableCollection<string>(Currencies);
             IsLoading = true;
             _userId = GetUserId();
             Network = app.Account.Network;
         }
 
-        private ReactiveCommand<string, Unit> _selectCurrencyCommand;
-        public ReactiveCommand<string, Unit> SelectCurrencyCommand => _selectCurrencyCommand ??= ReactiveCommand.CreateFromTask<string>(async (value) => await LoadWebView(value));
+        public void SetNavigationService(INavigationService navigationService)
+        {
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+        }
 
-        private async Task LoadWebView(string currency)
+        private ReactiveCommand<string, Unit> _selectCurrencyCommand;
+        public ReactiveCommand<string, Unit> SelectCurrencyCommand => _selectCurrencyCommand ??= ReactiveCommand.Create<string>((value) => LoadWebView(value));
+
+        private void LoadWebView(string currency)
         {
             string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
             string address = GetDefaultAddress(currency);
@@ -65,7 +68,7 @@ namespace atomex.ViewModel
                 $"&click_id=user:{_userId}/network:{Network}" +
                 $"&theme={appTheme}";
 
-            await Navigation.PushAsync(new BuyPage(this));
+            _navigationService?.ShowPage(new BuyPage(this), TabNavigation.Buy);
         }
 
         private ICommand _canExecuteCommand;
@@ -85,12 +88,12 @@ namespace atomex.ViewModel
         public void BuyCurrency(CurrencyConfig currency)
         {
             if (currency != null)
-                _ = LoadWebView(currency.Name);
+                LoadWebView(currency.Name);
         }
 
         private string GetUserId()
         {
-            using var servicePublicKey = AtomexApp.Account.Wallet.GetServicePublicKey(AtomexApp.Account.UserSettings.AuthenticationKeyIndex);
+            using var servicePublicKey = _app.Account.Wallet.GetServicePublicKey(_app.Account.UserSettings.AuthenticationKeyIndex);
             using var publicKey = servicePublicKey.ToUnsecuredBytes();
             return Sha256.Compute(Sha256.Compute(publicKey)).ToHexString();
         }
@@ -99,20 +102,20 @@ namespace atomex.ViewModel
         {
             // get all addresses with tokens (if exists)
             var tokenAddresses = Atomex.Currencies.HasTokens(currency)
-                ? (AtomexApp.Account
+                ? (_app.Account
                     .GetCurrencyAccount(currency) as IHasTokens)
                     ?.GetUnspentTokenAddressesAsync()
                     .WaitForResult() ?? new List<WalletAddress>()
                 : new List<WalletAddress>();
 
             // get all active addresses
-            var activeAddresses = AtomexApp.Account
+            var activeAddresses = _app.Account
                 .GetUnspentAddressesAsync(currency)
                 .WaitForResult()
                 .ToList();
 
             // get free external address
-            var freeAddress = AtomexApp.Account
+            var freeAddress = _app.Account
                 .GetFreeExternalAddressAsync(currency)
                 .WaitForResult();
 

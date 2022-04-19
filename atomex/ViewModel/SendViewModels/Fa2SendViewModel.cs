@@ -7,8 +7,9 @@ namespace atomex.ViewModel.SendViewModels
     {
         public Fa2SendViewModel(
             IAtomexApp app,
-            CurrencyViewModel currencyViewModel)
-            : base(app, currencyViewModel)
+            CurrencyViewModel currencyViewModel,
+            INavigationService navigationService)
+            : base(app, currencyViewModel, navigationService)
         {
         }
     }

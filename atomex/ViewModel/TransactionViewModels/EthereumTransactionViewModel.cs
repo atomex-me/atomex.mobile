@@ -11,8 +11,11 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
 
-        public EthereumTransactionViewModel(EthereumTransaction tx, EthereumConfig ethereumConfig)
-            : base(tx, ethereumConfig, GetAmount(tx), GetFee(tx))
+        public EthereumTransactionViewModel(
+            EthereumTransaction tx,
+            EthereumConfig ethereumConfig,
+            INavigationService navigationService)
+            : base(tx, ethereumConfig, GetAmount(tx), GetFee(tx), navigationService)
         {
             From = tx.From;
             To = tx.To;

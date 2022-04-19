@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
-using atomex.Services;
 using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Tezos.Internal;
@@ -18,10 +17,10 @@ using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
@@ -29,7 +28,7 @@ namespace atomex.ViewModel
     {
         private readonly IAtomexApp _app;
         private CurrencyConfig _currency;
-        private IToastService _toastService;
+        private INavigationService _navigationService;
 
         [Reactive] public string Address { get; set; }
         [Reactive] public string Type { get; set; }
@@ -44,11 +43,11 @@ namespace atomex.ViewModel
 
         public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
 
-        public AddressViewModel(IAtomexApp app, CurrencyConfig currency)
+        public AddressViewModel(IAtomexApp app, CurrencyConfig currency, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
             _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
-            _toastService = DependencyService.Get<IToastService>();
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             CopyButtonName = AppResources.CopyKeyButton;
         }
 
@@ -58,11 +57,11 @@ namespace atomex.ViewModel
             try
             {
                 Clipboard.SetTextAsync(Address);
-                _toastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
             }
             catch (Exception)
             {
-                Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         });
 
@@ -74,7 +73,7 @@ namespace atomex.ViewModel
                 if (!ExportKeyConfirm)
                 {
                     ExportKeyConfirm = true;
-                    _ = PopupNavigation.Instance.PushAsync(new ExportKeyBottomSheet(this));
+                    _navigationService?.ShowBottomSheet(new ExportKeyBottomSheet(this));
                     return;
                 }
 
@@ -122,11 +121,9 @@ namespace atomex.ViewModel
 
                 IsCopied = false;
                 CopyButtonName = AppResources.CopyKeyButton;
-
                 ExportKeyConfirm = false;
-                if (PopupNavigation.Instance.PopupStack.Count > 0)
-                    _ = PopupNavigation.Instance.PopAsync();
 
+                _navigationService?.CloseBottomSheet();
             }
             catch (Exception e)
             {
@@ -152,9 +149,7 @@ namespace atomex.ViewModel
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
         {
             ExportKeyConfirm = false;
-
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
+            _navigationService?.CloseBottomSheet();
         });
     }
 
@@ -162,28 +157,30 @@ namespace atomex.ViewModel
     {
         private readonly IAtomexApp _app;
         private CurrencyConfig _currency { get; set; }
+        private INavigationService _navigationService { get; }
 
         private readonly string _tokenContract;
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         [Reactive] public bool HasTokens { get; set; }
 
-        private IToastService _toastService;
-        public INavigation Navigation { get; set; }
-
         [Reactive] public AddressViewModel SelectedAddress { get; set; }
 
-        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, string tokenContract = null)
+        public AddressesViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService,
+            string tokenContract = null)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
             _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
-            _toastService = DependencyService.Get<IToastService>();
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             _tokenContract = tokenContract;
 
             this.WhenAnyValue(vm => vm.SelectedAddress)
                 .WhereNotNull()
                 .SubscribeInMainThread(a =>
                 {
-                    Navigation?.PushAsync(new AddressInfoPage(SelectedAddress));
+                    _navigationService?.ShowPage(new AddressInfoPage(SelectedAddress), TabNavigation.Portfolio);
                     SelectedAddress = null;
                 });
 
@@ -247,7 +244,7 @@ namespace atomex.ViewModel
                             ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
                             : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
 
-                        return new AddressViewModel(_app, _currency)
+                        return new AddressViewModel(_app, _currency, _navigationService)
                         {
                             Address = a.Address,
                             Type = KeyTypeToString(a.KeyType),
@@ -335,8 +332,8 @@ namespace atomex.ViewModel
                 await ReloadAddresses();
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                { 
-                    _toastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressLabel + " " + AppResources.HasBeenUpdated);
                 });
 
                 return Addresses.FirstOrDefault(a => a.Address == address);
