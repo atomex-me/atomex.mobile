@@ -308,6 +308,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (AvailableAmount <= 0) return;
 
+                _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
                 var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
                 if (Currency is BitcoinBasedConfig)
                 {

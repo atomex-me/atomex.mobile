@@ -28,5 +28,7 @@ namespace atomex
         void DisplaySnackBar(MessageType messageType, string text, string btnTxt = "OK", int duration = 3000);
         Task ShowAlert(string title, string text, string cancel);
         Task<bool> ShowAlert(string title, string text, string accept, string cancel);
+        void SetInitiatedPage(TabNavigation tab);
+        Task ReturnToInitiatedPage(TabNavigation tab);
     }
 }

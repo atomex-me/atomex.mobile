@@ -222,6 +222,7 @@ namespace atomex.ViewModel
         private ReactiveCommand<Unit, Unit> _sendCommand;
         public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
         {
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             SelectCurrencyUseCase = CurrencyActionType.Send;
             var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
             var selectCurrencyViewModel =

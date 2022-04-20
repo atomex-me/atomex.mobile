@@ -405,12 +405,10 @@ namespace atomex.ViewModel.SendViewModels
                         _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
                         return;
                     }
-
                     _navigationService?.CloseBottomSheet();
+                    await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
-                    // TODO: Get navigation stack
-                    //for (int i = Navigation.NavigationStack.Count; i > 2; i--)
-                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                 }
                 catch (Exception e)
                 {

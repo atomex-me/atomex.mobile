@@ -34,6 +34,8 @@ namespace atomex
         
         public MainViewModel MainViewModel { get; }
 
+        private int _initiatedPageNumber;
+
         public MainPage(MainViewModel mainViewModel)
         {
             InitializeComponent();
@@ -321,6 +323,74 @@ namespace atomex
         public async Task<bool> ShowAlert(string title, string text, string accept, string cancel)
         {
             return await Application.Current.MainPage.DisplayAlert(title, text, accept, cancel);
+        }
+
+        public void SetInitiatedPage(TabNavigation tab)
+        {
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Exchange:
+                     _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Buy:
+                    _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Settings:
+                    _initiatedPageNumber = NavigationSettingsPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.None:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public async Task ReturnToInitiatedPage(TabNavigation tab)
+        {
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationPortfolioPage.Navigation.RemovePage(
+                            NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationPortfolioPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Exchange:
+                    for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationConversionPage.Navigation.RemovePage(
+                            NavigationConversionPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationConversionPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Buy:
+                    for (int i = NavigationBuyPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationBuyPage.Navigation.RemovePage(
+                            NavigationBuyPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationBuyPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Settings:
+                    for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationSettingsPage.Navigation.RemovePage(
+                            NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationSettingsPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.None:
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

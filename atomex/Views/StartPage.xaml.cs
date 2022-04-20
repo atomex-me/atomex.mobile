@@ -165,5 +165,15 @@ namespace atomex
         {
             return await Application.Current.MainPage.DisplayAlert(title, text, accept, cancel);
         }
+
+        public void SetInitiatedPage(TabNavigation tab)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReturnToInitiatedPage(TabNavigation tab)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
