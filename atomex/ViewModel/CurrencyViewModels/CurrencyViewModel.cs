@@ -118,9 +118,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                     SelectedTransaction = null;
                 });
 
-            this.WhenAnyValue(vm => vm.Transactions)
+            this.WhenAnyValue(vm => vm.GroupedTransactions)
                 .WhereNotNull()
-                .SubscribeInMainThread(txs => CanShowMoreTxs = txs.Count > TxsNumberPerPage);
+                .SubscribeInMainThread(_ =>
+                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
 
             GetAddresses();
             IsAllTxsShowed = false;
@@ -406,6 +407,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             IsAllTxsShowed = true;
             CanShowMoreTxs = false;
+            TxsNumberPerPage = Transactions.Count;
 
             var groups = Transactions
                 .GroupBy(p => p.LocalTime.Date)
