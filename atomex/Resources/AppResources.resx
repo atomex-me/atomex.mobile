@@ -35,6 +35,9 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="RemoveButton" xml:space="preserve">
+        <value>Remove</value>
+    </data>
     <data name="CloseButton" xml:space="preserve">
         <value>Close</value>
     </data>
@@ -1050,7 +1053,7 @@
         <value>This baker is overdelegated, it will be better to choose another one</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>This action affects only the local database and does not affect the blockchain</value>
+        <value>Do you confirm the removal from the transaction list? This action affects only the local database and does not affect the blockchain</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>There is a new version of this app available. Would you like to update now?</value>

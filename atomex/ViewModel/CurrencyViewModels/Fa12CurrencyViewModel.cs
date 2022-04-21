@@ -92,6 +92,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public override async Task ScanCurrency()
         {
+            if (IsRefreshing) return;
+
             var cancellation = new CancellationTokenSource();
             IsRefreshing = true;
 

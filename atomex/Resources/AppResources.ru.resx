@@ -35,6 +35,9 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Удалить</value>
     </data>
+    <data name="RemoveButton" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
     <data name="CloseButton" xml:space="preserve">
         <value>Закрыть</value>
     </data>
@@ -1050,7 +1053,7 @@
         <value>Бейкер переделегирован, лучше выбрать другого</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>Это действие влияет только на локальные данные и не влияет на блокчейн</value>
+        <value>Вы подтверждаете удаление транзакции? Это действие влияет только на локальные данные и не влияет на блокчейн</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>Доступна новая версия. Обновить приложение сейчас?</value>

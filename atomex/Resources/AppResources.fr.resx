@@ -35,6 +35,9 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Supprimer</value>
     </data>
+    <data name="RemoveButton" xml:space="preserve">
+        <value>Remove</value>
+    </data>
     <data name="CloseButton" xml:space="preserve">
         <value>Close</value>
     </data>
@@ -1050,7 +1053,7 @@
         <value>Le baker est redélégué, mieux vaut en choisir un autre</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>Cette action n'affecte que les données locales et n'affecte pas la blockchain.</value>
+        <value>Do you confirm the removal from the transaction list? This action affects only the local database and does not affect the blockchain</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>Une nouvelle version est disponible. Mettre à jour l'application maintenant?</value>

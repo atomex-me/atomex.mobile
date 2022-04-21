@@ -10,7 +10,7 @@
         <custom:BindableToolbarItem IconImageSource="ic_delete"
                                     Order="Primary"
                                     Priority="0"
-                                    Command="{Binding DeleteTxCommand}"
+                                    Command="{Binding OpenBottomSheetCommand}"
                                     IsVisible="{Binding CanBeRemoved}">
         </custom:BindableToolbarItem>
     </ContentPage.ToolbarItems>
@@ -24,32 +24,32 @@
                    VerticalOptions="Center">
                 <Image.Triggers>
                     <DataTrigger TargetType="Image"
-                                    Binding="{Binding State}"
-                                    Value="Confirmed">
+                                 Binding="{Binding State}"
+                                 Value="Confirmed">
                         <Setter Property="Source"
                                 Value="SwapCompleted"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
-                                    Binding="{Binding State}"
-                                    Value="Pending">
+                                 Binding="{Binding State}"
+                                 Value="Pending">
                         <Setter Property="Source"
                                 Value="ic_status__pending"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
-                                    Binding="{Binding State}"
-                                    Value="Failed">
+                                 Binding="{Binding State}"
+                                 Value="Failed">
                         <Setter Property="Source"
                                 Value="SwapCanceled"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
-                                    Binding="{Binding State}"
-                                    Value="Unconfirmed">
+                                 Binding="{Binding State}"
+                                 Value="Unconfirmed">
                         <Setter Property="Source"
                                 Value="ic_status__pending"/>
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
-                                    Binding="{Binding State}"
-                                    Value="Unknown">
+                                 Binding="{Binding State}"
+                                 Value="Unknown">
                         <Setter Property="Source"
                                 Value="ic_status__pending"/>
                     </DataTrigger>

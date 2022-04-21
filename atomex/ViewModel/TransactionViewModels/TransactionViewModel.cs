@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reactive;
+using System.Windows.Input;
 using atomex.Resources;
+using atomex.Views;
 using Atomex.Blockchain;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
@@ -136,13 +138,17 @@ namespace atomex.ViewModel.TransactionViewModels
         private ReactiveCommand<string, Unit> _showAddressInExplorerCommand;
         public ReactiveCommand<string, Unit> ShowAddressInExplorerCommand => _showAddressInExplorerCommand ??= ReactiveCommand.CreateFromTask<string>((value) => Launcher.OpenAsync(new Uri($"{AddressExplorerUri}{value}")));
 
-        private ReactiveCommand<Unit, Unit> _deleteTxCommand;
-        public ReactiveCommand<Unit, Unit> DeleteTxCommand => _deleteTxCommand ??= ReactiveCommand.CreateFromTask(async () =>
-        {
-            var res = await _navigationService?.ShowAlert(AppResources.Warning, AppResources.RemoveTxWarning, AppResources.AcceptButton, AppResources.CancelButton);
+        private ReactiveCommand<Unit, Unit> _openBottomSheetCommand;
+        public ReactiveCommand<Unit, Unit> OpenBottomSheetCommand => _openBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.ShowBottomSheet(new RemoveTxBottomSheet(this)));
 
-            if (!res) return;
+        private ReactiveCommand<Unit, Unit> _deleteTxCommand;
+        public ReactiveCommand<Unit, Unit> DeleteTxCommand => _deleteTxCommand ??= ReactiveCommand.Create(() =>
+        {
             RemoveClicked?.Invoke(this, new TransactionEventArgs(Transaction));
+            _navigationService?.CloseBottomSheet();
         });
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
     }
 }

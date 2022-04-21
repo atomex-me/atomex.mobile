@@ -214,7 +214,6 @@
     <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSDT.png" />
@@ -324,6 +323,7 @@
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

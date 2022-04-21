@@ -319,6 +319,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task UpdateTokens()
         {
+            if (IsRefreshing) return;
+
             _cancellation = new CancellationTokenSource();
             IsRefreshing = true;
 
