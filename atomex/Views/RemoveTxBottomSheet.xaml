@@ -39,7 +39,8 @@
                        Margin="0,0,0,20"/>
                 <Label Text="{helpers:Translate Warning}"
                        Style="{DynamicResource TitleTextStyle}"
-                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                       Padding="0"/>
                 <Label Text="{helpers:Translate RemoveTxWarning}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="14"

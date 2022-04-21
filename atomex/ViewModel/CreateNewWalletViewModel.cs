@@ -324,6 +324,36 @@ namespace atomex
             Mnemonic = new Mnemonic(Language.Wordlist, entropy).ToString();
         }
 
+        private void WriteMnemonic()
+        {
+            Mnemonic = Mnemonic.ToLower();
+            if (string.IsNullOrEmpty(Mnemonic))
+            {
+                Warning = AppResources.EmptyMnemonicError;
+            }
+
+            try
+            {
+                var unused = new Mnemonic(Mnemonic, Language.Wordlist);
+                return;
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("Word count should be"))
+                {
+                    Warning = AppResources.MnemonicWordCountError;
+                    return;
+                }
+
+                if (e.Message.Contains("is not in the wordlist"))
+                {
+                    Warning = AppResources.Word + " " + e.Message.Split(' ')[1] + " " + AppResources.isNotInWordlist;
+                    return;
+                }
+
+                Warning = AppResources.InvalidMnemonic;
+            }
+        }
 
         private SecureString GenerateSecureString(string str)
         {
@@ -553,34 +583,10 @@ namespace atomex
         private ICommand _writeDerivedPasswordPageCommand;
         public ICommand WriteDerivedPasswordPageCommand => _writeDerivedPasswordPageCommand ??= ReactiveCommand.Create(() =>
             {
-                Mnemonic = Mnemonic.ToLower();
-                if (string.IsNullOrEmpty(Mnemonic))
-                {
-                    Warning = AppResources.EmptyMnemonicError;
-                }
+                WriteMnemonic();
 
-                try
-                {
-                    var unused = new Mnemonic(Mnemonic, Language.Wordlist);
-                    return;
-                }
-                catch (Exception e)
-                {
-                    if (e.Message.Contains("Word count should be"))
-                    {
-                        Warning = AppResources.MnemonicWordCountError;
-                        return;
-                    }
-                    if (e.Message.Contains("is not in the wordlist"))
-                    {
-                        Warning = AppResources.Word + " " + e.Message.Split(' ')[1] + " " + AppResources.isNotInWordlist;
-                        return;
-                    }
-                    Warning = AppResources.InvalidMnemonic;
-                }
                 if (Warning != string.Empty)
                     return;
-
                 _navigationService?.ShowPage(new WriteDerivedKeyPasswordPage(this));
             });
 

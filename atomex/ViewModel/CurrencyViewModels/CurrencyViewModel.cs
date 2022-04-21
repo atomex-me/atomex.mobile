@@ -337,6 +337,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             IsRefreshing = false;
         }
 
+        // TODO: unconfirmed amount tooltip
         //private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
         //public ReactiveCommand<Unit, Unit> UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= ReactiveCommand.Create(() =>
         //    ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString()));
