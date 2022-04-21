@@ -505,7 +505,7 @@ namespace atomex.ViewModel
 
             Device.BeginInvokeOnMainThread(async () =>
             {
-                await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation, walletBeaconClient)));
+                await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, walletBeaconClient, Navigation)));
             });
 
             

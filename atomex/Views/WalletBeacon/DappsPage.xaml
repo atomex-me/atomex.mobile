@@ -62,7 +62,7 @@
                            Padding="20,5"/>
                         <StackLayout.Triggers>
                             <DataTrigger TargetType="StackLayout"
-                                         Binding="{Binding DappsInfo.Count}"
+                                         Binding="{Binding Permissions.Count}"
                                          Value="0">
                                 <Setter Property="IsVisible"
                                         Value="True"/>
@@ -71,11 +71,11 @@
                     </StackLayout>
 
 
-                       <Frame CornerRadius="10"
-                           Style="{DynamicResource EntryFrameStyle}"
-                           Padding="20,5"
-                           IsVisible="True">
-                        <StackLayout BindableLayout.ItemsSource="{Binding DappsInfo}"
+                    <Frame CornerRadius="10"
+                        Style="{DynamicResource EntryFrameStyle}"
+                        Padding="20,5"
+                        IsVisible="True">
+                        <StackLayout BindableLayout.ItemsSource="{Binding Permissions}"
                                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                      VerticalOptions="FillAndExpand"
                                      Spacing="15">
@@ -98,7 +98,7 @@
                                                             Text="{Binding Address}"
                                                             FontFamily="{DynamicResource RegularFont}"
                                                             TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                                            FontSize="18"
+                                                            FontSize="14"
                                                             VerticalTextAlignment="End"
                                                             HorizontalTextAlignment="Start"/>
                                                     <Label Grid.Column="1"
@@ -106,7 +106,7 @@
                                                             Text="{Binding Network}"
                                                             FontFamily="{DynamicResource LightFont}"
                                                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                            FontSize="16"
+                                                            FontSize="12"
                                                             Margin="0,3"
                                                             VerticalTextAlignment="Start"
                                                             HorizontalTextAlignment="Start"/>
@@ -145,7 +145,7 @@
                         </StackLayout>
                         <Frame.Triggers>
                             <DataTrigger TargetType="Frame"
-                                         Binding="{Binding DappsInfo.Count}"
+                                         Binding="{Binding Permissions.Count}"
                                          Value="0">
                                 <Setter Property="IsVisible"
                                         Value="False"/>
