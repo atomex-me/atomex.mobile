@@ -2,9 +2,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.TransactionInfoPage"
              Title="{helpers:Translate TransactionInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.ToolbarItems>
+        <custom:BindableToolbarItem IconImageSource="ic_delete"
+                                    Order="Primary"
+                                    Priority="0"
+                                    Command="{Binding DeleteTxCommand}"
+                                    IsVisible="{Binding CanBeRemoved}">
+        </custom:BindableToolbarItem>
+    </ContentPage.ToolbarItems>
     <ScrollView>
         <StackLayout Spacing="0"
                      Margin="16,36,16,10">
