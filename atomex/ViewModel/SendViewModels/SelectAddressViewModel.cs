@@ -210,7 +210,6 @@ namespace atomex.ViewModel.SendViewModels
                 .OrderByDescending(address => address.Balance);
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
-
             _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
 
             SelectedAddress = selectedAddress != null
@@ -218,7 +217,7 @@ namespace atomex.ViewModel.SendViewModels
                     vm.Address == selectedAddress && (selectedTokenId == null || vm.TokenId == selectedTokenId))
                 : SelectAddressMode == SelectAddressMode.SendFrom
                     ? SelectDefaultAddress()
-                : null;
+                    : null;
         }
 
         public WalletAddressViewModel SelectDefaultAddress()

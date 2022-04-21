@@ -102,14 +102,11 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-
-            SubscribeToUpdates(_app.Account);
+            SubscribeToServices();
             SubscribeToRatesProvider(_app.QuotesProvider);
 
-            IsAllTxsShowed = false;
-
             if (loadTransaction)
-                _ = UpdateTransactionsAsync();
+                _ = LoadTransactionsAsync();
 
             _ = UpdateBalanceAsync();
 
@@ -126,36 +123,36 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .SubscribeInMainThread(txs => CanShowMoreTxs = txs.Count > TxsNumberPerPage);
 
             GetAddresses();
+            IsAllTxsShowed = false;
             CurrencyActiveTab = ActiveTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
         }
 
-        protected void GetAddresses()
+        protected virtual void GetAddresses()
         {
             AddressesViewModel = new AddressesViewModel(_app, Currency, _navigationService);
         }
 
-        public void SubscribeToUpdates(IAccount account)
+        protected virtual void SubscribeToServices()
         {
-            _account = account;
-            _account.BalanceUpdated += OnBalanceChangedEventHandler;
-            _account.UnconfirmedTransactionAdded += UnconfirmedTxAddedEventHandler;
+            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+            _app.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
         }
 
-        public void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
+        private void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
         {
             QuotesProvider = quotesProvider;
             QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
-        private async void OnBalanceChangedEventHandler(object sender, CurrencyEventArgs args)
+        protected virtual async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
         {
             try
             {
                 if (Currency.Name.Equals(args.Currency))
                 {
                     await UpdateBalanceAsync().ConfigureAwait(false);
-                    await UpdateTransactionsAsync().ConfigureAwait(false);
+                    await LoadTransactionsAsync().ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -164,7 +161,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public async Task UpdateBalanceAsync()
+        private async Task UpdateBalanceAsync()
         {
             try
             {
@@ -211,14 +208,14 @@ namespace atomex.ViewModel.CurrencyViewModels
             });
         }
 
-        private async void UnconfirmedTxAddedEventHandler(object sender, TransactionEventArgs e)
+        private async void OnUnconfirmedTransactionAdded(object sender, TransactionEventArgs e)
         {
             try
             {
                 if (e.Transaction.Currency != Currency?.Name)
                     return;
 
-                await UpdateTransactionsAsync();
+                await LoadTransactionsAsync();
             }
             catch (Exception ex)
             {
@@ -226,9 +223,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public virtual async Task UpdateTransactionsAsync()
+        public virtual async Task LoadTransactionsAsync()
         {
-            Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
+            Log.Debug("LoadTransactionsAsync for {@currency}", Currency.Name);
 
             try
             {
@@ -273,7 +270,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
+        protected async void RemoveTransactonEventHandler(object sender, TransactionEventArgs args)
         {
             if (_app.Account == null)
                 return;
@@ -286,7 +283,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .RemoveTransactionAsync(txId);
 
                 if (isRemoved)
-                    await UpdateTransactionsAsync();
+                    await LoadTransactionsAsync();
             }
             catch (Exception e)
             {
@@ -297,30 +294,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
         private ReactiveCommand<Unit, Unit> _receiveCommand;
-        public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(() =>
-            {
-                var receiveViewModel = new ReceiveViewModel(_app, Currency, _navigationService);
-                _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
-            });
+        public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(OnReceiveClick);
 
         private ReactiveCommand<Unit, Unit> _sendCommand;
-        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
-            {
-                if (AvailableAmount <= 0) return;
-
-                _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
-                var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
-                if (Currency is BitcoinBasedConfig)
-                {
-                    var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
-                    _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
-                }
-                else
-                {
-                    var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
-                    _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
-                }
-            });
+        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(OnSendClick);
 
         protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
@@ -333,11 +310,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _refreshCommand;
         public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
 
-        public async Task ScanCurrency()
+        public virtual async Task ScanCurrency()
         {
             var cancellation = new CancellationTokenSource();
             IsRefreshing = true;
-            this.RaisePropertyChanged(nameof(IsRefreshing));
 
             try
             {
@@ -347,7 +323,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     skipUsed: true,
                     cancellationToken: cancellation.Token);
 
-                await UpdateTransactionsAsync();
+                await LoadTransactionsAsync();
 
                 _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
             }
@@ -396,6 +372,32 @@ namespace atomex.ViewModel.CurrencyViewModels
                 CurrencyActiveTab = selectedTab;
             });
 
+        protected virtual void OnReceiveClick()
+        {
+            var receiveViewModel = new ReceiveViewModel(
+                app: _app,
+                currency: Currency,
+                navigationService: _navigationService);
+            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+        }
+
+        protected virtual void OnSendClick()
+        {
+            if (AvailableAmount <= 0) return; // TODO: show tooltip
+
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
+            if (Currency is BitcoinBasedConfig)
+            {
+                var selectOutputsViewModel = sendViewModel.SelectFromViewModel as SelectOutputsViewModel;
+                _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Portfolio);
+            }
+            else
+            {
+                var selectAddressViewModel = sendViewModel.SelectFromViewModel as SelectAddressViewModel;
+                _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
+            }
+        }
 
         public void ShowAllTxs()
         {
@@ -421,8 +423,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     if (_account != null)
                     {
-                        _account.BalanceUpdated -= OnBalanceChangedEventHandler;
-                        _account.UnconfirmedTransactionAdded -= UnconfirmedTxAddedEventHandler;
+                        _account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
+                        _account.UnconfirmedTransactionAdded -= OnUnconfirmedTransactionAdded;
                     }
 
                     if (QuotesProvider != null)

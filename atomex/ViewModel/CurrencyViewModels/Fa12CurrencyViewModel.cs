@@ -10,12 +10,14 @@ using atomex.ViewModel.TransactionViewModels;
 using System.Collections.ObjectModel;
 using Atomex.Common;
 using Atomex.Core;
+using ReactiveUI;
+using atomex.Views;
+using System.Threading;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public class Fa12CurrencyViewModel : CurrencyViewModel
     {
-
         public Fa12CurrencyViewModel(
            IAtomexApp app,
            CurrencyConfig currency,
@@ -25,7 +27,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
 
-        public override async Task UpdateTransactionsAsync()
+        public override async Task LoadTransactionsAsync()
         {
             Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
 
@@ -60,8 +62,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
 
-                    OnPropertyChanged(nameof(Transactions));
-                    OnPropertyChanged(nameof(GroupedTransactions));
+                    this.RaisePropertyChanged(nameof(Transactions));
+                    this.RaisePropertyChanged(nameof(GroupedTransactions));
                 });
             }
             catch (OperationCanceledException)
@@ -74,30 +76,58 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-
-        //public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
-
-        //public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
-
-        private void OnReceiveButtonClicked()
+        protected override void OnReceiveClick()
         {
-            var fa12currency = Currency as Fa12Config;
-            var tezosConfig = _app.Account
-                .Currencies
-                .GetByName(TezosConfig.Xtz);
+            var tezosConfig = _app.Account.Currencies.GetByName(TezosConfig.Xtz);
+            string tokenContractAddress = (Currency as Fa12Config).TokenContractAddress;
 
-            _navigationService?.ShowPage(new ReceivePage(new ReceiveViewModel(_app, tezosConfig, _navigationService, fa12currency.TokenContractAddress)), TabNavigation.Portfolio);
+            var receiveViewModel = new ReceiveViewModel(
+                app: _app,
+                currency: tezosConfig,
+                navigationService: _navigationService,
+                tokenContract: tokenContractAddress,
+                tokenType: "FA12");
+            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
-        private void OnAddressesButtonClicked()
+        public override async Task ScanCurrency()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsRefreshing = true;
+
+            try
+            {
+                await _app.Account
+                    .GetCurrencyAccount<Fa12Account>(Currency.Name)
+                    .UpdateBalanceAsync(cancellation.Token);
+
+                await LoadTransactionsAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Wallet update operation canceled.");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Fa12WalletViewModel.OnUpdateClick error.");
+                // todo: message to user!?
+            }
+
+            IsRefreshing = false;
+        }
+
+        protected override void GetAddresses()
         {
             var fa12currency = Currency as Fa12Config;
             var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            _navigationService?.ShowPage(new AddressesPage(new AddressesViewModel(_app, tezosConfig, _navigationService, fa12currency.TokenContractAddress)), TabNavigation.Portfolio);
+            AddressesViewModel = new AddressesViewModel(
+                app: _app,
+                currency: tezosConfig,
+                navigationService: _navigationService,
+                tokenContract: fa12currency.TokenContractAddress);
         }
-
     }
 }

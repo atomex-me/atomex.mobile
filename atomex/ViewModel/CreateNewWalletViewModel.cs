@@ -605,7 +605,7 @@ namespace atomex
         public ICommand DerivedPswdChangedCommand => _derivedPswdChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.DerivedPassword, value));
 
         private ICommand _derivedPswdConfirmationChangedCommand;
-        public ICommand DerivedPswdConfirmationChangedCommand => _derivedPswdConfirmationChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.DerivedPasswordConfirmation, value));
+        public ICommand DerivedPswdConfirmationChangedCommand => _derivedPswdConfirmationChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.DerivedPasswordConfirmation, value));
 
         private ICommand _storagePswdChangedCommand;
         public ICommand StoragePswdChangedCommand => _storagePswdChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.StoragePassword, value));
@@ -629,10 +629,10 @@ namespace atomex
         public ICommand DeleteWordFromVerificationCommand => _deleteWordFromVerificationCommand ??= ReactiveCommand.Create<string>((word) => UpdateMnemonicCollections(word, false));
 
         private ICommand _verificateDerivedPswdCommand;
-        public ICommand VerificateDerivedPswdCommand => _verificateDerivedPswdCommand ??= ReactiveCommand.Create(() => VerificateDerivedPassword());
+        public ICommand VerificateDerivedPswdCommand => _verificateDerivedPswdCommand ??= new Command(() => VerificateDerivedPassword());
 
         private ICommand _clearWarningCommand;
-        public ICommand ClearWarningCommand => _clearWarningCommand ??= ReactiveCommand.Create(() => Warning = string.Empty);
+        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => Warning = string.Empty);
 
         private ICommand _clearMnemonicCommand;
         public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= ReactiveCommand.Create(() => Mnemonic = string.Empty);
