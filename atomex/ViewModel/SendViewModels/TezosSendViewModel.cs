@@ -38,7 +38,11 @@ namespace atomex.ViewModel.SendViewModels
             CheckAmountCommand.Throttle(TimeSpan.FromMilliseconds(1))
                 .SubscribeInMainThread(estimation => CheckAmount(estimation));
 
-            SelectFromViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService, SelectAddressMode.SendFrom)
+            SelectFromViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: _currency,
+                navigationService: _navigationService,
+                mode: SelectAddressMode.SendFrom)
             {
                 ConfirmAction = ConfirmFromAddress
             };

@@ -397,6 +397,8 @@ namespace atomex.ViewModel
                         MaxClicked = MaxClicked,
                         SelectCurrencyClicked = async () =>
                         {
+                            _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
+
                             var selectCurrencyViewModel = new ConversionViewModels.SelectCurrencyViewModel(
                                 account: _app.Account,
                                 navigationService: _navigationService,
@@ -411,7 +413,7 @@ namespace atomex.ViewModel
                                     FromViewModel!.CurrencyViewModel = FromCurrencies!.First(c => c.Currency.Name == i.CurrencyViewModel.Currency.Name);
                                     FromViewModel.Address = i.ShortAddressDescription;
 
-                                    _navigationService?.ClosePage(TabNavigation.Exchange);
+                                    _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
                                 }
                             };
 
@@ -522,6 +524,8 @@ namespace atomex.ViewModel
             if (ToViewModel?.CurrencyViewModel == null)
                 return;
 
+            _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
+
             var item = await CreateToCurrencyViewModelItemAsync(ToViewModel.CurrencyViewModel);
 
             var feeCurrencyName = ToViewModel
@@ -537,13 +541,14 @@ namespace atomex.ViewModel
                 account: _app.Account,
                 currency: feeCurrency,
                 navigationService: _navigationService,
+                tab: TabNavigation.Exchange,
                 mode: SelectAddressMode.ChangeRedeemAddress,
                 selectedAddress: RedeemFromAddress)
             {
                 ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
                 {
                     RedeemFromAddress = walletAddressViewModel.Address;
-                    _navigationService?.ClosePage(TabNavigation.Exchange);
+                    _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
                 }
             };
 

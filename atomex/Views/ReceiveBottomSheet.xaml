@@ -46,7 +46,7 @@
                        Margin="0,0,0,40"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
-                <Label Text="{Binding ReceivingCurrencyAddressLabel}"
+                <Label Text="{Binding ReceivingAddressLabel}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="24"
                        FontFamily="{DynamicResource RegularFont}"
@@ -149,7 +149,7 @@
                         </Label>
                     </StackLayout>
                 </Frame>
-                <Button Text="{Binding MyCurrencyAddressesLabel}"
+                <Button Text="{Binding MyAddressesButtonName}"
                         BackgroundColor="Transparent"
                         BorderColor="Transparent"
                         TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"

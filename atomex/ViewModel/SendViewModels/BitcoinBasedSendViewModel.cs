@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
-using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views.Send;
@@ -64,12 +63,21 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, _account, _config, _navigationService)
+            SelectFromViewModel = new SelectOutputsViewModel(
+                outputs: outputs,
+                account: _account,
+                config: _config,
+                navigationService: _navigationService,
+                tab: TabNavigation.Portfolio)
             {
                 ConfirmAction = ConfirmOutputs
             };
 
-            SelectToViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService)
+            SelectToViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: _currency,
+                navigationService: _navigationService,
+                tab: TabNavigation.Portfolio)
             {
                 ConfirmAction = ConfirmToAddress
             };
@@ -341,7 +349,11 @@ namespace atomex.ViewModel.SendViewModels
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, _account, _config, _navigationService)
+            SelectFromViewModel = new SelectOutputsViewModel(
+                outputs: outputs,
+                account: _account,
+                config: _config,
+                navigationService: _navigationService)
             {
                 ConfirmAction = ConfirmOutputs
             };

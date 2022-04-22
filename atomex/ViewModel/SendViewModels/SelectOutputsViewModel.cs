@@ -27,6 +27,7 @@ namespace atomex.ViewModel.SendViewModels
         protected INavigationService _navigationService { get; set; }
 
         public SelectAddressFrom SelectAddressFrom { get; set; }
+        public TabNavigation TabNavigation { get; set; }
         private ObservableCollection<OutputViewModel> _initialOutputs { get; set; }
         [Reactive] public ObservableCollection<OutputViewModel> Outputs { get; set; }
         [Reactive] public string SearchPattern { get; set; }
@@ -40,7 +41,8 @@ namespace atomex.ViewModel.SendViewModels
             IEnumerable<OutputViewModel> outputs,
             BitcoinBasedAccount account,
             BitcoinBasedConfig config,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            TabNavigation tab = TabNavigation.Portfolio)
         {
             _account = account ?? throw new ArgumentNullException(nameof(_account));
             Currency = config ?? throw new ArgumentNullException(nameof(Currency));
@@ -50,6 +52,7 @@ namespace atomex.ViewModel.SendViewModels
 
             SelectAll = Outputs.Aggregate(true, (result, output) => result && output.IsSelected);
             SelectAddressFrom = SelectAddressFrom.Init;
+            TabNavigation = tab;
             SortButtonName = SortByBalance
                     ? AppResources.SortByBalanceButton
                     : AppResources.SortByDateButton;
@@ -292,7 +295,7 @@ namespace atomex.ViewModel.SendViewModels
             if (SelectAddressFrom == SelectAddressFrom.Change)
                 SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
-            _navigationService?.ShowPage(new SearchOutputsPage(this), TabNavigation.Portfolio);
+            _navigationService?.ShowPage(new SearchOutputsPage(this), TabNavigation);
         }
     }
 

@@ -197,22 +197,13 @@ namespace atomex.ViewModel.ConversionViewModels
                     }),
                     config: (BitcoinBasedConfig)currency,
                     account: bitcoinBasedAccount,
-                    navigationService: _navigationService)
+                    navigationService: _navigationService,
+                    tab: TabNavigation.Exchange)
                 {
                     ConfirmAction = (selectOutputsViewModel, outputs) =>
                     {
                         itemWithOutputs.SelectedOutputs = outputs;
-
-                        _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //if (selectOutputsViewModel.SelectAddressFrom == SelectAddressFrom.Init)
-                        //{
-                        //    _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //}
-                        //else
-                        //{
-                        //    for (int i = 0; i <= 1; i++)
-                        //        _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //}
+                        _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
 
                         CurrencySelected?.Invoke(i);
                     }
@@ -226,6 +217,7 @@ namespace atomex.ViewModel.ConversionViewModels
                     account: _account,
                     currency: currency,
                     navigationService: _navigationService,
+                    tab: TabNavigation.Exchange,
                     mode: Type == SelectCurrencyType.From ? SelectAddressMode.SendFrom : SelectAddressMode.ReceiveTo,
                     selectedAddress: itemWithAddress.SelectedAddress?.Address)
                 {
@@ -247,17 +239,7 @@ namespace atomex.ViewModel.ConversionViewModels
                                 Currency = currency.Name
                             };
                         }
-
-                        _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.Init)
-                        //{
-                        //    _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //}
-                        //else
-                        //{
-                        //    for (int i = 0; i <= 1; i++)
-                        //        _navigationService?.RemovePreviousPage(TabNavigation.Exchange);
-                        //}
+                        _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
 
                         CurrencySelected?.Invoke(i);
                     }

@@ -26,40 +26,8 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Style="{DynamicResource TitleTextStyle}">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="SendFrom">
-                        <Setter Property="Text"
-                                Value="{helpers:Translate SendFrom}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="ReceiveTo">
-                        <Setter Property="Text"
-                                Value="{helpers:Translate ReceiveTo}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="ChangeRedeemAddress">
-                        <Setter Property="Text"
-                                Value="{helpers:Translate ChangeRedeemAddress}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="EnterExternalAddress">
-                        <Setter Property="Text"
-                                Value="{helpers:Translate EnterAnExternalAddress}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="ChooseMyAddress">
-                        <Setter Property="Text"
-                                Value="{helpers:Translate ChooseAnAddress}"/>
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
+            <Label Style="{DynamicResource TitleTextStyle}"
+                   Text="{Binding Title}"/>
             <!--Tabs switcher-->
             <Grid Margin="14,12"
                   HorizontalOptions="FillAndExpand"

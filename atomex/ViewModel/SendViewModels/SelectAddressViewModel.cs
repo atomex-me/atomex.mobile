@@ -58,6 +58,7 @@ namespace atomex.ViewModel.SendViewModels
         public Action<SelectAddressViewModel, WalletAddressViewModel> ConfirmAction { get; set; }
         public SelectAddressMode SelectAddressMode { get; set; }
         public SelectAddressFrom SelectAddressFrom { get; set; }
+        public TabNavigation TabNavigation { get; set; }
         private ObservableCollection<WalletAddressViewModel> _initialMyAddresses { get; set; }
         [Reactive] public ObservableCollection<WalletAddressViewModel> MyAddresses { get; set; }
         [Reactive] public string SearchPattern { get; set; }
@@ -65,6 +66,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool SortIsAscending { get; set; }
         [Reactive] public bool SortByBalance { get; set; }
         [Reactive] public string SortButtonName { get; set; }
+        [Reactive] public string Title { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
 
         [Reactive] public Result ScanResult { get; set; }
@@ -82,6 +84,7 @@ namespace atomex.ViewModel.SendViewModels
             IAccount account,
             CurrencyConfig currency,
             INavigationService navigationService,
+            TabNavigation tab = TabNavigation.Portfolio,
             SelectAddressMode mode = SelectAddressMode.ReceiveTo,
             string selectedAddress = null,
             decimal? selectedTokenId = null,
@@ -91,7 +94,7 @@ namespace atomex.ViewModel.SendViewModels
             _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
             Message = new Message();
 
-
+            TabNavigation = tab;
             SelectAddressMode = mode;
             IsMyAddressesTab = false;
             SelectAddressFrom = SelectAddressFrom.Init;
@@ -113,6 +116,17 @@ namespace atomex.ViewModel.SendViewModels
                         SelectAddressMode == SelectAddressMode.EnterExternalAddress
                             ? ScanCommand
                             : SearchCommand;
+
+                    Title = SelectAddressMode == SelectAddressMode.ReceiveTo
+                        ? AppResources.ReceiveTo
+                        : SelectAddressMode == SelectAddressMode.SendFrom
+                        ? AppResources.SendFrom
+                        : SelectAddressMode == SelectAddressMode.EnterExternalAddress
+                        ? AppResources.EnterAnExternalAddress
+                        : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
+                        ? AppResources.ChangeRedeemAddress
+                        : string.Format(AppResources.MyCurrencyAddresses, _currency.Name);
+
                 });
 
             this.WhenAnyValue(
@@ -390,7 +404,7 @@ namespace atomex.ViewModel.SendViewModels
             this.RaisePropertyChanged(nameof(IsScanning));
             this.RaisePropertyChanged(nameof(IsAnalyzing));
 
-            _navigationService?.ShowPage(new ScanningQrPage(this), TabNavigation.Portfolio);
+            _navigationService?.ShowPage(new ScanningQrPage(this), TabNavigation);
         }
 
         private void OnSearchButtonClicked()
@@ -400,7 +414,7 @@ namespace atomex.ViewModel.SendViewModels
             if (SelectAddressFrom == SelectAddressFrom.Change)
                 SelectAddressFrom = SelectAddressFrom.ChangeSearch;
 
-            _navigationService?.ShowPage(new SearchAddressPage(this), TabNavigation.Portfolio);
+            _navigationService?.ShowPage(new SearchAddressPage(this), TabNavigation);
         }
 
         private async Task OnPasteButtonClicked()

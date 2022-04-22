@@ -27,7 +27,11 @@ namespace atomex.ViewModel.SendViewModels
             INavigationService navigationService)
             : base(app, currencyViewModel, navigationService)
         {
-            SelectFromViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService, SelectAddressMode.SendFrom)
+            SelectFromViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: _currency,
+                navigationService: _navigationService,
+                mode: SelectAddressMode.SendFrom)
             {
                 ConfirmAction = ConfirmFromAddress
             };

@@ -24,8 +24,8 @@ namespace atomex.ViewModel
 
         [Reactive] public CurrencyConfig Currency { get; set; }
         [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
-        [Reactive] public string ReceivingCurrencyAddressLabel { get; set; }
-        [Reactive] public string MyCurrencyAddressesLabel { get; set; }
+        [Reactive] public string ReceivingAddressLabel { get; set; }
+        [Reactive] public string MyAddressesButtonName { get; set; }
         [Reactive] public string CopyButtonName { get; set; }
         [Reactive] public bool IsCopied { get; set; }
         public SelectAddressViewModel SelectAddressViewModel { get; set; }
@@ -46,21 +46,20 @@ namespace atomex.ViewModel
             TokenContract = tokenContract;
             TokenType = tokenType;
 
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             SelectAddressViewModel = new SelectAddressViewModel(
                 account: _app.Account,
                 currency: Currency,
                 navigationService: _navigationService,
+                tab: TabNavigation.Portfolio,
                 mode: SelectAddressMode.ChooseMyAddress)
             {
                 ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
                 {
                     SelectedAddress = walletAddressViewModel;
 
-                    if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
-                        _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
-
+                    _navigationService.ReturnToInitiatedPage(TabNavigation.Portfolio);
                     _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(this));
-                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                 }
             };
 
@@ -70,8 +69,8 @@ namespace atomex.ViewModel
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    MyCurrencyAddressesLabel = string.Format(AppResources.MyCurrencyAddresses, Currency.Name);
-                    ReceivingCurrencyAddressLabel = string.Format(AppResources.ReceivingCurrencyAddress, Currency.Name);
+                    MyAddressesButtonName = string.Format(AppResources.MyCurrencyAddresses, Currency.Name);
+                    ReceivingAddressLabel = string.Format(AppResources.ReceivingCurrencyAddress, Currency.Name);
                 });
 
             CopyButtonName = AppResources.CopyAddress;
