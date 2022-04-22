@@ -118,7 +118,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             IsRefreshing = false;
         }
 
-        protected override void GetAddresses()
+        protected override void LoadAddresses()
         {
             var fa12currency = Currency as Fa12Config;
             var tezosConfig = _app.Account

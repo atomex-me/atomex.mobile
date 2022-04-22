@@ -364,7 +364,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             IsRefreshing = false;
         }
 
-        protected override void GetAddresses()
+        protected override void LoadAddresses()
         {
             var tezosConfig = _app.Account
                 .Currencies

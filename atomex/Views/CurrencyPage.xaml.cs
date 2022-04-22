@@ -19,7 +19,9 @@ namespace atomex
                     currencyViewModel.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
                     TransactionsListView.RowHeight / 2 ?? 0;
 
-            AddressesListView.HeightRequest = currencyViewModel.AddressesViewModel?.Addresses?.Count * AddressesListView.RowHeight ?? 0;
+            AddressesListView.HeightRequest = currencyViewModel.IsAllAddressesShowed
+                ? currencyViewModel.Addresses?.Count * AddressesListView.RowHeight ?? 0
+                : currencyViewModel.AddressesNumberPerPage * AddressesListView.RowHeight;
         }
 
         private void ShowAllTxs(object sender, EventArgs args)
@@ -31,6 +33,16 @@ namespace atomex
                 TransactionsListView.HeightRequest = vm.Transactions?.Count * TransactionsListView.RowHeight +
                     vm.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
                     TransactionsListView.RowHeight / 2 ?? 0;
+            }
+        }
+
+        private void ShowAllAddresses(object sender, EventArgs args)
+        {
+            if (BindingContext is CurrencyViewModel)
+            {
+                var vm = (CurrencyViewModel)BindingContext;
+                vm.ShowAllAddresses();
+                AddressesListView.HeightRequest = vm.AddressesNumberPerPage * AddressesListView.RowHeight;
             }
         }
     }

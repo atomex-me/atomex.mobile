@@ -165,6 +165,8 @@ namespace atomex.ViewModel
 
         [Reactive] public AddressViewModel SelectedAddress { get; set; }
 
+        public Action AddressesChanged;
+
         public AddressesViewModel(
             IAtomexApp app,
             CurrencyConfig currency,
@@ -290,6 +292,8 @@ namespace atomex.ViewModel
                         }
                     }
                 }
+
+                AddressesChanged?.Invoke();
             }
             catch (Exception e)
             {

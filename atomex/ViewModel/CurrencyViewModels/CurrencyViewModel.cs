@@ -72,9 +72,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
+        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
+
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
+        [Reactive] public bool CanShowMoreAddresses { get; set; }
+        [Reactive] public bool IsAllAddressesShowed { get; set; }
         public int TxsNumberPerPage = 3;
+        [Reactive] public int AddressesNumberPerPage { get; set; }
 
         public bool CanBuy { get; set; }
 
@@ -123,15 +128,26 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .SubscribeInMainThread(_ =>
                     CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
 
-            GetAddresses();
+            this.WhenAnyValue(vm => vm.AddressesNumberPerPage)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {
+                    CanShowMoreAddresses = AddressesViewModel.Addresses.Count > AddressesNumberPerPage;
+                    OnAddresesChangedEventHandler();
+                });
+
+            LoadAddresses();
             IsAllTxsShowed = false;
+            IsAllAddressesShowed = false;
+            AddressesNumberPerPage = 3;
             CurrencyActiveTab = ActiveTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
         }
 
-        protected virtual void GetAddresses()
+        protected virtual void LoadAddresses()
         {
             AddressesViewModel = new AddressesViewModel(_app, Currency, _navigationService);
+            AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
         }
 
         protected virtual void SubscribeToServices()
@@ -144,6 +160,21 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             QuotesProvider = quotesProvider;
             QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+        }
+
+        protected virtual void OnAddresesChangedEventHandler()
+        {
+            try
+            {
+                Addresses = new ObservableCollection<AddressViewModel>(
+                    AddressesViewModel?.Addresses
+                        .OrderByDescending(a => a.Balance)
+                        .Take(AddressesNumberPerPage));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Error for currency {Currency}");
+            }
         }
 
         protected virtual async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
@@ -415,6 +446,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+        }
+
+        public void ShowAllAddresses()
+        {
+            IsAllAddressesShowed = true;
+            CanShowMoreAddresses = false;
+            AddressesNumberPerPage = AddressesViewModel?.Addresses.Count ?? 0;
         }
 
         #region IDisposable Support
