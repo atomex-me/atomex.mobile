@@ -138,7 +138,6 @@ namespace atomex.ViewModel.WalletBeacon
 
         private async Task ScanQrCodeAsync()
         {
-            IsScanning = IsAnalyzing = true;
             PermissionStatus permissions = await Xamarin.Essentials.Permissions.CheckStatusAsync<Permissions.Camera>();
 
             if (permissions != PermissionStatus.Granted)
@@ -146,11 +145,23 @@ namespace atomex.ViewModel.WalletBeacon
             if (permissions != PermissionStatus.Granted)
                 return;
 
+            IsScanning = true;
+            IsAnalyzing = true;
+
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
+
             await Navigation.PushAsync(new ScanningQrPage(this));
         }
 
         private async Task OnScanAddressAsync()
         {
+            IsScanning = false;
+            IsAnalyzing = false;
+
+            this.RaisePropertyChanged(nameof(IsScanning));
+            this.RaisePropertyChanged(nameof(IsAnalyzing));
+
             if (ScanResult == null)
             {
                 await Application.Current.MainPage.DisplayAlert(AppResources.Error, "Incorrect QR code format", AppResources.AcceptButton);

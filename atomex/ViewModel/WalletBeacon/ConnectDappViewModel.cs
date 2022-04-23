@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Atomex;
+using Atomex.Common;
+using Atomex.Core;
+using Atomex.Wallet.Tezos;
 using Beacon.Sdk;
 using Beacon.Sdk.Beacon;
 using Beacon.Sdk.Beacon.Permission;
 using Netezos.Keys;
+using Serilog;
 using Xamarin.Forms;
+using Network = Beacon.Sdk.Beacon.Permission.Network;
 
 namespace atomex.ViewModel.WalletBeacon
 {
@@ -20,21 +27,29 @@ namespace atomex.ViewModel.WalletBeacon
     public class ConnectDappViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
+
         private readonly IWalletBeaconClient _walletBeaconClient;
-        private readonly PermissionRequest _permissionRequest;
+
         private readonly string _receiverId;
 
-        public ConnectDappViewModel(INavigation navigation, IWalletBeaconClient walletBeaconClient,
-            PermissionRequest permissionRequest, string receiverId)
+        public ConnectDappViewModel(
+            IAtomexApp app,
+            IWalletBeaconClient walletBeaconClient,
+            string receiverId,
+            INavigation navigation,
+            PermissionRequest permissionRequest)
         {
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
             _walletBeaconClient = walletBeaconClient ?? throw new ArgumentNullException(nameof(walletBeaconClient));
-            _permissionRequest = permissionRequest ?? throw new ArgumentNullException(nameof(permissionRequest));
             _receiverId = receiverId ?? throw new ArgumentNullException(nameof(receiverId));
-            Permissions = new List<PermissionModel>();
+
+            PermissionRequest = permissionRequest ?? throw new ArgumentNullException(nameof(permissionRequest));
+            Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
 
             ConnectCommand = new Command(async () => await ConnectAsync());
             CancelCommand = new Command(async () => await CancelAsync());
+
+            Permissions = new List<PermissionModel>();
 
             foreach (var scope in permissionRequest.Scopes)
             {
@@ -48,16 +63,44 @@ namespace atomex.ViewModel.WalletBeacon
 
         public INavigation Navigation { get; set; }
 
+        public PermissionRequest PermissionRequest { get; }
+
         public List<PermissionModel> Permissions { get; }
 
-
         public ICommand ConnectCommand { get; }
+
+        public ICommand CancelCommand { get; }
+
         private async Task ConnectAsync()
         {
-            //_app.Account.Wallet.
+            var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+            var addresses = (await account.GetAddressesAsync()).ToList();
+            if (addresses.Count == 0)
+            {
+                Log.Error("No adresses");
+                return;
+            }
 
-            // ToDo: refactor
-            var walletKey = Key.FromBase58("edsk35n2ruX2r92SdtWzP87mEUqxWSwM14hG6GRhEvU6kfdH8Ut6SW");
+            addresses.Sort((a1, a2) =>
+            {
+                var typeResult = a1.KeyType.CompareTo(a2.KeyType);
+
+                if (typeResult != 0)
+                    return typeResult;
+
+                var accountResult = a1.KeyIndex.Account.CompareTo(a2.KeyIndex.Account);
+
+                if (accountResult != 0)
+                    return accountResult;
+
+                var chainResult = a1.KeyIndex.Chain.CompareTo(a2.KeyIndex.Chain);
+
+                return chainResult != 0
+                   ? chainResult
+                   : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
+            });
+
+            var responseAddress = addresses[0].ResolvePublicKey(account.Currencies, account.Wallet); ;
 
             var network = new Network
             {
@@ -72,11 +115,11 @@ namespace atomex.ViewModel.WalletBeacon
                     scopes.Add(permission.Scope);
 
             var response = new PermissionResponse(
-                id: _permissionRequest!.Id,
+                id: PermissionRequest!.Id,
                 senderId: _walletBeaconClient.SenderId,
                 network: network,
-                scopes: _permissionRequest.Scopes,
-                publicKey: walletKey.PubKey.ToString(),
+                scopes: PermissionRequest.Scopes,
+                publicKey: responseAddress.PublicKey,
                 appMetadata: _walletBeaconClient.Metadata);
 
             await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);//.ConfigureAwait(false);
@@ -85,12 +128,13 @@ namespace atomex.ViewModel.WalletBeacon
             {
                 await Navigation.PopAsync();
                 await Navigation.PopAsync();
+                await Navigation.PopAsync();
             });
         }
 
-        public ICommand CancelCommand { get; }
         private async Task CancelAsync()
         {
+            await Navigation.PopAsync();
             await Navigation.PopAsync();
             await Navigation.PopAsync();
         }
