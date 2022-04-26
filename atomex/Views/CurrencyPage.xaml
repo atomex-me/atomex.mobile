@@ -215,111 +215,145 @@
                            Margin="12,0"
                            IsVisible="{Binding CanBuy}"/>
                 </Grid>
-                
-                <Grid Margin="8,20,8,0"
-                      HorizontalOptions="FillAndExpand"
-                      ColumnSpacing="0"
-                      RowSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="36" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="3*" />
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.ColumnSpan="3"
-                           CornerRadius="18"
-                           HasShadow="False"
-                           Padding="0"
-                           BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
-                    <Button CornerRadius="16"
-                            Padding="0"
-                            Margin="2"
-                            Text="Activity"
-                            FontFamily="{DynamicResource RegularFont}"
-                            TextTransform="None"
-                            FontSize="14"
-                            Command="{Binding ChangeCurrencyTabCommand}"
-                            CommandParameter="Activity">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab}"
-                                         Value="Activity">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
-                                         Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="Transparent"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Grid.Column="1"
-                            CornerRadius="16"
-                            Padding="0"
-                            Margin="2"
-                            Text="Collectibles"
-                            FontFamily="{DynamicResource RegularFont}"
-                            TextTransform="None"
-                            FontSize="14"
-                            Command="{Binding ChangeCurrencyTabCommand}"
-                            CommandParameter="Collectibles">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab}"
-                                         Value="Collectibles">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
-                                         Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="Transparent"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Grid.Column="2"
-                            CornerRadius="16"
-                            Padding="0"
-                            Margin="2"
-                            Text="{helpers:Translate Addresses}"
-                            FontFamily="{DynamicResource RegularFont}"
-                            TextTransform="None"
-                            FontSize="14"
-                            Command="{Binding ChangeCurrencyTabCommand}"
-                            CommandParameter="Addresses">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab}"
-                                         Value="Addresses">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CurrencyActiveTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Addresses'}"
-                                         Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                <Setter Property="BackgroundColor"
-                                        Value="Transparent"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                <ScrollView Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never"
+                            HorizontalOptions="CenterAndExpand">
+                    <Grid Margin="8,20,8,0"
+                          HorizontalOptions="FillAndExpand"
+                          ColumnSpacing="0"
+                          RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Frame Grid.ColumnSpan="4"
+                               CornerRadius="18"
+                               HasShadow="False"
+                               Padding="0"
+                               BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
+                        <Button CornerRadius="16"
+                                Padding="16,8"
+                                Margin="2"
+                                Text="Activity"
+                                FontFamily="{DynamicResource RegularFont}"
+                                TextTransform="None"
+                                FontSize="14"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Activity">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Activity">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="1"
+                                CornerRadius="16"
+                                Padding="16,8"
+                                Margin="2"
+                                Text="Collectibles"
+                                FontFamily="{DynamicResource RegularFont}"
+                                TextTransform="None"
+                                FontSize="14"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Collectibles">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Collectibles">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="2"
+                                CornerRadius="16"
+                                Padding="16,8"
+                                Margin="2"
+                                Text="{helpers:Translate Addresses}"
+                                FontFamily="{DynamicResource RegularFont}"
+                                TextTransform="None"
+                                FontSize="14"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Addresses">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Addresses">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Addresses'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="3"
+                                CornerRadius="16"
+                                Padding="16,8"
+                                Margin="2"
+                                Text="Delegations"
+                                FontFamily="{DynamicResource RegularFont}"
+                                TextTransform="None"
+                                FontSize="14"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Delegations"
+                                IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Delegations">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Delegations'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </ScrollView>
                 <ListView ItemsSource="{Binding GroupedTransactions}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
@@ -336,7 +370,7 @@
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
-                                     Binding="{Binding CurrencyActiveTab}"
+                                     Binding="{Binding SelectedTab}"
                                      Value="Activity">
                             <Setter Property="IsVisible"
                                     Value="True"/>
@@ -473,7 +507,7 @@
                             <MultiTrigger.Conditions>
                                 <BindingCondition Binding="{Binding CanShowMoreTxs}"
                                                   Value="True"/>
-                                <BindingCondition Binding="{Binding CurrencyActiveTab}"
+                                <BindingCondition Binding="{Binding SelectedTab}"
                                                   Value="Activity"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="IsVisible"
@@ -506,7 +540,7 @@
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
-                                     Binding="{Binding CurrencyActiveTab}"
+                                     Binding="{Binding SelectedTab}"
                                      Value="Addresses">
                             <Setter Property="IsVisible"
                                     Value="True"/>
@@ -560,7 +594,7 @@
                             <MultiTrigger.Conditions>
                                 <BindingCondition Binding="{Binding CanShowMoreAddresses}"
                                                   Value="True"/>
-                                <BindingCondition Binding="{Binding CurrencyActiveTab}"
+                                <BindingCondition Binding="{Binding SelectedTab}"
                                                   Value="Addresses"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="IsVisible"

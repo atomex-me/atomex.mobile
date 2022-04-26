@@ -30,14 +30,16 @@ using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
-    public enum ActiveTab
+    public enum CurrencyTab
     {
         [Description("Activity")]
         Activity,
         [Description("Collectibles")]
         Collectibles,
         [Description("Addresses")]
-        Addresses
+        Addresses,
+        [Description("Delegations")]
+        Delegations
     }
 
     public class CurrencyViewModel : BaseViewModel
@@ -96,7 +98,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         }
 
         [Reactive] public bool IsRefreshing { get; set; }
-        [Reactive] public ActiveTab CurrencyActiveTab { get; set; }
+        [Reactive] public CurrencyTab SelectedTab { get; set; }
 
         public CurrencyViewModel(
             IAtomexApp app,
@@ -140,7 +142,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             IsAllTxsShowed = false;
             IsAllAddressesShowed = false;
             AddressesNumberPerPage = 3;
-            CurrencyActiveTab = ActiveTab.Activity;
+            SelectedTab = CurrencyTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
         }
 
@@ -403,8 +405,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
         public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand => _changeCurrencyTabCommand ??= ReactiveCommand.Create<string>((value) =>
             {
-                Enum.TryParse(value, out ActiveTab selectedTab);
-                CurrencyActiveTab = selectedTab;
+                Enum.TryParse(value, out CurrencyTab selectedTab);
+                SelectedTab = selectedTab;
             });
 
         protected virtual void OnReceiveClick()
