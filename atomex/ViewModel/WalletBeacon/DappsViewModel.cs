@@ -51,8 +51,10 @@ namespace atomex.ViewModel.WalletBeacon
             _walletBeaconClient.OnBeaconMessageReceived += OnBeaconMessageRecievedHandler;
 
             var permissions = _walletBeaconClient.PermissionInfoRepository.ReadAllAsync().Result;
-            foreach (var permission in permissions)
-                Permissions.Add(permission);
+
+            Permissions = new ObservableCollection<PermissionInfo>(permissions);
+            //foreach (var permission in permissions)
+            //    Permissions.Add(permission);
         }
 
         [Reactive] public bool IsScanning { get; set; }
@@ -63,51 +65,67 @@ namespace atomex.ViewModel.WalletBeacon
 
         public INavigation Navigation { get; }
 
-        public ObservableCollection<PermissionInfo> Permissions { get; } = new();
+        [Reactive] public ObservableCollection<PermissionInfo> Permissions { get; set; } = new();
 
         public ICommand DeleteCommand { get; }
 
         public ICommand ScanQrCodeCommand { get; }
 
-        public ICommand ScanResultCommand { get; }
+        public ICommand ScanResultCommand { get; } // ScanResultCommand
 
         private void OnDappConnectedEventHandler(object sender, DappConnectedEventArgs e)
         {
             if (sender is not ResponseMessageHandler)
                 throw new ArgumentException("sender is not ResponseMessageHandler");
 
-            Permissions.Add(e.dappPermissionInfo);
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                Permissions.Add(e.dappPermissionInfo);
+                Permissions = new ObservableCollection<PermissionInfo>(Permissions);
+
+                this.RaisePropertyChanged(nameof(Permissions));
+            });
         }
 
         private void OnBeaconMessageRecievedHandler(object sender, BeaconMessageEventArgs args)
         {
-            BaseBeaconMessage message = args.Request;
-
-            if (message.Type != BeaconMessageType.operation_request)
-                return;
-
-            var request = message as OperationRequest;
-
-            if (request!.OperationDetails.Count <= 0)
-                return;
-
-            var transactionOperation = request.OperationDetails[0];
-
-            if (!long.TryParse(transactionOperation.Amount, out long amount))
-                return;
-
-            Device.BeginInvokeOnMainThread(async () =>
+            try
             {
-                await Navigation.PushAsync(
-                    new TezosTransactionRequestPage(
-                        new TezosTransactionRequestViewModel(
-                            _app,
-                            _walletBeaconClient,
-                            args.SenderId,
-                            Navigation,
-                            request,
-                            transactionOperation)));
-            });
+                BaseBeaconMessage message = args.Request;
+
+                if (message.Type != BeaconMessageType.operation_request)
+                    return;
+
+                var request = message as OperationRequest;
+
+                if (request!.OperationDetails.Count <= 0)
+                    return;
+
+                var transactionOperation = request.OperationDetails[0];
+
+                if (!long.TryParse(transactionOperation.Amount, out long amount))
+                    return;
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PushAsync(
+                        new TezosTransactionRequestPage(
+                            new TezosTransactionRequestViewModel(
+                                _app,
+                                _walletBeaconClient,
+                                args.SenderId,
+                                Navigation,
+                                request,
+                                transactionOperation)));
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Beacon message error");
+            }
+           
         }
 
         private async Task DeleteAsync(string address)
@@ -123,11 +141,22 @@ namespace atomex.ViewModel.WalletBeacon
 
                 try
                 {
-                    await _walletBeaconClient.PermissionInfoRepository.DeleteByAddressAsync(address);
+                    //await _walletBeaconClient.PermissionInfoRepository.DeleteAsync(selectedDapp.Address, selectedDapp.SenderId).ConfigureAwait(false);
 
-                    var index = Permissions.IndexOf(selectedDapp);
+                    //var index = Permissions.IndexOf(selectedDapp);
 
-                    Permissions.RemoveAt(index);//.Remove(selectedDapp);
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        //var result = Permissions.Where(x => x.Address != address).ToList();
+                        Permissions = new ObservableCollection<PermissionInfo>();
+
+                        this.RaisePropertyChanged(nameof(Permissions));
+                    });
+                    //var result = Permissions.Where(x => x.Address != address).ToList();
+                    //Permissions = new ObservableCollection<PermissionInfo>(result);
+
+                    //this.RaisePropertyChanged(nameof(Permissions));
+
                 }
                 catch (Exception e)
                 {
