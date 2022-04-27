@@ -521,6 +521,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string CoinsAndTokens {
+            get {
+                return ResourceManager.GetString("CoinsAndTokens", resourceCulture);
+            }
+        }
+        
+        internal static string ManageAssets {
+            get {
+                return ResourceManager.GetString("ManageAssets", resourceCulture);
+            }
+        }
+        
         internal static string WalletsPageTitle {
             get {
                 return ResourceManager.GetString("WalletsPageTitle", resourceCulture);
@@ -584,6 +596,24 @@ namespace atomex.Resources {
         internal static string UnconfirmedAmountLabel {
             get {
                 return ResourceManager.GetString("UnconfirmedAmountLabel", resourceCulture);
+            }
+        }
+        
+        internal static string Activity {
+            get {
+                return ResourceManager.GetString("Activity", resourceCulture);
+            }
+        }
+        
+        internal static string Collectibles {
+            get {
+                return ResourceManager.GetString("Collectibles", resourceCulture);
+            }
+        }
+        
+        internal static string Delegations {
+            get {
+                return ResourceManager.GetString("Delegations", resourceCulture);
             }
         }
         

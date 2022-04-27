@@ -1,6 +1,7 @@
 {
   "images": [
     {
+      "filename": "ic_exchange.pdf",
       "idiom": "universal"
     },
     {
@@ -86,7 +87,6 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_exchange.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

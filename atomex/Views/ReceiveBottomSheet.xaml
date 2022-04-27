@@ -118,7 +118,7 @@
                                              Binding="{Binding IsCopied}"
                                              Value="False">
                                     <Setter Property="Source"
-                                            Value="ic_copy"/>
+                                            Value="ic_copy__white"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding IsCopied}"

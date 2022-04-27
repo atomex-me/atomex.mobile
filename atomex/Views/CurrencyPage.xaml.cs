@@ -45,5 +45,10 @@ namespace atomex
                 AddressesListView.HeightRequest = vm.AddressesNumberPerPage * AddressesListView.RowHeight;
             }
         }
+
+        private async void TabChanged(object sender, EventArgs e)
+        {
+            await TabScrollView.ScrollToAsync((VisualElement)sender, ScrollToPosition.End, true);
+        }
     }
 }

@@ -217,7 +217,8 @@
                 </Grid>
                 <ScrollView Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
-                            HorizontalOptions="CenterAndExpand">
+                            HorizontalOptions="CenterAndExpand"
+                            x:Name="TabScrollView">
                     <Grid Margin="8,20,8,0"
                           HorizontalOptions="FillAndExpand"
                           ColumnSpacing="0"
@@ -226,9 +227,9 @@
                             <RowDefinition Height="36" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.ColumnSpan="4"
@@ -239,12 +240,13 @@
                         <Button CornerRadius="16"
                                 Padding="16,8"
                                 Margin="2"
-                                Text="Activity"
+                                Text="{helpers:Translate Activity}"
                                 FontFamily="{DynamicResource RegularFont}"
                                 TextTransform="None"
                                 FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Activity">
+                                CommandParameter="Activity"
+                                Clicked="TabChanged">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -268,12 +270,13 @@
                                 CornerRadius="16"
                                 Padding="16,8"
                                 Margin="2"
-                                Text="Collectibles"
+                                Text="{helpers:Translate Collectibles}"
                                 FontFamily="{DynamicResource RegularFont}"
                                 TextTransform="None"
                                 FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Collectibles">
+                                CommandParameter="Collectibles"
+                                Clicked="TabChanged">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -302,7 +305,8 @@
                                 TextTransform="None"
                                 FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Addresses">
+                                CommandParameter="Addresses"
+                                Clicked="TabChanged">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -326,12 +330,13 @@
                                 CornerRadius="16"
                                 Padding="16,8"
                                 Margin="2"
-                                Text="Delegations"
+                                Text="{helpers:Translate Delegations}"
                                 FontFamily="{DynamicResource RegularFont}"
                                 TextTransform="None"
                                 FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Delegations"
+                                Clicked="TabChanged"
                                 IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
@@ -524,8 +529,6 @@
                             Margin="16,0,16,16"
                             Clicked="ShowAllTxs"/>
                 </StackLayout>
-
-
                 <ListView ItemsSource="{Binding Addresses}"
                           SelectionMode="Single"
                           SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"

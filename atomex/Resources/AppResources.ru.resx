@@ -266,6 +266,12 @@
     <data name="TotalBalance" xml:space="preserve">
         <value>Общий баланс</value>
     </data>
+    <data name="CoinsAndTokens" xml:space="preserve">
+        <value>Валюты &amp; Токены</value>
+    </data>
+    <data name="ManageAssets" xml:space="preserve">
+        <value>Настройка активов</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">
@@ -302,6 +308,15 @@
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Неподтвержденная сумма</value>
+    </data>
+    <data name="Activity" xml:space="preserve">
+        <value>История</value>
+    </data>
+    <data name="Collectibles" xml:space="preserve">
+        <value>NFTs</value>
+    </data>
+    <data name="Delegations" xml:space="preserve">
+        <value>Делегирование</value>
     </data>
 
     <!-- Addresses info Page -->

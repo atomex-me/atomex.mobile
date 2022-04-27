@@ -86,7 +86,7 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_card.pdf",
+      "filename": "ic_card__dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -304,6 +304,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_card.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

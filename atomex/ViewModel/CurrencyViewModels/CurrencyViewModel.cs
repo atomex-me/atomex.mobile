@@ -134,7 +134,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    CanShowMoreAddresses = AddressesViewModel.Addresses.Count > AddressesNumberPerPage;
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
                     OnAddresesChangedEventHandler();
                 });
 

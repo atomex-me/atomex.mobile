@@ -1,7 +1,6 @@
 {
   "images": [
     {
-      "filename": "ic_receive.pdf",
       "idiom": "universal"
     },
     {
@@ -87,6 +86,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_copy__blue--dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -304,6 +304,7 @@
       "idiom": "car"
     },
     {
+      "filename": "ic_copy__blue.pdf",
       "appearances": [
         {
           "appearance": "luminosity",

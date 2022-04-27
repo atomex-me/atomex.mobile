@@ -555,7 +555,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"
@@ -882,7 +882,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"
@@ -1119,7 +1119,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"

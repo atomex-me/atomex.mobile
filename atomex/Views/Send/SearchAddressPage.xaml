@@ -125,7 +125,7 @@
                                        Margin="0"
                                        HorizontalOptions="End"
                                        VerticalOptions="FillAndExpand"
-                                       Source="ic_copy">
+                                       Source="ic_copy__gray">
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
                                                               CommandParameter="{Binding .}"/>

@@ -117,7 +117,7 @@
                                Padding="0"/>
                     </Grid>
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Coins &amp; Tokens"
+                        <Label Text="{helpers:Translate CoinsAndTokens}"
                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                FontSize="14"
                                FontFamily="{DynamicResource RegularFont}"

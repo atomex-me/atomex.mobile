@@ -44,7 +44,7 @@
                        FontSize="16"/>
                 <Image Grid.Column="1"
                        Grid.RowSpan="3"
-                       Source="ic_copy"
+                       Source="ic_copy__gray"
                        WidthRequest="25"
                        HeightRequest="30"
                        VerticalOptions="FillAndExpand">
@@ -206,7 +206,7 @@
                              HorizontalOptions="Center">
                     <Image HeightRequest="30"
                            WidthRequest="25"
-                           Source="ic_copy"
+                           Source="ic_copy__blue"
                            VerticalOptions="Center"/>
                     <Label Text="{helpers:Translate CopyPrivateKeyButton}"
                            VerticalTextAlignment="Center"

@@ -266,6 +266,12 @@
     <data name="TotalBalance" xml:space="preserve">
         <value>Total Balance</value>
     </data>
+    <data name="CoinsAndTokens" xml:space="preserve">
+        <value>Coins &amp; Tokens</value>
+    </data>
+    <data name="ManageAssets" xml:space="preserve">
+        <value>Manage assets</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">
@@ -302,6 +308,15 @@
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Unconfirmed amount</value>
+    </data>
+    <data name="Activity" xml:space="preserve">
+        <value>Activity</value>
+    </data>
+    <data name="Collectibles" xml:space="preserve">
+        <value>Collectibles</value>
+    </data>
+    <data name="Delegations" xml:space="preserve">
+        <value>Delegations</value>
     </data>
 
     <!-- Addresses info Page -->

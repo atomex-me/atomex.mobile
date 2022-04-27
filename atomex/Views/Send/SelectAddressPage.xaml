@@ -418,7 +418,7 @@
                                                HeightRequest="24"
                                                VerticalOptions="FillAndExpand"
                                                HorizontalOptions="End"
-                                               Source="ic_copy"/>
+                                               Source="ic_copy__gray"/>
                                     </StackLayout>
                                 </Grid>
                             </custom:CustomViewCell>
