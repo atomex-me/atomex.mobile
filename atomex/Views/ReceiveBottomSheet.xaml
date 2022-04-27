@@ -87,7 +87,7 @@
                        CornerRadius="25"
                        HeightRequest="50"
                        WidthRequest="200"
-                       Margin="24,12,24,45"
+                       Margin="24,12"
                        Padding="20,0"
                        HorizontalOptions="Center">
                     <Frame.GestureRecognizers>
@@ -148,6 +148,61 @@
                             </Label.Triggers>
                         </Label>
                     </StackLayout>
+                </Frame>
+                <Frame HasShadow="False"
+                       CornerRadius="25"
+                       HeightRequest="50"
+                       WidthRequest="200"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                       Padding="20,0"
+                       HorizontalOptions="Center">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShareCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <RelativeLayout HeightRequest="50">
+                        <StackLayout Spacing="10"
+                                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                                     Orientation="Horizontal"
+                                     HorizontalOptions="Center">
+                            <Image HeightRequest="18"
+                                   WidthRequest="18"
+                                   VerticalOptions="Center"
+                                   Source="ic_share">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding IsShared}"
+                                                 Value="True">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                            <Label Text="{helpers:Translate ShareButton}"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"
+                                   FontFamily="{DynamicResource RegularFont}"
+                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
+                                   FontSize="17">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsShared}"
+                                                 Value="True">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                                               RelativeLayout.WidthConstraint="24"
+                                               RelativeLayout.HeightConstraint="24"
+                                               Color="#92C8F9"
+                                               BackgroundColor="Transparent"
+                                               IsRunning="{Binding IsShared}"
+                                               IsVisible="{Binding IsShared}"/>
+                        </StackLayout>
+                    </RelativeLayout>
                 </Frame>
                 <Button Text="{Binding MyAddressesButtonName}"
                         BackgroundColor="Transparent"

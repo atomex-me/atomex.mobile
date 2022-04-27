@@ -204,14 +204,14 @@
                 <StackLayout Spacing="10"
                              Orientation="Horizontal"
                              HorizontalOptions="Center">
-                    <Image HeightRequest="30"
-                           WidthRequest="25"
+                    <Image HeightRequest="18"
+                           WidthRequest="15"
                            Source="ic_copy__blue"
                            VerticalOptions="Center"/>
                     <Label Text="{helpers:Translate CopyPrivateKeyButton}"
                            VerticalTextAlignment="Center"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                           FontFamily="{DynamicResource RegularFont}"
+                           FontFamily="{DynamicResource BoldFont}"
                            FontSize="17"/>
                 </StackLayout>
             </Frame>

@@ -70,7 +70,7 @@
                                          Binding="{Binding IsCopied}"
                                          Value="False">
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Frame"
                                          Binding="{Binding IsCopied}"
@@ -80,10 +80,12 @@
                             </DataTrigger>
                         </Frame.Triggers>
                         <StackLayout Spacing="10"
+                                     Padding="16,0"
                                      Orientation="Horizontal"
-                                     HorizontalOptions="Center">
+                                     HorizontalOptions="CenterAndExpand">
                             <Image HeightRequest="18"
                                    WidthRequest="18"
+                                   HorizontalOptions="EndAndExpand"
                                    VerticalOptions="Center">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image"
@@ -102,6 +104,8 @@
                             </Image>
                             <Label Text="{Binding CopyButtonName}"
                                    VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Start"
+                                   HorizontalOptions="Start"
                                    FontFamily="{DynamicResource RegularFont}"
                                    FontSize="17">
                                 <Label.Triggers>
@@ -109,7 +113,7 @@
                                                  Binding="{Binding IsCopied}"
                                                  Value="False">
                                         <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding IsCopied}"
@@ -123,15 +127,15 @@
                     </Frame>
                     <Frame Grid.Column="1"
                            HasShadow="False"
-                           Padding="0"
+                           Padding="16,0"
                            CornerRadius="25"
                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
                            HorizontalOptions="FillAndExpand">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
                         </Frame.GestureRecognizers>
-                        <Label Text="{helpers:Translate CloseButton}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                        <Label Text="{helpers:Translate CloseButton}"                                                       
+                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
                                VerticalTextAlignment="Center"
                                HorizontalTextAlignment="Center"
                                FontFamily="{DynamicResource RegularFont}"

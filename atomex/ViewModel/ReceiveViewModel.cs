@@ -28,6 +28,7 @@ namespace atomex.ViewModel
         [Reactive] public string MyAddressesButtonName { get; set; }
         [Reactive] public string CopyButtonName { get; set; }
         [Reactive] public bool IsCopied { get; set; }
+        [Reactive] public bool IsShared { get; set; }
         public SelectAddressViewModel SelectAddressViewModel { get; set; }
 
         public string TokenContract { get; private set; }
@@ -101,27 +102,24 @@ namespace atomex.ViewModel
             }
         });
 
-        //private ICommand _shareCommand;
-        //public ICommand ShareCommand => _shareCommand ??= new Command(async () =>
-        //{
-        //    IsLoading = true;
+        private ReactiveCommand<Unit, Unit> _shareCommand;
+        public ReactiveCommand<Unit, Unit> ShareCommand => _shareCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        {
+            IsShared = true;
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Text = AppResources.MyPublicAddress +
+                    " " +
+                    SelectedAddress?.CurrencyCode +
+                    ":\r\n" +
+                    SelectedAddress?.Address,
 
-        //    await Share.RequestAsync(new ShareTextRequest
-        //    {
-        //        Text = AppResources.MyPublicAddress +
-        //            " " +
-        //            SelectedAddress.CurrencyCode +
-        //            ":\r\n" +
-        //            SelectedAddress.Address,
+                Title = AppResources.AddressSharing
+            });
 
-        //        Title = AppResources.AddressSharing
-        //    });
-
-        //    await Task.Delay(1000);
-
-        //    IsLoading = false;
-        //
-        //});
+            await Task.Delay(1500);
+            IsShared = false;
+        });
 
         private ICommand _closeBottomSheetCommand;
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>_navigationService?.CloseBottomSheet());

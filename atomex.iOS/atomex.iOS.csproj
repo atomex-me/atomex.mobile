@@ -334,6 +334,9 @@
     <ImageAsset Include="Assets.xcassets\ic_export__black.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_export__black.imageset\ic_export__black.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export__white.imageset\ic_export__white.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -544,6 +547,7 @@
     <Folder Include="Assets.xcassets\ic_export__green.imageset\" />
     <Folder Include="Assets.xcassets\ic_export__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_export__black.imageset\" />
+    <Folder Include="Assets.xcassets\ic_share.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
