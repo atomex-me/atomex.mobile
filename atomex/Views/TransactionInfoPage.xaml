@@ -67,7 +67,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -86,13 +87,16 @@
                        VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -118,13 +122,16 @@
                 </Label>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -173,13 +180,17 @@
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -198,6 +209,8 @@
                        VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -213,7 +226,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -264,6 +278,9 @@
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -279,7 +296,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -330,6 +348,9 @@
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
@@ -344,7 +365,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -385,7 +407,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -411,6 +434,8 @@
                 </Label>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -426,7 +451,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -452,6 +478,8 @@
                 </Label>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -467,7 +495,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="1" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -493,6 +522,8 @@
                 </Label>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
             </Grid>
         </StackLayout>
     </ScrollView>
