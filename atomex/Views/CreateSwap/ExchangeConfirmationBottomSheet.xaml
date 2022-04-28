@@ -26,7 +26,7 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="16,8,16,16"
+                              Padding="16,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="448"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -36,7 +36,7 @@
                    HeightRequest="4"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   Margin="0,0,0,20"/>
+                   Margin="0,0,0,30"/>
             <Label Text="{helpers:Translate ConfirmationLabel}"
                    Style="{DynamicResource TitleTextStyle}"
                    Padding="0,0,0,20"/>

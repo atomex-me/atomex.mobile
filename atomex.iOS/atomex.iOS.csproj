@@ -176,18 +176,12 @@
     <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Copy.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\Copy.imageset\Copy-1.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password__white.pdf" />
     <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Scan-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\sort_white.pdf" />
     <ImageAsset Include="Assets.xcassets\SwapArrows.imageset\Swap-arrows-1.pdf" />
@@ -214,7 +208,6 @@
     <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete__blue-1.pdf" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSDT.png" />
     <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick__white.pdf" />
@@ -306,12 +299,10 @@
     <ImageAsset Include="Assets.xcassets\ic_send.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_receive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card.pdf" />
@@ -337,6 +328,12 @@
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -354,9 +351,6 @@
     </PackageReference>
     <PackageReference Include="ZXing.Net.Mobile">
       <Version>2.4.1</Version>
-    </PackageReference>
-    <PackageReference Include="SkiaSharp">
-      <Version>2.80.3</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.1.0</Version>
@@ -548,6 +542,7 @@
     <Folder Include="Assets.xcassets\ic_export__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_export__black.imageset\" />
     <Folder Include="Assets.xcassets\ic_share.imageset\" />
+    <Folder Include="Assets.xcassets\ic_update.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

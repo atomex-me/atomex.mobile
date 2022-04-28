@@ -34,13 +34,13 @@
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
                        HeightRequest="4"
-                       Margin="0,0,0,40"
+                       Margin="0,0,0,30"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontSize="30"
                        FontFamily="{DynamicResource RegularFont}"
-                       Margin="16,0,16,26"
+                       Margin="16,10"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center">
                     <Label.Triggers>

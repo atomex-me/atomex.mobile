@@ -27,7 +27,7 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="0,8,0,16"
+                              Padding="0,14"
                               HeightRequest="196"
                               HorizontalOptions="FillAndExpand"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
