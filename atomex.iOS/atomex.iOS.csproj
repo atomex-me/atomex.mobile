@@ -308,7 +308,6 @@
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf" />
@@ -337,6 +336,7 @@
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -12,16 +12,12 @@ namespace atomex
             BindingContext = currencyViewModel;
 
             TransactionsListView.HeightRequest = currencyViewModel.IsAllTxsShowed
-                ? currencyViewModel.Transactions?.Count * TransactionsListView.RowHeight +
-                    currencyViewModel.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2 ?? 0
+                ? currencyViewModel.Transactions.Count * TransactionsListView.RowHeight +
+                    currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TxsFooter.HeightRequest
                 : currencyViewModel.TxsNumberPerPage * TransactionsListView.RowHeight +
-                    currencyViewModel.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2 ?? 0;
-
-            AddressesListView.HeightRequest = currencyViewModel.IsAllAddressesShowed
-                ? currencyViewModel.Addresses?.Count * AddressesListView.RowHeight ?? 0
-                : currencyViewModel.AddressesNumberPerPage * AddressesListView.RowHeight;
+                    currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TxsFooter.HeightRequest;
         }
 
         private void ShowAllTxs(object sender, EventArgs args)
@@ -30,19 +26,9 @@ namespace atomex
             {
                 var vm = (CurrencyViewModel)BindingContext;
                 vm.ShowAllTxs();
-                TransactionsListView.HeightRequest = vm.Transactions?.Count * TransactionsListView.RowHeight +
-                    vm.GroupedTransactions?.Count * CurrencyViewModel.DefaultGroupHeight +
-                    TransactionsListView.RowHeight / 2 ?? 0;
-            }
-        }
-
-        private void ShowAllAddresses(object sender, EventArgs args)
-        {
-            if (BindingContext is CurrencyViewModel)
-            {
-                var vm = (CurrencyViewModel)BindingContext;
-                vm.ShowAllAddresses();
-                AddressesListView.HeightRequest = vm.AddressesNumberPerPage * AddressesListView.RowHeight;
+                TransactionsListView.HeightRequest = vm.Transactions.Count * TransactionsListView.RowHeight +
+                    vm.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
+                    TxsFooter.HeightRequest;
             }
         }
 

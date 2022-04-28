@@ -75,13 +75,12 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
+        private SelectAddressViewModel _selectAddressViewModel { get; set; }
 
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
-        [Reactive] public bool CanShowMoreAddresses { get; set; }
-        [Reactive] public bool IsAllAddressesShowed { get; set; }
         public int TxsNumberPerPage = 3;
-        [Reactive] public int AddressesNumberPerPage { get; set; }
+        public int AddressesNumberPerPage = 3;
 
         public bool CanBuy { get; set; }
 
@@ -130,18 +129,29 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .SubscribeInMainThread(_ =>
                     CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
 
-            this.WhenAnyValue(vm => vm.AddressesNumberPerPage)
-                .WhereNotNull()
-                .SubscribeInMainThread(_ =>
-                {
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
-                    OnAddresesChangedEventHandler();
-                });
-
             LoadAddresses();
+            OnAddresesChangedEventHandler();
+
+            _selectAddressViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: Currency,
+                navigationService: _navigationService,
+                tab: TabNavigation.Portfolio,
+                mode: SelectAddressMode.ChooseMyAddress)
+                    {
+                        ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                        {
+                            var address = AddressesViewModel?.Addresses?
+                                .Where(a => a.Address == walletAddressViewModel?.Address)
+                                .FirstOrDefault();
+                            _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
+
+                            if (_selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
+                                _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                        }
+                    };
+
             IsAllTxsShowed = false;
-            IsAllAddressesShowed = false;
-            AddressesNumberPerPage = 3;
             SelectedTab = CurrencyTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
         }
@@ -344,6 +354,12 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _refreshCommand;
         public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
 
+        private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
+        {
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio);
+        });
+
         public virtual async Task ScanCurrency()
         {
             if (IsRefreshing) return;
@@ -448,13 +464,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-        }
-
-        public void ShowAllAddresses()
-        {
-            IsAllAddressesShowed = true;
-            CanShowMoreAddresses = false;
-            AddressesNumberPerPage = AddressesViewModel?.Addresses.Count ?? 0;
         }
 
         #region IDisposable Support

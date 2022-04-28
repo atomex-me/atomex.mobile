@@ -371,7 +371,6 @@
                           HasUnevenRows="True"
                           RowHeight="48"
                           x:Name="TransactionsListView"
-                          Footer=""
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -505,8 +504,31 @@
                             </controls:CustomViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <Button Text="{helpers:Translate ShowAll}"
+                                x:Name="TxsFooter"
+                                BackgroundColor="Transparent"
+                                BorderColor="Transparent"
+                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
+                                FontSize="17"
+                                FontFamily="{DynamicResource BoldFont}"
+                                Padding="16"
+                                TextTransform="None"
+                                HeightRequest="50"
+                                HorizontalOptions="FillAndExpand"
+                                Clicked="ShowAllTxs">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanShowMoreTxs}"
+                                             Value="False">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </ListView.Footer>
                 </ListView>
-                <StackLayout IsVisible="False">
+                <!--<StackLayout IsVisible="False">
                     <StackLayout.Triggers>
                         <MultiTrigger TargetType="StackLayout">
                             <MultiTrigger.Conditions>
@@ -520,25 +542,24 @@
                         </MultiTrigger>
                     </StackLayout.Triggers>
                     <Button Text="{helpers:Translate ShowAll}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                            BackgroundColor="Transparent"
+                            BorderColor="Transparent"
                             TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                            Padding="16,0"
+                            FontSize="17"
+                            FontFamily="{DynamicResource BoldFont}"
+                            Padding="16"
                             TextTransform="None"
-                            CornerRadius="25"
                             HeightRequest="50"
-                            Margin="16,0,16,16"
+                            HorizontalOptions="FillAndExpand"
                             Clicked="ShowAllTxs"/>
-                </StackLayout>
+                </StackLayout>-->
                 <ListView ItemsSource="{Binding Addresses}"
                           SelectionMode="Single"
                           SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
                           BackgroundColor="Transparent"
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
-                          x:Name="AddressesListView"
                           HasUnevenRows="True"
-                          RowHeight="64"
-                          Footer=""
                           Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
@@ -590,30 +611,20 @@
                             </controls:CustomViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <Button Text="{helpers:Translate ShowAll}"
+                                BackgroundColor="Transparent"
+                                BorderColor="Transparent"
+                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
+                                FontSize="17"
+                                HeightRequest="50"
+                                TextTransform="None"
+                                Padding="16"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource BoldFont}"
+                                Command="{Binding ShowAllAddressesCommand}"/>
+                    </ListView.Footer>
                 </ListView>
-                <StackLayout IsVisible="False">
-                    <StackLayout.Triggers>
-                        <MultiTrigger TargetType="StackLayout">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding CanShowMoreAddresses}"
-                                                  Value="True"/>
-                                <BindingCondition Binding="{Binding SelectedTab}"
-                                                  Value="Addresses"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </MultiTrigger>
-                    </StackLayout.Triggers>
-                    <Button Text="{helpers:Translate ShowAll}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                            Padding="16,0"
-                            TextTransform="None"
-                            CornerRadius="25"
-                            HeightRequest="50"
-                            Margin="16,0,16,16"
-                            Clicked="ShowAllAddresses"/>
-                </StackLayout>
             </StackLayout>
         </ScrollView>
     </RefreshView>

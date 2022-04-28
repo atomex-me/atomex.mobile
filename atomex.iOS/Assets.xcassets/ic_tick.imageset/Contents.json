@@ -1,6 +1,7 @@
 {
   "images": [
     {
+      "filename": "ic_tick-1.pdf",
       "idiom": "universal"
     },
     {
@@ -86,7 +87,6 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_tick.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
