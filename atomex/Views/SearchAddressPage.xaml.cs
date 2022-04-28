@@ -1,7 +1,7 @@
-﻿using atomex.ViewModel.SendViewModels;
+﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex.Views.Send
+namespace atomex.Views
 {
     public partial class SearchAddressPage : ContentPage
     {

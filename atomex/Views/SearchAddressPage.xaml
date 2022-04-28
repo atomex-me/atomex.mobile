@@ -2,12 +2,12 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="atomex.Views.Send.SearchOutputsPage"
+    x:Class="atomex.Views.SearchAddressPage"
     xmlns:helpers="clr-namespace:atomex.Helpers"
-    xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -25,8 +25,8 @@
                          Spacing="0">
                 <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
                                     Style="{DynamicResource EntryStyle}"
-                                    Text="{Binding SearchPattern, Mode=TwoWay}"
                                     FontSize="14"
+                                    Text="{Binding SearchPattern, Mode=TwoWay}"
                                     HorizontalTextAlignment="Start"
                                     VerticalTextAlignment="Center"
                                     VerticalOptions="FillAndExpand"
@@ -42,17 +42,22 @@
                              IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
             </StackLayout>
             <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <ListView ItemsSource="{Binding Outputs}"
-                      SelectionMode="None"
+            <ListView ItemsSource="{Binding MyAddresses}"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding SelectedAddress}"
+                      BackgroundColor="Transparent"
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalOptions="Fill"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                      Command="{Binding SelectAddressCommand}"/>
+                </ListView.Behaviors>
                 <ListView.Triggers>
                     <DataTrigger TargetType="ListView"
-                                 Binding="{Binding Outputs.Count}"
+                                 Binding="{Binding MyAddresses.Count}"
                                  Value="0">
                         <Setter Property="IsVisible"
                                 Value="False"/>
@@ -60,7 +65,7 @@
                 </ListView.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0"
                                   Padding="16,5">
@@ -69,22 +74,11 @@
                                     <RowDefinition Height="32" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="7*" />
-                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectOutputCommand, Source={x:Reference BindingContextPage}}"
-                                                          CommandParameter="{Binding .}"/>
-                                </Grid.GestureRecognizers>
-                                <input:CheckBox Grid.RowSpan="2"
-                                                BoxSizeRequest="18"
-                                                IsChecked="{Binding IsSelected}"
-                                                IsEnabled="False"
-                                                Type="Material"
-                                                Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
-                                                IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"/>
-                                <Label Grid.Column="1"
+                                <Label Grid.ColumnSpan="2"
                                        Text="{Binding Address}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -94,25 +88,41 @@
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
-                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2"
                                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                        FontFamily="{DynamicResource RegularFont}"
                                        FontSize="14"
                                        VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start">
+                                       HorizontalTextAlignment="Start"
+                                       IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Balance, StringFormat='{0:0.##########}'}"/>
+                                            <Span Text="{Binding Balance}"/>
                                             <Span Text=" " /> 
-                                            <Span Text="{Binding Config.Name}"/>
+                                            <Span Text="{Binding BalanceCode}"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <Frame Grid.Row="1"
+                                       Padding="5,0"
+                                       Margin="0,6"
+                                       HasShadow="False"
+                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                                       CornerRadius="4"
+                                       IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
+                                    <Label FontFamily="{DynamicResource RegularFont}"
+                                           Text="{helpers:Translate New}"
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                           FontSize="12"
+                                           TextTransform="Lowercase"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Center"/>
+                                </Frame>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="2"
                                        WidthRequest="24"
                                        HeightRequest="24"
-                                       Margin="10,0,0,0"
+                                       Margin="0"
                                        HorizontalOptions="End"
                                        VerticalOptions="FillAndExpand"
                                        Source="ic_copy__gray">
@@ -122,7 +132,7 @@
                                     </Image.GestureRecognizers>
                                 </Image>
                             </Grid>
-                        </ViewCell>
+                        </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -130,7 +140,7 @@
                          VerticalOptions="Start">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding Outputs.Count}"
+                                 Binding="{Binding MyAddresses.Count}"
                                  Value="0">
                         <Setter Property="IsVisible"
                                 Value="True"/>
@@ -141,66 +151,13 @@
                        HeightRequest="45"
                        Margin="20,40,20,10"
                        VerticalOptions="Start"/>
-                <Label Text="No outputs found"
+                <Label Text="{helpers:Translate AddressesNotFound}"
                        FontFamily="{DynamicResource RegularFont}"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        FontSize="18"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"/>
             </StackLayout>
-            <Grid HorizontalOptions="Fill"
-                  VerticalOptions="EndAndExpand"
-                  ColumnSpacing="0"
-                  RowSpacing="0"
-                  BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1" />
-                    <RowDefinition Height="36" />
-                    <RowDefinition Height="36" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*" />
-                    <ColumnDefinition Width="5*" />
-                </Grid.ColumnDefinitions>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Grid.ColumnSpan="2"/>
-                <Button Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Text="{helpers:Translate ConfirmButton}"
-                        Margin="16,14"
-                        CornerRadius="22"
-                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                        FontSize="17"
-                        TextTransform="None"
-                        HeightRequest="44"
-                        HorizontalOptions="FillAndExpand"
-                        FontFamily="{DynamicResource RegularFont}"
-                        Command="{Binding ConfirmOutputsCommand}"/>
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{Binding TotalSelectedString}"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="End"/>
-                <Label Grid.Column="1"
-                       Grid.Row="2"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="Start">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate Total}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding SelectedFromBalance}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding Currency.Name}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

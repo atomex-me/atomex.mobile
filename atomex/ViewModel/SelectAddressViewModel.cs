@@ -9,7 +9,7 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Views.Send;
+using atomex.Views;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
@@ -22,7 +22,7 @@ using Xamarin.Forms;
 using ZXing;
 using static atomex.Models.Message;
 
-namespace atomex.ViewModel.SendViewModels
+namespace atomex.ViewModel
 {
     public enum SelectAddressFrom
     {

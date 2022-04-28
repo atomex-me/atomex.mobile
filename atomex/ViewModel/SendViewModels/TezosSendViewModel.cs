@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using atomex.Common;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views.Send;
+using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;

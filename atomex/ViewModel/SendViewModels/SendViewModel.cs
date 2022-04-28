@@ -9,6 +9,7 @@ using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
+using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Core;
