@@ -48,7 +48,7 @@ namespace atomex.ViewModel
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp, restore);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp, walletName, restore);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);

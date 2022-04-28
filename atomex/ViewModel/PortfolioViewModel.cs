@@ -9,7 +9,6 @@ using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.ViewModel.SendViewModels;
 using atomex.Views;
-using atomex.Views.Send;
 using Atomex;
 using Atomex.Common;
 using ReactiveUI;
@@ -61,13 +60,16 @@ namespace atomex.ViewModel
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
+        private string _walletName;
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
 
         public PortfolioViewModel(
             IAtomexApp app,
+            string walletName,
             bool restore = false)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
+            _walletName = walletName;
             
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
@@ -138,10 +140,10 @@ namespace atomex.ViewModel
         {
             try
             {
-                var currencies = Preferences.Get("Currencies", string.Empty);
+                var currencies = Preferences.Get(_walletName + "-" + "Currencies", string.Empty);
                 
                 if (string.IsNullOrEmpty(currencies))
-                    Preferences.Set("Currencies", _defaultCurrencies);
+                    Preferences.Set(_walletName + "-" + "Currencies", _defaultCurrencies);
 
                 List<string> result = new List<string>();
                 result = currencies != string.Empty
@@ -184,7 +186,7 @@ namespace atomex.ViewModel
             {
                 if (string.IsNullOrEmpty(currency)) return;
 
-                var currencies = Preferences.Get("Currencies", string.Empty);
+                var currencies = Preferences.Get(_walletName + "-" + "Currencies", string.Empty);
                 List<string> currenciesList = new List<string>();
                 currenciesList = currencies.Split(',').ToList();
 
@@ -197,7 +199,7 @@ namespace atomex.ViewModel
                     currenciesList.RemoveAll(c => c.Contains(currency));
                 
                 var result = string.Join(",", currenciesList);
-                Preferences.Set("Currencies", result);
+                Preferences.Set(_walletName + "-" + "Currencies", result);
 
                 AllCurrencies?.Select(c => c.IsSelected == currenciesList.Contains(c.CurrencyViewModel.CurrencyCode));
                 
