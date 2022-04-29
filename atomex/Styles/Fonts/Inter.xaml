@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <OnPlatform x:TypeArguments="x:String" x:Key="BlackFont">
+        <On Platform="iOS" Value="Inter-Black" />
+        <On Platform="Android" Value="Inter-Black.ttf#Inter Black" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
+        <On Platform="iOS" Value="Inter-Bold" />
+        <On Platform="Android" Value="Inter-Bold.ttf#Inter Bold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="SemiBoldFont">
+        <On Platform="iOS" Value="Inter-SemiBold" />
+        <On Platform="Android" Value="Inter-SemiBold.ttf#Inter SemiBold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="ExtraBoldFont">
+        <On Platform="iOS" Value="Inter-ExtraBold" />
+        <On Platform="Android" Value="Inter-ExtraBold.ttf#Inter ExtraBold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="LightFont">
+        <On Platform="iOS" Value="Inter-Light" />
+        <On Platform="Android" Value="Inter-Light.ttf#Inter Light" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="ExtraLightFont">
+        <On Platform="iOS" Value="Inter-ExtraLight" />
+        <On Platform="Android" Value="Inter-ExtraLight.ttf#Inter ExtraLight" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="RegularFont">
+        <On Platform="iOS" Value="Inter-Regular" />
+        <On Platform="Android" Value="Inter-Regular.ttf#Inter Regular" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="MediumFont">
+        <On Platform="iOS" Value="Inter-Medium" />
+        <On Platform="Android" Value="Inter-Medium.ttf#Inter Medium" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="ThinFont">
+        <On Platform="iOS" Value="Inter-Thin" />
+        <On Platform="Android" Value="Inter-Thin.ttf#Inter Thin" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="LogoFont">
+        <On Platform="iOS" Value="Comfortaa-Regular" />
+        <On Platform="Android" Value="Comfortaa-Regular.ttf#Comfortaa Regular" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="AgencyFont">
+        <On Platform="iOS" Value="Agency-FB" />
+        <On Platform="Android" Value="Agency-FB.ttf#Agency FB" />
+    </OnPlatform>
+</ResourceDictionary>

@@ -561,5 +561,14 @@
     <BundleResource Include="Assets\Animations\failed-completion_light.json" />
     <BundleResource Include="Assets\Animations\successful-completion_dark.json" />
     <BundleResource Include="Assets\Animations\successful-completion_light.json" />
+    <BundleResource Include="Resources\Inter-Black.ttf" />
+    <BundleResource Include="Resources\Inter-Bold.ttf" />
+    <BundleResource Include="Resources\Inter-ExtraBold.ttf" />
+    <BundleResource Include="Resources\Inter-ExtraLight.ttf" />
+    <BundleResource Include="Resources\Inter-Light.ttf" />
+    <BundleResource Include="Resources\Inter-Medium.ttf" />
+    <BundleResource Include="Resources\Inter-Regular.ttf" />
+    <BundleResource Include="Resources\Inter-SemiBold.ttf" />
+    <BundleResource Include="Resources\Inter-Thin.ttf" />
   </ItemGroup>
 </Project>

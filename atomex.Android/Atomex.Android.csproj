@@ -920,6 +920,15 @@
     <AndroidAsset Include="Assets\failed-completion_light.json" />
     <AndroidAsset Include="Assets\successful-completion_dark.json" />
     <AndroidAsset Include="Assets\successful-completion_light.json" />
+    <AndroidAsset Include="Assets\Inter-Black.ttf" />
+    <AndroidAsset Include="Assets\Inter-Bold.ttf" />
+    <AndroidAsset Include="Assets\Inter-ExtraBold.ttf" />
+    <AndroidAsset Include="Assets\Inter-ExtraLight.ttf" />
+    <AndroidAsset Include="Assets\Inter-Light.ttf" />
+    <AndroidAsset Include="Assets\Inter-Medium.ttf" />
+    <AndroidAsset Include="Assets\Inter-Regular.ttf" />
+    <AndroidAsset Include="Assets\Inter-SemiBold.ttf" />
+    <AndroidAsset Include="Assets\Inter-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
