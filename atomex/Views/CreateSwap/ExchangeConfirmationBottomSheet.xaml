@@ -38,7 +38,7 @@
                    VerticalOptions="Center"
                    Margin="0,0,0,30"/>
             <Label Text="{helpers:Translate ConfirmationLabel}"
-                   Style="{DynamicResource TitleTextStyle}"
+                   Style="{DynamicResource MainTextH1}"
                    Padding="0,0,0,20"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
@@ -70,39 +70,31 @@
                        HeightRequest="28"/>
                 <Label Grid.Column="1"
                        Text="{Binding FromCurrencyViewModel.CurrencyCode}"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource MainTextH4}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="End"
-                       Padding="0,2"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                       Padding="0,2"/>
                 <Label Grid.Column="2"
                        Text="{Binding Amount}"
+                       Style="{DynamicResource MainTextH4SemiBold}"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="End"
-                       Padding="16,0"
-                       FontFamily="{DynamicResource BoldFont}"
-                       FontSize="20"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                       Padding="16,0"/>
                 <Label Grid.Row="1"
                        Grid.ColumnSpan="2"
                        Text="{Binding FromAddressDescription}"
+                       Style="{DynamicResource AdditionalTextH6}"
                        Padding="22,0"
                        LineBreakMode="MiddleTruncation"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                       VerticalTextAlignment="Start"/>
                 <Label Grid.Row="1"
                        Grid.Column="2"
+                       Style="{DynamicResource AdditionalTextH6}"
                        Text="{Binding AmountInBase, StringFormat='${0:f2}'}"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Start"
-                       Padding="16,0"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                       Padding="16,0"/>
                 <Frame Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.ColumnSpan="3"
@@ -121,40 +113,32 @@
                 <Label Grid.Row="2"
                        Grid.Column="1"
                        Text="{Binding ToCurrencyViewModel.CurrencyCode}"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource MainTextH4}"
                        Padding="0,2"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                       VerticalTextAlignment="End"/>
                 <Label Grid.Row="2"
                        Grid.Column="2"
+                       Style="{DynamicResource MainTextH4SemiBold}"
                        Padding="16,0"
                        Text="{Binding TargetAmount}"
                        HorizontalTextAlignment="End"
-                       VerticalTextAlignment="End"
-                       FontFamily="{DynamicResource BoldFont}"
-                       FontSize="20"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                       VerticalTextAlignment="End"/>
                 <Label Grid.Row="3"
                        Grid.ColumnSpan="2"
+                       Style="{DynamicResource AdditionalTextH6}"
                        Padding="22,0"
                        Text="{Binding ToAddress}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start"
-                       LineBreakMode="MiddleTruncation"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                       LineBreakMode="MiddleTruncation"/>
                 <Label Grid.Row="3"
                        Grid.Column="2"
+                       Style="{DynamicResource AdditionalTextH6}"
                        Text="{Binding TargetAmountInBase, StringFormat='${0:f2}'}"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Start"
-                       Padding="16,0"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                       Padding="16,0"/>
                 <Frame WidthRequest="40"
                        HeightRequest="40"
                        CornerRadius="20"
@@ -184,9 +168,7 @@
             <StackLayout Spacing="2"
                          Padding="20,0">
                 <Label HorizontalTextAlignment="Start"
-                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                        FontFamily="{DynamicResource RegularFont}"
-                        FontSize="12">
+                       Style="{DynamicResource AdditionalTextH6}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{helpers:Translate EstimatedPriceLabel}"/>
@@ -202,9 +184,7 @@
                 <StackLayout Spacing="0"
                              Orientation="Horizontal">
                     <Label HorizontalTextAlignment="Start"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="12">
+                           Style="{DynamicResource AdditionalTextH6}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}"/>

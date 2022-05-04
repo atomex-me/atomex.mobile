@@ -39,9 +39,7 @@
                        VerticalOptions="Center"
                        Margin="0,0,0,24"/>
                 <Label Text="{helpers:Translate ReceiveTo}"
-                       FontSize="16"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Start"
                        Margin="24,0,24,24"/>
@@ -55,9 +53,7 @@
                         <TapGestureRecognizer Command="{Binding ChooseMyAddressCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate MyAddresses}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -74,9 +70,7 @@
                         <TapGestureRecognizer Command="{Binding EnterExternalAddressCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate ExternalAddress}"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"

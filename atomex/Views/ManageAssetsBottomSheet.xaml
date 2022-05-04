@@ -26,7 +26,7 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="0,14"
+                              Padding="0,14,0,0"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="558"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
@@ -38,10 +38,8 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label Text="{helpers:Translate ManageAssets}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="30"
-                       FontFamily="{DynamicResource RegularFont}"
-                       Margin="16,0,16,26"
+                       Style="{DynamicResource MainTextH1}"
+                       Margin="16,0,16,10"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"/>
                 <ListView ItemsSource="{Binding AllCurrencies}"
@@ -75,14 +73,10 @@
                                            VerticalOptions="Center"
                                            HorizontalOptions="Start"/>
                                     <Label Text="{Binding CurrencyViewModel.Currency.Description}"
-                                           FontSize="16"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                           Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"/>
-                                    <Label FontSize="14"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                    <Label Style="{DynamicResource MainTextH5}"
                                            HorizontalOptions="EndAndExpand"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Center">

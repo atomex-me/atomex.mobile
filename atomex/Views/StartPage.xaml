@@ -55,7 +55,7 @@
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
                      Style="{DynamicResource StartPageButtonsStyle}">
             <Button Text="{helpers:Translate MyWalletsButton}"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding ShowMyWalletsCommand}">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button"
@@ -77,10 +77,10 @@
                 </Button.Triggers>
             </Button>
             <Button Text="{helpers:Translate CreateNewWalletButton}"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding CreateNewWalletCommand}"/>
             <Button Text="{helpers:Translate RestoreWalletButton}"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding RestoreWalletCommand}"/>
         </StackLayout>
     </RelativeLayout>

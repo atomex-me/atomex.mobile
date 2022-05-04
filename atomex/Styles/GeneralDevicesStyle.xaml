@@ -22,27 +22,58 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"/>
     </Style>
 
+
+
     <!-- Buttons -->
-    <Style x:Key="MainButtonStyle" TargetType="Button">
+    <Style x:Key="MainButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
-        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="FontSize" Value="17"/>
         <Setter Property="HeightRequest" Value="50"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
     </Style>
-    <Style x:Key="WalletTypeButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="AdditionalButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Margin" Value="16,0"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+    </Style>
+    <Style x:Key="TransparentButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+    </Style>
+    <Style x:Key="TabButton" TargetType="Button">
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="16,8"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+
+
+    <Style x:Key="WalletTypeButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="WidthRequest" Value="150"/>
-    </Style>
-    <Style x:Key="TransparentButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="20,0"/>
-        <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
     </Style>
 
     <!-- Entries -->
@@ -84,13 +115,138 @@
     </Style>
 
     <!-- Labels -->
-    <Style x:Key="TitleTextStyle" TargetType="Label">
+    <Style x:Key="MainText" TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="FontSize" Value="30"/>
-        <Setter Property="Padding" Value="16,32,16,0"/>
-        <Setter Property="HorizontalTextAlignment" Value="Start"/>
     </Style>
+    <Style x:Key="MainTextH1" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource SemiBoldFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH2" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH3" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH3SemiBold" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource SemiBoldFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH4" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH5" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="MainTextH6" TargetType="Label" BasedOn="{StaticResource MainText}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="AdditionalText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH2" TargetType="Label" BasedOn="{StaticResource AdditionalText}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH3" TargetType="Label" BasedOn="{StaticResource AdditionalText}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH4" TargetType="Label" BasedOn="{StaticResource AdditionalText}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH5" TargetType="Label" BasedOn="{StaticResource AdditionalText}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH5Medium" TargetType="Label" BasedOn="{StaticResource AdditionalTextH4}">
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+    </Style>
+    <Style x:Key="AdditionalTextH6" TargetType="Label" BasedOn="{StaticResource AdditionalText}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="SuccessText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+    </Style>
+    <Style x:Key="SuccessTextH2" TargetType="Label" BasedOn="{StaticResource SuccessText}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+    </Style>
+    <Style x:Key="SuccessTextH5" TargetType="Label" BasedOn="{StaticResource SuccessText}">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style x:Key="SuccessTextH6" TargetType="Label" BasedOn="{StaticResource SuccessText}">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="ErrorText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+    </Style>
+    <Style x:Key="ErrorTextH2" TargetType="Label" BasedOn="{StaticResource ErrorText}">
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="FontSize" Value="24"/>
+    </Style>
+    <Style x:Key="ErrorTextH5" TargetType="Label" BasedOn="{StaticResource ErrorText}">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style x:Key="ErrorTextH6" TargetType="Label" BasedOn="{StaticResource ErrorText}">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="WarningText" TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
+    <Style x:Key="WarningTextH1" TargetType="Label" BasedOn="{StaticResource WarningText}">
+        <Setter Property="FontFamily" Value="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource SemiBoldFont}}"/>
+        <Setter Property="FontSize" Value="30"/>
+    </Style>
+    <Style x:Key="WarningTextH5" TargetType="Label" BasedOn="{StaticResource WarningText}">
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style x:Key="WarningTextH6" TargetType="Label" BasedOn="{StaticResource WarningText}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="ClickableFrame" TargetType="Frame">
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+    <Style x:Key="MainClickableFrame" TargetType="Frame" BasedOn="{StaticResource ClickableFrame}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+    </Style>
+    <Style x:Key="AdditionalClickableFrame" TargetType="Frame" BasedOn="{StaticResource ClickableFrame}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"/>
+    </Style>
+
+    <Style x:Key="ClickableLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="17"/>
+    </Style>
+    <Style x:Key="MainClickableLabel" TargetType="Label" BasedOn="{StaticResource ClickableLabel}">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+    </Style>
+    <Style x:Key="AdditionalClickableLabel" TargetType="Label" BasedOn="{StaticResource ClickableLabel}">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+    </Style>
+
+
+
+
+
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
         <Setter Property="Margin" Value="15,0,0,0"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
@@ -678,10 +834,10 @@
     </Style>
 
     <!-- Popup -->
-    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
     </Style>
-    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>

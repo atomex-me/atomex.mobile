@@ -21,7 +21,8 @@
                      RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
             <Label Text="{helpers:Translate SendPageTitle}"
-                   Style="{DynamicResource TitleTextStyle}"/>
+                   Style="{DynamicResource MainTextH1}"
+                   Padding="16,32,16,16"/>
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="8"
@@ -78,12 +79,10 @@
                 </Frame>
                 <Label Grid.Column="1"
                        Text="{Binding From}"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource MainTextH4}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="End"
-                       LineBreakMode="MiddleTruncation"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                       LineBreakMode="MiddleTruncation">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
                     </Label.GestureRecognizers>
@@ -91,11 +90,9 @@
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Text="{Binding SelectedFromBalance}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                       VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding SelectedFromBalance}"/>
@@ -163,12 +160,10 @@
                        Grid.RowSpan="2"
                        Grid.Column="1"
                        Text="{Binding To}"
+                       Style="{DynamicResource MainTextH5}"
                        LineHeight="1.25"
-                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                       VerticalTextAlignment="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
                     </Label.GestureRecognizers>
@@ -238,12 +233,10 @@
                                         HorizontalTextAlignment="Start"
                                         VerticalTextAlignment="Center"/>
                     <Label Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End"
-                           Text="{Binding AmountInBase, StringFormat='${0:0.00}'}"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="12"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                           Text="{Binding AmountInBase, StringFormat='${0:0.00}'}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="AmountEntryFocus"/>
                         </Label.GestureRecognizers>
@@ -284,8 +277,6 @@
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding RecommendedMaxAmountWarning.Text}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="FillAndExpand"
                            VerticalOptions="Center">
@@ -293,20 +284,20 @@
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Warning">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource WarningTextH6}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Error">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource ErrorTextH6}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Regular">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource AdditionalTextH6}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -356,9 +347,6 @@
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Message.Text}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -366,14 +354,14 @@
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource WarningTextH6}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource ErrorTextH6}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -440,13 +428,11 @@
                                         HorizontalTextAlignment="Start"
                                         VerticalTextAlignment="Center"/>
                     <Label Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End"
                            Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="12"
-                           Margin="16,0"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                           Margin="16,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="FeeEntryFocus"/>
                         </Label.GestureRecognizers>
@@ -470,9 +456,6 @@
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Message.Text}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -480,14 +463,14 @@
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource WarningTextH6}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource ErrorTextH6}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -554,13 +537,11 @@
                                         HorizontalTextAlignment="Start"
                                         VerticalTextAlignment="Center"/>
                     <Label Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End"
                            Text="{Binding GasPriceCode}"
-                           FontFamily="{DynamicResource LightFont}"
-                           FontSize="12"
-                           Margin="16,0"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                           Margin="16,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="GasPriceEntryFocus"/>
                         </Label.GestureRecognizers>
@@ -584,9 +565,6 @@
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
                     <Label Text="{Binding Message.Text}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
-                           TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="StartAndExpand"
                            VerticalOptions="Center">
@@ -594,14 +572,14 @@
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource WarningTextH6}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{DynamicResource ErrorTextH6}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -637,12 +615,10 @@
                             Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
                             IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"
                             TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-            <Label FontFamily="{DynamicResource RegularFont}"
+            <Label Style="{DynamicResource AdditionalTextH6}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   FontSize="12"
                    Margin="16,1"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                    IsVisible="{Binding IsBtcBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
@@ -654,12 +630,10 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label FontFamily="{DynamicResource RegularFont}"
+            <Label Style="{DynamicResource AdditionalTextH6}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   FontSize="12"
                    Margin="16,1"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                    IsVisible="{Binding IsEthBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
@@ -671,12 +645,10 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label FontFamily="{DynamicResource RegularFont}"
+            <Label Style="{DynamicResource AdditionalTextH6}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   FontSize="12"
                    Margin="16,1"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                    IsVisible="{Binding IsEthBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
@@ -688,12 +660,10 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Label FontFamily="{DynamicResource RegularFont}"
+            <Label Style="{DynamicResource AdditionalTextH6}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
-                   FontSize="12"
-                   Margin="16,1"
-                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}">
+                   Margin="16,1">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{helpers:Translate FeeLabel}"/>

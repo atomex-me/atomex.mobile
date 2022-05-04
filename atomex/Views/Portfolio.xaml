@@ -25,28 +25,23 @@
                   Footer="">
             <ListView.Header>
                 <StackLayout>
-                    <Label Text="{helpers:Translate TotalBalance}"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           Margin="16,56,16,6"
-                           FontSize="12"
-                           FontFamily="{DynamicResource RegularFont}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"/>
-                    <StackLayout Margin="16,0"
-                                 Spacing="10"
-                                 Orientation="Horizontal"
+                    <StackLayout Orientation="Horizontal"
+                                 Margin="16,56,16,0"
+                                 VerticalOptions="Center"
                                  HorizontalOptions="CenterAndExpand">
-                        <Label Text="{Binding PortfolioValue, StringFormat='${0:f2}'}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               FontSize="30"
-                               FontFamily="{DynamicResource RegularFont}"
+                        <Label Text="{helpers:Translate TotalBalance}"
+                               Style="{DynamicResource MainTextH5}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"/>
-                        <Image Source="ic_update"
-                               WidthRequest="16"
-                               HeightRequest="21"
-                               VerticalOptions="Center"/>
+                        <Image Source="ic_question"
+                               WidthRequest="12"
+                               HeightRequest="12"/>
                     </StackLayout>
+                    <Label Text="{Binding PortfolioValue, StringFormat='${0:f2}'}"
+                           Style="{DynamicResource MainTextH1}"
+                           Margin="16,0"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
                     <Grid RowSpacing="4"
                           ColumnSpacing="24"
                           HorizontalOptions="CenterAndExpand"
@@ -71,9 +66,7 @@
                                      Source="ic_send"/>
                         <Label Grid.Row="1"
                                Text="{helpers:Translate SendButton}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               FontSize="14"
-                               FontFamily="{DynamicResource RegularFont}"
+                               Style="{DynamicResource MainTextH5}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                Padding="0"/>
@@ -90,9 +83,7 @@
                         <Label Grid.Row="1"
                                Grid.Column="1"
                                Text="{helpers:Translate ReceiveButton}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               FontSize="14"
-                               FontFamily="{DynamicResource RegularFont}"
+                               Style="{DynamicResource MainTextH5}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                Padding="0"/>
@@ -109,18 +100,14 @@
                         <Label Grid.Row="1"
                                Grid.Column="2"
                                Text="{helpers:Translate ExchangeButton}"
-                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                               FontSize="14"
-                               FontFamily="{DynamicResource RegularFont}"
+                               Style="{DynamicResource MainTextH5}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                Padding="0"/>
                     </Grid>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{helpers:Translate CoinsAndTokens}"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                               FontSize="14"
-                               FontFamily="{DynamicResource RegularFont}"
+                               Style="{DynamicResource AdditionalTextH4}"
                                Margin="16,14"
                                HorizontalTextAlignment="Start"
                                VerticalTextAlignment="Center"/>
@@ -164,25 +151,19 @@
                                    HorizontalOptions="End"/>
                             <Label Grid.Column="1"
                                    Text="{Binding Currency.Description}"
-                                   FontSize="16"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   Style="{DynamicResource MainTextH4}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="End"/>
                             <Label Grid.Column="1"
                                    Grid.Row="1"
                                    Text="{Binding Price, StringFormat='${0:f2}'}"
-                                   FontSize="12"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                   Style="{DynamicResource AdditionalTextH6}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start">
                             </Label>
                             <Label Grid.Row="1"
                                    Grid.Column="2"
                                    Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
-                                   FontSize="12"
-                                   FontFamily="{DynamicResource RegularFont}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start"
                                    Padding="6,0">
@@ -190,23 +171,21 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="True">
-                                        <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource SuccessTextH6}"/>
                                         <Setter Property="Text"
                                                 Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="False">
-                                        <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                        <Setter Property="Style"
+                                                Value="{DynamicResource ErrorTextH6}"/>
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
                             <Label Grid.Column="3"
-                                   FontSize="14"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   Style="{DynamicResource MainTextH4}"
                                    Margin="16,0"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
@@ -221,9 +200,7 @@
                             <Label Grid.Row="1"
                                    Grid.Column="3"
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                                   FontSize="12"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                   Style="{DynamicResource MainTextH6}"
                                    Margin="16,0"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>

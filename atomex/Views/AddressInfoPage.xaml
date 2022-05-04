@@ -16,7 +16,8 @@
     <ContentPage.Content>
         <StackLayout Spacing="0">
             <Label Text="{helpers:Translate AddressInfoPageTitle}"
-                   Style="{DynamicResource TitleTextStyle}"/>
+                   Style="{DynamicResource MainTextH1}"
+                   Padding="16,32,16,16"/>
             <Grid RowSpacing="4"
                   ColumnSpacing="30"
                   Padding="16,0">
@@ -32,17 +33,13 @@
                     <ColumnDefinition Width="25" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate AddressLabel}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
                        Text="{Binding Address}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       Style="{DynamicResource MainTextH4}"
                        LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="Start"
-                       FontSize="16"/>
+                       VerticalTextAlignment="Start"/>
                 <Image Grid.Column="1"
                        Grid.RowSpan="3"
                        Source="ic_copy__gray"
@@ -74,15 +71,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Path}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
                        Text="{Binding Path}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="16"
+                       Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
@@ -102,15 +95,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Type}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Text="{Binding Type}"
                        Grid.Row="1"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="16"
+                       Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
@@ -131,17 +120,13 @@
                     <ColumnDefinition Width="25" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate Balance}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
                        Text="{Binding Balance, StringFormat='{0:0.#########}'}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       Style="{DynamicResource MainTextH4}"
                        LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="Start"
-                       FontSize="16"/>
+                       VerticalTextAlignment="Start"/>
                 <Image Grid.Column="1"
                        Grid.RowSpan="2"
                        Source="ic_update"
@@ -189,17 +174,13 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate TokenBalance}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       FontSize="14"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
                        Text="{Binding TokenBalance, StringFormat='{0:0.#########}'}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                       Style="{DynamicResource MainTextH4}"
                        LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="Start"
-                       FontSize="16"/>
+                       VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
@@ -207,14 +188,10 @@
                       Grid.ColumnSpan="2"
                       BackgroundColor="Transparent"/>
             </Grid>
-            <Frame HasShadow="False"
-                   HeightRequest="50"
-                   HorizontalOptions="FillAndExpand"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                   CornerRadius="25"
-                   Padding="0"
+            <Frame Style="{DynamicResource AdditionalClickableFrame}"
                    Margin="16,32"
-                   VerticalOptions="EndAndExpand">
+                   VerticalOptions="EndAndExpand"
+                   HorizontalOptions="FillAndExpand">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ExportKeyCommand}"
                                           CommandParameter="{Binding Address}"/>
@@ -227,10 +204,8 @@
                            Source="ic_copy__blue"
                            VerticalOptions="Center"/>
                     <Label Text="{helpers:Translate CopyPrivateKeyButton}"
-                           VerticalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                           FontFamily="{DynamicResource BoldFont}"
-                           FontSize="17"/>
+                           Style="{DynamicResource AdditionalClickableLabel}"
+                           VerticalTextAlignment="Center"/>
                 </StackLayout>
             </Frame>
         </StackLayout>

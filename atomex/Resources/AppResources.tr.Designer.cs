@@ -575,6 +575,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string AvailableBalance {
+            get {
+                return ResourceManager.GetString("AvailableBalance", resourceCulture);
+            }
+        }
+        
         internal static string BalanceUpdatingLabel {
             get {
                 return ResourceManager.GetString("BalanceUpdatingLabel", resourceCulture);

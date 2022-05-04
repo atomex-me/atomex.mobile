@@ -89,9 +89,7 @@
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
                                        Grid.ColumnSpan="2"
-                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="14"
+                                       Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start"
                                        IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
@@ -110,10 +108,8 @@
                                        BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                                        CornerRadius="4"
                                        IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
-                                    <Label FontFamily="{DynamicResource RegularFont}"
-                                           Text="{helpers:Translate New}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                           FontSize="12"
+                                    <Label Text="{helpers:Translate New}"
+                                           Style="{DynamicResource MainTextH6}"
                                            TextTransform="Lowercase"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Center"/>
@@ -152,9 +148,7 @@
                        Margin="20,40,20,10"
                        VerticalOptions="Start"/>
                 <Label Text="{helpers:Translate AddressesNotFound}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       FontSize="18"
+                       Style="{DynamicResource AdditionalTextH4}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"/>
             </StackLayout>

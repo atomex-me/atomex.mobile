@@ -14,9 +14,9 @@
     <Color x:Key="UnselectedTabColor">Gray</Color>
 
     <Color x:Key="MainButtonBackgroundColor">#2762BD</Color>
-    <Color x:Key="MainButtonTextColor">#ffffff</Color>
+    <Color x:Key="MainButtonTextColor">#F7DCECFF</Color>
     <Color x:Key="AdditionalButtonBackgroundColor">#F7DCECFF</Color>
-    <Color x:Key="AdditionalButtonTextColor">#223a66</Color>
+    <Color x:Key="AdditionalButtonTextColor">#2762BD</Color>
     <Color x:Key="HighlightingButtonBackgroundColor">#01A299</Color>
     <Color x:Key="HighlightingButtonTextColor">#F7000E22</Color>
     <Color x:Key="DisabledButtonBackgroundColor">#34000E22</Color>
@@ -31,7 +31,7 @@
     <Color x:Key="ActionElementBackgroundColor">#ffffff</Color>
     <Color x:Key="FrameBackgroundColor">#0F002041</Color>
     <Color x:Key="FrameBorderColor">#0F000E22</Color>
-    <Color x:Key="IconFrameBackgroundColor">#1AC4DEFF</Color>
+    <Color x:Key="IconFrameBackgroundColor">#0F002041</Color>
     
     <Color x:Key="ButtonContainerColor">Transparent</Color>
 
@@ -104,7 +104,7 @@
     <Color x:Key="ActionElementBackgroundColorDark">#29DCECFF</Color>
     <Color x:Key="FrameBackgroundColorDark">#0FDCECFF</Color>
     <Color x:Key="FrameBorderColorDark">#0FC4DEFF</Color>
-    <Color x:Key="IconFrameBackgroundColorDark">#1AC4DEFF</Color>
+    <Color x:Key="IconFrameBackgroundColorDark">#29DCECFF</Color>
 
     <Color x:Key="ButtonContainerColorDark">#12FFFFFF</Color>
 

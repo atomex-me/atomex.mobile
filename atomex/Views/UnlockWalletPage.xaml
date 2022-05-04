@@ -87,7 +87,7 @@
                 <Button Text="{helpers:Translate UnlockButton}"
                         Margin="0,20"
                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
-                        Style="{DynamicResource MainButtonStyle}"
+                        Style="{DynamicResource MainButton}"
                         Command="{Binding UnlockCommand}"/>
             </StackLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"

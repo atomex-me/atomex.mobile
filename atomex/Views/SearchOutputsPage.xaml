@@ -61,7 +61,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid ColumnSpacing="0"
+                            <Grid ColumnSpacing="12"
                                   RowSpacing="0"
                                   Padding="16,5">
                                 <Grid.RowDefinitions>
@@ -69,8 +69,8 @@
                                     <RowDefinition Height="32" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="7*" />
+                                    <ColumnDefinition Width="18" />
+                                    <ColumnDefinition Width="8*" />
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.GestureRecognizers>
@@ -86,18 +86,14 @@
                                                 IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding Address}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                       FontSize="16"
+                                       Style="{DynamicResource MainTextH4}"
                                        Margin="0,3"
                                        LineBreakMode="MiddleTruncation"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
-                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="14"
+                                       Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
@@ -142,9 +138,7 @@
                        Margin="20,40,20,10"
                        VerticalOptions="Start"/>
                 <Label Text="No outputs found"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       FontSize="18"
+                       Style="{DynamicResource AdditionalTextH3}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"/>
             </StackLayout>
@@ -180,15 +174,11 @@
                 <Label Grid.Row="1"
                        Grid.Column="1"
                        Text="{Binding TotalSelectedString}"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH6}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Column="1"
                        Grid.Row="2"
-                       FontSize="12"
-                       FontFamily="{DynamicResource RegularFont}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                       Style="{DynamicResource AdditionalTextH6}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>

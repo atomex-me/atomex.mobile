@@ -149,7 +149,7 @@
             </Label>
             <Button Text="{helpers:Translate NextButton}"
                     IsEnabled="{Binding MnemonicVerified}"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Margin="30"
                     Command="{Binding CreateStoragePasswordPageCommand}">
                 <Button.IsVisible>

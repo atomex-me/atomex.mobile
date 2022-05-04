@@ -66,7 +66,7 @@
             </Label>
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding MnemonicPageCommand}"/>
         </StackLayout>
     </ScrollView>

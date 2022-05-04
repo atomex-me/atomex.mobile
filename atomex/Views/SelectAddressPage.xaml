@@ -26,7 +26,8 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <Label Style="{DynamicResource TitleTextStyle}"
+            <Label Style="{DynamicResource MainTextH1}"
+                   Padding="16,32,16,16"
                    Text="{Binding Title}"/>
             <!--Tabs switcher-->
             <Grid Margin="14,12"
@@ -54,13 +55,8 @@
                        HasShadow="False"
                        Padding="0"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
-                <Button CornerRadius="16"
-                        Padding="0"
-                        Margin="2"
-                        Text="{helpers:Translate ExternalAddress}"
-                        FontFamily="{DynamicResource RegularFont}"
-                        TextTransform="None"
-                        FontSize="14"
+                <Button Text="{helpers:Translate ExternalAddress}"
+                        Style="{DynamicResource TabButton}"
                         Command="{Binding ChangeAddressesTabCommand}">
                     <Button.CommandParameter>
                         <x:Boolean>False</x:Boolean>
@@ -85,13 +81,8 @@
                     </Button.Triggers>
                 </Button>
                 <Button Grid.Column="1"
-                        CornerRadius="16"
-                        Padding="0"
-                        Margin="2"
+                        Style="{DynamicResource TabButton}"
                         Text="{helpers:Translate MyAddresses}"
-                        FontFamily="{DynamicResource RegularFont}"
-                        TextTransform="None"
-                        FontSize="14"
                         Command="{Binding ChangeAddressesTabCommand}">
                     <Button.CommandParameter>
                         <x:Boolean>True</x:Boolean>
@@ -212,9 +203,6 @@
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
                         <Label Text="{Binding Message.Text}"
-                               FontSize="14"
-                               FontFamily="{DynamicResource RegularFont}"
-                               TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
                                HorizontalTextAlignment="Start"
                                HorizontalOptions="StartAndExpand"
                                VerticalOptions="Center">
@@ -222,14 +210,14 @@
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Message.Type}"
                                              Value="Warning">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{StaticResource WarningTextH5}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Message.Type}"
                                              Value="Error">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{StaticResource ErrorTextH5}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -294,8 +282,7 @@
                              Margin="16,0"
                              Spacing="12">
                     <Label Text="{helpers:Translate MyAddresses}"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           Style="{DynamicResource AdditionalTextH5}"
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"
@@ -368,18 +355,14 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.ColumnSpan="2"
                                            Text="{Binding Address}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                           Style="{DynamicResource MainTextH4}"
                                            LineBreakMode="MiddleTruncation"
-                                           FontSize="16"
                                            Padding="0,3"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
                                     <Label Grid.Row="1"
                                            Grid.ColumnSpan="2"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="14"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"
                                            HorizontalTextAlignment="Start"
                                            IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
@@ -398,10 +381,8 @@
                                            BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                                            CornerRadius="4"
                                            IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
-                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                               Text="{helpers:Translate New}"
-                                               TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                               FontSize="12"
+                                        <Label Text="{helpers:Translate New}"
+                                               Style="{DynamicResource MainTextH6}"
                                                TextTransform="Lowercase"
                                                VerticalTextAlignment="Center"
                                                HorizontalTextAlignment="Center"/>
@@ -441,15 +422,8 @@
                 </StackLayout.IsVisible>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"/>
                 <Button Text="{helpers:Translate ConfirmButton}"
+                        Style="{DynamicResource MainButton}"
                         Margin="16,14"
-                        CornerRadius="22"
-                        BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                        TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                        FontSize="17"
-                        TextTransform="None"
-                        HeightRequest="44"
-                        HorizontalOptions="FillAndExpand"
-                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ConfirmCommand}">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"

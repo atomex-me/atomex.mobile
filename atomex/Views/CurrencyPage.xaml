@@ -31,62 +31,41 @@
                     <Image Source="{Binding CurrencyCode}"
                            Margin="30"/>
                 </Frame>
-                <StackLayout Margin="16,0"
-                             Spacing="10"
+                <StackLayout Margin="16,0,16,6"
                              Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand">
-                    <Label TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="24"
-                           FontFamily="{DynamicResource RegularFont}"
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UnconfirmedAmountCommand}"/>
+                    </StackLayout.GestureRecognizers>
+                    <Label Text="{helpers:Translate AvailableBalance}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyCode}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Image Source="ic_update"
-                           WidthRequest="16"
-                           HeightRequest="21"
-                           VerticalOptions="Center">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding RefreshCommand}"/>
-                        </Image.GestureRecognizers>
-                        <Image.Triggers>
-                            <DataTrigger TargetType="Image"
-                                         Binding="{Binding IsRefreshing}"
-                                         Value="True">
-                                <DataTrigger.EnterActions>
-                                    <behavior:AnimationTrigger Action="Start" />
-                                </DataTrigger.EnterActions>                                
-                            </DataTrigger>
-                            <DataTrigger TargetType="Image"
-                                         Binding="{Binding IsRefreshing}"
-                                         Value="False">
-                                <DataTrigger.EnterActions>
-                                    <behavior:AnimationTrigger  Action="Stop" />  
-                                </DataTrigger.EnterActions>                                
-                            </DataTrigger>                    
-                        </Image.Triggers>
-                    </Image>
+                           VerticalTextAlignment="Center"/>
+                    <Image Source="ic_question"
+                           WidthRequest="12"
+                           HeightRequest="12"/>
                 </StackLayout>
+                <Label Style="{DynamicResource MainTextH2}"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding CurrencyCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       FontSize="14"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource AdditionalTextH5}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
-                       Margin="16,4,16,12"/>
+                       Margin="16,2,16,12"/>
                 <StackLayout Spacing="6"
                              Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand">
                     <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
@@ -98,24 +77,22 @@
                         </Label.FormattedText>
                     </Label>
                     <Label Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                          Value="True">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{StaticResource SuccessTextH5}"/>
                                 <Setter Property="Text"
                                         Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                          Value="False">
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                <Setter Property="Style"
+                                        Value="{StaticResource ErrorTextH5}"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -145,13 +122,11 @@
                                  Source="ic_send"/>
                     <Label Grid.Row="1"
                            Text="{helpers:Translate SendButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            Padding="0"
-                           Margin="12,0"/>
+                           Margin="5,0"/>
                     <ImageButton Grid.Column="1"
                                  Padding="21"
                                  Margin="12,0"
@@ -165,13 +140,11 @@
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Text="{helpers:Translate ReceiveButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            Padding="0"
-                           Margin="12,0"/>
+                           Margin="5,0"/>
                     <ImageButton Grid.Column="2"
                                  Padding="19"
                                  Margin="12,0"
@@ -185,13 +158,11 @@
                     <Label Grid.Row="1"
                            Grid.Column="2"
                            Text="{helpers:Translate ExchangeButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            Padding="0"
-                           Margin="12,0"/>
+                           Margin="5,0"/>
                     <ImageButton Grid.Column="3"
                                  Padding="19"
                                  Margin="12,0"
@@ -206,13 +177,11 @@
                     <Label Grid.Row="1"
                            Grid.Column="3"
                            Text="{helpers:Translate BuyButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                           FontSize="14"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            Padding="0"
-                           Margin="12,0"
+                           Margin="5,0"
                            IsVisible="{Binding CanBuy}"/>
                 </Grid>
                 <ScrollView Orientation="Horizontal"
@@ -237,13 +206,8 @@
                                HasShadow="False"
                                Padding="0"
                                BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
-                        <Button CornerRadius="16"
-                                Padding="16,8"
-                                Margin="2"
+                        <Button Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Activity}"
-                                FontFamily="{DynamicResource RegularFont}"
-                                TextTransform="None"
-                                FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Activity"
                                 Clicked="TabChanged">
@@ -267,13 +231,8 @@
                             </Button.Triggers>
                         </Button>
                         <Button Grid.Column="1"
-                                CornerRadius="16"
-                                Padding="16,8"
-                                Margin="2"
+                                Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Collectibles}"
-                                FontFamily="{DynamicResource RegularFont}"
-                                TextTransform="None"
-                                FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Collectibles"
                                 Clicked="TabChanged">
@@ -297,13 +256,8 @@
                             </Button.Triggers>
                         </Button>
                         <Button Grid.Column="2"
-                                CornerRadius="16"
-                                Padding="16,8"
-                                Margin="2"
+                                Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Addresses}"
-                                FontFamily="{DynamicResource RegularFont}"
-                                TextTransform="None"
-                                FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Addresses"
                                 Clicked="TabChanged">
@@ -327,13 +281,8 @@
                             </Button.Triggers>
                         </Button>
                         <Button Grid.Column="3"
-                                CornerRadius="16"
-                                Padding="16,8"
-                                Margin="2"
+                                Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Delegations}"
-                                FontFamily="{DynamicResource RegularFont}"
-                                TextTransform="None"
-                                FontSize="14"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Delegations"
                                 Clicked="TabChanged"
@@ -387,10 +336,8 @@
                                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                              Spacing="0">
                                     <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            Padding="16,0"
-                                           FontSize="12"
                                            VerticalOptions="FillAndExpand"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
@@ -507,15 +454,7 @@
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
                                 x:Name="TxsFooter"
-                                BackgroundColor="Transparent"
-                                BorderColor="Transparent"
-                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                                FontSize="17"
-                                FontFamily="{DynamicResource BoldFont}"
-                                Padding="16"
-                                TextTransform="None"
-                                HeightRequest="50"
-                                HorizontalOptions="FillAndExpand"
+                                Style="{DynamicResource TransparentButton}"
                                 Clicked="ShowAllTxs">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
@@ -528,31 +467,6 @@
                         </Button>
                     </ListView.Footer>
                 </ListView>
-                <!--<StackLayout IsVisible="False">
-                    <StackLayout.Triggers>
-                        <MultiTrigger TargetType="StackLayout">
-                            <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding CanShowMoreTxs}"
-                                                  Value="True"/>
-                                <BindingCondition Binding="{Binding SelectedTab}"
-                                                  Value="Activity"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </MultiTrigger>
-                    </StackLayout.Triggers>
-                    <Button Text="{helpers:Translate ShowAll}"
-                            BackgroundColor="Transparent"
-                            BorderColor="Transparent"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                            FontSize="17"
-                            FontFamily="{DynamicResource BoldFont}"
-                            Padding="16"
-                            TextTransform="None"
-                            HeightRequest="50"
-                            HorizontalOptions="FillAndExpand"
-                            Clicked="ShowAllTxs"/>
-                </StackLayout>-->
                 <ListView ItemsSource="{Binding Addresses}"
                           SelectionMode="Single"
                           SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
@@ -586,17 +500,13 @@
                                         <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{Binding Address}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="16"
+                                           Style="{DynamicResource MainTextH4}"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"
                                            LineBreakMode="MiddleTruncation"/>
                                     <Label Grid.Row="1"
                                            Text="{Binding Balance}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="14"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            LineBreakMode="MiddleTruncation"/>
@@ -613,15 +523,7 @@
                     </ListView.ItemTemplate>
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
-                                BackgroundColor="Transparent"
-                                BorderColor="Transparent"
-                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                                FontSize="17"
-                                HeightRequest="50"
-                                TextTransform="None"
-                                Padding="16"
-                                HorizontalOptions="FillAndExpand"
-                                FontFamily="{DynamicResource BoldFont}"
+                                Style="{DynamicResource TransparentButton}"
                                 Command="{Binding ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>

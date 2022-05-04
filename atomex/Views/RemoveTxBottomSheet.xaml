@@ -22,13 +22,13 @@
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
-                                                ClosingEdge="144"
+                                                ClosingEdge="164"
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16,14"
                               HorizontalOptions="FillAndExpand"
-                              HeightRequest="244"
+                              HeightRequest="264"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
@@ -38,15 +38,12 @@
                        VerticalOptions="Center"
                        Margin="0,0,0,30"/>
                 <Label Text="{helpers:Translate Warning}"
-                       Style="{DynamicResource TitleTextStyle}"
-                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"
+                       Style="{DynamicResource WarningTextH1}"
                        Padding="0"/>
                 <Label Text="{helpers:Translate RemoveTxWarning}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="14"
+                       Style="{DynamicResource MainTextH4}"
                        LineHeight="1.25"
                        Padding="0,20,0,32"
-                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"/>
                 <Grid RowSpacing="0"
                       ColumnSpacing="12"
@@ -59,25 +56,25 @@
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
-                    <Button Text="{helpers:Translate CancelButton}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                            FontFamily="{DynamicResource RegularFont}"
-                            FontSize="17"
-                            TextTransform="None"
-                            CornerRadius="25"
-                            HeightRequest="50"
-                            Command="{Binding CloseBottomSheetCommand}"/>
-                    <Button Grid.Column="1"
-                            Text="{helpers:Translate RemoveButton}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                            FontFamily="{DynamicResource RegularFont}"
-                            FontSize="17"
-                            TextTransform="None"
-                            CornerRadius="25"
-                            HeightRequest="50"
-                            Command="{Binding DeleteTxCommand}"/>
+                    <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                           HorizontalOptions="FillAndExpand"
+                           Padding="16,0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="{helpers:Translate CancelButton}"                                                       
+                               Style="{DynamicResource AdditionalClickableLabel}"/>
+                    </Frame>
+                    <Frame Grid.Column="1"
+                           Style="{DynamicResource AdditionalClickableFrame}"
+                           HorizontalOptions="FillAndExpand"
+                           Padding="16,0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DeleteTxCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="{helpers:Translate RemoveButton}"                                                       
+                               Style="{DynamicResource AdditionalClickableLabel}"/>
+                    </Frame>
                 </Grid>
             </StackLayout>
         </controls:CustomFrame>

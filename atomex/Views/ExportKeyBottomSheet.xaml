@@ -38,14 +38,11 @@
                        VerticalOptions="Center"
                        Margin="0,0,0,40"/>
                 <Label Text="{helpers:Translate Warning}"
-                       Style="{DynamicResource TitleTextStyle}"
-                       Padding="0,0,0,20"
-                       TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                       Style="{DynamicResource WarningTextH1}"
+                       Padding="0,0,0,20"/>
                 <Label Text="{helpers:Translate CopyingPrivateKeyWarning}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="14"
+                       Style="{DynamicResource MainTextH4}"
                        LineHeight="1.25"
-                       FontFamily="{DynamicResource RegularFont}"
                        HorizontalTextAlignment="Start"/>
                 <Grid RowSpacing="0"
                       ColumnSpacing="12"
@@ -58,9 +55,7 @@
                         <ColumnDefinition Width="5*" />
                         <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
-                    <Frame HasShadow="False"
-                           CornerRadius="25"
-                           Padding="0"
+                    <Frame Style="{DynamicResource AdditionalClickableFrame}"
                            HorizontalOptions="FillAndExpand">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ExportKeyCommand}"/>
@@ -103,11 +98,10 @@
                                 </Image.Triggers>
                             </Image>
                             <Label Text="{Binding CopyButtonName}"
+                                   Style="{DynamicResource AdditionalButtonText}"
                                    VerticalTextAlignment="Center"
                                    HorizontalTextAlignment="Start"
-                                   HorizontalOptions="Start"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="17">
+                                   HorizontalOptions="Start">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding IsCopied}"
@@ -126,20 +120,14 @@
                         </StackLayout>
                     </Frame>
                     <Frame Grid.Column="1"
-                           HasShadow="False"
-                           Padding="16,0"
-                           CornerRadius="25"
-                           BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                           HorizontalOptions="FillAndExpand">
+                           Style="{DynamicResource AdditionalClickableFrame}"
+                           HorizontalOptions="FillAndExpand"
+                           Padding="16,0">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
                         </Frame.GestureRecognizers>
                         <Label Text="{helpers:Translate CloseButton}"                                                       
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                               VerticalTextAlignment="Center"
-                               HorizontalTextAlignment="Center"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="17"/>
+                               Style="{DynamicResource AdditionalClickableLabel}"/>
                     </Frame>
                 </Grid>
             </StackLayout>

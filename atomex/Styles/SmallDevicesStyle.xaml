@@ -23,26 +23,30 @@
     </Style>
 
     <!-- Buttons -->
-    <Style x:Key="MainButtonStyle" TargetType="Button">
+    <Style x:Key="MainButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
-        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="FontSize" Value="17"/>
         <Setter Property="HeightRequest" Value="44"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
     </Style>
-    <Style x:Key="WalletTypeButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="WalletTypeButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="WidthRequest" Value="130"/>
     </Style>
-    <Style x:Key="TransparentButtonStyle" TargetType="Button">
+    <Style x:Key="TransparentButton" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="20,0"/>
-        <Setter Property="TextTransform" Value="Uppercase"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="TextTransform" Value="None"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
     </Style>
 
     <!-- Entries -->
@@ -84,13 +88,6 @@
     </Style>
 
     <!-- Labels -->
-    <Style x:Key="TitleTextStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="Padding" Value="16,32,16,0"/>
-        <Setter Property="HorizontalTextAlignment" Value="Start"/>
-    </Style>
     <Style x:Key="SwapStateLabelStyle" TargetType="Label">
         <Setter Property="Margin" Value="15,0,0,0"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
@@ -679,10 +676,10 @@
     </Style>
 
     <!-- Popup -->
-    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="PopupAcceptButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
     </Style>
-    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButtonStyle}">
+    <Style x:Key="PopupCancelButtonStyle" TargetType="Button" BasedOn="{StaticResource MainButton}">
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>

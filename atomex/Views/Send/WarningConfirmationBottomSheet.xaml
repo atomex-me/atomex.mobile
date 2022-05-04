@@ -39,14 +39,11 @@
                    VerticalOptions="Center"
                    Margin="0,0,0,20"/>
             <Label Text="{helpers:Translate Warning}"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Padding="0,0,0,20"
-                   TextColor="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                   Style="{DynamicResource WarningTextH1}"
+                   Padding="0,0,0,20"/>
             <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
-                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                   FontSize="14"
+                   Style="{DynamicResource MainTextH5}"
                    LineHeight="1.25"
-                   FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Start"/>
             <input:RadioButtonGroupView>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"

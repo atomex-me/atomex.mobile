@@ -270,7 +270,7 @@
         <value>Валюты &amp; Токены</value>
     </data>
     <data name="ManageAssets" xml:space="preserve">
-        <value>Настройка активов</value>
+        <value>Управление активами</value>
     </data>
     
     <!-- Wallets Page -->
@@ -296,6 +296,9 @@
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Обновить</value>
+    </data>
+    <data name="AvailableBalance" xml:space="preserve">
+        <value>Доступный Баланс</value>
     </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Обновление баланса...</value>

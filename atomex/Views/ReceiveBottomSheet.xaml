@@ -47,9 +47,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 <Label Text="{Binding ReceivingAddressLabel}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontSize="24"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource MainTextH2}"
                        Margin="24,0,24,24"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"/>
@@ -65,16 +63,12 @@
                 </zxing:ZXingBarcodeImageView>
                 </StackLayout>
                 <Label Text="{Binding SelectedAddress.Address}"
-                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                       FontFamily="{DynamicResource RegularFont}"
+                       Style="{DynamicResource MainTextH4}"
                        LineBreakMode="CharacterWrap"
                        HorizontalTextAlignment="Center"
-                       FontSize="16"
                        Margin="24,24,24,4"/>
-                <Label TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       FontFamily="{DynamicResource RegularFont}"
-                       HorizontalTextAlignment="Center"
-                       FontSize="16">
+                <Label Style="{DynamicResource AdditionalTextH5}"
+                       HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
@@ -83,13 +77,9 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Frame HasShadow="False"
-                       CornerRadius="25"
-                       HeightRequest="50"
+                <Frame Style="{DynamicResource MainClickableFrame}"
                        WidthRequest="200"
-                       Margin="24,12"
-                       Padding="20,0"
-                       HorizontalOptions="Center">
+                       Margin="24,12">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyCommand}"/>
                     </Frame.GestureRecognizers>
@@ -129,9 +119,7 @@
                             </Image.Triggers>
                         </Image>
                         <Label Text="{Binding CopyButtonName}"
-                               VerticalTextAlignment="Center"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="17">
+                               Style="{DynamicResource MainClickableLabel}">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding IsCopied}"
@@ -149,13 +137,8 @@
                         </Label>
                     </StackLayout>
                 </Frame>
-                <Frame HasShadow="False"
-                       CornerRadius="25"
-                       HeightRequest="50"
-                       WidthRequest="200"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                       Padding="20,0"
-                       HorizontalOptions="Center">
+                <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                       WidthRequest="200">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShareCommand}"/>
                     </Frame.GestureRecognizers>
@@ -179,11 +162,9 @@
                                 </Image.Triggers>
                             </Image>
                             <Label Text="{helpers:Translate ShareButton}"
+                                   Style="{DynamicResource AdditionalClickableLabel}"
                                    VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Start"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                                   FontSize="17">
+                                   HorizontalTextAlignment="Start">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding IsShared}"
@@ -205,15 +186,8 @@
                     </RelativeLayout>
                 </Frame>
                 <Button Text="{Binding MyAddressesButtonName}"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent"
-                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"
-                        FontSize="17"
-                        HeightRequest="50"
-                        TextTransform="None"
+                        Style="{DynamicResource TransparentButton}"
                         Margin="70,12,70,45"
-                        HorizontalOptions="FillAndExpand"
-                        FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding ShowReceiveAddressesCommand}"/>
             </StackLayout>
         </controls:CustomFrame>

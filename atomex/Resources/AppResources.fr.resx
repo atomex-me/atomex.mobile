@@ -297,6 +297,9 @@
     <data name="UpdateButton" xml:space="preserve">
         <value>Rafraîchir</value>
     </data>
+    <data name="AvailableBalance" xml:space="preserve">
+        <value>Available Balance</value>
+    </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Mise à jour du solde...</value>
     </data>
