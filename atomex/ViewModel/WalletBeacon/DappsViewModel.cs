@@ -24,7 +24,6 @@ using Serilog;
 using Beacon.Sdk.Beacon.Operation;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Beacon.Sdk.Core.Domain;
 
 namespace atomex.ViewModel.WalletBeacon
 {
@@ -53,8 +52,6 @@ namespace atomex.ViewModel.WalletBeacon
             var permissions = _walletBeaconClient.PermissionInfoRepository.ReadAllAsync().Result;
 
             Permissions = new ObservableCollection<PermissionInfo>(permissions);
-            //foreach (var permission in permissions)
-            //    Permissions.Add(permission);
         }
 
         [Reactive] public bool IsScanning { get; set; }
@@ -73,96 +70,10 @@ namespace atomex.ViewModel.WalletBeacon
 
         public ICommand ScanResultCommand { get; } // ScanResultCommand
 
-        private void OnDappConnectedEventHandler(object sender, DappConnectedEventArgs e)
+        public void OnDisappearing()
         {
-            if (sender is not ResponseMessageHandler)
-                throw new ArgumentException("sender is not ResponseMessageHandler");
-
-
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                Permissions.Add(e.dappPermissionInfo);
-                Permissions = new ObservableCollection<PermissionInfo>(Permissions);
-
-                this.RaisePropertyChanged(nameof(Permissions));
-            });
-        }
-
-        private void OnBeaconMessageRecievedHandler(object sender, BeaconMessageEventArgs args)
-        {
-            try
-            {
-                BaseBeaconMessage message = args.Request;
-
-                if (message.Type != BeaconMessageType.operation_request)
-                    return;
-
-                var request = message as OperationRequest;
-
-                if (request!.OperationDetails.Count <= 0)
-                    return;
-
-                var transactionOperation = request.OperationDetails[0];
-
-                if (!long.TryParse(transactionOperation.Amount, out long amount))
-                    return;
-
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PushAsync(
-                        new TezosTransactionRequestPage(
-                            new TezosTransactionRequestViewModel(
-                                _app,
-                                _walletBeaconClient,
-                                args.SenderId,
-                                Navigation,
-                                request,
-                                transactionOperation)));
-                });
-
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, $"Beacon message error");
-            }
-           
-        }
-
-        private async Task DeleteAsync(string address)
-        {
-            var selectedDapp = Permissions.FirstOrDefault(w => w.Address == address);
-
-            var confirm = await Application.Current.MainPage.DisplayAlert("Delete",
-                string.Format(CultureInfo.InvariantCulture, "Are you sure?", selectedDapp?.Address),
-                AppResources.DeleteButton, AppResources.CancelButton);
-
-            if (confirm)
-            {
-
-                try
-                {
-                    //await _walletBeaconClient.PermissionInfoRepository.DeleteAsync(selectedDapp.Address, selectedDapp.SenderId).ConfigureAwait(false);
-
-                    //var index = Permissions.IndexOf(selectedDapp);
-
-                    Device.BeginInvokeOnMainThread(async () =>
-                    {
-                        //var result = Permissions.Where(x => x.Address != address).ToList();
-                        Permissions = new ObservableCollection<PermissionInfo>();
-
-                        this.RaisePropertyChanged(nameof(Permissions));
-                    });
-                    //var result = Permissions.Where(x => x.Address != address).ToList();
-                    //Permissions = new ObservableCollection<PermissionInfo>(result);
-
-                    //this.RaisePropertyChanged(nameof(Permissions));
-
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Delete dapp error");
-                }
-            }
+            _walletBeaconClient.OnDappConnected -= OnDappConnectedEventHandler;
+            _walletBeaconClient.OnBeaconMessageReceived -= OnBeaconMessageRecievedHandler;
         }
 
         private async Task ScanQrCodeAsync()
@@ -226,38 +137,98 @@ namespace atomex.ViewModel.WalletBeacon
                 });
             }
         }
+
+        private async Task DeleteAsync(string PermissionInfoId)
+        {
+            var selectedDapp = Permissions.FirstOrDefault(w => w.PermissionInfoId == PermissionInfoId);
+
+            var confirm = await Application.Current.MainPage.DisplayAlert("Delete",
+                string.Format(CultureInfo.InvariantCulture, "Are you sure?", selectedDapp?.Address),
+                AppResources.DeleteButton, AppResources.CancelButton);
+
+            if (confirm)
+            {
+
+                try
+                {
+                    await _walletBeaconClient.PermissionInfoRepository.DeleteByIdAsync(PermissionInfoId).ConfigureAwait(false);
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        var result = Permissions.Where(x => x.PermissionInfoId != PermissionInfoId).ToList();
+                        Permissions = new ObservableCollection<PermissionInfo>(result);
+
+                        this.RaisePropertyChanged(nameof(Permissions));
+                    });
+
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Delete dapp error");
+                }
+            }
+        }
+
+        private void OnDappConnectedEventHandler(object sender, DappConnectedEventArgs e)
+        {
+            //if (sender is not ResponseMessageHandler)
+            //    throw new ArgumentException("sender is not ResponseMessageHandler");
+
+            //var result = await _walletBeaconClient.PermissionInfoRepository.ReadAllAsync().ConfigureAwait(false);
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                var result = _walletBeaconClient.PermissionInfoRepository.ReadAllAsync().Result;
+                Permissions = new ObservableCollection<PermissionInfo>(result);
+
+                this.RaisePropertyChanged(nameof(Permissions));
+            });
+        }
+
+        private void OnBeaconMessageRecievedHandler(object sender, BeaconMessageEventArgs args)
+        {
+            //if (sender is not ResponseMessageHandler)
+            //    throw new ArgumentException("sender is not ResponseMessageHandler");
+
+            try
+            {
+                BaseBeaconMessage message = args.Request;
+
+                if (message.Type != BeaconMessageType.operation_request)
+                    return;
+
+                var request = message as OperationRequest;
+
+                if (request!.OperationDetails.Count <= 0)
+                    return;
+
+                var transactionOperation = request.OperationDetails[0];
+
+                if (!long.TryParse(transactionOperation.Amount, out long amount))
+                    return;
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PushAsync(
+                        new TezosTransactionRequestPage(
+                            new TezosTransactionRequestViewModel(
+                                _app,
+                                _walletBeaconClient,
+                                args.SenderId,
+                                Navigation,
+                                request,
+                                transactionOperation)));
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Beacon message error");
+            }
+
+        }
     }
 }
-
-//try
-//{
-//    Console.WriteLine($"1 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
-//    //Task.Run(async () =>
-//    //{
-//        Console.WriteLine($"2 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
-//        _= walletBeaconClient.InitAsync();
-//        Console.WriteLine($"3 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
-//    //});
-
-//} catch(Exception ex)
-//{
-
-//}
-
-//try
-//{
-//    var factory = new MatrixClientFactory();
-//    IMatrixClient client = factory.Create();
-
-//    (Uri matrixNodeAddress, string username, string password, string deviceId) = CreateLoginRequest();
-
-//    client.LoginAsync(matrixNodeAddress, username, password, deviceId).Wait();
-//    Console.WriteLine($"client.IsLoggedIn {client.IsLoggedIn}");
-//}
-//catch(Exception ex)
-//{
-
-//}
 
 //public class DappInfo
 //{

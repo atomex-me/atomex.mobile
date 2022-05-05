@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.Views.WalletBeacon.DappsPage"
              x:Name="BindingContextPage"
              Title="DappsPage"
              Style="{DynamicResource AdditionalBackgroundStyle}">
+     <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:WalletBeaconPermissionsConverter x:Key="WalletBeaconPermissions"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
                 <StackLayout 
@@ -36,96 +42,94 @@
                             </Frame.GestureRecognizers>
                         </StackLayout>
                     </Frame>
-                    <Label Text="DappsDevices"
+
+                    <Label Text="dApps connected using Beacon"
                            FontFamily="{DynamicResource LightFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="Center"
                            TextTransform="Uppercase"
                            Padding="20,5"/>
-                    <StackLayout
-                        Orientation="Vertical"
-                        Spacing="30"
-                        IsVisible="False">
-                        <Image WidthRequest="170"
-                           HeightRequest="156"
-                           Margin="10"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           Source="AtomexLogo"/>
-                        <Label Text="No Dapps have been connected"
-                           FontFamily="{DynamicResource RegularFont}"
-                           FontSize="20"
-                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           HorizontalOptions="Center"
-                           VerticalTextAlignment="Center"
-                           Padding="20,5"/>
-                        <StackLayout.Triggers>
-                            <DataTrigger TargetType="StackLayout"
-                                         Binding="{Binding Permissions.Count}"
-                                         Value="0">
-                                <Setter Property="IsVisible"
-                                        Value="True"/>
-                            </DataTrigger>
-                        </StackLayout.Triggers>
-                    </StackLayout>
-
 
                     <Frame CornerRadius="10"
                         Style="{DynamicResource EntryFrameStyle}"
-                        Padding="20,5"
+                        Padding="20,20"
                         IsVisible="True">
-                        <StackLayout BindableLayout.ItemsSource="{Binding Permissions}"
+                        <StackLayout BindableLayout.ItemsSource="{Binding Permissions, Mode=TwoWay}"
                                      BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                      VerticalOptions="FillAndExpand"
                                      Spacing="15">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <xct:Expander>
-                                         <xct:Expander.Header>
-                                              <Grid ColumnSpacing="0"
-                                                        RowSpacing="0">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="30" />
-                                                        <RowDefinition Height="30" />
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="7*" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="1"
-                                                            Text="{Binding Address}"
-                                                            FontFamily="{DynamicResource RegularFont}"
-                                                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                                            FontSize="14"
-                                                            VerticalTextAlignment="End"
-                                                            HorizontalTextAlignment="Start"/>
-                                                    <Label Grid.Column="1"
-                                                            Grid.Row="1"
-                                                            Text="{Binding Network}"
-                                                            FontFamily="{DynamicResource LightFont}"
-                                                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                                            FontSize="12"
-                                                            Margin="0,3"
-                                                            VerticalTextAlignment="Start"
-                                                            HorizontalTextAlignment="Start"/>
-                                                    <Image Grid.Column="2"
-                                                            Grid.RowSpan="2"
-                                                            Source="ic_delete"
-                                                            WidthRequest="20"
-                                                            HeightRequest="20"
-                                                            VerticalOptions="Center"
-                                                            HorizontalOptions="Center">
-                                                            <Image.GestureRecognizers>
-                                                                <TapGestureRecognizer CommandParameter="{Binding Address}"
-                                                                                      Command="{Binding BindingContext.DeleteCommand, Source={x:Reference BindingContextPage}}"/>
-                                                            </Image.GestureRecognizers>
-                                                    </Image>
-                                                </Grid>
-                                            </xct:Expander.Header>
+                                    <Grid ColumnSpacing="0"
+                                            RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                            <RowDefinition Height="30" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="8*" />
+                                            <ColumnDefinition Width="2*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0"
+                                                Text="{Binding AppMetadata.Name}"
+                                                FontFamily="{DynamicResource RegularFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                                FontSize="14"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="Start"/>
+                                        <Label Grid.Column="0"
+                                                Grid.Row="1"
+                                                Text="{Binding Address}"
+                                                FontFamily="{DynamicResource LightFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                FontSize="12"
+                                                VerticalTextAlignment="Start"
+                                                HorizontalTextAlignment="Start"/>
+                                        <Label Grid.Column="0"
+                                                Grid.Row="2"
+                                                Text="{Binding ConnectedAt}"
+                                                FontFamily="{DynamicResource LightFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                FontSize="12"
+                                                VerticalTextAlignment="End"
+                                                HorizontalTextAlignment="Start"/>
+                                          <Label Grid.Column="0"
+                                                Grid.Row="3"
+                                                Text="{Binding Scopes, Mode=OneWay, Converter={StaticResource WalletBeaconPermissions}}"
+                                                FontFamily="{DynamicResource LightFont}"
+                                                TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                FontSize="12"
+                                                VerticalTextAlignment="End"
+                                                HorizontalTextAlignment="Start"/>
 
-                                        <StackLayout Spacing="10"
+                                        <Image Grid.Column="1"
+                                                Grid.Row="0"
+                                                Source="ic_delete"
+                 
+                                                VerticalOptions="Start"
+                                                HorizontalOptions="End">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer CommandParameter="{Binding PermissionInfoId}"
+                                                                            Command="{Binding BindingContext.DeleteCommand, Source={x:Reference BindingContextPage}}"/>
+                                                </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
+
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
+
+
+
+ <!--<StackLayout Spacing="10"
                                                      VerticalOptions="FillAndExpand"
                                                      Orientation="Vertical">
                                             <Label Text="Permissions"
@@ -136,24 +140,4 @@
                                                    VerticalTextAlignment="Start"
                                                    HorizontalTextAlignment="Start"/>
                                            
-                                        </StackLayout>
-
-
-                                    </xct:Expander>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                        <Frame.Triggers>
-                            <DataTrigger TargetType="Frame"
-                                         Binding="{Binding Permissions.Count}"
-                                         Value="0">
-                                <Setter Property="IsVisible"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Frame.Triggers>
-                    </Frame>
-
-                </StackLayout>
-        </ScrollView>
-    </ContentPage.Content>
-</ContentPage>
+                                        </StackLayout>-->

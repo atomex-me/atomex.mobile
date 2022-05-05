@@ -59,7 +59,7 @@ namespace atomex.ViewModel.WalletBeacon
 
             var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
          
-            var permissionInfo = await _walletBeaconClient.TryReadPermissionInfo(OperationRequest.SourceAddress, OperationRequest.Network);
+            var permissionInfo = await _walletBeaconClient.TryReadPermissionInfo(OperationRequest.SourceAddress, OperationRequest.SenderId, OperationRequest.Network);
 
             if (permissionInfo != null)
             {

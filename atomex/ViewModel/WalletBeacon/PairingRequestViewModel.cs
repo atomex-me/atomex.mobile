@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace atomex.ViewModel.WalletBeacon
 {
-    public class PairingRequestViewModel : BaseViewModel, IDisposable
+    public class PairingRequestViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
 
@@ -44,6 +44,11 @@ namespace atomex.ViewModel.WalletBeacon
 
         public ICommand CancelCommand { get; }
 
+        public void OnDisappearing()
+        {
+            _walletBeaconClient.OnBeaconMessageReceived -= OnBeaconMessageReceived;
+        }
+
         private void OnBeaconMessageReceived(object sender, BeaconMessageEventArgs args)
         {
             BaseBeaconMessage message = args.Request;
@@ -71,46 +76,5 @@ namespace atomex.ViewModel.WalletBeacon
         private async Task ConnectAsync() => await _walletBeaconClient.AddPeerAsync(PairingRequest).ConfigureAwait(false);
 
         private async Task CancelAsync() => await Navigation.PopAsync();
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects)
-
-                    _walletBeaconClient.OnBeaconMessageReceived -= OnBeaconMessageReceived;
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-            }
-        }
-
-        void IDisposable.Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
     }
 }
-
-
-//void LoadDapp()
-//{
-//    Dapp = new DappInfo()
-//    {
-//        Name = "Dapp",
-//        Network = Network.TestNet,
-//        ImageUrl = "BTC",
-//        DappDeviceType = DappType.Mobile,
-//        Permissions = new List<Permission>()
-//        {
-//            new Permission() { Name = "Ты можешь сидеть?" },
-//            new Permission() { Name = "Тебе еще что-то надо?" }
-//        }
-//    };
-//}
