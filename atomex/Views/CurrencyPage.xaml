@@ -524,6 +524,7 @@
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
                                 Style="{DynamicResource TransparentButton}"
+                                IsVisible="{Binding CanShowMoreAddresses}"
                                 Command="{Binding ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>

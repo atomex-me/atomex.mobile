@@ -78,6 +78,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
+        [Reactive] public bool CanShowMoreAddresses { get; set; }
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
 
@@ -127,6 +128,11 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                     CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
+
+            this.WhenAnyValue(vm => vm.Addresses)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
 
             LoadAddresses();
             OnAddresesChangedEventHandler();

@@ -246,6 +246,9 @@
                 </StackLayout>
             </StackLayout>
             <StackLayout Spacing="5"
+                         Orientation="Vertical"
+                         VerticalOptions="Fill"
+                         HorizontalOptions="StartAndExpand"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
@@ -333,6 +336,7 @@
                           SeparatorVisibility="None"
                           CachingStrategy="RetainElement"
                           VerticalOptions="FillAndExpand"
+                          RowHeight="64"
                           Footer="">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="ItemTapped"

@@ -140,6 +140,9 @@
     <Style x:Key="MainTextH5" TargetType="Label" BasedOn="{StaticResource MainText}">
         <Setter Property="FontSize" Value="14"/>
     </Style>
+    <Style x:Key="MainTextH5Regular" TargetType="Label" BasedOn="{StaticResource MainTextH5}">
+        <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
+    </Style>
     <Style x:Key="MainTextH6" TargetType="Label" BasedOn="{StaticResource MainText}">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontFamily" Value="{DynamicResource RegularFont}"/>
