@@ -217,16 +217,11 @@
                                    HasShadow="False"
                                    Padding="0"
                                    BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
-                            <Button CornerRadius="16"
-                                    Padding="0"
-                                    Margin="2"
+                            <Button Style="{DynamicResource TabButton}"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapProgress"
                                     x:Name="ProgressButton"
-                                    Text="{helpers:Translate ProgressTab}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    FontSize="14"
-                                    TextTransform="None">
+                                    Text="{helpers:Translate ProgressTab}">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
@@ -249,13 +244,8 @@
                                 </VisualStateManager.VisualStateGroups>
                             </Button>
                             <Button Grid.Column="1"
-                                    CornerRadius="16"
-                                    Padding="0"
-                                    Margin="2"
+                                    Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate DetailsTab}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    FontSize="14"
-                                    TextTransform="None"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapDetails"
                                     x:Name="DetailsButton">
@@ -451,7 +441,7 @@
                                 </Image>
                                 <Label Text="{helpers:Translate Initialization}"
                                        Grid.Column="1"
-                                       Style="{DynamicResource MainTextH3SemiBold}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -474,7 +464,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding InitStatusDesc}"
-                                           Style="{DynamicResource AdditionalTextH5Medium}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -502,13 +492,13 @@
                                                 <StackLayout Spacing="0"
                                                              Orientation="Horizontal">
                                                     <Label Text="{Binding Description}"
-                                                           Style="{DynamicResource AdditionalTextH5Medium}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -519,7 +509,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -766,8 +756,7 @@
                                 </Image>
                                 <Label Text="{helpers:Translate Exchanging}"
                                        Grid.Column="1"
-                                       BackgroundColor="Transparent"
-                                       Style="{DynamicResource MainTextH3SemiBold}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -790,7 +779,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding ExchangeStatusDesc}"
-                                           Style="{DynamicResource MainTextH3SemiBold}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -818,14 +807,14 @@
                                                              Orientation="Horizontal"
                                                              HorizontalOptions="FillAndExpand">
                                                     <Label Text="{Binding Description}"
-                                                           Style="{DynamicResource AdditionalTextH5Medium}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  HorizontalOptions="FillAndExpand" 
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -836,7 +825,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -994,7 +983,7 @@
                                 </lottie:AnimationView>
                                 <Label Text="{helpers:Translate Completion}"
                                        Grid.Column="1"
-                                       Style="{DynamicResource MainTextH3SemiBold}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -1017,7 +1006,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding CompletionStatusDesc}"
-                                           Style="{DynamicResource AdditionalTextH5Medium}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -1045,14 +1034,14 @@
                                                 <StackLayout Spacing="0"
                                                              Orientation="Horizontal">
                                                     <Label Text="{Binding Description}"
-                                                           Style="{DynamicResource AdditionalTextH5Medium}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  HorizontalOptions="FillAndExpand"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -1063,7 +1052,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label Style="{DynamicResource AdditionalTextH5Medium}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -1153,7 +1142,7 @@
                             </VisualStateManager.VisualStateGroups>
                             <StackLayout>
                                 <Label Text="{helpers:Translate Price}"
-                                       Style="{DynamicResource AdditionalTextH5Medium}"
+                                       Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Text="{Binding Price}"

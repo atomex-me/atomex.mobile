@@ -12,12 +12,17 @@
                Style="{DynamicResource CreateNewWalletTitleStyle}"/>
         <Label Text="{helpers:Translate SelectTypeLabel}"
                Style="{DynamicResource CreateNewWalletTextStyle}"/>
-        <StackLayout Orientation="Horizontal" Margin="0,20" HorizontalOptions="Center">
+        <StackLayout Orientation="Horizontal"
+                     Margin="0,20"
+                     HorizontalOptions="Center"
+                     WidthRequest="300">
             <custom:LeftRoundedButton Text="{helpers:Translate TestNetButton}"
-                                      Style="{DynamicResource WalletTypeButtonStyle}"
+                                      Style="{DynamicResource MainButton}"
+                                      CornerRadius="0"
                                       Command="{Binding SetTestNetTypeCommand}"/>
             <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
-                                       Style="{DynamicResource WalletTypeButtonStyle}"
+                                       Style="{DynamicResource MainButton}"
+                                       CornerRadius="0"
                                        Command="{Binding SetMainNetTypeCommand}"/>
         </StackLayout>
     </StackLayout> 
