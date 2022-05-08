@@ -16,16 +16,18 @@ namespace atomex.ViewModel.TransactionViewModels
             CurrencyConfig currencyConfig,
             INavigationService navigationService)
         {
-            return tx.Currency switch
+            return currencyConfig switch
             {
-                "BTC" => (TransactionViewModel)new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, currencyConfig as BitcoinBasedConfig, navigationService),
-                "LTC" => new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, currencyConfig as BitcoinBasedConfig, navigationService),
-                "USDT" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config, navigationService),
-                "TBTC" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config, navigationService),
-                "WBTC" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config, navigationService),
-                "ETH" => new EthereumTransactionViewModel(tx as EthereumTransaction, currencyConfig as EthereumConfig, navigationService),
-                "XTZ" => new TezosTransactionViewModel(tx as TezosTransaction, currencyConfig as TezosConfig, navigationService),
-                _ => throw new NotSupportedException("Not supported transaction type."),
+                BitcoinBasedConfig config =>
+                    new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, config, navigationService),
+                Erc20Config config =>
+                    new EthereumERC20TransactionViewModel(tx as EthereumTransaction, config, navigationService),
+                EthereumConfig config =>
+                    new EthereumTransactionViewModel(tx as EthereumTransaction, config, navigationService),
+                TezosConfig config =>
+                    new TezosTransactionViewModel(tx as TezosTransaction, config, navigationService),
+
+                _ => throw new ArgumentOutOfRangeException("Not supported transaction type.")
             };
         }
     }

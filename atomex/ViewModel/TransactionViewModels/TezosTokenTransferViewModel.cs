@@ -10,9 +10,8 @@ namespace atomex.ViewModel.TransactionViewModels
     public class TezosTokenTransferViewModel : TransactionViewModel
     {
         public const int MaxAmountDecimals = 9;
-
+        public string TxHash => Id.Split('/')[0];
         private readonly TezosConfig _tezosConfig;
-
         public string Alias { get; set; }
 
         public TezosTokenTransferViewModel(TokenTransfer tx, TezosConfig tezosConfig)
@@ -25,6 +24,7 @@ namespace atomex.ViewModel.TransactionViewModels
             Type = Transaction.Type;
             From = tx.From;
             To = tx.To;
+            CurrencyCode = tx.Token.Symbol;
             Amount = GetAmount(tx);
             AmountFormat = $"F{Math.Min(tx.Token.Decimals, MaxAmountDecimals)}";
             CurrencyCode = tx.Token.Symbol;

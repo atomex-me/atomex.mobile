@@ -29,6 +29,7 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal Amount { get; set; }
         public string AmountFormat { get; set; }
         public string CurrencyCode { get; set; }
+        public string FeeCode { get; set; }
         public decimal Fee { get; set; }
         public DateTime Time { get; set; }
         public DateTime LocalTime => Time.ToLocalTime();
@@ -56,15 +57,20 @@ namespace atomex.ViewModel.TransactionViewModels
             State = Transaction.State;
             Type = Transaction.Type;
             Amount = amount;
-            Direction = amount <= 0 ? AppResources.ToLabel : AppResources.FromLabel;
+            Direction = amount switch
+            {
+                <= 0 => AppResources.ToLabel.ToLower(),
+                > 0 => AppResources.FromLabel.ToLower()
+            };
 
             TxExplorerUri = $"{Currency.TxExplorerUri}{Id}";
             AddressExplorerUri = $"{Currency.AddressExplorerUri}";
-
+            
             var netAmount = amount + fee;
         
             AmountFormat = currencyConfig.Format;
             CurrencyCode = currencyConfig.Name;
+            FeeCode = currencyConfig.FeeCode;
             Time = tx.CreationTime ?? DateTime.UtcNow;
             CanBeRemoved = tx.State == BlockchainTransactionState.Failed ||
                            tx.State == BlockchainTransactionState.Pending ||
@@ -92,38 +98,37 @@ namespace atomex.ViewModel.TransactionViewModels
             {
                  return $"{AppResources.TxSwapPayment} {Math.Abs(amount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (type.HasFlag(BlockchainTransactionType.SwapRefund))
+
+            if (type.HasFlag(BlockchainTransactionType.SwapRefund))
             {
                 return $"{AppResources.TxSwapRefund} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
+
+            if (type.HasFlag(BlockchainTransactionType.SwapRedeem))
             {
                 return $"{AppResources.TxSwapRedeem} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
             }
-            else if (type.HasFlag(BlockchainTransactionType.TokenApprove))
+
+            if (type.HasFlag(BlockchainTransactionType.TokenApprove))
             {
                 return $"{AppResources.TxTokenApprove}";
             }
-            else if (type.HasFlag(BlockchainTransactionType.TokenCall))
+
+            if (type.HasFlag(BlockchainTransactionType.TokenCall))
             {
                 return $"{AppResources.TxTokenCall}";
             }
-            else if (type.HasFlag(BlockchainTransactionType.SwapCall))
+
+            if (type.HasFlag(BlockchainTransactionType.SwapCall))
             {
                 return $"{AppResources.TxSwapCall}";
             }
-            else if (amount <= 0)
+
+            return amount switch
             {
-                return $"{AppResources.TxSent} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
-            }
-            else if (amount > 0)
-            {
-                return $"{AppResources.TxReceived} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}";
-            }
-            else
-            {
-                return $"{AppResources.TxUnknown}";
-            }
+                <= 0 => $"{AppResources.TxSent} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}",
+                > 0 => $"{AppResources.TxReceived} {Math.Abs(netAmount).ToString("0." + new string('#', amountDigits))} {currencyCode}"
+            };
         }
 
         private ReactiveCommand<string, Unit> _copyTxIdCommand;

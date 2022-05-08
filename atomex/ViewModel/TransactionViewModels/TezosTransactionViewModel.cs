@@ -1,4 +1,5 @@
-﻿using Atomex;
+﻿using atomex.Common;
+using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.Tezos;
 
@@ -7,6 +8,9 @@ namespace atomex.ViewModel.TransactionViewModels
     public class TezosTransactionViewModel : TransactionViewModel
     {
         public decimal GasLimit { get; set; }
+        public decimal GasUsed { get; set; }
+        public decimal StorageLimit { get; set; }
+        public decimal StorageUsed { get; set; }
         public bool IsInternal { get; set; }
         public string Alias { get; set; }
 
@@ -19,9 +23,18 @@ namespace atomex.ViewModel.TransactionViewModels
             From = tx.From;
             To = tx.To;
             GasLimit = tx.GasLimit;
+            GasUsed = tx.GasUsed;
+            StorageLimit = tx.StorageLimit;
+            StorageUsed = tx.StorageUsed;
             Fee = TezosConfig.MtzToTz(tx.Fee);
             IsInternal = tx.IsInternal;
-            Alias = tx.Alias;
+            Alias = !string.IsNullOrEmpty(tx.Alias)
+                ? Alias = tx.Alias
+                : Amount switch
+                    {
+                        <= 0 => tx.To.TruncateAddress(),
+                        > 0 => tx.From.TruncateAddress()
+                    };
         }
 
         private static decimal GetAmount(TezosTransaction tx, TezosConfig tezosConfig)

@@ -58,6 +58,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
+        public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
 
         [Reactive] public decimal TotalAmount { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }

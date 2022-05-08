@@ -4,7 +4,6 @@
              x:Class="atomex.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
-             xmlns:behavior="clr-namespace:atomex.Behaviors"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
@@ -14,6 +13,7 @@
             <converters:EqualsConverter x:Key="EqualsConverter"/>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -318,7 +318,7 @@
                           CachingStrategy="RecycleElement"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          RowHeight="48"
+                          RowHeight="72"
                           x:Name="TransactionsListView"
                           IsVisible="False">
                     <ListView.Triggers>
@@ -327,6 +327,12 @@
                                      Value="Activity">
                             <Setter Property="IsVisible"
                                     Value="True"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding IsBitcoinBased, FallbackValue='False', TargetNullValue='False'}"
+                                     Value="True">
+                            <Setter Property="RowHeight"
+                                    Value="48"/>
                         </DataTrigger>
                     </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
@@ -348,25 +354,40 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid Padding="16,0" 
+                                <Grid Padding="16,12" 
                                       HorizontalOptions="FillAndExpand"
                                       ColumnSpacing="0"
                                       RowSpacing="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="48" />
+                                        <RowDefinition Height="24" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="20" />
                                     </Grid.ColumnDefinitions>
                                     <Label Text="{Binding Description}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                           FontSize="16"
+                                           Style="{DynamicResource MainTextH4}"
                                            HorizontalOptions="StartAndExpand"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"/>
+                                    <Label Grid.Row="1"
+                                           Style="{DynamicResource AdditionalTextH4}"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start"
+                                           LineBreakMode="TailTruncation"
+                                           IsVisible="{Binding Alias, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Direction}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding Alias}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                     <Image Grid.Column="1"
+                                           Grid.RowSpan="2"
                                            Margin="0"
                                            HorizontalOptions="End">
                                         <Image.Triggers>
@@ -403,8 +424,9 @@
                                         </Image.Triggers>
                                     </Image>
                                     <lottie:AnimationView Grid.Column="1"
-                                                          WidthRequest="16"
-                                                          HeightRequest="16"
+                                                          Grid.RowSpan="2"
+                                                          WidthRequest="20"
+                                                          HeightRequest="20"
                                                           Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
                                                           AnimationSource="AssetOrBundle"
                                                           ImageAssetsFolder="Assets/Animations"
