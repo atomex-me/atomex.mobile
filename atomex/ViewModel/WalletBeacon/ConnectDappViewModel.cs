@@ -75,6 +75,7 @@ namespace atomex.ViewModel.WalletBeacon
         {
             var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
             var addresses = (await account.GetAddressesAsync()).ToList();
+
             if (addresses.Count == 0)
             {
                 Log.Error("No adresses");
@@ -114,12 +115,16 @@ namespace atomex.ViewModel.WalletBeacon
                 if (permission.IsChecked)
                     scopes.Add(permission.Scope);
 
+            var publicKey = PubKey.FromBase64(responseAddress.PublicKey);
+            string address = publicKey.Address;
+
             var response = new PermissionResponse(
                 id: PermissionRequest!.Id,
                 senderId: _walletBeaconClient.SenderId,
                 network: network,
                 scopes: PermissionRequest.Scopes,
-                publicKey: responseAddress.PublicKey,
+                publicKey: publicKey.ToString(),
+                address: address,
                 appMetadata: _walletBeaconClient.Metadata);
 
             await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);//.ConfigureAwait(false);

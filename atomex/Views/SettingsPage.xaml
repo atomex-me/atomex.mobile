@@ -48,7 +48,12 @@
                         </StackLayout>
                     </Frame>
 
-                    <Frame
+                
+
+                </StackLayout>
+
+
+                <Frame
                         CornerRadius="10"
                         HeightRequest="40"
                         Margin="0,0,0,20"
@@ -70,7 +75,6 @@
                         </StackLayout>
                     </Frame>
 
-                </StackLayout>
                 <Label
                     FontFamily="{DynamicResource LightFont}"
                     FontSize="14"

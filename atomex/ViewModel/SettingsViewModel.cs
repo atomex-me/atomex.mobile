@@ -493,23 +493,30 @@ namespace atomex.ViewModel
         private async Task OnDappsDevicesClicked()
         {
             var walletBeaconClient = WalletBeaconHelper.WalletBeaconClient;
-
-            Console.WriteLine($"1 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
-
-            if (!walletBeaconClient.LoggedIn)
-                await walletBeaconClient.InitAsync().ConfigureAwait(false);
-            
-            walletBeaconClient.Connect();
-
-            Console.WriteLine($"2 walletBeaconClient.LoggedIn {walletBeaconClient.LoggedIn}");
+            var dappsViewModel = new DappsViewModel(AtomexApp, walletBeaconClient, Navigation);
 
             Device.BeginInvokeOnMainThread(async () =>
             {
-                await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, walletBeaconClient, Navigation)));
+                await Navigation.PushAsync(new DappsPage(dappsViewModel));
             });
 
-            
-            //await Navigation.PushAsync(new DappsPage(new DappsViewModel(AtomexApp, Navigation, walletBeaconClient)));
+            if (!walletBeaconClient.LoggedIn)
+            {
+                await walletBeaconClient.InitAsync().ConfigureAwait(false);
+
+                walletBeaconClient.Connect();
+            }
+
+            if (WalletBeaconHelper.oldDappsViewModel != null)
+            { 
+                walletBeaconClient.OnDappConnected -= WalletBeaconHelper.oldDappsViewModel.OnDappConnectedEventHandler;
+                walletBeaconClient.OnBeaconMessageReceived -= WalletBeaconHelper.oldDappsViewModel.OnBeaconMessageRecievedHandler;
+            }
+
+            walletBeaconClient.OnDappConnected += dappsViewModel.OnDappConnectedEventHandler;
+            walletBeaconClient.OnBeaconMessageReceived += dappsViewModel.OnBeaconMessageRecievedHandler;
+
+            WalletBeaconHelper.oldDappsViewModel = dappsViewModel;
         }
     }
 }

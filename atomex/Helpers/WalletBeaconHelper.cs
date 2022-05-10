@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using atomex.ViewModel.WalletBeacon;
 using Beacon.Sdk;
 using Beacon.Sdk.WalletBeaconClient;
 using Serilog.Extensions.Logging;
@@ -51,5 +52,7 @@ namespace atomex.Helpers
                 return walletBeaconClient;
             }
         }
+
+        public static DappsViewModel oldDappsViewModel;
     }
 }
