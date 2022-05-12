@@ -22,13 +22,11 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
 using System.Reactive.Linq;
 using atomex.ViewModel.ConversionViewModels;
-using atomex.ViewModel.SendViewModels;
 using atomex.Common;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Wallet.BitcoinBased;
 using Atomex.ViewModels;
 using atomex.Models;
-using atomex.Views.Send;
 using atomex.Views;
 using static atomex.Models.Message;
 
@@ -974,7 +972,7 @@ namespace atomex.ViewModel
                         ? FormattableString.Invariant($"{RewardForRedeemInBase:(0.00$)}")
                         : FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
                     AppResources.MakerFeeLabel,
-                    FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.FeeCurrencyCode}"),
+                    FormattableString.Invariant($"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.CurrencyCode}"),
                     FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
                     AppResources.TotalNetworkFeeLabel,
                     FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
