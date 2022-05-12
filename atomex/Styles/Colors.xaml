@@ -7,11 +7,11 @@
     <Color x:Key="MainBackgroundColor">#ffffff</Color>
     <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
 
-    <Color x:Key="NavigationBarBackgroundColor">#2B5286</Color>
+    <Color x:Key="NavigationBarBackgroundColor">#20439E</Color>
     <Color x:Key="NavigationBarTextColor">#ffffff</Color>
-    <Color x:Key="TabBarBackgroundColor">#edecf0</Color>
-    <Color x:Key="SelectedTabColor">#3a6cb1</Color>
-    <Color x:Key="UnselectedTabColor">Gray</Color>
+    <Color x:Key="TabBarBackgroundColor">#20439E</Color>
+    <Color x:Key="SelectedTabColor">#F7DCECFF</Color>
+    <Color x:Key="UnselectedTabColor">#61DCECFF</Color>
 
     <Color x:Key="MainButtonBackgroundColor">#2762BD</Color>
     <Color x:Key="MainButtonTextColor">#F7DCECFF</Color>
@@ -49,13 +49,13 @@
     <Color x:Key="WarningTextColor">#f29c1f</Color>
     <Color x:Key="SuccessTextColor">#008B00</Color>
 
-    <Color x:Key="RegularSnackBarBgColor">#2762BD</Color>
+    <Color x:Key="RegularSnackBarBgColor">#11233C</Color>
     <Color x:Key="ErrorSnackBarBgColor">#E1457C</Color>
     <Color x:Key="WarningSnackBarBgColor">#FF7A00</Color>
     <Color x:Key="SuccessSnackBarBgColor">#48C3AD</Color>
 
-    <Color x:Key="RegularSnackBarTextColor">#FFFFFF</Color>
-    <Color x:Key="ErrorSnackBarTextColor">#FFFFFF</Color>
+    <Color x:Key="RegularSnackBarTextColor">#F7DCECFF</Color>
+    <Color x:Key="ErrorSnackBarTextColor">#F7DCECFF</Color>
     <Color x:Key="WarningSnackBarTextColor">#F7000E22</Color>
     <Color x:Key="SuccessSnackBarTextColor">#F7000E22</Color>
 

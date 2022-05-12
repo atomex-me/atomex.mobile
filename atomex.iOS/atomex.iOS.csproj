@@ -167,14 +167,6 @@
     <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\Warning.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Warning.imageset\Warning.pdf" />
-    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarWallets.imageset\NavBarWallets.pdf" />
-    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarSettings.imageset\NavBarSettings.pdf" />
-    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarPortfolio.imageset\NavBarPortfolio.pdf" />
-    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarConversion.imageset\NavBarConversion.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
@@ -218,8 +210,6 @@
     <ImageAsset Include="Assets.xcassets\ru.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf" />
-    <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NavBarBuy.imageset\NavBarBuy.pdf" />
     <ImageAsset Include="Assets.xcassets\tr.imageset\tr-1.pdf" />
     <ImageAsset Include="Assets.xcassets\fr.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\fr.imageset\fr.pdf" />
@@ -335,6 +325,14 @@
     <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\navbar_portfolio.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\navbar_dex.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\navbar_buy.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\navbar_settings.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -544,6 +542,10 @@
     <Folder Include="Assets.xcassets\ic_export__black.imageset\" />
     <Folder Include="Assets.xcassets\ic_share.imageset\" />
     <Folder Include="Assets.xcassets\ic_update.imageset\" />
+    <Folder Include="Assets.xcassets\ic_navbar__dex.imageset\" />
+    <Folder Include="Assets.xcassets\ic_navbar__portfolio.imageset\" />
+    <Folder Include="Assets.xcassets\ic_navbar__buy.imageset\" />
+    <Folder Include="Assets.xcassets\ic_navbar__settings.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

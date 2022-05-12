@@ -46,25 +46,25 @@ namespace atomex
 
             NavigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
             {
-                IconImageSource = "NavBarPortfolio",
+                IconImageSource = "ic_navbar__portfolio",
                 Title = AppResources.PortfolioTab
             };
 
             NavigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
             {
-                IconImageSource = "NavBarConversion",
+                IconImageSource = "ic_navbar__dex",
                 Title = AppResources.ConversionTab
             };
 
             NavigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
             {
-                IconImageSource = "NavBarSettings",
+                IconImageSource = "ic_navbar__settings",
                 Title = AppResources.SettingsTab
             };
 
             NavigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
             {
-                IconImageSource = "NavBarBuy",
+                IconImageSource = "ic_navbar__buy",
                 Title = AppResources.BuyTab
             };
 
