@@ -59,6 +59,7 @@
 <LangVersion>8.0</LangVersion>
 <MtouchInterpreter>-all</MtouchInterpreter>
 <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+<CodesignProvision>Atomex Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>

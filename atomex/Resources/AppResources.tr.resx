@@ -272,6 +272,12 @@
     <data name="ManageAssets" xml:space="preserve">
         <value>Manage assets</value>
     </data>
+    <data name="AvailableToSpend" xml:space="preserve">
+        <value>Available to spend</value>
+    </data>
+    <data name="BalanceOnHold" xml:space="preserve">
+        <value>Balance on hold</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">

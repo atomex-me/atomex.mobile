@@ -533,6 +533,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string AvailableToSpend {
+            get {
+                return ResourceManager.GetString("AvailableToSpend", resourceCulture);
+            }
+        }
+        
+        internal static string BalanceOnHold {
+            get {
+                return ResourceManager.GetString("BalanceOnHold", resourceCulture);
+            }
+        }
+        
         internal static string WalletsPageTitle {
             get {
                 return ResourceManager.GetString("WalletsPageTitle", resourceCulture);

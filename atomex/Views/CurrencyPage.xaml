@@ -35,7 +35,7 @@
                              Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UnconfirmedAmountCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Text="{helpers:Translate AvailableBalance}"
                            Style="{DynamicResource MainTextH5}"

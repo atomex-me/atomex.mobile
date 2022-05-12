@@ -9,6 +9,7 @@ using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.ViewModel.SendViewModels;
 using atomex.Views;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Common;
 using ReactiveUI;
@@ -55,7 +56,8 @@ namespace atomex.ViewModel
         [Reactive] public IList<PortfolioCurrency> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
 
-        [Reactive] public decimal PortfolioValue { get; set; }
+        [Reactive] public decimal AvailableAmountInBase { get; set; }
+        [Reactive] public decimal UnconfirmedAmountInBase { get; set; }
 
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
@@ -133,7 +135,8 @@ namespace atomex.ViewModel
 
         private void OnAmountUpdatedEventHandler(object sender, EventArgs args)
         {
-            PortfolioValue = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
+            AvailableAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.TotalAmountInBase);
+            UnconfirmedAmountInBase = AllCurrencies.Sum(c => c.CurrencyViewModel.UnconfirmedAmountInBase);
         }
 
         private void GetCurrencies()
@@ -216,6 +219,10 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _manageAssetsCommand;
         public ReactiveCommand<Unit, Unit> ManageAssetsCommand => _manageAssetsCommand ??= ReactiveCommand.Create(() => _navigationService?.ShowBottomSheet(new ManageAssetsBottomSheet(this)));
+
+        private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;
+        public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new AvailableAmountPopup(this)));
 
         private ICommand _closeBottomSheetCommand;
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());

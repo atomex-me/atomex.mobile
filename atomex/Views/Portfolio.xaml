@@ -29,7 +29,10 @@
                                  Margin="16,56,16,0"
                                  VerticalOptions="Center"
                                  HorizontalOptions="CenterAndExpand">
-                        <Label Text="{helpers:Translate TotalBalance}"
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                        <Label Text="{helpers:Translate AvailableBalance}"
                                Style="{DynamicResource MainTextH5}"
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"/>
@@ -37,7 +40,7 @@
                                WidthRequest="12"
                                HeightRequest="12"/>
                     </StackLayout>
-                    <Label Text="{Binding PortfolioValue, StringFormat='${0:f2}'}"
+                    <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                            Style="{DynamicResource MainTextH1}"
                            Margin="16,0"
                            HorizontalTextAlignment="Center"

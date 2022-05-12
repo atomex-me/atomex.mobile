@@ -13,6 +13,7 @@ using atomex.Resources;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
+using atomex.Views.Popup;
 using Atomex;
 using Atomex.Blockchain;
 using Atomex.Common;
@@ -362,9 +363,11 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
         public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
-        {
-            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio);
-        });
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio));
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
+            _navigationService?.CloseBottomSheet());
 
         public virtual async Task ScanCurrency()
         {
@@ -393,10 +396,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             IsRefreshing = false;
         }
 
-        // TODO: unconfirmed amount tooltip
-        //private ReactiveCommand<Unit, Unit> _unconfirmedAmountTappedCommand;
-        //public ReactiveCommand<Unit, Unit> UnconfirmedAmountTappedCommand => _unconfirmedAmountTappedCommand ??= ReactiveCommand.Create(() =>
-        //    ToastService?.Show(AppResources.UnconfirmedAmountLabel, ToastPosition.Top, Application.Current.RequestedTheme.ToString()));
+        private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;
+        public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new AvailableAmountPopup(this)));
 
         private void CopyAddress(string value)
         {
