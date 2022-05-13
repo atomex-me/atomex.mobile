@@ -73,6 +73,7 @@ namespace atomex.ViewModel.WalletBeacon
 
         private async Task ConnectAsync()
         {
+
             var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
             var addresses = (await account.GetAddressesAsync()).ToList();
 
@@ -103,6 +104,8 @@ namespace atomex.ViewModel.WalletBeacon
 
             var responseAddress = addresses[0].ResolvePublicKey(account.Currencies, account.Wallet); ;
 
+            var network2 = account.Wallet.Network;
+            
             var network = new Network
             {
                 Type = NetworkType.hangzhounet,
