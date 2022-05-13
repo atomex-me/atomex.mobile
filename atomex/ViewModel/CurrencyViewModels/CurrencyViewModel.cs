@@ -400,7 +400,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??= ReactiveCommand.Create(() =>
             _navigationService?.ShowBottomSheet(new AvailableAmountPopup(this)));
 
-        private void CopyAddress(string value)
+        protected void CopyAddress(string value)
         {
             if (value != null)
             {
@@ -413,7 +413,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private void CopyTxId(string value)
+        protected void CopyTxId(string value)
         {
             if (value != null)
             {

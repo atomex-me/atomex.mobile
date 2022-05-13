@@ -132,10 +132,10 @@ namespace atomex.ViewModel.TransactionViewModels
         }
 
         private ReactiveCommand<string, Unit> _copyTxIdCommand;
-        public ReactiveCommand<string, Unit> CopyTxIdCommand => _copyTxIdCommand ??= ReactiveCommand.Create<string>((value) => CopyTxId.Invoke(value));
+        public ReactiveCommand<string, Unit> CopyTxIdCommand => _copyTxIdCommand ??= ReactiveCommand.Create<string>((value) => CopyTxId?.Invoke(value));
 
         private ReactiveCommand<string, Unit> _copyAddressCommand;
-        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??= ReactiveCommand.Create<string>((value) => CopyAddress.Invoke(value));
+        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??= ReactiveCommand.Create<string>((value) => CopyAddress?.Invoke(value));
 
         private ReactiveCommand<Unit, Unit> _showTxInExplorerCommand;
         public ReactiveCommand<Unit, Unit> ShowTxInExplorerCommand => _showTxInExplorerCommand ??= ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(TxExplorerUri)));

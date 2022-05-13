@@ -58,6 +58,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                             .ForEachDo(t =>
                             {
                                 t.RemoveClicked += RemoveTransactonEventHandler;
+                                t.CopyAddress = CopyAddress;
+                                t.CopyTxId = CopyTxId;
                             }));
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);

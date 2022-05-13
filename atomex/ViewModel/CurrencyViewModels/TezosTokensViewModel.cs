@@ -7,7 +7,6 @@ using atomex.Resources;
 using atomex.ViewModel.SendViewModels;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
-using atomex.Views.Send;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
@@ -166,7 +165,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 // add new token contracts if exists
                 var newTokenContracts = tokensContractsViewModels.Except(
                     second: TokensContracts,
-                    comparer: new Atomex.Common.EqualityComparer<TezosTokenContractViewModel>(
+                    comparer: new EqualityComparer<TezosTokenContractViewModel>(
                         (x, y) => x.Contract.Address.Equals(y.Contract.Address),
                         x => x.Contract.Address.GetHashCode()));
 
