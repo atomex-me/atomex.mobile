@@ -17,8 +17,6 @@ namespace atomex.ViewModel.WalletBeacon
 
         private readonly IWalletBeaconClient _walletBeaconClient;
 
-        private bool disposedValue;
-
         public PairingRequestViewModel(
             IAtomexApp app,
             IWalletBeaconClient walletBeaconClient,

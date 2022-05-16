@@ -9,7 +9,23 @@
                     Orientation="Vertical"
                     Padding="20"
                     Spacing="0">
-                    
+
+                    <Label Text="Authorize Operation"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="0,5"/>
+
+                    <Label Text="{Binding OperationRequest.Name}"
+                           FontFamily="{DynamicResource RegularFont}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                           HorizontalOptions="Start"
+                           VerticalTextAlignment="Center"
+                           Margin="0,5"/>
+
                     <Label Text="{Binding OperationRequest.SourceAddress}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="16"
@@ -18,7 +34,8 @@
                            VerticalTextAlignment="Center"
                            Margin="0,5"/>
 
-                    <Label Text="{Binding PartialTezosTransactionOperation.Amount}"
+
+                    <Label Text="{Binding TransactionOperation.Amount}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="16"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
@@ -26,7 +43,7 @@
                            VerticalTextAlignment="Center"
                            Margin="0,5"/>
 
-                    <Label Text="{Binding PartialTezosTransactionOperation.Destination}"
+                    <Label Text="{Binding TransactionOperation.Destination}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="14"
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"

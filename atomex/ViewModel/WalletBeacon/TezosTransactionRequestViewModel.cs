@@ -6,6 +6,7 @@ using Atomex;
 using Atomex.Wallet.Tezos;
 using Beacon.Sdk;
 using Beacon.Sdk.Beacon.Operation;
+using Serilog;
 using Xamarin.Forms;
 
 namespace atomex.ViewModel.WalletBeacon
@@ -50,23 +51,30 @@ namespace atomex.ViewModel.WalletBeacon
 
         private async Task SignAsync()
         {
-            if (!decimal.TryParse(TransactionOperation.Amount, out var amount))
-                return;
-
-            var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-         
-            var permissionInfo = await _walletBeaconClient.TryReadPermissionInfo(OperationRequest.SourceAddress, OperationRequest.SenderId, OperationRequest.Network);
-
-            if (permissionInfo != null)
+            try
             {
-                await account.SendAsync(permissionInfo.PublicKey, TransactionOperation.Destination, amount, 1000);
+                if (!decimal.TryParse(TransactionOperation.Amount, out var amount))
+                    return;
 
-                var response = new OperationResponse(
-                            id: OperationRequest!.Id,
-                            senderId: _walletBeaconClient.SenderId,
-                            transactionHash: "transactionHash");
+                var account = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
-                await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);
+                var permissionInfo = await _walletBeaconClient.TryReadPermissionInfo(OperationRequest.SourceAddress, OperationRequest.SenderId, OperationRequest.Network);
+
+                if (permissionInfo != null)
+                {
+                    var result = await account.SendAsync(permissionInfo.PublicKey, TransactionOperation.Destination, amount, 1000);
+
+                    var response = new OperationResponse(
+                                id: OperationRequest!.Id,
+                                senderId: _walletBeaconClient.SenderId,
+                                transactionHash: "transactionHash");
+
+                    await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);
+                }
+            }
+            catch (Exception ex) 
+            {
+                Log.Error(ex, $"Beacon message error");
             }
         }
 
