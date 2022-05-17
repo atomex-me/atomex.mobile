@@ -555,7 +555,7 @@
                 </ListView>
                 <ListView ItemsSource="{Binding Delegations}"
                           SelectionMode="Single"
-                          SelectedItem="{Binding SelectedDelegationAddress, Mode=TwoWay}"
+                          SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
                           BackgroundColor="Transparent"
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"

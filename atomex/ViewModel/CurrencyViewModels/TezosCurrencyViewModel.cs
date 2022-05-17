@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using atomex.Common;
 using Atomex;
@@ -9,6 +10,7 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Core;
 using Atomex.Wallet;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
@@ -22,6 +24,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsStakingAvailable => CurrencyCode == "XTZ";
         public TezosConfig Tezos => Currency as TezosConfig;
         [Reactive] public ObservableCollection<Delegation> Delegations { get; set; }
+        [Reactive] public Delegation SelectedDelegation { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
 
         public TezosCurrencyViewModel(
@@ -31,6 +34,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             : base(app, currency, navigationService)
         {
             Delegations = new ObservableCollection<Delegation>();
+
+            this.WhenAnyValue(vm => vm.SelectedDelegation)
+               .WhereNotNull()
+               .Where(d => d.Baker != null)
+               .SubscribeInMainThread(d =>
+               {
+                   _navigationService?.ShowPage(new DelegationInfoPage(d), TabNavigation.Portfolio);
+                   SelectedDelegation = null;
+               });
 
             _ = LoadDelegationInfoAsync();
             //_delegateViewModel = new DelegateViewModel(_app, async () =>
