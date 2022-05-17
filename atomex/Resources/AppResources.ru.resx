@@ -507,6 +507,9 @@
     <data name="Copied" xml:space="preserve">
         <value>Скопировано</value>
     </data>
+    <data name="EstimatedRoi" xml:space="preserve">
+        <value>Расчетный ROI</value>
+    </data>
     
     <!-- Baker list Page -->
     <data name="BakerListPageTitle" xml:space="preserve">

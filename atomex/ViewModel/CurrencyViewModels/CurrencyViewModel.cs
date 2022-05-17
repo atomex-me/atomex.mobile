@@ -158,6 +158,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                         }
                     };
 
+            IsRefreshing = false;
             IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
             CanBuy = BuyViewModel.Currencies.Contains(Currency.Name);
@@ -202,8 +203,8 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (Currency.Name.Equals(args.Currency))
                 {
-                    await UpdateBalanceAsync().ConfigureAwait(false);
-                    await LoadTransactionsAsync().ConfigureAwait(false);
+                    await UpdateBalanceAsync();
+                    await LoadTransactionsAsync();
                 }
             }
             catch (Exception e)
@@ -212,7 +213,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private async Task UpdateBalanceAsync()
+        public async Task UpdateBalanceAsync()
         {
             try
             {
@@ -371,8 +372,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public virtual async Task ScanCurrency()
         {
-            if (IsRefreshing) return;
-
             var cancellation = new CancellationTokenSource();
             IsRefreshing = true;
 

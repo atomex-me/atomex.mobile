@@ -90,7 +90,7 @@ namespace atomex.ViewModel
                     keyIndex: walletAddress.KeyIndex,
                     keyType: walletAddress.KeyType);
 
-                using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
+                var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
 
                 if (Currencies.IsBitcoinBased(_currency.Name))
                 {
@@ -112,7 +112,7 @@ namespace atomex.ViewModel
                 }
                 else
                 {
-                    var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
+                    var hex = Hex.ToHexString(unsecuredPrivateKey); ;
 
                     await Clipboard.SetTextAsync(hex);
                 }

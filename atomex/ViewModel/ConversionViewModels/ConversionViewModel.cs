@@ -481,7 +481,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.Terminal,
+                        atomexClient: _app.AtomexClient,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -558,7 +558,7 @@ namespace atomex.ViewModel
         {
             var currencyName = currencyViewModel?.Currency?.Name;
 
-            if (Atomex.Currencies.IsBitcoinBased(currencyName))
+            if (Currencies.IsBitcoinBased(currencyName))
             {
                 var availableOutputs = (await _app.Account
                     .GetCurrencyAccount<BitcoinBasedAccount>(currencyName)
@@ -674,12 +674,12 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            _app.AtomexClientChanged += OnTerminalChangedEventHandler;
+            _app.AtomexClientChanged += OnAtomexClientChangedEventHandler;
 
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
 
-            OnTerminalChangedEventHandler(this, new AtomexClientChangedEventArgs(_app.Terminal));
+            OnAtomexClientChangedEventHandler(this, new AtomexClientChangedEventArgs(_app.AtomexClient));
         }
 
         protected virtual async Task EstimateSwapParamsAsync()
@@ -695,7 +695,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.Terminal,
+                        atomexClient: _app.AtomexClient,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -801,17 +801,17 @@ namespace atomex.ViewModel
                 EstimatedMakerNetworkFeeInBase +
                 (HasRewardForRedeem ? RewardForRedeemInBase : 0);
 
-        private void OnTerminalChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
+        private void OnAtomexClientChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var terminal = args.AtomexClient;
+            var atomexClient = args.AtomexClient;
 
-            if (terminal?.Account == null) return;
-            
+            if (atomexClient?.Account == null) return;
 
-            terminal.QuotesUpdated += OnQuotesUpdatedEventHandler;
-            terminal.SwapUpdated += OnSwapEventHandler;
 
-            FromCurrencies = terminal.Account.Currencies
+            atomexClient.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            _app.SwapManager.SwapUpdated += OnSwapEventHandler;
+
+            FromCurrencies = atomexClient.Account.Currencies
                 .Where(c => c.IsSwapAvailable)
                 .Select(c => CurrencyViewModelCreator.CreateViewModel(
                     app: _app,
@@ -906,7 +906,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.Terminal,
+                        atomexClient: _app.AtomexClient,
                         symbolsProvider: _app.SymbolsProvider);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -1123,7 +1123,7 @@ namespace atomex.ViewModel
                 return;
             }
 
-            if (!_app.Terminal.IsServiceConnected(TerminalService.All))
+            if (!_app.AtomexClient.IsServiceConnected(AtomexClientService.All))
             {
                 _navigationService?.ShowAlert(
                     AppResources.Error,

@@ -43,7 +43,7 @@ namespace atomex.ViewModel
         {
             if (!string.IsNullOrEmpty(Address))
             {
-                DelegateViewModel.SetWalletAddress(Address);
+                //DelegateViewModel.SetWalletAddress(Address);
                 _navigationService?.ShowPage(new DelegatePage(DelegateViewModel), TabNavigation.Portfolio);
             }
         }

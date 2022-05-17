@@ -841,13 +841,15 @@ namespace atomex.ViewModel.SendViewModels
                     tokenContract: TokenContract,
                     tokenId: TokenId);
 
-                return await tokenAccount.SendAsync(
+                var (_, error) = await tokenAccount.SendAsync(
                     from: tokenAddress.Address,
                     to: To,
                     amount: Amount,
                     fee: Fee,
                     useDefaultFee: UseDefaultFee,
                     cancellationToken: cancellationToken);
+
+                return error;
             }
             else
             {
@@ -860,7 +862,7 @@ namespace atomex.ViewModel.SendViewModels
                 var amount = Amount * (decimal)Math.Pow(10, decimals);
                 var fee = (int)Fee.ToMicroTez();
 
-                return await tokenAccount.SendAsync(
+                var (_, error) = await tokenAccount.SendAsync(
                     from: From,
                     to: To,
                     amount: amount,
@@ -869,6 +871,8 @@ namespace atomex.ViewModel.SendViewModels
                     fee: fee,
                     useDefaultFee: UseDefaultFee,
                     cancellationToken: cancellationToken);
+
+                return error;
             }
         }
 

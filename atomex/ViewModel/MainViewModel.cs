@@ -43,8 +43,7 @@ namespace atomex.ViewModel
             var atomexClient = new WebSocketAtomexClient(
                 configuration: configuration,
                 account: account,
-                symbolsProvider: AtomexApp.SymbolsProvider,
-                quotesProvider: AtomexApp.QuotesProvider);
+                symbolsProvider: AtomexApp.SymbolsProvider);
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
@@ -63,27 +62,27 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            AtomexApp.AtomexClientChanged += OnTerminalChangedEventHandler;
+            AtomexApp.AtomexClientChanged += OnAtomexClientChangedEventHandler;
         }
 
-        private void OnTerminalChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
+        private void OnAtomexClientChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var terminal = args.AtomexClient;
+            var atomexClient = args.AtomexClient;
 
-            if (terminal?.Account == null)
+            if (atomexClient?.Account == null)
                 return;
 
-            terminal.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
-            terminal.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
+            atomexClient.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
+            atomexClient.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
         }
 
-        private void OnTerminalServiceStateChangedEventHandler(object sender, TerminalServiceEventArgs args)
+        private void OnTerminalServiceStateChangedEventHandler(object sender, AtomexClientServiceEventArgs args)
         {
             if (!(sender is IAtomexClient terminal))
                 return;
 
             // subscribe to symbols updates
-            if (args.Service == TerminalService.MarketData && terminal.IsServiceConnected(TerminalService.MarketData))
+            if (args.Service == AtomexClientService.MarketData && terminal.IsServiceConnected(AtomexClientService.MarketData))
             {
                 terminal.SubscribeToMarketData(SubscriptionType.TopOfBook);
                 terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);

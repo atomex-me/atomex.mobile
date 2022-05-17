@@ -971,6 +971,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string EstimatedRoi {
+            get {
+                return ResourceManager.GetString("EstimatedRoi", resourceCulture);
+            }
+        }
+        
         internal static string BakerListPageTitle {
             get {
                 return ResourceManager.GetString("BakerListPageTitle", resourceCulture);

@@ -18,6 +18,8 @@ namespace atomex
                 : currencyViewModel.TxsNumberPerPage * TransactionsListView.RowHeight +
                     currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
                     TxsFooter.HeightRequest;
+            AddressesListView.HeightRequest = currencyViewModel.AddressesNumberPerPage * AddressesListView.RowHeight + AddressesFooter.HeightRequest;
+            DelegationsListView.HeightRequest = currencyViewModel.AddressesViewModel.Addresses.Count * DelegationsListView.RowHeight;
         }
 
         private void ShowAllTxs(object sender, EventArgs args)

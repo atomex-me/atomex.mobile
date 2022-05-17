@@ -187,9 +187,9 @@
                 <ScrollView Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
                             HorizontalOptions="CenterAndExpand"
+                            Margin="8,20,8,0"
                             x:Name="TabScrollView">
-                    <Grid Margin="8,20,8,0"
-                          HorizontalOptions="FillAndExpand"
+                    <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="0"
                           RowSpacing="0">
                         <Grid.RowDefinitions>
@@ -496,6 +496,8 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
+                          x:Name="AddressesListView"
+                          RowHeight="64"
                           Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
@@ -546,9 +548,144 @@
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
                                 Style="{DynamicResource TransparentButton}"
+                                x:Name="AddressesFooter"
                                 IsVisible="{Binding CanShowMoreAddresses}"
                                 Command="{Binding ShowAllAddressesCommand}"/>
                     </ListView.Footer>
+                </ListView>
+                <ListView ItemsSource="{Binding Delegations}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedDelegationAddress, Mode=TwoWay}"
+                          BackgroundColor="Transparent"
+                          SeparatorVisibility="None"
+                          VerticalScrollBarVisibility="Never"
+                          HasUnevenRows="True"
+                          RowHeight="72"
+                          x:Name="DelegationsListView"
+                          Footer=""
+                          IsVisible="False">
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Delegations">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                <Grid Padding="16,0" 
+                                      HorizontalOptions="FillAndExpand"
+                                      ColumnSpacing="0"
+                                      RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="36" />
+                                        <RowDefinition Height="36" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.RowSpan="2"
+                                           Source="{Binding Baker.Logo}"
+                                           HeightRequest="24"
+                                           WidthRequest="24"
+                                           Margin="0,0,12,0"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Start">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding Status}"
+                                                         Value="NotDelegated">
+                                                <Setter Property="IsVisible"
+                                                        Value="False"/>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Address}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           LineBreakMode="MiddleTruncation"
+                                           HorizontalTextAlignment="Start"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalTextAlignment="End"/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Text="{Binding StatusString}"
+                                           Style="{DynamicResource AdditionalTextH6}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Start">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="NotDelegated">
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="Confirmed">
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="Active">
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="Pending">
+                                                <Setter Property="TextColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Column="2"
+                                           Text="{helpers:Translate EstimatedRoi}"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="End">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="NotDelegated">
+                                                <Setter Property="IsVisible"
+                                                        Value="False"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Column="2"
+                                           Grid.Row="1"
+                                           Text="{Binding Baker.EstimatedRoi, StringFormat='${0:P}'}"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Start">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Status}"
+                                                         Value="NotDelegated">
+                                                <Setter Property="IsVisible"
+                                                        Value="False"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Image Grid.RowSpan="2"
+                                           Grid.Column="3"
+                                           Source="ic_menu"
+                                           WidthRequest="4"
+                                           HeightRequest="16"
+                                           Margin="0,0,10,0"
+                                           VerticalOptions="CenterAndExpand"
+                                           HorizontalOptions="EndAndExpand"/>
+                                </Grid>
+                            </controls:CustomViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
         </ScrollView>
