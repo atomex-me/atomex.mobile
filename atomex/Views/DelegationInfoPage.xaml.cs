@@ -1,15 +1,14 @@
-﻿using atomex.ViewModel;
-using Atomex.Blockchain.Tezos;
+﻿using Atomex.Blockchain.Tezos;
 using Xamarin.Forms;
 
 namespace atomex
 {
     public partial class DelegationInfoPage : ContentPage
     {
-        public DelegationInfoPage(Delegation delegationViewModel)
+        public DelegationInfoPage(Delegation delegation)
         {
             InitializeComponent();
-            BindingContext = delegationViewModel;
+            BindingContext = delegation;
         }
     }
 }

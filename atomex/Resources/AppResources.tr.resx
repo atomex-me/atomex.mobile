@@ -515,12 +515,15 @@
     <data name="BakerListPageTitle" xml:space="preserve">
         <value>Baker listesi</value>
     </data>
+    <data name="Bakers" xml:space="preserve">
+        <value>Bakers</value>
+    </data>
     <data name="SearchBarPlaceholder" xml:space="preserve">
         <value>Bakerı bul</value>
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegateToBakeryLabel" xml:space="preserve">
+    <data name="DelegateToBakery" xml:space="preserve">
         <value>Bekera yetki verme</value>
     </data>
     <data name="Balance" xml:space="preserve">
@@ -541,6 +544,18 @@
     <data name="FeeCalculationLabel" xml:space="preserve">
         <value>Komisyon hesaplama</value>
     </data>
+    <data name="SortByRoiButton" xml:space="preserve">
+        <value>Sort by ROI</value>
+    </data>
+    <data name="SortByStatusButton" xml:space="preserve">
+        <value>Sort by status</value>
+    </data>
+    <data name="SortByValidatorButton" xml:space="preserve">
+        <value>Sort by validator</value>
+    </data>
+    <data name="SortByMinTezButton" xml:space="preserve">
+        <value>Sort by min. XTZ</value>
+    </data>
     
     <!-- Delegation Confirmation Page -->
     <data name="WantToDelegate" xml:space="preserve">
@@ -554,10 +569,10 @@
     <data name="DelegationInfoPageTitle" xml:space="preserve">
         <value>Yetki bilgileri</value>
     </data>
-    <data name="CheckRewardsButton" xml:space="preserve">
+    <data name="CheckRewards" xml:space="preserve">
         <value>Çek ödemeleri</value>
     </data>
-    <data name="ChangeBakerButton" xml:space="preserve">
+    <data name="ChangeBaker" xml:space="preserve">
         <value>Bakeri değiştir</value>
     </data>
     <data name="BakerLabel" xml:space="preserve">
@@ -572,14 +587,8 @@
     <data name="DelegationTime" xml:space="preserve">
         <value>Yetki süresi</value>
     </data>
-    <data name="AccountSection" xml:space="preserve">
-        <value>Hesap</value>
-    </data>
-    <data name="BakerSection" xml:space="preserve">
+    <data name="CurrentBaker" xml:space="preserve">
         <value>Şu anki Baker</value>
-    </data>
-    <data name="MoreSection" xml:space="preserve">
-        <value>Daha fazla detay</value>
     </data>
     
     <!-- Buy with card Page -->

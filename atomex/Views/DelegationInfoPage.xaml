@@ -157,7 +157,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Text="{helpers:Translate BakerLabel}"
+                    <Label Text="{helpers:Translate CurrentBaker}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
                            VerticalTextAlignment="End"/>
@@ -218,10 +218,10 @@
                     <Line Grid.Row="3"
                           BackgroundColor="Transparent"/>
                 </Grid>
-                <Button Text="{helpers:Translate ChangeBakerButton}"
+                <Button Text="{helpers:Translate ChangeBaker}"
                         Style="{DynamicResource AdditionalButton}"
                         Margin="0,33,0,24"/>
-                <Button Text="{helpers:Translate CheckRewardsButton}"
+                <Button Text="{helpers:Translate CheckRewards}"
                         Style="{DynamicResource TransparentButton}">
                     <!--<Button.Triggers>
                         <DataTrigger TargetType="Button"

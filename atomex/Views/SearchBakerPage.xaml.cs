@@ -1,11 +1,11 @@
 ﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
-    public partial class DelegationConfirmationPage : ContentPage
+    public partial class SearchBakerPage : ContentPage
     {
-        public DelegationConfirmationPage(DelegateViewModel delegateViewModel)
+        public SearchBakerPage(DelegateViewModel delegateViewModel)
         {
             InitializeComponent();
             BindingContext = delegateViewModel;

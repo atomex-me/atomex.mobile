@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using atomex.Common;
@@ -37,14 +38,24 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.SelectedDelegation)
                .WhereNotNull()
-               .Where(d => d.Baker != null)
                .SubscribeInMainThread(d =>
                {
-                   _navigationService?.ShowPage(new DelegationInfoPage(d), TabNavigation.Portfolio);
+                   if (d.Baker != null)
+                   {
+                       _navigationService?.ShowPage(new DelegationInfoPage(d), TabNavigation.Portfolio);
+                   }
+                   else
+                   {
+                       _delegateViewModel.InitializeWith(SelectedDelegation);
+                       _navigationService?.ShowPage(new DelegatePage(_delegateViewModel), TabNavigation.Portfolio);
+                   }
+
                    SelectedDelegation = null;
                });
 
             _ = LoadDelegationInfoAsync();
+
+            _delegateViewModel = new DelegateViewModel(_app);
             //_delegateViewModel = new DelegateViewModel(_app, async () =>
             //{
             //    await Task.Delay(TimeSpan.FromSeconds(DelegationCheckIntervalInSec))
