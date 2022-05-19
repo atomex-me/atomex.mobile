@@ -989,15 +989,27 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string FreeSpace {
+            get {
+                return ResourceManager.GetString("FreeSpace", resourceCulture);
+            }
+        }
+        
+        internal static string BakerIsFull {
+            get {
+                return ResourceManager.GetString("BakerIsFull", resourceCulture);
+            }
+        }
+        
         internal static string SearchBarPlaceholder {
             get {
                 return ResourceManager.GetString("SearchBarPlaceholder", resourceCulture);
             }
         }
         
-        internal static string DelegateToBakery {
+        internal static string DelegatingTo {
             get {
-                return ResourceManager.GetString("DelegateToBakery", resourceCulture);
+                return ResourceManager.GetString("DelegatingTo", resourceCulture);
             }
         }
         
@@ -1037,6 +1049,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string SortByRatingButton {
+            get {
+                return ResourceManager.GetString("SortByRatingButton", resourceCulture);
+            }
+        }
+        
         internal static string SortByRoiButton {
             get {
                 return ResourceManager.GetString("SortByRoiButton", resourceCulture);
@@ -1058,6 +1076,12 @@ namespace atomex.Resources {
         internal static string SortByMinTezButton {
             get {
                 return ResourceManager.GetString("SortByMinTezButton", resourceCulture);
+            }
+        }
+        
+        internal static string BakersNotFound {
+            get {
+                return ResourceManager.GetString("BakersNotFound", resourceCulture);
             }
         }
         

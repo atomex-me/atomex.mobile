@@ -14,6 +14,15 @@ namespace atomex.ViewModel
 
         public bool IsFull => StakingAvailable <= 0;
         public bool IsMinDelegation => MinDelegation > 0;
+
+        public string FreeSpaceFormatted => StakingAvailable.ToString(StakingAvailable switch
+        {
+            > 999999999 => "0,,,.#B",
+            > 999999 => "0,,.#M",
+            > 999 => "0,.#K",
+            < -999 => "0,.#K",
+            _ => "0"
+        });
     }
 }
 

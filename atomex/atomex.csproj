@@ -45,6 +45,7 @@
     <Folder Include="Views\TezosTokens\" />
     <Folder Include="Views\Send\" />
     <Folder Include="ViewModel\ConversionViewModels\" />
+    <Folder Include="Views\Delegate\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
@@ -99,6 +100,7 @@
     <None Remove="ViewModel\ConversionViewModels\" />
     <None Remove="Sentry.Xamarin" />
     <None Remove="Sentry.Xamarin.Forms" />
+    <None Remove="Views\Delegate\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="**/*" />

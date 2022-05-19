@@ -10,8 +10,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
 using atomex.Views;
+using atomex.Views.Delegate;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -28,7 +30,7 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using static atomex.Models.SnackbarMessage;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel
 {
@@ -40,6 +42,7 @@ namespace atomex.ViewModel
 
     public enum DelegationSortField
     {
+        ByRating,
         ByRoi,
         ByValidator,
         ByMinTez
@@ -62,6 +65,7 @@ namespace atomex.ViewModel
 
         [Reactive] public string DelegateAddress { get; set; }
         [Reactive] public decimal DelegateAddressBalance { get; set; }
+        [Reactive] public decimal DelegateAddressBalanceInBase { get; set; }
         [Reactive] public List<BakerViewModel> BakersList { get; set; }
         private List<BakerViewModel> InitialBakersList { get; set; }
         [Reactive] public BakerViewModel SelectedBaker { get; set; }
@@ -72,13 +76,13 @@ namespace atomex.ViewModel
         [Reactive] public string FeeCurrencyCode { get; set; }
         [Reactive] public string BaseCurrencyCode { get; set; }
         [Reactive] public bool UseDefaultFee { get; set; }
-        [Reactive] public string Warning { get; set; }
         [Reactive] public bool ChoosenBakerIsOverdelegated { get; set; }
         [Reactive] public DelegationStage Stage { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public DelegationSortField CurrentSortField { get; set; }
         [Reactive] public SortDirection CurrentSortDirection { get; set; }
-        [ObservableAsProperty] public bool IsSending { get; }
+        [Reactive] public Message Message { get; set; }
+        [ObservableAsProperty] public bool IsLoading { get; }
         [ObservableAsProperty] public bool IsChecking { get; }
         [Reactive] public string SortButtonName { get; set; }
         [Reactive] public string Title { get; set; }
@@ -96,11 +100,13 @@ namespace atomex.ViewModel
                 
             });
 
-        private ReactiveCommand<Unit, Unit> _undoConfirmStageCommand;
-
-        public ReactiveCommand<Unit, Unit> UndoConfirmStageCommand => _undoConfirmStageCommand ??=
-            ReactiveCommand.Create(
-                () => { Stage = DelegationStage.Edit; });
+        private ICommand _undoConfirmStageCommand;
+        public ICommand UndoConfirmStageCommand =>
+            _undoConfirmStageCommand ??= new Command(() =>
+            {
+                Stage = DelegationStage.Edit;
+                _navigationService?.CloseBottomSheet();
+            });
 
         private ReactiveCommand<Unit, Unit> _setSortTypeCommand;
         public ReactiveCommand<Unit, Unit> SetSortTypeCommand =>
@@ -117,11 +123,22 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _changeSortFieldCommand;
         public ReactiveCommand<Unit, Unit> ChangeSortFieldCommand => _changeSortFieldCommand ??=
-            (_changeSortFieldCommand = ReactiveCommand.Create(() => { CurrentSortField = CurrentSortField.Next(); }));
+            (_changeSortFieldCommand = ReactiveCommand.Create(() =>
+            {
+                CurrentSortField = CurrentSortField.Next();
+            }));
 
         private ReactiveCommand<Unit, Unit> _searchCommand;
         public ReactiveCommand<Unit, Unit> SearchCommand =>
-            _searchCommand ??= (_searchCommand = ReactiveCommand.Create(() => _navigationService?.ShowPage(new SearchBakerPage(this), TabNavigation.Portfolio)));
+            _searchCommand ??= (_searchCommand = ReactiveCommand.Create(() =>
+                _navigationService?.ShowPage(new SearchBakerPage(this), TabNavigation.Portfolio)));
+
+        private ReactiveCommand<Unit, Unit> _clearSearchFieldCommand;
+        public ReactiveCommand<Unit, Unit> ClearSearchFieldCommand =>
+            _clearSearchFieldCommand ??= (_clearSearchFieldCommand = ReactiveCommand.Create(() =>
+            {
+                SearchPattern = string.Empty;
+            }));
 
         private ReactiveCommand<string, Unit> _copyCommand;
         public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(data =>
@@ -147,25 +164,33 @@ namespace atomex.ViewModel
             {
                 if (!_tezosConfig.IsValidAddress(SelectedBaker?.Address))
                 {
-                    //Warning = Resources.SvInvalidAddressError;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        text: AppResources.InvalidAddressError);
                     return;
                 }
 
                 if (DelegateAddress == null)
                 {
-                    //Warning = Resources.SvInvalidAddressError;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        text: AppResources.InvalidAddressError);
                     return;
                 }
 
                 if (Fee < 0)
                 {
-                    //Warning = Resources.SvCommissionLessThanZeroError;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        text: AppResources.CommissionLessThanZeroError);
                     return;
                 }
 
                 if (Fee > DelegateAddressBalance - (SelectedBaker?.MinDelegation ?? 0))
                 {
-                    //Warning = Resources.SvAvailableFundsError;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        text: AppResources.AvailableFundsError);
                     return;
                 }
 
@@ -173,7 +198,9 @@ namespace atomex.ViewModel
 
                 if (result.HasError)
                 {
-                    Warning = result.Error.Description;
+                    ShowMessage(
+                        messageType: MessageType.Error,
+                        text: result.Error.Description);
                 }
             }
             catch (Exception e)
@@ -337,20 +364,15 @@ namespace atomex.ViewModel
             }
         }
 
-        public DelegateViewModel(IAtomexApp app)
+        public DelegateViewModel(IAtomexApp app, INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             _tezosConfig = _app.Account.Currencies.Get<TezosConfig>(TezosConfig.Xtz);
+            Message = new Message();
 
-            SortButtonName = CurrentSortField == DelegationSortField.ByRoi
-                ? AppResources.SortByRoiButton
-                : CurrentSortField == DelegationSortField.ByValidator
-                    ? AppResources.SortByValidatorButton
-                    : AppResources.SortByMinTezButton;
-                    
             this.WhenAnyValue(vm => vm.Fee)
                 .SubscribeInMainThread(f => { OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty); });
-
 
             this.WhenAnyValue(vm => vm.SearchPattern)
                 .WhereNotNull()
@@ -360,7 +382,7 @@ namespace atomex.ViewModel
                     if (searchPattern == string.Empty)
                     {
                         BakersList = new List<BakerViewModel>(InitialBakersList);
-                        //CurrentSortField = null;
+                        CurrentSortField = DelegationSortField.ByRating;
                         return;
                     }
 
@@ -378,23 +400,32 @@ namespace atomex.ViewModel
                     {
                         BakersList = GetSortedBakersList(BakersList);
 
-                        SortButtonName = CurrentSortField == DelegationSortField.ByRoi
-                            ? AppResources.SortByRoiButton
-                            : CurrentSortField == DelegationSortField.ByValidator
-                                ? AppResources.SortByValidatorButton
-                                : AppResources.SortByMinTezButton;
+                        SortButtonName = CurrentSortField == DelegationSortField.ByRating
+                            ? AppResources.SortByRatingButton
+                            : CurrentSortField == DelegationSortField.ByRoi
+                                ? AppResources.SortByRoiButton
+                                : CurrentSortField == DelegationSortField.ByValidator
+                                    ? AppResources.SortByValidatorButton
+                                    : AppResources.SortByMinTezButton;
                     });
 
             this.WhenAnyValue(vm => vm.Stage)
                 .Where(stage => stage == DelegationStage.Edit)
-                .SubscribeInMainThread(_ => Warning = string.Empty);
+                .SubscribeInMainThread(_ =>
+                    {
+                        Message.Text = string.Empty;
+                        this.RaisePropertyChanged(nameof(Message));
+                    });
 
             this.WhenAnyValue(vm => vm.SelectedBaker)
                 .WhereNotNull()
                 .SubscribeInMainThread(selectedBaker =>
-                    ChoosenBakerIsOverdelegated = selectedBaker.StakingAvailable - DelegateAddressBalance < 0);
+                    {
+                        ChoosenBakerIsOverdelegated = selectedBaker.StakingAvailable - DelegateAddressBalance < 0;
+                        _navigationService?.ShowBottomSheet(new DelegationConfirmationBottomSheet(this));
+                    });
 
-            SendCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsSending);
+            SendCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsLoading);
             CheckDelegationCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsChecking);
 
             FeeFormat = _tezosConfig.FeeFormat;
@@ -404,6 +435,8 @@ namespace atomex.ViewModel
             UseDefaultFee = true;
             Stage = DelegationStage.Edit;
             CurrentSortDirection = SortDirection.Desc;
+            CurrentSortField = DelegationSortField.ByRating;
+            SortButtonName = AppResources.SortByRatingButton;
 
             SubscribeToServices();
             _ = LoadBakerList();
@@ -431,7 +464,7 @@ namespace atomex.ViewModel
             }
             else
             {
-                Title = AppResources.DelegateToBakery;
+                Title = AppResources.DelegatingTo;
                 SelectedBaker = null;
                 BakersList = new List<BakerViewModel>(BakersList?
                     .Select(baker =>
@@ -441,6 +474,8 @@ namespace atomex.ViewModel
                         return baker;
                     })!);
             }
+
+            OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
         }
 
         private async Task LoadBakerList()
@@ -466,7 +501,7 @@ namespace atomex.ViewModel
                         })
                         .ToList();
 
-                    //bakers.ForEach(bakerVm => _ = App.ImageService.LoadImageFromUrl(bakerVm.Logo));
+                    // TODO: load logo from cash
                 });
             }
             catch (Exception e)
@@ -482,10 +517,22 @@ namespace atomex.ViewModel
             });
         }
 
-        private List<BakerViewModel> GetSortedBakersList(IEnumerable<BakerViewModel>? bakersList)
+        private List<BakerViewModel> GetReverseInitialBakersList()
+        {
+            var bakers = new List<BakerViewModel>(InitialBakersList);
+            bakers.Reverse();
+            return bakers;
+        }
+
+        private List<BakerViewModel> GetSortedBakersList(IEnumerable<BakerViewModel> bakersList)
         {
             return CurrentSortField switch
             {
+                DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Desc
+                    => InitialBakersList,
+                DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Asc
+                    => GetReverseInitialBakersList(),
+
                 DelegationSortField.ByRoi when CurrentSortDirection == SortDirection.Desc
                     => new List<BakerViewModel>(bakersList.OrderByDescending(baker => baker.Roi)),
                 DelegationSortField.ByRoi when CurrentSortDirection == SortDirection.Asc
@@ -575,7 +622,7 @@ namespace atomex.ViewModel
 
         private async Task<Result<(TezosTransaction tx, bool isSuccess, bool isRunSuccess)>> RunAutofillOperation(
             string delegateAddress,
-            string? bakerAddress,
+            string bakerAddress,
             CancellationToken cancellationToken)
         {
             try
@@ -630,7 +677,7 @@ namespace atomex.ViewModel
             _app.QuotesProvider.AvailabilityChanged += OnQuotesProviderAvailabilityChangedEventHandler;
         }
 
-        private void OnQuotesUpdatedEventHandler(object? sender, EventArgs args)
+        private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
@@ -638,16 +685,27 @@ namespace atomex.ViewModel
             var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
 
             if (quote != null)
+            {
                 FeeInBase = Fee.SafeMultiply(quote.Bid);
+                DelegateAddressBalanceInBase = DelegateAddressBalance.SafeMultiply(quote.Bid);
+            }
         }
 
-        private void OnQuotesProviderAvailabilityChangedEventHandler(object? sender, EventArgs args)
+        private void OnQuotesProviderAvailabilityChangedEventHandler(object sender, EventArgs args)
         {
             if (sender is not ICurrencyQuotesProvider provider)
                 return;
 
             if (provider.IsAvailable)
                 _ = LoadBakerList();
+        }
+
+        protected void ShowMessage(MessageType messageType, string text)
+        {
+            Message.Type = messageType;
+            Message.Text = text;
+
+            this.RaisePropertyChanged(nameof(Message));
         }
     }
 }

@@ -4,14 +4,11 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:custom="clr-namespace:atomex.CustomElements"
-             x:Class="atomex.DelegatePage"
+             x:Class="atomex.Views.Delegate.DelegatePage"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -88,14 +85,10 @@
                           VerticalOptions="FillAndExpand"
                           RowHeight="76"
                           Footer="">
-                    <!--<ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="ItemTapped"
-                                                          Command="{Binding SelectAddressCommand}"/>
-                    </ListView.Behaviors>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid ColumnSpacing="20"
+                                <Grid ColumnSpacing="12"
                                       RowSpacing="4"
                                       Padding="16,0">
                                     <Grid.RowDefinitions>
@@ -105,7 +98,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="24" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="166" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
                                            WidthRequest="24"
@@ -121,15 +114,23 @@
                                            Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH6}"
                                            VerticalTextAlignment="Start"
-                                           HorizontalTextAlignment="Start">
+                                           HorizontalTextAlignment="Start"
+                                           IsVisible="{Binding IsFull, Converter={StaticResource InverseBool}}">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{helpers:Translate Available}"/>
+                                                <Span Text="{helpers:Translate FreeSpace}"/>
                                                 <Span Text=" " /> 
-                                                <Span Text="{Binding StakingAvailable, StringFormat='{0:0.##} XTZ'}"/>
+                                                <Span Text="{Binding FreeSpaceFormatted}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{helpers:Translate BakerIsFull}"
+                                           Style="{DynamicResource WarningTextH6}"
+                                           VerticalTextAlignment="Start"
+                                           HorizontalTextAlignment="Start"
+                                           IsVisible="{Binding IsFull}"/>
                                     <Label Grid.Column="2"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="End"

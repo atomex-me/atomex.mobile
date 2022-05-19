@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:custom="clr-namespace:atomex.CustomElements"
+    xmlns:converters="clr-namespace:atomex.Converters"
+    x:Class="atomex.Views.Delegate.SearchBakerPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         Margin="16,10"
+                         HeightRequest="52"
+                         Spacing="0">
+                <custom:CustomEntry Placeholder="{helpers:Translate Bakers}"
+                                    Style="{DynamicResource EntryStyle}"
+                                    FontSize="14"
+                                    Text="{Binding SearchPattern, Mode=TwoWay}"
+                                    HorizontalTextAlignment="Start"
+                                    VerticalTextAlignment="Center"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"/>
+                <ImageButton Source="ic_close"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                             Padding="7"
+                             WidthRequest="24"
+                             HeightRequest="24"
+                             CornerRadius="12"
+                             VerticalOptions="Center"
+                             Command="{Binding ClearSearchFieldCommand}"
+                             IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
+            </StackLayout>
+            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+            <ListView ItemsSource="{Binding BakersList}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedBaker}"
+                          BackgroundColor="Transparent"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="Default"
+                          CachingStrategy="RetainElement"
+                          VerticalOptions="FillAndExpand"
+                          RowHeight="76"
+                          Footer="">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding BakersList.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                            <Grid ColumnSpacing="12"
+                                  RowSpacing="4"
+                                  Padding="16,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="38" />
+                                    <RowDefinition Height="38" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       WidthRequest="24"
+                                       HeightRequest="24"
+                                       Source="{Binding Logo}"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       Style="{DynamicResource MainTextH4}"
+                                       LineBreakMode="TailTruncation"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="Start"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Style="{DynamicResource AdditionalTextH6}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start"
+                                       IsVisible="{Binding IsFull, Converter={StaticResource InverseBool}}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{helpers:Translate FreeSpace}"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding FreeSpaceFormatted}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Text="{helpers:Translate BakerIsFull}"
+                                       Style="{DynamicResource WarningTextH6}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start"
+                                       IsVisible="{Binding IsFull}"/>
+                                <Label Grid.Column="2"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       VerticalTextAlignment="End"
+                                       HorizontalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{helpers:Translate EstimatedRoi}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding Roi, StringFormat='${0:P}'}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="2"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{helpers:Translate MinLabel}"/>
+                                            <Span Text=" "/> 
+                                            <Span Text="{Binding MinDelegation, StringFormat='{0:0.##} XTZ'}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </custom:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout IsVisible="False"
+                         VerticalOptions="Start">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding BakersList.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible"
+                                Value="True"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Image Source="ic_search"
+                       WidthRequest="45"
+                       HeightRequest="45"
+                       Margin="20,40,20,10"
+                       VerticalOptions="Start"/>
+                <Label Text="{helpers:Translate BakersNotFound}"
+                       Style="{DynamicResource AdditionalTextH4}"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"/>
+            </StackLayout>   
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

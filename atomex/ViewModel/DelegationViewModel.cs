@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using atomex.Views.Delegate;
 using Atomex.Blockchain.Tezos;
 using Xamarin.Essentials;
 using Xamarin.Forms;

@@ -518,13 +518,19 @@
     <data name="Bakers" xml:space="preserve">
         <value>Bakers</value>
     </data>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Free space</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Baker is full</value>
+    </data>
     <data name="SearchBarPlaceholder" xml:space="preserve">
         <value>Trouver un baker...</value>
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegateToBakery" xml:space="preserve">
-        <value>Déléguer au baker</value>
+    <data name="DelegatingTo" xml:space="preserve">
+        <value>Déléguer au...</value>
     </data>
     <data name="Balance" xml:space="preserve">
         <value>Solde</value>
@@ -544,6 +550,9 @@
     <data name="FeeCalculationLabel" xml:space="preserve">
         <value>Calcul de la commission</value>
     </data>
+    <data name="SortByRatingButton" xml:space="preserve">
+        <value>Sort by rating</value>
+    </data>
     <data name="SortByRoiButton" xml:space="preserve">
         <value>Sort by ROI</value>
     </data>
@@ -555,6 +564,9 @@
     </data>
     <data name="SortByMinTezButton" xml:space="preserve">
         <value>Sort by min. XTZ</value>
+    </data>
+    <data name="BakersNotFound" xml:space="preserve">
+        <value>Bakers not found</value>
     </data>
     
     <!-- Delegation Confirmation Page -->

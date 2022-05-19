@@ -1,11 +1,11 @@
 ﻿using atomex.ViewModel;
 using Xamarin.Forms;
 
-namespace atomex.Views
+namespace atomex.Views.Delegate
 {
-    public partial class SearchBakerPage : ContentPage
+    public partial class DelegatePage : ContentPage
     {
-        public SearchBakerPage(DelegateViewModel delegateViewModel)
+        public DelegatePage(DelegateViewModel delegateViewModel)
         {
             InitializeComponent();
             BindingContext = delegateViewModel;

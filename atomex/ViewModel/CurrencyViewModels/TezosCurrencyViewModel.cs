@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Views.Delegate;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -55,7 +56,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             _ = LoadDelegationInfoAsync();
 
-            _delegateViewModel = new DelegateViewModel(_app);
+            _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             //_delegateViewModel = new DelegateViewModel(_app, async () =>
             //{
             //    await Task.Delay(TimeSpan.FromSeconds(DelegationCheckIntervalInSec))
