@@ -12,16 +12,13 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Views;
 using atomex.Views.Delegate;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
-using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
-using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;
@@ -34,12 +31,6 @@ using static atomex.Models.Message;
 
 namespace atomex.ViewModel
 {
-    public enum DelegationStage
-    {
-        Edit,
-        Confirmation
-    }
-
     public enum DelegationSortField
     {
         ByRating,
@@ -60,14 +51,13 @@ namespace atomex.ViewModel
     {
         private IAtomexApp _app { get; }
         private INavigationService _navigationService { get; }
-
         private readonly TezosConfig _tezosConfig;
 
         [Reactive] public string DelegateAddress { get; set; }
         [Reactive] public decimal DelegateAddressBalance { get; set; }
         [Reactive] public decimal DelegateAddressBalanceInBase { get; set; }
         [Reactive] public List<BakerViewModel> BakersList { get; set; }
-        private List<BakerViewModel> InitialBakersList { get; set; }
+        private List<BakerViewModel> _initialBakersList { get; set; }
         [Reactive] public BakerViewModel SelectedBaker { get; set; }
         [Reactive] public decimal Fee { get; set; }
         [Reactive] public string BaseCurrencyFormat { get; set; }
@@ -76,37 +66,30 @@ namespace atomex.ViewModel
         [Reactive] public string FeeCurrencyCode { get; set; }
         [Reactive] public string BaseCurrencyCode { get; set; }
         [Reactive] public bool UseDefaultFee { get; set; }
-        [Reactive] public bool ChoosenBakerIsOverdelegated { get; set; }
-        [Reactive] public DelegationStage Stage { get; set; }
         [Reactive] public string SearchPattern { get; set; }
         [Reactive] public DelegationSortField CurrentSortField { get; set; }
         [Reactive] public SortDirection CurrentSortDirection { get; set; }
         [Reactive] public Message Message { get; set; }
         [ObservableAsProperty] public bool IsLoading { get; }
-        [ObservableAsProperty] public bool IsChecking { get; }
         [Reactive] public string SortButtonName { get; set; }
         [Reactive] public string Title { get; set; }
+        [Reactive] public bool CanDelegate { get; set; }
 
         private ReactiveCommand<Unit, Unit> _checkDelegationCommand;
         public ReactiveCommand<Unit, Unit> CheckDelegationCommand =>
             _checkDelegationCommand ??= ReactiveCommand.CreateFromTask(CheckDelegation);
 
-        private ReactiveCommand<Unit, Unit> _sendCommand;
-        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.CreateFromTask(
+        private ReactiveCommand<Unit, Unit> _delegateCommand;
+        public ReactiveCommand<Unit, Unit> DelegateCommand => _delegateCommand ??= ReactiveCommand.CreateFromTask(
             async () =>
             {
                 //await Task.Delay(Constants.DelayBeforeSendMs);
-                await Send(fee: Fee);
-                
+                await Delegate(fee: Fee); 
             });
 
         private ICommand _undoConfirmStageCommand;
         public ICommand UndoConfirmStageCommand =>
-            _undoConfirmStageCommand ??= new Command(() =>
-            {
-                Stage = DelegationStage.Edit;
-                _navigationService?.CloseBottomSheet();
-            });
+            _undoConfirmStageCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
 
         private ReactiveCommand<Unit, Unit> _setSortTypeCommand;
         public ReactiveCommand<Unit, Unit> SetSortTypeCommand =>
@@ -116,10 +99,6 @@ namespace atomex.ViewModel
                     ? SortDirection.Desc
                     : SortDirection.Asc;
             });
-
-        //private ReactiveCommand<Unit, Unit> _changeSortFieldCommand;
-        //public ReactiveCommand<Unit, Unit> ChangeSortFieldCommand =>
-        //    _changeSortFieldCommand ??= ReactiveCommand.Create(() => { CurrentSortField.Next(); });
 
         private ReactiveCommand<Unit, Unit> _changeSortFieldCommand;
         public ReactiveCommand<Unit, Unit> ChangeSortFieldCommand => _changeSortFieldCommand ??=
@@ -141,25 +120,21 @@ namespace atomex.ViewModel
             }));
 
         private ReactiveCommand<string, Unit> _copyCommand;
-        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(data =>
+        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(value =>
         {
-            try
+            if (value != null)
             {
-                //App.Clipboard.SetTextAsync(data);
+                _ = Clipboard.SetTextAsync(value);
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
             }
-            catch (Exception e)
+            else
             {
-                Log.Error(e, "Copy to clipboard error");
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
         });
 
         private async Task CheckDelegation()
         {
-            if (Stage == DelegationStage.Edit)
-            {
-                Stage = DelegationStage.Confirmation;
-            }
-
             try
             {
                 if (!_tezosConfig.IsValidAddress(SelectedBaker?.Address))
@@ -221,11 +196,11 @@ namespace atomex.ViewModel
 
             if (autofillOperation.HasError)
             {
-                //App.DialogService.Show(MessageViewModel.Message(
-                //    title: "Error",
-                //    nextTitle: "Close",
-                //    text: autofillOperation.Error.Description,
-                //    nextAction: () => App.DialogService.Close()));
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    autofillOperation.Error.Description,
+                    AppResources.AcceptButton);
+
                 return;
             }
 
@@ -233,14 +208,15 @@ namespace atomex.ViewModel
 
             if (!isSuccess || !isRunSuccess)
             {
-                //App.DialogService.Show(MessageViewModel.Message(
-                //    title: "Error",
-                //    nextTitle: "Close",
-                //    text: "Autofill transaction failed.",
-                //    nextAction: () => App.DialogService.Close()));
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    "Autofill transaction failed",
+                    AppResources.AcceptButton);
+
                 return;
             }
 
+            // TODO: popup
             //var messageViewModel = MessageViewModel.Message(
             //    title: "Confirm undelegating",
             //    text: "Are you sure you want to send transaction, " +
@@ -251,7 +227,7 @@ namespace atomex.ViewModel
             //App.DialogService.Show(messageViewModel);
         }
 
-        private async Task Send(decimal fee)
+        private async Task Delegate(decimal fee)
         {
             var wallet = (HdWallet)_app.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
@@ -305,13 +281,12 @@ namespace atomex.ViewModel
 
                 if (!signResult)
                 {
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        "Delegation transaction signing error",
+                        AppResources.AcceptButton);
+
                     Log.Error("Delegation transaction signing error");
-
-                    //App.DialogService.Show(
-                    //    MessageViewModel.Error(
-                    //        text: "Delegation transaction signing error",
-                    //        backAction: () => App.DialogService.Show(this)));
-
                     return;
                 }
 
@@ -320,41 +295,40 @@ namespace atomex.ViewModel
 
                 if (result.Error != null)
                 {
-                    //App.DialogService.Show(
-                    //    MessageViewModel.Error(
-                    //        text: result.Error.Description,
-                    //        backAction: () => App.DialogService.Show(this)));
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        result.Error.Description,
+                        AppResources.AcceptButton);
 
                     return;
                 }
+
+                _navigationService?.CloseBottomSheet();
+                await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
                 var operationType = SelectedBaker?.Address != null
                     ? "delegated"
                     : "undelegated";
 
-                //App.DialogService.Show(
-                //    MessageViewModel.Success(
-                //        text: $"Successfully {operationType}, your delegations list will updated very soon!",
-                //        _tezosConfig.TxExplorerUri,
-                //        result.Value,
-                //        nextAction: () => App.DialogService.Close()));
+                _navigationService?.DisplaySnackBar(
+                    SnackbarMessage.MessageType.Success,
+                    $"Successfully {operationType}, your delegations list will updated very soon!");
             }
             catch (HttpRequestException e)
             {
-                //App.DialogService.Show(
-                //    MessageViewModel.Error(
-                //        text: "A network error has occurred while sending delegation transaction, " +
-                //              "check your internet connection and try again.",
-                //        backAction: () => App.DialogService.Show(this)));
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    "A network error has occurred while sending delegation transaction, check your internet connection and try again",
+                    AppResources.AcceptButton);
 
                 Log.Error(e, "Delegation send network error");
             }
             catch (Exception e)
             {
-                //App.DialogService.Show(
-                //    MessageViewModel.Error(
-                //        text: "An error has occurred while delegation.",
-                //        backAction: () => App.DialogService.Show(this)));
+                _navigationService?.ShowAlert(
+                    AppResources.Error,
+                    "An error has occurred while delegation",
+                    AppResources.AcceptButton);
 
                 Log.Error(e, "Delegation send error");
             }
@@ -372,7 +346,7 @@ namespace atomex.ViewModel
             Message = new Message();
 
             this.WhenAnyValue(vm => vm.Fee)
-                .SubscribeInMainThread(f => { OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty); });
+                .SubscribeInMainThread(f => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(vm => vm.SearchPattern)
                 .WhereNotNull()
@@ -381,12 +355,12 @@ namespace atomex.ViewModel
                 {
                     if (searchPattern == string.Empty)
                     {
-                        BakersList = new List<BakerViewModel>(InitialBakersList);
+                        BakersList = new List<BakerViewModel>(_initialBakersList);
                         CurrentSortField = DelegationSortField.ByRating;
                         return;
                     }
 
-                    BakersList = GetSortedBakersList(InitialBakersList)
+                    BakersList = GetSortedBakersList(_initialBakersList)
                         .Where(baker => baker.Name.ToLower().Contains(searchPattern))
                         .ToList();
                 });
@@ -409,31 +383,41 @@ namespace atomex.ViewModel
                                     : AppResources.SortByMinTezButton;
                     });
 
-            this.WhenAnyValue(vm => vm.Stage)
-                .Where(stage => stage == DelegationStage.Edit)
-                .SubscribeInMainThread(_ =>
-                    {
-                        Message.Text = string.Empty;
-                        this.RaisePropertyChanged(nameof(Message));
-                    });
-
             this.WhenAnyValue(vm => vm.SelectedBaker)
                 .WhereNotNull()
                 .SubscribeInMainThread(selectedBaker =>
                     {
-                        ChoosenBakerIsOverdelegated = selectedBaker.StakingAvailable - DelegateAddressBalance < 0;
+                        Message = new Message();
+                        if (selectedBaker.StakingAvailable - DelegateAddressBalance < 0)
+                            ShowMessage(
+                                messageType: MessageType.Warning,
+                                text: AppResources.BakerIsOverdelegatedWarning);
+                        _ = CheckDelegation();
+
                         _navigationService?.ShowBottomSheet(new DelegationConfirmationBottomSheet(this));
                     });
 
-            SendCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsLoading);
-            CheckDelegationCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsChecking);
+            this.WhenAnyValue(
+                    vm => vm.Message,
+                    vm => vm.SelectedBaker,
+                    vm => vm.Fee,
+                    vm => vm.IsLoading)
+                .WhereNotNull()
+                .SubscribeInMainThread(selectedBaker =>
+                {
+                    CanDelegate = DelegateAddress != null &&
+                                DelegateAddressBalance > 0 &&
+                                Message.Type != MessageType.Error &&
+                                !IsLoading;
+                });
+
+            DelegateCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsLoading);
 
             FeeFormat = _tezosConfig.FeeFormat;
             FeeCurrencyCode = _tezosConfig.FeeCode;
             BaseCurrencyCode = "USD";
             BaseCurrencyFormat = "$0.00";
             UseDefaultFee = true;
-            Stage = DelegationStage.Edit;
             CurrentSortDirection = SortDirection.Desc;
             CurrentSortField = DelegationSortField.ByRating;
             SortButtonName = AppResources.SortByRatingButton;
@@ -442,17 +426,14 @@ namespace atomex.ViewModel
             _ = LoadBakerList();
         }
 
-        public void InitializeWith(Delegation delegation)
+        public void InitializeWith(DelegationViewModel delegation)
         {
             DelegateAddress = delegation.Address;
             DelegateAddressBalance = delegation.Balance;
-            Stage = DelegationStage.Edit;
 
             if (delegation.Baker != null)
             {
                 Title = AppResources.ChangeBaker;
-                SelectedBaker = BakersList?
-                    .FirstOrDefault(baker => baker.Address == delegation.Baker.Address);
 
                 BakersList = new List<BakerViewModel>(BakersList?
                     .Select(baker =>
@@ -460,7 +441,7 @@ namespace atomex.ViewModel
                         if (baker.Address == delegation.Baker.Address)
                             baker.IsCurrentlyActive = true;
                         return baker;
-                    })!);
+                    }));
             }
             else
             {
@@ -472,7 +453,7 @@ namespace atomex.ViewModel
                         if (baker.IsCurrentlyActive)
                             baker.IsCurrentlyActive = false;
                         return baker;
-                    })!);
+                    }));
             }
 
             OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
@@ -512,14 +493,14 @@ namespace atomex.ViewModel
             await Device.InvokeOnMainThreadAsync(() =>
             {
                 BakersList = bakers;
-                InitialBakersList = new List<BakerViewModel>(BakersList);
+                _initialBakersList = new List<BakerViewModel>(BakersList);
                 //UseDefaultFee = _useDefaultFee;
             });
         }
 
-        private List<BakerViewModel> GetReverseInitialBakersList()
+        private List<BakerViewModel> GetReverse_initialBakersList()
         {
-            var bakers = new List<BakerViewModel>(InitialBakersList);
+            var bakers = new List<BakerViewModel>(_initialBakersList);
             bakers.Reverse();
             return bakers;
         }
@@ -529,9 +510,9 @@ namespace atomex.ViewModel
             return CurrentSortField switch
             {
                 DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Desc
-                    => InitialBakersList,
+                    => _initialBakersList,
                 DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Asc
-                    => GetReverseInitialBakersList(),
+                    => GetReverse_initialBakersList(),
 
                 DelegationSortField.ByRoi when CurrentSortDirection == SortDirection.Desc
                     => new List<BakerViewModel>(bakersList.OrderByDescending(baker => baker.Roi)),
@@ -548,7 +529,7 @@ namespace atomex.ViewModel
                 DelegationSortField.ByValidator when CurrentSortDirection == SortDirection.Asc
                     => new List<BakerViewModel>(bakersList.OrderBy(baker => baker.Name)),
 
-                _ => InitialBakersList
+                _ => _initialBakersList
             };
         }
 
@@ -702,6 +683,7 @@ namespace atomex.ViewModel
 
         protected void ShowMessage(MessageType messageType, string text)
         {
+            Message = new Message();
             Message.Type = messageType;
             Message.Text = text;
 

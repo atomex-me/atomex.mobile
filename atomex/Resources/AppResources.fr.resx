@@ -113,6 +113,9 @@
     <data name="New" xml:space="preserve">
         <value>New</value>
     </data>
+    <data name="Current" xml:space="preserve">
+        <value>Current</value>
+    </data>
     
     <!-- Start Page -->
     <data name="MyWalletsButton" xml:space="preserve">

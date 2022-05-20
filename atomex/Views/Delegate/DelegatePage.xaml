@@ -99,6 +99,7 @@
                                         <ColumnDefinition Width="24" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
                                            WidthRequest="24"
@@ -110,8 +111,24 @@
                                            LineBreakMode="TailTruncation"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
+                                    <Frame Grid.Column="2"
+                                           Padding="5,3"
+                                           Margin="0"
+                                           HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                                           CornerRadius="4"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="End"
+                                           IsVisible="{Binding IsCurrentlyActive}">
+                                        <Label Text="{helpers:Translate Current}"
+                                               Style="{DynamicResource MainTextH6}"
+                                               TextTransform="Lowercase"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="Center"/>
+                                    </Frame>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
+                                           Grid.ColumnSpan="2"
                                            Style="{DynamicResource AdditionalTextH6}"
                                            VerticalTextAlignment="Start"
                                            HorizontalTextAlignment="Start"
@@ -126,12 +143,13 @@
                                     </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="1"
+                                           Grid.ColumnSpan="2"
                                            Text="{helpers:Translate BakerIsFull}"
                                            Style="{DynamicResource WarningTextH6}"
                                            VerticalTextAlignment="Start"
                                            HorizontalTextAlignment="Start"
                                            IsVisible="{Binding IsFull}"/>
-                                    <Label Grid.Column="2"
+                                    <Label Grid.Column="3"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="End">
@@ -144,7 +162,7 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Row="1"
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"
                                            HorizontalTextAlignment="End">

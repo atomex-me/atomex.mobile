@@ -26,23 +26,24 @@
                     </Grid.ColumnDefinitions>
                     <Label Text="{helpers:Translate AddressLabel}"
                            Style="{DynamicResource AdditionalTextH5}"
-                           Padding="0,0,0,6"
+                           Padding="0,0,0,60"
                            VerticalTextAlignment="End"/>
                     <Label Grid.Row="1"
                            Text="{Binding Address}"
                            Style="{DynamicResource MainTextH4}"
                            LineBreakMode="MiddleTruncation"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start"
+                           Padding="0,0,60,0"/>
                     <Image Grid.Column="1"
                            Grid.RowSpan="2"
                            Source="ic_copy__gray"
                            WidthRequest="25"
                            HeightRequest="30"
                            VerticalOptions="FillAndExpand">
-                        <!--<Image.GestureRecognizers>
+                        <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
-                                                  CommandParameter="{Binding Addresss}"/>
-                        </Image.GestureRecognizers>-->
+                                                  CommandParameter="{Binding Address}"/>
+                        </Image.GestureRecognizers>
                     </Image>
                     <Line Grid.Row="2"
                           Grid.ColumnSpan="2"
@@ -220,9 +221,11 @@
                 </Grid>
                 <Button Text="{helpers:Translate ChangeBaker}"
                         Style="{DynamicResource AdditionalButton}"
-                        Margin="0,33,0,24"/>
+                        Margin="0,33,0,24"
+                        Command="{Binding ChangeBakerCommand}"/>
                 <Button Text="{helpers:Translate CheckRewards}"
-                        Style="{DynamicResource TransparentButton}">
+                        Style="{DynamicResource TransparentButton}"
+                        Command="{Binding CheckRewardsCommand}">
                     <!--<Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding BbUri, TargetNullValue=''}"
