@@ -34,7 +34,11 @@ namespace atomex
             }
         }
 
-        private async void TabChanged(object sender, EventArgs e)
+        private async void ScrollToCenter(object sender, EventArgs e)
+        {
+            await TabScrollView.ScrollToAsync((VisualElement)sender, ScrollToPosition.Center, true);
+        }
+        private async void ScrollToEnd(object sender, EventArgs e)
         {
             await TabScrollView.ScrollToAsync((VisualElement)sender, ScrollToPosition.End, true);
         }

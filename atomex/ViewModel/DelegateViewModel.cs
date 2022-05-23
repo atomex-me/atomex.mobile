@@ -70,14 +70,10 @@ namespace atomex.ViewModel
         [Reactive] public DelegationSortField CurrentSortField { get; set; }
         [Reactive] public SortDirection CurrentSortDirection { get; set; }
         [Reactive] public Message Message { get; set; }
-        [ObservableAsProperty] public bool IsLoading { get; }
+        [Reactive] public bool IsLoading { get; set; }
         [Reactive] public string SortButtonName { get; set; }
         [Reactive] public string Title { get; set; }
         [Reactive] public bool CanDelegate { get; set; }
-
-        private ReactiveCommand<Unit, Unit> _checkDelegationCommand;
-        public ReactiveCommand<Unit, Unit> CheckDelegationCommand =>
-            _checkDelegationCommand ??= ReactiveCommand.CreateFromTask(CheckDelegation);
 
         private ReactiveCommand<Unit, Unit> _delegateCommand;
         public ReactiveCommand<Unit, Unit> DelegateCommand => _delegateCommand ??= ReactiveCommand.CreateFromTask(
@@ -112,12 +108,9 @@ namespace atomex.ViewModel
             _searchCommand ??= (_searchCommand = ReactiveCommand.Create(() =>
                 _navigationService?.ShowPage(new SearchBakerPage(this), TabNavigation.Portfolio)));
 
-        private ReactiveCommand<Unit, Unit> _clearSearchFieldCommand;
-        public ReactiveCommand<Unit, Unit> ClearSearchFieldCommand =>
-            _clearSearchFieldCommand ??= (_clearSearchFieldCommand = ReactiveCommand.Create(() =>
-            {
-                SearchPattern = string.Empty;
-            }));
+        private ICommand _clearSearchFieldCommand;
+        public ICommand ClearSearchFieldCommand =>
+            _clearSearchFieldCommand ??= new Command(() => SearchPattern = string.Empty);
 
         private ReactiveCommand<string, Unit> _copyCommand;
         public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(value =>
@@ -137,6 +130,8 @@ namespace atomex.ViewModel
         {
             try
             {
+                IsLoading = true;
+
                 if (!_tezosConfig.IsValidAddress(SelectedBaker?.Address))
                 {
                     ShowMessage(
@@ -181,6 +176,10 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Delegation check error");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
@@ -229,6 +228,8 @@ namespace atomex.ViewModel
 
         private async Task Delegate(decimal fee)
         {
+            IsLoading = true;
+
             var wallet = (HdWallet)_app.Account.Wallet;
             var keyStorage = wallet.KeyStorage;
 
@@ -334,6 +335,7 @@ namespace atomex.ViewModel
             }
             finally
             {
+                IsLoading = false;
                 tezosAccount.AddressLocker.Unlock(walletAddress.Address);
             }
         }
@@ -410,8 +412,6 @@ namespace atomex.ViewModel
                                 Message.Type != MessageType.Error &&
                                 !IsLoading;
                 });
-
-            DelegateCommand.IsExecuting.ToPropertyExInMainThread(this, vm => vm.IsLoading);
 
             FeeFormat = _tezosConfig.FeeFormat;
             FeeCurrencyCode = _tezosConfig.FeeCode;
@@ -536,6 +536,7 @@ namespace atomex.ViewModel
         private async Task<Result<bool>> GetDelegate(
             CancellationToken cancellationToken = default)
         {
+            IsLoading = true;
             if (DelegateAddress == null)
                 return new Error(Errors.InvalidWallets, "You don't have non-empty accounts.");
 

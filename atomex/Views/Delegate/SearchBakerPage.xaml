@@ -5,7 +5,8 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
-    x:Class="atomex.Views.Delegate.SearchBakerPage">
+    x:Class="atomex.Views.Delegate.SearchBakerPage"
+    Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>

@@ -314,6 +314,12 @@
                                 <Setter Property="IsEnabled"
                                         Value="True"/>
                             </DataTrigger>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsLoading}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value=""/>
+                            </DataTrigger>
                         </Button.Triggers>
                     </Button>
                     <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"

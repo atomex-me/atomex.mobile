@@ -100,7 +100,7 @@
                 <Grid RowSpacing="4"
                       ColumnSpacing="0"
                       HorizontalOptions="CenterAndExpand"
-                      Margin="16,12">
+                      Margin="16,12,16,32">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="56" />
                         <RowDefinition Height="20" />
@@ -187,7 +187,7 @@
                 <ScrollView Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
                             HorizontalOptions="CenterAndExpand"
-                            Margin="8,20,8,0"
+                            Padding="8,0"
                             x:Name="TabScrollView">
                     <Grid HorizontalOptions="FillAndExpand"
                           ColumnSpacing="0"
@@ -196,9 +196,9 @@
                             <RowDefinition Height="36" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.ColumnSpan="4"
@@ -209,8 +209,7 @@
                         <Button Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Activity}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Activity"
-                                Clicked="TabChanged">
+                                CommandParameter="Activity">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -230,12 +229,14 @@
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Grid.Column="1"
+                        <Button Grid.Column="2"
                                 Style="{DynamicResource TabButton}"
+                                WidthRequest="120"
                                 Text="{helpers:Translate Collectibles}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Collectibles"
-                                Clicked="TabChanged">
+                                IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
+                                Clicked="ScrollToCenter">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -255,12 +256,12 @@
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
-                        <Button Grid.Column="2"
+                        <Button Grid.Column="1"
                                 Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Addresses}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Addresses"
-                                Clicked="TabChanged">
+                                Clicked="ScrollToEnd">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab}"
@@ -282,10 +283,10 @@
                         </Button>
                         <Button Grid.Column="3"
                                 Style="{DynamicResource TabButton}"
+                                WidthRequest="120"
                                 Text="{helpers:Translate Delegations}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Delegations"
-                                Clicked="TabChanged"
                                 IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button"
@@ -608,6 +609,7 @@
                                     <Label Grid.Column="1"
                                            Text="{Binding Address}"
                                            Style="{DynamicResource MainTextH4}"
+                                           Margin="0,0,70,0"
                                            LineBreakMode="MiddleTruncation"
                                            HorizontalTextAlignment="Start"
                                            HorizontalOptions="FillAndExpand"
