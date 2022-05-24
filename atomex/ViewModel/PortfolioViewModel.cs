@@ -227,7 +227,6 @@ namespace atomex.ViewModel
         private ICommand _closeBottomSheetCommand;
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
 
-
         private ReactiveCommand<Unit, Unit> _sendCommand;
         public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(() =>
         {

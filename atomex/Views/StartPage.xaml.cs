@@ -175,5 +175,10 @@ namespace atomex
         {
             throw new NotImplementedException();
         }
+
+        public Task<string> DisplayActionSheet(string cancel, string[] actions, string title = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

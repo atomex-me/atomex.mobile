@@ -301,7 +301,10 @@
         <value>Convert</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>Staking</value>
+        <value>Delegate</value>
+    </data>
+    <data name="UndelegateButton" xml:space="preserve">
+        <value>Undelegate</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Update</value>
@@ -1199,5 +1202,8 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     </data>
     <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
         <value>The redeem transaction will be sent from the address {0} if it has enough funds. Otherwise the transaction will be sent by an extrenal service for a fee</value>
+    </data>
+    <data name="UndelegateWarning" xml:space="preserve">
+        <value>Are you sure you want to send transaction, that will stop delegating {0} with fee {1} XTZ?</value>
     </data>
 </root>

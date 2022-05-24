@@ -226,16 +226,6 @@
                 <Button Text="{helpers:Translate CheckRewards}"
                         Style="{DynamicResource TransparentButton}"
                         Command="{Binding CheckRewardsCommand}">
-                    <!--<Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding BbUri, TargetNullValue=''}"
-                                     Value="">
-                            <Setter Property="IsVisible"
-                                    Value="False"/>
-                            <Setter Property="IsEnabled"
-                                    Value="False"/>
-                        </DataTrigger>
-                    </Button.Triggers>-->
                 </Button>
             </StackLayout>
         </ScrollView>

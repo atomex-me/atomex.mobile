@@ -579,7 +579,7 @@
                                 <Grid Padding="16,0" 
                                       HorizontalOptions="FillAndExpand"
                                       ColumnSpacing="0"
-                                      RowSpacing="0">
+                                      RowSpacing="2">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="36" />
                                         <RowDefinition Height="36" />
@@ -588,7 +588,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="36" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
                                            Source="{Binding Baker.Logo}"
@@ -676,14 +676,19 @@
                                             </DataTrigger>
                                         </Label.Triggers>
                                     </Label>
-                                    <Image Grid.RowSpan="2"
+                                    <Frame Grid.RowSpan="2"
                                            Grid.Column="3"
-                                           Source="ic_menu"
-                                           WidthRequest="4"
-                                           HeightRequest="16"
-                                           Margin="0,0,10,0"
-                                           VerticalOptions="CenterAndExpand"
-                                           HorizontalOptions="EndAndExpand"/>
+                                           HasShadow="False"
+                                           Padding="0"
+                                           BackgroundColor="Transparent">
+                                             <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding DelegationActionSheetCommand}"/>
+                                            </Frame.GestureRecognizers>
+                                        <Image Source="ic_menu"
+                                               WidthRequest="4"
+                                               HeightRequest="16"
+                                               Margin="22,0,10,0"/>
+                                    </Frame>
                                 </Grid>
                             </controls:CustomViewCell>
                         </DataTemplate>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive;
+using atomex.Resources;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using ReactiveUI;
@@ -9,6 +10,8 @@ namespace atomex.ViewModel
 {
     public class DelegationViewModel
     {
+        private INavigationService _navigationService { get; set; }
+
         public BakerData Baker { get; set; }
         public string Address { get; set; }
         public decimal Balance { get; set; }
@@ -19,9 +22,11 @@ namespace atomex.ViewModel
 
         public Action<string> CopyAddress { get; set; }
         public Action<DelegationViewModel> ChangeBaker { get; set; }
+        public Action<DelegationViewModel> Undelegate { get; set; }
 
-        public DelegationViewModel()
+        public DelegationViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
         }
    
         private ReactiveCommand<Unit, Unit> _checkRewardsCommand;
@@ -34,6 +39,42 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _changeBakerCommand;
         public ReactiveCommand<Unit, Unit> ChangeBakerCommand => _changeBakerCommand ??=
-            ReactiveCommand.Create(() => ChangeBaker?.Invoke(this)); 
+            ReactiveCommand.Create(() => ChangeBaker?.Invoke(this));
+
+
+        private ReactiveCommand<Unit, Unit> _delegationActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> DelegationActionSheetCommand => _delegationActionSheetCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        {
+            string delegateAction = Status == DelegationStatus.NotDelegated
+                ? AppResources.DelegateButton
+                : AppResources.UndelegateButton;
+
+            string changeAction = Status == DelegationStatus.NotDelegated
+                ? null
+                : AppResources.ChangeBaker;
+
+
+            string[] actions = new string[]
+            {
+                delegateAction,
+                changeAction
+            };
+
+            string result = await _navigationService?.DisplayActionSheet(AppResources.CancelButton, actions);
+
+            if (result == delegateAction)
+            {
+                if (Status == DelegationStatus.NotDelegated)
+                    ChangeBaker?.Invoke(this);
+                else
+                    Undelegate?.Invoke(this);
+
+                return;
+            }
+            if (result == changeAction)
+            {
+                ChangeBaker?.Invoke(this);
+            }
+        });
     }
 }

@@ -86,7 +86,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                     if (string.IsNullOrEmpty(@delegate))
                     {
-                        delegations.Add(new DelegationViewModel
+                        delegations.Add(new DelegationViewModel(_navigationService)
                         {
                             Baker = null,
                             Address = wa.Address,
@@ -95,7 +95,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                             DelegationTime = DateTime.Today,
                             Status = DelegationStatus.NotDelegated,
                             CopyAddress = CopyAddress,
-                            ChangeBaker = ChangeBaker
+                            ChangeBaker = ChangeBaker,
+                            Undelegate = Undelegate
                         });
 
                         continue;
@@ -111,7 +112,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                         ? Math.Floor((account.Value.DelegationLevel - 1) / 4096)
                         : Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
-                    delegations.Add(new DelegationViewModel
+                    delegations.Add(new DelegationViewModel(_navigationService)
                     {
                         Baker = baker,
                         Address = wa.Address,
@@ -122,7 +123,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                                 currentCycle - txCycle < 7 ? DelegationStatus.Confirmed :
                                 DelegationStatus.Active,
                         CopyAddress = CopyAddress,
-                        ChangeBaker = ChangeBaker
+                        ChangeBaker = ChangeBaker,
+                        Undelegate = Undelegate
                     });
                 }
 
@@ -145,6 +147,12 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             _delegateViewModel?.InitializeWith(delegation);
             _navigationService?.ShowPage(new DelegatePage(_delegateViewModel), TabNavigation.Portfolio);
+        }
+
+        private void Undelegate(DelegationViewModel delegation)
+        {
+            _navigationService.SetInitiatedPage(TabNavigation.Portfolio);
+            _delegateViewModel?.Undelegate(delegation.Address);
         }
 
         protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)

@@ -587,6 +587,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UndelegateButton {
+            get {
+                return ResourceManager.GetString("UndelegateButton", resourceCulture);
+            }
+        }
+        
         internal static string UpdateButton {
             get {
                 return ResourceManager.GetString("UpdateButton", resourceCulture);
@@ -2282,6 +2288,12 @@ namespace atomex.Resources {
         internal static string RedeemFromAddressNoteToolTip {
             get {
                 return ResourceManager.GetString("RedeemFromAddressNoteToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string UndelegateWarning {
+            get {
+                return ResourceManager.GetString("UndelegateWarning", resourceCulture);
             }
         }
     }

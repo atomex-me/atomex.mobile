@@ -5,7 +5,6 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.Portfolio"
-             x:Name="BindingContextPage"
              Title="{helpers:Translate PortfolioPageTitle}"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Resources>
@@ -126,41 +125,43 @@
                         </Image>
                     </StackLayout>
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Margin="16,0"/>
+                                 Margin="16,0,0,0"/>
                 </StackLayout>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                         <Grid RowSpacing="4"
-                              ColumnSpacing="0">
+                              ColumnSpacing="0"
+                              Padding="16,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="36" />
                                 <RowDefinition Height="36" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="56" />
+                                <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="32" />
                             </Grid.ColumnDefinitions>
                             <Image Grid.RowSpan="2"
                                    Source="{Binding CurrencyCode}"
                                    HeightRequest="24"
                                    WidthRequest="24"
-                                   Margin="16,0"
                                    VerticalOptions="Center"
                                    HorizontalOptions="End"/>
                             <Label Grid.Column="1"
                                    Text="{Binding Currency.Description}"
                                    Style="{DynamicResource MainTextH4}"
+                                   Padding="12,0"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="End"/>
                             <Label Grid.Column="1"
                                    Grid.Row="1"
                                    Text="{Binding Price, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource AdditionalTextH6}"
+                                   Padding="12,0"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start">
                             </Label>
@@ -189,7 +190,6 @@
                             </Label>
                             <Label Grid.Column="3"
                                    Style="{DynamicResource MainTextH4}"
-                                   Margin="16,0"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
                                 <Label.FormattedText>
@@ -204,16 +204,21 @@
                                    Grid.Column="3"
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource MainTextH6}"
-                                   Margin="16,0"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>
-                            <Image Grid.RowSpan="2"
+                            <Frame Grid.RowSpan="2"
                                    Grid.Column="4"
-                                   Source="ic_menu"
-                                   WidthRequest="4"
-                                   HeightRequest="16"
-                                   VerticalOptions="CenterAndExpand"
-                                   HorizontalOptions="StartAndExpand"/>
+                                   HasShadow="False"
+                                   Padding="0"
+                                   BackgroundColor="Transparent">
+                                     <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding DisplayActionSheetCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                <Image Source="ic_menu"
+                                       WidthRequest="4"
+                                       HeightRequest="16"
+                                       Margin="18,0,10,0"/>
+                            </Frame>
                         </Grid>
                     </controls:CustomViewCell>
                 </DataTemplate>

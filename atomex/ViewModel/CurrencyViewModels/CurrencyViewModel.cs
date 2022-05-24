@@ -432,6 +432,47 @@ namespace atomex.ViewModel.CurrencyViewModels
                 SelectedTab = selectedTab;
             });
 
+        private ReactiveCommand<Unit, Unit> _displayActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> DisplayActionSheetCommand => _displayActionSheetCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        {
+            string send = AppResources.SendButton + " " + CurrencyCode;
+            string receive = AppResources.ReceiveButton + " " + CurrencyCode;
+            string exchange = AppResources.ExchangeButton + " " + CurrencyCode;
+            string buy = CanBuy
+                ? AppResources.BuyButton + " " + CurrencyCode
+                : null;
+            
+            string[] actions = new string[]
+            {
+                send,
+                receive,
+                exchange,
+                buy
+            };
+
+            string result = await _navigationService?.DisplayActionSheet(AppResources.CancelButton, actions);
+
+            if (result == send)
+            {
+                OnSendClick();
+                return;
+            }
+            if (result == receive)
+            {
+                OnReceiveClick();
+                return;
+            }
+            if (result == exchange)
+            {
+                _navigationService?.GoToExchange(Currency);
+                return;
+            }
+            if (result == buy)
+            {
+                _navigationService?.GoToBuy(Currency);
+            }
+        });
+
         protected virtual void OnReceiveClick()
         {
             var receiveViewModel = new ReceiveViewModel(

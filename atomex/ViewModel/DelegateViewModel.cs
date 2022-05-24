@@ -74,6 +74,7 @@ namespace atomex.ViewModel
         [Reactive] public string SortButtonName { get; set; }
         [Reactive] public string Title { get; set; }
         [Reactive] public bool CanDelegate { get; set; }
+        public string UndelegateWarning { get; set; }
 
         private ReactiveCommand<Unit, Unit> _delegateCommand;
         public ReactiveCommand<Unit, Unit> DelegateCommand => _delegateCommand ??= ReactiveCommand.CreateFromTask(
@@ -215,15 +216,8 @@ namespace atomex.ViewModel
                 return;
             }
 
-            // TODO: popup
-            //var messageViewModel = MessageViewModel.Message(
-            //    title: "Confirm undelegating",
-            //    text: "Are you sure you want to send transaction, " +
-            //          $"that will stop delegating {address} with fee {tx.Fee} {TezosConfig.Xtz}?",
-            //    nextTitle: "Undelegate",
-            //    nextAction: () => _ = Send(fee: tx.Fee));
-
-            //App.DialogService.Show(messageViewModel);
+            UndelegateWarning = string.Format(AppResources.UndelegateWarning, address, tx.Fee);
+            _navigationService?.ShowBottomSheet(new UndoDelegationBottomSheet(this));
         }
 
         private async Task Delegate(decimal fee)
@@ -498,7 +492,7 @@ namespace atomex.ViewModel
             });
         }
 
-        private List<BakerViewModel> GetReverse_initialBakersList()
+        private List<BakerViewModel> GetReverseInitialBakersList()
         {
             var bakers = new List<BakerViewModel>(_initialBakersList);
             bakers.Reverse();
@@ -512,7 +506,7 @@ namespace atomex.ViewModel
                 DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Desc
                     => _initialBakersList,
                 DelegationSortField.ByRating when CurrentSortDirection == SortDirection.Asc
-                    => GetReverse_initialBakersList(),
+                    => GetReverseInitialBakersList(),
 
                 DelegationSortField.ByRoi when CurrentSortDirection == SortDirection.Desc
                     => new List<BakerViewModel>(bakersList.OrderByDescending(baker => baker.Roi)),

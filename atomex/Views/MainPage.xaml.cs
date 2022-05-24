@@ -129,7 +129,9 @@ namespace atomex
             }
         }
 
-        public void ShowPage(Page page, TabNavigation tab = TabNavigation.None)
+        public void ShowPage(
+            Page page,
+            TabNavigation tab = TabNavigation.None)
         {
             if (page == null)
                 return;
@@ -315,14 +317,31 @@ namespace atomex
             var result = await this.DisplaySnackBarAsync(options);
         }
 
-        public async Task ShowAlert(string title, string text, string cancel)
+        public async Task ShowAlert(
+            string title,
+            string text,
+            string cancel)
         {
-            await Application.Current.MainPage.DisplayAlert(title, text, cancel);
+            await Application.Current.MainPage
+                .DisplayAlert(title, text, cancel);
         }
 
-        public async Task<bool> ShowAlert(string title, string text, string accept, string cancel)
+        public async Task<bool> ShowAlert(
+            string title,
+            string text,
+            string accept,
+            string cancel)
         {
-            return await Application.Current.MainPage.DisplayAlert(title, text, accept, cancel);
+            return await Application.Current.MainPage
+                .DisplayAlert(title, text, accept, cancel);
+        }
+
+        public async Task<string> DisplayActionSheet(
+            string cancel,
+            string[] actions,
+            string title = null)
+        {
+            return await DisplayActionSheet(title: title, cancel: cancel, destruction: null, actions);
         }
 
         public void SetInitiatedPage(TabNavigation tab)
