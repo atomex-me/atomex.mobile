@@ -60,6 +60,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
+        public bool IsStakingAvailable => Currency is TezosConfig;
+        public bool HasCollectibles => Currency is TezosConfig;
 
         [Reactive] public decimal TotalAmount { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }

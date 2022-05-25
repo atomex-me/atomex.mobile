@@ -19,8 +19,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosCurrencyViewModel : CurrencyViewModel
     {
-        public bool IsStakingAvailable { get; } = true;
-        public bool HasCollectibles { get; } = true;
         public TezosConfig Tezos => Currency as TezosConfig;
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
