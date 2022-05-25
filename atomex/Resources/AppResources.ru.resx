@@ -315,6 +315,9 @@
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Обновление баланса...</value>
     </data>
+    <data name="StillUpdatingBalances" xml:space="preserve">
+        <value>Обновляем балансы...</value>
+    </data>
     <data name="LoadingLabel" xml:space="preserve">
         <value>Загрузка...</value>
     </data>

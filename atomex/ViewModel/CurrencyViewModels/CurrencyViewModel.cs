@@ -86,6 +86,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public bool CanBuy { get; set; }
 
+        private CancellationTokenSource _cancellationTokenSource;
+
         public class Grouping<K, T> : ObservableCollection<T>
         {
             public double GroupHeight { get; set; } = DefaultGroupHeight;
@@ -372,7 +374,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public virtual async Task ScanCurrency()
         {
-            var cancellation = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
             IsRefreshing = true;
 
             try
@@ -381,19 +383,32 @@ namespace atomex.ViewModel.CurrencyViewModels
                 await scanner.ScanAsync(
                     currency: Currency.Name,
                     skipUsed: true,
-                    cancellationToken: cancellation.Token);
+                    cancellationToken: _cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
 
                 _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
             }
+            catch (OperationCanceledException)
+            {
+                // nothing to do...
+            }
             catch (Exception e)
             {
                 Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
             }
-
-            IsRefreshing = false;
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
+
+        private ReactiveCommand<Unit, Unit> _cancelUpdateCommand;
+        public ReactiveCommand<Unit, Unit> CancelUpdateCommand => _cancelUpdateCommand ??= ReactiveCommand.Create(() =>
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+        });
 
         private ReactiveCommand<Unit, Unit> _showAvailableAmountCommand;
         public ReactiveCommand<Unit, Unit> ShowAvailableAmountCommand => _showAvailableAmountCommand ??= ReactiveCommand.Create(() =>

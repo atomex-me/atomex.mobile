@@ -315,6 +315,9 @@
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Mise à jour du solde...</value>
     </data>
+    <data name="StillUpdatingBalances" xml:space="preserve">
+        <value>Still updating balances...</value>
+    </data>
     <data name="LoadingLabel" xml:space="preserve">
         <value>Chargement...</value>
     </data>

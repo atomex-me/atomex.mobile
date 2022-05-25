@@ -611,6 +611,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string StillUpdatingBalances {
+            get {
+                return ResourceManager.GetString("StillUpdatingBalances", resourceCulture);
+            }
+        }
+        
         internal static string LoadingLabel {
             get {
                 return ResourceManager.GetString("LoadingLabel", resourceCulture);
