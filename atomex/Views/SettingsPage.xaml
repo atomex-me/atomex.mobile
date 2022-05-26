@@ -231,8 +231,8 @@
                                     HeightRequest="40"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <Button Text="{helpers:Translate SignOut}"
-                            Style="{DynamicResource TransparentButtonStyle}"
-                            CornerRadius="10"
+                            Style="{DynamicResource TransparentButton}"
+                            Padding="0"
                             Command="{Binding SignOutCommand}"/>
                 </custom:CustomFrame>
                 <Label Text="{helpers:Translate WalletsSection}"

@@ -18,10 +18,12 @@
                      WidthRequest="300">
             <custom:LeftRoundedButton Text="{helpers:Translate TestNetButton}"
                                       Style="{DynamicResource MainButton}"
+                                      FontSize="14"
                                       CornerRadius="0"
                                       Command="{Binding SetTestNetTypeCommand}"/>
             <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
                                        Style="{DynamicResource MainButton}"
+                                       FontSize="14"
                                        CornerRadius="0"
                                        Command="{Binding SetMainNetTypeCommand}"/>
         </StackLayout>

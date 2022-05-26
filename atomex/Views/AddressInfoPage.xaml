@@ -43,8 +43,8 @@
                 <Image Grid.Column="1"
                        Grid.RowSpan="3"
                        Source="ic_copy__gray"
-                       WidthRequest="25"
-                       HeightRequest="30"
+                       WidthRequest="15"
+                       HeightRequest="18"
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyCommand}"

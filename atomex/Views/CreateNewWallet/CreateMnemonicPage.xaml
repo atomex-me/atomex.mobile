@@ -241,8 +241,9 @@
                          x:Name="LoseMnemonicLabel"
                          IsVisible="{Binding Mnemonic, Converter={StaticResource StringToBool}}">
                 <Image Source="ic_question__warning"
-                       HeightRequest="32"
-                       WidthRequest="32"/>
+                       HeightRequest="16"
+                       WidthRequest="16"
+                       Margin="0,0,10,0"/>
                 <Label Text="{helpers:Translate LoseMnemonicPhraseText}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
@@ -252,7 +253,7 @@
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
                     x:Name="NextButton"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding SetMnemonicCommand}"
                     Clicked="OnNextButtonClicked">
                 <Button.Triggers>
