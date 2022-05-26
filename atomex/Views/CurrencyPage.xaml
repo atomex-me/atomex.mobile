@@ -700,15 +700,15 @@
         </ScrollView>
         <StackLayout Spacing="0"
                      AbsoluteLayout.LayoutBounds="0,1,1,56"
-                     AbsoluteLayout.LayoutFlags="WidthProportional, YProportional">
+                     AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
+                     IsVisible="{Binding IsRefreshing}">
             <Frame HasShadow="False"
                    CornerRadius="4"
                    HorizontalOptions="FillAndExpand"
                    Padding="0"
                    HeightRequest="48"
                    Margin="16,0"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}"
-                   IsVisible="{Binding IsRefreshing}">
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
                 <Grid Padding="20,14" 
                       HorizontalOptions="FillAndExpand"
                       ColumnSpacing="27"
