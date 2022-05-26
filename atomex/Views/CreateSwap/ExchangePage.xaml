@@ -755,9 +755,9 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                    <Grid Padding="8"
-                          RowSpacing="0"
-                          ColumnSpacing="5">
+                    <Grid Padding="16,0"
+                          RowSpacing="2"
+                          ColumnSpacing="12">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
                                          Binding="{Binding State}"
@@ -779,25 +779,25 @@
                             </DataTrigger>
                         </Grid.Triggers>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="33"/>
+                            <RowDefinition Height="33"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="24" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="24" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="16" />
                         </Grid.ColumnDefinitions>
                         <Image Source="{Binding FromCurrencyCode}"
                                Grid.RowSpan="2"
-                               WidthRequest="32"
-                               HeightRequest="32"
+                               WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="CenterAndExpand"/>
                         <Label Grid.Column="1"
                                Text="{Binding FromCurrencyCode}"
-                               Style="{DynamicResource MainTextH5}"
+                               Style="{DynamicResource MainTextH4}"
                                VerticalTextAlignment="End"
                                HorizontalTextAlignment="Start"/>
                         <Label Grid.Row="1"
@@ -808,7 +808,6 @@
                                HorizontalTextAlignment="Start"/>
                         <Image Grid.Column="2"
                                Grid.RowSpan="3"
-                               WidthRequest="24"
                                VerticalOptions="CenterAndExpand">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
@@ -846,12 +845,12 @@
                         <Image Source="{Binding ToCurrencyCode}"
                                Grid.Column="3"
                                Grid.RowSpan="2"
-                               WidthRequest="32"
-                               HeightRequest="32"
+                               WidthRequest="24"
+                               HeightRequest="24"
                                VerticalOptions="CenterAndExpand"/>
                         <Label Grid.Column="4"
                                 Text="{Binding ToCurrencyCode}"
-                                Style="{DynamicResource MainTextH5}"
+                                Style="{DynamicResource MainTextH4}"
                                 VerticalTextAlignment="End"
                                 HorizontalTextAlignment="Start"/>
                         <Label Grid.Row="1"
@@ -862,8 +861,8 @@
                                HorizontalTextAlignment="Start"/>
                         <Image Grid.Column="5"
                                Grid.RowSpan="2"
-                               WidthRequest="24"
-                               HeightRequest="24"
+                               WidthRequest="16"
+                               HeightRequest="16"
                                VerticalOptions="CenterAndExpand">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
@@ -900,8 +899,8 @@
                         </Image>
                         <lottie:AnimationView Grid.Column="5"
                                               Grid.RowSpan="2"
-                                              WidthRequest="24"
-                                              HeightRequest="24"
+                                              WidthRequest="16"
+                                              HeightRequest="16"
                                               Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
                                               AnimationSource="AssetOrBundle"
                                               ImageAssetsFolder="Assets/Animations"

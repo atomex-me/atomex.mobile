@@ -165,6 +165,8 @@
                                 <ColumnDefinition Width="4*" />
                             </Grid.ColumnDefinitions>
                             <Image Source="{Binding FromCurrencyCode}"
+                                   WidthRequest="48"
+                                   HeightRequest="48"
                                    HorizontalOptions="Center"/>
                             <Image Source="ConvertArrow"
                                    Grid.Column="1"
@@ -172,6 +174,8 @@
                                    VerticalOptions="CenterAndExpand"/>
                             <Image Grid.Column="2"
                                    Source="{Binding ToCurrencyCode}"
+                                   WidthRequest="48"
+                                   HeightRequest="48"
                                    HorizontalOptions="Center"/>
                             <Label Grid.Row="1"
                                    Style="{DynamicResource MainTextH6}"

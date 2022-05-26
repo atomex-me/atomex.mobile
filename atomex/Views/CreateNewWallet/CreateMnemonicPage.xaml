@@ -240,7 +240,7 @@
             <StackLayout Orientation="Horizontal"
                          x:Name="LoseMnemonicLabel"
                          IsVisible="{Binding Mnemonic, Converter={StaticResource StringToBool}}">
-                <Image Source="Warning"
+                <Image Source="ic_question__warning"
                        HeightRequest="32"
                        WidthRequest="32"/>
                 <Label Text="{helpers:Translate LoseMnemonicPhraseText}"
