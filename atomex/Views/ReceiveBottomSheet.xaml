@@ -142,38 +142,18 @@
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShareCommand}"/>
                     </Frame.GestureRecognizers>
-                    <RelativeLayout HeightRequest="50">
-                        <StackLayout Spacing="10"
-                                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                                     Orientation="Horizontal"
-                                     HorizontalOptions="Center">
-                            <Image HeightRequest="18"
-                                   WidthRequest="18"
-                                   VerticalOptions="Center"
-                                   Source="ic_share">
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image"
-                                                 Binding="{Binding IsShared}"
-                                                 Value="True">
-                                        <Setter Property="IsVisible"
-                                                Value="False"/>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                            <Label Text="{helpers:Translate ShareButton}"
-                                   Style="{DynamicResource AdditionalClickableLabel}"
-                                   VerticalTextAlignment="Center"
-                                   HorizontalTextAlignment="Start">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding IsShared}"
-                                                 Value="True">
-                                        <Setter Property="IsVisible"
-                                                Value="False"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
+                    <Grid ColumnSpacing="12"
+                          RowSpacing="0"
+                          HorizontalOptions="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <RelativeLayout Grid.ColumnSpan="2"
+                                        HorizontalOptions="FillAndExpand">
                             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
 	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
                                                RelativeLayout.WidthConstraint="24"
@@ -182,8 +162,35 @@
                                                BackgroundColor="Transparent"
                                                IsRunning="{Binding IsShared}"
                                                IsVisible="{Binding IsShared}"/>
-                        </StackLayout>
-                    </RelativeLayout>
+                        </RelativeLayout>
+                        <Image HeightRequest="18"
+                               WidthRequest="18"
+                               VerticalOptions="Center"
+                               Source="ic_share">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                                                Binding="{Binding IsShared}"
+                                                Value="True">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+                        <Label Grid.Column="1"
+                               Text="{helpers:Translate ShareButton}"
+                               Style="{DynamicResource AdditionalClickableLabel}"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                                Binding="{Binding IsShared}"
+                                                Value="True">
+                                    <Setter Property="IsVisible"
+                                            Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Grid>
                 </Frame>
                 <Button Text="{Binding MyAddressesButtonName}"
                         Style="{DynamicResource TransparentButton}"

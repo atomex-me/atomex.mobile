@@ -50,7 +50,7 @@
         <Setter Property="BorderColor" Value="Transparent"/>
         <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="FontSize" Value="17"/>
-        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Padding" Value="16,0"/>
         <Setter Property="TextTransform" Value="None"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
@@ -60,7 +60,7 @@
         <Setter Property="HeightRequest" Value="32"/>
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="16,8"/>
+        <Setter Property="Padding" Value="16,5"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="TextTransform" Value="None"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
@@ -214,6 +214,7 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="17"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
     </Style>
     <Style x:Key="MainClickableLabel" TargetType="Label" BasedOn="{StaticResource ClickableLabel}">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
@@ -321,6 +322,7 @@
         <Setter Property="IsEnabled" Value="True"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="20"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}"/>
     </Style>
     <Style x:Key="SeedWordFrameStyle" TargetType="Frame">
         <Setter Property="Padding" Value="0"/>

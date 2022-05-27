@@ -135,8 +135,8 @@
                                         <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
                                                               CommandParameter="{Binding .}"/>
                                     </StackLayout.GestureRecognizers>
-                                    <Image WidthRequest="24"
-                                           HeightRequest="24"
+                                    <Image WidthRequest="15"
+                                           HeightRequest="18"
                                            VerticalOptions="FillAndExpand"
                                            HorizontalOptions="End"
                                            Source="ic_copy__gray"/>

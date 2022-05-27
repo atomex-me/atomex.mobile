@@ -7,7 +7,7 @@
             if (string.IsNullOrEmpty(address))
                 return address;
 
-            return $"{address.Substring(0, 6)}...{address.Substring(address.Length - 6, 6)}";
+            return $"{address.Substring(0, 5)}...{address.Substring(address.Length - 5, 5)}";
         }
     }
 }

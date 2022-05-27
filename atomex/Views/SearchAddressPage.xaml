@@ -116,8 +116,8 @@
                                 </Frame>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="2"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
+                                       WidthRequest="15"
+                                       HeightRequest="18"
                                        Margin="0"
                                        HorizontalOptions="End"
                                        VerticalOptions="FillAndExpand"

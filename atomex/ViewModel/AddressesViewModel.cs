@@ -40,6 +40,7 @@ namespace atomex.ViewModel
         [Reactive] public bool IsCopied { get; set; }
         [Reactive] public bool ExportKeyConfirm { get; set; }
         [Reactive] public string CopyButtonName { get; set; }
+        [Reactive] public bool IsFreeAddress { get; set; }
 
         public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
 
@@ -239,18 +240,23 @@ namespace atomex.ViewModel
                        : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
                 });
 
+                var freeAddress = _app.Account
+                    .GetFreeExternalAddressAsync(_currency?.Name)
+                    .WaitForResult();
+
                 Addresses = new ObservableCollection<AddressViewModel>(
                     addresses.Select(a =>
                     {
                         var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
                             ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";             
 
                         return new AddressViewModel(_app, _currency, _navigationService)
                         {
                             Address = a.Address,
                             Type = KeyTypeToString(a.KeyType),
                             Path = path,
+                            IsFreeAddress = a?.Address == freeAddress?.Address,
                             Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {_currency.Name}",
                             UpdateAddress = UpdateAddress
                         };

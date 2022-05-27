@@ -127,7 +127,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="15" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate TransactionId}"
                        Style="{DynamicResource AdditionalTextH5}"
@@ -144,7 +144,7 @@
                 </Label>
                 <Image Grid.Column="1"
                        Grid.Row="1"
-                       Source="{AppThemeBinding Dark='ic_export__white', Light='ic_export__black'}"
+                       Source="ic_export"
                        VerticalOptions="Start"
                        Margin="0,2,40,0"
                        HeightRequest="12"
@@ -156,8 +156,8 @@
                 <Image Grid.Column="2"
                        Grid.RowSpan="2"
                        Source="ic_copy__gray"
-                       WidthRequest="25"
-                       HeightRequest="30"
+                       WidthRequest="15"
+                       HeightRequest="18"
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyTxIdCommand}"
@@ -215,7 +215,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="15" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate FromLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
@@ -233,7 +233,7 @@
                 </Label>
                 <Image Grid.Column="1"
                        Grid.Row="1"
-                       Source="{AppThemeBinding Dark='ic_export__white', Light='ic_export__black'}"
+                       Source="ic_export"
                        VerticalOptions="Start"
                        Margin="0,2,40,0"
                        HeightRequest="12"
@@ -246,8 +246,8 @@
                 <Image Grid.Column="2"
                        Grid.RowSpan="2"
                        Source="ic_copy__gray"
-                       WidthRequest="25"
-                       HeightRequest="30"
+                       WidthRequest="15"
+                       HeightRequest="18"
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
@@ -281,7 +281,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="15" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{helpers:Translate ToLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
@@ -299,7 +299,7 @@
                 </Label>
                 <Image Grid.Column="1"
                        Grid.Row="1"
-                       Source="{AppThemeBinding Dark='ic_export__white', Light='ic_export__black'}"
+                       Source="ic_export"
                        VerticalOptions="Start"
                        Margin="0,2,40,0"
                        HeightRequest="12"
@@ -312,8 +312,8 @@
                 <Image Grid.Column="2"
                        Grid.RowSpan="2"
                        Source="ic_copy__gray"
-                       WidthRequest="25"
-                       HeightRequest="30"
+                       WidthRequest="15"
+                       HeightRequest="18"
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyAddressCommand}"

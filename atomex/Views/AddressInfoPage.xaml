@@ -23,25 +23,28 @@
                   Padding="16,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="24" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="16.5" />
                     <RowDefinition Height="0.5" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="15" />
                 </Grid.ColumnDefinitions>
-                <Label Text="{helpers:Translate AddressLabel}"
+                <Label Grid.ColumnSpan="2"
+                       Text="{helpers:Translate AddressLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
+                       Grid.ColumnSpan="2"
                        Text="{Binding Address}"
                        Style="{DynamicResource MainTextH4}"
                        LineBreakMode="MiddleTruncation"
                        VerticalTextAlignment="Start"/>
-                <Image Grid.Column="1"
-                       Grid.RowSpan="3"
+                <Image Grid.Column="2"
+                       Grid.RowSpan="4"
                        Source="ic_copy__gray"
                        WidthRequest="15"
                        HeightRequest="18"
@@ -51,11 +54,24 @@
                                               CommandParameter="{Binding Address}"/>
                     </Image.GestureRecognizers>
                 </Image>
+                <Frame Grid.Row="2"
+                       Padding="5,0"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                       CornerRadius="4"
+                       IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
+                    <Label Text="{helpers:Translate New}"
+                           Style="{DynamicResource MainTextH6}"
+                           TextTransform="Lowercase"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+                </Frame>
                 <Line Grid.Row="3"
-                      Grid.ColumnSpan="2"
+                      Grid.ColumnSpan="3"
+                      Margin="0,16,0,0"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
                 <Line Grid.Row="4"
-                      Grid.ColumnSpan="2"
+                      Grid.ColumnSpan="3"
                       BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="4"

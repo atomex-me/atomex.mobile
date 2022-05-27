@@ -121,14 +121,36 @@
                                  HorizontalOptions="Center"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
                                  Command="{Binding SendCommand}"
-                                 Source="ic_send"/>
+                                 Source="ic_send">
+                        <ImageButton.Triggers>
+                            <DataTrigger TargetType="ImageButton"
+                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="False">
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
+                                <Setter Property="IsEnabled"
+                                        Value="False"/>
+                                <Setter Property="Opacity"
+                                        Value="0.3"/>
+                            </DataTrigger>
+                        </ImageButton.Triggers>
+                    </ImageButton>
                     <Label Grid.Row="1"
                            Text="{helpers:Translate SendButton}"
                            Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            Padding="0"
-                           Margin="5,0"/>
+                           Margin="5,0">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="False">
+                                <Setter Property="Opacity"
+                                        Value="0.3"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
                     <ImageButton Grid.Column="1"
                                  Padding="21"
                                  Margin="12,0"
@@ -285,7 +307,6 @@
                         </Button>
                         <Button Grid.Column="3"
                                 Style="{DynamicResource TabButton}"
-                                WidthRequest="120"
                                 Text="{helpers:Translate Delegations}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
                                 CommandParameter="Delegations"
@@ -709,16 +730,16 @@
                    HeightRequest="48"
                    Margin="16,0"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
-                <Grid Padding="20,14" 
+                <Grid Padding="20,0" 
                       HorizontalOptions="FillAndExpand"
                       ColumnSpacing="27"
                       RowSpacing="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
+                        <RowDefinition Height="48" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
                     <Label Text="{helpers:Translate StillUpdatingBalances}"
                            TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
@@ -730,6 +751,7 @@
                            Text="{helpers:Translate CancelButton}"
                            TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
                            FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                           LineBreakMode="TailTruncation"
                            FontSize="17"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End">

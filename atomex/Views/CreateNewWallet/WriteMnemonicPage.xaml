@@ -79,6 +79,7 @@
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
                         Style="{DynamicResource MnemonicPhraseEditorStyle}"
+                        BackgroundColor="Transparent"
                         TextChanged="OnTextChanged"
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused">

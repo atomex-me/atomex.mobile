@@ -106,8 +106,8 @@
                                 </Label>
                                 <Image Grid.RowSpan="2"
                                        Grid.Column="2"
-                                       WidthRequest="24"
-                                       HeightRequest="24"
+                                       WidthRequest="15"
+                                       HeightRequest="18"
                                        Margin="10,0,0,0"
                                        HorizontalOptions="End"
                                        VerticalOptions="FillAndExpand"

@@ -90,7 +90,8 @@
             </StackLayout>
             <Button Text="{helpers:Translate CloseButton}"
                     Style="{DynamicResource TransparentButton}"
-                    Margin="10,5"
+                    Margin="10,0"
+                    VerticalOptions="CenterAndExpand"
                     HorizontalOptions="EndAndExpand"
                     Command="{Binding CloseBottomSheetCommand}"/>
         </StackLayout>   

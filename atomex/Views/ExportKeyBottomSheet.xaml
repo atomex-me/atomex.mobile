@@ -75,7 +75,6 @@
                             </DataTrigger>
                         </Frame.Triggers>
                         <StackLayout Spacing="10"
-                                     Padding="16,0"
                                      Orientation="Horizontal"
                                      HorizontalOptions="CenterAndExpand">
                             <Image HeightRequest="18"
@@ -98,7 +97,7 @@
                                 </Image.Triggers>
                             </Image>
                             <Label Text="{Binding CopyButtonName}"
-                                   Style="{DynamicResource AdditionalButtonText}"
+                                   Style="{DynamicResource AdditionalClickableLabel}"
                                    VerticalTextAlignment="Center"
                                    HorizontalTextAlignment="Start"
                                    HorizontalOptions="Start">
@@ -121,8 +120,7 @@
                     </Frame>
                     <Frame Grid.Column="1"
                            Style="{DynamicResource AdditionalClickableFrame}"
-                           HorizontalOptions="FillAndExpand"
-                           Padding="16,0">
+                           HorizontalOptions="FillAndExpand">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CloseBottomSheetCommand}"/>
                         </Frame.GestureRecognizers>

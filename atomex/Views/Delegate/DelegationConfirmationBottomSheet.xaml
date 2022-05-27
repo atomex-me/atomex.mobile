@@ -172,8 +172,8 @@
                            VerticalTextAlignment="Center"
                            LineBreakMode="MiddleTruncation"/>
                     <Image Source="ic_copy__gray"
-                           WidthRequest="25"
-                           HeightRequest="30">
+                           WidthRequest="15"
+                           HeightRequest="18">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyCommand}"
                                                   CommandParameter="{Binding DelegateAddress}"/>
@@ -201,8 +201,8 @@
                            VerticalTextAlignment="Center"
                            LineBreakMode="MiddleTruncation"/>
                     <Image Source="ic_copy__gray"
-                           WidthRequest="25"
-                           HeightRequest="30">
+                           WidthRequest="15"
+                           HeightRequest="18">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyCommand}"
                                                   CommandParameter="{Binding SelectedBaker.Address}"/>

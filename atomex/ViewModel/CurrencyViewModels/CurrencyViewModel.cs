@@ -501,7 +501,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected virtual void OnSendClick()
         {
-            if (AvailableAmount <= 0) return; // TODO: show tooltip
+            if (AvailableAmount <= 0) return;
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);

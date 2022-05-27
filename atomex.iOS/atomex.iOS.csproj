@@ -260,10 +260,6 @@
     <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export__white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_export__black.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_export__black.imageset\ic_export__black.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export__white.imageset\ic_export__white.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf" />
@@ -301,6 +297,9 @@
     <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSD.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -523,6 +522,7 @@
     <Folder Include="Assets.xcassets\TZBTC.imageset\" />
     <Folder Include="Assets.xcassets\TBTC.imageset\" />
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
+    <Folder Include="Assets.xcassets\ic_export.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
