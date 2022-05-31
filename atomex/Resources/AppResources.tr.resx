@@ -479,6 +479,9 @@
     <data name="AddressesNotFound" xml:space="preserve">
         <value>Addresses not found</value>
     </data>
+    <data name="EnterAddressPlaceholder" xml:space="preserve">
+        <value>Enter an address...</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -519,24 +522,7 @@
     <data name="EstimatedRoi" xml:space="preserve">
         <value>Est. ROI</value>
     </data>
-    
-    <!-- Baker list Page -->
-    <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Baker listesi</value>
-    </data>
-    <data name="Bakers" xml:space="preserve">
-        <value>Bakers</value>
-    </data>
-    <data name="FreeSpace" xml:space="preserve">
-        <value>Free space</value>
-    </data>
-    <data name="BakerIsFull" xml:space="preserve">
-        <value>Baker is full</value>
-    </data>
-    <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Bakerı bul</value>
-    </data>
-    
+
     <!-- Delegate Page -->
     <data name="DelegatingTo" xml:space="preserve">
         <value>Delegating to...</value>
@@ -551,7 +537,7 @@
         <value>Adresten</value>
     </data>
     <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>bakerin adresini girin</value>
+        <value>Bakerin adını girin...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
         <value>Başka bir beker</value>
@@ -577,13 +563,14 @@
     <data name="BakersNotFound" xml:space="preserve">
         <value>Bakers not found</value>
     </data>
-    
-    <!-- Delegation Confirmation Page -->
-    <data name="WantToDelegate" xml:space="preserve">
-        <value>Yetki vermek istediğinizden emin misiniz?</value>
+    <data name="Bakers" xml:space="preserve">
+        <value>Bakers</value>
     </data>
-    <data name="CopyAndExitButton" xml:space="preserve">
-        <value>URI'yi Kopyala ve Kapat</value>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Free space</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Baker is full</value>
     </data>
     
     <!-- Delegation Info Page -->

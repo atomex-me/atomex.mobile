@@ -6,7 +6,7 @@
     x:Name="BindingContextPage"
     xmlns:helpers="clr-namespace:atomex.Helpers"         
     Title="{helpers:Translate BuyWithCardPageTitle}"
-    Style="{DynamicResource AdditionalBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="CenterAndExpand">

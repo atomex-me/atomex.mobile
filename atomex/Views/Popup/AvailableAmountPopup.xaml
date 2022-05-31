@@ -27,7 +27,7 @@
            HasShadow="False"
            HorizontalOptions="Center"
            VerticalOptions="Center"
-           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
         <StackLayout Spacing="0"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="Center">

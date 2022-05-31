@@ -479,6 +479,9 @@
     <data name="AddressesNotFound" xml:space="preserve">
         <value>Addresses not found</value>
     </data>
+    <data name="EnterAddressPlaceholder" xml:space="preserve">
+        <value>Enter an address...</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -520,23 +523,6 @@
         <value>Est. ROI</value>
     </data>
     
-    <!-- Baker list Page -->
-    <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Baker list</value>
-    </data>
-    <data name="Bakers" xml:space="preserve">
-        <value>Bakers</value>
-    </data>
-    <data name="FreeSpace" xml:space="preserve">
-        <value>Free space</value>
-    </data>
-    <data name="BakerIsFull" xml:space="preserve">
-        <value>Baker is full</value>
-    </data>
-    <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Search baker...</value>
-    </data>
-    
     <!-- Delegate Page -->
     <data name="DelegatingTo" xml:space="preserve">
         <value>Delegating to...</value>
@@ -550,8 +536,8 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>From Address</value>
     </data>
-    <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>Enter baker address...</value>
+    <data name="EnterBakerNamePlaceholder" xml:space="preserve">
+        <value>Enter baker name...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
         <value>Custom Baker</value>
@@ -577,13 +563,14 @@
     <data name="BakersNotFound" xml:space="preserve">
         <value>Bakers not found</value>
     </data>
-    
-    <!-- Delegation Confirmation Page -->
-    <data name="WantToDelegate" xml:space="preserve">
-        <value>Do you really want to delegate?</value>
+    <data name="Bakers" xml:space="preserve">
+        <value>Bakers</value>
     </data>
-    <data name="CopyAndExitButton" xml:space="preserve">
-        <value>Copy Uri and Exit</value>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Free space</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Baker is full</value>
     </data>
     
     <!-- Delegation Info Page -->

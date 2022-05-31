@@ -479,6 +479,9 @@
     <data name="AddressesNotFound" xml:space="preserve">
         <value>Адреса не найдены</value>
     </data>
+    <data name="EnterAddressPlaceholder" xml:space="preserve">
+        <value>Введите адрес...</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -520,23 +523,6 @@
         <value>Расчетный ROI</value>
     </data>
     
-    <!-- Baker list Page -->
-    <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Список бейкеров</value>
-    </data>
-    <data name="Bakers" xml:space="preserve">
-        <value>Бейкеры</value>
-    </data>
-    <data name="FreeSpace" xml:space="preserve">
-        <value>Свободно</value>
-    </data>
-    <data name="BakerIsFull" xml:space="preserve">
-        <value>Бейкер заполнен</value>
-    </data>
-    <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Найти бейкера...</value>
-    </data>
-    
     <!-- Delegate Page -->
     <data name="DelegatingTo" xml:space="preserve">
         <value>Делегировать...</value>
@@ -550,8 +536,8 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>С адреса</value>
     </data>
-    <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>Введите адрес бейкера...</value>
+    <data name="BakerNamePlaceholder" xml:space="preserve">
+        <value>Введите имя бейкера...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
         <value>Другой бейкер</value>
@@ -577,13 +563,14 @@
     <data name="BakersNotFound" xml:space="preserve">
         <value>Бейкеры не найдены</value>
     </data>
-    
-    <!-- Delegation Confirmation Page -->
-    <data name="WantToDelegate" xml:space="preserve">
-        <value>Вы уверены, что хотите делегировать?</value>
+    <data name="Bakers" xml:space="preserve">
+        <value>Бейкеры</value>
     </data>
-    <data name="CopyAndExitButton" xml:space="preserve">
-        <value>Копировать URI и закрыть</value>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Свободно</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Бейкер заполнен</value>
     </data>
     
     <!-- Delegation Info Page -->

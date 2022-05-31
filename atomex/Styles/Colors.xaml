@@ -4,11 +4,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Light theme colors -->
-    <Color x:Key="MainBackgroundColor">#ffffff</Color>
+    <Color x:Key="MainBackgroundColor">#0DFFFFFF</Color>
     <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
 
-    <Color x:Key="NavigationBarBackgroundColor">#20439E</Color>
-    <Color x:Key="NavigationBarTextColor">#ffffff</Color>
+    <Color x:Key="NavigationBarBackgroundColor">#0DFFFFFF</Color>
+    <Color x:Key="NavigationBarTextColor">#F7000E22</Color>
     <Color x:Key="TabBarBackgroundColor">#20439E</Color>
     <Color x:Key="SelectedTabColor">#F7DCECFF</Color>
     <Color x:Key="UnselectedTabColor">#61DCECFF</Color>
@@ -59,13 +59,8 @@
     <Color x:Key="WarningSnackBarTextColor">#F7000E22</Color>
     <Color x:Key="SuccessSnackBarTextColor">#F7000E22</Color>
 
-    <Color x:Key="ErrorFrameBackgroundColor">#ffc7c7</Color>
-    <Color x:Key="WarningFrameBackgroundColor">#FFFBCE</Color>
-    <Color x:Key="SuccessFrameBackgroundColor">#c7ffc7</Color>
-    <Color x:Key="PopupFrameBackgroundColor">#f3f2f7</Color>
-
+    <Color x:Key="PopupFrameBackgroundColor">#f4f4ff</Color>
     <Color x:Key="LoaderColor">#3a6cb1</Color>
-
     <Color x:Key="SeparatorColor">#29000E22</Color>
 
     <Color x:Key="StartPageBackgroundStartColor">#2b5287</Color>
@@ -75,12 +70,11 @@
     <Color x:Key="ListViewItemBackgroundColor">White</Color>
     <Color x:Key="ListViewSelectedBackgroundColor">LightGray</Color>
 
-
     <!-- Dark theme colors  -->
     <Color x:Key="MainBackgroundColorDark">#11233C</Color>
     <Color x:Key="AdditionalBackgroundColorDark">#08121D</Color>
 
-    <Color x:Key="NavigationBarBackgroundColorDark">#07172D</Color>
+    <Color x:Key="NavigationBarBackgroundColorDark">#11233C</Color>
     <Color x:Key="NavigationBarTextColorDark">#F7DCECFF</Color>
     <Color x:Key="TabBarBackgroundColorDark">#21324a</Color>
     <Color x:Key="SelectedTabColorDark">#F7DCECFF</Color>
@@ -132,13 +126,8 @@
     <Color x:Key="WarningSnackBarTextColorDark">#F7000E22</Color>
     <Color x:Key="SuccessSnackBarTextColorDark">#F7000E22</Color>
 
-    <Color x:Key="ErrorFrameBackgroundColorDark">#4E4646</Color>
-    <Color x:Key="WarningFrameBackgroundColorDark">#747568</Color>
-    <Color x:Key="SuccessFrameBackgroundColorDark">#383E38</Color>
-    <Color x:Key="PopupFrameBackgroundColorDark">#354454</Color>
-
+    <Color x:Key="PopupFrameBackgroundColorDark">#11233C</Color>
     <Color x:Key="LoaderColorDark">#f6f6f6</Color>
-
     <Color x:Key="SeparatorColorDark">#29DCECFF</Color>
 
     <Color x:Key="StartPageBackgroundStartColorDark">#2b5277</Color>

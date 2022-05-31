@@ -13,6 +13,7 @@
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -23,7 +24,7 @@
                          Margin="16,10"
                          HeightRequest="52"
                          Spacing="0">
-                <custom:CustomEntry Placeholder="{helpers:Translate MyAddresses}"
+                <custom:CustomEntry Placeholder="{helpers:Translate EnterAddressPlaceholder}"
                                     Style="{DynamicResource EntryStyle}"
                                     FontSize="14"
                                     Text="{Binding SearchPattern, Mode=TwoWay}"
@@ -31,6 +32,11 @@
                                     VerticalTextAlignment="Center"
                                     VerticalOptions="FillAndExpand"
                                     HorizontalOptions="FillAndExpand"/>
+                <Image Source="ic_search"
+                       WidthRequest="17"
+                       HeightRequest="17"
+                       VerticalOptions="Center"
+                       IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>
                 <ImageButton Source="ic_close"
                              BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
                              Padding="7"

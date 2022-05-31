@@ -6,7 +6,7 @@
              x:Class="atomex.SettingsPage"
              x:Name="BindingContextPage"
              Title="{helpers:Translate SettingsPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"

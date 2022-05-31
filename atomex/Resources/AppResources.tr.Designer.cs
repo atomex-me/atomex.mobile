@@ -923,6 +923,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string EnterAddressPlaceholder {
+            get {
+                return ResourceManager.GetString("EnterAddressPlaceholder", resourceCulture);
+            }
+        }
+        
         internal static string ReceivePageTitle {
             get {
                 return ResourceManager.GetString("ReceivePageTitle", resourceCulture);
@@ -992,36 +998,6 @@ namespace atomex.Resources {
         internal static string EstimatedRoi {
             get {
                 return ResourceManager.GetString("EstimatedRoi", resourceCulture);
-            }
-        }
-        
-        internal static string BakerListPageTitle {
-            get {
-                return ResourceManager.GetString("BakerListPageTitle", resourceCulture);
-            }
-        }
-        
-        internal static string Bakers {
-            get {
-                return ResourceManager.GetString("Bakers", resourceCulture);
-            }
-        }
-        
-        internal static string FreeSpace {
-            get {
-                return ResourceManager.GetString("FreeSpace", resourceCulture);
-            }
-        }
-        
-        internal static string BakerIsFull {
-            get {
-                return ResourceManager.GetString("BakerIsFull", resourceCulture);
-            }
-        }
-        
-        internal static string SearchBarPlaceholder {
-            get {
-                return ResourceManager.GetString("SearchBarPlaceholder", resourceCulture);
             }
         }
         
@@ -1103,15 +1079,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string WantToDelegate {
+        internal static string Bakers {
             get {
-                return ResourceManager.GetString("WantToDelegate", resourceCulture);
+                return ResourceManager.GetString("Bakers", resourceCulture);
             }
         }
         
-        internal static string CopyAndExitButton {
+        internal static string FreeSpace {
             get {
-                return ResourceManager.GetString("CopyAndExitButton", resourceCulture);
+                return ResourceManager.GetString("FreeSpace", resourceCulture);
+            }
+        }
+        
+        internal static string BakerIsFull {
+            get {
+                return ResourceManager.GetString("BakerIsFull", resourceCulture);
             }
         }
         

@@ -279,10 +279,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\Magnifier.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\Warning.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -345,10 +341,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-night\LogoLabel.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-night\Magnifier.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

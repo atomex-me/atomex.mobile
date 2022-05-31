@@ -7,7 +7,7 @@
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.CreateMnemonicPage"
              Title="{Binding Title}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <converters:StringToBoolConverter x:Key="StringToBool"/>
     </ContentPage.Resources>
@@ -204,7 +204,7 @@
                 </custom:CustomFrame>
             </StackLayout>
             <Label Text="{Binding Warning}"
-                   Style="{DynamicResource ErrorTextStyle}">
+                   Style="{DynamicResource ErrorTextH5CenterAlign}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Warning}"

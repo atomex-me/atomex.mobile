@@ -139,8 +139,6 @@
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
-    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Magnifier.imageset\magnifier-2-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
@@ -523,6 +521,7 @@
     <Folder Include="Assets.xcassets\TBTC.imageset\" />
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
+    <Folder Include="Assets.xcassets\ic_search__white.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
