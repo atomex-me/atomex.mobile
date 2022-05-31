@@ -33,7 +33,8 @@ namespace atomex.ViewModel
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    OnSelected?.Invoke(SelectedCurrency);
+                    if (SelectedCurrency.AvailableAmount > 0)
+                        OnSelected?.Invoke(SelectedCurrency);
                 });
         }
 

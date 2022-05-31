@@ -5,6 +5,7 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.Views.SelectCurrencyBottomSheet">
@@ -18,6 +19,11 @@
             EasingOut="SinIn"
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
@@ -80,7 +86,16 @@
                                     <Label Text="{Binding Currency.Description}"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Center"/>
+                                           VerticalTextAlignment="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                         Value="False">
+                                                <Setter Property="Opacity"
+                                                        Value="0.38"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                     <Label Style="{DynamicResource MainTextH4}"
                                            HorizontalOptions="EndAndExpand"
                                            HorizontalTextAlignment="End"
@@ -88,15 +103,15 @@
                                            Margin="16,0">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label"
-                                                         Binding="{Binding TotalAmount}"
-                                                         Value="0">
+                                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                         Value="False">
                                                 <Setter Property="Opacity"
                                                         Value="0.38"/>
                                             </DataTrigger>
                                         </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
                                                 <Span Text=" "/>
                                                 <Span Text="{Binding CurrencyCode}"/>
                                             </FormattedString>

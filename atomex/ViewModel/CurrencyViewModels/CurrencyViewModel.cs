@@ -357,11 +357,17 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.GoToExchange(Currency));
+        {
+            _navigationService?.CloseBottomSheet();
+            _navigationService?.GoToExchange(Currency);
+        });
 
         protected ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
         public ReactiveCommand<Unit, Unit> BuyCurrencyCommand => _buyCurrencyCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.GoToBuy(Currency));
+        {
+            _navigationService?.CloseBottomSheet();
+            _navigationService?.GoToBuy(Currency);
+        });
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
@@ -450,48 +456,12 @@ namespace atomex.ViewModel.CurrencyViewModels
             });
 
         private ReactiveCommand<Unit, Unit> _displayActionSheetCommand;
-        public ReactiveCommand<Unit, Unit> DisplayActionSheetCommand => _displayActionSheetCommand ??= ReactiveCommand.CreateFromTask(async () =>
-        {
-            string send = AppResources.SendButton + " " + CurrencyCode;
-            string receive = AppResources.ReceiveButton + " " + CurrencyCode;
-            string exchange = AppResources.ExchangeButton + " " + CurrencyCode;
-            string buy = CanBuy
-                ? AppResources.BuyButton + " " + CurrencyCode
-                : null;
-            
-            string[] actions = new string[]
-            {
-                send,
-                receive,
-                exchange,
-                buy
-            };
-
-            string result = await _navigationService?.DisplayActionSheet(AppResources.CancelButton, actions);
-
-            if (result == send)
-            {
-                OnSendClick();
-                return;
-            }
-            if (result == receive)
-            {
-                OnReceiveClick();
-                return;
-            }
-            if (result == exchange)
-            {
-                _navigationService?.GoToExchange(Currency);
-                return;
-            }
-            if (result == buy)
-            {
-                _navigationService?.GoToBuy(Currency);
-            }
-        });
+        public ReactiveCommand<Unit, Unit> DisplayActionSheetCommand => _displayActionSheetCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new CurrencyActionBottomSheet(this)));
 
         protected virtual void OnReceiveClick()
         {
+            _navigationService?.CloseBottomSheet();
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
                 currency: Currency,
@@ -502,6 +472,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected virtual void OnSendClick()
         {
             if (AvailableAmount <= 0) return;
+            _navigationService?.CloseBottomSheet();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             var sendViewModel = SendViewModelCreator.CreateViewModel(_app, this, _navigationService);
