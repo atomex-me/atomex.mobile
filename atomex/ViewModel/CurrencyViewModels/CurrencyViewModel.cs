@@ -116,7 +116,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             SubscribeToServices();
             SubscribeToRatesProvider(_app.QuotesProvider);
-
+            
             if (loadTransaction)
                 _ = LoadTransactionsAsync();
 

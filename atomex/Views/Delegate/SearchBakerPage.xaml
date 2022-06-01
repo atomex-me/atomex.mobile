@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>

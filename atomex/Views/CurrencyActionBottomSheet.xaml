@@ -57,7 +57,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SendCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5Regular}"
+                    <Label Style="{DynamicResource MainTextH5}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -81,7 +81,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ReceiveCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5Regular}"
+                    <Label Style="{DynamicResource MainTextH5}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -101,11 +101,12 @@
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
-                             Margin="24">
+                             Margin="24"
+                             IsVisible="{Binding Currency.IsSwapAvailable, TargetNullValue='False', FallbackValue='False'}">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ConvertCurrencyCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5Regular}"
+                    <Label Style="{DynamicResource MainTextH5}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -130,7 +131,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BuyCurrencyCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5Regular}"
+                    <Label Style="{DynamicResource MainTextH5}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"

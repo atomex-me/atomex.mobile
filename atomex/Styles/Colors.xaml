@@ -4,7 +4,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Light theme colors -->
-    <Color x:Key="MainBackgroundColor">#0DFFFFFF</Color>
+    <Color x:Key="MainBackgroundColor">#FEFEFF</Color>
     <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
 
     <Color x:Key="NavigationBarBackgroundColor">#0DFFFFFF</Color>
