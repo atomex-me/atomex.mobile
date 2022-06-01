@@ -247,8 +247,8 @@
             </StackLayout>
             <StackLayout Spacing="5"
                          Orientation="Vertical"
-                         VerticalOptions="Fill"
-                         HorizontalOptions="StartAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
                          IsVisible="False">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"

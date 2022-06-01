@@ -15,6 +15,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        <StackLayout>
         <StackLayout VerticalOptions="FillAndExpand">
             <Label Text="{helpers:Translate SendFrom}"
                    Style="{DynamicResource MainTextH1}"
@@ -196,6 +197,7 @@
                     </Label.FormattedText>
                 </Label>
             </Grid>
+        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

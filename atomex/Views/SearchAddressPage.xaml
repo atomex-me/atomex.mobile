@@ -17,10 +17,11 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
+        <StackLayout>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="FillAndExpand"
+                         HorizontalOptions="Fill"
                          Margin="16,10"
                          HeightRequest="52"
                          Spacing="0">
@@ -55,7 +56,7 @@
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
-                      VerticalOptions="Fill"
+                      VerticalOptions="FillAndExpand"
                       Footer="">
                 <ListView.Behaviors>
                     <behaviors:EventToCommandBehavior EventName="ItemTapped"
@@ -158,6 +159,7 @@
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"/>
             </StackLayout>
+        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

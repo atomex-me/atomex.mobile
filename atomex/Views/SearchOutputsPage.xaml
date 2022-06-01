@@ -17,6 +17,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
+        <StackLayout>
         <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal"
@@ -197,6 +198,7 @@
                     </Label.FormattedText>
                 </Label>
             </Grid>
+        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

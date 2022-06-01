@@ -301,7 +301,7 @@
         <value>Обменять</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>Отменить делегирование</value>
+        <value>Делегировать</value>
     </data>
     <data name="UndelegateButton" xml:space="preserve">
         <value>Undelegate</value>
