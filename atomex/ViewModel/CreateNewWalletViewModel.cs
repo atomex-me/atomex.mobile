@@ -641,7 +641,7 @@ namespace atomex
         public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => Warning = string.Empty);
 
         private ICommand _clearMnemonicCommand;
-        public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= ReactiveCommand.Create(() => Mnemonic = string.Empty);
+        public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= new Command(() => Mnemonic = string.Empty);
 
         private ICommand _createWalletCommand;
         public ICommand CreateWalletCommand => _createWalletCommand ??= ReactiveCommand.CreateFromTask(async () => await ConnectToWallet());

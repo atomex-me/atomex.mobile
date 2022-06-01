@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.Resources;
-using atomex.ViewModel.SendViewModels;
 using atomex.Views;
-using atomex.Views.Send;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
@@ -117,7 +115,7 @@ namespace atomex.ViewModel
                 Title = AppResources.AddressSharing
             });
 
-            await Task.Delay(1500);
+            await Task.Delay(500);
             IsShared = false;
         });
 

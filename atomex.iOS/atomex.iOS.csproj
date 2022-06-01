@@ -248,8 +248,6 @@
     <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy--dark-1.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\ic_copy__white.pdf" />
@@ -298,6 +296,8 @@
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

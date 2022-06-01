@@ -86,7 +86,7 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_copy--dark-1.pdf",
+      "filename": "ic_copy__gray--dark.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
@@ -304,7 +304,7 @@
       "idiom": "car"
     },
     {
-      "filename": "ic_copy.pdf",
+      "filename": "ic_copy__gray.pdf",
       "appearances": [
         {
           "appearance": "luminosity",
