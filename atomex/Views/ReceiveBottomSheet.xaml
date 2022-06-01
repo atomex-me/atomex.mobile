@@ -21,12 +21,6 @@
             EasingOut="SinIn"
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
-    <pages:PopupPage.Resources>
-        <ResourceDictionary>
-            <converters:NullToBooleanConverter x:Key="NullToBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-        </ResourceDictionary>
-    </pages:PopupPage.Resources>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>

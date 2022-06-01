@@ -57,7 +57,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SendCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5}"
+                    <Label Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -81,7 +81,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ReceiveCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5}"
+                    <Label Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -106,7 +106,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ConvertCurrencyCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5}"
+                    <Label Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
@@ -131,7 +131,7 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BuyCurrencyCommand}"/>
                     </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH5}"
+                    <Label Style="{DynamicResource MainTextH4}"
                            TextTransform="Lowercase"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
