@@ -89,9 +89,7 @@ namespace atomex.Services
                 var algorithm = "Sha256WithEcdsa:BtcMsg";
                 var messageToSign = $"{message}{timeStamp}";
                 var messageBytesToSign = Encoding.UTF8.GetBytes(messageToSign);
-                var messageToSignHex = messageBytesToSign.ToHexString();
                 var hash = BtcMessageHash(messageBytesToSign);
-                var hashHex = hash.ToHexString();
 
                 var signature = await atomexApp.Account.Wallet
                     .SignByServiceKeyAsync(hash, 0)
