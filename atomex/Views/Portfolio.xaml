@@ -212,7 +212,7 @@
                                    Padding="0"
                                    BackgroundColor="Transparent">
                                      <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding DisplayActionSheetCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
                                     </Frame.GestureRecognizers>
                                 <Image Source="ic_menu"
                                        WidthRequest="4"

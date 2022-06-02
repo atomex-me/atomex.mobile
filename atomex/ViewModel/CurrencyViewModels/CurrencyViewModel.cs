@@ -455,8 +455,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                 SelectedTab = selectedTab;
             });
 
-        private ReactiveCommand<Unit, Unit> _displayActionSheetCommand;
-        public ReactiveCommand<Unit, Unit> DisplayActionSheetCommand => _displayActionSheetCommand ??= ReactiveCommand.Create(() =>
+        private ReactiveCommand<Unit, Unit> _showCurrencyActionBottomSheet;
+        public ReactiveCommand<Unit, Unit> ShowCurrencyActionBottomSheet => _showCurrencyActionBottomSheet ??= ReactiveCommand.Create(() =>
             _navigationService?.ShowBottomSheet(new CurrencyActionBottomSheet(this)));
 
         protected virtual void OnReceiveClick()

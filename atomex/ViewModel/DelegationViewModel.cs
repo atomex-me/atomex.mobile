@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Reactive;
-using atomex.Resources;
+using System.Windows.Input;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using ReactiveUI;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class DelegationViewModel
     {
-        private INavigationService _navigationService { get; set; }
-
         public BakerData Baker { get; set; }
         public string Address { get; set; }
         public decimal Balance { get; set; }
@@ -20,14 +19,11 @@ namespace atomex.ViewModel
         public DelegationStatus Status { get; set; }
         public string StatusString => Status.GetDescription();
 
+        public Action<DelegationViewModel> ShowActionSheet { get; set; }
+        public Action CloseActionSheet { get; set; }
         public Action<string> CopyAddress { get; set; }
         public Action<DelegationViewModel> ChangeBaker { get; set; }
         public Action<DelegationViewModel> Undelegate { get; set; }
-
-        public DelegationViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-        }
    
         private ReactiveCommand<Unit, Unit> _checkRewardsCommand;
         public ReactiveCommand<Unit, Unit> CheckRewardsCommand => _checkRewardsCommand ??=
@@ -41,40 +37,16 @@ namespace atomex.ViewModel
         public ReactiveCommand<Unit, Unit> ChangeBakerCommand => _changeBakerCommand ??=
             ReactiveCommand.Create(() => ChangeBaker?.Invoke(this));
 
+        private ReactiveCommand<Unit, Unit> _undelegateCommand;
+        public ReactiveCommand<Unit, Unit> UndelegateCommand => _undelegateCommand ??=
+            ReactiveCommand.Create(() => Undelegate?.Invoke(this));
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
+            new Command(() => CloseActionSheet?.Invoke());
 
         private ReactiveCommand<Unit, Unit> _delegationActionSheetCommand;
-        public ReactiveCommand<Unit, Unit> DelegationActionSheetCommand => _delegationActionSheetCommand ??= ReactiveCommand.CreateFromTask(async () =>
-        {
-            string delegateAction = Status == DelegationStatus.NotDelegated
-                ? AppResources.DelegateButton
-                : AppResources.UndelegateButton;
-
-            string changeAction = Status == DelegationStatus.NotDelegated
-                ? null
-                : AppResources.ChangeBaker;
-
-
-            string[] actions = new string[]
-            {
-                delegateAction,
-                changeAction
-            };
-
-            string result = await _navigationService?.DisplayActionSheet(AppResources.CancelButton, actions);
-
-            if (result == delegateAction)
-            {
-                if (Status == DelegationStatus.NotDelegated)
-                    ChangeBaker?.Invoke(this);
-                else
-                    Undelegate?.Invoke(this);
-
-                return;
-            }
-            if (result == changeAction)
-            {
-                ChangeBaker?.Invoke(this);
-            }
-        });
+        public ReactiveCommand<Unit, Unit> DelegationActionSheetCommand => _delegationActionSheetCommand ??=
+            ReactiveCommand.Create(() => ShowActionSheet?.Invoke(this));
     }
 }

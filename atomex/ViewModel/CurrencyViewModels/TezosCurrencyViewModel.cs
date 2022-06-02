@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Views;
 using atomex.Views.Delegate;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -84,7 +85,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                     if (string.IsNullOrEmpty(@delegate))
                     {
-                        delegations.Add(new DelegationViewModel(_navigationService)
+                        delegations.Add(new DelegationViewModel
                         {
                             Baker = null,
                             Address = wa.Address,
@@ -94,7 +95,9 @@ namespace atomex.ViewModel.CurrencyViewModels
                             Status = DelegationStatus.NotDelegated,
                             CopyAddress = CopyAddress,
                             ChangeBaker = ChangeBaker,
-                            Undelegate = Undelegate
+                            Undelegate = Undelegate,
+                            ShowActionSheet = ShowActionBottomSheet,
+                            CloseActionSheet = CloseActionBottomSheet
                         });
 
                         continue;
@@ -110,7 +113,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                         ? Math.Floor((account.Value.DelegationLevel - 1) / 4096)
                         : Math.Floor((account.Value.DelegationLevel - 1) / 2048);
 
-                    delegations.Add(new DelegationViewModel(_navigationService)
+                    delegations.Add(new DelegationViewModel
                     {
                         Baker = baker,
                         Address = wa.Address,
@@ -122,7 +125,9 @@ namespace atomex.ViewModel.CurrencyViewModels
                                 DelegationStatus.Active,
                         CopyAddress = CopyAddress,
                         ChangeBaker = ChangeBaker,
-                        Undelegate = Undelegate
+                        Undelegate = Undelegate,
+                        ShowActionSheet = ShowActionBottomSheet,
+                        CloseActionSheet = CloseActionBottomSheet
                     });
                 }
 
@@ -143,14 +148,26 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void ChangeBaker(DelegationViewModel delegation)
         {
+            CloseActionBottomSheet();
             _delegateViewModel?.InitializeWith(delegation);
             _navigationService?.ShowPage(new DelegatePage(_delegateViewModel), TabNavigation.Portfolio);
         }
 
         private void Undelegate(DelegationViewModel delegation)
         {
+            CloseActionBottomSheet();
             _navigationService.SetInitiatedPage(TabNavigation.Portfolio);
             _delegateViewModel?.Undelegate(delegation.Address);
+        }
+
+        private void ShowActionBottomSheet(DelegationViewModel delegation)
+        {
+            _navigationService?.ShowBottomSheet(new DelegationActionBottomSheet(delegation));
+        }
+
+        private void CloseActionBottomSheet()
+        {
+            _navigationService?.CloseBottomSheet();
         }
 
         protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
