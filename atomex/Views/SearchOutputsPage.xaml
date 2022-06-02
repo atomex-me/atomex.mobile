@@ -54,7 +54,7 @@
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
-                      VerticalOptions="Fill"
+                      VerticalOptions="FillAndExpand"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                       Footer="">
                 <ListView.Triggers>

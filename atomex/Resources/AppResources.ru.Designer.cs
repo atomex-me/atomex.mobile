@@ -1025,9 +1025,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string BakerNamePlaceholder {
+        internal static string EnterBakerNamePlaceholder {
             get {
-                return ResourceManager.GetString("BakerNamePlaceholder", resourceCulture);
+                return ResourceManager.GetString("EnterBakerNamePlaceholder", resourceCulture);
             }
         }
         

@@ -536,7 +536,7 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>Adresten</value>
     </data>
-    <data name="BakerAddressPlaceholder" xml:space="preserve">
+    <data name="EnterBakerNamePlaceholder" xml:space="preserve">
         <value>Bakerin adını girin...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">

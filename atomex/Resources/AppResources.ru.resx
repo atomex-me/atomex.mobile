@@ -536,7 +536,7 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>С адреса</value>
     </data>
-    <data name="BakerNamePlaceholder" xml:space="preserve">
+    <data name="EnterBakerNamePlaceholder" xml:space="preserve">
         <value>Введите имя бейкера...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
