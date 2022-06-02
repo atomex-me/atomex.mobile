@@ -138,16 +138,17 @@
                     </Frame.GestureRecognizers>
                     <Grid ColumnSpacing="12"
                           RowSpacing="0"
+                          VerticalOptions="CenterAndExpand"
                           HorizontalOptions="Center">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="18" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <RelativeLayout Grid.ColumnSpan="2"
-                                        HorizontalOptions="FillAndExpand">
+                                        HorizontalOptions="CenterAndExpand">
                             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
 	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
                                                RelativeLayout.WidthConstraint="24"
@@ -159,7 +160,7 @@
                         </RelativeLayout>
                         <Image HeightRequest="18"
                                WidthRequest="18"
-                               VerticalOptions="Center"
+                               VerticalOptions="CenterAndExpand"
                                Source="ic_share">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"

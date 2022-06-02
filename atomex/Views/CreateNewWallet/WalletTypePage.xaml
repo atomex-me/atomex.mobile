@@ -20,11 +20,13 @@
                                       Style="{DynamicResource MainButton}"
                                       FontSize="14"
                                       CornerRadius="0"
+                                      TextTransform="Uppercase"
                                       Command="{Binding SetTestNetTypeCommand}"/>
             <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
                                        Style="{DynamicResource MainButton}"
                                        FontSize="14"
                                        CornerRadius="0"
+                                       TextTransform="Uppercase"
                                        Command="{Binding SetMainNetTypeCommand}"/>
         </StackLayout>
     </StackLayout> 
