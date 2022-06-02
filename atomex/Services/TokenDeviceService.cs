@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 using atomex.Models;
 using Atomex;
 using Atomex.Common;
+using Atomex.Cryptography.Abstract;
+using NBitcoin;
+using NBitcoin.Protocol;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -74,37 +78,40 @@ namespace atomex.Services
 
         private static async Task<string> GetAuthToken(IAtomexApp atomexApp, CancellationToken cancellationToken = default)
         {
-            var securePublicKey = atomexApp.Account.Wallet.GetServicePublicKey(0);
-            var publicKey = securePublicKey.ToUnsecuredBytes();
-
-            var timeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            var message = "Sign by Atomex Mobile Client";
-            var publicKeyHex = Hex.ToHexString(publicKey);
-            var algorithm = "Sha256WithEcdsa:BtcMsg";
-
-            var signature = await atomexApp.Account.Wallet
-                .SignByServiceKeyAsync(Encoding.UTF8.GetBytes($"{message}{timeStamp}"), 0)
-                .ConfigureAwait(false);
-
-            var signatureHex = Hex.ToHexString(signature);
-
-            string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me/";
-
-            var requestUri = "v1/token";
-
-            var jsonRequest = JsonConvert.SerializeObject(new
-            {
-                timeStamp = timeStamp,
-                message = message,
-                publicKey = publicKeyHex,
-                signature = signatureHex,
-                algorithm = algorithm
-            });
-
-            var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-
             try
             {
+                var securePublicKey = atomexApp.Account.Wallet.GetServicePublicKey(0);
+                var publicKey = securePublicKey.ToUnsecuredBytes();
+
+                var timeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                var message = "Sign by Atomex Mobile Client";
+                var publicKeyHex = Hex.ToHexString(publicKey);
+                var algorithm = "Sha256WithEcdsa:BtcMsg";
+                var messageToSign = $"{message}{timeStamp}";
+                var messageBytesToSign = Encoding.UTF8.GetBytes(messageToSign);
+                var messageToSignHex = messageBytesToSign.ToHexString();
+                var hash = BtcMessageHash(messageBytesToSign);
+                var hashHex = hash.ToHexString();
+
+                var signature = await atomexApp.Account.Wallet
+                    .SignByServiceKeyAsync(hash, 0)
+                    .ConfigureAwait(false);
+                var signatureHex = Hex.ToHexString(signature);
+
+                string baseUri = atomexApp.Account.Network == Atomex.Core.Network.MainNet ? "https://api.atomex.me/" : "https://api.test.atomex.me/";
+                var requestUri = "v1/token";
+
+                var jsonRequest = JsonConvert.SerializeObject(new
+                {
+                    timeStamp = timeStamp,
+                    message = message,
+                    publicKey = publicKeyHex,
+                    signature = signatureHex,
+                    algorithm = algorithm
+                });
+
+                var requestContent = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
                 var authTokenResult = await HttpHelper.PostAsyncResult<string>(
                         baseUri: baseUri,
                         requestUri: requestUri,
@@ -120,6 +127,23 @@ namespace atomex.Services
                 Log.Error(e, "Get auth token error");
                 return null;
             }
+        }
+
+        private static string BitcoinSignedMessageHeader = "Bitcoin Signed Message:\n";
+        private static byte[] BitcoinSignedMessageHeaderBytes = Encoding.UTF8.GetBytes(BitcoinSignedMessageHeader);
+
+        private static byte[] BtcMessageHash(byte[] messageBytes)
+        {
+            var ms = new MemoryStream();
+
+            ms.WriteByte((byte)BitcoinSignedMessageHeaderBytes.Length);
+            ms.Write(BitcoinSignedMessageHeaderBytes);
+            ms.Write(new VarInt((ulong)messageBytes.Length).ToBytes());
+            ms.Write(messageBytes);
+
+            var messageForSigning = ms.ToArray();
+
+            return HashAlgorithm.Sha256.Hash(messageForSigning, iterations: 2);
         }
     }
 }
