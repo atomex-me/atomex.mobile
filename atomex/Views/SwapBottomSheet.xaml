@@ -168,7 +168,7 @@
                                    WidthRequest="48"
                                    HeightRequest="48"
                                    HorizontalOptions="Center"/>
-                            <Image Source="ConvertArrow"
+                            <Image Source="ic_exchange"
                                    Grid.Column="1"
                                    WidthRequest="20"
                                    VerticalOptions="CenterAndExpand"/>

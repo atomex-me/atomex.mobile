@@ -301,7 +301,7 @@
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-1.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-2.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
