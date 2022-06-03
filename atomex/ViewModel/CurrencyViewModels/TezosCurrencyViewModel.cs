@@ -24,6 +24,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
+        private TezosTokensViewModel _tezosTokensViewModel { get; set; }
 
         public TezosCurrencyViewModel(
              IAtomexApp app,
@@ -49,6 +50,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             _ = LoadDelegationInfoAsync();
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
+            _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()

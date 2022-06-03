@@ -224,8 +224,9 @@
                             <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Frame Grid.ColumnSpan="4"
+                        <Frame Grid.ColumnSpan="5"
                                CornerRadius="18"
                                HasShadow="False"
                                Padding="0"
@@ -245,33 +246,6 @@
                                 </DataTrigger>
                                 <DataTrigger TargetType="Button"
                                              Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button Grid.Column="2"
-                                Style="{DynamicResource TabButton}"
-                                WidthRequest="120"
-                                Text="{helpers:Translate Collectibles}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Collectibles"
-                                IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
-                                Clicked="ScrollToCenter">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Collectibles">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
                                              Value="True">
                                     <Setter Property="TextColor"
                                             Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
@@ -305,7 +279,61 @@
                                 </DataTrigger>
                             </Button.Triggers>
                         </Button>
+                        <Button Grid.Column="2"
+                                Style="{DynamicResource TabButton}"
+                                WidthRequest="120"
+                                Text="{helpers:Translate Tokens}"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Tokens"
+                                IsVisible="{Binding HasTokens, TargetNullValue='false', FallbackValue='false'}"
+                                Clicked="ScrollToCenter">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Tokens">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Tokens'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Grid.Column="3"
+                                Style="{DynamicResource TabButton}"
+                                WidthRequest="120"
+                                Text="{helpers:Translate Collectibles}"
+                                Command="{Binding ChangeCurrencyTabCommand}"
+                                CommandParameter="Collectibles"
+                                IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
+                                Clicked="ScrollToCenter">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab}"
+                                             Value="Collectibles">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
+                                             Value="True">
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    <Setter Property="BackgroundColor"
+                                            Value="Transparent"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Grid.Column="4"
                                 Style="{DynamicResource TabButton}"
                                 Text="{helpers:Translate Delegations}"
                                 Command="{Binding ChangeCurrencyTabCommand}"
@@ -579,6 +607,176 @@
                                 Command="{Binding ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>
+
+
+
+
+                <ListView ItemsSource="{Binding Tokens}"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="Default"
+                          SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                          VerticalOptions="FillAndExpand"
+                          BackgroundColor="Transparent"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedToken, Mode=TwoWay}"
+                          IsVisible="False"
+                          Footer="">
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding SelectedTab}"
+                                     Value="Tokens">
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                    <ListView.Header>
+                        <StackLayout Spacing="0">
+                            <StackLayout Orientation="Horizontal"
+                                         HorizontalOptions="Fill"
+                                         Margin="16,8,16,0"
+                                         HeightRequest="52"
+                                         Spacing="4">
+                                <Label Text="{helpers:Translate Tokens}"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       HorizontalOptions="FillAndExpand"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center"/>
+                                <Frame HasShadow="False"
+                                       WidthRequest="32"
+                                       Padding="0"
+                                       VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="End"
+                                       BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="ic_update"
+                                           WidthRequest="16"
+                                           HeightRequest="21"
+                                           Margin="8,16"/>
+                                </Frame>
+                                <Frame HasShadow="False"
+                                       WidthRequest="32"
+                                       Padding="0"
+                                       VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="End"
+                                       BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="ic_menu"
+                                           WidthRequest="4"
+                                           HeightRequest="16"
+                                           HorizontalOptions="End"
+                                           Margin="10,17"/>
+                                </Frame>
+                            </StackLayout>
+                            <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                         Margin="16,0,0,0"/>
+                        </StackLayout>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                <Grid RowSpacing="4"
+                                      ColumnSpacing="0"
+                                      Padding="16,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="36" />
+                                        <RowDefinition Height="36" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="24" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="32" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.RowSpan="2"
+                                           Source="{Binding CurrencyCode}"
+                                           HeightRequest="24"
+                                           WidthRequest="24"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"/>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Currency.Description}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           Padding="12,0"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="End"/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Text="{Binding Price, StringFormat='${0:f2}'}"
+                                           Style="{DynamicResource AdditionalTextH6}"
+                                           Padding="12,0"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Start">
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="2"
+                                           Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Start"
+                                           Padding="6,0">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                         Value="True">
+                                                <Setter Property="Style"
+                                                        Value="{DynamicResource SuccessTextH6}"/>
+                                                <Setter Property="Text"
+                                                        Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                         Value="False">
+                                                <Setter Property="Style"
+                                                        Value="{DynamicResource ErrorTextH6}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Column="3"
+                                           Style="{DynamicResource MainTextH4}"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="End">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding CurrencyCode}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="3"
+                                           Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                                           Style="{DynamicResource MainTextH6}"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Start"/>
+                                    <Frame Grid.RowSpan="2"
+                                           Grid.Column="4"
+                                           HasShadow="False"
+                                           Padding="0"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_menu"
+                                               WidthRequest="4"
+                                               HeightRequest="16"
+                                               Margin="18,0,10,0"/>
+                                    </Frame>
+                                </Grid>
+                            </controls:CustomViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>         
+
+
+
+
+
+
                 <ListView ItemsSource="{Binding Delegations}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
