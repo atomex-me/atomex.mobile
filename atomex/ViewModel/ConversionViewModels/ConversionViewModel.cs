@@ -145,7 +145,7 @@ namespace atomex.ViewModel
                         return;
 
                     var existsViewModel = ToCurrencies?.FirstOrDefault(
-                        c => c.Currency.Name == ToViewModel.CurrencyViewModel.Currency.Name);
+                        c => c?.Currency?.Name == ToViewModel?.CurrencyViewModel?.Currency?.Name);
 
                     if (existsViewModel == null)
                     {
