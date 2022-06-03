@@ -236,7 +236,6 @@
     <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_send.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_receive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
@@ -246,7 +245,6 @@
     <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_send.imageset\ic_send.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\Contents.json" />
@@ -298,6 +296,12 @@
     <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray--dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\ic_exchange__white.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-1.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -522,6 +526,8 @@
     <Folder Include="Assets.xcassets\WBTC.imageset\" />
     <Folder Include="Assets.xcassets\ic_export.imageset\" />
     <Folder Include="Assets.xcassets\ic_search__white.imageset\" />
+    <Folder Include="Assets.xcassets\ic_exchange__white.imageset\" />
+    <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

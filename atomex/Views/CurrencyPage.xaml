@@ -178,7 +178,7 @@
                                  HorizontalOptions="Center"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
                                  Command="{Binding ConvertCurrencyCommand}"
-                                 Source="ic_exchange"/>
+                                 Source="ic_exchange__white"/>
                     <Label Grid.Row="1"
                            Grid.Column="2"
                            Text="{helpers:Translate ExchangeButton}"
@@ -412,7 +412,9 @@
                                     </Label>
                                     <Image Grid.Column="1"
                                            Grid.RowSpan="2"
-                                           Margin="0"
+                                           WidthRequest="20"
+                                           HeightRequest="20"
+                                           VerticalOptions="Center"
                                            HorizontalOptions="End">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"

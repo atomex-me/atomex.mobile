@@ -98,7 +98,7 @@
                                      HorizontalOptions="Center"
                                      BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
                                      Command="{Binding ExchangeCommand}"
-                                     Source="ic_exchange"/>
+                                     Source="ic_exchange__white"/>
                         <Label Grid.Row="1"
                                Grid.Column="2"
                                Text="{helpers:Translate ExchangeButton}"

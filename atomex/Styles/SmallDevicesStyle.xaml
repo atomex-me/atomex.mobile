@@ -397,7 +397,7 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
     <Style x:Key="TestNetWalletlButtonTextStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource AdditionalButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource AdditionalButtonTextColor}}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource BoldFont}"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>

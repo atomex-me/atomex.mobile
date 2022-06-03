@@ -28,13 +28,23 @@ namespace atomex.ViewModel
         [Reactive] public string Url { get; set; }
 
         private string _userId;
-        private string[] _redirectedUrls = { "https://widget.wert.io/terms-and-conditions",
-                                             "https://widget.wert.io/privacy-policy",
-                                             "https://support.wert.io/",
-                                             "https://sandbox.wert.io/terms-and-conditions",
-                                             "https://sandbox.wert.io/privacy-policy" };
+        private string[] _redirectedUrls =
+        {
+            "https://widget.wert.io/terms-and-conditions",
+            "https://widget.wert.io/privacy-policy",
+            "https://support.wert.io/",
+            "https://sandbox.wert.io/terms-and-conditions",
+            "https://sandbox.wert.io/privacy-policy"
+        };
 
-        public static ObservableCollection<string> Currencies { get; } = new ObservableCollection<string> { "BTC", "ETH", "XTZ" };
+        public static ObservableCollection<string> Currencies { get; } =
+            new ObservableCollection<string>
+            {
+                "BTC",
+                "ETH",
+                "XTZ"
+            };
+
         public ObservableCollection<string> AvailableCurrencies { get; set; }
 
         public BuyViewModel(IAtomexApp app)
@@ -52,7 +62,8 @@ namespace atomex.ViewModel
         }
 
         private ReactiveCommand<string, Unit> _selectCurrencyCommand;
-        public ReactiveCommand<string, Unit> SelectCurrencyCommand => _selectCurrencyCommand ??= ReactiveCommand.Create<string>((value) => LoadWebView(value));
+        public ReactiveCommand<string, Unit> SelectCurrencyCommand => _selectCurrencyCommand ??=
+            ReactiveCommand.Create<string>((value) => LoadWebView(value));
 
         private void LoadWebView(string currency)
         {
@@ -72,7 +83,8 @@ namespace atomex.ViewModel
         }
 
         private ICommand _canExecuteCommand;
-        public ICommand CanExecuteCommand => _canExecuteCommand ??= ReactiveCommand.Create<WebNavigatingEventArgs>((args) => CanExecute(args));
+        public ICommand CanExecuteCommand => _canExecuteCommand ??=
+            ReactiveCommand.Create<WebNavigatingEventArgs>((args) => CanExecute(args));
 
         private void CanExecute(WebNavigatingEventArgs args)
         {
@@ -94,7 +106,7 @@ namespace atomex.ViewModel
         private string GetUserId()
         {
             using var servicePublicKey =
-                _app.Account.Wallet.GetServicePublicKey(_app.Account.UserSettings.AuthenticationKeyIndex);
+                _app.Account.Wallet.GetServicePublicKey(_app.Account.UserData.AuthenticationKeyIndex);
             var publicKey = servicePublicKey.ToUnsecuredBytes();
 
             return HashAlgorithm.Sha256.Hash(publicKey).ToHexString();
