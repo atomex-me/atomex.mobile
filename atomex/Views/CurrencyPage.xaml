@@ -607,18 +607,16 @@
                                 Command="{Binding ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>
-
-
-
-
                 <ListView ItemsSource="{Binding Tokens}"
                           HasUnevenRows="True"
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                          VerticalOptions="FillAndExpand"
                           BackgroundColor="Transparent"
+                          x:Name="TokensListView"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedToken, Mode=TwoWay}"
+                          RowHeight="72"
+                          VerticalScrollBarVisibility="Never"
                           IsVisible="False"
                           Footer="">
                     <ListView.Triggers>
@@ -633,7 +631,7 @@
                         <StackLayout Spacing="0">
                             <StackLayout Orientation="Horizontal"
                                          HorizontalOptions="Fill"
-                                         Margin="16,8,16,0"
+                                         Padding="16,8,16,0"
                                          HeightRequest="52"
                                          Spacing="4">
                                 <Label Text="{helpers:Translate Tokens}"
@@ -687,74 +685,49 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="24" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="6*" />
                                         <ColumnDefinition Width="32" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.RowSpan="2"
-                                           Source="{Binding CurrencyCode}"
+                                           Source="{Binding TokenPreview}"
                                            HeightRequest="24"
                                            WidthRequest="24"
                                            VerticalOptions="Center"
                                            HorizontalOptions="End"/>
                                     <Label Grid.Column="1"
-                                           Text="{Binding Currency.Description}"
+                                           Text="{Binding Symbol}"
                                            Style="{DynamicResource MainTextH4}"
                                            Padding="12,0"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.Column="1"
                                            Grid.Row="1"
-                                           Text="{Binding Price, StringFormat='${0:f2}'}"
+                                           Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
                                            Style="{DynamicResource AdditionalTextH6}"
                                            Padding="12,0"
                                            HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Start">
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="2"
-                                           Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
-                                           HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Start"
-                                           Padding="6,0">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                         Value="True">
-                                                <Setter Property="Style"
-                                                        Value="{DynamicResource SuccessTextH6}"/>
-                                                <Setter Property="Text"
-                                                        Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                         Value="False">
-                                                <Setter Property="Style"
-                                                        Value="{DynamicResource ErrorTextH6}"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Column="3"
+                                           VerticalTextAlignment="Start"/>
+                                    <Label Grid.Column="2"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyCode}"/>
+                                                <Span Text="{Binding Symbol}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Row="1"
-                                           Grid.Column="3"
-                                           Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                                           Grid.Column="2"
+                                           Text="{Binding BalanceInBase, StringFormat='${0:f2}'}"
                                            Style="{DynamicResource MainTextH6}"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Start"/>
                                     <Frame Grid.RowSpan="2"
-                                           Grid.Column="4"
+                                           Grid.Column="3"
                                            HasShadow="False"
                                            Padding="0"
                                            BackgroundColor="Transparent">
@@ -771,12 +744,6 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>         
-
-
-
-
-
-
                 <ListView ItemsSource="{Binding Delegations}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
@@ -786,8 +753,8 @@
                           HasUnevenRows="True"
                           RowHeight="72"
                           x:Name="DelegationsListView"
-                          Footer=""
-                          IsVisible="False">
+                          IsVisible="False"
+                          Footer="">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
                                      Binding="{Binding SelectedTab}"
@@ -916,7 +883,7 @@
                             </controls:CustomViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>    
             </StackLayout>
         </ScrollView>
         <StackLayout Spacing="0"

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -8,6 +7,7 @@ using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -18,13 +18,25 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
         public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
+        public TokenContract Contract { get; set; }
         public string Address { get; set; }
+        [Reactive] public decimal BalanceInBase { get; set; }
+        [Reactive] public decimal CurrentQuote { get; set; }
+
+        private ThumbsApi ThumbsApi => new ThumbsApi(
+            new ThumbsApiSettings
+            {
+                ThumbsApiUri = TezosConfig.ThumbsApiUri,
+                IpfsGatewayUri = TezosConfig.IpfsGatewayUri,
+                CatavaApiUri = TezosConfig.CatavaApiUri
+            });
 
         public UriImageSource TokenPreview
         {
             get
             {
-                foreach (var url in GetTokenPreviewUrls())
+                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance.Contract, TokenBalance.ThumbnailUri,
+                             TokenBalance.DisplayUri ?? TokenBalance.ArtifactUri))
                 {
                     var hasImageInCache = CacheHelper
                         .HasCacheAsync(new Uri(url))
@@ -77,30 +89,12 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Log.Error("Invalid uri for ipfs asset");
         });
 
-        public bool IsIpfsAsset => TokenBalance.ArtifactUri != null && HasIpfsPrefix(TokenBalance.ArtifactUri);
+        public bool IsIpfsAsset =>
+            TokenBalance.ArtifactUri != null && ThumbsApi.HasIpfsPrefix(TokenBalance.ArtifactUri);
 
-        public string AssetUrl => IsIpfsAsset
-            ? $"http://ipfs.io/ipfs/{RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
+        public string? AssetUrl => IsIpfsAsset
+            ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
-
-        public IEnumerable<string> GetTokenPreviewUrls()
-        {
-            yield return $"https://d38roug276qjor.cloudfront.net/{TokenBalance.Contract}/{TokenBalance.TokenId}.png";
-
-            if (TokenBalance.ArtifactUri != null && HasIpfsPrefix(TokenBalance.ArtifactUri))
-                yield return $"https://api.dipdup.net/thumbnail/{RemoveIpfsPrefix(TokenBalance.ArtifactUri)}";
-
-            yield return $"https://services.tzkt.io/v1/avatars/{TokenBalance.Contract}";
-        }
-
-        public static string RemovePrefix(string s, string prefix) =>
-            s.StartsWith(prefix) ? s.Substring(prefix.Length) : s;
-
-        public static string RemoveIpfsPrefix(string url) =>
-            RemovePrefix(url, "ipfs://");
-
-        public static bool HasIpfsPrefix(string url) =>
-            url?.StartsWith("ipfs://") ?? false;
     }
 
     public class TezosTokenContractViewModel : BaseViewModel

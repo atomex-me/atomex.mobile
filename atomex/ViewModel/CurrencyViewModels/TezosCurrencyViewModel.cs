@@ -23,6 +23,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public TezosConfig Tezos => Currency as TezosConfig;
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
+        [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
         private TezosTokensViewModel _tezosTokensViewModel { get; set; }
 
@@ -51,6 +52,19 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
+            _tezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
+        }
+
+        protected void OnTokensChangedEventHandler()
+        {
+            try
+            {
+                Tokens = new ObservableCollection<TezosTokenViewModel>(_tezosTokensViewModel?.Tokens);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"On tokens changed event handler error");
+            }
         }
 
         private async Task LoadDelegationInfoAsync()

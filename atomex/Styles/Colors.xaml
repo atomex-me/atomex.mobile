@@ -7,7 +7,7 @@
     <Color x:Key="MainBackgroundColor">#FEFEFF</Color>
     <Color x:Key="AdditionalBackgroundColor">#f3f2f7</Color>
 
-    <Color x:Key="NavigationBarBackgroundColor">#0DFFFFFF</Color>
+    <Color x:Key="NavigationBarBackgroundColor">#FEFEFF</Color>
     <Color x:Key="NavigationBarTextColor">#F7000E22</Color>
     <Color x:Key="TabBarBackgroundColor">#20439E</Color>
     <Color x:Key="SelectedTabColor">#F7DCECFF</Color>

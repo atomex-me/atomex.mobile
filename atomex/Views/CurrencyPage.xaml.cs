@@ -12,19 +12,25 @@ namespace atomex
             BindingContext = currencyViewModel;
 
             TransactionsListView.HeightRequest = currencyViewModel.IsAllTxsShowed
-                ? currencyViewModel.Transactions.Count * TransactionsListView.RowHeight +
+                ? (currencyViewModel.Transactions.Count + 1) * TransactionsListView.RowHeight +
                     currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
                     TxsFooter.HeightRequest
                 : currencyViewModel.TxsNumberPerPage * TransactionsListView.RowHeight +
-                    currencyViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
+                    (currencyViewModel.GroupedTransactions.Count + 1) * CurrencyViewModel.DefaultGroupHeight +
                     TxsFooter.HeightRequest;
             AddressesListView.HeightRequest = currencyViewModel.AddressesNumberPerPage * AddressesListView.RowHeight + AddressesFooter.HeightRequest;
 
             if (currencyViewModel.IsStakingAvailable)
             {
                 var vm = currencyViewModel as TezosCurrencyViewModel;
-                DelegationsListView.HeightRequest = vm.Delegations.Count * DelegationsListView.RowHeight;
-            } 
+                DelegationsListView.HeightRequest = (vm.Delegations.Count + 1) * DelegationsListView.RowHeight;
+            }
+
+            if (currencyViewModel.HasTokens)
+            {
+                var vm = currencyViewModel as TezosCurrencyViewModel;
+                TokensListView.HeightRequest = (vm.Tokens.Count + 1) * TokensListView.RowHeight;
+            }
         }
 
         private void ShowAllTxs(object sender, EventArgs args)
