@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Threading.Tasks;
 using atomex.Common;
 using atomex.Views;
 using atomex.Views.Delegate;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
@@ -25,7 +27,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
-        private TezosTokensViewModel _tezosTokensViewModel { get; set; }
+        public TezosTokensViewModel TezosTokensViewModel { get; set; }
 
         public TezosCurrencyViewModel(
              IAtomexApp app,
@@ -34,6 +36,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             : base(app, currency, navigationService)
         {
             Delegations = new ObservableCollection<DelegationViewModel>();
+            Tokens = new ObservableCollection<TezosTokenViewModel>();
 
             this.WhenAnyValue(vm => vm.SelectedDelegation)
                .WhereNotNull()
@@ -51,15 +54,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             _ = LoadDelegationInfoAsync();
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
-            _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
-            _tezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
+            TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
+            TezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
         }
 
         protected void OnTokensChangedEventHandler()
         {
             try
             {
-                Tokens = new ObservableCollection<TezosTokenViewModel>(_tezosTokensViewModel?.Tokens);
+                Tokens = new ObservableCollection<TezosTokenViewModel>(TezosTokensViewModel?.Tokens);
             }
             catch (Exception e)
             {
@@ -162,6 +165,10 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
+        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
+        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
+                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(TezosTokensViewModel)));
+
         private void ChangeBaker(DelegationViewModel delegation)
         {
             CloseActionBottomSheet();
@@ -172,7 +179,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         private void Undelegate(DelegationViewModel delegation)
         {
             CloseActionBottomSheet();
-            _navigationService.SetInitiatedPage(TabNavigation.Portfolio);
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
             _delegateViewModel?.Undelegate(delegation.Address);
         }
 

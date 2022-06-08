@@ -54,7 +54,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
-        private ICurrencyQuotesProvider QuotesProvider { get; set; }
+        private ICurrencyQuotesProvider _quotesProvider { get; set; }
 
         public AddressesViewModel AddressesViewModel { get; set; }
 
@@ -185,8 +185,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
         {
-            QuotesProvider = quotesProvider;
-            QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            _quotesProvider = quotesProvider;
+            _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         protected virtual void OnAddresesChangedEventHandler()
@@ -235,7 +235,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
                 });
 
-                UpdateQuotesInBaseCurrency(QuotesProvider);
+                UpdateQuotesInBaseCurrency(_quotesProvider);
             }
             catch (Exception e)
             {
@@ -520,8 +520,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                         _account.UnconfirmedTransactionAdded -= OnUnconfirmedTransactionAdded;
                     }
 
-                    if (QuotesProvider != null)
-                        QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+                    if (_quotesProvider != null)
+                        _quotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
                 }
 
                 _account = null;

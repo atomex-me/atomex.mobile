@@ -15,11 +15,11 @@ namespace atomex.ViewModel.SendViewModels
         {
             return currencyViewModel.Currency switch
             {
-                BitcoinBasedConfig _ => (SendViewModel)new BitcoinBasedSendViewModel(app, currencyViewModel, navigationService),
-                Erc20Config _ => (SendViewModel)new Erc20SendViewModel(app, currencyViewModel, navigationService),
-                EthereumConfig _ => (SendViewModel)new EthereumSendViewModel(app, currencyViewModel, navigationService),
-                Fa12Config _ => (SendViewModel)new Fa12SendViewModel(app, currencyViewModel, navigationService),
-                TezosConfig _ => (SendViewModel)new TezosSendViewModel(app, currencyViewModel, navigationService),
+                BitcoinBasedConfig _ => new BitcoinBasedSendViewModel(app, currencyViewModel, navigationService),
+                Erc20Config _ => new Erc20SendViewModel(app, currencyViewModel, navigationService),
+                EthereumConfig _ => new EthereumSendViewModel(app, currencyViewModel, navigationService),
+                Fa12Config _ => new Fa12SendViewModel(app, currencyViewModel, navigationService),
+                TezosConfig _ => new TezosSendViewModel(app, currencyViewModel, navigationService),
                 _ => throw new NotSupportedException($"Can't create send view model for {currencyViewModel.Currency.Name}. This currency is not supported."),
             };
         }

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.ViewModel.SendViewModels;
+using atomex.Views;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
+using Atomex.TezosTokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
@@ -16,10 +23,15 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
+        protected IAtomexApp _app { get; set; }
+        protected INavigationService _navigationService { get; set; }
+
         public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
         public TokenContract Contract { get; set; }
         public string Address { get; set; }
+        public bool IsConvertable => _app?.Account?.Currencies
+            .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
         [Reactive] public decimal BalanceInBase { get; set; }
         [Reactive] public decimal CurrentQuote { get; set; }
 
@@ -78,8 +90,73 @@ namespace atomex.ViewModel.CurrencyViewModels
             ? TokenBalance.Symbol
             : "TOKEN";
 
-        private ICommand _openInBrowser;
-        public ICommand OpenInBrowser => _openInBrowser ??= new Command(() =>
+        public TezosTokenViewModel(
+            IAtomexApp app,
+            INavigationService navigationService)
+        {
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+        }
+
+        private ReactiveCommand<Unit, Unit> _tokenActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> TokenActionSheetCommand => _tokenActionSheetCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new TokenActionBottomSheet(this)));
+
+        private ReactiveCommand<Unit, Unit> _receiveCommand;
+        public ReactiveCommand<Unit, Unit> ReceiveCommand => _receiveCommand ??= ReactiveCommand.Create(OnReceiveClick);
+
+        private ReactiveCommand<Unit, Unit> _sendCommand;
+        public ReactiveCommand<Unit, Unit> SendCommand => _sendCommand ??= ReactiveCommand.Create(OnSendClick);
+
+        protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
+        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
+        {
+            if (IsConvertable)
+            {
+                var currency = _app.Account.Currencies
+                    .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == Contract.Address);
+
+                if (currency == null)
+                    return; // TODO: msg to user
+
+                _navigationService?.CloseBottomSheet();
+                _navigationService?.GoToExchange(currency);
+            }
+        });
+
+        protected virtual void OnReceiveClick()
+        {
+            _navigationService?.CloseBottomSheet();
+            var receiveViewModel = new ReceiveViewModel(
+                app: _app,
+                currency: TezosConfig,
+                navigationService: _navigationService);
+            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
+        }
+
+        protected virtual void OnSendClick()
+        {
+            if (Balance <= 0) return;
+            _navigationService?.CloseBottomSheet();
+
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            var sendViewModel = new TezosTokensSendViewModel(
+                app: _app,
+                navigationService: _navigationService,
+                tokenContract: Contract.Address,
+                tokenId: 0,
+                tokenType: Contract.GetContractType(),
+                tokenPreview: TokenPreview);
+            
+            _navigationService?.ShowPage(new SelectAddressPage(sendViewModel.SelectFromViewModel), TabNavigation.Portfolio);
+        }
+
+        private ICommand _closeActionSheetCommand;
+        public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??= new Command(() =>
+            _navigationService?.CloseBottomSheet());
+
+        private ReactiveCommand<Unit, Unit> _openInBrowser;
+        public ReactiveCommand<Unit, Unit> OpenInBrowser => _openInBrowser ??= ReactiveCommand.Create(() =>
         {
             var assetUrl = AssetUrl;
 
@@ -92,9 +169,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsIpfsAsset =>
             TokenBalance.ArtifactUri != null && ThumbsApi.HasIpfsPrefix(TokenBalance.ArtifactUri);
 
-        public string? AssetUrl => IsIpfsAsset
+        public string AssetUrl => IsIpfsAsset
             ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
+
     }
 
     public class TezosTokenContractViewModel : BaseViewModel

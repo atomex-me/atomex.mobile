@@ -1469,9 +1469,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string TezosTokensListPageTitle {
+        internal static string TezosTokens {
             get {
-                return ResourceManager.GetString("TezosTokensListPageTitle", resourceCulture);
+                return ResourceManager.GetString("TezosTokens", resourceCulture);
             }
         }
         

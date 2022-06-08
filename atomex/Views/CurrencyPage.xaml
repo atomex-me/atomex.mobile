@@ -5,6 +5,7 @@
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:behavior="clr-namespace:atomex.Behaviors"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
              Title="{Binding Currency.Description}">
@@ -651,7 +652,27 @@
                                     <Image Source="ic_update"
                                            WidthRequest="16"
                                            HeightRequest="21"
-                                           Margin="8,16"/>
+                                           Margin="8,16">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding TezosTokensViewModel.UpdateTokensCommand}"/>
+                                        </Image.GestureRecognizers>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
+                                                         Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <behavior:AnimationTrigger Action="Start" />  
+                                                </DataTrigger.EnterActions>                                
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Image"
+                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
+                                                         Value="False">
+                                                <DataTrigger.EnterActions>
+                                                    <behavior:AnimationTrigger Action="Stop" />  
+                                                </DataTrigger.EnterActions>                                
+                                            </DataTrigger>                    
+                                        </Image.Triggers>
+                                    </Image>
                                 </Frame>
                                 <Frame HasShadow="False"
                                        WidthRequest="32"
@@ -660,7 +681,7 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                        <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_menu"
                                            WidthRequest="4"
@@ -732,7 +753,7 @@
                                            Padding="0"
                                            BackgroundColor="Transparent">
                                         <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                            <TapGestureRecognizer Command="{Binding TokenActionSheetCommand}"/>
                                         </Frame.GestureRecognizers>
                                         <Image Source="ic_menu"
                                                WidthRequest="4"

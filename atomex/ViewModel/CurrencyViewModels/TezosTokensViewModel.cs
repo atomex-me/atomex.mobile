@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using atomex.Common;
+using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
@@ -18,6 +20,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -27,8 +30,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         private const string FA12 = "FA12";
         private IAtomexApp _app { get; }
         private INavigationService _navigationService { get; set; }
+        private ICurrencyQuotesProvider _quotesProvider { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
         [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
+        [Reactive] public bool IsUpdating { get; set; }
 
         public Action TokensChanged;
 
@@ -36,16 +41,22 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-
-            _app.AtomexClientChanged += OnAtomexClientChanged;
-            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
-            _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            SubscribeToServices(_app);
 
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
 
             _ = ReloadTokenContractsAsync();
+        }
+
+        private void SubscribeToServices(IAtomexApp app)
+        {
+            app.AtomexClientChanged += OnAtomexClientChanged;
+            app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+
+            _quotesProvider = app.QuotesProvider;
+            _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private async Task ReloadTokenContractsAsync()
@@ -94,7 +105,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                             return result;
                         }))
-                    .Select(walletAddress => new TezosTokenViewModel
+                    .Select(walletAddress => new TezosTokenViewModel(_app, _navigationService)
                     {
                         TezosConfig = tezosConfig,
                         TokenBalance = walletAddress.TokenBalance,
@@ -109,16 +120,42 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Where(token => !token.TokenBalance.IsNft);
         }
 
-        private ReactiveCommand<Unit, Unit> _setTokenCommand;
-        private ReactiveCommand<Unit, Unit> SetTokenCommand => _setTokenCommand ??=
-            ReactiveCommand.Create(() => { });
+        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
+        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
+            ReactiveCommand.CreateFromTask(async () =>
+            {
+                IsUpdating = true;
+                await ReloadTokenContractsAsync();
+                await Task.Delay(1500);
+                OnQuotesUpdatedEventHandler(_quotesProvider, EventArgs.Empty);
+                IsUpdating = false;
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+            });
+
+        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
+        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
+        {
+            // TODO: Manage Tezos tokens bottom sheet
+        });
+
+        private ReactiveCommand<Unit, Unit> _hideLowBalancesCommand;
+        public ReactiveCommand<Unit, Unit> HideLowBalancesCommand => _hideLowBalancesCommand ??= ReactiveCommand.Create(() =>
+        {
+            _navigationService?.CloseBottomSheet();
+            // TODO: filters tezos tokens
+        });
+
+        public async Task UpdateTokens()
+        {
+            IsUpdating = true;
+            await ReloadTokenContractsAsync();
+            OnQuotesUpdatedEventHandler(_quotesProvider, EventArgs.Empty);
+            IsUpdating = false;
+        }
 
         private void OnAtomexClientChanged(object sender, AtomexClientChangedEventArgs e)
         {
-            // Tokens?.Clear();
-            // Transactions?.Clear();
             Contracts?.Clear();
-            // TokenContract = null;
         }
 
         private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
@@ -138,14 +175,12 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-
         private async void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
             if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
 
             var tokens = await LoadTokens();
-
             Tokens = new ObservableCollection<TezosTokenViewModel>(tokens
                 .Select(token =>
                 {
@@ -162,5 +197,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             TokensChanged?.Invoke();
         }
+
+        private ICommand _closeActionSheetCommand;
+        public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
+            new Command(() => _navigationService?.CloseBottomSheet());
     }
 }

@@ -770,7 +770,7 @@
     </data>
 
     <!-- Tezos tokens list, token info Pages -->
-    <data name="TezosTokensListPageTitle" xml:space="preserve">
+    <data name="TezosTokens" xml:space="preserve">
         <value>Jetons Tezos</value>
     </data>
     <data name="TokenInfoPageTitle" xml:space="preserve">
