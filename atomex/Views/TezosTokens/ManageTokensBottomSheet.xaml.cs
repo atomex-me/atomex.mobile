@@ -1,24 +1,15 @@
-﻿using atomex.ViewModel.CurrencyViewModels;
-using Rg.Plugins.Popup.Pages;
+﻿using System;
+using System.Collections.Generic;
+
+using Xamarin.Forms;
 
 namespace atomex.Views.TezosTokens
 {
-    public partial class ManageTokensBottomSheet : PopupPage
+    public partial class ManageTokensBottomSheet : ContentPage
     {
-        public ManageTokensBottomSheet(TezosTokensViewModel tezosTokensViewModel)
+        public ManageTokensBottomSheet()
         {
             InitializeComponent();
-            BindingContext = tezosTokensViewModel;
-        }
-
-        public void OnClose()
-        {
-            if (BindingContext is TezosTokensViewModel)
-            {
-                var tezosTokensViewModel = (TezosTokensViewModel)BindingContext;
-                if (tezosTokensViewModel.CloseActionSheetCommand.CanExecute(null))
-                    tezosTokensViewModel.CloseActionSheetCommand.Execute(null);
-            }
         }
     }
 }
