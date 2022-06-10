@@ -1475,6 +1475,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string ManageTezosTokens {
+            get {
+                return ResourceManager.GetString("ManageTezosTokens", resourceCulture);
+            }
+        }
+        
+        internal static string HideLowBalances {
+            get {
+                return ResourceManager.GetString("HideLowBalances", resourceCulture);
+            }
+        }
+        
         internal static string TokenInfoPageTitle {
             get {
                 return ResourceManager.GetString("TokenInfoPageTitle", resourceCulture);

@@ -40,7 +40,7 @@
 
     <Color x:Key="SwitchBackgroundColor">#6101A299</Color>
     <Color x:Key="ActiveThumbColor">#01A299</Color>
-    <Color x:Key="InactiveThumbColor">#61DCECFF</Color>
+    <Color x:Key="InactiveThumbColor">#000E22</Color>
 
     <Color x:Key="MainTextColor">#F7000E22</Color>
     <Color x:Key="AdditionalTextColor">#80000E22</Color>

@@ -1,9 +1,119 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ContentPage
+<pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="atomex.Views.TezosTokens.ManageTokensBottomSheet">
-    <ContentPage.Content>
-        
-    </ContentPage.Content>
-</ContentPage>
+    x:Class="atomex.Views.TezosTokens.ManageTokensBottomSheet"
+    xmlns:helpers="clr-namespace:atomex.Helpers"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:controls="clr-namespace:atomex.CustomElements"
+    xmlns:behavior="clr-namespace:atomex.Behaviors">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand"
+                 HorizontalOptions="FillAndExpand">
+        <StackLayout.Behaviors>
+            <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
+                                                ClosingEdge="567"
+                                                ClosingTimeInMs="300"/>
+        </StackLayout.Behaviors>
+        <controls:CustomFrame CornerRadius="20,20,0,0"
+                              Padding="0,14,0,0"
+                              HorizontalOptions="FillAndExpand"
+                              HeightRequest="667"
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       Margin="0,0,0,40"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <Label Text="{helpers:Translate ManageTezosTokens}"
+                       Style="{DynamicResource MainTextH1}"
+                       Margin="16,0,16,10"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center"/>
+                <ListView ItemsSource="{Binding AllTokens}"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="Default"
+                          SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                          VerticalOptions="FillAndExpand"
+                          BackgroundColor="Transparent"
+                          SelectionMode="None"
+                          Footer="">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="60">
+                                <StackLayout Orientation="Horizontal"
+                                             Spacing="0">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ToggleCommand}"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout"
+                                                     Binding="{Binding IsSelected}"
+                                                     Value="False">
+                                            <Setter Property="Opacity"
+                                                    Value="0.38"/>
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <Image Source="{Binding TokenViewModel.TokenPreview}"
+                                           HeightRequest="28"
+                                           WidthRequest="28"
+                                           Margin="16,0"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Start"/>
+                                    <Label Text="{Binding TokenViewModel.Symbol}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Center"/>
+                                    <Label Style="{DynamicResource MainTextH5}"
+                                           HorizontalOptions="EndAndExpand"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TokenViewModel.Balance, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding TokenViewModel.Symbol}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Switch OnColor="{AppThemeBinding Dark={StaticResource SwitchBackgroundColorDark}, Light={StaticResource SwitchBackgroundColor}}"
+                                            IsToggled="{Binding IsSelected, Mode=TwoWay}"
+                                            Margin="16,0"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Center">
+                                        <Switch.Triggers>
+                                            <DataTrigger TargetType="Switch"
+                                                         Binding="{Binding IsSelected}"
+                                                         Value="False">
+                                                <Setter Property="ThumbColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource InactiveThumbColorDark}, Light={StaticResource InactiveThumbColor}}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Switch"
+                                                         Binding="{Binding IsSelected}"
+                                                         Value="True">
+                                                <Setter Property="ThumbColor"
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveThumbColorDark}, Light={StaticResource ActiveThumbColor}}"/>
+                                            </DataTrigger>
+                                        </Switch.Triggers>
+                                    </Switch>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </controls:CustomFrame>
+    </StackLayout>
+</pages:PopupPage>

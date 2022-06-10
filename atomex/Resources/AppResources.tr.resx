@@ -773,6 +773,12 @@
     <data name="TezosTokens" xml:space="preserve">
         <value>Tezos Tokenleri</value>
     </data>
+    <data name="ManageTezosTokens" xml:space="preserve">
+        <value>Manage Tezos tokens</value>
+    </data>
+    <data name="HideLowBalances" xml:space="preserve">
+        <value>Hide low balances</value>
+    </data>
     <data name="TokenInfoPageTitle" xml:space="preserve">
         <value>Tokenlar bilgisi</value>
     </data>

@@ -3,9 +3,9 @@ using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.TezosTokens
 {
-    public partial class ManageTokensBottomSheet : PopupPage
+    public partial class TokensActionBottomSheet : PopupPage
     {
-        public ManageTokensBottomSheet(TezosTokensViewModel tezosTokensViewModel)
+        public TokensActionBottomSheet(TezosTokensViewModel tezosTokensViewModel)
         {
             InitializeComponent();
             BindingContext = tezosTokensViewModel;

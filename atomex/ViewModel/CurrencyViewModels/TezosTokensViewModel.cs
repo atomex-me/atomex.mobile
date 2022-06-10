@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
-using atomex.Resources;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
@@ -19,30 +19,56 @@ using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
+    public class TezosToken : BaseViewModel
+    {
+        public TezosTokenViewModel TokenViewModel { get; set; }
+        [Reactive] public bool IsSelected { get; set; }
+        public Action<string, bool> OnChanged { get; set; }
+
+        public TezosToken()
+        {
+            this.WhenAnyValue(vm => vm.IsSelected)
+                .Skip(1)
+                .SubscribeInMainThread(flag =>
+                {
+                    OnChanged?.Invoke(TokenViewModel.Symbol, flag);
+                });
+        }
+
+        private ICommand _toggleCommand;
+        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() => IsSelected = !IsSelected);
+    }
+
     public class TezosTokensViewModel : BaseViewModel
     {
-        private const string FA2 = "FA2";
-        private const string FA12 = "FA12";
         private IAtomexApp _app { get; }
         private INavigationService _navigationService { get; set; }
         private ICurrencyQuotesProvider _quotesProvider { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
-        [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
-        [Reactive] public bool IsUpdating { get; set; }
+
+        [Reactive] public IEnumerable<TezosToken> AllTokens { get; set; }
+        [Reactive] public IEnumerable<TezosTokenViewModel> UserTokens { get; set; }
 
         public Action TokensChanged;
 
-        public TezosTokensViewModel(IAtomexApp app, INavigationService navigationService)
+        public string BaseCurrencyCode => "USD";
+        private string _walletName;
+
+        public TezosTokensViewModel(
+            IAtomexApp app,
+            INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            SubscribeToServices(_app);
+            GetWalletName();
 
+            SubscribeToServices(_app);
+            
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
@@ -112,7 +138,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                         Address = walletAddress.Address,
                         Contract = contract,
                     });
-
                 tokens.AddRange(tokensViewModels);
             }
 
@@ -120,23 +145,43 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Where(token => !token.TokenBalance.IsNft);
         }
 
-        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
-        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
-            ReactiveCommand.CreateFromTask(async () =>
-            {
-                IsUpdating = true;
-                await ReloadTokenContractsAsync();
-                await Task.Delay(1500);
-                OnQuotesUpdatedEventHandler(_quotesProvider, EventArgs.Empty);
-                IsUpdating = false;
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
-            });
-
-        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
-        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
+        private void ChangeUserTokens(
+            string token,
+            bool isSelected)
         {
-            // TODO: Manage Tezos tokens bottom sheet
-        });
+            try
+            {
+                if (string.IsNullOrEmpty(token)) return;
+
+                var tokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
+                List<string> tokensList = new List<string>();
+                tokensList = tokens.Split(',').ToList();
+
+                if (isSelected && tokensList.Any(item => item == token))
+                    return;
+
+                if (isSelected)
+                    tokensList.Add(token);
+                else
+                    tokensList.RemoveAll(c => c.Contains(token));
+
+                var result = string.Join(",", tokensList);
+                Preferences.Set(_walletName + "-" + "TezosTokens", result);
+
+                AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.Symbol));
+
+                UserTokens = AllTokens?
+                    .Where(c => c.IsSelected)
+                    .Select(vm => vm.TokenViewModel)
+                    .ToList();
+
+                TokensChanged?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Change user tokens error");
+            }
+        }
 
         private ReactiveCommand<Unit, Unit> _hideLowBalancesCommand;
         public ReactiveCommand<Unit, Unit> HideLowBalancesCommand => _hideLowBalancesCommand ??= ReactiveCommand.Create(() =>
@@ -144,14 +189,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             _navigationService?.CloseBottomSheet();
             // TODO: filters tezos tokens
         });
-
-        public async Task UpdateTokens()
-        {
-            IsUpdating = true;
-            await ReloadTokenContractsAsync();
-            OnQuotesUpdatedEventHandler(_quotesProvider, EventArgs.Empty);
-            IsUpdating = false;
-        }
 
         private void OnAtomexClientChanged(object sender, AtomexClientChangedEventArgs e)
         {
@@ -180,20 +217,40 @@ namespace atomex.ViewModel.CurrencyViewModels
             if (sender is not ICurrencyQuotesProvider quotesProvider)
                 return;
 
+            var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
             var tokens = await LoadTokens();
-            Tokens = new ObservableCollection<TezosTokenViewModel>(tokens
+
+            List<string> result = new List<string>();
+            result = userTokens != string.Empty
+                ? userTokens.Split(',').ToList()
+                : tokens.Select(t => t.Symbol).ToList();
+
+            AllTokens = new ObservableCollection<TezosToken>(tokens
                 .Select(token =>
                 {
-                    var quote = quotesProvider.GetQuote(token.TokenBalance.Symbol.ToLower());
-                    if (quote == null) return token;
+                    var quote = quotesProvider.GetQuote(token.TokenBalance.Symbol, BaseCurrencyCode);
+
+                    var vm = new TezosToken
+                    {
+                        TokenViewModel = token,
+                        IsSelected = result.Contains(token.Symbol),
+                        OnChanged = ChangeUserTokens
+                    };
+
+                    if (quote == null) return vm;
 
                     token.CurrentQuote = quote.Bid;
                     token.BalanceInBase = token.TokenBalance.GetTokenBalance().SafeMultiply(quote.Bid);
-                    return token;
+
+                    return vm;
                 })
-                .OrderByDescending(token => token.Contract.Name?.ToLower() == "tzbtc")
-                .ThenByDescending(token => token.Contract.Name?.ToLower() == "kusd")
-                .ThenByDescending(token => token.BalanceInBase));
+                .OrderByDescending(token => token.TokenViewModel.IsConvertable)
+                .ThenByDescending(token => token.TokenViewModel.BalanceInBase));
+
+            UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
+                .Where(c => c.IsSelected)
+                .Select(vm => vm.TokenViewModel)
+                .ToList());
 
             TokensChanged?.Invoke();
         }
@@ -201,5 +258,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _closeActionSheetCommand;
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
             new Command(() => _navigationService?.CloseBottomSheet());
+
+        private string GetWalletName()
+        {
+            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
+        }
     }
 }

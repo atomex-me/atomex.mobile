@@ -6,7 +6,7 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:converters="clr-namespace:atomex.Converters"
-    x:Class="atomex.Views.TezosTokens.ManageTokensBottomSheet"
+    x:Class="atomex.Views.TezosTokens.TokensActionBottomSheet"
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors">
     <pages:PopupPage.Animation>
@@ -47,26 +47,10 @@
                              Margin="24"
                              Spacing="0">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
-                    </StackLayout.GestureRecognizers>
-                    <Label Style="{DynamicResource MainTextH4}"
-                           Text="Manage tezos tokens"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start"
-                           HorizontalOptions="FillAndExpand"/>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
-                           HeightRequest="12"
-                           WidthRequest="12"
-                           HorizontalOptions="End"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal"
-                             Margin="24"
-                             Spacing="0">
-                    <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding HideLowBalancesCommand}"/>
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
-                           Text="Hide low balances"
+                           Text="{helpers:Translate HideLowBalances}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
                            HorizontalOptions="FillAndExpand"/>

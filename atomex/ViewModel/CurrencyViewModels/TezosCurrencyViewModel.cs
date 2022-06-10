@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Resources;
 using atomex.Views;
 using atomex.Views.Delegate;
 using atomex.Views.TezosTokens;
@@ -13,10 +15,12 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Core;
 using Atomex.Wallet;
+using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -27,7 +31,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
-        public TezosTokensViewModel TezosTokensViewModel { get; set; }
+        private TezosTokensViewModel _tezosTokensViewModel { get; set; }
+        [Reactive] public bool IsUpdating { get; set; }
 
         public TezosCurrencyViewModel(
              IAtomexApp app,
@@ -54,15 +59,15 @@ namespace atomex.ViewModel.CurrencyViewModels
             _ = LoadDelegationInfoAsync();
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
-            TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
-            TezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
+            _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
+            _tezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
         }
 
         protected void OnTokensChangedEventHandler()
         {
             try
             {
-                Tokens = new ObservableCollection<TezosTokenViewModel>(TezosTokensViewModel?.Tokens);
+                Tokens = new ObservableCollection<TezosTokenViewModel>(_tezosTokensViewModel?.UserTokens);
             }
             catch (Exception e)
             {
@@ -165,9 +170,56 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
+        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
+        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
+            (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
+
+        private async Task UpdateTokens()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsUpdating = true;
+
+            try
+            {
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await tezosTokensScanner.ScanAsync(
+                    skipUsed: false,
+                    cancellationToken: cancellation.Token);
+
+                // reload balances for all tezos tokens account
+                foreach (var currency in _app.Account.Currencies)
+                    if (Currencies.IsTezosToken(currency.Name))
+                        _app.Account
+                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                            .ReloadBalances();
+
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Tezos tokens update canceled");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Tezos tokens update error");
+            }
+            finally
+            {
+                IsUpdating = false;
+            }
+        }
+
         private ReactiveCommand<Unit, Unit> _manageTokensCommand;
         public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(TezosTokensViewModel)));
+                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(_tezosTokensViewModel)));
+
+        private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(_tezosTokensViewModel)));
 
         private void ChangeBaker(DelegationViewModel delegation)
         {

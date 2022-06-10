@@ -647,25 +647,22 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
+                                        <TapGestureRecognizer Command="{Binding UpdateTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_update"
                                            WidthRequest="16"
                                            HeightRequest="21"
                                            Margin="8,16">
-                                        <Image.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding TezosTokensViewModel.UpdateTokensCommand}"/>
-                                        </Image.GestureRecognizers>
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
+                                                         Binding="{Binding IsUpdating}"
                                                          Value="True">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Start" />  
                                                 </DataTrigger.EnterActions>                                
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
+                                                         Binding="{Binding IsUpdating}"
                                                          Value="False">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Stop" />  
@@ -682,6 +679,22 @@
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="ic_filters"
+                                           Margin="8,0"
+                                           HorizontalOptions="EndAndExpand"
+                                           VerticalOptions="FillAndExpand"
+                                           HeightRequest="16"
+                                           WidthRequest="16"/>
+                                </Frame>
+                                <Frame HasShadow="False"
+                                       WidthRequest="32"
+                                       Padding="0"
+                                       VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="End"
+                                       BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TokensActionSheetCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_menu"
                                            WidthRequest="4"
