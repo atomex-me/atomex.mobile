@@ -463,9 +463,9 @@ namespace atomex.ViewModel.SendViewModels
                     }
 
                     _navigationService?.CloseBottomSheet();
+                    await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+
                     _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
-                    //for (int i = Navigation.NavigationStack.Count; i > 3; i--)
-                    //    Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
                 }
                 catch (Exception e)
                 {

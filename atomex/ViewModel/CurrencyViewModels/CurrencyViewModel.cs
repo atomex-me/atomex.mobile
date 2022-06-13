@@ -56,8 +56,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         public event EventHandler AmountUpdated;
         private ICurrencyQuotesProvider _quotesProvider { get; set; }
 
-        public AddressesViewModel AddressesViewModel { get; set; }
-
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
@@ -80,12 +78,13 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
+        [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
-        private SelectAddressViewModel _selectAddressViewModel { get; set; }
 
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
+
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
 
@@ -115,6 +114,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             bool loadTransaction = true)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
             SubscribeToServices();
@@ -143,27 +143,15 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .SubscribeInMainThread(_ =>
                     CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
 
+            this.WhenAnyValue(vm => vm.AddressesViewModel)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {
+                    AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
+                    OnAddresesChangedEventHandler();
+                });
+
             LoadAddresses();
-            OnAddresesChangedEventHandler();
-
-            _selectAddressViewModel = new SelectAddressViewModel(
-                account: _app.Account,
-                currency: Currency,
-                navigationService: _navigationService,
-                tab: TabNavigation.Portfolio,
-                mode: SelectAddressMode.ChooseMyAddress)
-                    {
-                        ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
-                        {
-                            var address = AddressesViewModel?.Addresses?
-                                .Where(a => a.Address == walletAddressViewModel?.Address)
-                                .FirstOrDefault();
-                            _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
-
-                            if (_selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
-                                _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
-                        }
-                    };
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
@@ -173,8 +161,12 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected virtual void LoadAddresses()
         {
-            AddressesViewModel = new AddressesViewModel(_app, Currency, _navigationService);
-            AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
+            AddressesViewModel?.Dispose();
+
+            AddressesViewModel = new AddressesViewModel(
+                app: _app,
+                currency: Currency,
+                navigationService: _navigationService);
         }
 
         protected virtual void SubscribeToServices()
@@ -239,7 +231,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "UpdateBalanceAsync error for {@currency}", Currency?.Name);
+                Log.Error(e, $"UpdateBalanceAsync error for {Currency?.Name}");
             }
         }
 
@@ -278,13 +270,13 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "UnconfirmedTxAddedEventHandler error for {@currency}", Currency?.Name);
+                Log.Error(ex, $"UnconfirmedTxAddedEventHandler error for {Currency?.Name}");
             }
         }
 
         public virtual async Task LoadTransactionsAsync()
         {
-            Log.Debug("LoadTransactionsAsync for {@currency}", Currency.Name);
+            Log.Debug($"LoadTransactionsAsync for {Currency?.Name}");
 
             try
             {
@@ -325,7 +317,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "LoadTransactionAsync error for {@currency}", Currency?.Name);
+                Log.Error(e, $"LoadTransactionAsync error for {Currency?.Name}");
             }
         }
 
@@ -375,10 +367,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _refreshCommand;
         public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
 
-        private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
-        public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio));
-
         private ICommand _closeBottomSheetCommand;
         public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
             _navigationService?.CloseBottomSheet());
@@ -406,7 +394,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "HdWalletScanner error for {@currency}", Currency?.Name);
+                Log.Error(e, $"HdWalletScanner error for {Currency?.Name}");
             }
             finally
             {

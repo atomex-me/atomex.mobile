@@ -200,8 +200,8 @@ namespace atomex.ViewModel
                     else
                     {
                         MyAddresses = new ObservableCollection<WalletAddressViewModel>(item2
-                            ? myAddresses.OrderBy(addressViewModel => addressViewModel.AvailableBalance)
-                            : myAddresses.OrderByDescending(addressViewModel => addressViewModel.AvailableBalance));
+                            ? myAddresses.OrderBy(addressViewModel => addressViewModel.Balance)
+                            : myAddresses.OrderByDescending(addressViewModel => addressViewModel.Balance));
 
                     }
                 });
@@ -216,9 +216,10 @@ namespace atomex.ViewModel
 
             var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(
-                  account: account,
-                  currency: currency,
-                  tokenContract: tokenContract)
+                    account: account,
+                    currency: currency,
+                    tokenContract: tokenContract,
+                    tokenId: selectedTokenId)
                 .WaitForResult()
                 .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
                 .OrderByDescending(address => address.Balance);
@@ -248,7 +249,8 @@ namespace atomex.ViewModel
                 }
                 else
                 {
-                    SelectedAddress = MyAddresses.FirstOrDefault(vm => vm.IsFreeAddress) ?? MyAddresses.FirstOrDefault();
+                    SelectedAddress = MyAddresses.FirstOrDefault(vm => vm.IsFreeAddress) ??
+                                      MyAddresses.FirstOrDefault();
                 }
             }
             else

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -62,16 +63,15 @@ namespace atomex.ViewModel
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
-        private string _walletName;
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
+        private string _walletName;
 
         public PortfolioViewModel(
             IAtomexApp app,
-            string walletName,
             bool restore = false)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            _walletName = walletName;
+            _walletName = GetWalletName();
             
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
@@ -274,5 +274,10 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
         public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => _navigationService?.GoToExchange(null));
+
+        private string GetWalletName()
+        {
+            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
+        }
     }
 }

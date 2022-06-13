@@ -26,7 +26,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
         }
 
-
         public override async Task LoadTransactionsAsync()
         {
             Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);

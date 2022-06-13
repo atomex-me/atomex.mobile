@@ -504,7 +504,6 @@ namespace atomex
                             mainViewModel = new MainViewModel(
                                 _app,
                                 account,
-                                WalletName,
                                 CurrentAction == Action.Restore ? true : false);
                         });
 

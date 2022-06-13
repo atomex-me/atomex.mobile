@@ -29,6 +29,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public TezosConfig Tezos => Currency as TezosConfig;
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
+        [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
         private TezosTokensViewModel _tezosTokensViewModel { get; set; }
@@ -54,6 +55,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                        ChangeBaker(SelectedDelegation);
 
                    SelectedDelegation = null;
+               });
+
+            this.WhenAnyValue(vm => vm.SelectedToken)
+               .WhereNotNull()
+               .SubscribeInMainThread(token =>
+               {
+                    _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
+                   SelectedToken = null;
                });
 
             _ = LoadDelegationInfoAsync();

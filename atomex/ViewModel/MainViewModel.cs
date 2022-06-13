@@ -25,7 +25,6 @@ namespace atomex.ViewModel
         public MainViewModel(
             IAtomexApp app,
             IAccount account,
-            string walletName,
             bool restore = false)
         {
             var assembly = AppDomain.CurrentDomain
@@ -47,10 +46,10 @@ namespace atomex.ViewModel
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp, walletName, restore);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp, restore);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
-            SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
+            SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
         }

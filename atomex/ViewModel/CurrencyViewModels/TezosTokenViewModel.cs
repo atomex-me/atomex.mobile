@@ -1,39 +1,82 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Resources;
 using atomex.ViewModel.SendViewModels;
+using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
 using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
 using Atomex.TezosTokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Atomex.Wallet;
+using Atomex.Wallet.Abstract;
+using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
         protected IAtomexApp _app { get; set; }
+        protected IAccount _account { get; set; }
         protected INavigationService _navigationService { get; set; }
 
+        public const string Fa12 = "FA12";
+        public const string Fa2 = "FA2";
         public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
         public TokenContract Contract { get; set; }
+        public bool IsFa12 => Contract.GetContractType() == Fa12;
+        public bool IsFa2 => Contract.GetContractType() == Fa2;
         public string Address { get; set; }
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
         [Reactive] public decimal BalanceInBase { get; set; }
         [Reactive] public decimal CurrentQuote { get; set; }
+
+        [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
+        [Reactive] public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
+        [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
+
+        public AddressesViewModel AddressesViewModel { get; set; }
+        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
+
+        [Reactive] public bool CanShowMoreTxs { get; set; }
+        [Reactive] public bool IsAllTxsShowed { get; set; }
+        [Reactive] public bool CanShowMoreAddresses { get; set; }
+        public int TxsNumberPerPage = 3;
+        public int AddressesNumberPerPage = 3;
+        public const double DefaultGroupHeight = 36;
+
+        private CancellationTokenSource _cancellationTokenSource;
+
+        public class Grouping<K, T> : ObservableCollection<T>
+        {
+            public double GroupHeight { get; set; } = DefaultGroupHeight;
+            public K Date { get; private set; }
+            public Grouping(K date, IEnumerable<T> items)
+            {
+                Date = date;
+                foreach (T item in items)
+                    Items.Add(item);
+            }
+        }
+
+        [Reactive] public bool IsRefreshing { get; set; }
+        [Reactive] public CurrencyTab SelectedTab { get; set; }
 
         private ThumbsApi ThumbsApi => new ThumbsApi(
             new ThumbsApiSettings
@@ -92,10 +135,181 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public TezosTokenViewModel(
             IAtomexApp app,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            TokenContract contract,
+            TokenBalance tokenBalance,
+            string address)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            Contract = contract;
+            TokenBalance = tokenBalance;
+            Address = address;
+
+            TezosConfig = _app.Account
+                .Currencies
+                .Get<TezosConfig>(TezosConfig.Xtz);
+
+            SubscribeToServices();
+
+            this.WhenAnyValue(vm => vm.SelectedTransaction)
+                .WhereNotNull()
+                .SubscribeInMainThread(t =>
+                {
+                    _navigationService?.ShowPage(new TransactionInfoPage(t), TabNavigation.Portfolio);
+                    SelectedTransaction = null;
+                });
+
+            this.WhenAnyValue(vm => vm.GroupedTransactions)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
+
+            this.WhenAnyValue(vm => vm.Addresses)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
+
+            this.WhenAnyValue(vm => vm.AddressesViewModel)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {
+                    AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
+                    OnAddresesChangedEventHandler();
+                });
+
+            LoadAddresses();
+            OnAddresesChangedEventHandler();
+            _ = LoadTransfers();
+
+            IsRefreshing = false;
+            IsAllTxsShowed = false;
+            SelectedTab = CurrencyTab.Activity;
+        }
+
+        protected virtual void OnAddresesChangedEventHandler()
+        {
+            try
+            {
+                Addresses = new ObservableCollection<AddressViewModel>(
+                    AddressesViewModel?.Addresses
+                        .OrderByDescending(a => a.Balance)
+                        .Take(AddressesNumberPerPage));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Error for token {Symbol}");
+            }
+        }
+
+        private void LoadAddresses()
+        {
+            AddressesViewModel?.Dispose();
+
+            AddressesViewModel = new AddressesViewModel(
+                app: _app,
+                currency: TezosConfig,
+                navigationService: _navigationService,
+                tokenContract: Contract.Address,
+                tokenId: TokenBalance.TokenId);
+        }
+
+        private async Task LoadTransfers()
+        {
+            try
+            {
+                if (IsFa12)
+                {
+                    var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
+                        currency: Fa12,
+                        tokenContract: Contract.Address,
+                        tokenId: 0);
+
+                    var selectedTransactionId = SelectedTransaction?.Id;
+
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        Transactions = new ObservableCollection<TransactionViewModel>((await tokenAccount
+                            .DataRepository
+                            .GetTezosTokenTransfersAsync(
+                                Contract.Address,
+                                offset: 0,
+                                limit: int.MaxValue))
+                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
+                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
+                            .ToList()
+                            .ForEachDo(t =>
+                            {
+                                t.CopyAddress = CopyAddress;
+                                t.CopyTxId = CopyTxId;
+                            }));
+
+                        var groups = !IsAllTxsShowed
+                            ? Transactions
+                               .OrderByDescending(p => p.LocalTime.Date)
+                               .Take(TxsNumberPerPage)
+                               .GroupBy(p => p.LocalTime.Date)
+                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                            : Transactions
+                                .GroupBy(p => p.LocalTime.Date)
+                                .OrderByDescending(g => g.Key)
+                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                    });
+                }
+                else if (IsFa2)
+                {
+                    var tezosAccount = _app.Account
+                        .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                    var selectedTransactionId = SelectedTransaction?.Id;
+
+                    await Device.InvokeOnMainThreadAsync(async () =>
+                    {
+                        Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
+                            .DataRepository
+                            .GetTezosTokenTransfersAsync(
+                                Contract.Address,
+                                offset: 0,
+                                limit: int.MaxValue))
+                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
+                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
+                            .ToList()
+                            .ForEachDo(t =>
+                            {
+                                t.CopyAddress = CopyAddress;
+                                t.CopyTxId = CopyTxId;
+                            }));
+
+                        var groups = !IsAllTxsShowed
+                            ? Transactions
+                               .OrderByDescending(p => p.LocalTime.Date)
+                               .Take(TxsNumberPerPage)
+                               .GroupBy(p => p.LocalTime.Date)
+                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                            : Transactions
+                                .GroupBy(p => p.LocalTime.Date)
+                                .OrderByDescending(g => g.Key)
+                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                    });
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug($"LoadTransfers for {Contract} canceled");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"LoadTransfers error for contract {Contract}");
+            }
+            finally
+            {
+                Log.Debug($"Token transfers loaded for contract {Contract}");
+            }
         }
 
         private ReactiveCommand<Unit, Unit> _tokenActionSheetCommand;
@@ -124,17 +338,68 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         });
 
-        protected virtual void OnReceiveClick()
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand => _refreshCommand ??= new Command(async () => await ScanCurrency());
+
+        private ReactiveCommand<Unit, Unit> _cancelUpdateCommand;
+        public ReactiveCommand<Unit, Unit> CancelUpdateCommand => _cancelUpdateCommand ??= ReactiveCommand.Create(() =>
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+        });
+
+        public async Task ScanCurrency()
+        {
+            _cancellationTokenSource = new CancellationTokenSource();
+            IsRefreshing = true;
+
+            try
+            {
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await tezosTokensScanner.ScanContractAsync(
+                    contractAddress: Contract.Address,
+                    cancellationToken: _cancellationTokenSource.Token);
+
+                // reload balances for all tezos tokens account
+                foreach (var currency in _app.Account.Currencies)
+                    if (Currencies.IsTezosToken(currency.Name))
+                        _app.Account
+                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                            .ReloadBalances();
+
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+            }
+            catch (OperationCanceledException)
+            {
+                // nothing to do...
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Tezos tokens scanner error for {Symbol}");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+
+        protected void OnReceiveClick()
         {
             _navigationService?.CloseBottomSheet();
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
+                navigationService: _navigationService,
                 currency: TezosConfig,
-                navigationService: _navigationService);
+                tokenContract: Contract.Address,
+                tokenType: Contract.GetContractType());
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
-        protected virtual void OnSendClick()
+        protected void OnSendClick()
         {
             if (Balance <= 0) return;
             _navigationService?.CloseBottomSheet();
@@ -144,16 +409,42 @@ namespace atomex.ViewModel.CurrencyViewModels
                 app: _app,
                 navigationService: _navigationService,
                 tokenContract: Contract.Address,
-                tokenId: 0,
+                tokenId: TokenBalance.TokenId,
                 tokenType: Contract.GetContractType(),
                 tokenPreview: TokenPreview);
-            
+
             _navigationService?.ShowPage(new SelectAddressPage(sendViewModel.SelectFromViewModel), TabNavigation.Portfolio);
         }
 
         private ICommand _closeActionSheetCommand;
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??= new Command(() =>
             _navigationService?.CloseBottomSheet());
+
+        private ReactiveCommand<string, Unit> _changeCurrencyTabCommand;
+        public ReactiveCommand<string, Unit> ChangeCurrencyTabCommand => _changeCurrencyTabCommand ??= ReactiveCommand.Create<string>((value) =>
+        {
+            Enum.TryParse(value, out CurrencyTab selectedTab);
+            SelectedTab = selectedTab;
+        });
+
+        private void SubscribeToServices()
+        {
+            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+        }
+
+        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                if (!Currencies.IsTezosToken(args.Currency)) return;
+
+                await Device.InvokeOnMainThreadAsync(async () => await LoadTransfers());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Balance updated event handler error for {Symbol}");
+            }
+        }
 
         private ReactiveCommand<Unit, Unit> _openInBrowser;
         public ReactiveCommand<Unit, Unit> OpenInBrowser => _openInBrowser ??= ReactiveCommand.Create(() =>
@@ -166,6 +457,32 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Log.Error("Invalid uri for ipfs asset");
         });
 
+        protected void CopyAddress(string value)
+        {
+            if (value != null)
+            {
+                _ = Clipboard.SetTextAsync(value);
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+            }
+            else
+            {
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
+        protected void CopyTxId(string value)
+        {
+            if (value != null)
+            {
+                _ = Clipboard.SetTextAsync(value);
+                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+            }
+            else
+            {
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
+        }
+
         public bool IsIpfsAsset =>
             TokenBalance.ArtifactUri != null && ThumbsApi.HasIpfsPrefix(TokenBalance.ArtifactUri);
 
@@ -173,67 +490,51 @@ namespace atomex.ViewModel.CurrencyViewModels
             ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
 
-    }
-
-    public class TezosTokenContractViewModel : BaseViewModel
-    {
-        public TokenContract Contract { get; set; }
-        public string IconUrl => $"https://services.tzkt.io/v1/avatars/{Contract.Address}";
-        public bool IsFa12 => Contract.GetContractType() == "FA12";
-        public bool IsFa2 => Contract.GetContractType() == "FA2";
-
-        private bool _isTriedToGetFromTzkt = false;
-
-        private string _name;
-        public string Name
+        public void ShowAllTxs()
         {
-            get
-            {
-                if (_name != null)
-                    return _name;
+            IsAllTxsShowed = true;
+            CanShowMoreTxs = false;
+            TxsNumberPerPage = Transactions.Count;
 
-                if (!_isTriedToGetFromTzkt)
+            var groups = Transactions
+                .GroupBy(p => p.LocalTime.Date)
+                .OrderByDescending(g => g.Key)
+                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+        }
+
+        #region IDisposable Support
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
                 {
-                    _isTriedToGetFromTzkt = true;
-                    _ = TryGetAliasAsync();
+                    if (_account != null)
+                    {
+                        _account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
+                    }
                 }
 
-                _name = Contract.Name;
-                return _name;
+                _account = null;
+
+                _disposedValue = true;
             }
         }
 
-        private async Task TryGetAliasAsync()
+        ~TezosTokenViewModel()
         {
-            try
-            {
-                var response = await HttpHelper.HttpClient
-                    .GetAsync($"https://api.tzkt.io/v1/accounts/{Contract.Address}")
-                    .ConfigureAwait(false);
-
-                if (!response.IsSuccessStatusCode)
-                    return;
-
-                var stringResponse = await response.Content
-                    .ReadAsStringAsync()
-                    .ConfigureAwait(false);
-
-                var alias = JsonConvert.DeserializeObject<JObject>(stringResponse)
-                    ?["alias"]
-                    ?.Value<string>();
-
-                if (alias != null)
-                    _name = alias;
-
-                await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    OnPropertyChanged(nameof(Name));
-                });
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Alias getting error.");
-            }
+            Dispose(false);
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

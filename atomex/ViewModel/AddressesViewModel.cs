@@ -9,6 +9,7 @@ using atomex.Common;
 using atomex.Resources;
 using atomex.Views;
 using Atomex;
+using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
@@ -34,7 +35,7 @@ namespace atomex.ViewModel
         [Reactive] public string Type { get; set; }
         [Reactive] public string Path { get; set; }
         [Reactive] public string Balance { get; set; }
-        [Reactive] public string TokenBalance { get; set; }
+        [Reactive] public TokenBalance TokenBalance { get; set; }
 
         [Reactive] public bool IsUpdating { get; set; }
         [Reactive] public bool IsCopied { get; set; }
@@ -44,7 +45,10 @@ namespace atomex.ViewModel
 
         public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
 
-        public AddressViewModel(IAtomexApp app, CurrencyConfig currency, INavigationService navigationService)
+        public AddressViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
@@ -161,10 +165,14 @@ namespace atomex.ViewModel
         private INavigationService _navigationService { get; }
 
         private readonly string _tokenContract;
+        private readonly decimal _tokenId;
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
-        [Reactive] public bool HasTokens { get; set; }
+        public bool HasTokens => _currency.Name == TezosConfig.Xtz && _tokenContract != null;
 
+        private SelectAddressViewModel _selectAddressViewModel { get; set; }
         [Reactive] public AddressViewModel SelectedAddress { get; set; }
+
+        public const int MinimalAddressUpdateTimeMs = 1000;
 
         public Action AddressesChanged;
 
@@ -172,12 +180,38 @@ namespace atomex.ViewModel
             IAtomexApp app,
             CurrencyConfig currency,
             INavigationService navigationService,
-            string tokenContract = null)
+            string tokenContract = null,
+            decimal tokenId = 0)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             _tokenContract = tokenContract;
+            _tokenId = tokenId;
+
+            this.WhenAnyValue(vm => vm.Addresses)
+                .WhereNotNull()
+                .SubscribeInMainThread(a =>
+                {
+                    _selectAddressViewModel = new SelectAddressViewModel(
+                        account: _app.Account,
+                        currency: _currency,
+                        navigationService: _navigationService,
+                        tab: TabNavigation.Portfolio,
+                        mode: SelectAddressMode.ChooseMyAddress)
+                    {
+                        ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                        {
+                            var address = Addresses?
+                                .Where(a => a.Address == walletAddressViewModel?.Address)
+                                .FirstOrDefault();
+                            _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
+
+                            if (_selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
+                                _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                        }
+                    };
+                });
 
             this.WhenAnyValue(vm => vm.SelectedAddress)
                 .WhereNotNull()
@@ -191,6 +225,10 @@ namespace atomex.ViewModel
             SubscribeToServices();
         }
 
+        private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio));
+
         private void SubscribeToServices()
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
@@ -200,9 +238,14 @@ namespace atomex.ViewModel
         {
             try
             {
-                if (_currency.Name != args.Currency)
+                if (Currencies.IsTezosToken(args.Currency) && Currencies.IsTezosBased(_currency.Name))
+                {
+                    await ReloadAddresses();
                     return;
-                await ReloadAddresses();
+                }
+
+                if (_currency.Name == args.Currency)
+                    await ReloadAddresses();
             }
             catch (Exception e)
             {
@@ -262,41 +305,25 @@ namespace atomex.ViewModel
                         };
                     }));
 
-                if (_currency.Name == TezosConfig.Xtz && _tokenContract != null)
+                if (HasTokens)
                 {
-                    HasTokens = true;
-
                     var tezosAccount = account as TezosAccount;
 
-                    var addressesWithTokens = (await tezosAccount
-                        .DataRepository
-                        .GetTezosTokenAddressesByContractAsync(_tokenContract))
+                    (await tezosAccount
+                            .DataRepository
+                            .GetTezosTokenAddressesByContractAsync(_tokenContract))
+                        .Where(w => w.TokenBalance.TokenId == _tokenId)
                         .Where(w => w.Balance != 0)
-                        .GroupBy(w => w.Address);
-
-                    foreach (var addressWithTokens in addressesWithTokens)
-                    {
-                        var addressInfo = Addresses.FirstOrDefault(a => a.Address == addressWithTokens.Key);
-
-                        if (addressInfo == null)
-                            continue;
-
-                        if (addressWithTokens.Count() == 1)
+                        .ToList()
+                        .ForEachDo(addressWithTokens =>
                         {
-                            var tokenAddress = addressWithTokens.First();
+                            var addressViewModel = Addresses
+                                .FirstOrDefault(a => a.Address == addressWithTokens.Address);
+                            if (addressViewModel == null)
+                                return;
 
-                            addressInfo.TokenBalance = tokenAddress.Balance.ToString("F8", CultureInfo.InvariantCulture);
-
-                            var tokenCode = tokenAddress?.TokenBalance?.Symbol;
-
-                            if (tokenCode != null)
-                                addressInfo.TokenBalance += $" {tokenCode}";
-                        }
-                        else
-                        {
-                            addressInfo.TokenBalance = $"{addressWithTokens.Count()} TOKENS";
-                        }
-                    }
+                            addressViewModel.TokenBalance = addressWithTokens.TokenBalance;
+                        });
                 }
 
                 AddressesChanged?.Invoke();
@@ -319,8 +346,10 @@ namespace atomex.ViewModel
         {
             try
             {
-                await new HdWalletScanner(_app.Account)
+                var updateTask = new HdWalletScanner(_app.Account)
                     .ScanAddressAsync(_currency.Name, address);
+
+                await Task.WhenAll(Task.Delay(MinimalAddressUpdateTimeMs), updateTask);
 
                 if (_currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
@@ -360,6 +389,7 @@ namespace atomex.ViewModel
 
             return null;
         }
+
+        public void Dispose() => _app.Account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
     }
 }
-

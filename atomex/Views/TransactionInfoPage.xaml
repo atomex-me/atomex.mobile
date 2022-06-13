@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
+             xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.TransactionInfoPage"
              Title="{helpers:Translate TransactionInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
@@ -14,6 +15,12 @@
                                     IsVisible="{Binding CanBeRemoved}">
         </custom:BindableToolbarItem>
     </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:StringToBoolConverter x:Key="StringToBool"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <StackLayout Spacing="0"
                      Margin="16,36,16,10">
@@ -197,15 +204,7 @@
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
-                  IsVisible="False">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding From, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  IsVisible="{Binding From, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
@@ -263,15 +262,7 @@
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
-                  IsVisible="False">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding To, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  IsVisible="{Binding To, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
@@ -328,15 +319,8 @@
                       BackgroundColor="Transparent"/>
             </Grid>
             <Grid RowSpacing="0"
-                  ColumnSpacing="0">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding Fee, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  ColumnSpacing="0"
+                  IsVisible="{Binding Fee, Converter={StaticResource GreaterThanZeroConverter}, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
@@ -366,15 +350,7 @@
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
-                  IsVisible="False">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding GasPrice, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  IsVisible="{Binding GasPrice, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
@@ -406,15 +382,7 @@
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
-                  IsVisible="False">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding GasLimit, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  IsVisible="{Binding GasLimit, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />
@@ -446,15 +414,7 @@
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
-                  IsVisible="False">
-                <Grid.Triggers>
-                    <DataTrigger TargetType="Grid"
-                                 Binding="{Binding GasUsed, FallbackValue={Null}}"
-                                 Value="{Null}">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </Grid.Triggers>
+                  IsVisible="{Binding GasUsed, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="36" />

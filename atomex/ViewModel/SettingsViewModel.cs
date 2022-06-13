@@ -37,11 +37,11 @@ namespace atomex.ViewModel
 
         [Reactive] public bool IsLoading { get; set; }
         [Reactive] public string Warning { get; set; }
-        [Reactive] public string WalletName { get; set; }
         [Reactive] public List<WalletInfo> Wallets { get; set; }
         [Reactive] public SecureString StoragePassword { get; set; }
         [Reactive] public bool BiometricSensorAvailibility { get; set; }
         [Reactive] public bool UseBiometric { get; set; }
+        private string _walletName;
 
         private Language _language;
         public Language Language
@@ -82,13 +82,12 @@ namespace atomex.ViewModel
 
         public SettingsViewModel(
             IAtomexApp app,
-            MainViewModel mainViewModel,
-            string walletName)
+            MainViewModel mainViewModel)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(MainViewModel));
+            _walletName = GetWalletName();
             StoragePassword = new SecureString();
-            WalletName = walletName;
             SetUserLanguage();
             Wallets = WalletInfo.AvailableWallets().ToList();
             _ = CheckBiometricSensor();
@@ -107,7 +106,7 @@ namespace atomex.ViewModel
         {
             try
             {
-                string value = await SecureStorage.GetAsync(WalletName);
+                string value = await SecureStorage.GetAsync(_walletName);
                 if (string.IsNullOrEmpty(value))
                     UseBiometric = false;
                 else
@@ -153,7 +152,7 @@ namespace atomex.ViewModel
                     }
                     else
                     {
-                        await SecureStorage.SetAsync(WalletName, string.Empty);
+                        await SecureStorage.SetAsync(_walletName, string.Empty);
                     }
                 });
             }
@@ -208,7 +207,7 @@ namespace atomex.ViewModel
                 try
                 {
                     string walletName = Path.GetFileName(Path.GetDirectoryName(_app.Account.Wallet.PathToWallet));
-                    await SecureStorage.SetAsync(WalletName, pswd);
+                    await SecureStorage.SetAsync(_walletName, pswd);
                 }
                 catch (Exception ex)
                 {
@@ -395,6 +394,11 @@ namespace atomex.ViewModel
                     }
                 }
             });
+
+        private string GetWalletName()
+        {
+            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
+        }
     }
 }
 

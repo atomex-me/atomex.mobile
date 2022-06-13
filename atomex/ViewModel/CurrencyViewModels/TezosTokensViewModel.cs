@@ -48,6 +48,7 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
         private IAtomexApp _app { get; }
         private INavigationService _navigationService { get; set; }
+        private string _walletName { get; set; }
         private ICurrencyQuotesProvider _quotesProvider { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
@@ -57,7 +58,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         public Action TokensChanged;
 
         public string BaseCurrencyCode => "USD";
-        private string _walletName;
 
         public TezosTokensViewModel(
             IAtomexApp app,
@@ -65,7 +65,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            GetWalletName();
+            _walletName = GetWalletName();
 
             SubscribeToServices(_app);
             
@@ -88,10 +88,10 @@ namespace atomex.ViewModel.CurrencyViewModels
         private async Task ReloadTokenContractsAsync()
         {
             var contracts = (await _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz)
-                    .DataRepository
-                    .GetTezosTokenContractsAsync())
-                .ToList();
+                .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz)
+                .DataRepository
+                .GetTezosTokenContractsAsync())
+                    .ToList();
 
             Contracts = new ObservableCollection<TokenContract>(contracts);
         }
@@ -131,13 +131,13 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                             return result;
                         }))
-                    .Select(walletAddress => new TezosTokenViewModel(_app, _navigationService)
-                    {
-                        TezosConfig = tezosConfig,
-                        TokenBalance = walletAddress.TokenBalance,
-                        Address = walletAddress.Address,
-                        Contract = contract,
-                    });
+                    .Select(walletAddress => new TezosTokenViewModel(
+                        app: _app,
+                        navigationService: _navigationService,
+                        tokenBalance: walletAddress.TokenBalance,
+                        contract: contract,
+                        address: walletAddress.Address));
+
                 tokens.AddRange(tokensViewModels);
             }
 
@@ -233,7 +233,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     var vm = new TezosToken
                     {
                         TokenViewModel = token,
-                        IsSelected = result.Contains(token.Symbol),
+                        IsSelected = result != null ? result.Contains(token.Symbol) : false,
                         OnChanged = ChangeUserTokens
                     };
 

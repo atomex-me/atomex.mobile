@@ -298,7 +298,7 @@ namespace atomex
 
                             await Task.Run(() =>
                             {
-                                mainViewModel = new MainViewModel(_app, account, WalletName);
+                                mainViewModel = new MainViewModel(_app, account);
                             });
 
                             Application.Current.MainPage = new MainPage(mainViewModel);

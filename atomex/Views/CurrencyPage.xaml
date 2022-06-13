@@ -211,10 +211,10 @@
                 </Grid>
                 <ScrollView Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
-                            HorizontalOptions="CenterAndExpand"
+                            HorizontalOptions="FillAndExpand"
                             Padding="8,0"
                             x:Name="TabScrollView">
-                    <Grid HorizontalOptions="FillAndExpand"
+                    <Grid HorizontalOptions="CenterAndExpand"
                           ColumnSpacing="0"
                           RowSpacing="0">
                         <Grid.RowDefinitions>
@@ -605,7 +605,7 @@
                                 Style="{DynamicResource TransparentButton}"
                                 x:Name="AddressesFooter"
                                 IsVisible="{Binding CanShowMoreAddresses}"
-                                Command="{Binding ShowAllAddressesCommand}"/>
+                                Command="{Binding AddressesViewModel.ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>
                 <ListView ItemsSource="{Binding Tokens}"
