@@ -364,12 +364,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                     contractAddress: Contract.Address,
                     cancellationToken: _cancellationTokenSource.Token);
 
-                // reload balances for all tezos tokens account
-                foreach (var currency in _app.Account.Currencies)
-                    if (Currencies.IsTezosToken(currency.Name))
-                        _app.Account
-                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                            .ReloadBalances();
+                var tokenAccount = _app.Account
+                    .GetTezosTokenAccount<TezosTokenAccount>(
+                        currency: IsFa12 ? Fa12 : Fa2,
+                        tokenContract: Contract.Address,
+                        tokenId: TokenBalance.TokenId);
+
+                tokenAccount.ReloadBalances();
 
                 _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
             }
