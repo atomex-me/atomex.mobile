@@ -46,8 +46,10 @@
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"/>
                 <StackLayout Spacing="0">
-                    <zxing:ZXingBarcodeImageView BarcodeValue="{Binding SelectedAddress.Address, FallbackValue='Atomex'}"
+                    <zxing:ZXingBarcodeImageView BarcodeValue="{Binding SelectedAddress.Address, Mode=TwoWay, FallbackValue='Atomex'}"
                                                  BarcodeFormat="QR_CODE"
+                                                 WidthRequest="150"
+                                                 HeightRequest="150"
                                                  Margin="0">
                     <zxing:ZXingBarcodeImageView.BarcodeOptions>
                         <zxcm:EncodingOptions Width="150"
