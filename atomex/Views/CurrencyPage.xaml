@@ -681,13 +681,13 @@
                                         <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_filters"
-                                           Margin="8,0"
+                                           Margin="8,0,4,0"
                                            HorizontalOptions="EndAndExpand"
                                            VerticalOptions="FillAndExpand"
                                            HeightRequest="16"
                                            WidthRequest="16"/>
                                 </Frame>
-                                <Frame HasShadow="False"
+                                <!--<Frame HasShadow="False"
                                        WidthRequest="32"
                                        Padding="0"
                                        VerticalOptions="FillAndExpand"
@@ -701,7 +701,7 @@
                                            HeightRequest="16"
                                            HorizontalOptions="End"
                                            Margin="10,17"/>
-                                </Frame>
+                                </Frame>-->
                             </StackLayout>
                             <StackLayout Style="{DynamicResource SeparatorStyle}"
                                          Margin="16,0,0,0"/>

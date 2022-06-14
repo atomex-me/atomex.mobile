@@ -14,6 +14,7 @@ using Atomex.Common;
 using Atomex.MarketData.Abstract;
 using Atomex.Services;
 using Atomex.Wallet;
+using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
 using DynamicData;
 using ReactiveUI;
@@ -47,6 +48,7 @@ namespace atomex.ViewModel.CurrencyViewModels
     public class TezosTokensViewModel : BaseViewModel
     {
         private IAtomexApp _app { get; }
+        private IAccount _account { get; set; }
         private INavigationService _navigationService { get; set; }
         private string _walletName { get; set; }
         private ICurrencyQuotesProvider _quotesProvider { get; set; }
@@ -64,6 +66,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             _walletName = GetWalletName();
 
@@ -263,5 +266,42 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
         }
+
+        #region IDisposable Support
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_account != null)
+                        _account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
+
+                    if (_app != null)
+                        _app.AtomexClientChanged -= OnAtomexClientChanged;
+
+                    if (_quotesProvider != null)
+                        _quotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
+                }
+
+                _account = null;
+                _quotesProvider = null;
+                _disposedValue = true;
+            }
+        }
+
+        ~TezosTokensViewModel()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

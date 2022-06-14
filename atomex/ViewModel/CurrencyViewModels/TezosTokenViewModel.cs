@@ -515,12 +515,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                 if (disposing)
                 {
                     if (_account != null)
-                    {
                         _account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
-                    }
+
+                    if (AddressesViewModel != null)
+                        AddressesViewModel.AddressesChanged -= OnAddresesChangedEventHandler;
                 }
 
                 _account = null;
+                AddressesViewModel = null;
 
                 _disposedValue = true;
             }
