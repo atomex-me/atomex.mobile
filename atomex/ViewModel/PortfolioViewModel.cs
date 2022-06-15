@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
@@ -13,6 +14,7 @@ using atomex.Views;
 using atomex.Views.Popup;
 using Atomex;
 using Atomex.Common;
+using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
@@ -63,19 +65,25 @@ namespace atomex.ViewModel
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
+        private bool _startCurrenciesScan = false;
+        private string[] _currenciesForScan { get; set; }
         private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
         private string _walletName;
 
-        public PortfolioViewModel(
-            IAtomexApp app,
-            bool restore = false)
+        public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _walletName = GetWalletName();
             
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
-                .SubscribeInMainThread(_ => SubscribeToUpdates(restore));
+                .SubscribeInMainThread(async _ =>
+                {
+                    SubscribeToUpdates();
+
+                    if (_startCurrenciesScan)
+                        await StartCurrenciesScan();
+                });
 
             this.WhenAnyValue(vm => vm._navigationService)
                 .WhereNotNull()
@@ -121,16 +129,69 @@ namespace atomex.ViewModel
                 });   
         }
 
-        private void SubscribeToUpdates(bool restore = false)
+        private void SubscribeToUpdates()
         {
             AllCurrencies.ForEachDo(c =>
                 c.CurrencyViewModel.AmountUpdated += OnAmountUpdatedEventHandler);
 
-            if (restore)
-                AllCurrencies.ForEachDo(async c =>
-                    await c.CurrencyViewModel.ScanCurrency());
-
             OnAmountUpdatedEventHandler(this, EventArgs.Empty);
+        }
+
+        public void InitCurrenciesScan(string[] currenciesArr = null)
+        {
+            _startCurrenciesScan = true;
+            _currenciesForScan = currenciesArr;
+        }
+
+        private async Task StartCurrenciesScan()
+        {
+            var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
+
+            if (_currenciesForScan != null)
+                currencies = AllCurrencies
+                    .Where(curr => _currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
+                    .Select(c => c.CurrencyViewModel)
+                    .ToList();
+
+            try
+            {
+                var primaryCurrencies = currencies
+                    .Where(curr => !curr.Currency.IsToken);
+
+                var tokenCurrencies = currencies
+                    .Where(curr => curr.Currency.IsToken);
+
+                await Task.Run(() =>
+                        Task.WhenAll(primaryCurrencies
+                            .Select(currency => currency.ScanCurrency())));
+
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await tezosTokensScanner.ScanAsync(
+                    skipUsed: false,
+                    cancellationToken: default);
+
+                // reload balances for all tezos tokens account
+                foreach (var currency in _app.Account.Currencies)
+                {
+                    if (Currencies.IsTezosToken(currency.Name))
+                        _app.Account
+                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                            .ReloadBalances();
+                }
+
+                await Task.Run(() =>
+                        Task.WhenAll(tokenCurrencies
+                            .Select(currency => currency.ScanCurrency())));
+
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Restore currencies error");
+            }
         }
 
         private void OnAmountUpdatedEventHandler(object sender, EventArgs args)

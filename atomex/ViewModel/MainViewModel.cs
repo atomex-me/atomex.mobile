@@ -24,8 +24,7 @@ namespace atomex.ViewModel
 
         public MainViewModel(
             IAtomexApp app,
-            IAccount account,
-            bool restore = false)
+            IAccount account)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -46,12 +45,17 @@ namespace atomex.ViewModel
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp, restore);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
+        }
+
+        public void InitCurrenciesScan(string[] currenciesArr = null)
+        {
+            PortfolioViewModel?.InitCurrenciesScan(currenciesArr);
         }
 
         public void SignOut()

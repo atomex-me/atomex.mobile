@@ -215,11 +215,14 @@ namespace atomex.ViewModel
                     Log.Error(ex, AppResources.NotSupportSecureStorage);
                 }
 
-                Warning = string.Empty;
-                StoragePassword?.Clear();
-                _ = ResetUseBiometricSetting();
-                _navigationService?.ClosePage(TabNavigation.Settings);
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.BiometricAuthEnabled);
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Warning = string.Empty;
+                    StoragePassword?.Clear();
+                    _ = ResetUseBiometricSetting();
+                    _navigationService?.ClosePage(TabNavigation.Settings);
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.BiometricAuthEnabled);
+                });
             }
             else
             {

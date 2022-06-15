@@ -401,20 +401,26 @@ namespace atomex.ViewModel.SendViewModels
                 {
                     var error = await Send();
 
-                    if (error != null)
+                    await Device.InvokeOnMainThreadAsync(async () =>
                     {
-                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
-                        return;
-                    }
-                    _navigationService?.CloseBottomSheet();
-                    await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                        if (error != null)
+                        {
+                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
+                            return;
+                        }
+                        _navigationService?.CloseBottomSheet();
+                        await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
+                    });
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, "Transaction send error.");
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, AppResources.SendingTransactionError);
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, AppResources.SendingTransactionError);
+                    });
                 }
                 finally
                 {

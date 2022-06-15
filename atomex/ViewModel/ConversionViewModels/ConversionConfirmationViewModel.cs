@@ -94,20 +94,26 @@ namespace atomex.ViewModel
             {
                 var error = await ConvertAsync();
 
-                if (error != null)
+                await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    if (error.Code == Errors.PriceHasChanged)
-                        _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
-                    else
-                        _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
-                    
-                    return;
-                }
+                    if (error != null)
+                    {
+                        if (error.Code == Errors.PriceHasChanged)
+                            _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
+                        else
+                            _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
+
+                        return;
+                    }
+                });
                 OnSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
-                _navigationService?.DisplaySnackBar(MessageType.Error, "An error has occurred while sending swap");
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Error, "An error has occurred while sending swap");
+                });
                 Log.Error(e, "Swap error.");
             }
             finally

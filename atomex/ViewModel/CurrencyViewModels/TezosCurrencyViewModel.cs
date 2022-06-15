@@ -206,7 +206,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                             .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
                             .ReloadBalances();
 
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                });
             }
             catch (OperationCanceledException)
             {

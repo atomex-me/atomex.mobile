@@ -62,7 +62,10 @@ namespace atomex.ViewModel
             try
             {
                 Clipboard.SetTextAsync(Address);
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                });
             }
             catch (Exception)
             {

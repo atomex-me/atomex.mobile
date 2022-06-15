@@ -277,15 +277,18 @@ namespace atomex.ViewModel
 
         protected async Task OnCopyButtonClicked(OutputViewModel output)
         {
-            if (output != null)
+            await Device.InvokeOnMainThreadAsync(() =>
             {
-                await Clipboard.SetTextAsync(output.Address);
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
-            }
-            else
-            {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
+                if (output != null)
+                {
+                    Clipboard.SetTextAsync(output.Address);
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                }
+            });
         }
 
         private void OnSearchButtonClicked()

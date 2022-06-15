@@ -349,15 +349,18 @@ namespace atomex.ViewModel
 
         protected async void OnCopyClicked(string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            await Device.InvokeOnMainThreadAsync(() =>
             {
-                await Clipboard.SetTextAsync(value);
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
-            }
-            else
-            {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
+                if (!string.IsNullOrEmpty(value))
+                {
+                    Clipboard.SetTextAsync(value);
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                }
+            });
         }
 
         private void OnScanResult()

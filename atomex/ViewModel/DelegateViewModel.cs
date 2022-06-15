@@ -116,15 +116,18 @@ namespace atomex.ViewModel
         private ReactiveCommand<string, Unit> _copyCommand;
         public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(value =>
         {
-            if (value != null)
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                _ = Clipboard.SetTextAsync(value);
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
-            }
-            else
-            {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
+                if (value != null)
+                {
+                    _ = Clipboard.SetTextAsync(value);
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.AddressCopied);
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                }
+            });
         });
 
         private async Task CheckDelegation()
@@ -305,9 +308,12 @@ namespace atomex.ViewModel
                     ? "delegated"
                     : "undelegated";
 
-                _navigationService?.DisplaySnackBar(
-                    SnackbarMessage.MessageType.Success,
-                    $"Successfully {operationType}, your delegations list will updated very soon!");
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(
+                        SnackbarMessage.MessageType.Success,
+                        $"Successfully {operationType}, your delegations list will updated very soon!");
+                });
             }
             catch (HttpRequestException e)
             {

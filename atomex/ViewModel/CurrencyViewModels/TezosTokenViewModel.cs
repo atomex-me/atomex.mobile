@@ -372,7 +372,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 tokenAccount.ReloadBalances();
 
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                });
             }
             catch (OperationCanceledException)
             {
@@ -460,28 +463,34 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected void CopyAddress(string value)
         {
-            if (value != null)
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                _ = Clipboard.SetTextAsync(value);
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
-            }
-            else
-            {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
+                if (value != null)
+                {
+                    _ = Clipboard.SetTextAsync(value);
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                }
+            });
         }
 
         protected void CopyTxId(string value)
         {
-            if (value != null)
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                _ = Clipboard.SetTextAsync(value);
-                _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
-            }
-            else
-            {
-                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
+                if (value != null)
+                {
+                    _ = Clipboard.SetTextAsync(value);
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TransactionIdCopied);
+                }
+                else
+                {
+                    _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                }
+            });
         }
 
         public bool IsIpfsAsset =>

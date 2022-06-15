@@ -417,22 +417,25 @@ namespace atomex
 
         private void VerificateDerivedPassword()
         {
-            if (DerivedPasswordConfirmation != null &&
-                !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                Warning = AppResources.InvalidPassword;
-                DerivedPswdVerified = false;
+                if (DerivedPasswordConfirmation != null &&
+                !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
+                {
+                    Warning = AppResources.InvalidPassword;
+                    DerivedPswdVerified = false;
+                    this.RaisePropertyChanged(nameof(DerivedPswdVerified));
+                    return;
+                }
+
+                DerivedPswdVerified = true;
+
                 this.RaisePropertyChanged(nameof(DerivedPswdVerified));
-                return;
-            }
 
-            DerivedPswdVerified = true;
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
 
-            this.RaisePropertyChanged(nameof(DerivedPswdVerified));
-
-            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
-
-            Warning = string.Empty;
+                Warning = string.Empty;
+            });
         }
 
         private bool IsValidStoragePassword()
@@ -502,9 +505,11 @@ namespace atomex
                         await Task.Run(() =>
                         {
                             mainViewModel = new MainViewModel(
-                                _app,
-                                account,
-                                CurrentAction == Action.Restore ? true : false);
+                                app: _app,
+                                account: account);
+
+                            if (CurrentAction == Action.Restore)
+                                mainViewModel.InitCurrenciesScan();
                         });
 
                         Application.Current.MainPage = new MainPage(mainViewModel);
@@ -626,8 +631,11 @@ namespace atomex
         public ICommand AddWordToVerificationCommand => _addWordToVerificationCommand ??= ReactiveCommand.Create<string>((word) =>
             {
                 UpdateMnemonicCollections(word, true);
-                if (DerivedPswdVerified)
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    if (DerivedPswdVerified)
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
+                });
             });
 
         private ICommand _deleteWordFromVerificationCommand;

@@ -13,6 +13,7 @@ using atomex.ViewModel;
 using atomex.Views;
 using Atomex;
 using Atomex.Common;
+using Atomex.LiteDb;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
@@ -40,11 +41,15 @@ namespace atomex
         [Reactive] public bool IsLocked { get; set; }
         [Reactive] public string Warning { get; set; }
 
+        private MainViewModel MainViewModel { get; set; }
+
         private CancellationTokenSource Cancellation { get; set; }
 
         private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
         private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
         private const int DefaultAttemptsCount = 5;
+
+        private Action OnMigrateAction;
 
         private Account _userAccount;
 
@@ -267,10 +272,17 @@ namespace atomex
                     account = await Task.Run(() =>
                     {
                         return Account.LoadFromFile(
-                            walletPath,
-                            StoragePassword,
-                            _app.CurrenciesProvider,
-                            clientType);
+                            pathToAccount: walletPath,
+                            password: StoragePassword,
+                            currenciesProvider: _app.CurrenciesProvider,
+                            clientType: clientType,
+                            migrationCompleteCallback: (MigrationActionType actionType) =>
+                            {
+                                if (actionType == MigrationActionType.XtzTransactionsDeleted)
+                                {
+                                    OnMigrateAction = TezosTransactionsDeleted;
+                                }
+                            });
                     });
                 }
                 else
@@ -294,14 +306,13 @@ namespace atomex
                     {
                         if (IsPinExist)
                         {
-                            MainViewModel mainViewModel = null;
-
                             await Task.Run(() =>
                             {
-                                mainViewModel = new MainViewModel(_app, account);
+                                MainViewModel = new MainViewModel(_app, account);
+                                OnMigrateAction?.Invoke();
                             });
 
-                            Application.Current.MainPage = new MainPage(mainViewModel);
+                            Application.Current.MainPage = new MainPage(MainViewModel);
 
                             try
                             {
@@ -576,6 +587,12 @@ namespace atomex
                 Log.Error(ex, AppResources.NotSupportSecureStorage);
                 return;
             }
+        }
+
+        private void TezosTransactionsDeleted()
+        {
+            var xtzCurrencies = new[] { "XTZ", "TZBTC", "KUSD" };
+            MainViewModel?.InitCurrenciesScan(xtzCurrencies);
         }
     }
 }
