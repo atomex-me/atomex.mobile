@@ -41,17 +41,17 @@
                            VerticalTextAlignment="Center"/>
                 </StackLayout>
                 <Label Style="{DynamicResource MainTextH2}"
-                        HorizontalTextAlignment="Center"
-                        VerticalTextAlignment="Center">
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"/>
+                            <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding Symbol}"/>
+                            <Span Text="{Binding CurrencyCode}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                <Label Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
                        Style="{DynamicResource AdditionalTextH5}"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
@@ -59,13 +59,12 @@
                 <StackLayout Spacing="6"
                              Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand">
-                    <Label Text="{Binding BalanceInBase, StringFormat='${0:f2}'}"
-                           Style="{DynamicResource MainTextH5}"
+                    <Label Style="{DynamicResource MainTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Symbol, StringFormat='1 {0} ='}"/>
+                                <Span Text="{Binding CurrencyCode, StringFormat='1 {0} ='}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"/>
                             </FormattedString>
@@ -97,7 +96,7 @@
                                  Source="ic_send">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding Balance, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
                                          Value="False">
                                 <Setter Property="BackgroundColor"
                                         Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
@@ -117,7 +116,7 @@
                            Margin="5,0">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
-                                         Binding="{Binding Balance, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
                                          Value="False">
                                 <Setter Property="Opacity"
                                         Value="0.3"/>

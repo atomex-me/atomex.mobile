@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
+using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
@@ -41,10 +43,13 @@ namespace atomex.ViewModel.CurrencyViewModels
         public TokenContract Contract { get; set; }
         public bool IsFa12 => Contract.GetContractType() == Fa12;
         public bool IsFa2 => Contract.GetContractType() == Fa2;
+        public static string BaseCurrencyCode => "USD";
+        public string CurrencyCode => TokenBalance.Symbol;
         public string Address { get; set; }
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
-        [Reactive] public decimal BalanceInBase { get; set; }
+        [Reactive] public decimal TotalAmount { get; set; }
+        [Reactive] public decimal TotalAmountInBase { get; set; }
         [Reactive] public decimal CurrentQuote { get; set; }
 
         [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
@@ -125,14 +130,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public decimal Balance => TokenBalance.Balance != "1"
-            ? TokenBalance.GetTokenBalance()
-            : 1;
-
-        public string Symbol => TokenBalance.Symbol != ""
-            ? TokenBalance.Symbol
-            : "TOKEN";
-
         public TezosTokenViewModel(
             IAtomexApp app,
             INavigationService navigationService,
@@ -151,7 +148,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            SubscribeToServices();
+            this.WhenAnyValue(vm => vm.TotalAmount)
+                .WhereNotNull()
+                .Where(_ => _app != null)
+                .SubscribeInMainThread(_ => UpdateQuotesInBaseCurrency(_app.QuotesProvider));
 
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
@@ -180,12 +180,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                 });
 
             LoadAddresses();
-            OnAddresesChangedEventHandler();
             _ = LoadTransfers();
+            _ = UpdateAsync();
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
+
+            SubscribeToUpdates();
         }
 
         protected virtual void OnAddresesChangedEventHandler()
@@ -199,7 +201,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Error for token {Symbol}");
+                Log.Error(e, $"Error for token {CurrencyCode}");
             }
         }
 
@@ -312,6 +314,47 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
+        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                if (!Currencies.IsTezosToken(args?.Currency)) return;
+
+                await Device.InvokeOnMainThreadAsync(async () =>
+                {
+                    await LoadTransfers();
+                    await UpdateAsync();
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Balance updated event handler error for tezos token {CurrencyCode}");
+            }
+        }
+
+        private void SubscribeToUpdates()
+        {
+            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+            _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+        }
+
+        private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        {
+            if (sender is not ICurrencyQuotesProvider quotesProvider)
+                return;
+
+            UpdateQuotesInBaseCurrency(quotesProvider);
+        }
+
+        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        {
+            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+            if (quote == null) return;
+
+            CurrentQuote = quote.Bid;
+            TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+        }
+
         private ReactiveCommand<Unit, Unit> _tokenActionSheetCommand;
         public ReactiveCommand<Unit, Unit> TokenActionSheetCommand => _tokenActionSheetCommand ??= ReactiveCommand.Create(() =>
             _navigationService?.ShowBottomSheet(new TokenActionBottomSheet(this)));
@@ -348,6 +391,28 @@ namespace atomex.ViewModel.CurrencyViewModels
             _cancellationTokenSource?.Dispose();
         });
 
+        private async Task UpdateAsync()
+        {
+            var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+            var tokenWalletAddresses = await tezosAccount
+                .DataRepository
+                .GetTezosTokenAddressesByContractAsync(Contract.Address);
+
+            var addresses = tokenWalletAddresses
+                .Where(walletAddress => walletAddress.TokenBalance.TokenId == TokenBalance.TokenId)
+                .ToList();
+
+            var tokenBalance = 0m;
+            addresses.ForEach(a => { tokenBalance += a.TokenBalance.GetTokenBalance(); });
+
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                TotalAmount = tokenBalance;
+            });
+        }
+
+
         public async Task ScanCurrency()
         {
             _cancellationTokenSource = new CancellationTokenSource();
@@ -374,7 +439,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, CurrencyCode + " " + AppResources.HasBeenUpdated);
                 });
             }
             catch (OperationCanceledException)
@@ -383,7 +448,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Tezos tokens scanner error for {Symbol}");
+                Log.Error(e, $"Tezos tokens scanner error for {CurrencyCode}");
             }
             finally
             {
@@ -405,7 +470,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected void OnSendClick()
         {
-            if (Balance <= 0) return;
+            if (TotalAmount <= 0) return;
             _navigationService?.CloseBottomSheet();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
@@ -430,25 +495,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             Enum.TryParse(value, out CurrencyTab selectedTab);
             SelectedTab = selectedTab;
         });
-
-        private void SubscribeToServices()
-        {
-            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
-        }
-
-        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
-        {
-            try
-            {
-                if (!Currencies.IsTezosToken(args.Currency)) return;
-
-                await Device.InvokeOnMainThreadAsync(async () => await LoadTransfers());
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, $"Balance updated event handler error for {Symbol}");
-            }
-        }
 
         private ReactiveCommand<Unit, Unit> _openInBrowser;
         public ReactiveCommand<Unit, Unit> OpenInBrowser => _openInBrowser ??= ReactiveCommand.Create(() =>
@@ -525,6 +571,9 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     if (_account != null)
                         _account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
+
+                    if (_app.QuotesProvider != null)
+                        _app.QuotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
 
                     if (AddressesViewModel != null)
                         AddressesViewModel.AddressesChanged -= OnAddresesChangedEventHandler;

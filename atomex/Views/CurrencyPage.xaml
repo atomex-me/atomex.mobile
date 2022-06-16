@@ -730,7 +730,7 @@
                                            VerticalOptions="Center"
                                            HorizontalOptions="End"/>
                                     <Label Grid.Column="1"
-                                           Text="{Binding Symbol}"
+                                           Text="{Binding CurrencyCode}"
                                            Style="{DynamicResource MainTextH4}"
                                            Padding="12,0"
                                            HorizontalTextAlignment="Start"
@@ -744,20 +744,22 @@
                                            VerticalTextAlignment="Start"/>
                                     <Label Grid.Column="2"
                                            Style="{DynamicResource MainTextH4}"
+                                           LineBreakMode="TailTruncation"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Symbol}"/>
+                                                <Span Text="{Binding CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                     <Label Grid.Row="1"
                                            Grid.Column="2"
-                                           Text="{Binding BalanceInBase, StringFormat='${0:f2}'}"
+                                           Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
                                            Style="{DynamicResource MainTextH6}"
+                                           LineBreakMode="TailTruncation"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Start"/>
                                     <Frame Grid.RowSpan="2"

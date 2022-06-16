@@ -72,7 +72,7 @@
                                            Margin="16,0"
                                            VerticalOptions="Center"
                                            HorizontalOptions="Start"/>
-                                    <Label Text="{Binding TokenViewModel.Symbol}"
+                                    <Label Text="{Binding TokenViewModel.CurrencyCode}"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center"/>
@@ -82,9 +82,9 @@
                                            VerticalTextAlignment="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TokenViewModel.Balance, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding TokenViewModel.TotalAmount, StringFormat='{0:0.#########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding TokenViewModel.Symbol}"/>
+                                                <Span Text="{Binding TokenViewModel.CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

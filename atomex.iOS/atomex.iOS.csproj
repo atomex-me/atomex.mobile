@@ -73,7 +73,6 @@
     <MtouchFloat32>true</MtouchFloat32>
     <MtouchLink>SdkOnly</MtouchLink>
 <LangVersion>8.0</LangVersion>
-<CodesignProvision>Automatic:AppStore</CodesignProvision>
 <BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <ItemGroup>

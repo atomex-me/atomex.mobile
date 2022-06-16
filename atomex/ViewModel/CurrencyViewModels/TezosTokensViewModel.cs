@@ -37,7 +37,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Skip(1)
                 .SubscribeInMainThread(flag =>
                 {
-                    OnChanged?.Invoke(TokenViewModel.Symbol, flag);
+                    OnChanged?.Invoke(TokenViewModel.CurrencyCode, flag);
                 });
         }
 
@@ -171,7 +171,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 var result = string.Join(",", tokensList);
                 Preferences.Set(_walletName + "-" + "TezosTokens", result);
 
-                AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.Symbol));
+                AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.CurrencyCode));
 
                 UserTokens = AllTokens?
                     .Where(c => c.IsSelected)
@@ -226,7 +226,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             List<string> result = new List<string>();
             result = userTokens != string.Empty
                 ? userTokens.Split(',').ToList()
-                : tokens.Select(t => t.Symbol).ToList();
+                : tokens.Select(t => t.CurrencyCode).ToList();
 
             AllTokens = new ObservableCollection<TezosToken>(tokens
                 .Select(token =>
@@ -236,19 +236,19 @@ namespace atomex.ViewModel.CurrencyViewModels
                     var vm = new TezosToken
                     {
                         TokenViewModel = token,
-                        IsSelected = result != null ? result.Contains(token.Symbol) : false,
+                        IsSelected = result != null ? result.Contains(token.CurrencyCode) : false,
                         OnChanged = ChangeUserTokens
                     };
 
                     if (quote == null) return vm;
 
                     token.CurrentQuote = quote.Bid;
-                    token.BalanceInBase = token.TokenBalance.GetTokenBalance().SafeMultiply(quote.Bid);
+                    token.TotalAmountInBase = token.TokenBalance.GetTokenBalance().SafeMultiply(quote.Bid);
 
                     return vm;
                 })
                 .OrderByDescending(token => token.TokenViewModel.IsConvertable)
-                .ThenByDescending(token => token.TokenViewModel.BalanceInBase));
+                .ThenByDescending(token => token.TokenViewModel.TotalAmountInBase));
 
             UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
                 .Where(c => c.IsSelected)

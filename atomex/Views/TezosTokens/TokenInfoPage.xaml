@@ -33,10 +33,10 @@
                        Padding="10,0">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"
+                            <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"
                                   Style="{DynamicResource TxAmountLabelStyle}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding Symbol}"
+                            <Span Text="{Binding CurrencyCode}"
                                   Style="{DynamicResource TxAmountCodeLabelStyle}"/>
                         </FormattedString>
                     </Label.FormattedText>

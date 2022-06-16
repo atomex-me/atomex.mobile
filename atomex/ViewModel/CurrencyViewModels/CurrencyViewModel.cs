@@ -61,7 +61,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
         public bool IsStakingAvailable => Currency.Name == "XTZ";
-        public bool HasCollectibles => Currency.Name == "XTZ";
+        public bool HasCollectibles => false;
         public bool HasTokens => Currency.Name == "XTZ";
 
         [Reactive] public decimal TotalAmount { get; set; }

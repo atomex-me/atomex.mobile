@@ -190,6 +190,7 @@
                             </Label>
                             <Label Grid.Column="3"
                                    Style="{DynamicResource MainTextH4}"
+                                   LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
                                 <Label.FormattedText>
@@ -204,6 +205,7 @@
                                    Grid.Column="3"
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource MainTextH6}"
+                                   LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>
                             <Frame Grid.RowSpan="2"
