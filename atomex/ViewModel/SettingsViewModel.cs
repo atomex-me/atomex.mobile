@@ -94,6 +94,7 @@ namespace atomex.ViewModel
             _ = ResetUseBiometricSetting();
 
             this.WhenAnyValue(vm => vm.UseBiometric)
+                .WhereNotNull()
                 .SubscribeInMainThread((flag) => UpdateUseBiometric(flag));
         }
 
@@ -123,12 +124,12 @@ namespace atomex.ViewModel
         {
             try
             {
+                if (_navigationService == null) return;
+
                 UseBiometric = value;
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    if (_navigationService == null) return;
-
                     if (UseBiometric)
                     {
                         var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
@@ -142,12 +143,18 @@ namespace atomex.ViewModel
                             availability == FingerprintAvailability.Denied)
                         {
                             UseBiometric = false;
-                            _navigationService?.ShowAlert(string.Empty, AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                            _navigationService?.ShowAlert(
+                                title: string.Empty,
+                                text: AppResources.NeedPermissionsForBiometricLogin,
+                                cancel: AppResources.AcceptButton);
                         }
                         else
                         {
                             UseBiometric = false;
-                            _navigationService?.ShowAlert(AppResources.SorryLabel, AppResources.ImpossibleEnableBiometric, AppResources.AcceptButton);
+                            _navigationService?.ShowAlert(
+                                title: AppResources.SorryLabel,
+                                text: AppResources.ImpossibleEnableBiometric,
+                                cancel: AppResources.AcceptButton);
                         }
                     }
                     else
@@ -169,7 +176,9 @@ namespace atomex.ViewModel
 
             try
             {
-                var wallet = HdWallet.LoadFromFile(_app.Account.Wallet.PathToWallet, StoragePassword);
+                var wallet = HdWallet.LoadFromFile(
+                    pathToWallet: _app.Account.Wallet.PathToWallet,
+                    password: StoragePassword);
                 return true;
             }
             catch (Exception e)
@@ -187,7 +196,9 @@ namespace atomex.ViewModel
                 if (Directory.Exists(directoryPath))
                 {
                     Directory.Delete(directoryPath, true);
-                    Wallets = WalletInfo.AvailableWallets().ToList();
+                    Wallets = WalletInfo
+                        .AvailableWallets()
+                        .ToList();
                 }
             }
             catch (Exception e)
@@ -211,7 +222,10 @@ namespace atomex.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    _navigationService?.ShowAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(
+                        title: AppResources.Error,
+                        text: AppResources.NotSupportSecureStorage,
+                        cancel: AppResources.AcceptButton);
                     Log.Error(ex, AppResources.NotSupportSecureStorage);
                 }
 
@@ -221,7 +235,9 @@ namespace atomex.ViewModel
                     StoragePassword?.Clear();
                     _ = ResetUseBiometricSetting();
                     _navigationService?.ClosePage(TabNavigation.Settings);
-                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.BiometricAuthEnabled);
+                    _navigationService?.DisplaySnackBar(
+                        messageType: SnackbarMessage.MessageType.Regular,
+                        text: AppResources.BiometricAuthEnabled);
                 });
             }
             else
@@ -280,12 +296,17 @@ namespace atomex.ViewModel
         {
             try
             {
-                Language = Languages.Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
+                Language = Languages
+                    .Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName))
+                    .Single();
             }
             catch (Exception e)
             {
                 Log.Error(e, "Set user language error");
-                Language = Languages.Where(l => l.Code == "en").Single();
+
+                Language = Languages
+                    .Where(l => l.Code == "en")
+                    .Single();
             }
         }
 
@@ -383,17 +404,23 @@ namespace atomex.ViewModel
         private ReactiveCommand<string, Unit> _deleteWalletCommand;
         public ReactiveCommand<string, Unit> DeleteWalletCommand => _deleteWalletCommand ??= ReactiveCommand.Create<string>(async (name) =>
             {
-                WalletInfo selectedWallet = Wallets.Where(w => w.Name == name).Single();
+                WalletInfo selectedWallet = Wallets
+                    .Where(w => w.Name == name)
+                    .Single();
 
                 var confirm = await _navigationService?.ShowAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
                 if (confirm)
                 {
-                    var confirm2 = await _navigationService?.ShowAlert(AppResources.DeletingWallet, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name), AppResources.DeleteButton, AppResources.CancelButton);
+                    var confirm2 = await _navigationService?.ShowAlert(
+                        title: AppResources.DeletingWallet,
+                        text: string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name),
+                        accept: AppResources.DeleteButton,
+                        cancel: AppResources.CancelButton);
                     if (confirm2)
                     {
-                        DeleteWallet(selectedWallet.Path);
+                        DeleteWallet(selectedWallet?.Path);
                         if (_app.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
-                            _mainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                            _mainViewModel?.Locked?.Invoke(this, EventArgs.Empty);
                     }
                 }
             });

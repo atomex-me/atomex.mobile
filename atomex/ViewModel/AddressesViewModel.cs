@@ -331,9 +331,6 @@ namespace atomex.ViewModel
                             ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
                             : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
 
-                        if (_currency.Name == "XTZ" && _tokenContract != null)
-                            Console.WriteLine('1');
-
                         return new AddressViewModel(_app, _currency, _navigationService)
                         {
                             WalletAddress = a,
