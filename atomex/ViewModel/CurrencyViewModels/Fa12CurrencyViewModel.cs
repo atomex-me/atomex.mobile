@@ -128,7 +128,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             AddressesViewModel = new AddressesViewModel(
                 app: _app,
-                currency: tezosConfig,
+                currency: fa12currency,
                 navigationService: _navigationService,
                 tokenContract: fa12currency.TokenContractAddress);
         }

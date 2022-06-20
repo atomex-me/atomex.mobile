@@ -15,6 +15,8 @@
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -345,7 +347,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid ColumnSpacing="20"
+                                <Grid ColumnSpacing="0"
                                       RowSpacing="0"
                                       Padding="16,5">
                                     <Grid.RowDefinitions>
@@ -365,16 +367,38 @@
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
                                     <Label Grid.Row="1"
-                                           Grid.ColumnSpan="2"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"
                                            HorizontalTextAlignment="Start"
                                            IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Balance}"/>
+                                                <Span Text="{Binding AvailableBalance}"/>
                                                 <Span Text=" " /> 
-                                                <Span Text="{Binding BalanceCode}"/>
+                                                <Span Text="{Binding CurrencyCode}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Start"
+                                           HorizontalTextAlignment="Start">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                <Binding Path="ShowTokenBalance"
+                                                         Mode="OneWay"/>
+                                                <Binding Path="TokenBalance"
+                                                         Mode="OneWay"
+                                                         Converter="{StaticResource NullToBoolean}"/>
+                                            </MultiBinding>                   
+                                        </Label.IsVisible>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text=" / "/>
+                                                <Span Text="{Binding TokenBalance}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding TokenCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

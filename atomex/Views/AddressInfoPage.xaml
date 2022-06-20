@@ -10,7 +10,7 @@
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -139,10 +139,16 @@
                        Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
-                       Text="{Binding Balance, StringFormat='{0:0.#########}'}"
                        Style="{DynamicResource MainTextH4}"
-                       LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding BalanceCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Image Grid.Column="1"
                        Grid.RowSpan="2"
                        Source="ic_update"
@@ -179,7 +185,7 @@
             <Grid RowSpacing="4"
                   ColumnSpacing="30"
                   Padding="16,0"
-                  IsVisible="{Binding TokenBalance, Mode=OneWay, Converter={StaticResource StringToBool}}">
+                  IsVisible="{Binding TokenBalance, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36" />
                     <RowDefinition Height="40" />
@@ -193,10 +199,16 @@
                        Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
-                       Text="{Binding TokenBalance, StringFormat='{0:0.#########}'}"
                        Style="{DynamicResource MainTextH4}"
-                       LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding TokenBalanceString}"/>
+                            <!--<Span Text=" "/>
+                            <Span Text="{Binding TokenCode}"/>-->
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>

@@ -52,7 +52,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected IAccount _account { get; set; }
         protected INavigationService _navigationService { get; set; }
 
-        public CurrencyConfig Currency { get; set; }
+        public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
         private ICurrencyQuotesProvider _quotesProvider { get; set; }
 

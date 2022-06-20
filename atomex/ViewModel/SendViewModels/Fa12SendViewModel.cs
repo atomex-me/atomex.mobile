@@ -27,11 +27,15 @@ namespace atomex.ViewModel.SendViewModels
             INavigationService navigationService)
             : base(app, currencyViewModel, navigationService)
         {
+            var tokenConfig = (Fa12Config)_currency;
+            var tokenContract = tokenConfig.TokenContractAddress;
+
             SelectFromViewModel = new SelectAddressViewModel(
                 account: _app.Account,
-                currency: _currency,
+                currency: tokenConfig,
                 navigationService: _navigationService,
-                mode: SelectAddressMode.SendFrom)
+                mode: SelectAddressMode.SendFrom,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmFromAddress
             };

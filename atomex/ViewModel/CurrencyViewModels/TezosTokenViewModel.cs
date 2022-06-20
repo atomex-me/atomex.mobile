@@ -56,7 +56,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
-        public AddressesViewModel AddressesViewModel { get; set; }
+        [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
 
         [Reactive] public bool CanShowMoreTxs { get; set; }
@@ -190,7 +190,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             SubscribeToUpdates();
         }
 
-        protected virtual void OnAddresesChangedEventHandler()
+        protected void OnAddresesChangedEventHandler()
         {
             try
             {

@@ -14,6 +14,8 @@
             <converters:InverseBoolConverter x:Key="InverseBool"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -87,24 +89,44 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.ColumnSpan="2"
                                        Text="{Binding Address}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                       FontSize="16"
-                                       Margin="0,3"
+                                       Style="{DynamicResource MainTextH4}"
                                        LineBreakMode="MiddleTruncation"
+                                       Padding="0,3"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
-                                       Grid.ColumnSpan="2"
                                        Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start"
                                        IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Balance}"/>
+                                            <Span Text="{Binding AvailableBalance}"/>
                                             <Span Text=" " /> 
-                                            <Span Text="{Binding BalanceCode}"/>
+                                            <Span Text="{Binding CurrencyCode}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       VerticalTextAlignment="Start"
+                                       HorizontalTextAlignment="Start">
+                                    <Label.IsVisible>
+                                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                            <Binding Path="ShowTokenBalance"
+                                                     Mode="OneWay"/>
+                                            <Binding Path="TokenBalance"
+                                                     Mode="OneWay"
+                                                     Converter="{StaticResource NullToBoolean}"/>
+                                        </MultiBinding>                   
+                                    </Label.IsVisible>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text=" / "/>
+                                            <Span Text="{Binding TokenBalance}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding TokenCode}"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

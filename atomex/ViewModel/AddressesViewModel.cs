@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -14,6 +13,7 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -31,11 +31,17 @@ namespace atomex.ViewModel
         private CurrencyConfig _currency;
         private INavigationService _navigationService;
 
-        [Reactive] public string Address { get; set; }
-        [Reactive] public string Type { get; set; }
+        [Reactive] public WalletAddress WalletAddress { get; set; }
+        public string Address => WalletAddress.Address;
+        public string Type => KeyTypeToString(WalletAddress.KeyType);
         [Reactive] public string Path { get; set; }
-        [Reactive] public string Balance { get; set; }
+        [Reactive] public bool HasTokens { get; set; }
+        [Reactive] public decimal Balance { get; set; }
+        [Reactive] public string BalanceCode { get; set; }
         [Reactive] public TokenBalance TokenBalance { get; set; }
+
+        public string TokenBalanceString =>
+            $"{TokenBalance?.GetTokenBalance() ?? 0} {TokenBalance?.Symbol ?? string.Empty}";
 
         [Reactive] public bool IsUpdating { get; set; }
         [Reactive] public bool IsCopied { get; set; }
@@ -55,6 +61,14 @@ namespace atomex.ViewModel
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             CopyButtonName = AppResources.CopyKeyButton;
         }
+
+        private string KeyTypeToString(int keyType) =>
+            keyType switch
+            {
+                CurrencyConfig.StandardKey => "Standard",
+                TezosConfig.Bip32Ed25519Key => "Atomex",
+                _ => throw new NotSupportedException($"Key type {keyType} not supported.")
+            };
 
         private ReactiveCommand<string, Unit> _copyCommand;
         public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>((s) =>
@@ -142,15 +156,26 @@ namespace atomex.ViewModel
         private ReactiveCommand<string, Unit> _updateAddressCommand;
         public ReactiveCommand<string, Unit> UpdateAddressCommand => _updateAddressCommand ??= ReactiveCommand.Create<string>(async (s) =>
         {
-            if (UpdateAddress == null)
-                return;
+            try
+            {
+                if (UpdateAddress == null) return;
 
-            IsUpdating = true;
-            var updatedViewModel = await UpdateAddress(Address);
-            IsUpdating = false;
+                IsUpdating = true;
+                var updatedViewModel = await UpdateAddress(Address);
 
-            Balance = updatedViewModel?.Balance;
-            TokenBalance = updatedViewModel?.TokenBalance;
+                if (updatedViewModel == null) return;
+
+                Balance = updatedViewModel.Balance;
+                TokenBalance = updatedViewModel?.TokenBalance;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Update address error", e);
+            }
+            finally
+            {
+                IsUpdating = false;
+            }
         });
 
         private ICommand _closeBottomSheetCommand;
@@ -194,12 +219,21 @@ namespace atomex.ViewModel
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
-                .SubscribeInMainThread(a =>
+                .SubscribeInMainThread(_ =>
                 {
+                    var addresses = AddressesHelper
+                        .GetAllAddressesAsync(
+                            account: _app.Account,
+                            currency: _currency,
+                            tokenContract: _tokenContract,
+                            tokenId: _tokenId)
+                        .WaitForResult();
+
                     _selectAddressViewModel = new SelectAddressViewModel(
                         account: _app.Account,
                         currency: _currency,
                         navigationService: _navigationService,
+                        desiredAddresses: addresses,
                         tab: TabNavigation.Portfolio,
                         mode: SelectAddressMode.ChooseMyAddress)
                     {
@@ -295,15 +329,19 @@ namespace atomex.ViewModel
                     {
                         var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
                             ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";             
+                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+
+                        if (_currency.Name == "XTZ" && _tokenContract != null)
+                            Console.WriteLine('1');
 
                         return new AddressViewModel(_app, _currency, _navigationService)
                         {
-                            Address = a.Address,
-                            Type = KeyTypeToString(a.KeyType),
+                            WalletAddress = a,
                             Path = path,
+                            HasTokens = HasTokens,
                             IsFreeAddress = a?.Address == freeAddress?.Address,
-                            Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {_currency.Name}",
+                            Balance = a.Balance,
+                            BalanceCode = _currency.Name,
                             UpdateAddress = UpdateAddress
                         };
                     }));
@@ -313,8 +351,8 @@ namespace atomex.ViewModel
                     var tezosAccount = account as TezosAccount;
 
                     (await tezosAccount
-                            .DataRepository
-                            .GetTezosTokenAddressesByContractAsync(_tokenContract))
+                        .DataRepository
+                        .GetTezosTokenAddressesByContractAsync(_tokenContract))
                         .Where(w => w.TokenBalance.TokenId == _tokenId)
                         .Where(w => w.Balance != 0)
                         .ToList()
@@ -324,7 +362,7 @@ namespace atomex.ViewModel
                                 .FirstOrDefault(a => a.Address == addressWithTokens.Address);
                             if (addressViewModel == null)
                                 return;
-
+                            
                             addressViewModel.TokenBalance = addressWithTokens.TokenBalance;
                         });
                 }
@@ -336,14 +374,6 @@ namespace atomex.ViewModel
                 Log.Error(e, "Error while reload addresses list.");
             }
         }
-
-        private string KeyTypeToString(int keyType) =>
-            keyType switch
-            {
-                CurrencyConfig.StandardKey => "Standard",
-                TezosConfig.Bip32Ed25519Key => "Atomex",
-                _ => throw new NotSupportedException($"Key type {keyType} not supported.")
-            };
 
         private async Task<AddressViewModel> UpdateAddress(string address)
         {

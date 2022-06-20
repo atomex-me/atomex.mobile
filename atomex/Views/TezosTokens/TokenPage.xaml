@@ -13,6 +13,8 @@
             <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
             <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -439,21 +441,51 @@
                                         <RowDefinition Height="20" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="8*" />
-                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="44" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Address}"
+                                    <Label Grid.ColumnSpan="2" Text="{Binding Address}"
                                            Style="{DynamicResource MainTextH4}"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"
+                                           HorizontalOptions="FillAndExpand"
                                            LineBreakMode="MiddleTruncation"/>
                                     <Label Grid.Row="1"
-                                           Text="{Binding Balance}"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Balance}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding BalanceCode}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation"/>
-                                    <Image Grid.Column="1"
+                                           LineBreakMode="MiddleTruncation">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                <Binding Path="HasTokens"
+                                                         Mode="OneWay"/>
+                                                <Binding Path="TokenBalance"
+                                                         Mode="OneWay"
+                                                         Converter="{StaticResource NullToBoolean}"/>
+                                            </MultiBinding>                   
+                                        </Label.IsVisible>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text=" / "/>
+                                                <Span Text="{Binding TokenBalanceString}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Column="2"
                                            Grid.RowSpan="2"
                                            HorizontalOptions="End"
                                            WidthRequest="11"

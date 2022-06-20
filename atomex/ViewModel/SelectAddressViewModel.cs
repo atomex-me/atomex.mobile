@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -86,6 +87,7 @@ namespace atomex.ViewModel
             INavigationService navigationService,
             TabNavigation tab = TabNavigation.Portfolio,
             SelectAddressMode mode = SelectAddressMode.ReceiveTo,
+            IEnumerable<WalletAddressViewModel> desiredAddresses = null,
             string selectedAddress = null,
             decimal? selectedTokenId = null,
             string tokenContract = null)
@@ -214,15 +216,17 @@ namespace atomex.ViewModel
                     this.RaisePropertyChanged(nameof(Message));
                 });
 
-            var addresses = AddressesHelper
-                .GetReceivingAddressesAsync(
-                    account: account,
-                    currency: currency,
-                    tokenContract: tokenContract,
-                    tokenId: selectedTokenId)
-                .WaitForResult()
-                .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
-                .OrderByDescending(address => address.Balance);
+            var addresses = desiredAddresses == null
+                ? AddressesHelper
+                    .GetReceivingAddressesAsync(
+                        account: account,
+                        currency: currency,
+                        tokenContract: tokenContract,
+                        tokenId: selectedTokenId)
+                    .WaitForResult()
+                    .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
+                    .OrderByDescending(address => address.Balance)
+                : desiredAddresses;
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
             _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
