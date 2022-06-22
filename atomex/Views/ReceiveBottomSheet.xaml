@@ -11,6 +11,12 @@
     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
     xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
     x:Class="atomex.Views.ReceiveBottomSheet">
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
             PositionIn="Bottom"
@@ -63,16 +69,42 @@
                        LineBreakMode="CharacterWrap"
                        HorizontalTextAlignment="Center"
                        Margin="24,24,24,4"/>
-                <Label Style="{DynamicResource AdditionalTextH5}"
-                       HorizontalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding SelectedAddress.CurrencyCode}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <StackLayout Spacing="0"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <Label Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center">
+                        <Label.IsVisible>
+                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                <Binding Path="SelectedAddress.IsFreeAddress"
+                                         Mode="OneWay"
+                                         Converter="{StaticResource InverseBool}"/>
+                                <Binding Path="SelectedAddress.IsTezosToken"
+                                         Mode="OneWay"/>
+                            </MultiBinding>                   
+                        </Label.IsVisible>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SelectedAddress.TokenBalance}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding SelectedAddress.TokenCode}"/>
+                                <Span Text=" / "/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding SelectedAddress.CurrencyCode}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
                 <Frame Style="{DynamicResource MainClickableFrame}"
                        WidthRequest="200"
                        Margin="24,12">

@@ -575,7 +575,6 @@
                                         <RowDefinition Height="20" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="44" />
                                     </Grid.ColumnDefinitions>
@@ -596,21 +595,7 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation"
-                                           IsVisible="{Binding HasTokens, FallbackValue='False', TargetNullValue='False'}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text=" / "/>
-                                                <Span Text="{Binding TokenBalanceString}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Image Grid.Column="2"
+                                    <Image Grid.Column="1"
                                            Grid.RowSpan="2"
                                            HorizontalOptions="End"
                                            WidthRequest="11"

@@ -15,7 +15,6 @@
             <converters:StringToBoolConverter x:Key="StringToBool"/>
             <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
             <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
-            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -59,6 +58,7 @@
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       VerticalOptions="FillAndExpand"
+                      RowHeight="64"
                       Footer="">
                 <ListView.Behaviors>
                     <behaviors:EventToCommandBehavior EventName="ItemTapped"
@@ -97,13 +97,22 @@
                                 <Label Grid.Row="1"
                                        Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start"
-                                       IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
+                                       HorizontalTextAlignment="Start">
+                                    <Label.IsVisible>
+                                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                            <Binding Path="IsFreeAddress"
+                                                     Mode="OneWay"
+                                                     Converter="{StaticResource InverseBool}"/>
+                                            <Binding Path="IsTezosToken"
+                                                     Mode="OneWay"/>
+                                        </MultiBinding>                   
+                                    </Label.IsVisible>
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding AvailableBalance}"/>
-                                            <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyCode}"/>
+                                            <Span Text="{Binding TokenBalance}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding TokenCode}"/>
+                                            <Span Text=" / "/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
@@ -111,22 +120,13 @@
                                        Grid.Column="1"
                                        Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start">
-                                    <Label.IsVisible>
-                                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                                            <Binding Path="ShowTokenBalance"
-                                                     Mode="OneWay"/>
-                                            <Binding Path="TokenBalance"
-                                                     Mode="OneWay"
-                                                     Converter="{StaticResource NullToBoolean}"/>
-                                        </MultiBinding>                   
-                                    </Label.IsVisible>
+                                       HorizontalTextAlignment="Start"
+                                       IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text=" / "/>
-                                            <Span Text="{Binding TokenBalance}"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding TokenCode}"/>
+                                            <Span Text="{Binding AvailableBalance}"/>
+                                            <Span Text=" " /> 
+                                            <Span Text="{Binding CurrencyCode}"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>

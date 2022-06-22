@@ -55,7 +55,7 @@
                     </Image.GestureRecognizers>
                 </Image>
                 <Frame Grid.Row="2"
-                       Padding="5,0"
+                       Padding="5,3"
                        HasShadow="False"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                        CornerRadius="4"
@@ -199,16 +199,9 @@
                        Style="{DynamicResource AdditionalTextH5}"
                        VerticalTextAlignment="End"/>
                 <Label Grid.Row="1"
+                       Text="{Binding TokenBalanceString}"
                        Style="{DynamicResource MainTextH4}"
-                       VerticalTextAlignment="Start">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding TokenBalanceString}"/>
-                            <!--<Span Text=" "/>
-                            <Span Text="{Binding TokenCode}"/>-->
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                       VerticalTextAlignment="Start"/>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="2"
                       BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>

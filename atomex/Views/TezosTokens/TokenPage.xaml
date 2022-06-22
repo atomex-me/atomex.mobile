@@ -445,7 +445,8 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="44" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.ColumnSpan="2" Text="{Binding Address}"
+                                    <Label Grid.ColumnSpan="2"
+                                           Text="{Binding Address}"
                                            Style="{DynamicResource MainTextH4}"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"
@@ -457,9 +458,8 @@
                                            HorizontalTextAlignment="Start">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Balance}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding BalanceCode}"/>
+                                                <Span Text="{Binding TokenBalanceString}"/>
+                                                <Span Text=" / "/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -467,21 +467,12 @@
                                            Grid.Column="1"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation">
-                                        <Label.IsVisible>
-                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                                                <Binding Path="HasTokens"
-                                                         Mode="OneWay"/>
-                                                <Binding Path="TokenBalance"
-                                                         Mode="OneWay"
-                                                         Converter="{StaticResource NullToBoolean}"/>
-                                            </MultiBinding>                   
-                                        </Label.IsVisible>
+                                           HorizontalTextAlignment="Start">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text=" / "/>
-                                                <Span Text="{Binding TokenBalanceString}"/>
+                                                <Span Text="{Binding Balance}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding BalanceCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

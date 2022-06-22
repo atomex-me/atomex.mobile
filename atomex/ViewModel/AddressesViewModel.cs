@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
@@ -13,7 +14,6 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
-using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -41,7 +41,7 @@ namespace atomex.ViewModel
         [Reactive] public TokenBalance TokenBalance { get; set; }
 
         public string TokenBalanceString =>
-            $"{TokenBalance?.GetTokenBalance() ?? 0} {TokenBalance?.Symbol ?? string.Empty}";
+            $"{TokenBalance?.GetTokenBalance() ?? 0} {TokenBalance?.Symbol ?? "TOKENS" }";
 
         [Reactive] public bool IsUpdating { get; set; }
         [Reactive] public bool IsCopied { get; set; }
@@ -220,20 +220,13 @@ namespace atomex.ViewModel
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                {
-                    var addresses = AddressesHelper
-                        .GetAllAddressesAsync(
-                            account: _app.Account,
-                            currency: _currency,
-                            tokenContract: _tokenContract,
-                            tokenId: _tokenId)
-                        .WaitForResult();
-
+                {                   
                     _selectAddressViewModel = new SelectAddressViewModel(
                         account: _app.Account,
                         currency: _currency,
                         navigationService: _navigationService,
-                        desiredAddresses: addresses,
+                        tokenContract: tokenContract,
+                        selectedTokenId: tokenId,
                         tab: TabNavigation.Portfolio,
                         mode: SelectAddressMode.ChooseMyAddress)
                     {

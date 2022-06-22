@@ -196,7 +196,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 Addresses = new ObservableCollection<AddressViewModel>(
                     AddressesViewModel?.Addresses
-                        .OrderByDescending(a => a.Balance)
+                        .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
                         .Take(AddressesNumberPerPage));
             }
             catch (Exception e)
@@ -464,7 +464,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                 navigationService: _navigationService,
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
-                tokenType: Contract.GetContractType());
+                tokenType: Contract.GetContractType(),
+                tokenId: TokenBalance.TokenId);
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 

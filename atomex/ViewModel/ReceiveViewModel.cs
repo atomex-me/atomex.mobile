@@ -37,7 +37,8 @@ namespace atomex.ViewModel
             CurrencyConfig currency,
             INavigationService navigationService,
             string tokenContract = null,
-            string tokenType = null)
+            string tokenType = null,
+            decimal? tokenId = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
@@ -50,6 +51,8 @@ namespace atomex.ViewModel
                 account: _app.Account,
                 currency: Currency,
                 navigationService: _navigationService,
+                tokenContract: tokenContract,
+                selectedTokenId: tokenId,
                 tab: TabNavigation.Portfolio,
                 mode: SelectAddressMode.ChooseMyAddress)
             {
