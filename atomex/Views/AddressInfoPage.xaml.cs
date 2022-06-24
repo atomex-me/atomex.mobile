@@ -5,10 +5,10 @@ namespace atomex
 {
     public partial class AddressInfoPage : ContentPage
     {
-        public AddressInfoPage(AddressesViewModel addressesViewModel)
+        public AddressInfoPage(AddressViewModel addressInfoViewModel)
         {
             InitializeComponent();
-            BindingContext = addressesViewModel;
+            BindingContext = addressInfoViewModel;
         }
     }
 }

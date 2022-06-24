@@ -3,10 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views.Send;
+using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Core;
@@ -15,6 +14,7 @@ using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -23,41 +23,50 @@ namespace atomex.ViewModel.SendViewModels
 
         public Fa12SendViewModel(
             IAtomexApp app,
-            CurrencyViewModel currencyViewModel)
-            : base(app, currencyViewModel)
+            CurrencyViewModel currencyViewModel,
+            INavigationService navigationService)
+            : base(app, currencyViewModel, navigationService)
         {
-            SelectFromViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation, SelectAddressMode.SendFrom)
+            var tokenConfig = (Fa12Config)_currency;
+            var tokenContract = tokenConfig.TokenContractAddress;
+
+            SelectFromViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: tokenConfig,
+                navigationService: _navigationService,
+                mode: SelectAddressMode.SendFrom,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmFromAddress
             };
 
-            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
+            SelectToViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService)
             {
                 ConfirmAction = ConfirmToAddress
             };
         }
 
-        protected override async Task FromClick()
+        protected override void FromClick()
         {
             var selectFromViewModel = SelectFromViewModel as SelectAddressViewModel;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new SelectAddressPage(selectFromViewModel));
+            _navigationService?.ShowPage(new SelectAddressPage(selectFromViewModel), TabNavigation.Portfolio);
         }
 
-        protected override async Task ToClick()
+        protected override void ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+            _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
         }
 
         protected override async Task UpdateAmount()
         {
             try
             {
-                var account = App.Account
-                    .GetCurrencyAccount<Fa12Account>(Currency.Name);
+                var account = _app.Account
+                    .GetCurrencyAccount<Fa12Account>(_currency.Name);
 
                 var maxAmountEstimation = await account
                     .EstimateMaxAmountToSendAsync(
@@ -95,7 +104,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update amount error", Currency?.Description);
+                Log.Error(e, "{@currency}: update amount error", _currency?.Description);
             }
         }
 
@@ -105,8 +114,8 @@ namespace atomex.ViewModel.SendViewModels
             {
                 if (!UseDefaultFee)
                 {
-                    var account = App.Account
-                        .GetCurrencyAccount<Fa12Account>(Currency.Name);
+                    var account = _app.Account
+                        .GetCurrencyAccount<Fa12Account>(_currency.Name);
 
                     var maxAmountEstimation = await account
                         .EstimateMaxAmountToSendAsync(
@@ -142,7 +151,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: update fee error", Currency?.Description);
+                Log.Error(e, "{@currency}: update fee error", _currency?.Description);
             }
         }
 
@@ -150,8 +159,8 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                var account = App.Account
-                    .GetCurrencyAccount<Fa12Account>(Currency.Name);
+                var account = _app.Account
+                    .GetCurrencyAccount<Fa12Account>(_currency.Name);
 
                 var maxAmountEstimation = await account
                     .EstimateMaxAmountToSendAsync(
@@ -187,7 +196,7 @@ namespace atomex.ViewModel.SendViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, "{@currency}: max click error", Currency?.Description);
+                Log.Error(e, "{@currency}: max click error", _currency?.Description);
             }
         }
 
@@ -209,34 +218,38 @@ namespace atomex.ViewModel.SendViewModels
 
         protected override async Task<Error> Send(CancellationToken cancellationToken = default)
         {
-            var tokenConfig = (Fa12Config)Currency;
+            var tokenConfig = (Fa12Config)_currency;
             var tokenContract = tokenConfig.TokenContractAddress;
             const int tokenId = 0;
             const string tokenType = "FA12";
 
             var tokenAddress = await TezosTokensSendViewModel.GetTokenAddressAsync(
-                account: App.Account,
+                account: _app.Account,
                 address: From,
                 tokenContract: tokenContract,
                 tokenId: tokenId,
                 tokenType: tokenType);
 
-            var currencyName = App.Account.Currencies
+            var currencyName = _app.Account.Currencies
                 .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == tokenContract)
                 ?.Name ?? "FA12";
 
-            var tokenAccount = App.Account.GetTezosTokenAccount<Fa12Account>(
+            var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
                 currency: currencyName,
                 tokenContract: tokenContract,
                 tokenId: tokenId);
 
-            return await tokenAccount.SendAsync(
-                from: tokenAddress.Address,
-                to: To,
-                amount: AmountToSend,
-                fee: Fee,
-                useDefaultFee: UseDefaultFee,
-                cancellationToken: cancellationToken);
+            var (_, error) = await tokenAccount
+                .SendAsync(
+                    from: tokenAddress.Address,
+                    to: To,
+                    amount: AmountToSend,
+                    fee: Fee,
+                    useDefaultFee: UseDefaultFee,
+                    cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
+            return error;
         }
     }
 }

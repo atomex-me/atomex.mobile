@@ -1,6 +1,7 @@
 ﻿using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.Ethereum;
+using atomex.Common;
 
 namespace atomex.ViewModel.TransactionViewModels
 {
@@ -10,9 +11,13 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
+        public string Alias { get; set; }
 
-        public EthereumTransactionViewModel(EthereumTransaction tx, EthereumConfig ethereumConfig)
-            : base(tx, ethereumConfig, GetAmount(tx), GetFee(tx))
+        public EthereumTransactionViewModel(
+            EthereumTransaction tx,
+            EthereumConfig ethereumConfig,
+            INavigationService navigationService)
+            : base(tx, ethereumConfig, GetAmount(tx), GetFee(tx), navigationService)
         {
             From = tx.From;
             To = tx.To;
@@ -21,6 +26,11 @@ namespace atomex.ViewModel.TransactionViewModels
             GasUsed = (decimal)tx.GasUsed;
             Fee = EthereumConfig.WeiToEth(tx.GasUsed * tx.GasPrice);
             IsInternal = tx.IsInternal;
+            Alias = Amount switch
+            {
+                <= 0 => tx.To.TruncateAddress(),
+                > 0 => tx.From.TruncateAddress()
+            };
         }
 
         private static decimal GetAmount(EthereumTransaction tx)

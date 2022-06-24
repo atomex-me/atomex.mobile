@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
@@ -14,13 +15,14 @@ using atomex.CustomElements;
 using atomex.Helpers;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Services;
 using atomex.Views;
 using atomex.Views.SettingsOptions;
 using Atomex;
 using Atomex.Wallet;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -29,67 +31,17 @@ namespace atomex.ViewModel
 {
     public class SettingsViewModel : BaseViewModel
     {
-        public IAtomexApp AtomexApp { get; private set; }
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; set; }
+        private MainViewModel _mainViewModel { get; }
 
-        public INavigation Navigation { get; set; }
-
-        protected IToastService ToastService { get; set; }
-
-        public MainViewModel MainViewModel { get; }
-
-        private const string LanguageKey = nameof(LanguageKey);
-
-        private string YoutubeUrl = "https://www.youtube.com/c/BakingBad";
-
-        private string TwitterUrl = "https://twitter.com/atomex_official";
-
-        private string TelegramUrl = "https://t.me/atomex_official";
-
-        private string SupportUrl = "mailto:support@atomex.me";
-
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-
-        private string _warning;
-        public string Warning
-        {
-            get => _warning;
-            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
-        }
-
-        private bool _biometricSensorAvailibility;
-        public bool BiometricSensorAvailibility
-        {
-            get => _biometricSensorAvailibility;
-            set { _biometricSensorAvailibility = value; OnPropertyChanged(nameof(BiometricSensorAvailibility)); }
-        }
-
+        [Reactive] public bool IsLoading { get; set; }
+        [Reactive] public string Warning { get; set; }
+        [Reactive] public List<WalletInfo> Wallets { get; set; }
+        [Reactive] public SecureString StoragePassword { get; set; }
+        [Reactive] public bool BiometricSensorAvailibility { get; set; }
+        [Reactive] public bool UseBiometric { get; set; }
         private string _walletName;
-        public string WalletName
-        {
-            get => _walletName;
-            set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
-        }
-
-        private List<WalletInfo> _wallets;
-        public List<WalletInfo> Wallets
-        {
-            get => _wallets;
-            set { _wallets = value; OnPropertyChanged(nameof(Wallets)); }
-        }
 
         private Language _language;
         public Language Language
@@ -102,14 +54,11 @@ namespace atomex.ViewModel
 
                 if (_language != null)
                     _language.IsActive = false;
-
                 _language = value;
-
                 SetCulture(_language);
-
                 _language.IsActive = true;
 
-                OnPropertyChanged(nameof(Language));
+                this.RaisePropertyChanged(nameof(Language));
             }
         }
 
@@ -122,43 +71,43 @@ namespace atomex.ViewModel
         };
 
         public string Header => AppResources.EnterPin;
+        private const string LanguageKey = nameof(LanguageKey);
 
-        private SecureString _storagePassword;
-
-        public SecureString StoragePassword
-        {
-            get => _storagePassword;
-            set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
-        }
-
-        private bool _useBiometric;
-
-        public bool UseBiometric
-        {
-            get { return _useBiometric; }
-            set { _ = UpdateUseBiometric(value); }
-        }
+        private const string YoutubeUrl = "https://www.youtube.com/c/BakingBad";
+        private const string TwitterUrl = "https://twitter.com/atomex_official";
+        private const string TelegramUrl = "https://t.me/atomex_official";
+        private const string SupportUrl = "mailto:support@atomex.me";
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
-        public SettingsViewModel(IAtomexApp app, MainViewModel mainViewModel, string walletName)
+        public SettingsViewModel(
+            IAtomexApp app,
+            MainViewModel mainViewModel)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(MainViewModel));
+            _walletName = GetWalletName();
+            StoragePassword = new SecureString();
             SetUserLanguage();
-            WalletName = walletName;
             Wallets = WalletInfo.AvailableWallets().ToList();
-            MainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(MainViewModel));
-            ToastService = DependencyService.Get<IToastService>();
             _ = CheckBiometricSensor();
             _ = ResetUseBiometricSetting();
-            StoragePassword = new SecureString();
+
+            this.WhenAnyValue(vm => vm.UseBiometric)
+                .WhereNotNull()
+                .SubscribeInMainThread((flag) => UpdateUseBiometric(flag));
+        }
+
+        public void SetNavigationService(INavigationService service)
+        {
+            _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         public async Task ResetUseBiometricSetting()
         {
             try
             {
-                string value = await SecureStorage.GetAsync(WalletName);
+                string value = await SecureStorage.GetAsync(_walletName);
                 if (string.IsNullOrEmpty(value))
                     UseBiometric = false;
                 else
@@ -171,57 +120,65 @@ namespace atomex.ViewModel
             }
         }
 
-        public async Task UpdateUseBiometric(bool value)
+        public async void UpdateUseBiometric(bool value)
         {
-            if (_useBiometric != value)
+            try
             {
-                _useBiometric = value;
+                if (_navigationService == null) return;
 
-                if (_useBiometric)
+                UseBiometric = value;
+
+                await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
+                    if (UseBiometric)
+                    {
+                        var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
 
-                    if (availability == FingerprintAvailability.Available)
-                    {
-                        await Navigation.PushAsync(new AuthPage(this));
-                    }
-                    else if (availability == FingerprintAvailability.NoPermission ||
-                        availability == FingerprintAvailability.NoFingerprint ||
-                        availability == FingerprintAvailability.Denied)
-                    {
-                        _useBiometric = false;
-                        await Application.Current.MainPage.DisplayAlert("", AppResources.NeedPermissionsForBiometricLogin, AppResources.AcceptButton);
+                        if (availability == FingerprintAvailability.Available)
+                        {
+                            _navigationService?.ShowPage(new AuthPage(this), TabNavigation.Settings);
+                        }
+                        else if (availability == FingerprintAvailability.NoPermission ||
+                            availability == FingerprintAvailability.NoFingerprint ||
+                            availability == FingerprintAvailability.Denied)
+                        {
+                            UseBiometric = false;
+                            _navigationService?.ShowAlert(
+                                title: string.Empty,
+                                text: AppResources.NeedPermissionsForBiometricLogin,
+                                cancel: AppResources.AcceptButton);
+                        }
+                        else
+                        {
+                            UseBiometric = false;
+                            _navigationService?.ShowAlert(
+                                title: AppResources.SorryLabel,
+                                text: AppResources.ImpossibleEnableBiometric,
+                                cancel: AppResources.AcceptButton);
+                        }
                     }
                     else
                     {
-                        _useBiometric = false;
-                        await Application.Current.MainPage.DisplayAlert(AppResources.SorryLabel, AppResources.ImpossibleEnableBiometric, AppResources.AcceptButton);
+                        await SecureStorage.SetAsync(_walletName, string.Empty);
                     }
-                }
-                else
-                {
-                    try
-                    {
-                        await SecureStorage.SetAsync(WalletName, string.Empty);
-                    }
-                    catch (Exception ex)
-                    {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
-                        Log.Error(ex, AppResources.NotSupportSecureStorage);
-                    }
-                }
-                OnPropertyChanged(nameof(UseBiometric));
+                });
             }
+            catch (Exception e)
+            {
+                Log.Error(e, "Update biometric settings error");
+            }   
         }
 
         public bool CheckAccountExist()
         {
-            if (StoragePassword == null || StoragePassword.Length == 0)
+            if (StoragePassword == null || StoragePassword?.Length == 0)
                 return false;
 
             try
             {
-                var wallet = HdWallet.LoadFromFile(AtomexApp.Account.Wallet.PathToWallet, StoragePassword);
+                var wallet = HdWallet.LoadFromFile(
+                    pathToWallet: _app.Account.Wallet.PathToWallet,
+                    password: StoragePassword);
                 return true;
             }
             catch (Exception e)
@@ -239,7 +196,9 @@ namespace atomex.ViewModel
                 if (Directory.Exists(directoryPath))
                 {
                     Directory.Delete(directoryPath, true);
-                    Wallets = WalletInfo.AvailableWallets().ToList();
+                    Wallets = WalletInfo
+                        .AvailableWallets()
+                        .ToList();
                 }
             }
             catch (Exception e)
@@ -251,7 +210,6 @@ namespace atomex.ViewModel
         private async Task EnableBiometric(string pswd)
         {
             IsLoading = true;
-
             bool accountExist = CheckAccountExist();
 
             IsLoading = false;
@@ -259,27 +217,35 @@ namespace atomex.ViewModel
             {
                 try
                 {
-                    string walletName = Path.GetFileName(Path.GetDirectoryName(AtomexApp.Account.Wallet.PathToWallet));
-                    await SecureStorage.SetAsync(WalletName, pswd);
+                    string walletName = Path.GetFileName(Path.GetDirectoryName(_app.Account.Wallet.PathToWallet));
+                    await SecureStorage.SetAsync(_walletName, pswd);
                 }
                 catch (Exception ex)
                 {
-                    await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.NotSupportSecureStorage, AppResources.AcceptButton);
+                    _navigationService?.ShowAlert(
+                        title: AppResources.Error,
+                        text: AppResources.NotSupportSecureStorage,
+                        cancel: AppResources.AcceptButton);
                     Log.Error(ex, AppResources.NotSupportSecureStorage);
                 }
 
-                Warning = string.Empty;
-                StoragePassword?.Clear();
-                _ = ResetUseBiometricSetting();
-                await Navigation.PopAsync();
-                ToastService?.Show(AppResources.BiometricAuthEnabled, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Warning = string.Empty;
+                    StoragePassword?.Clear();
+                    _ = ResetUseBiometricSetting();
+                    _navigationService?.ClosePage(TabNavigation.Settings);
+                    _navigationService?.DisplaySnackBar(
+                        messageType: SnackbarMessage.MessageType.Regular,
+                        text: AppResources.BiometricAuthEnabled);
+                });
             }
             else
             {
                 Warning = AppResources.InvalidPin;
-                
+
                 StoragePassword.Clear();
-                OnPropertyChanged(nameof(StoragePassword));
+                this.RaisePropertyChanged(nameof(StoragePassword));
 
                 var tabs = ((CustomTabbedPage)Application.Current.MainPage).Children;
 
@@ -309,39 +275,38 @@ namespace atomex.ViewModel
             }
         }
 
-        async Task CheckBiometricSensor()
+        private async Task CheckBiometricSensor()
         {
             var availability = await CrossFingerprint.Current.GetAvailabilityAsync();
             BiometricSensorAvailibility = availability != FingerprintAvailability.NoSensor;
         }
 
-        private ICommand _showLanguagesCommand;
-        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());
+        private ReactiveCommand<Unit, Unit> _showLanguagesCommand;
+        public ReactiveCommand<Unit, Unit> ShowLanguagesCommand => _showLanguagesCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowPage(new LanguagesPage(this), TabNavigation.Settings));
 
-        private ICommand _changeLanguageCommand;
-        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
-
-        async Task ShowLanguages()
-        {
-            await Navigation.PushAsync(new LanguagesPage(this));
-        }
-
-        async Task ChangeLanguage(Language value)
-        {
-            Language = value;
-            await Navigation.PopAsync();
-        }
+        private ReactiveCommand<Language, Unit> _changeLanguageCommand;
+        public ReactiveCommand<Language, Unit> ChangeLanguageCommand => _changeLanguageCommand ??= ReactiveCommand.Create<Language>((value) =>
+            {
+                Language = value;
+                _navigationService?.ClosePage(TabNavigation.Settings);
+            });
 
         private void SetUserLanguage()
         {
             try
             {
-                Language = Languages.Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
+                Language = Languages
+                    .Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName))
+                    .Single();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error(e, "Set user language error");
-                Language = Languages.Where(l => l.Code == "en").Single();
+
+                Language = Languages
+                    .Where(l => l.Code == "en")
+                    .Single();
             }
         }
 
@@ -357,38 +322,38 @@ namespace atomex.ViewModel
             }
         }
 
-        private ICommand _addCharCommand;
-        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>((value) => AddChar(value));
-
-        private ICommand _deleteCharCommand;
-        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
-
-        private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
-
-        private async Task OnCancelButtonTapped()
-        {
-            await Navigation.PopAsync();
-        }
-
-        private void AddChar(string str)
-        {
-            if (StoragePassword?.Length < 4)
+        private ReactiveCommand<string, Unit> _addCharCommand;
+        public ReactiveCommand<string, Unit> AddCharCommand => _addCharCommand ??= ReactiveCommand.Create<string>((value) =>
             {
-                Warning = string.Empty;
-
-                foreach (char c in str)
+                if (StoragePassword?.Length < 4)
                 {
-                    StoragePassword.AppendChar(c);
-                }
+                    Warning = string.Empty;
 
-                OnPropertyChanged(nameof(StoragePassword));
-                if (StoragePassword?.Length == 4)
-                {
-                    _ = EnableBiometric(SecureStringToString(StoragePassword));
+                    foreach (char c in value)
+                    {
+                        StoragePassword.AppendChar(c);
+                    }
+
+                    this.RaisePropertyChanged(nameof(StoragePassword));
+                    if (StoragePassword?.Length == 4)
+                    {
+                        _ = EnableBiometric(SecureStringToString(StoragePassword));
+                    }
                 }
-            }
-        }
+            });
+
+        private ReactiveCommand<Unit, Unit> _deleteCharCommand;
+        public ReactiveCommand<Unit, Unit> DeleteCharCommand => _deleteCharCommand ??= ReactiveCommand.Create(() =>
+            {
+                if (StoragePassword?.Length != 0)
+                {
+                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                    this.RaisePropertyChanged(nameof(StoragePassword));
+                }
+            });
+
+        private ReactiveCommand<Unit, Unit> _cancelCommand;
+        public ReactiveCommand<Unit, Unit> CancelCommand => _cancelCommand ??= ReactiveCommand.Create(() => _navigationService?.ClosePage(TabNavigation.Settings));
 
         private String SecureStringToString(SecureString value)
         {
@@ -404,85 +369,65 @@ namespace atomex.ViewModel
             }
         }
 
-        private void RemoveChar()
-        {
-            if (StoragePassword?.Length != 0)
-            {
-                StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                OnPropertyChanged(nameof(StoragePassword));
-            }
-        }
-
         private ICommand _backCommand;
-        public ICommand BackCommand => _backCommand ??= new Command(() => OnBackButtonTapped());
-
-        private void OnBackButtonTapped()
-        {
-            Warning = string.Empty;
-            StoragePassword?.Clear();
-            _ = ResetUseBiometricSetting();
-        }
-
-        private ICommand _youtubeCommand;
-        public ICommand YoutubeCommand => _youtubeCommand ??= new Command( () => OnYoutubeTapped());
-
-        private ICommand _telegramCommand;
-        public ICommand TelegramCommand => _telegramCommand ??= new Command(() => OnTelegramTapped());
-
-        private ICommand _twitterCommand;
-        public ICommand TwitterCommand => _twitterCommand ??= new Command(() => OnTwitterTapped());
-
-        private ICommand _supportCommand;
-        public ICommand SupportCommand => _supportCommand ??= new Command(() => OnSupportTapped());
-
-        private ICommand _signOutCommand;
-        public ICommand SignOutCommand => _signOutCommand ??= new Command(() => SignOut());
-
-        private ICommand _deleteWalletCommand;
-        public ICommand DeleteWalletCommand => _deleteWalletCommand ??= new Command<string>((name) => OnWalletTapped(name));
-
-        private async void SignOut()
-        {
-            var res = await Application.Current.MainPage.DisplayAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
-            if (res)
-                MainViewModel.Locked.Invoke(this, EventArgs.Empty);
-        }
-
-        private async void OnWalletTapped(string name)
-        {
-            WalletInfo selectedWallet = Wallets.Where(w => w.Name == name).Single();
-
-            var confirm = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
-            if (confirm)
+        public ICommand BackCommand => _backCommand ??= ReactiveCommand.Create(() =>
             {
-                var confirm2 = await Application.Current.MainPage.DisplayAlert(AppResources.DeletingWallet, string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name), AppResources.DeleteButton, AppResources.CancelButton);
-                if (confirm2)
+                Warning = string.Empty;
+                StoragePassword?.Clear();
+                _ = ResetUseBiometricSetting();
+            });
+
+        private ReactiveCommand<Unit, Unit> _youtubeCommand;
+        public ReactiveCommand<Unit, Unit> YoutubeCommand => _youtubeCommand ??= ReactiveCommand.CreateFromTask(() =>
+            Launcher.OpenAsync(new Uri(YoutubeUrl)));
+
+        private ReactiveCommand<Unit, Unit> _telegramCommand;
+        public ReactiveCommand<Unit, Unit> TelegramCommand => _telegramCommand ??= ReactiveCommand.CreateFromTask(() =>
+            Launcher.OpenAsync(new Uri(TelegramUrl)));
+
+        private ReactiveCommand<Unit, Unit> _twitterCommand;
+        public ReactiveCommand<Unit, Unit> TwitterCommand => _twitterCommand ??= ReactiveCommand.CreateFromTask(() =>
+            Launcher.OpenAsync(new Uri(TwitterUrl)));
+
+        private ReactiveCommand<Unit, Unit> _supportCommand;
+        public ReactiveCommand<Unit, Unit> SupportCommand => _supportCommand ??= ReactiveCommand.CreateFromTask(() =>
+            Launcher.OpenAsync(new Uri(SupportUrl)));
+
+        private ReactiveCommand<Unit, Unit> _signOutCommand;
+        public ReactiveCommand<Unit, Unit> SignOutCommand => _signOutCommand ??= ReactiveCommand.CreateFromTask(async () =>
+            {
+                var res = await _navigationService?.ShowAlert(AppResources.SignOut, AppResources.AreYouSure, AppResources.AcceptButton, AppResources.CancelButton);
+                if (res)
+                    _mainViewModel.Locked.Invoke(this, EventArgs.Empty);
+            });
+
+        private ReactiveCommand<string, Unit> _deleteWalletCommand;
+        public ReactiveCommand<string, Unit> DeleteWalletCommand => _deleteWalletCommand ??= ReactiveCommand.Create<string>(async (name) =>
+            {
+                WalletInfo selectedWallet = Wallets
+                    .Where(w => w.Name == name)
+                    .Single();
+
+                var confirm = await _navigationService?.ShowAlert(AppResources.DeletingWallet, AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
+                if (confirm)
                 {
-                    DeleteWallet(selectedWallet.Path);
-                    if (AtomexApp.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
-                        MainViewModel.Locked.Invoke(this, EventArgs.Empty);
+                    var confirm2 = await _navigationService?.ShowAlert(
+                        title: AppResources.DeletingWallet,
+                        text: string.Format(CultureInfo.InvariantCulture, AppResources.DeletingWalletConfirmationText, selectedWallet?.Name),
+                        accept: AppResources.DeleteButton,
+                        cancel: AppResources.CancelButton);
+                    if (confirm2)
+                    {
+                        DeleteWallet(selectedWallet?.Path);
+                        if (_app.Account.Wallet.PathToWallet.Equals(selectedWallet.Path))
+                            _mainViewModel?.Locked?.Invoke(this, EventArgs.Empty);
+                    }
                 }
-            }
-        }
+            });
 
-        private void OnYoutubeTapped()
+        private string GetWalletName()
         {
-            Launcher.OpenAsync(new Uri(YoutubeUrl));
-        }
-
-        private void OnTwitterTapped()
-        {
-            Launcher.OpenAsync(new Uri(TwitterUrl));
-        }
-
-        private void OnSupportTapped()
-        {
-            Launcher.OpenAsync(new Uri(SupportUrl));
-        }
-
-        private void OnTelegramTapped()
-        {
-            Launcher.OpenAsync(new Uri(TelegramUrl));
+            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
         }
     }
 }

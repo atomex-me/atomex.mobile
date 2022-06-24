@@ -14,9 +14,8 @@ using Atomex.Wallet.Abstract;
 using ReactiveUI;
 using Serilog;
 using atomex.Common;
-using Rg.Plugins.Popup.Services;
-using atomex.Views.Popup;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
@@ -27,6 +26,7 @@ namespace atomex.ViewModel
         public event EventHandler OnSuccess;
 
         private readonly IAtomexApp _app;
+        private INavigationService _navigationService { get; set; }
         public IFromSource FromSource { get; set; }
         public string FromAddressDescription
         {
@@ -74,76 +74,52 @@ namespace atomex.ViewModel
         public ICommand NextCommand => _nextCommand ??= ReactiveCommand.Create(Send);
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
 
-        public ConversionConfirmationViewModel(IAtomexApp app)
+        public ConversionConfirmationViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
         }
 
         private async void Send()
         {
+            if (IsLoading)
+                return;
+
+            IsLoading = true;
+            this.RaisePropertyChanged(nameof(IsLoading));
+
             try
             {
-                IsLoading = true;
-                this.RaisePropertyChanged(nameof(IsLoading));
-
                 var error = await ConvertAsync();
 
-                if (error != null)
+                await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-
-                    if (error.Code == Errors.PriceHasChanged)
+                    if (error != null)
                     {
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = AppResources.PriceChangedError,
-                                ButtonText = AppResources.AcceptButton
-                            }));
-                    }
-                    else
-                    {
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = error.Description,
-                                ButtonText = AppResources.AcceptButton
-                            }));
-                    }
-                    return;
-                }
+                        if (error.Code == Errors.PriceHasChanged)
+                            _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
+                        else
+                            _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
 
-                IsLoading = false;
-                this.RaisePropertyChanged(nameof(IsLoading));
-
+                        return;
+                    }
+                });
                 OnSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Error, "An error has occurred while sending swap");
+                });
+                Log.Error(e, "Swap error.");
+            }
+            finally
+            {
                 IsLoading = false;
                 this.RaisePropertyChanged(nameof(IsLoading));
-
-                await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                    new PopupViewModel
-                    {
-                        Type = PopupType.Error,
-                        Title = AppResources.Error,
-                        Body = "An error has occurred while sending swap",
-                        ButtonText = AppResources.AcceptButton
-                    }));
-
-                Log.Error(e, "Swap error.");
             }
         }
 
@@ -177,7 +153,7 @@ namespace atomex.ViewModel
 
                 var baseCurrency = _app.Account.Currencies.GetByName(symbol.Base);
                 var side = symbol.OrderSideForBuyCurrency(ToCurrencyViewModel.Currency);
-                var terminal = _app.Terminal;
+                var atomexClient = _app.AtomexClient;
                 var price = EstimatedPrice;
                 var orderPrice = EstimatedOrderPrice;
 
@@ -230,7 +206,7 @@ namespace atomex.ViewModel
 
                 await order.CreateProofOfPossessionAsync(account);
 
-                terminal.OrderSendAsync(order);
+                atomexClient.OrderSendAsync(order);
 
                 // wait for swap confirmation
                 var timeStamp = DateTime.UtcNow;
@@ -239,7 +215,7 @@ namespace atomex.ViewModel
                 {
                     await Task.Delay(SwapCheckInterval);
 
-                    var currentOrder = terminal.Account.GetOrderById(order.ClientOrderId);
+                    var currentOrder = atomexClient.Account.GetOrderById(order.ClientOrderId);
 
                     if (currentOrder == null)
                         continue;
@@ -249,7 +225,7 @@ namespace atomex.ViewModel
 
                     if (currentOrder.Status == OrderStatus.PartiallyFilled || currentOrder.Status == OrderStatus.Filled)
                     {
-                        var swap = (await terminal.Account
+                        var swap = (await atomexClient.Account
                             .GetSwapsAsync())
                             .FirstOrDefault(s => s.OrderId == currentOrder.Id);
 

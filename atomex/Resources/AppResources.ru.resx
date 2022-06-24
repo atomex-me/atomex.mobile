@@ -35,6 +35,12 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Удалить</value>
     </data>
+    <data name="RemoveButton" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="CloseButton" xml:space="preserve">
+        <value>Закрыть</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>Основная сеть</value>
     </data>
@@ -106,6 +112,9 @@
     </data>
     <data name="New" xml:space="preserve">
         <value>Новый</value>
+    </data>
+    <data name="Current" xml:space="preserve">
+        <value>Текущий</value>
     </data>
     
     <!-- Start Page -->
@@ -257,6 +266,21 @@
     <data name="MainWalletLabel" xml:space="preserve">
         <value>Основной кошелек</value>
     </data>
+    <data name="TotalBalance" xml:space="preserve">
+        <value>Общий баланс</value>
+    </data>
+    <data name="CoinsAndTokens" xml:space="preserve">
+        <value>Валюты &amp; Токены</value>
+    </data>
+    <data name="ManageAssets" xml:space="preserve">
+        <value>Управление активами</value>
+    </data>
+    <data name="AvailableToSpend" xml:space="preserve">
+        <value>Available to spend</value>
+    </data>
+    <data name="BalanceOnHold" xml:space="preserve">
+        <value>Balance on hold</value>
+    </data>
     
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">
@@ -270,17 +294,29 @@
     <data name="ReceiveButton" xml:space="preserve">
         <value>Получить</value>
     </data>
+    <data name="BuyButton" xml:space="preserve">
+        <value>Купить</value>
+    </data>
     <data name="ConvertButton" xml:space="preserve">
         <value>Обменять</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>Стейкинг</value>
+        <value>Делегировать</value>
+    </data>
+    <data name="UndelegateButton" xml:space="preserve">
+        <value>Undelegate</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Обновить</value>
     </data>
+    <data name="AvailableBalance" xml:space="preserve">
+        <value>Доступный Баланс</value>
+    </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Обновление баланса...</value>
+    </data>
+    <data name="StillUpdatingBalances" xml:space="preserve">
+        <value>Обновляем балансы...</value>
     </data>
     <data name="LoadingLabel" xml:space="preserve">
         <value>Загрузка...</value>
@@ -290,6 +326,15 @@
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Неподтвержденная сумма</value>
+    </data>
+    <data name="Activity" xml:space="preserve">
+        <value>История</value>
+    </data>
+    <data name="Collectibles" xml:space="preserve">
+        <value>NFTs</value>
+    </data>
+    <data name="Delegations" xml:space="preserve">
+        <value>Делегирование</value>
     </data>
 
     <!-- Addresses info Page -->
@@ -314,8 +359,11 @@
     <data name="Key" xml:space="preserve">
         <value>Ключ</value>
     </data>
-    <data name="ExportKeyButton" xml:space="preserve">
-        <value>Экспорт приватного ключа</value>
+    <data name="CopyPrivateKeyButton" xml:space="preserve">
+        <value>Скопировать приватный ключ</value>
+    </data>
+    <data name="CopyKeyButton" xml:space="preserve">
+        <value>Копировать ключ</value>
     </data>
     
     <!-- Transaction Page -->
@@ -394,7 +442,7 @@
         <value>Подтвердите транзакцию</value>
     </data>
 
-    <!-- Addresses Pages -->
+    <!-- Select address Pages -->
     <data name="SendFrom" xml:space="preserve">
         <value>Отправить</value>
     </data>
@@ -431,6 +479,9 @@
     <data name="AddressesNotFound" xml:space="preserve">
         <value>Адреса не найдены</value>
     </data>
+    <data name="EnterAddressPlaceholder" xml:space="preserve">
+        <value>Введите адрес...</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -445,6 +496,15 @@
     <data name="ShareButton" xml:space="preserve">
         <value>Поделиться</value>
     </data>
+    <data name="MyCurrencyAddresses" xml:space="preserve">
+        <value>Мои {0} адреса</value>
+    </data>
+    <data name="ReceivingCurrencyAddress" xml:space="preserve">
+        <value>Ваш {0} адрес</value>
+    </data>
+    <data name="CopyAddress" xml:space="preserve">
+        <value>Скопировать адрес</value>
+    </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">
@@ -456,18 +516,16 @@
     <data name="NotDelegated" xml:space="preserve">
         <value>Не делегировано</value>
     </data>
-    
-    <!-- Baker list Page -->
-    <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Список бейкеров</value>
+    <data name="Copied" xml:space="preserve">
+        <value>Скопировано</value>
     </data>
-    <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Найти бейкера...</value>
+    <data name="EstimatedRoi" xml:space="preserve">
+        <value>Расчетный ROI</value>
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegateToBakeryLabel" xml:space="preserve">
-        <value>Делегируем бейкеру</value>
+    <data name="DelegatingTo" xml:space="preserve">
+        <value>Делегировать...</value>
     </data>
     <data name="Balance" xml:space="preserve">
         <value>Баланс</value>
@@ -478,8 +536,8 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>С адреса</value>
     </data>
-    <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>Введите адрес бейкера...</value>
+    <data name="EnterBakerNamePlaceholder" xml:space="preserve">
+        <value>Введите имя бейкера...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
         <value>Другой бейкер</value>
@@ -487,23 +545,42 @@
     <data name="FeeCalculationLabel" xml:space="preserve">
         <value>Расчет комиссии</value>
     </data>
-    
-    <!-- Delegation Confirmation Page -->
-    <data name="WantToDelegate" xml:space="preserve">
-        <value>Вы уверены, что хотите делегировать?</value>
+    <data name="SortByRatingButton" xml:space="preserve">
+        <value>Sort by rating</value>
     </data>
-    <data name="CopyAndExitButton" xml:space="preserve">
-        <value>Копировать URI и закрыть</value>
+    <data name="SortByRoiButton" xml:space="preserve">
+        <value>Sort by ROI</value>
+    </data>
+    <data name="SortByStatusButton" xml:space="preserve">
+        <value>Sort by status</value>
+    </data>
+    <data name="SortByValidatorButton" xml:space="preserve">
+        <value>Sort by validator</value>
+    </data>
+    <data name="SortByMinTezButton" xml:space="preserve">
+        <value>Sort by min. XTZ</value>
+    </data>
+    <data name="BakersNotFound" xml:space="preserve">
+        <value>Бейкеры не найдены</value>
+    </data>
+    <data name="Bakers" xml:space="preserve">
+        <value>Бейкеры</value>
+    </data>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Свободно</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Бейкер заполнен</value>
     </data>
     
     <!-- Delegation Info Page -->
     <data name="DelegationInfoPageTitle" xml:space="preserve">
         <value>Информация о делегировании</value>
     </data>
-    <data name="CheckRewardsButton" xml:space="preserve">
+    <data name="CheckRewards" xml:space="preserve">
         <value>Проверить выплаты</value>
     </data>
-    <data name="ChangeBakerButton" xml:space="preserve">
+    <data name="ChangeBaker" xml:space="preserve">
         <value>Сменить бейкера</value>
     </data>
     <data name="BakerLabel" xml:space="preserve">
@@ -518,14 +595,8 @@
     <data name="DelegationTime" xml:space="preserve">
         <value>Время делегирования</value>
     </data>
-    <data name="AccountSection" xml:space="preserve">
-        <value>Аккаунт</value>
-    </data>
-    <data name="BakerSection" xml:space="preserve">
+    <data name="CurrentBaker" xml:space="preserve">
         <value>Текущий бейкер</value>
-    </data>
-    <data name="MoreSection" xml:space="preserve">
-        <value>Подробнее</value>
     </data>
     
     <!-- Buy with card Page -->
@@ -699,8 +770,14 @@
     </data>
 
     <!-- Tezos tokens list, token info Pages -->
-    <data name="TezosTokensListPageTitle" xml:space="preserve">
+    <data name="TezosTokens" xml:space="preserve">
         <value>Tezos токены</value>
+    </data>
+    <data name="ManageTezosTokens" xml:space="preserve">
+        <value>Управление Tezos токенами</value>
+    </data>
+    <data name="HideLowBalances" xml:space="preserve">
+        <value>Скрыть нулевые балансы</value>
     </data>
     <data name="TokenInfoPageTitle" xml:space="preserve">
         <value>Информация о токене</value>
@@ -1026,7 +1103,7 @@
         <value>Бейкер переделегирован, лучше выбрать другого</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>Это действие влияет только на локальные данные и не влияет на блокчейн</value>
+        <value>Вы подтверждаете удаление транзакции? Это действие влияет только на локальные данные и не влияет на блокчейн</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>Доступна новая версия. Обновить приложение сейчас?</value>
@@ -1062,7 +1139,7 @@
         <value>История свопов хранится локально на вашем устройстве. Это значит, что вы не увидите операции, сделанные на другом устройстве.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>Копирование приватного ключа в буфер обмена может привести к потере всех ваших средств в кошельке. Вы уверены, что хотите скопировать приватный ключ для {0}?</value>
+        <value>Копирование приватного ключа в буфер обмена может привести к потере всех ваших средств в кошельке. Вы уверены, что хотите скопировать приватный ключ?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Приватный ключ скопирован</value>
@@ -1121,5 +1198,8 @@
     </data>
     <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
         <value>Транзакция выкупа будет отправлена с адреса {0}, если на нем достаточно средств. В противном случае транзакция будет отправлена внешним сервисом за определенную плату</value>
+    </data>
+    <data name="UndelegateWarning" xml:space="preserve">
+        <value>Вы уверены, что хотите отправить транзакцию, которая остановит делегирование {0} с комиссией {1} XTZ?</value>
     </data>
 </root>

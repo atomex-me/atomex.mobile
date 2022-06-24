@@ -1,125 +1,294 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
-using atomex.Services;
+using atomex.Views;
 using Atomex;
+using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel
 {
-    public class AddressInfo : BaseViewModel
+    public class AddressViewModel : BaseViewModel
     {
-        public string Address { get; set; }
-        public string Type { get; set; }
-        public string Path { get; set; }
+        private readonly IAtomexApp _app;
+        private CurrencyConfig _currency;
+        private INavigationService _navigationService;
 
-        private string _balance;
-        public string Balance
+        [Reactive] public WalletAddress WalletAddress { get; set; }
+        public string Address => WalletAddress.Address;
+        public string Type => KeyTypeToString(WalletAddress.KeyType);
+        [Reactive] public string Path { get; set; }
+        [Reactive] public bool HasTokens { get; set; }
+        [Reactive] public decimal Balance { get; set; }
+        [Reactive] public string BalanceCode { get; set; }
+        [Reactive] public TokenBalance TokenBalance { get; set; }
+
+        public string TokenBalanceString =>
+            $"{TokenBalance?.GetTokenBalance() ?? 0} {TokenBalance?.Symbol ?? "TOKENS" }";
+
+        [Reactive] public bool IsUpdating { get; set; }
+        [Reactive] public bool IsCopied { get; set; }
+        [Reactive] public bool ExportKeyConfirm { get; set; }
+        [Reactive] public string CopyButtonName { get; set; }
+        [Reactive] public bool IsFreeAddress { get; set; }
+
+        public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
+
+        public AddressViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService)
         {
-            get => _balance;
-            set
-            {
-                _balance = value;
-                OnPropertyChanged(nameof(Balance));
-            }
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            CopyButtonName = AppResources.CopyKeyButton;
         }
 
-        public string TokenBalance { get; set; }
+        private string KeyTypeToString(int keyType) =>
+            keyType switch
+            {
+                CurrencyConfig.StandardKey => "Standard",
+                TezosConfig.Bip32Ed25519Key => "Atomex",
+                _ => throw new NotSupportedException($"Key type {keyType} not supported.")
+            };
 
-        public Action<string> CopyToClipboard { get; set; }
-        public Action<string> ExportKey { get; set; }
-        public Action<string> UpdateAddress { get; set; }
-
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??= new Command<string>( (s) =>
+        private ReactiveCommand<string, Unit> _copyCommand;
+        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>((s) =>
         {
-            CopyToClipboard?.Invoke(Address);
+            try
+            {
+                Clipboard.SetTextAsync(Address);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressCopied);
+                });
+            }
+            catch (Exception)
+            {
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+            }
         });
 
-        private ICommand _exportKeyCommand;
-        public ICommand ExportKeyCommand => _exportKeyCommand ??= new Command<string>((s) =>
+        private ReactiveCommand<string, Unit> _exportKeyCommand;
+        public ReactiveCommand<string, Unit> ExportKeyCommand => _exportKeyCommand ??= ReactiveCommand.CreateFromTask<string>(async (s) =>
         {
-            ExportKey?.Invoke(Address);
+            try
+            {
+                if (!ExportKeyConfirm)
+                {
+                    ExportKeyConfirm = true;
+                    _navigationService?.ShowBottomSheet(new ExportKeyBottomSheet(this));
+                    return;
+                }
+
+                IsCopied = true;
+                CopyButtonName = AppResources.Copied;
+
+                var walletAddress = await _app.Account
+                    .GetAddressAsync(_currency.Name, Address);
+
+                var hdWallet = _app.Account.Wallet as HdWallet;
+
+                using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
+                    currency: _currency,
+                    keyIndex: walletAddress.KeyIndex,
+                    keyType: walletAddress.KeyType);
+
+                var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
+
+                if (Currencies.IsBitcoinBased(_currency.Name))
+                {
+                    var btcBasedConfig = _currency as BitcoinBasedConfig;
+
+                    var wif = new NBitcoin.Key(unsecuredPrivateKey)
+                        .GetWif(btcBasedConfig.Network)
+                        .ToWif();
+
+                    await Clipboard.SetTextAsync(wif);
+                }
+                else if (Currencies.IsTezosBased(_currency.Name))
+                {
+                    var base58 = unsecuredPrivateKey.Length == 32
+                        ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
+                        : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
+
+                    await Clipboard.SetTextAsync(base58);
+                }
+                else
+                {
+                    var hex = Hex.ToHexString(unsecuredPrivateKey); ;
+
+                    await Clipboard.SetTextAsync(hex);
+                }
+
+                await Task.Delay(1500);
+
+                IsCopied = false;
+                CopyButtonName = AppResources.CopyKeyButton;
+                ExportKeyConfirm = false;
+
+                _navigationService?.CloseBottomSheet();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Private key export error");
+            }
         });
 
-        private ICommand _updateAddressCommand;
-        public ICommand UpdateAddressCommand => _updateAddressCommand ??= new Command<string>((s) =>
+        private ReactiveCommand<string, Unit> _updateAddressCommand;
+        public ReactiveCommand<string, Unit> UpdateAddressCommand => _updateAddressCommand ??= ReactiveCommand.Create<string>(async (s) =>
         {
-            UpdateAddress?.Invoke(Address);
+            try
+            {
+                if (UpdateAddress == null) return;
+
+                IsUpdating = true;
+                var updatedViewModel = await UpdateAddress(Address);
+
+                if (updatedViewModel == null) return;
+
+                Balance = updatedViewModel.Balance;
+                TokenBalance = updatedViewModel?.TokenBalance;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Update address error", e);
+            }
+            finally
+            {
+                IsUpdating = false;
+            }
+        });
+
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
+        {
+            ExportKeyConfirm = false;
+            _navigationService?.CloseBottomSheet();
         });
     }
 
     public class AddressesViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
-
-        public CurrencyConfig Currency { get; set; }
-
-        private CancellationTokenSource _cancellation;
-
-        private bool _isUpdating;
-        public bool IsUpdating
-        {
-            get => _isUpdating;
-            set
-            {
-                _isUpdating = value;
-                OnPropertyChanged(nameof(IsUpdating));
-            }
-        }
+        private CurrencyConfig _currency { get; set; }
+        private INavigationService _navigationService { get; }
 
         private readonly string _tokenContract;
+        private readonly decimal _tokenId;
+        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
+        public bool HasTokens => _currency.Name == TezosConfig.Xtz && _tokenContract != null;
 
-        public ObservableCollection<AddressInfo> Addresses { get; set; }
+        private SelectAddressViewModel _selectAddressViewModel { get; set; }
+        [Reactive] public AddressViewModel SelectedAddress { get; set; }
 
-        public bool HasTokens { get; set; }
+        public const int MinimalAddressUpdateTimeMs = 1000;
 
-        private IToastService ToastService;
+        public Action AddressesChanged;
 
-        public INavigation Navigation { get; set; }
-
-        private AddressInfo _selectedAddress;
-        public AddressInfo SelectedAddress
+        public AddressesViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService,
+            string tokenContract = null,
+            decimal tokenId = 0)
         {
-            get => _selectedAddress;
-            set
-            {
-                if (value == null) return;
-                _selectedAddress = value;
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _tokenContract = tokenContract;
+            _tokenId = tokenId;
 
-                Navigation.PushAsync(new AddressInfoPage(this));
+            this.WhenAnyValue(vm => vm.Addresses)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {                   
+                    _selectAddressViewModel = new SelectAddressViewModel(
+                        account: _app.Account,
+                        currency: _currency,
+                        navigationService: _navigationService,
+                        tokenContract: tokenContract,
+                        selectedTokenId: tokenId,
+                        tab: TabNavigation.Portfolio,
+                        mode: SelectAddressMode.ChooseMyAddress)
+                    {
+                        ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                        {
+                            var address = Addresses?
+                                .Where(a => a.Address == walletAddressViewModel?.Address)
+                                .FirstOrDefault();
+                            _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
+
+                            if (_selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
+                                _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                        }
+                    };
+                });
+
+            this.WhenAnyValue(vm => vm.SelectedAddress)
+                .WhereNotNull()
+                .SubscribeInMainThread(a =>
+                {
+                    _navigationService?.ShowPage(new AddressInfoPage(SelectedAddress), TabNavigation.Portfolio);
+                    SelectedAddress = null;
+                });
+
+            _ = ReloadAddresses();
+            SubscribeToServices();
+        }
+
+        private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio));
+
+        private void SubscribeToServices()
+        {
+            _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
+        }
+
+        private async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                if (Currencies.IsTezosToken(args.Currency) && Currencies.IsTezosBased(_currency.Name))
+                {
+                    await ReloadAddresses();
+                    return;
+                }
+
+                if (_currency.Name == args.Currency)
+                    await ReloadAddresses();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Reload addresses event handler error");
             }
         }
 
-        public AddressesViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
-        {
-            _app = app ?? throw new ArgumentNullException(nameof(app));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
-            ToastService = DependencyService.Get<IToastService>();
-            _tokenContract = tokenContract;
-
-            ReloadAddresses();
-        }
-
-        public async void ReloadAddresses()
+        public async Task ReloadAddresses()
         {
             try
             {
                 var account = _app.Account
-                    .GetCurrencyAccount(Currency.Name);
+                    .GetCurrencyAccount(_currency.Name);
 
                 var addresses = (await account
                     .GetAddressesAsync())
@@ -144,64 +313,51 @@ namespace atomex.ViewModel
                        : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
                 });
 
-                Addresses = new ObservableCollection<AddressInfo>(
+                var freeAddress = _app.Account
+                    .GetFreeExternalAddressAsync(_currency?.Name)
+                    .WaitForResult();
+
+                Addresses = new ObservableCollection<AddressViewModel>(
                     addresses.Select(a =>
                     {
-                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(Currency.Name)
-                            ? $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                            : $"m/44'/{Currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
+                            ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
+                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
 
-                        return new AddressInfo
+                        return new AddressViewModel(_app, _currency, _navigationService)
                         {
-                            Address = a.Address,
-                            Type = KeyTypeToString(a.KeyType),
+                            WalletAddress = a,
                             Path = path,
-                            Balance = $"{a.Balance.ToString(CultureInfo.InvariantCulture)} {Currency.Name}",
-                            CopyToClipboard = OnCopyAddressButtonClicked,
-                            ExportKey = OnExportKeyButtonClicked,
-                            UpdateAddress = OnUpdateButtonClicked
+                            HasTokens = HasTokens,
+                            IsFreeAddress = a?.Address == freeAddress?.Address,
+                            Balance = a.Balance,
+                            BalanceCode = _currency.Name,
+                            UpdateAddress = UpdateAddress
                         };
                     }));
 
-                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
+                if (HasTokens)
                 {
-                    HasTokens = true;
-
                     var tezosAccount = account as TezosAccount;
 
-                    var addressesWithTokens = (await tezosAccount
+                    (await tezosAccount
                         .DataRepository
                         .GetTezosTokenAddressesByContractAsync(_tokenContract))
+                        .Where(w => w.TokenBalance.TokenId == _tokenId)
                         .Where(w => w.Balance != 0)
-                        .GroupBy(w => w.Address);
-
-                    foreach (var addressWithTokens in addressesWithTokens)
-                    {
-                        var addressInfo = Addresses.FirstOrDefault(a => a.Address == addressWithTokens.Key);
-
-                        if (addressInfo == null)
-                            continue;
-
-                        if (addressWithTokens.Count() == 1)
+                        .ToList()
+                        .ForEachDo(addressWithTokens =>
                         {
-                            var tokenAddress = addressWithTokens.First();
-
-                            addressInfo.TokenBalance = tokenAddress.Balance.ToString("F8", CultureInfo.InvariantCulture);
-
-                            var tokenCode = tokenAddress?.TokenBalance?.Symbol;
-
-                            if (tokenCode != null)
-                                addressInfo.TokenBalance += $" {tokenCode}";
-                        }
-                        else
-                        {
-                            addressInfo.TokenBalance = $"{addressWithTokens.Count()} TOKENS";
-                        }
-                    }
+                            var addressViewModel = Addresses
+                                .FirstOrDefault(a => a.Address == addressWithTokens.Address);
+                            if (addressViewModel == null)
+                                return;
+                            
+                            addressViewModel.TokenBalance = addressWithTokens.TokenBalance;
+                        });
                 }
 
-                OnPropertyChanged(nameof(Addresses));
-                OnPropertyChanged(nameof(HasTokens));
+                AddressesChanged?.Invoke();
             }
             catch (Exception e)
             {
@@ -209,104 +365,16 @@ namespace atomex.ViewModel
             }
         }
 
-        private string KeyTypeToString(int keyType) =>
-            keyType switch
-            {
-                CurrencyConfig.StandardKey => "Standard",
-                TezosConfig.Bip32Ed25519Key => "Atomex",
-                _ => throw new NotSupportedException($"Key type {keyType} not supported.")
-            };
-
-        private async void OnCopyAddressButtonClicked(string address)
+        private async Task<AddressViewModel> UpdateAddress(string address)
         {
             try
             {
-                await Clipboard.SetTextAsync(address);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
-            }
-        }
+                var updateTask = new HdWalletScanner(_app.Account)
+                    .ScanAddressAsync(_currency.Name, address);
 
-        private async void OnExportKeyButtonClicked(string address)
-        {
-            try
-            {
-                string message = string.Format(
-                  CultureInfo.InvariantCulture,
-                  AppResources.CopyingPrivateKeyWarning,
-                  address);
+                await Task.WhenAll(Task.Delay(MinimalAddressUpdateTimeMs), updateTask);
 
-                var confirm = await Application.Current.MainPage.DisplayAlert(
-                    string.Empty,
-                    message,
-                    AppResources.CopyButton,
-                    AppResources.CancelButton);
-
-                if (confirm)
-                {
-                    var walletAddress = await _app.Account
-                        .GetAddressAsync(Currency.Name, address);
-
-                    var hdWallet = _app.Account.Wallet as HdWallet;
-
-                    using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
-                        currency: Currency,
-                        keyIndex: walletAddress.KeyIndex,
-                        keyType: walletAddress.KeyType);
-
-                    using var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
-
-                    if (Currencies.IsBitcoinBased(Currency.Name))
-                    {
-                        var btcBasedConfig = Currency as BitcoinBasedConfig;
-
-                        var wif = new NBitcoin.Key(unsecuredPrivateKey)
-                            .GetWif(btcBasedConfig.Network)
-                            .ToWif();
-
-                        await Clipboard.SetTextAsync(wif);
-                    }
-                    else if (Currencies.IsTezosBased(Currency.Name))
-                    {
-                        var base58 = unsecuredPrivateKey.Length == 32
-                            ? Base58Check.Encode(unsecuredPrivateKey, Prefix.Edsk)
-                            : Base58Check.Encode(unsecuredPrivateKey, Prefix.EdskSecretKey);
-
-                        await Clipboard.SetTextAsync(base58);
-                    }
-                    else
-                    {
-                        var hex = Hex.ToHexString(unsecuredPrivateKey.Data);
-
-                        await Clipboard.SetTextAsync(hex);
-                    }
-
-                    await Device.InvokeOnMainThreadAsync(() =>
-                    {
-                        ToastService?.Show(AppResources.PrivateKeyCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
-                    });
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Private key export error");
-            }
-        }
-
-
-        private async void OnUpdateButtonClicked(string address)
-        {
-            IsUpdating = true;
-
-            try
-            {
-                await new HdWalletScanner(_app.Account)
-                    .ScanAddressAsync(Currency.Name, address);
-
-                if (Currency.Name == TezosConfig.Xtz && _tokenContract != null)
+                if (_currency.Name == TezosConfig.Xtz && _tokenContract != null)
                 {
                     // update tezos token balance
                     var tezosAccount = _app.Account
@@ -323,12 +391,14 @@ namespace atomex.ViewModel
                                 .ReloadBalances();
                 }
 
-                ReloadAddresses();
+                await ReloadAddresses();
 
                 await Device.InvokeOnMainThreadAsync(() =>
-                { 
-                    ToastService?.Show(AppResources.AddressLabel + " " + AppResources.HasBeenUpdated, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.AddressLabel + " " + AppResources.HasBeenUpdated);
                 });
+
+                return Addresses.FirstOrDefault(a => a.Address == address);
             }
             catch (OperationCanceledException)
             {
@@ -336,11 +406,13 @@ namespace atomex.ViewModel
             }
             catch (Exception e)
             {
-                Log.Error(e, "AddressesViewModel.OnUpdateButtonClicked");
+                Log.Error(e, "UpdateAddress error");
                 // todo: message to user!?
             }
-            IsUpdating = false;
+
+            return null;
         }
+
+        public void Dispose() => _app.Account.BalanceUpdated -= OnBalanceUpdatedEventHandler;
     }
 }
-

@@ -13,18 +13,21 @@ namespace atomex.ViewModel.TransactionViewModels
     {
         public static TransactionViewModel CreateViewModel(
             IBlockchainTransaction tx,
-            CurrencyConfig currencyConfig)
+            CurrencyConfig currencyConfig,
+            INavigationService navigationService)
         {
-            return tx.Currency switch
+            return currencyConfig switch
             {
-                "BTC" => (TransactionViewModel)new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, currencyConfig as BitcoinBasedConfig),
-                "LTC" => new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, currencyConfig as BitcoinBasedConfig),
-                "USDT" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config),
-                "TBTC" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config),
-                "WBTC" => new EthereumERC20TransactionViewModel(tx as EthereumTransaction, currencyConfig as Erc20Config),
-                "ETH" => new EthereumTransactionViewModel(tx as EthereumTransaction, currencyConfig as EthereumConfig),
-                "XTZ" => new TezosTransactionViewModel(tx as TezosTransaction, currencyConfig as TezosConfig),
-                _ => throw new NotSupportedException("Not supported transaction type."),
+                BitcoinBasedConfig config =>
+                    new BitcoinBasedTransactionViewModel(tx as IBitcoinBasedTransaction, config, navigationService),
+                Erc20Config config =>
+                    new EthereumERC20TransactionViewModel(tx as EthereumTransaction, config, navigationService),
+                EthereumConfig config =>
+                    new EthereumTransactionViewModel(tx as EthereumTransaction, config, navigationService),
+                TezosConfig config =>
+                    new TezosTransactionViewModel(tx as TezosTransaction, config, navigationService),
+
+                _ => throw new ArgumentOutOfRangeException("Not supported transaction type.")
             };
         }
     }

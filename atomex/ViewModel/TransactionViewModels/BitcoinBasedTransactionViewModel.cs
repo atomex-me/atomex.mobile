@@ -8,8 +8,9 @@ namespace atomex.ViewModel.TransactionViewModels
     {
         public BitcoinBasedTransactionViewModel(
             IBitcoinBasedTransaction tx,
-            BitcoinBasedConfig bitcoinBasedConfig)
-            : base(tx, bitcoinBasedConfig, tx.Amount / bitcoinBasedConfig.DigitsMultiplier, GetFee(tx, bitcoinBasedConfig))
+            BitcoinBasedConfig bitcoinBasedConfig,
+            INavigationService navigationService)
+            : base(tx, bitcoinBasedConfig, tx.Amount / bitcoinBasedConfig.DigitsMultiplier, GetFee(tx, bitcoinBasedConfig), navigationService)
         {
             Fee = tx.Fees != null
                 ? tx.Fees.Value / bitcoinBasedConfig.DigitsMultiplier

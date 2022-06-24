@@ -30,7 +30,7 @@
                               Padding="16,8,16,16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
         <StackLayout Spacing="0">
             <Image Source="ic_swipe__indicator"
                    WidthRequest="35"
@@ -39,14 +39,11 @@
                    VerticalOptions="Center"
                    Margin="0,0,0,20"/>
             <Label Text="{helpers:Translate Warning}"
-                   Style="{DynamicResource TitleTextStyle}"
-                   Padding="0,0,0,20"
-                   TextColor="#FF7A00"/>
+                   Style="{DynamicResource WarningTextH1}"
+                   Padding="0,0,0,20"/>
             <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
-                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                   FontSize="14"
+                   Style="{DynamicResource MainTextH5}"
                    LineHeight="1.25"
-                   FontFamily="{DynamicResource RegularFont}"
                    HorizontalTextAlignment="Start"/>
             <input:RadioButtonGroupView>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -54,8 +51,8 @@
                 <input:RadioButton Text="{Binding SendRecommendedAmountMenu}"
                                    IsChecked="{Binding UseRecommendedAmount, Mode=TwoWay}"
                                    TextFontSize="16"
-                                   CircleColor="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                   Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
+                                   CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                   Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                     <input:RadioButton.Triggers>
                         <DataTrigger TargetType="input:RadioButton"
@@ -71,8 +68,8 @@
                 <input:RadioButton Text="{Binding SendEnteredAmountMenu}"
                                    IsChecked="{Binding UseEnteredAmount, Mode=TwoWay}"
                                    TextFontSize="16"
-                                   CircleColor="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
-                                   Color="{AppThemeBinding Dark='#92C8F9', Light={StaticResource MainButtonBackgroundColor}}"
+                                   CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                   Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
                     <input:RadioButton.Triggers>
                         <DataTrigger TargetType="input:RadioButton"
@@ -112,9 +109,9 @@
                                          Binding="{Binding CanSend}"
                                          Value="False">
                                 <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark='#34DCECFF', Light='#34000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#29000E22'}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
                                 <Setter Property="Opacity"
                                         Value="0.5"/>
                                 <Setter Property="IsEnabled"

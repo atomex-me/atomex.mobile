@@ -1,233 +1,129 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using atomex.Common;
 using atomex.Resources;
-using atomex.Services;
 using atomex.Views;
 using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.ViewModels;
-using Atomex.Wallet.Abstract;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class ReceiveViewModel : BaseViewModel
     {
+        private IAtomexApp _app { get; }
+        private INavigationService _navigationService { get; }
 
-        protected IAtomexApp AtomexApp { get; }
-
-        private IToastService ToastService;
-
-        public INavigation Navigation { get; set; }
-
-        private CurrencyConfig _currency;
-        public CurrencyConfig Currency
-        {
-            get => _currency;
-            set
-            {
-                _currency = value;
-                OnPropertyChanged(nameof(Currency));
-
-                // get all addresses with tokens (if exists)
-                var tokenAddresses = Currencies.HasTokens(_currency.Name)
-                    ? (AtomexApp.Account
-                        .GetCurrencyAccount(_currency.Name) as IHasTokens)
-                        ?.GetUnspentTokenAddressesAsync()
-                        .WaitForResult() ?? new List<WalletAddress>()
-                    : new List<WalletAddress>();
-
-                // get all active addresses
-                var activeAddresses = AtomexApp.Account
-                    .GetUnspentAddressesAsync(_currency.Name)
-                    .WaitForResult()
-                    .ToList();
-
-                // get free external address
-                var freeAddress = AtomexApp.Account
-                    .GetFreeExternalAddressAsync(_currency.Name)
-                    .WaitForResult();
-
-                FromAddressList = activeAddresses
-                    .Concat(tokenAddresses)
-                    .Concat(new WalletAddress[] { freeAddress })
-                    .GroupBy(w => w.Address)
-                    .Select(g =>
-                    {
-                            // main address
-                            var address = g.FirstOrDefault(w => w.Currency == _currency.Name);
-
-                        var isFreeAddress = address?.Address == freeAddress.Address;
-
-                        var hasTokens = g.Any(w => w.Currency != _currency.Name);
-
-                        var tokenAddresses = TokenContract != null
-                            ? g.Where(w => w.TokenBalance?.Contract == TokenContract)
-                            : Enumerable.Empty<WalletAddress>();
-
-                        var hasSeveralTokens = tokenAddresses.Count() > 1;
-
-                        var tokenAddress = tokenAddresses.FirstOrDefault();
-
-                        var tokenBalance = hasSeveralTokens
-                            ? tokenAddresses.Count()
-                            : tokenAddress?.Balance ?? 0m;
-
-                        var showTokenBalance = hasSeveralTokens
-                            ? tokenBalance != 0
-                            : TokenContract != null && tokenAddress?.TokenBalance?.Symbol != null;
-
-                        var tokenCode = hasSeveralTokens
-                            ? "TOKENS"
-                            : tokenAddress?.TokenBalance?.Symbol ?? "";
-
-                        return new WalletAddressViewModel
-                        {
-                            Address = g.Key,
-                            HasActivity = address?.HasActivity ?? hasTokens,
-                            AvailableBalance = address?.AvailableBalance() ?? 0m,
-                            CurrencyFormat = _currency.Format,
-                            CurrencyCode = _currency.Name,
-                            IsFreeAddress = isFreeAddress,
-                            ShowTokenBalance = showTokenBalance,
-                            TokenBalance = tokenBalance,
-                            TokenFormat = "F8",
-                            TokenCode = tokenCode
-                        };
-                    })
-                    .ToList();
-            }
-        }
-
-        private List<WalletAddressViewModel> _fromAddressList;
-        public virtual List<WalletAddressViewModel> FromAddressList
-        {
-            get => _fromAddressList;
-            set
-            {
-                _fromAddressList = value;
-                OnPropertyChanged(nameof(FromAddressList));
-
-                SelectedAddress = GetDefaultAddress();
-            }
-        }
-
-        private WalletAddressViewModel _selectedAddress;
-        public WalletAddressViewModel SelectedAddress
-        {
-            get => _selectedAddress;
-            set
-            {
-                _selectedAddress = value;
-                OnPropertyChanged(nameof(SelectedAddress));
-            }
-        }
+        [Reactive] public CurrencyConfig Currency { get; set; }
+        [Reactive] public WalletAddressViewModel SelectedAddress { get; set; }
+        [Reactive] public string ReceivingAddressLabel { get; set; }
+        [Reactive] public string MyAddressesButtonName { get; set; }
+        [Reactive] public string CopyButtonName { get; set; }
+        [Reactive] public bool IsCopied { get; set; }
+        [Reactive] public bool IsShared { get; set; }
+        public SelectAddressViewModel SelectAddressViewModel { get; set; }
 
         public string TokenContract { get; private set; }
+        public string TokenType { get; private set; }
 
-        private bool _isLoading = false;
-        public bool IsLoading
+        public ReceiveViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService,
+            string tokenContract = null,
+            string tokenType = null,
+            decimal? tokenId = null)
         {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        public ReceiveViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation)
-        {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
-            ToastService = DependencyService.Get<IToastService>();
-        }
-
-        public ReceiveViewModel(IAtomexApp app, CurrencyConfig currency, INavigation navigation, string tokenContract = null)
-        {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             TokenContract = tokenContract;
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            Navigation = navigation ?? throw new ArgumentNullException(nameof(Navigation));
-            ToastService = DependencyService.Get<IToastService>();
-        }
+            TokenType = tokenType;
 
-        protected virtual WalletAddressViewModel GetDefaultAddress()
-        {
-            if (Currency is TezosConfig || Currency is EthereumConfig)
+            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
+            SelectAddressViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: Currency,
+                navigationService: _navigationService,
+                tokenContract: tokenContract,
+                selectedTokenId: tokenId,
+                tab: TabNavigation.Portfolio,
+                mode: SelectAddressMode.ChooseMyAddress)
             {
-                var activeAddressViewModel = FromAddressList
-                    .Where(vm => vm.HasActivity && vm.AvailableBalance > 0)
-                    .MaxByOrDefault(vm => vm.AvailableBalance);
+                ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                {
+                    SelectedAddress = walletAddressViewModel;
 
-                if (activeAddressViewModel != null)
-                    return activeAddressViewModel;
-            }
+                    _navigationService.ReturnToInitiatedPage(TabNavigation.Portfolio);
+                    _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(this));
+                }
+            };
 
-            return FromAddressList.First(vm => vm.IsFreeAddress);
+            SelectedAddress = SelectAddressViewModel?.SelectDefaultAddress()!;
+
+            this.WhenAnyValue(vm => vm.Currency)
+                .WhereNotNull()
+                .SubscribeInMainThread(_ =>
+                {
+                    MyAddressesButtonName = string.Format(AppResources.MyCurrencyAddresses, Currency.Name);
+                    ReceivingAddressLabel = string.Format(AppResources.ReceivingCurrencyAddress, Currency.Name);
+                });
+
+            CopyButtonName = AppResources.CopyAddress;
         }
 
-        private ICommand _showReceiveAddressesCommand;
-        public ICommand ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= new Command(async () =>
-            await Navigation.PushAsync(new ReceiveAddressesPage(this)));
+        private ReactiveCommand<Unit, Unit> _showReceiveAddressesCommand;
+        public ReactiveCommand<Unit, Unit> ShowReceiveAddressesCommand => _showReceiveAddressesCommand ??= ReactiveCommand.Create(() =>
+            {
+                _navigationService?.CloseBottomSheet();
+                _navigationService?.ShowPage(new SelectAddressPage(SelectAddressViewModel), TabNavigation.Portfolio);
+            });
 
-        private ICommand _selectAddressCommand;
-        public ICommand SelectAddressCommand => _selectAddressCommand ??= new Command<WalletAddressViewModel>(async (address) => await OnAddressClicked(address));
-
-        private async Task OnAddressClicked(WalletAddressViewModel address)
-        {
-            SelectedAddress = address;
-
-            await Navigation.PopAsync();
-        }
-
-        private ICommand _copyCommand;
-        public ICommand CopyCommand => _copyCommand ??= new Command(async () => await OnCopyClicked());
-
-        private ICommand _shareCommand;
-        public ICommand ShareCommand => _shareCommand ??= new Command(async () => await OnShareClicked());
-
-        async Task OnCopyClicked()
+        private ReactiveCommand<Unit, Unit> _copyCommand;
+        public ReactiveCommand<Unit, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
             if (SelectedAddress != null)
             {
+                IsCopied = true;
+                CopyButtonName = AppResources.Copied;
                 await Clipboard.SetTextAsync(SelectedAddress.Address);
-                ToastService?.Show(AppResources.AddressCopied, ToastPosition.Top, Application.Current.RequestedTheme.ToString());
+                await Task.Delay(1500);
+                IsCopied = false;
+                CopyButtonName = AppResources.CopyAddress;
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.CopyError, AppResources.AcceptButton);
             }
-        }
+        });
 
-        async Task OnShareClicked()
+        private ReactiveCommand<Unit, Unit> _shareCommand;
+        public ReactiveCommand<Unit, Unit> ShareCommand => _shareCommand ??= ReactiveCommand.CreateFromTask(async () =>
         {
-            IsLoading = true;
-
+            IsShared = true;
             await Share.RequestAsync(new ShareTextRequest
             {
                 Text = AppResources.MyPublicAddress +
                     " " +
-                    SelectedAddress.CurrencyCode +
+                    SelectedAddress?.CurrencyCode +
                     ":\r\n" +
-                    SelectedAddress.Address,
+                    SelectedAddress?.Address,
 
                 Title = AppResources.AddressSharing
             });
 
-            await Task.Delay(1000);
+            await Task.Delay(500);
+            IsShared = false;
+        });
 
-            IsLoading = false;
-        }
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>_navigationService?.CloseBottomSheet());
     }
 }
 

@@ -14,6 +14,8 @@ using atomex.Views.CreateNewWallet;
 using atomex.Views.SettingsOptions;
 using Atomex;
 using Plugin.LatestVersion;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -22,19 +24,10 @@ namespace atomex
 {
     public class StartViewModel : BaseViewModel
     {
-        public IAtomexApp AtomexApp { get; private set; }
-
-        public INavigation Navigation { get; set; }
-
-        private const string LanguageKey = nameof(LanguageKey);
-
-        private bool _hasWallets;
-        public bool HasWallets
-        {
-            get => _hasWallets;
-            private set { _hasWallets = value; OnPropertyChanged(nameof(HasWallets)); }
-        }
-
+        private IAtomexApp _app { get; set; }
+        private INavigationService _navigationService { get; set; }
+        
+        [Reactive] public bool HasWallets { get; set; }
         private Language _language;
         public Language Language
         {
@@ -57,6 +50,7 @@ namespace atomex
             }
         }
 
+        private const string LanguageKey = nameof(LanguageKey);
         public ObservableCollection<Language> Languages { get; } = new ObservableCollection<Language>()
         {
             new Language { Name = "English", Code = "en", ShortName = "Eng", IsActive = false },
@@ -81,10 +75,15 @@ namespace atomex
 
         public StartViewModel(IAtomexApp app)
         {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
             HasWallets = WalletInfo.AvailableWallets().Count() > 0;
             SetUserLanguage();
             _ = CheckLatestVersion();
+        }
+
+        public void SetNavigationService(INavigationService service)
+        {
+            _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         private void SetUserLanguage()
@@ -104,49 +103,33 @@ namespace atomex
         }
 
         private ICommand _createNewWalletCommand;
-        public ICommand CreateNewWalletCommand => _createNewWalletCommand ??= new Command(async () => await CreateNewWallet());
+        public ICommand CreateNewWalletCommand => _createNewWalletCommand ??= ReactiveCommand.Create(() =>
+            {
+                CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(_app, _navigationService);
+                createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
+                _navigationService?.ShowPage(new WalletTypePage(createNewWalletViewModel));
+            });
 
         private ICommand _restoreWalletCommand;
-        public ICommand RestoreWalletCommand => _restoreWalletCommand ??= new Command(async () => await RestoreWallet());
+        public ICommand RestoreWalletCommand => _restoreWalletCommand ??= new Command(() =>
+            {
+                CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(_app, _navigationService);
+                createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
+                _navigationService?.ShowPage(new WalletTypePage(createNewWalletViewModel));
+            });
 
         private ICommand _showMyWalletsCommand;
-        public ICommand ShowMyWalletsCommand => _showMyWalletsCommand ??= new Command(async () => await ShowMyWallets());
+        public ICommand ShowMyWalletsCommand => _showMyWalletsCommand ??= ReactiveCommand.Create(() => _navigationService?.ShowPage(new MyWalletsPage(new MyWalletsViewModel(_app, _navigationService))));
 
         private ICommand _showLanguagesCommand;
-        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= new Command(async () => await ShowLanguages());
+        public ICommand ShowLanguagesCommand => _showLanguagesCommand ??= ReactiveCommand.Create(() => _navigationService?.ShowPage(new LanguagesPage(this)));
 
         private ICommand _changeLanguageCommand;
-        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= new Command<Language>(async (value) => await ChangeLanguage(value));
-
-        private async Task CreateNewWallet()
-        {
-            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
-            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Create;
-            await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
-        }
-
-        private async Task RestoreWallet()
-        {
-            CreateNewWalletViewModel createNewWalletViewModel = new CreateNewWalletViewModel(AtomexApp, Navigation);
-            createNewWalletViewModel.CurrentAction = CreateNewWalletViewModel.Action.Restore;
-            await Navigation.PushAsync(new WalletTypePage(createNewWalletViewModel));
-        }
-
-        private async Task ShowMyWallets()
-        {
-            await Navigation.PushAsync(new MyWalletsPage(new MyWalletsViewModel(AtomexApp, Navigation)));
-        }
-
-        private async Task ShowLanguages()
-        {
-            await Navigation.PushAsync(new LanguagesPage(this));
-        }
-
-        private async Task ChangeLanguage(Language value)
+        public ICommand ChangeLanguageCommand => _changeLanguageCommand ??= ReactiveCommand.Create<Language>((value) =>
         {
             Language = value;
-            await Navigation.PopAsync();
-        }
+            _navigationService?.ClosePage();
+        });
 
         private async Task CheckLatestVersion()
         {
@@ -154,7 +137,7 @@ namespace atomex
 
             if (!isLatest)
             {
-                var update = await Application.Current.MainPage.DisplayAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
+                var update = await _navigationService?.ShowAlert(AppResources.UpdateAvailable, AppResources.UpdateApp, AppResources.Yes, AppResources.No);
 
                 if (update)
                     await CrossLatestVersion.Current.OpenAppInStore();

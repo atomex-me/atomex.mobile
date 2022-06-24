@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{Binding Title}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
@@ -19,13 +19,13 @@
             </StackLayout>
             <Frame x:Name="Frame"
                    Style="{DynamicResource EntryFrameStyle}"
-                   Margin="0,10,0,0"
+                   Margin="20,10"
                    CornerRadius="10">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnEntryTapped"/>
                 </Frame.GestureRecognizers>
                 <StackLayout HeightRequest="60">
-                    <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}">
+                    <RelativeLayout>
                         <Label x:Name="NameHint"
                                Style="{DynamicResource EntryHintStyle}"
                                VerticalTextAlignment="Center"
@@ -43,7 +43,7 @@
                                               Style="{DynamicResource CustomEntryStyle}"
                                               TextChanged="OnTextChanged"
                                               Text="{Binding WalletName}"
-                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
+                                              RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
                                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                             <controls:CustomEntry.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Focused"
@@ -54,7 +54,7 @@
                 </StackLayout>
             </Frame>
             <Label Text="{Binding Warning}"
-                   Style="{DynamicResource ErrorTextStyle}">
+                   Style="{DynamicResource ErrorTextH5CenterAlign}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Warning}"
@@ -65,8 +65,8 @@
                 </Label.Triggers>
             </Label>
             <Button Text="{helpers:Translate NextButton}"
-                    Margin="0,20"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Margin="20,10"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding MnemonicPageCommand}"/>
         </StackLayout>
     </ScrollView>

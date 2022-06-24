@@ -10,7 +10,6 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
-using atomex.Services;
 using atomex.ViewModel;
 using atomex.Views;
 using atomex.Views.CreateNewWallet;
@@ -19,6 +18,8 @@ using Atomex.Common;
 using Atomex.Cryptography;
 using Atomex.Wallet;
 using NBitcoin;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -28,11 +29,8 @@ namespace atomex
 {
     public class CreateNewWalletViewModel : BaseViewModel
     {
-        public IAtomexApp AtomexApp { get; private set; }
-
-        public INavigation Navigation { get; set; }
-
-        private IToastService _toastService;
+        private IAtomexApp _app { get; set; }
+        private INavigationService _navigationService { get; set; }
 
         public enum Action
         {
@@ -55,49 +53,19 @@ namespace atomex
             set
             {
                 _currentAction = value;
-                if (_currentAction == Action.Restore)
-                    _title = AppResources.RestoreWalletPageTitle;
-                else
-                    _title = AppResources.CreateNewWalletPageTitle;
-                OnPropertyChanged(nameof(Title));
-                OnPropertyChanged(nameof(CurrentAction));
+                Title = _currentAction == Action.Restore
+                    ? AppResources.RestoreWalletPageTitle
+                    : AppResources.CreateNewWalletPageTitle;
+
+                this.RaisePropertyChanged(nameof(Title));
+                this.RaisePropertyChanged(nameof(CurrentAction));
             }
         }
 
-        private string _header;
-        public string Header
-        {
-            get => _header;
-            set { _header = value; OnPropertyChanged(nameof(Header)); }
-        }
-
-        private string _title;
-        public string Title
-        {
-            get => _title;
-            set { _title = value; OnPropertyChanged(nameof(Title)); }
-        }
-
-        private string _warning;
-        public string Warning
-        {
-            get => _warning;
-            set { _warning = value; OnPropertyChanged(nameof(Warning)); }
-        }
-
-        private bool _isLoading = false;
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                if (_isLoading == value)
-                    return;
-
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
+        [Reactive] public string Header { get; set; }
+        [Reactive] public string Title { get; set; }
+        [Reactive] public string Warning { get; set; }
+        [Reactive] public bool IsLoading { get; set; }
 
         public List<Network> Networks { get; } = new List<Network>
         {
@@ -125,21 +93,9 @@ namespace atomex
             new CustomEntropy { WordCount = "24", Length = 256 }
         };
 
-        private Network _network;
-        public Network Network
-        {
-            get => _network;
-            set { _network = value; OnPropertyChanged(nameof(Network)); }
-        }
-
-        private string _walletName;
-        public string WalletName
-        {
-            get => _walletName;
-            set { _walletName = value; OnPropertyChanged(nameof(WalletName)); }
-        }
-
-        public string PathToWallet { get; set; }
+        [Reactive] public Network Network { get; set; }
+        [Reactive] public string WalletName { get; set; }
+        [Reactive] public string PathToWallet { get; set; }
 
         private CustomWordlist _language;
         public CustomWordlist Language
@@ -179,75 +135,34 @@ namespace atomex
                 {
                     _mnemonic = value;
 
-                    if (!string.IsNullOrEmpty(_mnemonic))
-                        _mnemonicSubstr = new ObservableCollection<string>(_mnemonic.Split(' '));
-                    else
-                        _mnemonicSubstr = new ObservableCollection<string>();
+                    MnemonicSubstr = !string.IsNullOrEmpty(_mnemonic)
+                        ? new ObservableCollection<string>(_mnemonic.Split(' '))
+                        : new ObservableCollection<string>();
 
-                    OnPropertyChanged(nameof(Mnemonic));
-                    OnPropertyChanged(nameof(MnemonicSubstr));
+                    this.RaisePropertyChanged(nameof(Mnemonic));
+                    this.RaisePropertyChanged(nameof(MnemonicSubstr));
 
                     ResetMnemonicCollections();
                 }
             }
         }
 
-        private ObservableCollection<string> _mnemonicSubstr;
-        public ObservableCollection<string> MnemonicSubstr
-        {
-            get => _mnemonicSubstr;
-            set { _mnemonicSubstr = value; OnPropertyChanged(nameof(MnemonicSubstr));}
-        }
+        [Reactive] public ObservableCollection<string> MnemonicSubstr { get; set; }
+        [Reactive] public ObservableCollection<string> SourceMnemonicSubstr { get; set; }
+        [Reactive] public ObservableCollection<string> TargetMnemonicSubstr { get; set; }
+        [Reactive] public bool MnemonicVerified { get; set; }
+        [Reactive] public bool DerivedPswdVerified { get; set; }
+        [Reactive] public bool IsEnteredStoragePassword { get; set; }
 
-        private ObservableCollection<string> _sourceMnemonicSubstr;
-        public ObservableCollection<string> SourceMnemonicSubstr
-        {
-            get => _sourceMnemonicSubstr;
-            set { _sourceMnemonicSubstr = value; OnPropertyChanged(nameof(SourceMnemonicSubstr)); }
-        }
-
-        private ObservableCollection<string> _targetMnemonicSubstr;
-        public ObservableCollection<string> TargetMnemonicSubstr
-        {
-            get => _targetMnemonicSubstr;
-            set { _targetMnemonicSubstr = value; OnPropertyChanged(nameof(TargetMnemonicSubstr)); }
-        }
-
-        private bool _mnemonicVerified;
-        public bool MnemonicVerified
-        {
-            get => _mnemonicVerified;
-            set { _mnemonicVerified = value; OnPropertyChanged(nameof(MnemonicVerified)); }
-        }
-
-        private bool _derivedPswdVerified = false;
-        public bool DerivedPswdVerified
-        {
-            get => _derivedPswdVerified;
-            set { _derivedPswdVerified = value; OnPropertyChanged(nameof(DerivedPswdVerified)); }
-        }
-
-        private bool _isEnteredStoragePassword = false;
-        public bool IsEnteredStoragePassword
-        {
-            get => _isEnteredStoragePassword;
-            set { _isEnteredStoragePassword = value; OnPropertyChanged(nameof(IsEnteredStoragePassword)); }
-        }
-
-        private readonly int DefaultAttemptsCount = 5;
+        private const int DefaultAttemptsCount = 5;
 
         public void ResetMnemonicCollections()
         {
             Random rnd = new Random();
-
             SourceMnemonicSubstr = new ObservableCollection<string>(MnemonicSubstr.OrderBy(x => rnd.Next()));
-
             TargetMnemonicSubstr = new ObservableCollection<string>();
-
             MnemonicVerified = false;
-
             DerivedPswdVerified = false;
-
             Warning = string.Empty;
         }
 
@@ -255,48 +170,48 @@ namespace atomex
         {
             if (addition)
             {
-                _targetMnemonicSubstr.Add(word);
-                _sourceMnemonicSubstr.Remove(word);
+                TargetMnemonicSubstr.Add(word);
+                SourceMnemonicSubstr.Remove(word);
             }
             else
             {
-                _sourceMnemonicSubstr.Add(word);
-                _targetMnemonicSubstr.Remove(word);
+                SourceMnemonicSubstr.Add(word);
+                TargetMnemonicSubstr.Remove(word);
             }
-            if (_sourceMnemonicSubstr.Count == 0)
+            if (SourceMnemonicSubstr.Count == 0)
             {
                 string delimiter = " ";
-                string targetMnemonic = _targetMnemonicSubstr.Aggregate((i, j) => i + delimiter + j);
+                string targetMnemonic = TargetMnemonicSubstr.Aggregate((i, j) => i + delimiter + j);
   
                 if (targetMnemonic != _mnemonic)
                 {
-                    _mnemonicVerified = false;
-                    _derivedPswdVerified = false;
+                    MnemonicVerified = false;
+                    DerivedPswdVerified = false;
                     Warning = AppResources.WrongWordOrder;
                 }
                 else
                 {
-                    _mnemonicVerified = true;
+                    MnemonicVerified = true;
                     if (!_useDerivedKeyPswd)
-                        _derivedPswdVerified = true;
+                        DerivedPswdVerified = true;
                     else
                     {
-                        _derivedPswdVerified = false;
-                        _derivedPasswordConfirmation = null;
-                        OnPropertyChanged(nameof(DerivedPasswordConfirmation));
+                        DerivedPswdVerified = false;
+                        DerivedPasswordConfirmation = null;
+                        this.RaisePropertyChanged(nameof(DerivedPasswordConfirmation));
                     }
                 }
             }
             else
             {
-                _mnemonicVerified = false;
-                _derivedPswdVerified = false;
+                MnemonicVerified = false;
+                DerivedPswdVerified = false;
                 Warning = string.Empty;
             }
-            OnPropertyChanged(nameof(MnemonicVerified));
-            OnPropertyChanged(nameof(DerivedPswdVerified));
-            OnPropertyChanged(nameof(TargetMnemonicSubstr));
-            OnPropertyChanged(nameof(SourceMnemonicSubstr));
+            this.RaisePropertyChanged(nameof(MnemonicVerified));
+            this.RaisePropertyChanged(nameof(DerivedPswdVerified));
+            this.RaisePropertyChanged(nameof(TargetMnemonicSubstr));
+            this.RaisePropertyChanged(nameof(SourceMnemonicSubstr));
         }
 
         private bool _useDerivedKeyPswd;
@@ -312,16 +227,9 @@ namespace atomex
                     if (!_useDerivedKeyPswd)
                         ClearDerivedPswd();
 
-                    OnPropertyChanged(nameof(UseDerivedKeyPswd));
+                    this.RaisePropertyChanged(nameof(UseDerivedKeyPswd));
                 }
             }
-        }
-
-        private int _derivedPasswordScore;
-        public int DerivedPasswordScore
-        {
-            get => _derivedPasswordScore;
-            set { _derivedPasswordScore = value; OnPropertyChanged(nameof(DerivedPasswordScore)); }
         }
 
         private SecureString _derivedPassword;
@@ -332,38 +240,21 @@ namespace atomex
             {
                 _derivedPassword = value;
                 DerivedPasswordScore = (int)PasswordAdvisor.CheckStrength(DerivedPassword);
-                OnPropertyChanged(nameof(DerivedPassword));
+                this.RaisePropertyChanged(nameof(DerivedPassword));
             }
         }
 
-        private SecureString _derivedPasswordConfirmation;
-        public SecureString DerivedPasswordConfirmation
-        {
-            get => _derivedPasswordConfirmation;
-            set { _derivedPasswordConfirmation = value; OnPropertyChanged(nameof(DerivedPasswordConfirmation)); }
-        }
+        [Reactive] public int DerivedPasswordScore { get; set; }
+        [Reactive] public SecureString DerivedPasswordConfirmation { get; set; }
+        [Reactive] public SecureString StoragePassword { get; set; }
+        [Reactive] public SecureString StoragePasswordConfirmation { get; set; }
 
-        private SecureString _storagePassword;
-        public SecureString StoragePassword
-        {
-            get => _storagePassword;
-            set { _storagePassword = value; OnPropertyChanged(nameof(StoragePassword)); }
-        }
+        private HdWallet _wallet { get; set; }
 
-        private SecureString _storagePasswordConfirmation;
-        public SecureString StoragePasswordConfirmation
+        public CreateNewWalletViewModel(IAtomexApp app, INavigationService navigationService)
         {
-            get => _storagePasswordConfirmation;
-            set { _storagePasswordConfirmation = value; OnPropertyChanged(nameof(StoragePasswordConfirmation)); }
-        }
-
-        private HdWallet Wallet { get; set; }
-
-        public CreateNewWalletViewModel(IAtomexApp app, INavigation navigation)
-        {
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            Navigation = navigation;
-            _toastService = DependencyService.Get<IToastService>();
+            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Network = Network.MainNet;
             Language = Languages.FirstOrDefault();
             Entropy = WordCountToEntropyLength.FirstOrDefault();
@@ -526,22 +417,25 @@ namespace atomex
 
         private void VerificateDerivedPassword()
         {
-            if (DerivedPasswordConfirmation != null &&
-                !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                Warning = AppResources.InvalidPassword;
-                _derivedPswdVerified = false;
-                OnPropertyChanged(nameof(DerivedPswdVerified));
-                return;
-            }
+                if (DerivedPasswordConfirmation != null &&
+                !DerivedPassword.SecureEqual(DerivedPasswordConfirmation) || DerivedPasswordConfirmation == null)
+                {
+                    Warning = AppResources.InvalidPassword;
+                    DerivedPswdVerified = false;
+                    this.RaisePropertyChanged(nameof(DerivedPswdVerified));
+                    return;
+                }
 
-            _derivedPswdVerified = true;
+                DerivedPswdVerified = true;
 
-            OnPropertyChanged(nameof(DerivedPswdVerified));
+                this.RaisePropertyChanged(nameof(DerivedPswdVerified));
 
-            _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
 
-            Warning = string.Empty;
+                Warning = string.Empty;
+            });
         }
 
         private bool IsValidStoragePassword()
@@ -558,19 +452,6 @@ namespace atomex
             return true;
         }
 
-        private void CreateHdWallet()
-        {
-            Wallet = new HdWallet(
-                mnemonic: Mnemonic,
-                wordList: Language.Wordlist,
-                passPhrase: DerivedPassword,
-                network: Network
-                )
-            {
-                PathToWallet = PathToWallet
-            };
-        }
-
         private async Task ConnectToWallet()
         {
             try
@@ -578,13 +459,10 @@ namespace atomex
                 IsLoading = true;
 
                 Account account = null;
-
-                await Wallet.EncryptAsync(StoragePassword);
-
-                Wallet.SaveToFile(Wallet.PathToWallet, StoragePassword);
+                await _wallet.EncryptAsync(StoragePassword);
+                _wallet.SaveToFile(_wallet.PathToWallet, StoragePassword);
 
                 ClientType clientType;
-
                 switch (Device.RuntimePlatform)
                 {
                     case Device.iOS:
@@ -600,13 +478,12 @@ namespace atomex
 
                 try
                 {
-
                     account = await Task.Run(() =>
                     {
                         return account = new Account(
-                        wallet: Wallet,
+                        wallet: _wallet,
                         password: StoragePassword,
-                        currenciesProvider: AtomexApp.CurrenciesProvider,
+                        currenciesProvider: _app.CurrenciesProvider,
                         clientType);
                     });
 
@@ -623,25 +500,23 @@ namespace atomex
                             Log.Error(ex, AppResources.NotSupportSecureStorage);
                         }
 
-                        string appTheme = Application.Current.RequestedTheme.ToString().ToLower();
-
                         MainViewModel mainViewModel = null;
 
                         await Task.Run(() =>
                         {
                             mainViewModel = new MainViewModel(
-                                AtomexApp,
-                                account,
-                                WalletName,
-                                appTheme,
-                                CurrentAction == Action.Restore ? true : false);
+                                app: _app,
+                                account: account);
+
+                            if (CurrentAction == Action.Restore)
+                                mainViewModel.InitCurrenciesScan();
                         });
 
                         Application.Current.MainPage = new MainPage(mainViewModel);
                     }
                     else
                     {
-                        await Application.Current.MainPage.DisplayAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
+                        _navigationService?.ShowAlert(AppResources.Error, AppResources.CreateWalletError, AppResources.AcceptButton);
                     }
                 }
                 catch (CryptographicException e)
@@ -658,142 +533,197 @@ namespace atomex
 
             IsLoading = false;
             StoragePassword.Clear();
-            OnPropertyChanged(nameof(StoragePassword));
+            this.RaisePropertyChanged(nameof(StoragePassword));
         }
 
         private ICommand _setTestNetTypeCommand;
-        public ICommand SetTestNetTypeCommand => _setTestNetTypeCommand ??= new Command(async () => await SetTestNetType());
+        public ICommand SetTestNetTypeCommand => _setTestNetTypeCommand ??= ReactiveCommand.Create(() =>
+            {
+                Network = Network.TestNet;
+                _navigationService?.ShowPage(new WalletNamePage(this));
+            });
 
         private ICommand _setMainNetTypeCommand;
-        public ICommand SetMainNetTypeCommand => _setMainNetTypeCommand ??= new Command(async () => await SetMainNetType());
+        public ICommand SetMainNetTypeCommand => _setMainNetTypeCommand ??= ReactiveCommand.Create(() =>
+            {
+                Network = Network.MainNet;
+                _navigationService?.ShowPage(new WalletNamePage(this));
+            });
 
         private ICommand _mnemonicPageCommand;
-        public ICommand MnemonicPageCommand => _mnemonicPageCommand ??= new Command(async () => await MnemonicPage());
+        public ICommand MnemonicPageCommand => _mnemonicPageCommand ??= ReactiveCommand.Create(() =>
+            {
+                SaveWalletName();
+                if (Warning != string.Empty)
+                    return;
+                ClearDerivedPswd();
+                if (CurrentAction == Action.Restore)
+                    _navigationService?.ShowPage(new WriteMnemonicPage(this));
+                else
+                    _navigationService?.ShowPage(new CreateMnemonicPage(this));
+            });
 
         private ICommand _setMnemonicCommand;
-        public ICommand SetMnemonicCommand => _setMnemonicCommand ??= new Command(async () => await SetMnemonic());
+        public ICommand SetMnemonicCommand => _setMnemonicCommand ??= ReactiveCommand.Create(() =>
+            {
+                if (string.IsNullOrEmpty(Mnemonic))
+                {
+                    GenerateMnemonic();
+                }
+                else
+                {
+                    if (UseDerivedKeyPswd)
+                    {
+                        CheckDerivedPassword();
+
+                        if (Warning != string.Empty)
+                            return;
+                    }
+                    ResetMnemonicCollections();
+                    _navigationService?.ShowPage(new VerificationMnemonicPage(this));
+                }
+            });
 
         private ICommand _writeDerivedPasswordPageCommand;
-        public ICommand WriteDerivedPasswordPageCommand => _writeDerivedPasswordPageCommand ??= new Command(async () => await WriteDerivedPasswordPage());
+        public ICommand WriteDerivedPasswordPageCommand => _writeDerivedPasswordPageCommand ??= ReactiveCommand.Create(() =>
+            {
+                WriteMnemonic();
+
+                if (Warning != string.Empty)
+                    return;
+                _navigationService?.ShowPage(new WriteDerivedKeyPasswordPage(this));
+            });
 
         private ICommand _createStoragePasswordPageCommand;
-        public ICommand CreateStoragePasswordPageCommand => _createStoragePasswordPageCommand ??= new Command(async () => await CreateStoragePasswordPage());
+        public ICommand CreateStoragePasswordPageCommand => _createStoragePasswordPageCommand ??= ReactiveCommand.Create(() =>
+            {
+                _wallet = new HdWallet(
+                    mnemonic: Mnemonic,
+                    wordList: Language.Wordlist,
+                    passPhrase: DerivedPassword,
+                    network: Network)
+                {
+                    PathToWallet = PathToWallet
+                };
+                ClearStoragePswd();
+                Warning = string.Empty;
+
+                _navigationService?.ShowPage(new AuthPage(this));
+            });
 
         private ICommand _derivedPswdChangedCommand;
-        public ICommand DerivedPswdChangedCommand => _derivedPswdChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.DerivedPassword, value));
+        public ICommand DerivedPswdChangedCommand => _derivedPswdChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.DerivedPassword, value));
 
         private ICommand _derivedPswdConfirmationChangedCommand;
         public ICommand DerivedPswdConfirmationChangedCommand => _derivedPswdConfirmationChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.DerivedPasswordConfirmation, value));
 
         private ICommand _storagePswdChangedCommand;
-        public ICommand StoragePswdChangedCommand => _storagePswdChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.StoragePassword, value));
+        public ICommand StoragePswdChangedCommand => _storagePswdChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.StoragePassword, value));
 
         private ICommand _storagePswdConfirmationChangedCommand;
-        public ICommand StoragePswdConfirmationChangedCommand => _storagePswdConfirmationChangedCommand ??= new Command<string>((value) => SetPassword(PasswordType.StoragePasswordConfirmation, value));
+        public ICommand StoragePswdConfirmationChangedCommand => _storagePswdConfirmationChangedCommand ??= ReactiveCommand.Create<string>((value) => SetPassword(PasswordType.StoragePasswordConfirmation, value));
 
         private ICommand _useDerivedPswdInfoCommand;
-        public ICommand UseDerivedPswdInfoCommand => _useDerivedPswdInfoCommand ??= new Command(() => OnUseDerivedPswdRowTapped());
+        public ICommand UseDerivedPswdInfoCommand => _useDerivedPswdInfoCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowAlert(string.Empty, AppResources.DerivedPasswordDescriptionText, AppResources.AcceptButton));
 
         private ICommand _addWordToVerificationCommand;
-        public ICommand AddWordToVerificationCommand => _addWordToVerificationCommand ??= new Command<string>((value) => OnSourceWordTapped(value));
+        public ICommand AddWordToVerificationCommand => _addWordToVerificationCommand ??= ReactiveCommand.Create<string>((word) =>
+            {
+                UpdateMnemonicCollections(word, true);
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    if (DerivedPswdVerified)
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular, AppResources.Verified);
+                });
+            });
 
         private ICommand _deleteWordFromVerificationCommand;
-        public ICommand DeleteWordFromVerificationCommand => _deleteWordFromVerificationCommand ??= new Command<string>((value) => OnTargetWordTapped(value));
+        public ICommand DeleteWordFromVerificationCommand => _deleteWordFromVerificationCommand ??= ReactiveCommand.Create<string>((word) => UpdateMnemonicCollections(word, false));
 
         private ICommand _verificateDerivedPswdCommand;
         public ICommand VerificateDerivedPswdCommand => _verificateDerivedPswdCommand ??= new Command(() => VerificateDerivedPassword());
 
         private ICommand _clearWarningCommand;
-        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => ClearWarning());
+        public ICommand ClearWarningCommand => _clearWarningCommand ??= new Command(() => Warning = string.Empty);
 
         private ICommand _clearMnemonicCommand;
-        public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= new Command(() => ClearMnemonic());
+        public ICommand ClearMnemonicCommand => _clearMnemonicCommand ??= new Command(() => Mnemonic = string.Empty);
 
         private ICommand _createWalletCommand;
-        public ICommand CreateWalletCommand => _createWalletCommand ??= new Command(async () => await ConnectToWallet());
+        public ICommand CreateWalletCommand => _createWalletCommand ??= ReactiveCommand.CreateFromTask(async () => await ConnectToWallet());
 
         private ICommand _addCharCommand;
-        public ICommand AddCharCommand => _addCharCommand ??= new Command<string>((value) => AddChar(value));
+        public ICommand AddCharCommand => _addCharCommand ??= ReactiveCommand.Create<string>((value) =>
+            {
+                if (!IsEnteredStoragePassword)
+                {
+                    if (StoragePassword?.Length < 4)
+                    {
+                        foreach (char c in value)
+                            StoragePassword.AppendChar(c);
+
+                        this.RaisePropertyChanged(nameof(StoragePassword));
+
+                        if (StoragePassword?.Length == 4)
+                        {
+                            IsEnteredStoragePassword = true;
+
+                            Header = AppResources.ReEnterPin;
+                            this.RaisePropertyChanged(nameof(Header));
+                        }
+                    }
+                }
+                else
+                {
+                    if (StoragePasswordConfirmation?.Length < 4)
+                    {
+                        foreach (char c in value)
+                        {
+                            StoragePasswordConfirmation.AppendChar(c);
+                        }
+
+                        this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
+
+                        if (StoragePasswordConfirmation?.Length == 4)
+                        {
+                            if (IsValidStoragePassword())
+                            {
+                                _ = ConnectToWallet();
+                            }
+                            else
+                            {
+                                _ = ShakePage();
+                                ClearStoragePswd();
+                            }
+                        }
+                    }
+                }
+            });
 
         private ICommand _deleteCharCommand;
-        public ICommand DeleteCharCommand => _deleteCharCommand ??= new Command(() => RemoveChar());
+        public ICommand DeleteCharCommand => _deleteCharCommand ??= ReactiveCommand.Create(() =>
+            {
+                if (!IsEnteredStoragePassword)
+                {
+                    if (StoragePassword?.Length != 0)
+                    {
+                        StoragePassword.RemoveAt(StoragePassword.Length - 1);
+                        this.RaisePropertyChanged(nameof(StoragePassword));
+                    }
+                }
+                else
+                {
+                    if (StoragePasswordConfirmation?.Length != 0)
+                    {
+                        StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
+                        this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
+                    }
+                }
+            });
 
         private ICommand _cancelCommand;
-        public ICommand CancelCommand => _cancelCommand ??= new Command(async () => await OnCancelButtonTapped());
-
-        private async Task OnCancelButtonTapped()
-        {
-            await Navigation.PopAsync();
-        }
-
-        private void AddChar(string str)
-        {
-            if (!IsEnteredStoragePassword)
-            {
-                if (StoragePassword?.Length < 4)
-                {
-                    foreach (char c in str)
-                    {
-                        StoragePassword.AppendChar(c);
-                    }
-
-                    OnPropertyChanged(nameof(StoragePassword));
-
-                    if (StoragePassword?.Length == 4)
-                    {
-                        IsEnteredStoragePassword = true;
-
-                        Header = AppResources.ReEnterPin;
-                        OnPropertyChanged(nameof(Header));
-                    }
-                }
-            }
-            else
-            {
-                if (StoragePasswordConfirmation?.Length < 4)
-                {
-                    foreach (char c in str)
-                    {
-                        StoragePasswordConfirmation.AppendChar(c);
-                    }
-
-                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
-
-                    if (StoragePasswordConfirmation?.Length == 4)
-                    {
-                        if (IsValidStoragePassword())
-                        {
-                            _ = ConnectToWallet();
-                        }
-                        else
-                        {
-                            _ = ShakePage();
-                            ClearStoragePswd();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void RemoveChar()
-        {
-            if (!IsEnteredStoragePassword)
-            {
-                if (StoragePassword?.Length != 0)
-                {
-                    StoragePassword.RemoveAt(StoragePassword.Length - 1);
-                    OnPropertyChanged(nameof(StoragePassword));
-                }
-            }
-            else
-            {
-                if (StoragePasswordConfirmation?.Length != 0)
-                {
-                    StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
-                    OnPropertyChanged(nameof(StoragePasswordConfirmation));
-                }
-            }
-        }
+        public ICommand CancelCommand => _cancelCommand ??= ReactiveCommand.Create(() => _navigationService?.ClosePage());
 
         private async Task ShakePage()
         {
@@ -816,95 +746,6 @@ namespace atomex
             view.TranslationX = 0;
         }
 
-        private async Task SetMainNetType()
-        {
-            Network = Network.MainNet;
-            await Navigation.PushAsync(new WalletNamePage(this));
-        }
-
-        private async Task SetTestNetType()
-        {
-            Network = Network.TestNet;
-            await Navigation.PushAsync(new WalletNamePage(this));
-        }
-
-        private async Task MnemonicPage()
-        {
-            SaveWalletName();
-            if (Warning != string.Empty)
-                return;
-            ClearDerivedPswd();
-            if (CurrentAction == Action.Restore)
-                await Navigation.PushAsync(new WriteMnemonicPage(this));
-            else
-                await Navigation.PushAsync(new CreateMnemonicPage(this));
-        }
-
-        async Task SetMnemonic()
-        {
-            if (string.IsNullOrEmpty(Mnemonic))
-            {
-                GenerateMnemonic();
-            }
-            else
-            {
-                if (UseDerivedKeyPswd)
-                {
-                    CheckDerivedPassword();
-
-                    if (Warning != string.Empty)
-                        return;
-                }
-                ResetMnemonicCollections();
-                await Navigation.PushAsync(new VerificationMnemonicPage(this));
-            }
-        }
-
-        private async void OnUseDerivedPswdRowTapped()
-        {
-            await Application.Current.MainPage.DisplayAlert("", AppResources.DerivedPasswordDescriptionText, AppResources.AcceptButton);
-        }
-
-        private void OnSourceWordTapped(string word)
-        {
-            UpdateMnemonicCollections(word, true);
-            if (DerivedPswdVerified)
-                _toastService?.Show(AppResources.Verified, ToastPosition.Center, Application.Current.RequestedTheme.ToString());
-        }
-
-        private void OnTargetWordTapped(string word)
-        {
-            UpdateMnemonicCollections(word, false);
-        }
-
-        private async Task WriteDerivedPasswordPage()
-        {
-            WriteMnemonic();
-
-            if (Warning != string.Empty)
-                return;
-
-            await Navigation.PushAsync(new WriteDerivedKeyPasswordPage(this));
-        }
-
-        private async Task CreateStoragePasswordPage()
-        {
-            CreateHdWallet();
-            ClearStoragePswd();
-            ClearWarning();
-            await Navigation.PushAsync(new AuthPage(this));
-        }
-
-        private void ClearWarning()
-        {
-            Warning = string.Empty;
-        }
-
-        private void ClearMnemonic()
-        {
-            Mnemonic = string.Empty;
-        }
-
         private void ClearDerivedPswd()
         {
             Warning = string.Empty;
@@ -920,10 +761,10 @@ namespace atomex
             StoragePassword.Clear();
             StoragePasswordConfirmation.Clear();
             Header = AppResources.CreatePin;
-
-            OnPropertyChanged(nameof(Header));
-            OnPropertyChanged(nameof(StoragePassword));
-            OnPropertyChanged(nameof(StoragePasswordConfirmation));
+            
+            this.RaisePropertyChanged(nameof(Header));
+            this.RaisePropertyChanged(nameof(StoragePassword));
+            this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
         }
     }
 }

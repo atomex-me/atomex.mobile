@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.WriteMnemonicPage"
              Title="{Binding Title}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
@@ -79,6 +79,7 @@
                         x:Name="Editor"
                         Text="{Binding Mnemonic}"
                         Style="{DynamicResource MnemonicPhraseEditorStyle}"
+                        BackgroundColor="Transparent"
                         TextChanged="OnTextChanged"
                         Focused="OnEditorFocused"
                         Unfocused="OnEditorFocused">
@@ -89,7 +90,7 @@
                 </Editor>
             </custom:CustomFrame>
             <Label Text="{Binding Warning}"
-                   Style="{DynamicResource ErrorTextStyle}">
+                   Style="{DynamicResource ErrorTextH5CenterAlign}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Warning}"
@@ -101,7 +102,7 @@
             </Label>
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
-                    Style="{DynamicResource MainButtonStyle}"
+                    Style="{DynamicResource MainButton}"
                     Command="{Binding WriteDerivedPasswordPageCommand}"/>
         </StackLayout>
     </ScrollView>

@@ -10,10 +10,5 @@ namespace atomex.Views.CreateSwap
             InitializeComponent();
             BindingContext = conversionViewModel;
         }
-        private void ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-                ((ListView)sender).SelectedItem = null;
-        }
     }
 }

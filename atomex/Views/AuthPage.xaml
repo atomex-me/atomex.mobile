@@ -5,7 +5,8 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.Views.AuthPage"
-    Style="{DynamicResource AdditionalBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}"
+    Title="{helpers:Translate UnlockTitle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:GreaterThanValueConverter x:Key="GreaterThanValue"/>
@@ -253,8 +254,7 @@
                     </Frame>
                 </Grid>
                 <Label Text="{Binding Warning}"
-                       Style="{DynamicResource ErrorTextStyle}"
-                       FontSize="16"
+                       Style="{DynamicResource ErrorTextH5CenterAlign}"
                        LineHeight="1.2">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
@@ -269,15 +269,19 @@
             <StackLayout Style="{DynamicResource LockOverlay}"
                          IsVisible="{Binding IsLocked, TargetNullValue=False, FallbackValue=False}">
                 <StackLayout VerticalOptions="CenterAndExpand"
-                             Margin="0,0,0,50">
+                             Margin="20,0,20,50">
                     <Image WidthRequest="150"
                            HeightRequest="150"
                            HorizontalOptions="CenterAndExpand"
                            Source="AtomexLogo"/>
                     <Label Text="{helpers:Translate WalletHasBeenLocked}"
-                           Style="{DynamicResource LockOverlayLabel}" />
+                           Style="{DynamicResource MainTextH3}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
                     <Label Text="{Binding Warning}"
-                           Style="{DynamicResource LockOverlayWarning}" />
+                           Style="{DynamicResource MainTextH4}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
                 </StackLayout>
             </StackLayout>
             <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"

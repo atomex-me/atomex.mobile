@@ -6,7 +6,7 @@
              x:Class="atomex.SettingsPage"
              x:Name="BindingContextPage"
              Title="{helpers:Translate SettingsPageTitle}"
-             Style="{DynamicResource AdditionalBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="FillAndExpand"
@@ -231,8 +231,8 @@
                                     HeightRequest="40"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <Button Text="{helpers:Translate SignOut}"
-                            Style="{DynamicResource TransparentButtonStyle}"
-                            CornerRadius="10"
+                            Style="{DynamicResource TransparentButton}"
+                            Padding="0"
                             Command="{Binding SignOutCommand}"/>
                 </custom:CustomFrame>
                 <Label Text="{helpers:Translate WalletsSection}"
@@ -267,8 +267,8 @@
                                            Padding="6,0"
                                            FontSize="12"
                                            VerticalTextAlignment="Center"/>
-                                    <Image WidthRequest="16"
-                                           HeightRequest="16"
+                                    <Image WidthRequest="11"
+                                           HeightRequest="14"
                                            HorizontalOptions="EndAndExpand"
                                            Source="ic_delete"/>
                                 </StackLayout>

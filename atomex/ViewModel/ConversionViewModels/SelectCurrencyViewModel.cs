@@ -8,8 +8,8 @@ using System.Windows.Input;
 using atomex.Common;
 using atomex.ViewModel.CurrencyViewModels;
 using atomex.ViewModel.SendViewModels;
+using atomex.Views;
 using atomex.Views.CreateSwap;
-using atomex.Views.Send;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
@@ -18,8 +18,6 @@ using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
-using Xamarin.Forms;
 
 namespace atomex.ViewModel.ConversionViewModels
 {
@@ -199,34 +197,27 @@ namespace atomex.ViewModel.ConversionViewModels
                     }),
                     config: (BitcoinBasedConfig)currency,
                     account: bitcoinBasedAccount,
-                    navigation: _navigation)
+                    navigationService: _navigationService,
+                    tab: TabNavigation.Exchange)
                 {
                     ConfirmAction = (selectOutputsViewModel, outputs) =>
                     {
                         itemWithOutputs.SelectedOutputs = outputs;
-
-                        if (selectOutputsViewModel.SelectAddressFrom == SelectAddressFrom.Init)
-                        {
-                            _navigation.RemovePage(_navigation.NavigationStack[_navigation.NavigationStack.Count - 2]);
-                        }
-                        else
-                        {
-                            for (int i = 0; i <= 1; i++)
-                                _navigation.RemovePage(_navigation.NavigationStack[_navigation.NavigationStack.Count - 2]);
-                        }
+                        _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
 
                         CurrencySelected?.Invoke(i);
                     }
                 };
 
-                await _navigation.PushAsync(new SelectOutputsPage(selectOutputsViewModel));
+                _navigationService?.ShowPage(new SelectOutputsPage(selectOutputsViewModel), TabNavigation.Exchange);
             }
             else if (i is SelectCurrencyWithAddressViewModelItem itemWithAddress)
             {
                 _selectAddressViewModel = new SelectAddressViewModel(
                     account: _account,
                     currency: currency,
-                    navigation: _navigation,
+                    navigationService: _navigationService,
+                    tab: TabNavigation.Exchange,
                     mode: Type == SelectCurrencyType.From ? SelectAddressMode.SendFrom : SelectAddressMode.ReceiveTo,
                     selectedAddress: itemWithAddress.SelectedAddress?.Address)
                 {
@@ -248,64 +239,50 @@ namespace atomex.ViewModel.ConversionViewModels
                                 Currency = currency.Name
                             };
                         }
-
-                        if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.Init)
-                        {
-                            _navigation.RemovePage(_navigation.NavigationStack[_navigation.NavigationStack.Count - 2]);
-                        }
-                        else
-                        {
-                            for (int i = 0; i <= 1; i++)
-                                _navigation.RemovePage(_navigation.NavigationStack[_navigation.NavigationStack.Count - 2]);
-                        }
+                        _navigationService?.ReturnToInitiatedPage(TabNavigation.Exchange);
 
                         CurrencySelected?.Invoke(i);
                     }
                 };
 
-                _ = Type == SelectCurrencyType.From
-                    ? _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel))
-                    : PopupNavigation.Instance.PushAsync(new AddressesBottomSheet(this));
+                if (Type == SelectCurrencyType.From)
+                    _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Exchange);
+                else
+                    _navigationService?.ShowBottomSheet(new AddressesBottomSheet(this));
             }
         });
 
         private ICommand _enterExternalAddressCommand;
-        public ICommand EnterExternalAddressCommand => _enterExternalAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        public ICommand EnterExternalAddressCommand => _enterExternalAddressCommand ??= ReactiveCommand.Create(() =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.EnterExternalAddress);
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-            await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
+            _navigationService?.CloseBottomSheet();
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Exchange);
         });
 
         private ICommand _chooseMyAddressCommand;
-        public ICommand ChooseMyAddressCommand => _chooseMyAddressCommand ??= ReactiveCommand.CreateFromTask(async () =>
+        public ICommand ChooseMyAddressCommand => _chooseMyAddressCommand ??= ReactiveCommand.Create(() =>
         {
             _selectAddressViewModel?.SetAddressMode(SelectAddressMode.ChooseMyAddress);
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-            await _navigation.PushAsync(new SelectAddressPage(_selectAddressViewModel));
+            _navigationService?.CloseBottomSheet();
+            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Exchange);
         });
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= ReactiveCommand.Create(() => _navigationService?.CloseBottomSheet());
 
         private readonly IAccount _account;
-        private readonly INavigation _navigation;
+        private readonly INavigationService _navigationService;
 
         public SelectCurrencyViewModel(
             IAccount account,
-            INavigation navigation,
+            INavigationService navigationService,
             SelectCurrencyType type,
             IEnumerable<SelectCurrencyViewModelItem> currencies,
             SelectCurrencyViewModelItem selected = null)
         {
             _account = account ?? throw new ArgumentNullException(nameof(account));
-            _navigation = navigation ?? throw new ArgumentNullException(nameof(navigation));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             Type = type;
             Currencies = new ObservableCollection<SelectCurrencyViewModelItem>(currencies);
@@ -332,6 +309,7 @@ namespace atomex.ViewModel.ConversionViewModels
                 .Subscribe(i =>
                 {
                     CurrencySelected?.Invoke(i);
+                    SelectedCurrency = null;
                 });
         }
     }

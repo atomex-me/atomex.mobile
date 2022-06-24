@@ -1,4 +1,5 @@
-﻿using Atomex;
+﻿using atomex.Common;
+using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Blockchain.Ethereum;
 using Atomex.EthereumTokens;
@@ -11,11 +12,13 @@ namespace atomex.ViewModel.TransactionViewModels
         public decimal GasLimit { get; set; }
         public decimal GasUsed { get; set; }
         public bool IsInternal { get; set; }
+        public string Alias { get; set; }
 
         public EthereumERC20TransactionViewModel(
             EthereumTransaction tx,
-            Erc20Config erc20Config)
-            : base(tx, erc20Config, GetAmount(tx, erc20Config), 0)
+            Erc20Config erc20Config,
+            INavigationService navigationService)
+            : base(tx, erc20Config, GetAmount(tx, erc20Config), 0, navigationService)
         {
             From = tx.From;
             To = tx.To;
@@ -23,6 +26,11 @@ namespace atomex.ViewModel.TransactionViewModels
             GasLimit = (decimal)tx.GasLimit;
             GasUsed = (decimal)tx.GasUsed;
             IsInternal = tx.IsInternal;
+            Alias = Amount switch
+            {
+                <= 0 => tx.To.TruncateAddress(),
+                > 0 => tx.From.TruncateAddress()
+            };
         }
 
         public static decimal GetAmount(

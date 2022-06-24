@@ -8,7 +8,6 @@ using atomex.Resources;
 using atomex.ViewModel;
 using Atomex.Abstract;
 using Atomex.Core;
-using Rg.Plugins.Popup.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using static Atomex.ViewModels.Helpers;
@@ -23,6 +22,8 @@ namespace atomex
 
     public class SwapViewModel : BaseViewModel
     {
+        private INavigationService _navigationService;
+
         public string Id { get; set; }
 
         public SwapMode Mode { get; set; }
@@ -266,6 +267,11 @@ namespace atomex
             _completionStatusMessages = new ObservableCollection<SwapDetailingInfo>();
         }
 
+        public void SetNavigationService(INavigationService navigationService)
+        {
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+        }
+
         public void UpdateSwap(Swap swap)
         {
             SetState(swap);
@@ -294,11 +300,7 @@ namespace atomex
         );
 
         private ICommand _closeBottomSheetCommand;
-        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                _ = PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
     }
 }
 

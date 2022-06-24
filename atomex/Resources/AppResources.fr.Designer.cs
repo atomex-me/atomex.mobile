@@ -89,6 +89,18 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string RemoveButton {
+            get {
+                return ResourceManager.GetString("RemoveButton", resourceCulture);
+            }
+        }
+        
+        internal static string CloseButton {
+            get {
+                return ResourceManager.GetString("CloseButton", resourceCulture);
+            }
+        }
+        
         internal static string MainNetButton {
             get {
                 return ResourceManager.GetString("MainNetButton", resourceCulture);
@@ -224,6 +236,12 @@ namespace atomex.Resources {
         internal static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        internal static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
             }
         }
         
@@ -503,6 +521,36 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string TotalBalance {
+            get {
+                return ResourceManager.GetString("TotalBalance", resourceCulture);
+            }
+        }
+        
+        internal static string CoinsAndTokens {
+            get {
+                return ResourceManager.GetString("CoinsAndTokens", resourceCulture);
+            }
+        }
+        
+        internal static string ManageAssets {
+            get {
+                return ResourceManager.GetString("ManageAssets", resourceCulture);
+            }
+        }
+        
+        internal static string AvailableToSpend {
+            get {
+                return ResourceManager.GetString("AvailableToSpend", resourceCulture);
+            }
+        }
+        
+        internal static string BalanceOnHold {
+            get {
+                return ResourceManager.GetString("BalanceOnHold", resourceCulture);
+            }
+        }
+        
         internal static string WalletsPageTitle {
             get {
                 return ResourceManager.GetString("WalletsPageTitle", resourceCulture);
@@ -521,6 +569,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string BuyButton {
+            get {
+                return ResourceManager.GetString("BuyButton", resourceCulture);
+            }
+        }
+        
         internal static string ConvertButton {
             get {
                 return ResourceManager.GetString("ConvertButton", resourceCulture);
@@ -533,15 +587,33 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string UndelegateButton {
+            get {
+                return ResourceManager.GetString("UndelegateButton", resourceCulture);
+            }
+        }
+        
         internal static string UpdateButton {
             get {
                 return ResourceManager.GetString("UpdateButton", resourceCulture);
             }
         }
         
+        internal static string AvailableBalance {
+            get {
+                return ResourceManager.GetString("AvailableBalance", resourceCulture);
+            }
+        }
+        
         internal static string BalanceUpdatingLabel {
             get {
                 return ResourceManager.GetString("BalanceUpdatingLabel", resourceCulture);
+            }
+        }
+        
+        internal static string StillUpdatingBalances {
+            get {
+                return ResourceManager.GetString("StillUpdatingBalances", resourceCulture);
             }
         }
         
@@ -560,6 +632,24 @@ namespace atomex.Resources {
         internal static string UnconfirmedAmountLabel {
             get {
                 return ResourceManager.GetString("UnconfirmedAmountLabel", resourceCulture);
+            }
+        }
+        
+        internal static string Activity {
+            get {
+                return ResourceManager.GetString("Activity", resourceCulture);
+            }
+        }
+        
+        internal static string Collectibles {
+            get {
+                return ResourceManager.GetString("Collectibles", resourceCulture);
+            }
+        }
+        
+        internal static string Delegations {
+            get {
+                return ResourceManager.GetString("Delegations", resourceCulture);
             }
         }
         
@@ -605,9 +695,15 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ExportKeyButton {
+        internal static string CopyPrivateKeyButton {
             get {
-                return ResourceManager.GetString("ExportKeyButton", resourceCulture);
+                return ResourceManager.GetString("CopyPrivateKeyButton", resourceCulture);
+            }
+        }
+        
+        internal static string CopyKeyButton {
+            get {
+                return ResourceManager.GetString("CopyKeyButton", resourceCulture);
             }
         }
         
@@ -827,6 +923,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string EnterAddressPlaceholder {
+            get {
+                return ResourceManager.GetString("EnterAddressPlaceholder", resourceCulture);
+            }
+        }
+        
         internal static string ReceivePageTitle {
             get {
                 return ResourceManager.GetString("ReceivePageTitle", resourceCulture);
@@ -851,6 +953,30 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string MyCurrencyAddresses {
+            get {
+                return ResourceManager.GetString("MyCurrencyAddresses", resourceCulture);
+            }
+        }
+        
+        internal static string ReceivingCurrencyAddress {
+            get {
+                return ResourceManager.GetString("ReceivingCurrencyAddress", resourceCulture);
+            }
+        }
+        
+        internal static string CopyAddress {
+            get {
+                return ResourceManager.GetString("CopyAddress", resourceCulture);
+            }
+        }
+        
+        internal static string Copied {
+            get {
+                return ResourceManager.GetString("Copied", resourceCulture);
+            }
+        }
+        
         internal static string DelegationListPageTitle {
             get {
                 return ResourceManager.GetString("DelegationListPageTitle", resourceCulture);
@@ -869,21 +995,15 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string BakerListPageTitle {
+        internal static string EstimatedRoi {
             get {
-                return ResourceManager.GetString("BakerListPageTitle", resourceCulture);
+                return ResourceManager.GetString("EstimatedRoi", resourceCulture);
             }
         }
         
-        internal static string SearchBarPlaceholder {
+        internal static string DelegatingTo {
             get {
-                return ResourceManager.GetString("SearchBarPlaceholder", resourceCulture);
-            }
-        }
-        
-        internal static string DelegateToBakeryLabel {
-            get {
-                return ResourceManager.GetString("DelegateToBakeryLabel", resourceCulture);
+                return ResourceManager.GetString("DelegatingTo", resourceCulture);
             }
         }
         
@@ -905,9 +1025,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string BakerAddressPlaceholder {
+        internal static string EnterBakerNamePlaceholder {
             get {
-                return ResourceManager.GetString("BakerAddressPlaceholder", resourceCulture);
+                return ResourceManager.GetString("EnterBakerNamePlaceholder", resourceCulture);
             }
         }
         
@@ -923,15 +1043,57 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string WantToDelegate {
+        internal static string SortByRatingButton {
             get {
-                return ResourceManager.GetString("WantToDelegate", resourceCulture);
+                return ResourceManager.GetString("SortByRatingButton", resourceCulture);
             }
         }
         
-        internal static string CopyAndExitButton {
+        internal static string SortByRoiButton {
             get {
-                return ResourceManager.GetString("CopyAndExitButton", resourceCulture);
+                return ResourceManager.GetString("SortByRoiButton", resourceCulture);
+            }
+        }
+        
+        internal static string SortByStatusButton {
+            get {
+                return ResourceManager.GetString("SortByStatusButton", resourceCulture);
+            }
+        }
+        
+        internal static string SortByValidatorButton {
+            get {
+                return ResourceManager.GetString("SortByValidatorButton", resourceCulture);
+            }
+        }
+        
+        internal static string SortByMinTezButton {
+            get {
+                return ResourceManager.GetString("SortByMinTezButton", resourceCulture);
+            }
+        }
+        
+        internal static string BakersNotFound {
+            get {
+                return ResourceManager.GetString("BakersNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string Bakers {
+            get {
+                return ResourceManager.GetString("Bakers", resourceCulture);
+            }
+        }
+        
+        internal static string FreeSpace {
+            get {
+                return ResourceManager.GetString("FreeSpace", resourceCulture);
+            }
+        }
+        
+        internal static string BakerIsFull {
+            get {
+                return ResourceManager.GetString("BakerIsFull", resourceCulture);
             }
         }
         
@@ -941,15 +1103,15 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string CheckRewardsButton {
+        internal static string CheckRewards {
             get {
-                return ResourceManager.GetString("CheckRewardsButton", resourceCulture);
+                return ResourceManager.GetString("CheckRewards", resourceCulture);
             }
         }
         
-        internal static string ChangeBakerButton {
+        internal static string ChangeBaker {
             get {
-                return ResourceManager.GetString("ChangeBakerButton", resourceCulture);
+                return ResourceManager.GetString("ChangeBaker", resourceCulture);
             }
         }
         
@@ -977,21 +1139,9 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string AccountSection {
+        internal static string CurrentBaker {
             get {
-                return ResourceManager.GetString("AccountSection", resourceCulture);
-            }
-        }
-        
-        internal static string BakerSection {
-            get {
-                return ResourceManager.GetString("BakerSection", resourceCulture);
-            }
-        }
-        
-        internal static string MoreSection {
-            get {
-                return ResourceManager.GetString("MoreSection", resourceCulture);
+                return ResourceManager.GetString("CurrentBaker", resourceCulture);
             }
         }
         
@@ -1319,9 +1469,21 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string TezosTokensListPageTitle {
+        internal static string TezosTokens {
             get {
-                return ResourceManager.GetString("TezosTokensListPageTitle", resourceCulture);
+                return ResourceManager.GetString("TezosTokens", resourceCulture);
+            }
+        }
+        
+        internal static string ManageTezosTokens {
+            get {
+                return ResourceManager.GetString("ManageTezosTokens", resourceCulture);
+            }
+        }
+        
+        internal static string HideLowBalances {
+            get {
+                return ResourceManager.GetString("HideLowBalances", resourceCulture);
             }
         }
         
@@ -1448,6 +1610,12 @@ namespace atomex.Resources {
         internal static string DeletingWalletConfirmationText {
             get {
                 return ResourceManager.GetString("DeletingWalletConfirmationText", resourceCulture);
+            }
+        }
+        
+        internal static string AccountSection {
+            get {
+                return ResourceManager.GetString("AccountSection", resourceCulture);
             }
         }
         
@@ -2120,6 +2288,12 @@ namespace atomex.Resources {
         internal static string RedeemFromAddressNoteToolTip {
             get {
                 return ResourceManager.GetString("RedeemFromAddressNoteToolTip", resourceCulture);
+            }
+        }
+        
+        internal static string UndelegateWarning {
+            get {
+                return ResourceManager.GetString("UndelegateWarning", resourceCulture);
             }
         }
     }

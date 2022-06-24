@@ -9,7 +9,8 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"
-                   Style="{DynamicResource TitleTextStyle}">
+                   Style="{DynamicResource MainTextH1}"
+                   Padding="16,32,16,16">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Type}"
@@ -28,7 +29,6 @@
             <ListView ItemsSource="{Binding Currencies}"
                       SelectionMode="Single"
                       SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
-                      ItemSelected="ItemSelected"
                       CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
@@ -60,17 +60,13 @@
                                        Source="{Binding CurrencyViewModel.CurrencyCode}"/>
                                 <Label Grid.Column="1"
                                        Text="{Binding CurrencyViewModel.Currency.Description}"
-                                       FontFamily="{DynamicResource BoldFont}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                       FontSize="20"
+                                       Style="{DynamicResource MainTextH3}"
                                        Margin="0,3"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="14"
+                                       Style="{DynamicResource MainTextH5}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
@@ -83,17 +79,13 @@
                                 </Label>
                                 <Label Grid.Column="2"
                                        Text="{Binding SelectedAddressDescription}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       Style="{DynamicResource AdditionalTextH6}"
                                        Margin="0,2"
-                                       FontSize="12"
                                        VerticalTextAlignment="End"
                                        HorizontalTextAlignment="End"/>
                                 <Label Grid.Row="1"
                                        Grid.Column="2"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                                       FontSize="12"
+                                       Style="{DynamicResource AdditionalTextH6}"
                                        VerticalTextAlignment="Start"
                                        HorizontalTextAlignment="End">
                                     <Label.Triggers>

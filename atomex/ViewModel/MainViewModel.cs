@@ -8,13 +8,11 @@ using System.Linq;
 using atomex.Services;
 using Atomex.Services;
 using Atomex.Services.Abstract;
-using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public CurrenciesViewModel CurrenciesViewModel { get; set; }
         public SettingsViewModel SettingsViewModel { get; set; }
         public ConversionViewModel ConversionViewModel { get; set; }
         public PortfolioViewModel PortfolioViewModel { get; set; }
@@ -24,7 +22,9 @@ namespace atomex.ViewModel
 
         public EventHandler Locked;
 
-        public MainViewModel(IAtomexApp app, IAccount account, string walletName, string appTheme = "light", bool restore = false)
+        public MainViewModel(
+            IAtomexApp app,
+            IAccount account)
         {
             var assembly = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -41,18 +41,21 @@ namespace atomex.ViewModel
             var atomexClient = new WebSocketAtomexClient(
                 configuration: configuration,
                 account: account,
-                symbolsProvider: AtomexApp.SymbolsProvider,
-                quotesProvider: AtomexApp.QuotesProvider);
+                symbolsProvider: AtomexApp.SymbolsProvider);
 
             AtomexApp.UseAtomexClient(atomexClient, restart: true);
 
-            CurrenciesViewModel = new CurrenciesViewModel(AtomexApp, restore);
-            SettingsViewModel = new SettingsViewModel(AtomexApp, this, walletName);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
-            PortfolioViewModel = new PortfolioViewModel(CurrenciesViewModel, appTheme);
             BuyViewModel = new BuyViewModel(AtomexApp);
+            SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
             _ = TokenDeviceService.SendTokenToServerAsync(App.DeviceToken, App.FileSystem, AtomexApp);
+        }
+
+        public void InitCurrenciesScan(string[] currenciesArr = null)
+        {
+            PortfolioViewModel?.InitCurrenciesScan(currenciesArr);
         }
 
         public void SignOut()
@@ -62,27 +65,27 @@ namespace atomex.ViewModel
 
         private void SubscribeToServices()
         {
-            AtomexApp.AtomexClientChanged += OnTerminalChangedEventHandler;
+            AtomexApp.AtomexClientChanged += OnAtomexClientChangedEventHandler;
         }
 
-        private void OnTerminalChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
+        private void OnAtomexClientChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var terminal = args.AtomexClient;
+            var atomexClient = args.AtomexClient;
 
-            if (terminal?.Account == null)
+            if (atomexClient?.Account == null)
                 return;
 
-            terminal.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
-            terminal.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
+            atomexClient.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
+            atomexClient.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
         }
 
-        private void OnTerminalServiceStateChangedEventHandler(object sender, TerminalServiceEventArgs args)
+        private void OnTerminalServiceStateChangedEventHandler(object sender, AtomexClientServiceEventArgs args)
         {
             if (!(sender is IAtomexClient terminal))
                 return;
 
             // subscribe to symbols updates
-            if (args.Service == TerminalService.MarketData && terminal.IsServiceConnected(TerminalService.MarketData))
+            if (args.Service == AtomexClientService.MarketData && terminal.IsServiceConnected(AtomexClientService.MarketData))
             {
                 terminal.SubscribeToMarketData(SubscriptionType.TopOfBook);
                 terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);

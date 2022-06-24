@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Reactive;
 using System.Windows.Input;
 using Atomex.Blockchain.Tezos;
+using Atomex.Common;
+using ReactiveUI;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -9,44 +11,42 @@ namespace atomex.ViewModel
 {
     public class DelegationViewModel
     {
-        public INavigation Navigation { get; set; }
-
         public BakerData Baker { get; set; }
         public string Address { get; set; }
         public decimal Balance { get; set; }
-        public string BbUri { get; set; }
+        public string ExplorerUri { get; set; }
         public DateTime DelegationTime { get; set; }
-        public string Status { get; set; }
+        public DelegationStatus Status { get; set; }
+        public string StatusString => Status.GetDescription();
 
-        public DelegateViewModel DelegateViewModel;
+        public Action<DelegationViewModel> ShowActionSheet { get; set; }
+        public Action CloseActionSheet { get; set; }
+        public Action<string> CopyAddress { get; set; }
+        public Action<DelegationViewModel> ChangeBaker { get; set; }
+        public Action<DelegationViewModel> Undelegate { get; set; }
+   
+        private ReactiveCommand<Unit, Unit> _checkRewardsCommand;
+        public ReactiveCommand<Unit, Unit> CheckRewardsCommand => _checkRewardsCommand ??=
+            ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(ExplorerUri + Address)));
 
-        public DelegationViewModel(DelegateViewModel delegateViewModel, INavigation navigation)
-        {
-            DelegateViewModel = delegateViewModel;
-            Navigation = navigation;
-        }
+        private ReactiveCommand<string, Unit> _copyAddressCommand;
+        public ReactiveCommand<string, Unit> CopyAddressCommand => _copyAddressCommand ??=
+            ReactiveCommand.Create<string>((value) => CopyAddress?.Invoke(value));
 
-        private ICommand _checkRewardsCommand;
-        public ICommand CheckRewardsCommand => _checkRewardsCommand ??= new Command((item) => OnCheckRewardsButtonClicked());
+        private ReactiveCommand<Unit, Unit> _changeBakerCommand;
+        public ReactiveCommand<Unit, Unit> ChangeBakerCommand => _changeBakerCommand ??=
+            ReactiveCommand.Create(() => ChangeBaker?.Invoke(this));
 
-        private void OnCheckRewardsButtonClicked()
-        {
-            if (!string.IsNullOrEmpty(BbUri))
-            {
-                Launcher.OpenAsync(new Uri(BbUri + Address));
-            }
-        }
+        private ReactiveCommand<Unit, Unit> _undelegateCommand;
+        public ReactiveCommand<Unit, Unit> UndelegateCommand => _undelegateCommand ??=
+            ReactiveCommand.Create(() => Undelegate?.Invoke(this));
 
-        private ICommand _changeBakerCommand;
-        public ICommand ChangeBakerCommand => _changeBakerCommand ??= new Command(async (item) => await OnChangeBakerButtonClicked());
+        private ICommand _closeBottomSheetCommand;
+        public ICommand CloseBottomSheetCommand => _closeBottomSheetCommand ??=
+            new Command(() => CloseActionSheet?.Invoke());
 
-        private async Task OnChangeBakerButtonClicked()
-        {
-            if (!string.IsNullOrEmpty(Address))
-            {
-                DelegateViewModel.SetWalletAddress(Address);
-                await Navigation.PushAsync(new DelegatePage(DelegateViewModel));
-            }
-        }
+        private ReactiveCommand<Unit, Unit> _delegationActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> DelegationActionSheetCommand => _delegationActionSheetCommand ??=
+            ReactiveCommand.Create(() => ShowActionSheet?.Invoke(this));
     }
 }

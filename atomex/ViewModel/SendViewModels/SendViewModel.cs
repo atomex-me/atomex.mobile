@@ -9,7 +9,7 @@ using atomex.Common;
 using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views.Popup;
+using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
 using Atomex.Core;
@@ -17,9 +17,9 @@ using Atomex.MarketData.Abstract;
 using Atomex.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Rg.Plugins.Popup.Services;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {
@@ -32,12 +32,12 @@ namespace atomex.ViewModel.SendViewModels
 
     public abstract class SendViewModel : BaseViewModel
     {
-        protected IAtomexApp App { get; }
-        protected INavigation Navigation { get; set; }
+        protected IAtomexApp _app { get; }
+        protected INavigationService _navigationService { get; }
 
-        protected CurrencyConfig Currency { get; set; }
+        protected CurrencyConfig _currency { get; set; }
         public BaseViewModel SelectFromViewModel { get; set; }
-        protected SelectAddressViewModel SelectToViewModel { get; set; }
+        public SelectAddressViewModel SelectToViewModel { get; set; }
         [Reactive] public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public string From { get; set; }
         [Reactive] public decimal SelectedFromBalance { get; set; }
@@ -123,8 +123,8 @@ namespace atomex.ViewModel.SendViewModels
         protected virtual Task UpdateFee() { return Task.CompletedTask; }
         protected abstract Task OnMaxClick();
         protected abstract Task<Error> Send(CancellationToken cancellationToken = default);
-        protected abstract Task FromClick();
-        protected abstract Task ToClick();
+        protected abstract void FromClick();
+        protected abstract void ToClick();
 
         [Reactive] public decimal RecommendedMaxAmount { get; set; }
         [Reactive] public Message RecommendedMaxAmountWarning { get; set; }
@@ -140,13 +140,12 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public string SendRecommendedAmountMenu { get; set; }
         [Reactive] public string SendEnteredAmountMenu { get; set; }
 
-        public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel)
+        public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
-            App = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-
+            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel));
-            Currency = currencyViewModel?.Currency;
-            Navigation = currencyViewModel?.Navigation;
+            _currency = currencyViewModel?.Currency;
 
             Message = new Message();
             RecommendedMaxAmountWarning = new Message();
@@ -170,7 +169,7 @@ namespace atomex.ViewModel.SendViewModels
             this.WhenAnyValue(
                     vm => vm.Amount,
                     vm => vm.Fee,
-                    (amount, fee) => Currency.IsToken ? amount : amount + fee)
+                    (amount, fee) => _currency.IsToken ? amount : amount + fee)
                 .Select(totalAmount => totalAmount.ToString())
                 .ToPropertyExInMainThread(this, vm => vm.TotalAmountString);
 
@@ -188,7 +187,7 @@ namespace atomex.ViewModel.SendViewModels
                     vm => vm.Amount,
                     vm => vm.Fee
                 )
-                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(vm => vm.Fee)
                 .Select(_ => Unit.Default)
@@ -245,7 +244,7 @@ namespace atomex.ViewModel.SendViewModels
                     SendRecommendedAmountMenu = string.Format(
                         AppResources.SendRecommendedAmountMenu,
                         RecommendedMaxAmount,
-                        Currency.Name);
+                        _currency.Name);
                 });
 
             this.WhenAnyValue(vm => vm.Amount)
@@ -254,7 +253,7 @@ namespace atomex.ViewModel.SendViewModels
                     SendEnteredAmountMenu = string.Format(
                         AppResources.SendEnteredAmountMenu,
                         Amount,
-                        Currency.Name);
+                        _currency.Name);
                 });
 
             SubscribeToServices();
@@ -318,20 +317,15 @@ namespace atomex.ViewModel.SendViewModels
 
         private void SubscribeToServices()
         {
-            if (App.HasQuotesProvider)
-                App.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private ICommand _undoConfirmStageCommand;
-        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() =>
-            Stage = PopupNavigation.Instance.PopupStack.Count <= 1 ? SendStage.Edit : Stage);
+        public ICommand UndoConfirmStageCommand => _undoConfirmStageCommand ??= new Command(() => Stage = _navigationService.HasMultipleBottomSheets() ? Stage : SendStage.Edit);
 
         private ICommand _closeConfirmationCommand;
-        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() =>
-        {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                PopupNavigation.Instance.PopAsync();
-        });
+        public ICommand CloseConfirmationCommand => _closeConfirmationCommand ??= new Command(() => _navigationService?.CloseBottomSheet());
 
         private ReactiveCommand<Unit, Unit> _maxCommand;
         public ReactiveCommand<Unit, Unit> MaxCommand =>
@@ -344,18 +338,15 @@ namespace atomex.ViewModel.SendViewModels
 
         private ReactiveCommand<Unit, Unit> _showRecommendedMaxAmountTooltip;
         public ReactiveCommand<Unit, Unit> ShowRecommendedMaxAmountTooltip =>
-            _showRecommendedMaxAmountTooltip ??= (_showRecommendedMaxAmountTooltip = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await Application.Current.MainPage.DisplayAlert(AppResources.Warning, RecommendedMaxAmountWarning?.TooltipText, AppResources.AcceptButton);
-            }));
+            _showRecommendedMaxAmountTooltip ??= (_showRecommendedMaxAmountTooltip = ReactiveCommand.CreateFromTask(() => _navigationService?.ShowAlert(AppResources.Warning, RecommendedMaxAmountWarning?.TooltipText, AppResources.AcceptButton)));
 
         private ReactiveCommand<Unit, Unit> _selectFromCommand;
         public ReactiveCommand<Unit, Unit> SelectFromCommand => _selectFromCommand ??=
-            (_selectFromCommand = ReactiveCommand.CreateFromTask(FromClick));
+            (_selectFromCommand = ReactiveCommand.Create(FromClick));
 
         private ReactiveCommand<Unit, Unit> _selectToCommand;
         public ReactiveCommand<Unit, Unit> SelectToCommand => _selectToCommand ??=
-            (_selectToCommand = ReactiveCommand.CreateFromTask(ToClick));
+            (_selectToCommand = ReactiveCommand.Create(ToClick));
 
         private ReactiveCommand<Unit, Unit> _nextCommand;
         public ReactiveCommand<Unit, Unit> NextCommand => _nextCommand ??=
@@ -369,7 +360,7 @@ namespace atomex.ViewModel.SendViewModels
                     element: RelatedTo.Address,
                     text: AppResources.EmptyAddressError);
 
-            else if (!Currency.IsValidAddress(To))
+            else if (!_currency.IsValidAddress(To))
                 ShowMessage(
                     messageType: MessageType.Error,
                     element: RelatedTo.Address,
@@ -387,7 +378,7 @@ namespace atomex.ViewModel.SendViewModels
                     element: RelatedTo.Fee,
                     text: AppResources.CommissionLessThanZeroError);
 
-            var feeAmount = !Currency.IsToken ? Fee : 0;
+            var feeAmount = !_currency.IsToken ? Fee : 0;
 
             if (Amount + feeAmount > CurrencyViewModel.AvailableAmount)
                 ShowMessage(
@@ -400,78 +391,53 @@ namespace atomex.ViewModel.SendViewModels
             if ((Stage == SendStage.Confirmation && !ShowAdditionalConfirmation) ||
                 Stage == SendStage.AdditionalConfirmation)
             {
+                if (IsLoading)
+                    return;
+
+                IsLoading = true;
+                this.RaisePropertyChanged(nameof(IsLoading));
+
                 try
                 {
-                    IsLoading = true;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-        
                     var error = await Send();
 
-                    if (error != null)
+                    await Device.InvokeOnMainThreadAsync(async () =>
                     {
-                        IsLoading = false;
-                        this.RaisePropertyChanged(nameof(IsLoading));
-                        await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                            new PopupViewModel
-                            {
-                                Type = PopupType.Error,
-                                Title = AppResources.Error,
-                                Body = error.Description,
-                                ButtonText = AppResources.AcceptButton
-                            }));
-                        return;
-                    }
-
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-
-                    if (PopupNavigation.Instance.PopupStack.Count > 0)
-                        await PopupNavigation.Instance.PopAsync();
-
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
+                        if (error != null)
                         {
-                            Type = PopupType.Success,
-                            Title = AppResources.Success,
-                            Body = string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending),
-                            ButtonText = AppResources.AcceptButton
-                        }));
+                            _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, error.Description);
+                            return;
+                        }
+                        _navigationService?.CloseBottomSheet();
+                        await _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
 
-                    var navStackCount = Currency?.Name == "XTZ"
-                        ? 3
-                        : 2;
-                    for (int i = Navigation.NavigationStack.Count; i > navStackCount; i--)
-                        Navigation.RemovePage(Navigation.NavigationStack[i - 1]);
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Success, string.Format(CultureInfo.InvariantCulture, AppResources.SuccessSending));
+                    });
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, "Transaction send error.");
-                    IsLoading = false;
-                    this.RaisePropertyChanged(nameof(IsLoading));
-                    await PopupNavigation.Instance.PushAsync(new CompletionPopup(
-                        new PopupViewModel
-                        {
-                            Type = PopupType.Error,
-                            Title = AppResources.Error,
-                            Body = AppResources.SendingTransactionError,
-                            ButtonText = AppResources.AcceptButton
-                        }));
+                    await Device.InvokeOnMainThreadAsync(() =>
+                    {
+                        _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error, AppResources.SendingTransactionError);
+                    });
                 }
                 finally
                 {
+                    IsLoading = false;
+                    this.RaisePropertyChanged(nameof(IsLoading));
                     Stage = SendStage.Edit;
                 }
             }
             else if (Stage == SendStage.Confirmation && ShowAdditionalConfirmation)
             {
                 Stage = SendStage.AdditionalConfirmation;
-                await PopupNavigation.Instance.PushAsync(new WarningConfirmationBottomSheet(this));
-                _ = PopupNavigation.Instance.RemovePageAsync(PopupNavigation.Instance.PopupStack[PopupNavigation.Instance.PopupStack.Count - 2], false);
+                _navigationService?.ShowBottomSheet(new WarningConfirmationBottomSheet(this));
             }
             else
             {
                 Stage = SendStage.Confirmation;
-                await PopupNavigation.Instance.PushAsync(new SendingConfirmationBottomSheet(this));
+                _navigationService?.ShowBottomSheet(new SendingConfirmationBottomSheet(this));
             } 
         }
 
@@ -483,21 +449,21 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    Navigation.PopAsync();
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -509,21 +475,21 @@ namespace atomex.ViewModel.SendViewModels
             switch (selectAddressViewModel.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new SendPage(this));
+                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new SendPage(this));
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.ShowPage(new SendPage(this), TabNavigation.Portfolio);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    Navigation.PopAsync();
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -553,7 +519,7 @@ namespace atomex.ViewModel.SendViewModels
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             Message.Type = messageType;
-            Message.RelatedTo = element;
+            Message.RelatedElement = element;
             Message.Text = text;
             Message.TooltipText = tooltipText;
 
@@ -563,7 +529,7 @@ namespace atomex.ViewModel.SendViewModels
         protected void SetRecommededAmountWarning(MessageType messageType, RelatedTo element, string text, string tooltipText = null)
         {
             RecommendedMaxAmountWarning.Type = messageType;
-            RecommendedMaxAmountWarning.RelatedTo = element;
+            RecommendedMaxAmountWarning.RelatedElement = element;
             RecommendedMaxAmountWarning.Text = text;
             RecommendedMaxAmountWarning.TooltipText = tooltipText;
 

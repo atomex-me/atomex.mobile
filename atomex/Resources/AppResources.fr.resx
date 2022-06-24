@@ -35,6 +35,12 @@
     <data name="DeleteButton" xml:space="preserve">
         <value>Supprimer</value>
     </data>
+    <data name="RemoveButton" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="CloseButton" xml:space="preserve">
+        <value>Close</value>
+    </data>
     <data name="MainNetButton" xml:space="preserve">
         <value>Réseau principal</value>
     </data>
@@ -106,6 +112,9 @@
     </data>
     <data name="New" xml:space="preserve">
         <value>New</value>
+    </data>
+    <data name="Current" xml:space="preserve">
+        <value>Current</value>
     </data>
     
     <!-- Start Page -->
@@ -257,7 +266,22 @@
     <data name="MainWalletLabel" xml:space="preserve">
         <value>Portefeuille principal</value>
     </data>
-    
+    <data name="TotalBalance" xml:space="preserve">
+        <value>Total Balance</value>
+    </data>
+    <data name="CoinsAndTokens" xml:space="preserve">
+        <value>Coins &amp; Tokens</value>
+    </data>
+    <data name="ManageAssets" xml:space="preserve">
+        <value>Manage assets</value>
+    </data>
+    <data name="AvailableToSpend" xml:space="preserve">
+        <value>Available to spend</value>
+    </data>
+    <data name="BalanceOnHold" xml:space="preserve">
+        <value>Balance on hold</value>
+    </data>
+
     <!-- Wallets Page -->
     <data name="WalletsPageTitle" xml:space="preserve">
         <value>Portefeuilles</value>
@@ -270,17 +294,29 @@
     <data name="ReceiveButton" xml:space="preserve">
         <value>Recevoir</value>
     </data>
+    <data name="BuyButton" xml:space="preserve">
+        <value>Buy</value>
+    </data>
     <data name="ConvertButton" xml:space="preserve">
         <value>Échanger</value>
     </data>
     <data name="DelegateButton" xml:space="preserve">
-        <value>Staking</value>
+        <value>Delegate</value>
+    </data>
+    <data name="UndelegateButton" xml:space="preserve">
+        <value>Undelegate</value>
     </data>
     <data name="UpdateButton" xml:space="preserve">
         <value>Rafraîchir</value>
     </data>
+    <data name="AvailableBalance" xml:space="preserve">
+        <value>Available Balance</value>
+    </data>
     <data name="BalanceUpdatingLabel" xml:space="preserve">
         <value>Mise à jour du solde...</value>
+    </data>
+    <data name="StillUpdatingBalances" xml:space="preserve">
+        <value>Still updating balances...</value>
     </data>
     <data name="LoadingLabel" xml:space="preserve">
         <value>Chargement...</value>
@@ -290,6 +326,15 @@
     </data>
     <data name="UnconfirmedAmountLabel" xml:space="preserve">
         <value>Montant non confirmé</value>
+    </data>
+    <data name="Activity" xml:space="preserve">
+        <value>Activity</value>
+    </data>
+    <data name="Collectibles" xml:space="preserve">
+        <value>Collectibles</value>
+    </data>
+    <data name="Delegations" xml:space="preserve">
+        <value>Delegations</value>
     </data>
 
     <!-- Addresses info Page -->
@@ -314,8 +359,11 @@
     <data name="Key" xml:space="preserve">
         <value>Clé</value>
     </data>
-    <data name="ExportKeyButton" xml:space="preserve">
-        <value>Exporter une clé privée</value>
+    <data name="CopyPrivateKeyButton" xml:space="preserve">
+        <value>Copy private key</value>
+    </data>
+    <data name="CopyKeyButton" xml:space="preserve">
+        <value>Copy key</value>
     </data>
     
     <!-- Transaction Page -->
@@ -394,7 +442,7 @@
         <value>Confirmer la transaction</value>
     </data>
 
-    <!-- Addresses Pages -->
+    <!-- Select address Pages -->
     <data name="SendFrom" xml:space="preserve">
         <value>Send from</value>
     </data>
@@ -431,6 +479,9 @@
     <data name="AddressesNotFound" xml:space="preserve">
         <value>Addresses not found</value>
     </data>
+    <data name="EnterAddressPlaceholder" xml:space="preserve">
+        <value>Enter an address...</value>
+    </data>
 
     <!-- Receive Page -->
     <data name="ReceivePageTitle" xml:space="preserve">
@@ -445,6 +496,18 @@
     <data name="ShareButton" xml:space="preserve">
         <value>Partager</value>
     </data>
+    <data name="MyCurrencyAddresses" xml:space="preserve">
+        <value>My {0} addresses</value>
+    </data>
+    <data name="ReceivingCurrencyAddress" xml:space="preserve">
+        <value>Your receiving {0} address</value>
+    </data>
+    <data name="CopyAddress" xml:space="preserve">
+        <value>Copy address</value>
+    </data>
+    <data name="Copied" xml:space="preserve">
+        <value>Copied</value>
+    </data>
     
     <!-- Delegation list Page -->
     <data name="DelegationListPageTitle" xml:space="preserve">
@@ -456,18 +519,13 @@
     <data name="NotDelegated" xml:space="preserve">
         <value>Non délégué</value>
     </data>
-    
-    <!-- Baker list Page -->
-    <data name="BakerListPageTitle" xml:space="preserve">
-        <value>Liste des bakers</value>
-    </data>
-    <data name="SearchBarPlaceholder" xml:space="preserve">
-        <value>Trouver un baker...</value>
+    <data name="EstimatedRoi" xml:space="preserve">
+        <value>Est. ROI</value>
     </data>
     
     <!-- Delegate Page -->
-    <data name="DelegateToBakeryLabel" xml:space="preserve">
-        <value>Déléguer au baker</value>
+    <data name="DelegatingTo" xml:space="preserve">
+        <value>Déléguer au...</value>
     </data>
     <data name="Balance" xml:space="preserve">
         <value>Solde</value>
@@ -478,8 +536,8 @@
     <data name="FromAddressLabel" xml:space="preserve">
         <value>De l'adresse</value>
     </data>
-    <data name="BakerAddressPlaceholder" xml:space="preserve">
-        <value>Entrez l'adresse du baker...</value>
+    <data name="EnterBakerNamePlaceholder" xml:space="preserve">
+        <value>Entrez le nom du baker...</value>
     </data>
     <data name="CustomBaker" xml:space="preserve">
         <value>Autre baker</value>
@@ -487,23 +545,42 @@
     <data name="FeeCalculationLabel" xml:space="preserve">
         <value>Calcul de la commission</value>
     </data>
-    
-    <!-- Delegation Confirmation Page -->
-    <data name="WantToDelegate" xml:space="preserve">
-        <value>Voulez-vous vraiment déléguer?</value>
+    <data name="SortByRatingButton" xml:space="preserve">
+        <value>Sort by rating</value>
     </data>
-    <data name="CopyAndExitButton" xml:space="preserve">
-        <value>Copier l'URI et fermer</value>
+    <data name="SortByRoiButton" xml:space="preserve">
+        <value>Sort by ROI</value>
+    </data>
+    <data name="SortByStatusButton" xml:space="preserve">
+        <value>Sort by status</value>
+    </data>
+    <data name="SortByValidatorButton" xml:space="preserve">
+        <value>Sort by validator</value>
+    </data>
+    <data name="SortByMinTezButton" xml:space="preserve">
+        <value>Sort by min. XTZ</value>
+    </data>
+    <data name="BakersNotFound" xml:space="preserve">
+        <value>Bakers not found</value>
+    </data>
+    <data name="Bakers" xml:space="preserve">
+        <value>Bakers</value>
+    </data>
+    <data name="FreeSpace" xml:space="preserve">
+        <value>Free space</value>
+    </data>
+    <data name="BakerIsFull" xml:space="preserve">
+        <value>Baker is full</value>
     </data>
     
     <!-- Delegation Info Page -->
     <data name="DelegationInfoPageTitle" xml:space="preserve">
         <value>Informations sur la délégation</value>
     </data>
-    <data name="CheckRewardsButton" xml:space="preserve">
+    <data name="CheckRewards" xml:space="preserve">
         <value>Vérifier les paiements</value>
     </data>
-    <data name="ChangeBakerButton" xml:space="preserve">
+    <data name="ChangeBaker" xml:space="preserve">
         <value>Changer de baker</value>
     </data>
     <data name="BakerLabel" xml:space="preserve">
@@ -518,14 +595,8 @@
     <data name="DelegationTime" xml:space="preserve">
         <value>Temps de délégation</value>
     </data>
-    <data name="AccountSection" xml:space="preserve">
-        <value>Compte</value>
-    </data>
-    <data name="BakerSection" xml:space="preserve">
+    <data name="CurrentBaker" xml:space="preserve">
         <value>Baker actuel</value>
-    </data>
-    <data name="MoreSection" xml:space="preserve">
-        <value>Plus de détails</value>
     </data>
     
     <!-- Buy with card Page -->
@@ -699,8 +770,14 @@
     </data>
 
     <!-- Tezos tokens list, token info Pages -->
-    <data name="TezosTokensListPageTitle" xml:space="preserve">
+    <data name="TezosTokens" xml:space="preserve">
         <value>Jetons Tezos</value>
+    </data>
+    <data name="ManageTezosTokens" xml:space="preserve">
+        <value>Manage Tezos tokens</value>
+    </data>
+    <data name="HideLowBalances" xml:space="preserve">
+        <value>Hide low balances</value>
     </data>
     <data name="TokenInfoPageTitle" xml:space="preserve">
         <value>Informations sur le jeton</value>
@@ -1026,7 +1103,7 @@
         <value>Le baker est redélégué, mieux vaut en choisir un autre</value>
     </data>
     <data name="RemoveTxWarning" xml:space="preserve">
-        <value>Cette action n'affecte que les données locales et n'affecte pas la blockchain.</value>
+        <value>Do you confirm the removal from the transaction list? This action affects only the local database and does not affect the blockchain</value>
     </data>
     <data name="UpdateApp" xml:space="preserve">
         <value>Une nouvelle version est disponible. Mettre à jour l'application maintenant?</value>
@@ -1062,7 +1139,7 @@
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
     </data>
     <data name="CopyingPrivateKeyWarning" xml:space="preserve">
-        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans votre portefeuille. Êtes-vous sûr de vouloir copier la clé privée pour {0}?</value>
+        <value>La copie de la clé privée dans le presse-papiers peut entraîner la perte de toutes vos pièces dans votre portefeuille. Êtes-vous sûr de vouloir copier la clé privée?</value>
     </data>
     <data name="PrivateKeyCopied" xml:space="preserve">
         <value>Clé privée copiée</value>
@@ -1121,5 +1198,8 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     </data>
     <data name="RedeemFromAddressNoteToolTip" xml:space="preserve">
         <value>The redeem transaction will be sent from the address {0} if it has enough funds. Otherwise the transaction will be sent by an extrenal service for a fee</value>
+    </data>
+    <data name="UndelegateWarning" xml:space="preserve">
+        <value>Are you sure you want to send transaction, that will stop delegating {0} with fee {1} XTZ?</value>
     </data>
 </root>

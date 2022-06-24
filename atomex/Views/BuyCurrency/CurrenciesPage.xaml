@@ -6,7 +6,7 @@
     x:Name="BindingContextPage"
     xmlns:helpers="clr-namespace:atomex.Helpers"         
     Title="{helpers:Translate BuyWithCardPageTitle}"
-    Style="{DynamicResource AdditionalBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Content>
         <StackLayout Spacing="0"
                      VerticalOptions="CenterAndExpand">
@@ -18,7 +18,7 @@
                    VerticalTextAlignment="End"/>
             <StackLayout Spacing="0"
                          Margin="20">
-                <FlexLayout BindableLayout.ItemsSource="{Binding Currencies, Mode=OneWay}"
+                <FlexLayout BindableLayout.ItemsSource="{Binding AvailableCurrencies, Mode=OneWay}"
                             BackgroundColor="Transparent"
                             Direction="Row"
                             Wrap="Wrap"

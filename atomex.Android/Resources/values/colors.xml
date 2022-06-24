@@ -2,10 +2,9 @@
 <resources>
     <color name="launcher_background">#FFFFFF</color>
     <color name="splashBackground">#223a66</color>
-    <color name="navigationBarBackground">#2B5286</color>
-    <color name="buttonBackground">#3a6cb1</color>
+    <color name="navigationBarBackground">#20439E</color>
+    <color name="buttonBackground">#2762BD</color>
     <color name="colorAccent">#298ad4</color>
-    <color name="colorPrimary">#2B5286</color>
-    <color name="colorPrimaryDark">#2B5286</color>
-    <color name="toastBackground">#dd353535</color>
+    <color name="colorPrimary">#20439E</color>
+    <color name="colorPrimaryDark">#20439E</color>
 </resources>

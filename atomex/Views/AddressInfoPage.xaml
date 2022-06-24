@@ -4,102 +4,231 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.AddressInfoPage"
     Title="{helpers:Translate AddressInfoPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <RelativeLayout>
-            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
-                               RelativeLayout.WidthConstraint="50"
-                               RelativeLayout.HeightConstraint="50"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               BackgroundColor="Transparent"
-                               IsRunning="{Binding IsUpdating}"
-                               IsVisible="{Binding IsUpdating}"/>
-            <StackLayout Padding="0,10"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding IsUpdating}"
-                                 Value="True">
-                        <Setter Property="Opacity"
-                                Value="0.3"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding IsUpdating}"
-                                 Value="False">
-                        <Setter Property="Opacity"
-                                Value="1"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate AddressLabel}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.Address}"
-                                   Style="{DynamicResource InfoRowTextStyle}"
-                                   LineBreakMode="MiddleTruncation"/>
-                        </StackLayout>
-                        <ImageButton Source="Copy"
-                                     Style="{DynamicResource InfoImageButtonStyle}"
-                                     Command="{Binding SelectedAddress.CopyCommand}"/>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+        <StackLayout Spacing="0">
+            <Label Text="{helpers:Translate AddressInfoPageTitle}"
+                   Style="{DynamicResource MainTextH1}"
+                   Padding="16,32,16,16"/>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="16.5" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.ColumnSpan="2"
+                       Text="{helpers:Translate AddressLabel}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding Address}"
+                       Style="{DynamicResource MainTextH4}"
+                       LineBreakMode="MiddleTruncation"
+                       VerticalTextAlignment="Start"/>
+                <Image Grid.Column="2"
+                       Grid.RowSpan="4"
+                       Source="ic_copy__gray"
+                       WidthRequest="15"
+                       HeightRequest="18"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                              CommandParameter="{Binding Address}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Frame Grid.Row="2"
+                       Padding="5,3"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                       CornerRadius="4"
+                       IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
+                    <Label Text="{helpers:Translate New}"
+                           Style="{DynamicResource MainTextH6}"
+                           TextTransform="Lowercase"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Center"/>
+                </Frame>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="3"
+                      Margin="0,16,0,0"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="4"
+                      Grid.ColumnSpan="3"
+                      BackgroundColor="Transparent"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="0"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate Path}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding Path}"
+                       Style="{DynamicResource MainTextH4}"
+                       VerticalTextAlignment="Start"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="0"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate Type}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="End"/>
+                <Label Text="{Binding Type}"
+                       Grid.Row="1"
+                       Style="{DynamicResource MainTextH4}"
+                       VerticalTextAlignment="Start"/>
+                <Line Grid.Row="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      BackgroundColor="Transparent"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate Balance}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Style="{DynamicResource MainTextH4}"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Balance, StringFormat='{0:0.#########}'}"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding BalanceCode}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Image Grid.Column="1"
+                       Grid.RowSpan="2"
+                       Source="ic_update"
+                       Margin="0,30"
+                       VerticalOptions="FillAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UpdateAddressCommand}"
+                                              CommandParameter="{Binding Address}"/>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding IsUpdating}"
+                                     Value="True">
+                            <DataTrigger.EnterActions>
+                                <behavior:AnimationTrigger Action="Start" />  
+                            </DataTrigger.EnterActions>                                
+                        </DataTrigger>
+                        <DataTrigger TargetType="Image"
+                                     Binding="{Binding IsUpdating}"
+                                     Value="False">
+                            <DataTrigger.EnterActions>
+                                <behavior:AnimationTrigger Action="Stop" />  
+                            </DataTrigger.EnterActions>                                
+                        </DataTrigger>                    
+                    </Image.Triggers>
+                </Image>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="Transparent"/>
+            </Grid>
+            <Grid RowSpacing="4"
+                  ColumnSpacing="30"
+                  Padding="16,0"
+                  IsVisible="{Binding TokenBalance, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{helpers:Translate TokenBalance}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       VerticalTextAlignment="End"/>
+                <Label Grid.Row="1"
+                       Text="{Binding TokenBalanceString}"
+                       Style="{DynamicResource MainTextH4}"
+                       VerticalTextAlignment="Start"/>
+                <Line Grid.Row="2"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                <Line Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      BackgroundColor="Transparent"/>
+            </Grid>
+            <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                   Margin="16,32"
+                   VerticalOptions="EndAndExpand"
+                   HorizontalOptions="FillAndExpand">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ExportKeyCommand}"
+                                          CommandParameter="{Binding Address}"/>
+                </Frame.GestureRecognizers>
+                <StackLayout Spacing="10"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <Image HeightRequest="18"
+                           WidthRequest="15"
+                           Source="ic_copy__blue"
+                           VerticalOptions="Center"/>
+                    <Label Text="{helpers:Translate CopyPrivateKeyButton}"
+                           Style="{DynamicResource AdditionalClickableLabel}"
+                           VerticalTextAlignment="Center"/>
                 </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <Label Text="{helpers:Translate Path}"
-                           Style="{DynamicResource InfoRowTitleStyle}"/>
-                    <Label Text="{Binding SelectedAddress.Path}"
-                           Style="{DynamicResource InfoRowTextStyle}"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <Label Text="{helpers:Translate Type}"
-                           Style="{DynamicResource InfoRowTitleStyle}"/>
-                    <Label Text="{Binding SelectedAddress.Type}"
-                           Style="{DynamicResource InfoRowTextStyle}"/>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource InfoRowStyle}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate Balance}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.Balance}"
-                                   Style="{DynamicResource InfoRowTextStyle}"/>
-                        </StackLayout>
-                        <ImageButton Source="ic_redeem"
-                                     Style="{DynamicResource InfoImageButtonStyle}"
-                                     Command="{Binding SelectedAddress.UpdateAddressCommand}"/>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                 <StackLayout Style="{DynamicResource InfoRowStyle}"
-                              IsVisible="{Binding SelectedAddress.TokenBalance,Mode=OneWay, Converter={StaticResource StringToBool}}">
-                    <StackLayout Orientation="Horizontal">
-                        <StackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{helpers:Translate TokenBalance}"
-                                   Style="{DynamicResource InfoRowTitleStyle}"/>
-                            <Label Text="{Binding SelectedAddress.TokenBalance}"
-                                   Style="{DynamicResource InfoRowTextStyle}"/>
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-                </StackLayout>
-                <Button Text="{helpers:Translate ExportKeyButton}"
-                        Style="{DynamicResource TransparentButtonStyle}"
-                        TextColor="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"
-                        Command="{Binding SelectedAddress.ExportKeyCommand}"/>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            </StackLayout>
-        </RelativeLayout>
+            </Frame>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -39,10 +39,10 @@
                                                 ClosingTimeInMs="300"/>
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
-                              Padding="0,8"
+                              Padding="0,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="620"
-                              BackgroundColor="{AppThemeBinding Dark='#203040', Light={StaticResource MainBackgroundColor}}">
+                              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"
                        WidthRequest="35"
@@ -89,48 +89,44 @@
                             </Image.Triggers>
                         </Image>
                         <Label Text="{Binding StateStringI18n}"
-                               FontFamily="{DynamicResource BoldFont}"
-                               FontSize="24"
                                Padding="24,12"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="In Progress">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource MainTextH2}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Completed">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource SuccessTextH2}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Canceled">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource ErrorTextH2}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Refunded">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource ErrorTextH2}"/>
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Unsettled">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource ErrorTextH2}"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
                         <Label Text="{Binding StateDescription}"
+                               Style="{DynamicResource AdditionalTextH6}"
                                Padding="24,0"
-                               FontFamily="{DynamicResource RegularFont}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                                HorizontalTextAlignment="Center"
                                IsVisible="False">
                             <Label.Triggers>
@@ -169,20 +165,22 @@
                                 <ColumnDefinition Width="4*" />
                             </Grid.ColumnDefinitions>
                             <Image Source="{Binding FromCurrencyCode}"
+                                   WidthRequest="48"
+                                   HeightRequest="48"
                                    HorizontalOptions="Center"/>
-                            <Image Source="ConvertArrow"
+                            <Image Source="ic_exchange"
                                    Grid.Column="1"
                                    WidthRequest="20"
                                    VerticalOptions="CenterAndExpand"/>
                             <Image Grid.Column="2"
                                    Source="{Binding ToCurrencyCode}"
+                                   WidthRequest="48"
+                                   HeightRequest="48"
                                    HorizontalOptions="Center"/>
                             <Label Grid.Row="1"
-                                   FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="12"
+                                   Style="{DynamicResource MainTextH6}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                                   VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding FromAmount}"/>
@@ -191,13 +189,11 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label FontFamily="{DynamicResource RegularFont}"
-                                   FontSize="12"
-                                   Grid.Row="1"
+                            <Label Grid.Row="1"
                                    Grid.Column="2"
+                                   Style="{DynamicResource MainTextH6}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                                   VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding ToAmount}"/>
@@ -224,19 +220,12 @@
                                    CornerRadius="18"
                                    HasShadow="False"
                                    Padding="0"
-                                   BackgroundColor="{AppThemeBinding Dark='#14DCECFF', Light='#0F002041'}"/>
-                            <Button CornerRadius="16"
-                                    Padding="0"
-                                    Margin="2"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
+                            <Button Style="{DynamicResource TabButton}"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapProgress"
                                     x:Name="ProgressButton"
-                                    Text="{helpers:Translate ProgressTab}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    FontSize="14"
-                                    TextTransform="None"
-                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                    BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
+                                    Text="{helpers:Translate ProgressTab}">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
@@ -244,13 +233,13 @@
                                                 <Setter Property="TextColor"
                                                         Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
                                                         Value="Transparent"/>
                                             </VisualState.Setters>
@@ -259,24 +248,17 @@
                                 </VisualStateManager.VisualStateGroups>
                             </Button>
                             <Button Grid.Column="1"
-                                    CornerRadius="16"
-                                    Padding="0"
-                                    Margin="2"
+                                    Style="{DynamicResource TabButton}"
                                     Text="{helpers:Translate DetailsTab}"
-                                    FontFamily="{DynamicResource RegularFont}"
-                                    FontSize="14"
-                                    TextTransform="None"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapDetails"
-                                    x:Name="DetailsButton"
-                                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
-                                    BackgroundColor="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}">
+                                    x:Name="DetailsButton">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark='#61DCECFF', Light='#80000E22'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
                                                         Value="Transparent"/>
                                             </VisualState.Setters>
@@ -284,9 +266,9 @@
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                      Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark='#29DCECFF', Light='#FFFFFF'}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -463,9 +445,7 @@
                                 </Image>
                                 <Label Text="{helpers:Translate Initialization}"
                                        Grid.Column="1"
-                                       FontFamily="{DynamicResource BoldFont}"
-                                       FontSize="20"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -488,9 +468,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding InitStatusDesc}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="14"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -517,18 +495,14 @@
                                                          Padding="0,4">
                                                 <StackLayout Spacing="0"
                                                              Orientation="Horizontal">
-                                                    <Label FontFamily="{DynamicResource RegularFont}"
-                                                           Text="{Binding Description}"
-                                                           FontSize="14"
-                                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                    <Label Text="{Binding Description}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -539,9 +513,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -559,7 +531,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"
@@ -788,10 +760,7 @@
                                 </Image>
                                 <Label Text="{helpers:Translate Exchanging}"
                                        Grid.Column="1"
-                                       FontFamily="{DynamicResource BoldFont}"
-                                       FontSize="20"
-                                       BackgroundColor="Transparent"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -814,9 +783,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding ExchangeStatusDesc}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="14"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -843,19 +810,15 @@
                                                 <StackLayout Spacing="0"
                                                              Orientation="Horizontal"
                                                              HorizontalOptions="FillAndExpand">
-                                                    <Label FontFamily="{DynamicResource RegularFont}"
-                                                           Text="{Binding Description}"
-                                                           FontSize="14"
-                                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                    <Label Text="{Binding Description}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  HorizontalOptions="FillAndExpand" 
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -866,9 +829,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -886,7 +847,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"
@@ -1026,9 +987,7 @@
                                 </lottie:AnimationView>
                                 <Label Text="{helpers:Translate Completion}"
                                        Grid.Column="1"
-                                       FontFamily="{DynamicResource BoldFont}"
-                                       FontSize="20"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       Style="{DynamicResource MainTextH3}"
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
@@ -1051,9 +1010,7 @@
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding CompletionStatusDesc}"
-                                           FontFamily="{DynamicResource RegularFont}"
-                                           FontSize="14"
-                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                           Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"/>
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
@@ -1080,19 +1037,15 @@
                                                          Padding="0,4">
                                                 <StackLayout Spacing="0"
                                                              Orientation="Horizontal">
-                                                    <Label FontFamily="{DynamicResource RegularFont}"
-                                                           Text="{Binding Description}"
-                                                           FontSize="14"
-                                                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                    <Label Text="{Binding Description}"
+                                                           Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
                                                            IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  HorizontalOptions="FillAndExpand"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
@@ -1103,9 +1056,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Label FontFamily="{DynamicResource RegularFont}"
-                                                               FontSize="14"
-                                                               TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                                        <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
@@ -1123,7 +1074,7 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                        <Image Source="ic_export"
+                                                        <Image Source="ic_export__green"
                                                                VerticalOptions="Center"
                                                                HorizontalOptions="EndAndExpand"
                                                                WidthRequest="10"
@@ -1195,15 +1146,11 @@
                             </VisualStateManager.VisualStateGroups>
                             <StackLayout>
                                 <Label Text="{helpers:Translate Price}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="14"
-                                       TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                                       Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Start"/>
                                 <Label Text="{Binding Price}"
-                                       FontFamily="{DynamicResource RegularFont}"
-                                       FontSize="16"
-                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
+                                       Style="{DynamicResource MainTextH4}"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Start"/>
                             </StackLayout>

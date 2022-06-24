@@ -6,10 +6,9 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
-using atomex.Models;
 using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views.Send;
+using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
@@ -19,92 +18,102 @@ using NBitcoin;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using static atomex.Models.Message;
 
 namespace atomex.ViewModel.SendViewModels
 {
     public class BitcoinBasedSendViewModel : SendViewModel
     {
-        public bool IsBtcBased => Currency is BitcoinBasedConfig;
+        public bool IsBtcBased => _currency is BitcoinBasedConfig;
 
         public BitcoinBasedSendViewModel(
             IAtomexApp app,
-            CurrencyViewModel currencyViewModel)
-            : base(app, currencyViewModel)
+            CurrencyViewModel currencyViewModel,
+            INavigationService navigationService)
+            : base(app, currencyViewModel, navigationService)
         {
-            this.WhenAnyValue(vm => vm.Outputs)
+            this.WhenAnyValue(vm => vm._outputs)
                 .WhereNotNull()
                 .SubscribeInMainThread(outputs =>
                 {
                     From = outputs.ToList().Count != 1
                         ? $"{outputs.ToList().Count} outputs"
-                        : outputs.ElementAt(0).DestinationAddress(Config.Network);
+                        : outputs.ElementAt(0).DestinationAddress(_config.Network);
 
                     var totalOutputsSatoshi = outputs
                         .Aggregate((long)0, (sum, output) => sum + output.Value);
 
-                    SelectedFromBalance = Config.SatoshiToCoin(totalOutputsSatoshi);
+                    SelectedFromBalance = _config.SatoshiToCoin(totalOutputsSatoshi);
                 });
 
             this.WhenAnyValue(vm => vm.FeeRate)
-                .Subscribe(_ => OnQuotesUpdatedEventHandler(App.QuotesProvider, EventArgs.Empty));
+                .Subscribe(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
 
             this.WhenAnyValue(vm => vm.UseDefaultFee)
                 .Where(useDefaultFee => !useDefaultFee)
                 .SubscribeInMainThread((useDefaultFee) => { _ = UpdateFee(); });
 
-            var outputs = Account.GetAvailableOutputsAsync()
+            var outputs = _account.GetAvailableOutputsAsync()
                 .WaitForResult()
                 .Select(output => new OutputViewModel()
                 {
                     Output = (BitcoinBasedTxOutput)output,
-                    Config = Config,
+                    Config = _config,
                     IsSelected = true
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config, Navigation)
+            SelectFromViewModel = new SelectOutputsViewModel(
+                outputs: outputs,
+                account: _account,
+                config: _config,
+                navigationService: _navigationService,
+                tab: TabNavigation.Portfolio)
             {
                 ConfirmAction = ConfirmOutputs
             };
 
-            SelectToViewModel = new SelectAddressViewModel(App.Account, Currency, Navigation)
+            SelectToViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: _currency,
+                navigationService: _navigationService,
+                tab: TabNavigation.Portfolio)
             {
                 ConfirmAction = ConfirmToAddress
             };
         }
 
-        private BitcoinBasedConfig Config => (BitcoinBasedConfig)Currency;
+        private BitcoinBasedConfig _config => (BitcoinBasedConfig)_currency;
 
-        [Reactive] private IEnumerable<BitcoinBasedTxOutput> Outputs { get; set; }
+        [Reactive] private IEnumerable<BitcoinBasedTxOutput> _outputs { get; set; }
 
         [Reactive] public decimal FeeRate { get; set; }
-
         public string FeeRateCode => "sat/byte";
 
-        private BitcoinBasedAccount Account => App.Account.GetCurrencyAccount<BitcoinBasedAccount>(Currency.Name);
+        private BitcoinBasedAccount _account => _app.Account.GetCurrencyAccount<BitcoinBasedAccount>(_currency.Name);
 
         protected void ConfirmOutputs(SelectOutputsViewModel selectOutputsViewModel, IEnumerable<BitcoinBasedTxOutput> outputs)
         {
-            Outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
+            _outputs = new ObservableCollection<BitcoinBasedTxOutput>(outputs);
 
             switch (selectOutputsViewModel?.SelectAddressFrom)
             {
                 case SelectAddressFrom.Init:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.Change:
-                    Navigation.PopAsync();
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.InitSearch:
-                    Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+                    _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
                     break;
 
                 case SelectAddressFrom.ChangeSearch:
-                    Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-                    Navigation.PopAsync();
+                    _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
                     break;
             }
         }
@@ -113,19 +122,22 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                if (Outputs == null)
+                if (_outputs == null)
                     return;
 
                 if (UseDefaultFee)
                 {
-                    FeeRate = await Config.GetFeeRateAsync();
+                    FeeRate = await _config.GetFeeRateAsync();
+
+                    if (To == null)
+                        return;
 
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeRateAsync(
-                        availableOutputs: Outputs,
+                        availableOutputs: _outputs,
                         to: To,
                         amount: Amount,
                         feeRate: FeeRate,
-                        account: Account);
+                        account: _account);
 
                     if (transactionParams == null)
                     {
@@ -137,17 +149,17 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
 
-                    var feeVal = Config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
+                    var feeVal = _config.SatoshiToCoin((long)transactionParams.FeeInSatoshi);
                     SetFeeFromString(feeVal.ToString());
                 }
                 else
                 {
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
-                        availableOutputs: Outputs,
+                        availableOutputs: _outputs,
                         to: To,
                         amount: Amount,
                         fee: Fee,
-                        account: Account);
+                        account: _account);
 
                     if (transactionParams == null)
                     {
@@ -159,8 +171,8 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
 
-                    var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
-                    var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
+                    var minimumFeeInSatoshi = _config.GetMinimumFee((int)transactionParams.Size);
+                    var minimumFee = _config.SatoshiToCoin(minimumFeeInSatoshi);
 
                     if (Fee < minimumFee)
                     {
@@ -183,15 +195,15 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                if (Outputs == null)
+                if (_outputs == null)
                     return;
 
                 var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
-                    availableOutputs: Outputs,
+                    availableOutputs: _outputs,
                     to: To,
                     amount: Amount,
                     fee: Fee,
-                    account: Account);
+                    account: _account);
 
                 if (transactionParams == null)
                 {
@@ -203,8 +215,8 @@ namespace atomex.ViewModel.SendViewModels
                     return;
                 }
 
-                var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
-                var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
+                var minimumFeeInSatoshi = _config.GetMinimumFee((int)transactionParams.Size);
+                var minimumFee = _config.SatoshiToCoin(minimumFeeInSatoshi);
 
                 if (Fee < minimumFee)
                 {
@@ -226,12 +238,12 @@ namespace atomex.ViewModel.SendViewModels
         {
             try
             {
-                if (Outputs == null)
+                if (_outputs == null)
                     return;
 
                 if (UseDefaultFee)
                 {
-                    if (Outputs.Count() == 0)
+                    if (_outputs.Count() == 0)
                     {
                         ShowMessage(
                             messageType: MessageType.Error,
@@ -242,10 +254,10 @@ namespace atomex.ViewModel.SendViewModels
                         return;
                     }
 
-                    FeeRate = await Config.GetFeeRateAsync();
+                    FeeRate = await _config.GetFeeRateAsync();
 
-                    var maxAmountEstimation = await Account.EstimateMaxAmountToSendAsync(
-                        outputs: Outputs,
+                    var maxAmountEstimation = await _account.EstimateMaxAmountToSendAsync(
+                        outputs: _outputs,
                         to: To,
                         fee: null,
                         feeRate: FeeRate);
@@ -262,17 +274,17 @@ namespace atomex.ViewModel.SendViewModels
                 }
                 else
                 {
-                    var availableInSatoshi = Outputs.Sum(o => o.Value);
-                    var feeInSatoshi = Config.CoinToSatoshi(Fee);
+                    var availableInSatoshi = _outputs.Sum(o => o.Value);
+                    var feeInSatoshi = _config.CoinToSatoshi(Fee);
                     var maxAmountInSatoshi = Math.Max(availableInSatoshi - feeInSatoshi, 0);
-                    var maxAmount = Config.SatoshiToCoin(maxAmountInSatoshi);
+                    var maxAmount = _config.SatoshiToCoin(maxAmountInSatoshi);
 
                     var transactionParams = await BitcoinTransactionParams.SelectTransactionParamsByFeeAsync(
-                        availableOutputs: Outputs,
+                        availableOutputs: _outputs,
                         to: To,
                         amount: maxAmount,
                         fee: Fee,
-                        account: Account);
+                        account: _account);
 
                     if (transactionParams == null)
                     {
@@ -291,8 +303,8 @@ namespace atomex.ViewModel.SendViewModels
                     }
                     else
                     {
-                        var minimumFeeInSatoshi = Config.GetMinimumFee((int)transactionParams.Size);
-                        var minimumFee = Config.SatoshiToCoin(minimumFeeInSatoshi);
+                        var minimumFeeInSatoshi = _config.GetMinimumFee((int)transactionParams.Size);
+                        var minimumFee = _config.SatoshiToCoin(minimumFeeInSatoshi);
 
                         if (Fee < minimumFee)
                         {
@@ -314,8 +326,8 @@ namespace atomex.ViewModel.SendViewModels
 
         protected override Task<Error> Send(CancellationToken cancellationToken = default)
         {
-            return Account.SendAsync(
-                from: Outputs,
+            return _account.SendAsync(
+                from: _outputs,
                 to: To,
                 amount: AmountToSend,
                 fee: Fee,
@@ -323,21 +335,25 @@ namespace atomex.ViewModel.SendViewModels
                 cancellationToken: cancellationToken);
         }
 
-        protected async override Task FromClick()
+        protected async override void FromClick()
         {
-            var outputs = (await Account.GetAvailableOutputsAsync())
+            var outputs = (await _account.GetAvailableOutputsAsync())
                 .Select(output => new OutputViewModel()
                 {
                     Output = (BitcoinBasedTxOutput)output,
-                    Config = Config,
-                    IsSelected = Outputs.Any(o =>
+                    Config = _config,
+                    IsSelected = _outputs.Any(o =>
                         output.TxId == o.TxId &&
                         output.Index == o.Index)
 
                 })
                 .ToList();
 
-            SelectFromViewModel = new SelectOutputsViewModel(outputs, Account, Config, Navigation)
+            SelectFromViewModel = new SelectOutputsViewModel(
+                outputs: outputs,
+                account: _account,
+                config: _config,
+                navigationService: _navigationService)
             {
                 ConfirmAction = ConfirmOutputs
             };
@@ -345,14 +361,14 @@ namespace atomex.ViewModel.SendViewModels
             var selectFromViewModel = SelectFromViewModel as SelectOutputsViewModel;
             selectFromViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new SelectOutputsPage(SelectFromViewModel as SelectOutputsViewModel));
+            _navigationService?.ShowPage(new SelectOutputsPage(SelectFromViewModel as SelectOutputsViewModel), TabNavigation.Portfolio);
         }
 
-        protected async override Task ToClick()
+        protected override void ToClick()
         {
             SelectToViewModel.SelectAddressFrom = SelectAddressFrom.Change;
 
-            await Navigation.PushAsync(new SelectAddressPage(SelectToViewModel));
+            _navigationService?.ShowPage(new SelectAddressPage(SelectToViewModel), TabNavigation.Portfolio);
         }
     }
 }

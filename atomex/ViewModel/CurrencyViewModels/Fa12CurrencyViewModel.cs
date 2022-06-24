@@ -10,36 +10,38 @@ using atomex.ViewModel.TransactionViewModels;
 using System.Collections.ObjectModel;
 using Atomex.Common;
 using Atomex.Core;
-using System.Windows.Input;
+using ReactiveUI;
+using atomex.Views;
+using System.Threading;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public class Fa12CurrencyViewModel : CurrencyViewModel
     {
-
         public Fa12CurrencyViewModel(
-           IAtomexApp app, CurrencyConfig currency)
-           : base(app, currency)
+           IAtomexApp app,
+           CurrencyConfig currency,
+           INavigationService navigationService)
+           : base(app, currency, navigationService)
         {
         }
 
-
-        public override async Task UpdateTransactionsAsync()
+        public override async Task LoadTransactionsAsync()
         {
             Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
 
             try
             {
-                if (AtomexApp.Account == null)
+                if (_app.Account == null)
                     return;
 
                 var fa12currency = Currency as Fa12Config;
 
-                var tezosConfig = AtomexApp.Account
+                var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
-                var transactions = (await AtomexApp.Account
+                var transactions = (await _app.Account
                     .GetCurrencyAccount<Fa12Account>(Currency.Name)
                     .DataRepository
                     .GetTezosTokenTransfersAsync(fa12currency.TokenContractAddress)
@@ -55,12 +57,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                             .ForEachDo(t =>
                             {
                                 t.RemoveClicked += RemoveTransactonEventHandler;
+                                t.CopyAddress = CopyAddress;
+                                t.CopyTxId = CopyTxId;
                             }));
                     var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
                     GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
 
-                    OnPropertyChanged(nameof(Transactions));
-                    OnPropertyChanged(nameof(GroupedTransactions));
+                    this.RaisePropertyChanged(nameof(Transactions));
+                    this.RaisePropertyChanged(nameof(GroupedTransactions));
                 });
             }
             catch (OperationCanceledException)
@@ -73,30 +77,60 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-
-        public override ICommand ReceivePageCommand => _receivePageCommand ??= new Command(async () => await OnReceiveButtonClicked());
-
-        public override ICommand AddressesPageCommand => _addressesPageCommand ??= new Command(async () => await OnAddressesButtonClicked());
-
-        private async Task OnReceiveButtonClicked()
+        protected override void OnReceiveClick()
         {
-            var fa12currency = Currency as Fa12Config;
-            var tezosConfig = AtomexApp.Account
-                .Currencies
-                .GetByName(TezosConfig.Xtz);
+            var tezosConfig = _app.Account.Currencies.GetByName(TezosConfig.Xtz);
+            string tokenContractAddress = (Currency as Fa12Config).TokenContractAddress;
 
-            await Navigation.PushAsync(new ReceivePage(new ReceiveViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            var receiveViewModel = new ReceiveViewModel(
+                app: _app,
+                currency: tezosConfig,
+                navigationService: _navigationService,
+                tokenContract: tokenContractAddress,
+                tokenType: "FA12");
+            _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
-        private async Task OnAddressesButtonClicked()
+        public override async Task ScanCurrency()
+        {
+            if (IsRefreshing) return;
+
+            var cancellation = new CancellationTokenSource();
+            IsRefreshing = true;
+
+            try
+            {
+                await _app.Account
+                    .GetCurrencyAccount<Fa12Account>(Currency.Name)
+                    .UpdateBalanceAsync(cancellation.Token);
+
+                await LoadTransactionsAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Wallet update operation canceled.");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Fa12WalletViewModel.OnUpdateClick error.");
+                // todo: message to user!?
+            }
+
+            IsRefreshing = false;
+        }
+
+        protected override void LoadAddresses()
         {
             var fa12currency = Currency as Fa12Config;
-            var tezosConfig = AtomexApp.Account
+            var tezosConfig = _app.Account
                 .Currencies
                 .Get<TezosConfig>(TezosConfig.Xtz);
 
-            await Navigation.PushAsync(new AddressesPage(new AddressesViewModel(AtomexApp, tezosConfig, Navigation, fa12currency.TokenContractAddress)));
+            AddressesViewModel = new AddressesViewModel(
+                app: _app,
+                currency: fa12currency,
+                navigationService: _navigationService,
+                tokenContract: fa12currency.TokenContractAddress);
         }
-
     }
 }

@@ -16,11 +16,9 @@ namespace atomex
         public MyWalletsPage(MyWalletsViewModel myWalletsViewModel)
         {
             InitializeComponent();
-
-            string selectedColorName = "ListViewSelectedBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-                selectedColorName = "ListViewSelectedBackgroundColorDark";
+            string selectedColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? "ListViewSelectedBackgroundColorDark"
+                : "ListViewSelectedBackgroundColor";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
             selectedItemBackgroundColor = (Color)selectedColor;

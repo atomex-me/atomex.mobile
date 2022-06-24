@@ -1,20 +1,24 @@
 ﻿using System.ComponentModel;
-
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Application = Xamarin.Forms.Application;
-
 using atomex.CustomElements;
 using atomex.Resources;
 using atomex.ViewModel;
 using atomex.Helpers;
-using System.Threading.Tasks;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
-using atomex.ViewModel.CurrencyViewModels;
-using atomex.Views.TezosTokens;
+using NavigationPage = Xamarin.Forms.NavigationPage;
 using atomex.Views.CreateSwap;
 using Atomex.Core;
+using Xamarin.CommunityToolkit.UI.Views.Options;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.Extensions;
+using System;
+using static atomex.Models.SnackbarMessage;
+using Rg.Plugins.Popup.Services;
+using Rg.Plugins.Popup.Pages;
 
 namespace atomex
 {
@@ -24,16 +28,13 @@ namespace atomex
     public partial class MainPage : CustomTabbedPage, INavigationService
     {
         private readonly NavigationPage NavigationConversionPage;
-
-        private readonly NavigationPage NavigationWalletsListPage;
-
         private readonly NavigationPage NavigationPortfolioPage;
-
         private readonly NavigationPage NavigationBuyPage;
-
         private readonly NavigationPage NavigationSettingsPage;
-
+        
         public MainViewModel MainViewModel { get; }
+
+        private int _initiatedPageNumber;
 
         public MainPage(MainViewModel mainViewModel)
         {
@@ -45,44 +46,34 @@ namespace atomex
 
             NavigationPortfolioPage = new NavigationPage(new Portfolio(MainViewModel.PortfolioViewModel))
             {
-                IconImageSource = "NavBarPortfolio",
+                IconImageSource = "ic_navbar__portfolio",
                 Title = AppResources.PortfolioTab
-            };
-
-            NavigationWalletsListPage = new NavigationPage(new CurrenciesListPage(MainViewModel.CurrenciesViewModel))
-            {
-                IconImageSource = "NavBarWallets",
-                Title = AppResources.WalletsTab
             };
 
             NavigationConversionPage = new NavigationPage(new ExchangePage(MainViewModel.ConversionViewModel))
             {
-                IconImageSource = "NavBarConversion",
+                IconImageSource = "ic_navbar__dex",
                 Title = AppResources.ConversionTab
             };
 
             NavigationSettingsPage = new NavigationPage(new SettingsPage(MainViewModel.SettingsViewModel))
             {
-                IconImageSource = "NavBarSettings",
+                IconImageSource = "ic_navbar__settings",
                 Title = AppResources.SettingsTab
             };
 
             NavigationBuyPage = new NavigationPage(new CurrenciesPage(MainViewModel.BuyViewModel))
             {
-                IconImageSource = "NavBarBuy",
+                IconImageSource = "ic_navbar__buy",
                 Title = AppResources.BuyTab
             };
 
-            MainViewModel.SettingsViewModel.Navigation = NavigationSettingsPage.Navigation;
-            MainViewModel.CurrenciesViewModel.SetNavigation(NavigationWalletsListPage.Navigation, this);
-            MainViewModel.ConversionViewModel.Navigation = NavigationConversionPage.Navigation;
-            MainViewModel.PortfolioViewModel.NavigationService = this;
-            MainViewModel.BuyViewModel.Navigation = NavigationBuyPage.Navigation;
-
-            SetAppTheme();
+            MainViewModel?.SettingsViewModel?.SetNavigationService(this);
+            MainViewModel?.BuyViewModel?.SetNavigationService(this);
+            MainViewModel?.ConversionViewModel?.SetNavigationService(this);
+            MainViewModel?.PortfolioViewModel?.SetNavigationService(this);
 
             Children.Add(NavigationPortfolioPage);
-            Children.Add(NavigationWalletsListPage);
             Children.Add(NavigationConversionPage);
             Children.Add(NavigationBuyPage);
             Children.Add(NavigationSettingsPage);
@@ -101,105 +92,324 @@ namespace atomex
         public void LocalizeNavTabs()
         {
             NavigationPortfolioPage.Title = AppResources.PortfolioTab;
-            NavigationWalletsListPage.Title = AppResources.WalletsTab;
             NavigationConversionPage.Title = AppResources.ConversionTab;
             NavigationSettingsPage.Title = AppResources.SettingsTab;
             NavigationBuyPage.Title = AppResources.BuyTab;
         }
 
-        public void SetAppTheme()
-        {
-            string navBarBackgroundColorName = "NavigationBarBackgroundColor";
-            string navBarTextColorName = "NavigationBarTextColor";
-            string tabBarBackgroundColorName = "TabBarBackgroundColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-            {
-                navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
-                navBarTextColorName = "NavigationBarTextColorDark";
-                tabBarBackgroundColorName = "TabBarBackgroundColorDark";
-            }
-
-            if (Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor))
-                NavigationWalletsListPage.BarBackgroundColor =
-                NavigationPortfolioPage.BarBackgroundColor =
-                NavigationConversionPage.BarBackgroundColor =
-                NavigationBuyPage.BarBackgroundColor =
-                NavigationSettingsPage.BarBackgroundColor =
-                (Color)navBarColor;
-
-            if (Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor))
-                NavigationWalletsListPage.BarTextColor =
-                NavigationPortfolioPage.BarTextColor =
-                NavigationConversionPage.BarTextColor =
-                NavigationBuyPage.BarTextColor =
-                NavigationSettingsPage.BarTextColor =
-                (Color)navBarTextColor;
-
-            if (Application.Current.Resources.TryGetValue(tabBarBackgroundColorName, out var tabBarBackgroundColor))
-                NavigationWalletsListPage.BackgroundColor =
-                NavigationPortfolioPage.BackgroundColor =
-                NavigationConversionPage.BackgroundColor =
-                NavigationBuyPage.BackgroundColor =
-                NavigationSettingsPage.BackgroundColor =
-                (Color)tabBarBackgroundColor;
-        }
-
         private void SignOut()
         {
-            MainViewModel.SignOut();
+            MainViewModel?.SignOut();
             StartViewModel startViewModel = new StartViewModel(MainViewModel.AtomexApp);
-            Application.Current.MainPage = new NavigationPage(new StartPage(startViewModel));
-            startViewModel.Navigation = Application.Current.MainPage.Navigation;
-
-            string navBarBackgroundColorName = "NavigationBarBackgroundColor";
-            string navBarTextColorName = "NavigationBarTextColor";
-
-            if (Application.Current.RequestedTheme == OSAppTheme.Dark)
-            {
-                navBarBackgroundColorName = "NavigationBarBackgroundColorDark";
-                navBarTextColorName = "NavigationBarTextColorDark";
-            }
-
-            Application.Current.Resources.TryGetValue(navBarBackgroundColorName, out var navBarColor);
-            Application.Current.Resources.TryGetValue(navBarTextColorName, out var navBarTextColor);
-
-            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = (Color)navBarColor;
-            ((NavigationPage)Application.Current.MainPage).BackgroundColor = (Color)navBarColor;
-            ((NavigationPage)Application.Current.MainPage).BarTextColor = (Color)navBarTextColor;
+            var mainPage = new StartPage(startViewModel);
+            Application.Current.MainPage = new NavigationPage(mainPage);
+            startViewModel?.SetNavigationService(mainPage);
         }
 
-        public void ConvertCurrency(CurrencyConfig currency)
+        public void GoToBuy(CurrencyConfig currency)
+        {
+            if (NavigationBuyPage.RootPage.BindingContext is BuyViewModel buyViewModel)
+            {
+                _ = NavigationBuyPage.Navigation.PopToRootAsync(false);
+                CurrentPage = NavigationBuyPage;
+                buyViewModel.BuyCurrency(currency);
+            }
+        }
+
+        public void GoToExchange(CurrencyConfig currency)
         {
             if (NavigationConversionPage.RootPage.BindingContext is ConversionViewModel conversionViewModel)
             {
                 _ = NavigationConversionPage.Navigation.PopToRootAsync(false);
                 CurrentPage = NavigationConversionPage;
-                conversionViewModel.SetFromCurrency(currency);
+                if (currency == null)
+                    conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
+                else
+                    conversionViewModel.SetFromCurrency(currency);
             }
         }
 
-        public void ShowCurrency(CurrencyViewModel currencyViewModel)
+        public void ShowPage(
+            Page page,
+            TabNavigation tab = TabNavigation.None)
         {
-            if (currencyViewModel == null)
+            if (page == null)
                 return;
 
-            NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-            CurrentPage = NavigationWalletsListPage;
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    NavigationPortfolioPage.PushAsync(page);
+                    break;
+                case TabNavigation.Exchange:
+                    NavigationConversionPage.PushAsync(page);
+                    break;
+                case TabNavigation.Buy:
+                    NavigationBuyPage.PushAsync(page);
+                    break;
+                case TabNavigation.Settings:
+                    NavigationSettingsPage.PushAsync(page);
+                    break;
+                case TabNavigation.None:
+                    break;
 
-            NavigationWalletsListPage.PushAsync(new CurrencyPage(currencyViewModel));
+                default:
+                    break;
+            }
         }
 
-
-        public void ShowTezosTokens(TezosTokensViewModel tezosTokensViewModel)
+        public void ClosePage(TabNavigation tab)
         {
-            if (tezosTokensViewModel == null)
-                return;
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    NavigationPortfolioPage.PopAsync();
+                    break;
+                case TabNavigation.Exchange:
+                    NavigationConversionPage.PopAsync();
+                    break;
+                case TabNavigation.Buy:
+                    NavigationBuyPage.PopAsync();
+                    break;
+                case TabNavigation.Settings:
+                    NavigationSettingsPage.PopAsync();
+                    break;
+                case TabNavigation.None:
+                    break;
 
-            NavigationWalletsListPage.Navigation.PopToRootAsync(false);
-            CurrentPage = NavigationWalletsListPage;
+                default:
+                    break;
+            }
+        }
 
-            NavigationWalletsListPage.PushAsync(new TezosTokensListPage(tezosTokensViewModel));
+        public void RemovePreviousPage(TabNavigation tab)
+        {
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    NavigationPortfolioPage.Navigation.RemovePage(
+                        NavigationPortfolioPage.Navigation.NavigationStack[NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
+                    break;
+                case TabNavigation.Exchange:
+                    NavigationConversionPage.Navigation.RemovePage(
+                        NavigationConversionPage.Navigation.NavigationStack[NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
+                    break;
+                case TabNavigation.Buy:
+                    NavigationBuyPage.Navigation.RemovePage(
+                        NavigationBuyPage.Navigation.NavigationStack[NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
+                    break;
+                case TabNavigation.Settings:
+                    NavigationSettingsPage.Navigation.RemovePage(
+                        NavigationSettingsPage.Navigation.NavigationStack[NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
+                    break;
+                case TabNavigation.None:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public void ShowBottomSheet(PopupPage popup)
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                _ = PopupNavigation.Instance.PopAsync();
+
+            _ = PopupNavigation.Instance.PushAsync(popup);
+        }
+
+        public void CloseBottomSheet()
+        {
+            if (PopupNavigation.Instance.PopupStack.Count > 0)
+                PopupNavigation.Instance.PopAsync();
+        }
+
+        public bool HasMultipleBottomSheets()
+        {
+            return PopupNavigation.Instance.PopupStack.Count > 1;
+        }
+
+        public async void DisplaySnackBar(
+            MessageType messageType,
+            string text,
+            string buttonText = "OK",
+            int duration = 3000)
+        {
+            string snackBarBgColorName;
+            string snackBarTextColorName;
+            Color backgroundColor = Color.White;
+            Color textColor = Color.Black;
+
+            switch (messageType)
+            {
+                case MessageType.Error:
+                    snackBarBgColorName = "ErrorSnackBarBgColor";
+                    snackBarTextColorName = "ErrorSnackBarTextColor";
+                    break;
+
+                case MessageType.Warning:
+                    snackBarBgColorName = "WarningSnackBarBgColor";
+                    snackBarTextColorName = "WarningSnackBarTextColor";
+                    break;
+
+                case MessageType.Success:
+                    snackBarBgColorName = "SuccessSnackBarBgColor";
+                    snackBarTextColorName = "SuccessSnackBarTextColor";
+                    break;
+
+                case MessageType.Regular:
+                    snackBarBgColorName = "RegularSnackBarBgColor";
+                    snackBarTextColorName = "RegularSnackBarTextColor";
+                    break;
+
+                default:
+                    snackBarBgColorName = "RegularSnackBarBgColor";
+                    snackBarTextColorName = "RegularSnackBarTextColor";
+                    break;
+            }
+
+            snackBarBgColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? snackBarBgColorName + "Dark"
+                : snackBarBgColorName;
+            snackBarTextColorName = Application.Current.RequestedTheme == OSAppTheme.Dark
+                ? snackBarTextColorName + "Dark"
+                : snackBarTextColorName;
+
+            Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
+            backgroundColor = (Color)bgColor;
+            Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
+            textColor = (Color)txtColor;
+
+            var messageOptions = new MessageOptions
+            {
+                Foreground = textColor,
+                Font = Font.SystemFontOfSize(14),
+                Padding = new Thickness(20, 14),
+                Message = text
+            };
+
+            var actionOptions = new List<SnackBarActionOptions>
+            {
+                new SnackBarActionOptions
+                {
+                    ForegroundColor = textColor,
+                    BackgroundColor = Color.Transparent,
+                    Font = Font.SystemFontOfSize(17),
+                    Text = buttonText,
+                    Padding = new Thickness(20, 16),
+                    Action = () => 
+                    {
+                        return Task.CompletedTask;
+                    }
+                }
+            };
+
+            var options = new SnackBarOptions
+            {
+                MessageOptions = messageOptions,
+                Duration = TimeSpan.FromMilliseconds(duration),
+                BackgroundColor = backgroundColor,
+                IsRtl = false,
+                CornerRadius = 4,
+                Actions = actionOptions
+            };            
+
+            var result = await this.DisplaySnackBarAsync(options);
+        }
+
+        public async Task ShowAlert(
+            string title,
+            string text,
+            string cancel)
+        {
+            await Application.Current.MainPage
+                .DisplayAlert(title, text, cancel);
+        }
+
+        public async Task<bool> ShowAlert(
+            string title,
+            string text,
+            string accept,
+            string cancel)
+        {
+            return await Application.Current.MainPage
+                .DisplayAlert(title, text, accept, cancel);
+        }
+
+        public async Task<string> DisplayActionSheet(
+            string cancel,
+            string[] actions,
+            string title = null)
+        {
+            return await DisplayActionSheet(title: title, cancel: cancel, destruction: null, actions);
+        }
+
+        public void SetInitiatedPage(TabNavigation tab)
+        {
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Exchange:
+                     _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Buy:
+                    _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.Settings:
+                    _initiatedPageNumber = NavigationSettingsPage.Navigation.NavigationStack.Count;
+                    break;
+                case TabNavigation.None:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public async Task ReturnToInitiatedPage(TabNavigation tab)
+        {
+            switch (tab)
+            {
+                case TabNavigation.Portfolio:
+                    for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationPortfolioPage.Navigation.RemovePage(
+                            NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationPortfolioPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Exchange:
+                    for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationConversionPage.Navigation.RemovePage(
+                            NavigationConversionPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationConversionPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Buy:
+                    for (int i = NavigationBuyPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationBuyPage.Navigation.RemovePage(
+                            NavigationBuyPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationBuyPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.Settings:
+                    for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    {
+                        NavigationSettingsPage.Navigation.RemovePage(
+                            NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
+                    }
+                    await NavigationSettingsPage.Navigation.PopAsync();
+                    break;
+                case TabNavigation.None:
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
