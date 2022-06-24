@@ -38,8 +38,9 @@ namespace atomex.ViewModel
 
             SubscribeToServices();
 
-            var atomexClient = new WebSocketAtomexClient(
-                configuration: configuration,
+            var atomexClient = new WebSocketAtomexClientLegacy(
+                exchangeUrl: configuration[$"Services:{account?.Network}:Exchange:Url"],
+                marketDataUrl: configuration[$"Services:{account?.Network}:MarketData:Url"],
                 account: account,
                 symbolsProvider: AtomexApp.SymbolsProvider);
 

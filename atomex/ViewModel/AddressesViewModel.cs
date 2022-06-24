@@ -226,7 +226,7 @@ namespace atomex.ViewModel
                         currency: _currency,
                         navigationService: _navigationService,
                         tokenContract: tokenContract,
-                        selectedTokenId: tokenId,
+                        selectedTokenId: (int)tokenId,
                         tab: TabNavigation.Portfolio,
                         mode: SelectAddressMode.ChooseMyAddress)
                     {

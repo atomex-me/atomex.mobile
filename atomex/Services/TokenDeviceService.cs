@@ -44,28 +44,24 @@ namespace atomex.Services
 
             try
             {
-                var result = await HttpHelper.PostAsync(
+                var response = await HttpHelper.PostAsync(
                     baseUri: baseUri,
-                    requestUri: requestUri,
+                    relativeUri: requestUri,
                     headers: headers,
                     content: null,
-                    responseHandler: response =>
-                    {
-                        if (!response.IsSuccessStatusCode)
-                            return false;
-
-                        var responseContent = response
-                            .Content
-                            .ReadAsStringAsync()
-                            .Result;
-
-                        if (bool.TryParse(responseContent, out var result))
-                            return result;
-
-                        return false;
-                    },
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                var responseContent = response
+                    .Content
+                    .ReadAsStringAsync()
+                    .Result;
+
+                if (!bool.TryParse(responseContent, out var result))
+                    return false;
 
                 return result;
             }

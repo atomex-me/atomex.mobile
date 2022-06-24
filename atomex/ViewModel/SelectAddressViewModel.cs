@@ -87,7 +87,7 @@ namespace atomex.ViewModel
             TabNavigation tab = TabNavigation.Portfolio,
             SelectAddressMode mode = SelectAddressMode.ReceiveTo,
             string selectedAddress = null,
-            decimal? selectedTokenId = null,
+            int selectedTokenId = 0,
             string tokenContract = null)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
@@ -228,7 +228,7 @@ namespace atomex.ViewModel
 
             SelectedAddress = selectedAddress != null
                 ? MyAddresses.FirstOrDefault(vm =>
-                    vm.Address == selectedAddress && (selectedTokenId == null || vm.TokenId == selectedTokenId))
+                    vm.Address == selectedAddress && vm.TokenId == selectedTokenId)
                 : SelectAddressMode == SelectAddressMode.SendFrom
                     ? SelectDefaultAddress()
                     : null;

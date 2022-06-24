@@ -10,7 +10,9 @@ using atomex.Styles;
 using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
+using Atomex.MarketData;
 using Atomex.MarketData.Bitfinex;
+using Atomex.MarketData.TezTools;
 using Atomex.Services;
 using Microsoft.Extensions.Configuration;
 using Xamarin.Essentials;
@@ -64,14 +66,19 @@ namespace atomex
             var currenciesProvider = new CurrenciesProvider(CurrenciesConfigurationJson);
             var symbolsProvider = new SymbolsProvider(SymbolsConfiguration);
 
+            var bitfinexQuotesProvider = new BitfinexQuotesProvider(
+                currencies: currenciesProvider.GetCurrencies(Network.MainNet),
+                baseCurrency: BitfinexQuotesProvider.Usd);
+            var tezToolsQuotesProvider = new TezToolsQuotesProvider();
+
+            var quotesProvider = new MultiSourceQuotesProvider(bitfinexQuotesProvider, tezToolsQuotesProvider);
+
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)
                 .UseSymbolsProvider(symbolsProvider)
                 .UseCurrenciesUpdater(new CurrenciesUpdater(currenciesProvider))
                 .UseSymbolsUpdater(new SymbolsUpdater(symbolsProvider))
-                .UseQuotesProvider(new BitfinexQuotesProvider(
-                    currencies: currenciesProvider.GetCurrencies(Network.MainNet),
-                    baseCurrency: BitfinexQuotesProvider.Usd));
+                .UseQuotesProvider(quotesProvider);
 
             AtomexApp.Start();
 

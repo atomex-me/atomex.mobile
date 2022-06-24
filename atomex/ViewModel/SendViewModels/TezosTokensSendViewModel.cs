@@ -12,7 +12,6 @@ using atomex.Resources;
 using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
-using Atomex.Blockchain.Tezos;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
@@ -39,7 +38,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public decimal SelectedFromBalance { get; set; }
         [Reactive] public string From { get; set; }
         [Reactive] public string TokenContract { get; set; }
-        [Reactive] public decimal TokenId { get; set; }
+        [Reactive] public int TokenId { get; set; }
         [Reactive] public string To { get; set; }
         [Reactive] public UriImageSource TokenPreview { get; set; }
         private readonly string _tokenType;
@@ -179,7 +178,7 @@ namespace atomex.ViewModel.SendViewModels
             IAtomexApp app,
             INavigationService navigationService,
             string tokenContract,
-            decimal tokenId,
+            int tokenId,
             string tokenType,
             UriImageSource tokenPreview,
             string from = null)
@@ -836,50 +835,26 @@ namespace atomex.ViewModel.SendViewModels
                 tokenId: TokenId,
                 tokenType: _tokenType);
 
-            if (tokenAddress.Currency == "FA12")
-            {
-                var currencyName = _app.Account.Currencies
-                    .FirstOrDefault(c => c is Fa12Config fa12 && fa12.TokenContractAddress == TokenContract)
-                    ?.Name ?? "FA12";
+            var currencyName = _app.Account.Currencies
+                            .FirstOrDefault(c => c is TezosTokenConfig tokenConfig &&
+                                                 tokenConfig.TokenContractAddress == TokenContract &&
+                                                 tokenConfig.TokenId == TokenId)
+                            ?.Name ?? _tokenType;
 
-                var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
-                    currency: currencyName,
-                    tokenContract: TokenContract,
-                    tokenId: TokenId);
+            var tokenAccount = _app.Account.GetTezosTokenAccount<TezosTokenAccount>(
+                currency: currencyName,
+                tokenContract: TokenContract,
+                tokenId: TokenId);
 
-                var (_, error) = await tokenAccount.SendAsync(
-                    from: tokenAddress.Address,
-                    to: To,
-                    amount: Amount,
-                    fee: Fee,
-                    useDefaultFee: UseDefaultFee,
-                    cancellationToken: cancellationToken);
+            var (_, error) = await tokenAccount.SendAsync(
+                from: tokenAddress.Address,
+                to: To,
+                amount: Amount,
+                fee: Fee,
+                useDefaultFee: UseDefaultFee,
+                cancellationToken: cancellationToken);
 
-                return error;
-            }
-            else
-            {
-                var tokenAccount = _app.Account.GetTezosTokenAccount<Fa2Account>(
-                    currency: "FA2",
-                    tokenContract: TokenContract,
-                    tokenId: TokenId);
-
-                var decimals = tokenAddress.TokenBalance.Decimals;
-                var amount = Amount * (decimal)Math.Pow(10, decimals);
-                var fee = (int)Fee.ToMicroTez();
-
-                var (_, error) = await tokenAccount.SendAsync(
-                    from: From,
-                    to: To,
-                    amount: amount,
-                    tokenContract: TokenContract,
-                    tokenId: (int)TokenId,
-                    fee: fee,
-                    useDefaultFee: UseDefaultFee,
-                    cancellationToken: cancellationToken);
-
-                return error;
-            }
+            return error;
         }
 
         protected void ShowMessage(MessageType messageType, RelatedTo element, string text, string tooltipText = null)

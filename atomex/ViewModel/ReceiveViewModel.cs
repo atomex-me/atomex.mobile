@@ -38,7 +38,7 @@ namespace atomex.ViewModel
             INavigationService navigationService,
             string tokenContract = null,
             string tokenType = null,
-            decimal? tokenId = null)
+            int tokenId = 0)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));

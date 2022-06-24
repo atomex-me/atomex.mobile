@@ -433,7 +433,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .GetTezosTokenAccount<TezosTokenAccount>(
                         currency: IsFa12 ? Fa12 : Fa2,
                         tokenContract: Contract.Address,
-                        tokenId: TokenBalance.TokenId);
+                        tokenId: (int)TokenBalance.TokenId);
 
                 tokenAccount.ReloadBalances();
 
@@ -465,7 +465,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
-                tokenId: TokenBalance.TokenId);
+                tokenId: (int)TokenBalance?.TokenId);
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -479,7 +479,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 app: _app,
                 navigationService: _navigationService,
                 tokenContract: Contract.Address,
-                tokenId: TokenBalance.TokenId,
+                tokenId: (int)TokenBalance?.TokenId,
                 tokenType: Contract.GetContractType(),
                 tokenPreview: TokenPreview);
 
