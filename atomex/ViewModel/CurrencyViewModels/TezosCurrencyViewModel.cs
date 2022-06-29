@@ -59,9 +59,12 @@ namespace atomex.ViewModel.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                .WhereNotNull()
-               .SubscribeInMainThread(token =>
+               .SubscribeInMainThread(async (token) =>
                {
                     _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
+
+                   // TODO: Держать актуальный selected token для обновления его трансферов
+                   await Task.Run(() => SelectedToken.LoadTransfers());
                    SelectedToken = null;
                });
 
@@ -195,16 +198,19 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
-                await tezosTokensScanner.ScanAsync(
-                    skipUsed: false,
-                    cancellationToken: cancellation.Token);
+                await Task.Run(async () =>
+                {
+                    await tezosTokensScanner.ScanAsync(
+                        skipUsed: false,
+                        cancellationToken: cancellation.Token);
 
-                // reload balances for all tezos tokens account
-                foreach (var currency in _app.Account.Currencies)
-                    if (Currencies.IsTezosToken(currency.Name))
-                        _app.Account
-                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                            .ReloadBalances();
+                    // reload balances for all tezos tokens account
+                    foreach (var currency in _app.Account.Currencies)
+                        if (Atomex.Currencies.IsTezosToken(currency.Name))
+                            _app.Account
+                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                                .ReloadBalances();
+                });
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {

@@ -126,7 +126,7 @@ namespace atomex.ViewModel
                             SelectedCurrency = null;
                             break;
                     }
-                });   
+                });
         }
 
         private void SubscribeToUpdates()
@@ -170,18 +170,21 @@ namespace atomex.ViewModel
 
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
-                await tezosTokensScanner.ScanAsync(
-                    skipUsed: false,
-                    cancellationToken: default);
-
-                // reload balances for all tezos tokens account
-                foreach (var currency in _app.Account.Currencies)
+                await Task.Run(async () =>
                 {
-                    if (Currencies.IsTezosToken(currency.Name))
-                        _app.Account
-                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                            .ReloadBalances();
-                }
+                    await tezosTokensScanner.ScanAsync(
+                        skipUsed: false,
+                        cancellationToken: default);
+
+                    // reload balances for all tezos tokens account
+                    foreach (var currency in _app.Account.Currencies)
+                    {
+                        if (Atomex.Currencies.IsTezosToken(currency.Name))
+                            _app.Account
+                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                                .ReloadBalances();
+                    }
+                });
 
                 await Task.Run(() =>
                         Task.WhenAll(tokenCurrencies
@@ -217,7 +220,10 @@ namespace atomex.ViewModel
                 AllCurrencies = _app.Account?.Currencies
                     .Select(c =>
                     {
-                        var currency = CurrencyViewModelCreator.CreateViewModel(_app, c, _navigationService);
+                        var currency = CurrencyViewModelCreator.CreateOrGet(
+                            currencyConfig: c,
+                            navigationService: _navigationService,
+                            subscribeToUpdates: true);
                         var vm = new PortfolioCurrency
                         {
                             CurrencyViewModel = currency,
@@ -232,6 +238,7 @@ namespace atomex.ViewModel
                     .Where(c => c.IsSelected)
                     .Select(vm => vm.CurrencyViewModel)
                     .ToList();
+
             }
             catch (Exception ex)
             {

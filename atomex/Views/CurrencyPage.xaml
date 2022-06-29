@@ -736,9 +736,10 @@
                                            VerticalOptions="Center"
                                            HorizontalOptions="End"/>
                                     <Label Grid.Column="1"
-                                           Text="{Binding CurrencyCode}"
+                                           Text="{Binding Description}"
                                            Style="{DynamicResource MainTextH4}"
-                                           Padding="12,0"
+                                           Padding="12,0,0,0"
+                                           LineBreakMode="TailTruncation"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.Column="1"
@@ -755,7 +756,7 @@
                                            VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
                                                 <Span Text=" "/>
                                                 <Span Text="{Binding CurrencyCode}"/>
                                             </FormattedString>

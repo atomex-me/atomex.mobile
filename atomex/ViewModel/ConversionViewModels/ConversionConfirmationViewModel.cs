@@ -179,7 +179,7 @@ namespace atomex.ViewModel
                     return new Error(Errors.SwapError, message);
                 }
 
-                var isToBitcoinBased = Currencies.IsBitcoinBased(ToCurrencyViewModel.Currency.Name);
+                var isToBitcoinBased = Atomex.Currencies.IsBitcoinBased(ToCurrencyViewModel.Currency.Name);
 
                 var order = new Order
                 {

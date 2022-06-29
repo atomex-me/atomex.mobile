@@ -105,7 +105,7 @@
                                        HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Balance, StringFormat='{0:0.##########}'}"/>
+                                            <Span Text="{Binding Balance, StringFormat='{0:0.########}'}"/>
                                             <Span Text=" " /> 
                                             <Span Text="{Binding Config.Name}"/>
                                         </FormattedString>

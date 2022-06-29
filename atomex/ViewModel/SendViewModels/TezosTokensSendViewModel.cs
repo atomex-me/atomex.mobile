@@ -292,7 +292,9 @@ namespace atomex.ViewModel.SendViewModels
             SelectToViewModel = new SelectAddressViewModel(
                 account: _app.Account,
                 currency: tezosConfig,
-                navigationService: _navigationService)
+                navigationService: _navigationService,
+                selectedTokenId: tokenId,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmToAddress
             };

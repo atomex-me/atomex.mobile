@@ -11,7 +11,6 @@ using atomex.Common;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
-using Atomex.MarketData.Abstract;
 using Atomex.Services;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
@@ -51,7 +50,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private IAccount _account { get; set; }
         private INavigationService _navigationService { get; set; }
         private string _walletName { get; set; }
-        private ICurrencyQuotesProvider _quotesProvider { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
         [Reactive] public IEnumerable<TezosToken> AllTokens { get; set; }
@@ -71,10 +69,11 @@ namespace atomex.ViewModel.CurrencyViewModels
             _walletName = GetWalletName();
 
             SubscribeToServices(_app);
-            
+
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
-                .SubscribeInMainThread(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
+                .SubscribeInMainThread(async _ =>
+                    await GetTokensAsync());
 
             _ = ReloadTokenContractsAsync();
         }
@@ -83,9 +82,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             app.AtomexClientChanged += OnAtomexClientChanged;
             app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
-
-            _quotesProvider = app.QuotesProvider;
-            _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private async Task ReloadTokenContractsAsync()
@@ -101,51 +97,13 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task<IEnumerable<TezosTokenViewModel>> LoadTokens()
         {
-            var tezosConfig = _app.Account
-                .Currencies
-                .Get<TezosConfig>(TezosConfig.Xtz);
-
             var tokens = new ObservableCollection<TezosTokenViewModel>();
 
             foreach (var contract in Contracts)
-            {
-                var tezosAccount = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+                tokens.AddRange(await TezosTokenViewModelCreator.CreateOrGet(_app, _navigationService, contract));
 
-                var tokenWalletAddresses = await tezosAccount
-                    .DataRepository
-                    .GetTezosTokenAddressesByContractAsync(contract.Address);
-
-                var tokenGroups = tokenWalletAddresses
-                    .Where(walletAddress => walletAddress.Balance != 0)
-                    .GroupBy(walletAddress => new
-                    {
-                        walletAddress.TokenBalance.TokenId,
-                        walletAddress.TokenBalance.Contract
-                    });
-
-                var tokensViewModels = tokenGroups
-                    .Select(walletAddressGroup =>
-                        walletAddressGroup.Skip(1).Aggregate(walletAddressGroup.First(), (result, walletAddress) =>
-                        {
-                            result.Balance += walletAddress.Balance;
-                            result.TokenBalance.ParsedBalance = result.TokenBalance.GetTokenBalance() +
-                                                                walletAddress.TokenBalance.GetTokenBalance();
-
-                            return result;
-                        }))
-                    .Select(walletAddress => new TezosTokenViewModel(
-                        app: _app,
-                        navigationService: _navigationService,
-                        tokenBalance: walletAddress.TokenBalance,
-                        contract: contract,
-                        address: walletAddress.Address));
-
-                tokens.AddRange(tokensViewModels);
-            }
-
-            return tokens
-                .Where(token => !token.TokenBalance.IsNft);
+            return tokens.OrderByDescending(token => token.IsConvertable)
+                .ThenByDescending(token => token.TotalAmountInBase);
         }
 
         private void ChangeUserTokens(
@@ -202,7 +160,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (!Currencies.IsTezosToken(args.Currency)) return;
+                if (!Atomex.Currencies.IsTezosToken(args.Currency)) return;
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
@@ -215,24 +173,22 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private async void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        private async Task GetTokensAsync()
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
-                return;
-
-            var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
-            var tokens = await LoadTokens();
+            var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);    
+            var tokens = await Task.Run(
+                () => LoadTokens());
 
             List<string> result = new List<string>();
-            result = userTokens != string.Empty
-                ? userTokens.Split(',').ToList()
-                : tokens.Select(t => t.CurrencyCode).ToList();
+                result = userTokens != string.Empty
+                    ? userTokens.Split(',').ToList()
+                    : tokens.Select(t => t.CurrencyCode).ToList();
 
-            AllTokens = new ObservableCollection<TezosToken>(tokens
+            await Device.InvokeOnMainThreadAsync(() =>
+            {
+                AllTokens = new ObservableCollection<TezosToken>(tokens
                 .Select(token =>
                 {
-                    var quote = quotesProvider.GetQuote(token.TokenBalance.Symbol, BaseCurrencyCode);
-
                     var vm = new TezosToken
                     {
                         TokenViewModel = token,
@@ -240,20 +196,16 @@ namespace atomex.ViewModel.CurrencyViewModels
                         OnChanged = ChangeUserTokens
                     };
 
-                    if (quote == null) return vm;
-
-                    token.CurrentQuote = quote.Bid;
-                    token.TotalAmountInBase = token.TokenBalance.GetTokenBalance().SafeMultiply(quote.Bid);
-
                     return vm;
                 })
                 .OrderByDescending(token => token.TokenViewModel.IsConvertable)
                 .ThenByDescending(token => token.TokenViewModel.TotalAmountInBase));
 
-            UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
-                .Where(c => c.IsSelected)
-                .Select(vm => vm.TokenViewModel)
-                .ToList());
+                UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
+                    .Where(c => c.IsSelected)
+                    .Select(vm => vm.TokenViewModel)
+                    .ToList());
+            });
 
             TokensChanged?.Invoke();
         }
@@ -281,13 +233,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                     if (_app != null)
                         _app.AtomexClientChanged -= OnAtomexClientChanged;
-
-                    if (_quotesProvider != null)
-                        _quotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
                 }
 
                 _account = null;
-                _quotesProvider = null;
                 _disposedValue = true;
             }
         }

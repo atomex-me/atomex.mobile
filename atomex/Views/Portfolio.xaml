@@ -195,7 +195,7 @@
                                    VerticalTextAlignment="End">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
                                         <Span Text=" "/>
                                         <Span Text="{Binding CurrencyCode}"/>
                                     </FormattedString>

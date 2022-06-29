@@ -25,7 +25,7 @@ namespace atomex
         public static string DeviceToken;
         public static string FileSystem;
 
-        private IAtomexApp AtomexApp;
+        public static IAtomexApp AtomexApp;
 
         public static double ScreenWidth { get; } = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
         public static double ScreenHeight { get; } = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;

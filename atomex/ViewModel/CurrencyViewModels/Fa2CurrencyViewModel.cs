@@ -1,49 +1,49 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using atomex.ViewModel.TransactionViewModels;
+using atomex.Views;
 using Atomex;
+using Atomex.Common;
+using Atomex.Core;
 using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
-using atomex.ViewModel.TransactionViewModels;
-using System.Collections.ObjectModel;
-using Atomex.Common;
-using Atomex.Core;
-using atomex.Views;
-using System.Threading;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
-    public class Fa12CurrencyViewModel : CurrencyViewModel
+    public class Fa2CurrencyViewModel : CurrencyViewModel
     {
-        public Fa12CurrencyViewModel(
-           IAtomexApp app,
-           CurrencyConfig currency,
-           INavigationService navigationService)
-           : base(app, currency, navigationService)
+        public Fa2CurrencyViewModel(
+            IAtomexApp app,
+            CurrencyConfig currency,
+            INavigationService navigationService)
+            : base(app, currency, navigationService)
         {
         }
 
         public override async Task LoadTransactionsAsync()
         {
-            Log.Debug("UpdateTransactionsAsync for {@currency}", Currency.Name);
+            Log.Debug("LoadTransactionsAsync for FA2 {@currency}.", Currency.Name);
 
             try
             {
                 if (_app.Account == null)
                     return;
 
-                var fa12currency = Currency as Fa12Config;
+                var fa2currency = Currency as Fa2Config;
 
                 var tezosConfig = _app.Account
                     .Currencies
                     .Get<TezosConfig>(TezosConfig.Xtz);
 
                 var transactions = (await _app.Account
-                    .GetCurrencyAccount<Fa12Account>(Currency.Name)
+                    .GetCurrencyAccount<Fa2Account>(Currency.Name)
                     .DataRepository
-                    .GetTezosTokenTransfersAsync(fa12currency.TokenContractAddress)
+                    .GetTezosTokenTransfersAsync(fa2currency.TokenContractAddress, offset: 0, limit: int.MaxValue)
                     .ConfigureAwait(false))
                     .ToList();
 
@@ -87,14 +87,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         protected override void OnReceiveClick()
         {
             var tezosConfig = _app.Account.Currencies.GetByName(TezosConfig.Xtz);
-            string tokenContractAddress = (Currency as Fa12Config).TokenContractAddress;
+            string tokenContractAddress = (Currency as Fa2Config).TokenContractAddress;
 
             var receiveViewModel = new ReceiveViewModel(
                 app: _app,
                 currency: tezosConfig,
                 navigationService: _navigationService,
                 tokenContract: tokenContractAddress,
-                tokenType: "FA12");
+                tokenType: "FA2");
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -106,7 +106,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             try
             {
                 await _app.Account
-                    .GetCurrencyAccount<Fa12Account>(Currency.Name)
+                    .GetCurrencyAccount<Fa2Account>(Currency.Name)
                     .UpdateBalanceAsync(_cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
@@ -128,13 +128,13 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected override void LoadAddresses()
         {
-            var fa12currency = Currency as Fa12Config;
+            var fa2currency = Currency as Fa2Config;
 
             AddressesViewModel = new AddressesViewModel(
                 app: _app,
-                currency: fa12currency,
+                currency: fa2currency,
                 navigationService: _navigationService,
-                tokenContract: fa12currency.TokenContractAddress);
+                tokenContract: fa2currency.TokenContractAddress);
         }
     }
 }

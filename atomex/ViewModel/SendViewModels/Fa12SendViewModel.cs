@@ -40,7 +40,11 @@ namespace atomex.ViewModel.SendViewModels
                 ConfirmAction = ConfirmFromAddress
             };
 
-            SelectToViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService)
+            SelectToViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: tokenConfig,
+                navigationService: _navigationService,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmToAddress
             };

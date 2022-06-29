@@ -8,6 +8,7 @@ using System.Linq;
 using atomex.Services;
 using Atomex.Services;
 using Atomex.Services.Abstract;
+using atomex.ViewModel.CurrencyViewModels;
 
 namespace atomex.ViewModel
 {
@@ -74,7 +75,11 @@ namespace atomex.ViewModel
             var atomexClient = args.AtomexClient;
 
             if (atomexClient?.Account == null)
+            {
+                CurrencyViewModelCreator.Reset();
+                TezosTokenViewModelCreator.Reset();
                 return;
+            }
 
             atomexClient.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
             atomexClient.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;

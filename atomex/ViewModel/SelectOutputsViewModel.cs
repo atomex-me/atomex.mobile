@@ -219,10 +219,9 @@ namespace atomex.ViewModel
         public ICommand BackCommand => _backCommand ??= new Command(() =>
         {
             SearchPattern = string.Empty;
-            if (SelectAddressFrom == SelectAddressFrom.InitSearch)
-                SelectAddressFrom = SelectAddressFrom.Init;
-            if (SelectAddressFrom == SelectAddressFrom.ChangeSearch)
-                SelectAddressFrom = SelectAddressFrom.Change;
+            SelectAddressFrom = SelectAddressFrom == SelectAddressFrom.ChangeSearch
+                ? SelectAddressFrom.Change
+                : SelectAddressFrom.Init;
         });
 
         private ICommand _confirmOutputsCommand;
@@ -293,10 +292,9 @@ namespace atomex.ViewModel
 
         private void OnSearchButtonClicked()
         {
-            if (SelectAddressFrom == SelectAddressFrom.Init)
-                SelectAddressFrom = SelectAddressFrom.InitSearch;
-            if (SelectAddressFrom == SelectAddressFrom.Change)
-                SelectAddressFrom = SelectAddressFrom.ChangeSearch;
+            SelectAddressFrom = SelectAddressFrom == SelectAddressFrom.Change
+                ? SelectAddressFrom.ChangeSearch
+                : SelectAddressFrom.InitSearch;
 
             _navigationService?.ShowPage(new SearchOutputsPage(this), TabNavigation);
         }

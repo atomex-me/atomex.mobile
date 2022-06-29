@@ -558,7 +558,7 @@ namespace atomex.ViewModel
         {
             var currencyName = currencyViewModel?.Currency?.Name;
 
-            if (Currencies.IsBitcoinBased(currencyName))
+            if (Atomex.Currencies.IsBitcoinBased(currencyName))
             {
                 var availableOutputs = (await _app.Account
                     .GetCurrencyAccount<BitcoinBasedAccount>(currencyName)
@@ -805,7 +805,11 @@ namespace atomex.ViewModel
         {
             var atomexClient = args.AtomexClient;
 
-            if (atomexClient?.Account == null) return;
+            if (atomexClient?.Account == null)
+            {
+                CurrencyViewModelCreator.Reset();
+                return;
+            }
 
 
             atomexClient.QuotesUpdated += OnQuotesUpdatedEventHandler;
@@ -813,11 +817,10 @@ namespace atomex.ViewModel
 
             FromCurrencies = atomexClient.Account.Currencies
                 .Where(c => c.IsSwapAvailable)
-                .Select(c => CurrencyViewModelCreator.CreateViewModel(
-                    app: _app,
-                    currency: c,
+                .Select(c => CurrencyViewModelCreator.CreateOrGet(
+                    currencyConfig: c,
                     navigationService: _navigationService,
-                    loadTransactions: false))
+                    subscribeToUpdates: true))
                 .ToList();
 
             ToCurrencies = FromCurrencies;

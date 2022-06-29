@@ -45,6 +45,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsFa2 => Contract.GetContractType() == Fa2;
         public static string BaseCurrencyCode => "USD";
         public string CurrencyCode => TokenBalance.Symbol;
+        public string Description => TokenBalance.Name ?? TokenBalance.Symbol;
         public string Address { get; set; }
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
@@ -137,6 +138,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             TokenBalance tokenBalance,
             string address)
         {
+            Transactions = new ObservableCollection<TransactionViewModel>();
+            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>();
+
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
@@ -179,25 +183,26 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
 
-            LoadAddresses();
-            _ = LoadTransfers();
-            _ = UpdateAsync();
+            LoadAddresses(); // 8-9 sec
+            //_ = LoadTransfers(); // 10 sec
+            _ = UpdateBalanceAsync(); // 2 sec
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
-
-            SubscribeToUpdates();
         }
 
         protected void OnAddresesChangedEventHandler()
         {
             try
             {
-                Addresses = new ObservableCollection<AddressViewModel>(
-                    AddressesViewModel?.Addresses
-                        .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
-                        .Take(AddressesNumberPerPage));
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Addresses = new ObservableCollection<AddressViewModel>(
+                        AddressesViewModel?.Addresses
+                            .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
+                            .Take(AddressesNumberPerPage));
+                });
             }
             catch (Exception e)
             {
@@ -217,7 +222,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 tokenId: TokenBalance.TokenId);
         }
 
-        private async Task LoadTransfers()
+        public async Task LoadTransfers()
         {
             try
             {
@@ -227,8 +232,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                         currency: Fa12,
                         tokenContract: Contract.Address,
                         tokenId: 0);
-
-                    var selectedTransactionId = SelectedTransaction?.Id;
 
                     await Device.InvokeOnMainThreadAsync(async () =>
                     {
@@ -265,8 +268,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     var tezosAccount = _app.Account
                         .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-
-                    var selectedTransactionId = SelectedTransaction?.Id;
 
                     await Device.InvokeOnMainThreadAsync(async () =>
                     {
@@ -318,12 +319,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (!Currencies.IsTezosToken(args?.Currency)) return;
+                // проблема в том, что не приходит символ обновленного токена
+                // !!! Обработчик вызывается по 3 раза (символы TZBTC, KUSD, USDT_XTZ) на КАЖДОМ!! токене
+                if (!Atomex.Currencies.IsTezosToken(args?.Currency)) return;
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    await LoadTransfers();
-                    await UpdateAsync();
+                    //await LoadTransfers(); // обновлять в случае открытой страницы токена
+                    await UpdateBalanceAsync();
                 });
             }
             catch (Exception e)
@@ -332,7 +335,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private void SubscribeToUpdates()
+        public void SubscribeToUpdates()
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
             _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
@@ -346,13 +349,20 @@ namespace atomex.ViewModel.CurrencyViewModels
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        public void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
         {
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-            if (quote == null) return;
+            try
+            {
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                if (quote == null) return;
 
-            CurrentQuote = quote.Bid;
-            TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+                CurrentQuote = quote.Bid;
+                TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Update quotes error on tezos token {CurrencyCode}");
+            } 
         }
 
         private ReactiveCommand<Unit, Unit> _tokenActionSheetCommand;
@@ -391,7 +401,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             _cancellationTokenSource?.Dispose();
         });
 
-        private async Task UpdateAsync()
+        private async Task UpdateBalanceAsync()
         {
             var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 

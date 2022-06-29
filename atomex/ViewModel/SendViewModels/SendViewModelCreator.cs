@@ -19,6 +19,7 @@ namespace atomex.ViewModel.SendViewModels
                 Erc20Config _ => new Erc20SendViewModel(app, currencyViewModel, navigationService),
                 EthereumConfig _ => new EthereumSendViewModel(app, currencyViewModel, navigationService),
                 Fa12Config _ => new Fa12SendViewModel(app, currencyViewModel, navigationService),
+                Fa2Config _ => new Fa2SendViewModel(app, currencyViewModel, navigationService),
                 TezosConfig _ => new TezosSendViewModel(app, currencyViewModel, navigationService),
                 _ => throw new NotSupportedException($"Can't create send view model for {currencyViewModel.Currency.Name}. This currency is not supported."),
             };

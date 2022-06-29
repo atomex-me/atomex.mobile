@@ -73,7 +73,7 @@
                            IsVisible="{Binding UnconfirmedAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding UnconfirmedAmount, StringFormat='{0:0.#########}'}"/>
+                                <Span Text="{Binding UnconfirmedAmount, StringFormat='{0:0.########}'}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding CurrencyCode}"/>
                             </FormattedString>
