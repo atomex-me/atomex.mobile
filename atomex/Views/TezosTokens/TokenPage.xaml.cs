@@ -12,11 +12,11 @@ namespace atomex.Views.TezosTokens
             BindingContext = tezosTokenViewModel;
 
             TransactionsListView.HeightRequest = tezosTokenViewModel.IsAllTxsShowed
-                ? (tezosTokenViewModel.Transactions.Count + 1) * TransactionsListView.RowHeight +
-                    tezosTokenViewModel.GroupedTransactions.Count * CurrencyViewModel.DefaultGroupHeight +
+                ? (double)(tezosTokenViewModel?.Transactions?.Count + 1 ?? 0) * TransactionsListView.RowHeight +
+                    (tezosTokenViewModel?.GroupedTransactions?.Count + 1 ?? 0) * TezosTokenViewModel.DefaultGroupHeight +
                     TxsFooter.HeightRequest
                 : tezosTokenViewModel.TxsNumberPerPage * TransactionsListView.RowHeight +
-                    (tezosTokenViewModel.GroupedTransactions.Count + 1) * CurrencyViewModel.DefaultGroupHeight +
+                    tezosTokenViewModel.TxsNumberPerPage * TezosTokenViewModel.DefaultGroupHeight +
                     TxsFooter.HeightRequest;
             AddressesListView.HeightRequest = tezosTokenViewModel.AddressesNumberPerPage * AddressesListView.RowHeight + AddressesFooter.HeightRequest;
         }

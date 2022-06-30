@@ -394,7 +394,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"HdWalletScanner error for {Currency?.Name}");
+                Log.Error(e, "HdWalletScanner error for {Currency}", Currency?.Name);
             }
             finally
             {

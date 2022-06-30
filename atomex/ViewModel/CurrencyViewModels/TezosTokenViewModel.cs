@@ -60,6 +60,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
 
+        [Reactive] public bool IsTransfersLoading { get; set; }
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
@@ -226,6 +227,8 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
+                IsTransfersLoading = true;
+                
                 if (IsFa12)
                 {
                     var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
@@ -311,6 +314,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             finally
             {
+                IsTransfersLoading = false;
                 Log.Debug($"Token transfers loaded for contract {Contract}");
             }
         }
@@ -444,7 +448,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                         currency: IsFa12 ? Fa12 : Fa2,
                         tokenContract: Contract.Address,
                         tokenId: (int)TokenBalance.TokenId);
-
+                // TODO: !!! BalanceUpdated Action == null
                 tokenAccount.ReloadBalances();
 
                 await Device.InvokeOnMainThreadAsync(() =>

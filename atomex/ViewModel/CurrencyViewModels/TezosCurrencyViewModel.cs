@@ -30,9 +30,9 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
-        [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
+        [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
-        private TezosTokensViewModel _tezosTokensViewModel { get; set; }
+        
         [Reactive] public bool IsUpdating { get; set; }
 
         public TezosCurrencyViewModel(
@@ -42,7 +42,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             : base(app, currency, navigationService)
         {
             Delegations = new ObservableCollection<DelegationViewModel>();
-            Tokens = new ObservableCollection<TezosTokenViewModel>();
 
             this.WhenAnyValue(vm => vm.SelectedDelegation)
                .WhereNotNull()
@@ -57,34 +56,10 @@ namespace atomex.ViewModel.CurrencyViewModels
                    SelectedDelegation = null;
                });
 
-            this.WhenAnyValue(vm => vm.SelectedToken)
-               .WhereNotNull()
-               .SubscribeInMainThread(async (token) =>
-               {
-                    _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
-
-                   // TODO: Держать актуальный selected token для обновления его трансферов
-                   await Task.Run(() => SelectedToken.LoadTransfers());
-                   SelectedToken = null;
-               });
-
             _ = LoadDelegationInfoAsync();
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
-            _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
-            _tezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
-        }
-
-        protected void OnTokensChangedEventHandler()
-        {
-            try
-            {
-                Tokens = new ObservableCollection<TezosTokenViewModel>(_tezosTokensViewModel?.UserTokens);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, $"On tokens changed event handler error");
-            }
+            TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
@@ -233,11 +208,11 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private ReactiveCommand<Unit, Unit> _manageTokensCommand;
         public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(_tezosTokensViewModel)));
+                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(TezosTokensViewModel)));
 
         private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
         public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(_tezosTokensViewModel)));
+            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(TezosTokensViewModel)));
 
         private void ChangeBaker(DelegationViewModel delegation)
         {
@@ -267,7 +242,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (Currency.Name != args.Currency) return;
+                if (Currency?.Name != args?.Currency) return;
 
                 await UpdateBalanceAsync();
                 await LoadTransactionsAsync();

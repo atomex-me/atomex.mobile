@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Common;
@@ -52,10 +53,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         private string _walletName { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
-        [Reactive] public IEnumerable<TezosToken> AllTokens { get; set; }
-        [Reactive] public IEnumerable<TezosTokenViewModel> UserTokens { get; set; }
-
-        public Action TokensChanged;
+        [Reactive] public IList<TezosToken> AllTokens { get; set; }
+        [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
+        [Reactive] public bool IsTokensLoading { get; set; }
+        [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
+        private TezosTokenViewModel _openToken;
 
         public string BaseCurrencyCode => "USD";
 
@@ -67,13 +69,25 @@ namespace atomex.ViewModel.CurrencyViewModels
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             _walletName = GetWalletName();
-
+            
             SubscribeToServices(_app);
 
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
                     await GetTokensAsync());
+
+            this.WhenAnyValue(vm => vm.SelectedToken)
+                .WhereNotNull()
+                .SubscribeInMainThread(async (token) =>
+                {
+                    _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
+                    _openToken = token;
+                    await Task.Run(() => SelectedToken.LoadTransfers());
+
+                    SelectedToken = null;
+                });
+
 
             _ = ReloadTokenContractsAsync();
         }
@@ -129,14 +143,15 @@ namespace atomex.ViewModel.CurrencyViewModels
                 var result = string.Join(",", tokensList);
                 Preferences.Set(_walletName + "-" + "TezosTokens", result);
 
-                AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.CurrencyCode));
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.CurrencyCode));
 
-                UserTokens = AllTokens?
-                    .Where(c => c.IsSelected)
-                    .Select(vm => vm.TokenViewModel)
-                    .ToList();
-
-                TokensChanged?.Invoke();
+                    UserTokens = AllTokens?
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.TokenViewModel)
+                        .ToList();
+                });
             }
             catch (Exception e)
             {
@@ -162,6 +177,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (!Atomex.Currencies.IsTezosToken(args.Currency)) return;
 
+                if (_openToken != null)
+                    _ = _openToken.LoadTransfers();
+
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
                     await ReloadTokenContractsAsync();
@@ -175,39 +193,50 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task GetTokensAsync()
         {
-            var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);    
-            var tokens = await Task.Run(
-                () => LoadTokens());
+            try
+            {
+                IsTokensLoading = true;
 
-            List<string> result = new List<string>();
+                var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
+                var tokens = await Task.Run(
+                    () => LoadTokens());
+
+                List<string> result = new List<string>();
                 result = userTokens != string.Empty
                     ? userTokens.Split(',').ToList()
                     : tokens.Select(t => t.CurrencyCode).ToList();
 
-            await Device.InvokeOnMainThreadAsync(() =>
-            {
-                AllTokens = new ObservableCollection<TezosToken>(tokens
-                .Select(token =>
+                await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    var vm = new TezosToken
+                    AllTokens = new ObservableCollection<TezosToken>(tokens
+                    .Select(token =>
                     {
-                        TokenViewModel = token,
-                        IsSelected = result != null ? result.Contains(token.CurrencyCode) : false,
-                        OnChanged = ChangeUserTokens
-                    };
+                        var vm = new TezosToken
+                        {
+                            TokenViewModel = token,
+                            IsSelected = result != null ? result.Contains(token.CurrencyCode) : false,
+                            OnChanged = ChangeUserTokens
+                        };
 
-                    return vm;
-                })
-                .OrderByDescending(token => token.TokenViewModel.IsConvertable)
-                .ThenByDescending(token => token.TokenViewModel.TotalAmountInBase));
+                        return vm;
+                    })
+                    .OrderByDescending(token => token.TokenViewModel.IsConvertable)
+                    .ThenByDescending(token => token.TokenViewModel.TotalAmountInBase));
 
-                UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
-                    .Where(c => c.IsSelected)
-                    .Select(vm => vm.TokenViewModel)
-                    .ToList());
-            });
-
-            TokensChanged?.Invoke();
+                    UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.TokenViewModel)
+                        .ToList());
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Get tezos tokens error");
+            }
+            finally
+            {
+                IsTokensLoading = false;
+            }
         }
 
         private ICommand _closeActionSheetCommand;

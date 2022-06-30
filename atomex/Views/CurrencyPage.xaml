@@ -614,14 +614,14 @@
                                 Command="{Binding AddressesViewModel.ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>
-                <ListView ItemsSource="{Binding Tokens}"
+                <ListView ItemsSource="{Binding TezosTokensViewModel.UserTokens}"
                           HasUnevenRows="True"
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           BackgroundColor="Transparent"
                           x:Name="TokensListView"
                           SelectionMode="Single"
-                          SelectedItem="{Binding SelectedToken, Mode=TwoWay}"
+                          SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
                           RowHeight="72"
                           VerticalScrollBarVisibility="Never"
                           IsVisible="False"
@@ -640,6 +640,7 @@
                                          HorizontalOptions="Fill"
                                          Padding="16,8,16,0"
                                          HeightRequest="52"
+                                         x:Name="TokensHeader"
                                          Spacing="4">
                                 <Label Text="{helpers:Translate Tokens}"
                                        Style="{DynamicResource AdditionalTextH5}"
