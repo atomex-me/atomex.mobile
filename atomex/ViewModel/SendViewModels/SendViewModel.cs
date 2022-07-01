@@ -113,6 +113,7 @@ namespace atomex.ViewModel.SendViewModels
         [Reactive] public bool IsLoading { get; set; }
 
         public string CurrencyCode => CurrencyViewModel.CurrencyCode;
+        public string CurrencyName => CurrencyViewModel.CurrencyName;
         public string FeeCurrencyCode => CurrencyViewModel.FeeCurrencyCode;
         public string BaseCurrencyCode => CurrencyViewModel.BaseCurrencyCode;
         public bool IsToken => CurrencyViewModel.Currency.IsToken;

@@ -125,7 +125,7 @@ namespace atomex.ViewModel
                         ? AppResources.EnterAnExternalAddress
                         : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
                         ? AppResources.ChangeRedeemAddress
-                        : string.Format(AppResources.MyCurrencyAddresses, _currency.Name);
+                        : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
                 });
 
             this.WhenAnyValue(

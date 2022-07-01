@@ -12,7 +12,6 @@ using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
-using Atomex.Core;
 using Atomex.Wallet.BitcoinBased;
 using NBitcoin;
 using ReactiveUI;

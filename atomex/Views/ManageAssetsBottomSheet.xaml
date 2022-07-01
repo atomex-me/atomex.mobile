@@ -84,7 +84,7 @@
                                             <FormattedString>
                                                 <Span Text="{Binding CurrencyViewModel.TotalAmount, StringFormat='{0:0.########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyViewModel.CurrencyCode}"/>
+                                                <Span Text="{Binding CurrencyViewModel.CurrencyName}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

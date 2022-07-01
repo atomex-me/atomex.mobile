@@ -92,13 +92,11 @@
                     </Frame>
                     <Label Grid.Column="1"
                            Text="{Binding From}"
-                           FontFamily="{DynamicResource RegularFont}"
+                           Style="{DynamicResource MainTextH4}"
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="End"
                            LineBreakMode="MiddleTruncation"
-                           Padding="0,0,20,0"
-                           FontSize="16"
-                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                           Padding="0,0,20,0"/>
                     <Label Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding SelectedFromBalance}"
@@ -109,7 +107,7 @@
                             <FormattedString>
                                 <Span Text="{Binding SelectedFromBalance}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding CurrencyCode}"/>
+                                <Span Text="{Binding CurrencyName}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -197,7 +195,7 @@
                                           FontSize="14"
                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding CurrencyCode}"
+                                    <Span Text="{Binding CurrencyName}"
                                           FontSize="14"
                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
                                     <Span Text=" / "
@@ -366,7 +364,7 @@
                                 <FormattedString>
                                     <Span Text="{Binding TotalAmountString}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding CurrencyCode}"/>
+                                    <Span Text="{Binding CurrencyName}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>

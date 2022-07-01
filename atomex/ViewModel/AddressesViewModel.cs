@@ -332,7 +332,7 @@ namespace atomex.ViewModel
                                 HasTokens = HasTokens,
                                 IsFreeAddress = a?.Address == freeAddress?.Address,
                                 Balance = a.Balance,
-                                BalanceCode = _currency.Name,
+                                BalanceCode = _currency.DisplayedName,
                                 UpdateAddress = UpdateAddress
                             };
                         })

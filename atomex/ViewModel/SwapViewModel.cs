@@ -33,10 +33,12 @@ namespace atomex
         public decimal FromAmount { get; set; }
         public string FromAmountFormat { get; set; }
         public string FromCurrencyCode { get; set; }
+        public string FromCurrencyName { get; set; }
 
         public decimal ToAmount { get; set; }
         public string ToAmountFormat { get; set; }
         public string ToCurrencyCode { get; set; }
+        public string ToCurrencyName { get; set; }
 
         public decimal Price { get; set; }
         public string PriceFormat { get; set; }
@@ -71,7 +73,7 @@ namespace atomex
                                 (!item.IsCompleted && State == "Unsettled"))
                                 _initStatusDesc = AppResources.InitFailure;
                             else if (!item.IsCompleted && State == "Refunded")
-                                _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                _initStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyName);
                             else if (!item.IsCompleted && State == "In Progress")
                                 _initStatusDesc = AppResources.WaitingInit;
                             item.IsCompleted = true;
@@ -87,7 +89,7 @@ namespace atomex
                                 (!item.IsCompleted && State == "Unsettled"))
                                 _exchangeStatusDesc = AppResources.FailedPayment;
                             else if (!item.IsCompleted && State == "Refunded")
-                                _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                _exchangeStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyName);
                             else if (!item.IsCompleted && State == "In Progress")
                                 _exchangeStatusDesc = AppResources.WaitingForPayment;
                             item.IsCompleted = true;
@@ -96,12 +98,12 @@ namespace atomex
                         case SwapDetailingStatus.Completion:
                             _status = SwapDetailingStatus.Completion.ToString();
                             if (State == "Completed")
-                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyReceived, ToCurrencyCode);
+                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyReceived, ToCurrencyName);
                             else if ((!item.IsCompleted && State == "Canceled") ||
                                 (!item.IsCompleted && State == "Unsettled"))
                                 _completionStatusDesc = AppResources.FailedRedeem;
                             else if (!item.IsCompleted && State == "Refunded")
-                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyCode);
+                                _completionStatusDesc = string.Format(CultureInfo.InvariantCulture, AppResources.CurrencyRefunded, FromCurrencyName);
                             else if (!item.IsCompleted && State == "In Progress")
                                 _completionStatusDesc = AppResources.WaitingForRedeem;
                             item.IsCompleted = true;

@@ -12,6 +12,8 @@ using Atomex.Common;
 using Atomex.Core;
 using atomex.Views;
 using System.Threading;
+using static atomex.Models.SnackbarMessage;
+using atomex.Resources;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -110,6 +112,11 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .UpdateBalanceAsync(_cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
+                });
             }
             catch (OperationCanceledException)
             {

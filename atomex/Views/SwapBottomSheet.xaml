@@ -185,7 +185,7 @@
                                     <FormattedString>
                                         <Span Text="{Binding FromAmount}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding FromCurrencyCode}"/>
+                                        <Span Text="{Binding FromCurrencyName}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -198,7 +198,7 @@
                                     <FormattedString>
                                         <Span Text="{Binding ToAmount}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding ToCurrencyCode}"/>
+                                        <Span Text="{Binding ToCurrencyName}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>

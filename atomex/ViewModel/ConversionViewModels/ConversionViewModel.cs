@@ -253,8 +253,11 @@ namespace atomex.ViewModel
                 {
                     var symbol = _symbols.SymbolByCurrencies(t.Item1.Currency, t.Item2.Currency);
 
-                    BaseCurrencyCode = symbol?.Base;
-                    QuoteCurrencyCode = symbol?.Quote;
+                    var quoteCurrency = symbol != null ? _currencies.GetByName(symbol.Quote) : null;
+                    var baseCurrency = symbol != null ? _currencies.GetByName(symbol.Base) : null;
+
+                    BaseCurrencyCode = baseCurrency?.DisplayedName;
+                    QuoteCurrencyCode = quoteCurrency?.DisplayedName;
                 });
 
             // Amount, FromCurrencyViewModel or ToCurrencyViewModel changed => estimate swap price and target amount

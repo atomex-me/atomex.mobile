@@ -57,6 +57,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         private IQuotesProvider _quotesProvider { get; set; }
 
         public string CurrencyCode => Currency.Name;
+        public string CurrencyName => Currency.DisplayedName;
         public string FeeCurrencyCode => Currency.FeeCode;
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;

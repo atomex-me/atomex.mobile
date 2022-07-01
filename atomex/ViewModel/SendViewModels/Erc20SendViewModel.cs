@@ -6,7 +6,6 @@ using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
 using Atomex.Blockchain.Abstract;
 using Atomex.Common;
-using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Ethereum;
 using Serilog;

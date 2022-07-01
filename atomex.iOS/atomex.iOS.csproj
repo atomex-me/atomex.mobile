@@ -301,6 +301,8 @@
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\USDT_XTZ.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -527,6 +529,7 @@
     <Folder Include="Assets.xcassets\ic_search__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
+    <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

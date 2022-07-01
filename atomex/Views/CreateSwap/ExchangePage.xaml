@@ -79,7 +79,7 @@
                                    WidthRequest="22"
                                    HeightRequest="22"
                                    Margin="0,5"/>
-                            <Label Text="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"
+                            <Label Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}"
                                    Style="{DynamicResource MainTextH4}"
                                    VerticalTextAlignment="Center"/>
                         </StackLayout>
@@ -217,7 +217,7 @@
                                     <Span Text=" "/>
                                     <Span Text="{Binding EstimatedMaxFromAmount, StringFormat='{0:0.#########}'}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyCode}"/>
+                                    <Span Text="{Binding FromViewModel.CurrencyViewModel.CurrencyName}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -258,7 +258,7 @@
                                    WidthRequest="22"
                                    HeightRequest="22"
                                    Margin="0,5"/>
-                            <Label Text="{Binding ToViewModel.CurrencyViewModel.CurrencyCode}"
+                            <Label Text="{Binding ToViewModel.CurrencyViewModel.CurrencyName}"
                                    FontFamily="{DynamicResource RegularFont}"
                                    FontSize="16"
                                    VerticalTextAlignment="Center"
@@ -796,7 +796,7 @@
                                HeightRequest="24"
                                VerticalOptions="CenterAndExpand"/>
                         <Label Grid.Column="1"
-                               Text="{Binding FromCurrencyCode}"
+                               Text="{Binding FromCurrencyName}"
                                Style="{DynamicResource MainTextH4}"
                                VerticalTextAlignment="End"
                                HorizontalTextAlignment="Start"/>
@@ -849,10 +849,10 @@
                                HeightRequest="24"
                                VerticalOptions="CenterAndExpand"/>
                         <Label Grid.Column="4"
-                                Text="{Binding ToCurrencyCode}"
-                                Style="{DynamicResource MainTextH4}"
-                                VerticalTextAlignment="End"
-                                HorizontalTextAlignment="Start"/>
+                               Text="{Binding ToCurrencyName}"
+                               Style="{DynamicResource MainTextH4}"
+                               VerticalTextAlignment="End"
+                               HorizontalTextAlignment="Start"/>
                         <Label Grid.Row="1"
                                Grid.Column="4"
                                Text="{Binding ToAmount, StringFormat='{0:0.000000000}'}"

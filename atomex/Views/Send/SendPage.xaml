@@ -97,7 +97,7 @@
                         <FormattedString>
                             <Span Text="{Binding SelectedFromBalance}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding CurrencyCode}"/>
+                            <Span Text="{Binding CurrencyName}"/>
                         </FormattedString>
                     </Label.FormattedText>
                     <Label.GestureRecognizers>

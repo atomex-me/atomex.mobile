@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using atomex.Resources;
 using atomex.ViewModel.TransactionViewModels;
 using atomex.Views;
 using Atomex;
@@ -12,6 +13,7 @@ using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -110,6 +112,11 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .UpdateBalanceAsync(_cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
+                });
             }
             catch (OperationCanceledException)
             {

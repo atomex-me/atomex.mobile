@@ -10,7 +10,7 @@ namespace atomex
         {
             var soldCurrency = currencies.GetByName(swap.SoldCurrency);
             var purchasedCurrency = currencies.GetByName(swap.PurchasedCurrency);
-
+            
             var fromAmount = AmountHelper.QtyToSellAmount(swap.Side, swap.Qty, swap.Price, soldCurrency.DigitsMultiplier);
             var toAmount = AmountHelper.QtyToSellAmount(swap.Side.Opposite(), swap.Qty, swap.Price, purchasedCurrency.DigitsMultiplier);
 
@@ -25,8 +25,10 @@ namespace atomex
                 Time             = swap.TimeStamp,
                 FromAmount       = fromAmount,
                 FromCurrencyCode = soldCurrency.Name,
+                FromCurrencyName = soldCurrency.DisplayedName,
                 ToAmount         = toAmount,
                 ToCurrencyCode   = purchasedCurrency.Name,
+                ToCurrencyName   = purchasedCurrency.DisplayedName,
                 Price            = swap.Price,
                 PriceFormat      = $"F{quoteCurrency.Digits}",
                 Currencies       = currencies
