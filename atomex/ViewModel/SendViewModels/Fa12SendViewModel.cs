@@ -8,6 +8,7 @@ using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
+using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
@@ -206,7 +207,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

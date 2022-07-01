@@ -481,10 +481,9 @@ namespace atomex
                     account = await Task.Run(() =>
                     {
                         return account = new Account(
-                        wallet: _wallet,
-                        password: StoragePassword,
-                        currenciesProvider: _app.CurrenciesProvider,
-                        clientType);
+                            wallet: _wallet,
+                            password: StoragePassword,
+                            currenciesProvider: _app.CurrenciesProvider);
                     });
 
                     if (account != null)

@@ -12,6 +12,7 @@ using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
+using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.ViewModels;
@@ -496,7 +497,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected virtual void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

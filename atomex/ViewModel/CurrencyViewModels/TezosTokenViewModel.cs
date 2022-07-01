@@ -184,9 +184,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
 
-            LoadAddresses(); // 8-9 sec
-            //_ = LoadTransfers(); // 10 sec
-            _ = UpdateBalanceAsync(); // 2 sec
+            LoadAddresses();
+            _ = UpdateBalanceAsync();
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
@@ -329,7 +328,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    //await LoadTransfers(); // обновлять в случае открытой страницы токена
                     await UpdateBalanceAsync();
                 });
             }
@@ -347,13 +345,13 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        public void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        public void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
             try
             {

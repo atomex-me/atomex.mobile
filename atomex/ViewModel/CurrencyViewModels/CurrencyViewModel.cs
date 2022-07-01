@@ -54,7 +54,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
-        private ICurrencyQuotesProvider _quotesProvider { get; set; }
+        private IQuotesProvider _quotesProvider { get; set; }
 
         public string CurrencyCode => Currency.Name;
         public string FeeCurrencyCode => Currency.FeeCode;
@@ -169,7 +169,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
         }
 
-        public void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
+        public void SubscribeToRatesProvider(IQuotesProvider quotesProvider)
         {
             _quotesProvider = quotesProvider;
             _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
@@ -234,13 +234,13 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        private void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
             var quote = quotesProvider?.GetQuote(CurrencyCode, BaseCurrencyCode);
 

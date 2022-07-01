@@ -5,7 +5,6 @@ using Atomex.Core;
 using System.Threading.Tasks;
 using Atomex.Common;
 using System;
-using Atomex.MarketData;
 using Serilog;
 using Xamarin.Forms;
 using Atomex.MarketData.Abstract;
@@ -16,7 +15,6 @@ using Atomex.Abstract;
 using atomex.Resources;
 using System.Windows.Input;
 using atomex.Views.CreateSwap;
-using Atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
@@ -29,6 +27,8 @@ using Atomex.ViewModels;
 using atomex.Models;
 using atomex.Views;
 using static atomex.Models.Message;
+using Atomex.MarketData.Common;
+using Atomex.Client.Common;
 
 namespace atomex.ViewModel
 {
@@ -481,7 +481,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -679,7 +679,7 @@ namespace atomex.ViewModel
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
 
-            OnAtomexClientChangedEventHandler(this, new AtomexClientChangedEventArgs(_app.AtomexClient));
+            OnAtomexClientChangedEventHandler(this, new AtomexClientChangedEventArgs(oldClient: null, newClient: _app.AtomexClient));
         }
 
         protected virtual async Task EstimateSwapParamsAsync()
@@ -695,7 +695,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -743,7 +743,7 @@ namespace atomex.ViewModel
             decimal amount,
             string currency,
             string baseCurrency,
-            ICurrencyQuotesProvider provider,
+            IQuotesProvider provider,
             decimal defaultAmountInBase = 0)
         {
             if (currency == null || baseCurrency == null || provider == null)
@@ -805,7 +805,7 @@ namespace atomex.ViewModel
         {
             var atomexClient = args.AtomexClient;
 
-            if (atomexClient?.Account == null)
+            if (_app?.Account == null)
             {
                 CurrencyViewModelCreator.Reset();
                 return;
@@ -815,7 +815,7 @@ namespace atomex.ViewModel
             atomexClient.QuotesUpdated += OnQuotesUpdatedEventHandler;
             _app.SwapManager.SwapUpdated += OnSwapEventHandler;
 
-            FromCurrencies = atomexClient.Account.Currencies
+            FromCurrencies = _app.Account.Currencies
                 .Where(c => c.IsSwapAvailable)
                 .Select(c => CurrencyViewModelCreator.CreateOrGet(
                     currencyConfig: c,
@@ -893,7 +893,7 @@ namespace atomex.ViewModel
             });
         }
 
-        protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
+        protected async void OnQuotesUpdatedEventHandler(object sender, QuotesEventArgs args)
         {
             try
             {
@@ -909,7 +909,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -1126,7 +1126,8 @@ namespace atomex.ViewModel
                 return;
             }
 
-            if (!_app.AtomexClient.IsServiceConnected(AtomexClientService.All))
+            if (!_app.AtomexClient.IsServiceConnected(Service.Exchange) ||
+                !_app.AtomexClient.IsServiceConnected(Service.MarketData))
             {
                 _navigationService?.ShowAlert(
                     AppResources.Error,

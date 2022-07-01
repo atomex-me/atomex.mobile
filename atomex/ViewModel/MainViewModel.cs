@@ -1,14 +1,17 @@
 ﻿using System;
 using Atomex;
 using Microsoft.Extensions.Configuration;
-using Atomex.MarketData;
 using Atomex.Wallet.Abstract;
 using Atomex.Common.Configuration;
 using System.Linq;
 using atomex.Services;
 using Atomex.Services;
-using Atomex.Services.Abstract;
 using atomex.ViewModel.CurrencyViewModels;
+using Atomex.Common;
+using Xamarin.Forms;
+using Atomex.Client.Common;
+using Atomex.Client.Abstract;
+using Atomex.Client.V1.Entities;
 
 namespace atomex.ViewModel
 {
@@ -39,13 +42,28 @@ namespace atomex.ViewModel
 
             SubscribeToServices();
 
+            ClientType clientType;
+
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    clientType = ClientType.iOS;
+                    break;
+                case Device.Android:
+                    clientType = ClientType.Android;
+                    break;
+                default:
+                    clientType = ClientType.Unknown;
+                    break;
+            }
+
             var atomexClient = new WebSocketAtomexClientLegacy(
                 exchangeUrl: configuration[$"Services:{account?.Network}:Exchange:Url"],
                 marketDataUrl: configuration[$"Services:{account?.Network}:MarketData:Url"],
-                account: account,
-                symbolsProvider: AtomexApp.SymbolsProvider);
+                clientType: clientType,
+                authMessageSigner: account.DefaultAuthMessageSigner());
 
-            AtomexApp.UseAtomexClient(atomexClient, restart: true);
+            AtomexApp.ChangeAtomexClient(atomexClient, account, restart: true);
 
             PortfolioViewModel = new PortfolioViewModel(AtomexApp);
             ConversionViewModel = new ConversionViewModel(AtomexApp);
@@ -62,7 +80,7 @@ namespace atomex.ViewModel
 
         public void SignOut()
         {
-            AtomexApp.UseAtomexClient(null);
+            AtomexApp.ChangeAtomexClient(atomexClient: null, account: null);
         }
 
         private void SubscribeToServices()
@@ -72,29 +90,26 @@ namespace atomex.ViewModel
 
         private void OnAtomexClientChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var atomexClient = args.AtomexClient;
-
-            if (atomexClient?.Account == null)
+            if (AtomexApp?.Account == null)
             {
                 CurrencyViewModelCreator.Reset();
                 TezosTokenViewModelCreator.Reset();
                 return;
             }
 
-            atomexClient.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
-            atomexClient.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
+            args.AtomexClient.ServiceStatusChanged += OnAtomexClientServiceStatusChangedEventHandler;
         }
 
-        private void OnTerminalServiceStateChangedEventHandler(object sender, AtomexClientServiceEventArgs args)
+        private void OnAtomexClientServiceStatusChangedEventHandler(object sender, ServiceEventArgs args)
         {
-            if (!(sender is IAtomexClient terminal))
+            if (sender is not IAtomexClient atomexClient)
                 return;
 
             // subscribe to symbols updates
-            if (args.Service == AtomexClientService.MarketData && terminal.IsServiceConnected(AtomexClientService.MarketData))
+            if (args.Service == Service.MarketData && args.Status == ServiceStatus.Connected)
             {
-                terminal.SubscribeToMarketData(SubscriptionType.TopOfBook);
-                terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);
+                atomexClient.SubscribeToMarketData(SubscriptionType.TopOfBook);
+                atomexClient.SubscribeToMarketData(SubscriptionType.DepthTwenty);
             }
         }
     }
