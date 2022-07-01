@@ -262,7 +262,7 @@
                     </RelativeLayout>
                     <Label Text="{helpers:Translate LoadingLabel}"
                            Style="{DynamicResource AdditionalTextH5}"
-                           Margin="0,2"
+                           Margin="0,4"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Start"/>
                 </StackLayout>

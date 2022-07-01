@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Resources;
 using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
@@ -22,6 +24,7 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -56,6 +59,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
         [Reactive] public bool IsTokensLoading { get; set; }
+        [Reactive] public bool IsUpdating { get; set; }
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         private TezosTokenViewModel _openToken;
 
@@ -238,6 +242,63 @@ namespace atomex.ViewModel.CurrencyViewModels
                 IsTokensLoading = false;
             }
         }
+
+        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
+        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
+            (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
+
+        private async Task UpdateTokens()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsUpdating = true;
+
+            try
+            {
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await Task.Run(async () =>
+                {
+                    await tezosTokensScanner.ScanAsync(
+                        skipUsed: false,
+                        cancellationToken: cancellation.Token);
+
+                    // reload balances for all tezos tokens account
+                    foreach (var currency in _app.Account.Currencies)
+                        if (Atomex.Currencies.IsTezosToken(currency.Name))
+                            _app.Account
+                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
+                                .ReloadBalances();
+                });
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Tezos tokens update canceled");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Tezos tokens update error");
+            }
+            finally
+            {
+                IsUpdating = false;
+            }
+        }
+
+        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
+        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
+                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(this)));
+
+        private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(this)));
 
         private ICommand _closeActionSheetCommand;
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=

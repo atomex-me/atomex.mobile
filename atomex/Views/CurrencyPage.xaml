@@ -654,7 +654,7 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding UpdateTokensCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.UpdateTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_update"
                                            WidthRequest="16"
@@ -662,14 +662,14 @@
                                            Margin="8,16">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding IsUpdating}"
+                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
                                                          Value="True">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Start" />  
                                                 </DataTrigger.EnterActions>                                
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding IsUpdating}"
+                                                         Binding="{Binding TezosTokensViewModel.IsUpdating}"
                                                          Value="False">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Stop" />  
@@ -685,7 +685,7 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.ManageTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_filters"
                                            Margin="8,0,4,0"
@@ -712,6 +712,27 @@
                             </StackLayout>
                             <StackLayout Style="{DynamicResource SeparatorStyle}"
                                          Margin="16,0,0,0"/>
+                            <StackLayout IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                         VerticalOptions="FillAndExpand"
+                                         Margin="0,30">
+                                <RelativeLayout VerticalOptions="End"
+                                                HorizontalOptions="Center">
+                                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+	             	                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                                                       RelativeLayout.WidthConstraint="20"
+                                                       RelativeLayout.HeightConstraint="20"
+                                                       BackgroundColor="Transparent"
+                                                       IsRunning="True"
+                                                       Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+
+                                </RelativeLayout>
+                                <Label Text="{helpers:Translate LoadingLabel}"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       Margin="0,4"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Start"/>
+                            </StackLayout>
                         </StackLayout>
                     </ListView.Header>
                     <ListView.ItemTemplate>
