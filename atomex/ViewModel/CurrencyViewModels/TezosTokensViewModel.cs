@@ -65,6 +65,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public string BaseCurrencyCode => "USD";
 
+        public const double DefaultTokenRowHeight = 76;
+        public const double TokenListHeaderHeight = 72;
+        [Reactive] public double TokenListViewHeight { get; set; }
+
         public TezosTokensViewModel(
             IAtomexApp app,
             INavigationService navigationService)
@@ -80,6 +84,14 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
                     await GetTokensAsync());
+
+            this.WhenAnyValue(vm => vm.UserTokens)
+                .WhereNotNull()
+                .SubscribeInMainThread(vm =>
+                {
+                    TokenListViewHeight = (UserTokens.Count + 1) * DefaultTokenRowHeight +
+                        TokenListHeaderHeight;
+                });
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()

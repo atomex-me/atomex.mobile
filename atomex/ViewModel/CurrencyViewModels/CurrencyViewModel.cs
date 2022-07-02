@@ -46,8 +46,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
     public class CurrencyViewModel : BaseViewModel
     {
-        public const double DefaultGroupHeight = 36;
-
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
         protected INavigationService _navigationService { get; set; }
@@ -64,6 +62,9 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsStakingAvailable => Currency.Name == "XTZ";
         public bool HasCollectibles => false;
         public bool HasTokens => Currency.Name == "XTZ";
+        public bool CanBuy { get; set; }
+
+        protected CancellationTokenSource _cancellationTokenSource;
 
         [Reactive] public decimal TotalAmount { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }
@@ -89,13 +90,16 @@ namespace atomex.ViewModel.CurrencyViewModels
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
 
-        public bool CanBuy { get; set; }
-
-        protected CancellationTokenSource _cancellationTokenSource;
+        public const double DefaultTxGroupHeight = 36;
+        public double DefaultTxRowHeight => IsBitcoinBased ? 52 : 76;
+        public const double DefaultAddressRowHeight = 64;
+        public const double ListViewFooterHeight = 72;
+        [Reactive] public double TxListViewHeight { get; set; }
+        [Reactive] public double AddressListViewHeight { get; set; }
 
         public class Grouping<K, T> : ObservableCollection<T>
         {
-            public double GroupHeight { get; set; } = DefaultGroupHeight;
+            public double GroupHeight { get; set; } = DefaultTxGroupHeight;
             public K Date { get; private set; }
             public Grouping(K date, IEnumerable<T> items)
             {
@@ -129,12 +133,26 @@ namespace atomex.ViewModel.CurrencyViewModels
             this.WhenAnyValue(vm => vm.GroupedTransactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
+                {
+                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
+
+                    TxListViewHeight = IsAllTxsShowed
+                        ? Transactions.Count * DefaultTxRowHeight +
+                            GroupedTransactions.Count * DefaultTxGroupHeight +
+                            ListViewFooterHeight
+                        : TxsNumberPerPage * DefaultTxRowHeight +
+                            (GroupedTransactions.Count + 1) * DefaultTxGroupHeight;
+                });
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
+                {
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
+
+                    AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
+                        ListViewFooterHeight;
+                });
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()
@@ -486,8 +504,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public void ShowAllTxs()
-        {
+        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
+        { 
             IsAllTxsShowed = true;
             CanShowMoreTxs = false;
             TxsNumberPerPage = Transactions.Count;
@@ -498,7 +517,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-        }
+        });
 
         #region IDisposable Support
         private bool _disposedValue;

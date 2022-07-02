@@ -371,8 +371,7 @@
                           CachingStrategy="RecycleElement"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          RowHeight="72"
-                          x:Name="TransactionsListView"
+                          HeightRequest="{Binding TxListViewHeight}"
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -380,12 +379,6 @@
                                      Value="Activity">
                             <Setter Property="IsVisible"
                                     Value="True"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding IsBitcoinBased, FallbackValue='False', TargetNullValue='False'}"
-                                     Value="True">
-                            <Setter Property="RowHeight"
-                                    Value="48"/>
                         </DataTrigger>
                     </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
@@ -530,18 +523,10 @@
                     </ListView.ItemTemplate>
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
-                                x:Name="TxsFooter"
                                 Style="{DynamicResource TransparentButton}"
-                                Clicked="ShowAllTxs">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding CanShowMoreTxs}"
-                                             Value="False">
-                                    <Setter Property="IsVisible"
-                                            Value="False"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                                IsVisible="{Binding CanShowMoreTxs}"
+                                HeightRequest="52"
+                                Command="{Binding ShowAllTxsCommand}"/>
                     </ListView.Footer>
                 </ListView>
                 <ListView ItemsSource="{Binding Addresses}"
@@ -551,8 +536,7 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          x:Name="AddressesListView"
-                          RowHeight="64"
+                          HeightRequest="{Binding AddressListViewHeight}"
                           Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
@@ -609,7 +593,6 @@
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
                                 Style="{DynamicResource TransparentButton}"
-                                x:Name="AddressesFooter"
                                 IsVisible="{Binding CanShowMoreAddresses}"
                                 Command="{Binding AddressesViewModel.ShowAllAddressesCommand}"/>
                     </ListView.Footer>
@@ -619,10 +602,9 @@
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           BackgroundColor="Transparent"
-                          x:Name="TokensListView"
                           SelectionMode="Single"
                           SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
-                          RowHeight="72"
+                          HeightRequest="{Binding TezosTokensViewModel.TokenListViewHeight}"
                           VerticalScrollBarVisibility="Never"
                           IsVisible="False"
                           Footer="">
@@ -640,7 +622,6 @@
                                          HorizontalOptions="Fill"
                                          Padding="16,8,16,0"
                                          HeightRequest="52"
-                                         x:Name="TokensHeader"
                                          Spacing="4">
                                 <Label Text="{helpers:Translate Tokens}"
                                        Style="{DynamicResource AdditionalTextH5}"
@@ -816,8 +797,7 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          RowHeight="72"
-                          x:Name="DelegationsListView"
+                          HeightRequest="{Binding DelegationListViewHeight}"
                           IsVisible="False"
                           Footer="">
                     <ListView.Triggers>
