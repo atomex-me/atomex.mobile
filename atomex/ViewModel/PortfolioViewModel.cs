@@ -145,10 +145,10 @@ namespace atomex.ViewModel
 
         private async Task StartCurrenciesScan()
         {
-            var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
-
-            if (_currenciesForScan != null)
-                currencies = AllCurrencies
+            var currencies = _currenciesForScan == null
+                ? AllCurrencies
+                    .Select(c => c.CurrencyViewModel)
+                : AllCurrencies
                     .Where(curr => _currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
                     .Select(c => c.CurrencyViewModel)
                     .ToList();
@@ -165,26 +165,13 @@ namespace atomex.ViewModel
                         Task.WhenAll(primaryCurrencies
                             .Select(currency => currency.ScanCurrency())));
 
-                var tezosAccount = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-
-                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
-
-                await Task.Run(async () =>
-                {
-                    await tezosTokensScanner.ScanAsync(
-                        skipUsed: false,
-                        cancellationToken: default);
-
-                    // reload balances for all tezos tokens account
-                    foreach (var currency in _app.Account.Currencies)
-                    {
-                        if (Atomex.Currencies.IsTezosToken(currency.Name))
-                            _app.Account
-                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                                .ReloadBalances();
-                    }
-                });
+                var tezosTokens = primaryCurrencies
+                    .Where(c => c.HasTokens && c.CurrencyCode == "XTZ")
+                    ?.Cast<TezosCurrencyViewModel>()
+                    ?.FirstOrDefault()
+                    ?.TezosTokensViewModel;
+                
+                await tezosTokens?.UpdateTokens();
 
                 await Task.Run(() =>
                         Task.WhenAll(tokenCurrencies

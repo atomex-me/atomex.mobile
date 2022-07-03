@@ -151,7 +151,8 @@
                                    WidthRequest="24"
                                    VerticalOptions="Center"
                                    HorizontalOptions="End"/>
-                            <Label Grid.Column="1"
+                            <Label Grid.ColumnSpan="2"
+                                   Grid.Column="1"
                                    Text="{Binding Currency.Description}"
                                    Style="{DynamicResource MainTextH4}"
                                    Padding="12,0"
@@ -169,8 +170,7 @@
                                    Grid.Column="2"
                                    Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
                                    HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="Start"
-                                   Padding="6,0">
+                                   VerticalTextAlignment="Start">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"

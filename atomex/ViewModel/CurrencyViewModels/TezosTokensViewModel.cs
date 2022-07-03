@@ -259,7 +259,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
             (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
 
-        private async Task UpdateTokens()
+        public async Task UpdateTokens()
         {
             var cancellation = new CancellationTokenSource();
             IsUpdating = true;
