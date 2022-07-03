@@ -66,13 +66,13 @@
                                                     Value="0.38"/>
                                         </DataTrigger>
                                     </StackLayout.Triggers>
-                                    <Image Source="{Binding TokenViewModel.TokenPreview}"
+                                    <Image Source="{Binding TezosTokenViewModel.TokenPreview}"
                                            HeightRequest="28"
                                            WidthRequest="28"
                                            Margin="16,0"
                                            VerticalOptions="Center"
                                            HorizontalOptions="Start"/>
-                                    <Label Text="{Binding TokenViewModel.Description}"
+                                    <Label Text="{Binding TezosTokenViewModel.Description}"
                                            Style="{DynamicResource MainTextH4}"
                                            LineBreakMode="TailTruncation"
                                            WidthRequest="150"
@@ -84,9 +84,9 @@
                                            VerticalTextAlignment="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TokenViewModel.TotalAmount, StringFormat='{0:0.########}'}"/>
+                                                <Span Text="{Binding TezosTokenViewModel.TotalAmount, StringFormat='{0:0.########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding TokenViewModel.CurrencyCode}"/>
+                                                <Span Text="{Binding TezosTokenViewModel.CurrencyCode}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
