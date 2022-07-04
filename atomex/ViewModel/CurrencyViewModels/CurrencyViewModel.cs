@@ -48,7 +48,7 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
-        public INavigationService _navigationService { get; set; }
+        protected INavigationService _navigationService { get; set; }
 
         public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
@@ -270,10 +270,10 @@ namespace atomex.ViewModel.CurrencyViewModels
             Device.InvokeOnMainThreadAsync(() =>
             {
                 Price = quote?.Bid ?? 0;
-                TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0);
-                AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0);
-                UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0);
                 DailyChangePercent = quote?.DailyChangePercent ?? 0;
+                TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
+                AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
+                UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
 
                 AmountUpdated?.Invoke(this, EventArgs.Empty);
             });

@@ -180,16 +180,16 @@
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="True">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource SuccessTextH6}"/>
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                                         <Setter Property="Text"
                                                 Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="False">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource ErrorTextH6}"/>
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
