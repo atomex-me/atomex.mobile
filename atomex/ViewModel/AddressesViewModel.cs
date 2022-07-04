@@ -14,6 +14,7 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -286,30 +287,33 @@ namespace atomex.ViewModel
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount(_currency.Name);
-
-                var addresses = (await account
-                    .GetAddressesAsync())
+                var addresses = AddressesHelper
+                    .GetReceivingAddressesAsync(
+                        account: _app.Account,
+                        currency: _currency,
+                        tokenContract: _tokenContract,
+                        tokenId: (int)_tokenId)
+                    .WaitForResult()
+                    .OrderByDescending(address => address.Balance)
                     .ToList();
-
+                
                 addresses.Sort((a1, a2) =>
                 {
-                    var typeResult = a1.KeyType.CompareTo(a2.KeyType);
+                    var typeResult = a1.WalletAddress.KeyType.CompareTo(a2.WalletAddress.KeyType);
 
                     if (typeResult != 0)
                         return typeResult;
 
-                    var accountResult = a1.KeyIndex.Account.CompareTo(a2.KeyIndex.Account);
+                    var accountResult = a1.WalletAddress.KeyIndex.Account.CompareTo(a2.WalletAddress.KeyIndex.Account);
 
                     if (accountResult != 0)
                         return accountResult;
 
-                    var chainResult = a1.KeyIndex.Chain.CompareTo(a2.KeyIndex.Chain);
+                    var chainResult = a1.WalletAddress.KeyIndex.Chain.CompareTo(a2.WalletAddress.KeyIndex.Chain);
 
                     return chainResult != 0
                        ? chainResult
-                       : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
+                       : a1.WalletAddress.KeyIndex.Index.CompareTo(a2.WalletAddress.KeyIndex.Index);
                 });
 
                 var freeAddress = _app.Account
@@ -321,13 +325,13 @@ namespace atomex.ViewModel
                     Addresses = new ObservableCollection<AddressViewModel>(
                         addresses.Select(a =>
                         {
-                            var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
-                                ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                                : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
+                            var path = a.WalletAddress.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
+                                ? $"m/44'/{_currency.Bip44Code}'/{a.WalletAddress.KeyIndex.Account}'/{a.WalletAddress.KeyIndex.Chain}'"
+                                : $"m/44'/{_currency.Bip44Code}'/{a.WalletAddress.KeyIndex.Account}'/{a.WalletAddress.KeyIndex.Chain}/{a.WalletAddress.KeyIndex.Index}";
 
                             return new AddressViewModel(_app, _currency, _navigationService)
                             {
-                                WalletAddress = a,
+                                WalletAddress = a.WalletAddress,
                                 Path = path,
                                 HasTokens = HasTokens,
                                 IsFreeAddress = a?.Address == freeAddress?.Address,
@@ -341,6 +345,9 @@ namespace atomex.ViewModel
 
                 if (HasTokens)
                 {
+                    var account = _app.Account
+                        .GetCurrencyAccount(_currency.Name);
+
                     var tezosAccount = account as TezosAccount;
 
                     (await tezosAccount
