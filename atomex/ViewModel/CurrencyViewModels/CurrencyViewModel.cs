@@ -54,14 +54,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         public event EventHandler AmountUpdated;
         private IQuotesProvider _quotesProvider { get; set; }
 
-        public string CurrencyCode => Currency.Name;
-        public string CurrencyName => Currency.DisplayedName;
-        public string FeeCurrencyCode => Currency.FeeCode;
+        public string CurrencyCode => Currency?.Name;
+        public string CurrencyName => Currency?.DisplayedName;
+        public string FeeCurrencyCode => Currency?.FeeCode;
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
-        public bool IsStakingAvailable => Currency.Name == "XTZ";
+        public bool IsStakingAvailable => Currency?.Name == "XTZ";
         public bool HasCollectibles => false;
-        public bool HasTokens => Currency.Name == "XTZ";
+        public bool HasTokens => Currency?.Name == "XTZ";
         public bool CanBuy { get; set; }
 
         protected CancellationTokenSource _cancellationTokenSource;

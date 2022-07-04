@@ -34,7 +34,7 @@ namespace atomex.ViewModel
 {
     public class ConversionViewModel : BaseViewModel
     {
-        private readonly IAtomexApp _app;
+        private IAtomexApp _app { get; set; }
         [Reactive] private INavigationService _navigationService { get; set; }
 
         private ISymbols _symbols
@@ -278,22 +278,27 @@ namespace atomex.ViewModel
 
             // From Amount changed => update FromViewModel.AmountInBase
             this.WhenAnyValue(vm => vm.FromViewModel.Amount)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateFromAmountInBase());
 
             // To Amount changed => update ToViewModel.AmountInBase
             this.WhenAnyValue(vm => vm.ToViewModel.Amount)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateToAmountInBase());
 
             // EstimatedPaymentFee changed => update EstimatedPaymentFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedPaymentFee)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateEstimatedPaymentFeeInBase());
 
             // EstimatedRedeemFee changed => update EstimatedRedeemFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedRedeemFee)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateEstimatedRedeemFeeInBase());
 
             // RewardForRedeem changed => update RewardForRedeemInBase
             this.WhenAnyValue(vm => vm.RewardForRedeem)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateRewardForRedeemInBase());
 
             // RewardForRedeem changed => update HasRewardForRedeem
@@ -1235,5 +1240,38 @@ namespace atomex.ViewModel
 
             this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
         }
+
+        #region IDisposable Support
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_app != null)
+                        _app.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+                    if (_app?.QuotesProvider != null)
+                        _app.QuotesProvider.QuotesUpdated -= OnBaseQuotesUpdatedEventHandler;
+                }
+
+                _app = null;
+
+                _disposedValue = true;
+            }
+        }
+
+        ~ConversionViewModel()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
