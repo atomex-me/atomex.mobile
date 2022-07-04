@@ -144,7 +144,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="32" />
                             </Grid.ColumnDefinitions>
@@ -158,7 +158,8 @@
                                    Grid.Column="1"
                                    Text="{Binding Currency.Description}"
                                    Style="{DynamicResource MainTextH4}"
-                                   Padding="12,0"
+                                   LineBreakMode="TailTruncation"
+                                   Padding="12,0,0,0"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="End"/>
                             <Label Grid.Column="1"

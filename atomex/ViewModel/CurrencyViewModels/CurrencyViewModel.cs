@@ -48,7 +48,7 @@ namespace atomex.ViewModel.CurrencyViewModels
     {
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
-        protected INavigationService _navigationService { get; set; }
+        public INavigationService _navigationService { get; set; }
 
         public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
@@ -236,14 +236,16 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .GetBalanceAsync(Currency.Name)
                     .ConfigureAwait(false);
 
+                if (balance == null) return;
+
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     TotalAmount = balance.Confirmed;
                     AvailableAmount = balance.Available;
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
-                });
 
-                UpdateQuotesInBaseCurrency(_quotesProvider);
+                    UpdateQuotesInBaseCurrency(_quotesProvider);
+                });
             }
             catch (Exception e)
             {
@@ -261,16 +263,18 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
-            var quote = quotesProvider?.GetQuote(CurrencyCode, BaseCurrencyCode);
+            if (quotesProvider == null) return;
+
+            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Device.InvokeOnMainThreadAsync(() =>
             {
-                Price = quote.Bid;
-                DailyChangePercent = quote.DailyChangePercent;
-                TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
-                AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
-                UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
-                
+                Price = quote?.Bid ?? 0;
+                TotalAmountInBase = TotalAmount.SafeMultiply(quote?.Bid ?? 0);
+                AvailableAmountInBase = AvailableAmount.SafeMultiply(quote?.Bid ?? 0);
+                UnconfirmedAmountInBase = UnconfirmedAmount.SafeMultiply(quote?.Bid ?? 0);
+                DailyChangePercent = quote?.DailyChangePercent ?? 0;
+
                 AmountUpdated?.Invoke(this, EventArgs.Empty);
             });
         }
@@ -487,7 +491,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected virtual void OnSendClick()
         {
-            if (AvailableAmount <= 0) return;
+            if (TotalAmount <= 0) return;
             _navigationService?.CloseBottomSheet();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);

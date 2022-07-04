@@ -22,12 +22,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private static readonly ConcurrentDictionary<Currencies, CurrencyViewModel> Instances = new();
 
-        public static CurrencyViewModel CreateOrGet(CurrencyConfig currency, INavigationService navigationService)
-        {
-            return CreateOrGet(currency, navigationService, subscribeToUpdates: true);
-        }
-
-        public static CurrencyViewModel CreateOrGet(CurrencyConfig currencyConfig, INavigationService navigationService, bool subscribeToUpdates)
+        public static CurrencyViewModel CreateOrGet(
+            CurrencyConfig currencyConfig,
+            INavigationService navigationService,
+            bool subscribeToUpdates)
         {
             var parsed = Enum.TryParse(currencyConfig.Name, out Currencies currency);
             if (!parsed) throw NotSupported(currencyConfig.Name);

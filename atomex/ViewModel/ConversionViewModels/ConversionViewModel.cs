@@ -471,6 +471,14 @@ namespace atomex.ViewModel
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+        public void Reset()
+        {
+            _app.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated -= OnBaseQuotesUpdatedEventHandler;
+        }
+
         public async void MaxClicked()
         {
             try
@@ -813,12 +821,7 @@ namespace atomex.ViewModel
         {
             var atomexClient = args.AtomexClient;
 
-            if (_app?.Account == null)
-            {
-                CurrencyViewModelCreator.Reset();
-                return;
-            }
-
+            if (_app?.Account == null) return;
 
             atomexClient.QuotesUpdated += OnQuotesUpdatedEventHandler;
             _app.SwapManager.SwapUpdated += OnSwapEventHandler;

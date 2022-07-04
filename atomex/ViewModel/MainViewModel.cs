@@ -81,6 +81,13 @@ namespace atomex.ViewModel
         public void SignOut()
         {
             AtomexApp.ChangeAtomexClient(atomexClient: null, account: null);
+
+            ConversionViewModel?.Reset();
+            CurrencyViewModelCreator.Reset();
+            TezosTokenViewModelCreator.Reset();
+
+            AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+
         }
 
         private void SubscribeToServices()
@@ -92,8 +99,9 @@ namespace atomex.ViewModel
         {
             if (AtomexApp?.Account == null)
             {
-                CurrencyViewModelCreator.Reset();
-                TezosTokenViewModelCreator.Reset();
+                if (args.OldAtomexClient != null)
+                    args.OldAtomexClient.ServiceStatusChanged -= OnAtomexClientServiceStatusChangedEventHandler;
+
                 return;
             }
 
