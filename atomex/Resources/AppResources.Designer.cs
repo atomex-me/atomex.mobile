@@ -77,6 +77,12 @@ namespace atomex.Resources {
             }
         }
         
+        internal static string HideButton {
+            get {
+                return ResourceManager.GetString("HideButton", resourceCulture);
+            }
+        }
+        
         internal static string UnderstandButton {
             get {
                 return ResourceManager.GetString("UnderstandButton", resourceCulture);
@@ -548,6 +554,12 @@ namespace atomex.Resources {
         internal static string BalanceOnHold {
             get {
                 return ResourceManager.GetString("BalanceOnHold", resourceCulture);
+            }
+        }
+        
+        internal static string RestoringWallet {
+            get {
+                return ResourceManager.GetString("RestoringWallet", resourceCulture);
             }
         }
         

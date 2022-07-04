@@ -73,6 +73,8 @@ namespace atomex.ViewModel
         private bool _startCurrenciesScan = false;
         private string[] _currenciesForScan { get; set; }
 
+        [Reactive] public bool IsRestoring { get; set; }
+
         public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
@@ -147,6 +149,8 @@ namespace atomex.ViewModel
 
         private async Task StartCurrenciesScan()
         {
+            IsRestoring = true;
+
             var currencies = _currenciesForScan == null
                 ? AllCurrencies
                     .Select(c => c.CurrencyViewModel)
@@ -154,7 +158,6 @@ namespace atomex.ViewModel
                     .Where(curr => _currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
                     .Select(c => c.CurrencyViewModel)
                     .ToList();
-
             try
             {
                 var primaryCurrencies = currencies
@@ -172,7 +175,7 @@ namespace atomex.ViewModel
                     ?.Cast<TezosCurrencyViewModel>()
                     ?.FirstOrDefault()
                     ?.TezosTokensViewModel;
-                
+
                 await tezosTokens?.UpdateTokens();
 
                 await Task.Run(() =>
@@ -183,6 +186,10 @@ namespace atomex.ViewModel
             catch (Exception e)
             {
                 Log.Error(e, "Restore currencies error");
+            }
+            finally
+            {
+                IsRestoring = false;
             }
         }
 
@@ -320,5 +327,11 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
         public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => _navigationService?.GoToExchange(null));
+
+        private ReactiveCommand<Unit, Unit> _hideRestoringCommand;
+        public ReactiveCommand<Unit, Unit> HideRestoringCommand => _hideRestoringCommand ??= ReactiveCommand.Create(() =>
+        {
+            IsRestoring = false;
+        });
     }
 }
