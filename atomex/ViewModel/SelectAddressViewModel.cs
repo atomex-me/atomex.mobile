@@ -116,16 +116,6 @@ namespace atomex.ViewModel
                         SelectAddressMode == SelectAddressMode.EnterExternalAddress
                             ? ScanCommand
                             : SearchCommand;
-
-                    Title = SelectAddressMode == SelectAddressMode.ReceiveTo
-                        ? AppResources.ReceiveTo
-                        : SelectAddressMode == SelectAddressMode.SendFrom
-                        ? AppResources.SendFrom
-                        : SelectAddressMode == SelectAddressMode.EnterExternalAddress
-                        ? AppResources.EnterAnExternalAddress
-                        : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
-                        ? AppResources.ChangeRedeemAddress
-                        : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
                 });
 
             this.WhenAnyValue(
@@ -232,6 +222,15 @@ namespace atomex.ViewModel
                 : SelectAddressMode == SelectAddressMode.SendFrom
                     ? SelectDefaultAddress()
                     : null;
+            Title = SelectAddressMode == SelectAddressMode.ReceiveTo
+                ? AppResources.ReceiveTo
+                : SelectAddressMode == SelectAddressMode.SendFrom
+                    ? AppResources.SendFrom
+                    : SelectAddressMode == SelectAddressMode.EnterExternalAddress
+                        ? AppResources.EnterAnExternalAddress
+                        : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
+                            ? AppResources.ChangeRedeemAddress
+                            : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
         }
 
         public WalletAddressViewModel SelectDefaultAddress()

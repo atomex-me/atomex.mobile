@@ -172,6 +172,7 @@
                             <Label Grid.Row="1"
                                    Grid.Column="2"
                                    Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                                   Style="{DynamicResource AdditionalTextH6}"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start">
                                 <Label.Triggers>
@@ -193,6 +194,7 @@
                             </Label>
                             <Label Grid.Column="3"
                                    Style="{DynamicResource MainTextH4}"
+                                   Margin="8,0,0,0"
                                    LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
@@ -208,6 +210,7 @@
                                    Grid.Column="3"
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource MainTextH6}"
+                                   Margin="8,0,0,0"
                                    LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>
