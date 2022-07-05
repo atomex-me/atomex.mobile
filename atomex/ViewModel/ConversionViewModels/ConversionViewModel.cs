@@ -1102,120 +1102,141 @@ namespace atomex.ViewModel
                 this.RaisePropertyChanged(nameof(GroupedSwaps));
         }
 
-        private void OnConvertClick()
+        private bool _convertClick = false;
+
+        private async void OnConvertClick()
         {
-            if (FromViewModel?.CurrencyViewModel == null ||
-                ToViewModel?.CurrencyViewModel == null ||
-                FromCurrencyViewModelItem?.FromSource == null ||
-                ToAddress == null)
-                return;
-
-            if (FromViewModel.Amount <= 0)
+            try
             {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.AmountLessThanZeroError,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (_convertClick)
+                    return;
 
-            if (!FromViewModel.IsAmountValid || !ToViewModel.IsAmountValid)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.BigAmount,
-                    AppResources.AcceptButton);
-                return;
-            }
+                _convertClick = true;
 
-            if (EstimatedPrice <= 0)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.NoLiquidityError,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (FromViewModel?.CurrencyViewModel == null ||
+                    ToViewModel?.CurrencyViewModel == null ||
+                    FromCurrencyViewModelItem?.FromSource == null ||
+                    ToAddress == null)
+                    return;
 
-            if (!_app.AtomexClient.IsServiceConnected(Service.Exchange) ||
-                !_app.AtomexClient.IsServiceConnected(Service.MarketData))
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Error,
-                    AppResources.ServicesUnavailable,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (FromViewModel.Amount <= 0)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.AmountLessThanZeroError,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var symbol = _symbols.SymbolByCurrencies(
-                from: FromViewModel?.CurrencyViewModel.Currency,
-                to: ToViewModel?.CurrencyViewModel.Currency);
+                // final swap params estimation
+                await EstimateSwapParamsAsync();
 
-            if (symbol == null)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Error,
-                    AppResources.NotSupportedSymbol,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (!FromViewModel.IsAmountValid || !ToViewModel.IsAmountValid)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.BigAmount,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var side = symbol.OrderSideForBuyCurrency(ToViewModel.CurrencyViewModel.Currency);
-            var price = EstimatedPrice;
-            var baseCurrency = _currencies.GetByName(symbol.Base);
+                if (EstimatedPrice <= 0)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.NoLiquidityError,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var qty = AmountHelper.AmountToSellQty(
-                side: side,
-                amount: FromViewModel.Amount,
-                price: price,
-                digitsMultiplier: baseCurrency.DigitsMultiplier);
+                if (!_app.AtomexClient.IsServiceConnected(Service.Exchange) ||
+                    !_app.AtomexClient.IsServiceConnected(Service.MarketData))
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.ServicesUnavailable,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            if (qty < symbol.MinimumQty)
-            {
-                var minimumAmount = AmountHelper.QtyToSellAmount(
+                var symbol = _symbols.SymbolByCurrencies(
+                    from: FromViewModel?.CurrencyViewModel.Currency,
+                    to: ToViewModel?.CurrencyViewModel.Currency);
+
+                if (symbol == null)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.NotSupportedSymbol,
+                        AppResources.AcceptButton);
+                    return;
+                }
+
+                var side = symbol.OrderSideForBuyCurrency(ToViewModel.CurrencyViewModel.Currency);
+                var price = EstimatedPrice;
+                var baseCurrency = _currencies.GetByName(symbol.Base);
+
+                var qty = AmountHelper.AmountToSellQty(
                     side: side,
-                    qty: symbol.MinimumQty,
+                    amount: FromViewModel.Amount,
                     price: price,
-                    digitsMultiplier: FromViewModel.CurrencyViewModel.Currency.DigitsMultiplier);
+                    digitsMultiplier: baseCurrency.DigitsMultiplier);
 
-                var message = string.Format(
-                    provider: CultureInfo.CurrentCulture,
-                    format: AppResources.MinimumAllowedQtyWarning,
-                    arg0: minimumAmount,
-                    arg1: FromViewModel.CurrencyViewModel.Currency.Name);
+                if (qty < symbol.MinimumQty)
+                {
+                    var minimumAmount = AmountHelper.QtyToSellAmount(
+                        side: side,
+                        qty: symbol.MinimumQty,
+                        price: price,
+                        digitsMultiplier: FromViewModel.CurrencyViewModel.Currency.DigitsMultiplier);
 
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    message,
-                    AppResources.AcceptButton);
+                    var message = string.Format(
+                        provider: CultureInfo.CurrentCulture,
+                        format: AppResources.MinimumAllowedQtyWarning,
+                        arg0: minimumAmount,
+                        arg1: FromViewModel.CurrencyViewModel.Currency.Name);
 
-                return;
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        message,
+                        AppResources.AcceptButton);
+
+                    return;
+                }
+
+                var viewModel = new ConversionConfirmationViewModel(_app, _navigationService)
+                {
+                    FromCurrencyViewModel = FromViewModel?.CurrencyViewModel,
+                    ToCurrencyViewModel = ToViewModel?.CurrencyViewModel,
+                    FromSource = FromCurrencyViewModelItem?.FromSource,
+                    ToAddress = ToAddress,
+                    RedeemFromAddress = RedeemFromAddress,
+
+                    BaseCurrencyCode = BaseCurrencyCode,
+                    QuoteCurrencyCode = QuoteCurrencyCode,
+                    Amount = FromViewModel.Amount,
+                    AmountInBase = FromViewModel?.AmountInBase ?? 0m,
+                    TargetAmount = ToViewModel?.Amount ?? 0m,
+                    TargetAmountInBase = ToViewModel?.AmountInBase ?? 0m,
+
+                    EstimatedPrice = EstimatedPrice,
+                    EstimatedOrderPrice = _estimatedOrderPrice,
+                    EstimatedMakerNetworkFee = EstimatedMakerNetworkFee,
+                    EstimatedTotalNetworkFeeInBase = EstimatedTotalNetworkFeeInBase,
+                };
+
+                viewModel.OnSuccess += OnSuccessConvertion;
+
+                _navigationService?.ShowBottomSheet(new ExchangeConfirmationBottomSheet(viewModel));
             }
-
-            var viewModel = new ConversionConfirmationViewModel(_app, _navigationService)
+            catch (Exception e)
             {
-                FromCurrencyViewModel = FromViewModel?.CurrencyViewModel,
-                ToCurrencyViewModel = ToViewModel?.CurrencyViewModel,
-                FromSource = FromCurrencyViewModelItem?.FromSource,
-                ToAddress = ToAddress,
-                RedeemFromAddress = RedeemFromAddress,
-
-                BaseCurrencyCode = BaseCurrencyCode,
-                QuoteCurrencyCode = QuoteCurrencyCode,
-                Amount = FromViewModel.Amount,
-                AmountInBase = FromViewModel?.AmountInBase ?? 0m,
-                TargetAmount = ToViewModel?.Amount ?? 0m,
-                TargetAmountInBase = ToViewModel?.AmountInBase ?? 0m,
-
-                EstimatedPrice = EstimatedPrice,
-                EstimatedOrderPrice = _estimatedOrderPrice,
-                EstimatedMakerNetworkFee = EstimatedMakerNetworkFee,
-                EstimatedTotalNetworkFeeInBase = EstimatedTotalNetworkFeeInBase,
-            };
-
-            viewModel.OnSuccess += OnSuccessConvertion;
-
-            _navigationService?.ShowBottomSheet(new ExchangeConfirmationBottomSheet(viewModel));
+                Log.Error("On convert click error", e);
+            }
+            finally
+            {
+                _convertClick = false;
+            }
         }
 
         private void OnSuccessConvertion(object sender, EventArgs e)
