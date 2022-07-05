@@ -14,6 +14,7 @@ using atomex.Views;
 using System.Threading;
 using static atomex.Models.SnackbarMessage;
 using atomex.Resources;
+using Atomex.Wallet;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -142,6 +143,27 @@ namespace atomex.ViewModel.CurrencyViewModels
                 currency: fa12currency,
                 navigationService: _navigationService,
                 tokenContract: fa12currency.TokenContractAddress);
+        }
+
+        protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                var tezosTokenConfig = (TezosTokenConfig)Currency;
+
+                if (!args.IsTokenUpdate ||
+                   args.TokenContract != null && (args.TokenContract != tezosTokenConfig.TokenContractAddress || args.TokenId != tezosTokenConfig.TokenId))
+                {
+                    return;
+                }
+
+                await UpdateBalanceAsync();
+                await LoadTransactionsAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Account balance updated event handler error");
+            }
         }
     }
 }

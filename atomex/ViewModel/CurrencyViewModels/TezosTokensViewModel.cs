@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -56,20 +55,18 @@ namespace atomex.ViewModel.CurrencyViewModels
         private IAtomexApp _app { get; }
         private IAccount _account { get; set; }
         private INavigationService _navigationService { get; set; }
-        private string _walletName { get; set; }
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
         [Reactive] public bool IsTokensLoading { get; set; }
-        [Reactive] public bool IsUpdating { get; set; }
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         private TezosTokenViewModel _openToken;
 
         public string BaseCurrencyCode => "USD";
 
         public const double DefaultTokenRowHeight = 76;
-        public const double TokenListHeaderHeight = 72;
+        public const double TokenListHeaderHeight = 76;
         [Reactive] public double TokenListViewHeight { get; set; }
 
         public TezosTokensViewModel(
@@ -79,7 +76,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            _walletName = GetWalletName();
             
             SubscribeToServices(_app);
 
@@ -185,7 +181,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (!Atomex.Currencies.IsTezosToken(args.Currency)) return;
+                if (!args.IsTokenUpdate ||
+                   args.TokenContract != null && (args.TokenContract != _openToken.Contract.Address || args.TokenId != _openToken.TokenBalance.TokenId))
+                {
+                    return;
+                };
 
                 if (_openToken != null)
                     _ = _openToken.LoadTransfers();
@@ -251,7 +251,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public async Task UpdateTokens()
         {
             var cancellation = new CancellationTokenSource();
-            IsUpdating = true;
+            IsTokensLoading = true;
 
             try
             {
@@ -260,19 +260,8 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
-                await Task.Run(async () =>
-                {
-                    await tezosTokensScanner.ScanAsync(
-                        skipUsed: false,
-                        cancellationToken: cancellation.Token);
-
-                    // reload balances for all tezos tokens account
-                    foreach (var currency in _app.Account.Currencies)
-                        if (Atomex.Currencies.IsTezosToken(currency.Name))
-                            _app.Account
-                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                                .ReloadBalances();
-                });
+                await tezosTokensScanner.UpdateBalanceAsync(
+                    cancellationToken: cancellation.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
@@ -289,7 +278,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             finally
             {
-                IsUpdating = false;
+                IsTokensLoading = false;
             }
         }
 
@@ -304,11 +293,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         private ICommand _closeActionSheetCommand;
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
             new Command(() => _navigationService?.CloseBottomSheet());
-
-        private string GetWalletName()
-        {
-            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
-        }
 
         #region IDisposable Support
         private bool _disposedValue;

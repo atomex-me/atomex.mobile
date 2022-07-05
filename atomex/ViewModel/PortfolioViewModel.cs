@@ -180,6 +180,7 @@ namespace atomex.ViewModel
 
                 await Task.Run(() =>
                         Task.WhenAll(tokenCurrencies
+                            .Where(c => c.Currency is not TezosConfig)
                             .Select(currency => currency.ScanCurrency())));
 
             }

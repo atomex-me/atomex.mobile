@@ -10,6 +10,7 @@ using Atomex;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.TezosTokens;
+using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Serilog;
 using Xamarin.Forms;
@@ -142,6 +143,27 @@ namespace atomex.ViewModel.CurrencyViewModels
                 currency: fa2currency,
                 navigationService: _navigationService,
                 tokenContract: fa2currency.TokenContractAddress);
+        }
+
+        protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                var tezosTokenConfig = (TezosTokenConfig)Currency;
+
+                if (!args.IsTokenUpdate ||
+                   args.TokenContract != null && (args.TokenContract != tezosTokenConfig.TokenContractAddress || args.TokenId != tezosTokenConfig.TokenId))
+                {
+                    return;
+                }
+
+                await UpdateBalanceAsync();
+                await LoadTransactionsAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Account balance updated event handler error");
+            }
         }
     }
 }

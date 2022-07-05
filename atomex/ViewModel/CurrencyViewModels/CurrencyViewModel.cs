@@ -19,6 +19,7 @@ using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using Atomex.TezosTokens;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
@@ -216,11 +217,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (Currency.Name.Equals(args.Currency))
-                {
-                    await UpdateBalanceAsync();
-                    await LoadTransactionsAsync();
-                }
+                if (args.Currency != Currency.Name)
+                    return;
+
+                await UpdateBalanceAsync();
+                await LoadTransactionsAsync();
             }
             catch (Exception e)
             {

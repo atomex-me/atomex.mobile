@@ -322,9 +322,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                // проблема в том, что не приходит символ обновленного токена
-                // !!! Обработчик вызывается по 3 раза (символы TZBTC, KUSD, USDT_XTZ) на КАЖДОМ!! токене
-                if (!Atomex.Currencies.IsTezosToken(args?.Currency)) return;
+                if (!args.IsTokenUpdate ||
+                    args.TokenContract != null && (args.TokenContract != TokenBalance.Contract || args.TokenId != TokenBalance.TokenId))
+                {
+                    return;
+                }
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
@@ -437,17 +439,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
-                await tezosTokensScanner.ScanContractAsync(
-                    contractAddress: Contract.Address,
+                await tezosTokensScanner.UpdateBalanceAsync(
+                    tokenContract: Contract?.Address,
+                    tokenId: (int)TokenBalance?.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
-
-                var tokenAccount = _app.Account
-                    .GetTezosTokenAccount<TezosTokenAccount>(
-                        currency: IsFa12 ? Fa12 : Fa2,
-                        tokenContract: Contract.Address,
-                        tokenId: (int)TokenBalance.TokenId);
-                // TODO: !!! BalanceUpdated Action == null
-                tokenAccount.ReloadBalances();
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
