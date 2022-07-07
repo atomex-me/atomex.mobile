@@ -1,20 +1,25 @@
-﻿using Android.App;
+﻿using System;
+using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+
+using Android.App;
 using Android.Content.PM;
 using Android.Gms.Extensions;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using atomex.Common.FileSystem;
-using Atomex.Common;
 using Firebase.Messaging;
 using Plugin.Fingerprint;
 using Sentry;
 using Serilog;
 using Serilog.Events;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Xamarin.Forms;
+
+using atomex.Common.FileSystem;
+using Atomex.Common;
+using Atomex.TzktEvents;
 
 namespace atomex.Droid
 {
@@ -33,6 +38,9 @@ namespace atomex.Droid
             base.OnCreate(bundle);
 
             FileSystem.UseFileSystem(new AndroidFileSystem());
+
+            // disable ssl certificate check for TzKT
+            TzktEventsClient.ServerCertificateCustomValidationCallback = ServerCertificateCustomValidationCallback;
 
             //Window.DecorView.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
 
@@ -108,10 +116,7 @@ namespace atomex.Droid
                 o.Dsn = "https://dee6b20f797d4dff97b8bcdbd738a583@newsentry.baking-bad.org/4";
                 o.CreateHttpClientHandler = () => new HttpClientHandler()
                 {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, sslPoicyErrors) =>
-                    {
-                        return true;
-                    }
+                    ServerCertificateCustomValidationCallback = ServerCertificateCustomValidationCallback
                 };
             });
 
@@ -129,6 +134,15 @@ namespace atomex.Droid
                     o.InitializeSdk = false;
                 })
                 .CreateLogger();
+        }
+
+        private static bool ServerCertificateCustomValidationCallback(
+            HttpRequestMessage message,
+            X509Certificate2 cert,
+            X509Chain chan,
+            SslPolicyErrors policyErrors)
+        {
+            return true;
         }
     }
 }

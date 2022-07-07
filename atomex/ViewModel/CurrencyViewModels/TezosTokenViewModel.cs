@@ -84,7 +84,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public bool IsRefreshing { get; set; }
         [Reactive] public CurrencyTab SelectedTab { get; set; }
 
-        private ThumbsApi ThumbsApi => new ThumbsApi(
+        private ThumbsApi ThumbsApi => new(
             new ThumbsApiSettings
             {
                 ThumbsApiUri = TezosConfig.ThumbsApiUri,
@@ -181,7 +181,6 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
 
-            LoadAddresses();
             _ = UpdateBalanceAsync();
 
             IsRefreshing = false;
@@ -207,16 +206,23 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private void LoadAddresses()
+        public void LoadAddresses()
         {
-            AddressesViewModel?.Dispose();
+            try
+            {
+                AddressesViewModel?.Dispose();
 
-            AddressesViewModel = new AddressesViewModel(
-                app: _app,
-                currency: TezosConfig,
-                navigationService: _navigationService,
-                tokenContract: Contract.Address,
-                tokenId: TokenBalance.TokenId);
+                AddressesViewModel = new AddressesViewModel(
+                    app: _app,
+                    currency: TezosConfig,
+                    navigationService: _navigationService,
+                    tokenContract: Contract.Address,
+                    tokenId: TokenBalance.TokenId);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"LoadAddresses error for contract {Contract?.Name} ({Contract?.Address})");
+            }
         }
 
         public async Task LoadTransfers()
@@ -225,80 +231,39 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 IsTransfersLoading = true;
                 
-                if (IsFa12)
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
-                        currency: Fa12,
-                        tokenContract: Contract.Address,
-                        tokenId: 0);
+                    Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
+                        .DataRepository
+                        .GetTezosTokenTransfersAsync(
+                            Contract.Address,
+                            offset: 0,
+                            limit: int.MaxValue))
+                        .Where(token => token.Token.TokenId == TokenBalance.TokenId)
+                        .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
+                        .ToList()
+                        .ForEachDo(t =>
+                        {
+                            t.CopyAddress = CopyAddress;
+                            t.CopyTxId = CopyTxId;
+                        }));
 
-                    await Device.InvokeOnMainThreadAsync(async () =>
-                    {
-                        Transactions = new ObservableCollection<TransactionViewModel>((await tokenAccount
-                            .DataRepository
-                            .GetTezosTokenTransfersAsync(
-                                Contract.Address,
-                                offset: 0,
-                                limit: int.MaxValue))
-                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
-                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
-                            .ToList()
-                            .ForEachDo(t =>
-                            {
-                                t.CopyAddress = CopyAddress;
-                                t.CopyTxId = CopyTxId;
-                            }));
+                    var groups = !IsAllTxsShowed
+                        ? Transactions
+                            .OrderByDescending(p => p.LocalTime.Date)
+                            .Take(TxsNumberPerPage)
+                            .GroupBy(p => p.LocalTime.Date)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                        : Transactions
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-                        var groups = !IsAllTxsShowed
-                            ? Transactions
-                               .OrderByDescending(p => p.LocalTime.Date)
-                               .Take(TxsNumberPerPage)
-                               .GroupBy(p => p.LocalTime.Date)
-                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
-                            : Transactions
-                                .GroupBy(p => p.LocalTime.Date)
-                                .OrderByDescending(g => g.Key)
-                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
-
-                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-                    });
-                }
-                else if (IsFa2)
-                {
-                    var tezosAccount = _app.Account
-                        .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-
-                    await Device.InvokeOnMainThreadAsync(async () =>
-                    {
-                        Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
-                            .DataRepository
-                            .GetTezosTokenTransfersAsync(
-                                Contract.Address,
-                                offset: 0,
-                                limit: int.MaxValue))
-                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
-                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
-                            .ToList()
-                            .ForEachDo(t =>
-                            {
-                                t.CopyAddress = CopyAddress;
-                                t.CopyTxId = CopyTxId;
-                            }));
-
-                        var groups = !IsAllTxsShowed
-                            ? Transactions
-                               .OrderByDescending(p => p.LocalTime.Date)
-                               .Take(TxsNumberPerPage)
-                               .GroupBy(p => p.LocalTime.Date)
-                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
-                            : Transactions
-                                .GroupBy(p => p.LocalTime.Date)
-                                .OrderByDescending(g => g.Key)
-                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
-
-                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-                    });
-                }
+                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                });
             }
             catch (OperationCanceledException)
             {

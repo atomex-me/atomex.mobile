@@ -102,7 +102,12 @@ namespace atomex.ViewModel.CurrencyViewModels
                 {
                     _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
                     _openToken = token;
-                    await Task.Run(() => SelectedToken.LoadTransfers());
+
+                    await Task.Run(async () =>
+                    {
+                        await SelectedToken.LoadTransfers();
+                        SelectedToken.LoadAddresses();
+                    });
 
                     SelectedToken = null;
                 });
