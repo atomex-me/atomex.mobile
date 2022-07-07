@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Wallet.Tezos;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
-    public static class TezosTokenViewModelCreator
+    public class TezosTokenViewModelCreator
     {
-        private static readonly ConcurrentDictionary<KeyValuePair<string, decimal>, TezosTokenViewModel> Instances =
+        private readonly ConcurrentDictionary<(string, decimal), TezosTokenViewModel> Instances =
             new();
 
-        public static async Task<IEnumerable<TezosTokenViewModel>> CreateOrGet(
+        public async Task<IEnumerable<TezosTokenViewModel>> CreateOrGet(
             IAtomexApp atomexApp,
             INavigationService navigationService,
             TokenContract contract)
@@ -25,50 +26,58 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .GetTezosTokenAddressesByContractAsync(contract.Address);
 
             var tokenGroups = tokenWalletAddresses
-                .Where(walletAddress => !walletAddress.TokenBalance.IsNft)
+                .Where(walletAddress => !walletAddress.TokenBalance.IsNft) // skip NFT
                 .GroupBy(walletAddress => walletAddress.TokenBalance.TokenId);
 
-            var walletAddresses = tokenGroups
-                .Select(walletAddressGroup =>
-                    walletAddressGroup.Skip(1).Aggregate(walletAddressGroup.First(), (result, walletAddress) =>
-                    {
-                        result.TokenBalance.ParsedBalance = result.TokenBalance.GetTokenBalance() +
-                                                            walletAddress.TokenBalance.GetTokenBalance();
+            var resultTokens = new List<TezosTokenViewModel>();
 
-                        return result;
-                    }));
-
-            var tokens = new List<TezosTokenViewModel>();
-
-            foreach (var walletAddress in walletAddresses)
+            foreach (var tokenGroup in tokenGroups)
             {
-                var kv = new KeyValuePair<string, decimal>(
-                    contract.Address,
-                    walletAddress.TokenBalance.TokenId);
-
-                if (Instances.TryGetValue(kv, out var cachedTokenViewModel))
+                if (Instances.TryGetValue((contract.Address, tokenGroup.Key), out var cachedTokenViewModel))
                 {
-                    tokens.Add(cachedTokenViewModel);
+                    resultTokens.Add(cachedTokenViewModel);
                     continue;
                 }
+
+                var tokenBalance = tokenGroup
+                    .Select(w => w.TokenBalance)
+                    .Aggregate(new TokenBalance { ParsedBalance = 0 }, (result, tb) =>
+                    {
+                        result.ParsedBalance  += tb.GetTokenBalance();
+                        result.Balance         = result.ParsedBalance.ToString();
+                        result.ArtifactUri   ??= tb.ArtifactUri;
+                        result.Contract      ??= tb.Contract;
+                        result.ContractAlias ??= tb.ContractAlias;
+                        result.Creators      ??= tb.Creators;
+                        result.Decimals        = tb.Decimals;
+                        result.Description   ??= tb.Description;
+                        result.DisplayUri    ??= tb.DisplayUri;
+                        result.Name          ??= tb.Name;
+                        result.Standard      ??= tb.Standard;
+                        result.Symbol        ??= tb.Symbol;
+                        result.ThumbnailUri  ??= tb.ThumbnailUri;
+                        result.TokenId         = tb.TokenId;
+                        return result;
+                    });
 
                 var tokenViewModel = new TezosTokenViewModel(
                     app: atomexApp,
                     navigationService: navigationService,
-                    tokenBalance: walletAddress.TokenBalance,
-                    contract: contract,
-                    address: walletAddress.Address);
+                    tokenBalance: tokenBalance,
+                    contract: contract);
 
-                tokenViewModel.UpdateQuotesInBaseCurrency(atomexApp.QuotesProvider);
+                //tokenViewModel.UpdateQuotesInBaseCurrency(atomexApp.QuotesProvider);
                 tokenViewModel.SubscribeToUpdates();
-                Instances.TryAdd(kv, tokenViewModel);
-                tokens.Add(tokenViewModel);
+
+                Instances.TryAdd((contract.Address, tokenGroup.Key), tokenViewModel);
+
+                resultTokens.Add(tokenViewModel);
             }
 
-            return tokens.Where(token => !token.TokenBalance.IsNft);
+            return resultTokens;
         }
 
-        public static void Reset()
+        public void Reset()
         {
             foreach (var tokenViewModel in Instances.Values)
             {

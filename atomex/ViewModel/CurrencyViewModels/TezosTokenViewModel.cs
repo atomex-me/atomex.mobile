@@ -32,9 +32,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
-        protected IAtomexApp _app { get; set; }
-        protected IAccount _account { get; set; }
-        protected INavigationService _navigationService { get; set; }
+        protected IAtomexApp _app;
+        protected IAccount _account;
+        protected INavigationService _navigationService;
 
         public const string Fa12 = "FA12";
         public const string Fa2 = "FA2";
@@ -46,7 +46,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         public static string BaseCurrencyCode => "USD";
         public string CurrencyCode => TokenBalance.Symbol;
         public string Description => TokenBalance.Name ?? TokenBalance.Symbol;
-        public string Address { get; set; }
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
         [Reactive] public decimal TotalAmount { get; set; }
@@ -136,8 +135,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             IAtomexApp app,
             INavigationService navigationService,
             TokenContract contract,
-            TokenBalance tokenBalance,
-            string address)
+            TokenBalance tokenBalance)
         {
             Transactions = new ObservableCollection<TransactionViewModel>();
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>();
@@ -147,7 +145,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Contract = contract;
             TokenBalance = tokenBalance;
-            Address = address;
 
             TezosConfig = _app.Account
                 .Currencies

@@ -1,19 +1,20 @@
 ﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.OS;
-using Atomex.Common;
-using atomex.Common.FileSystem;
-using Plugin.Fingerprint;
-using Android.Views;
-using Xamarin.Forms;
-using Firebase.Messaging;
 using Android.Gms.Extensions;
-using System.Threading.Tasks;
-using Serilog.Debugging;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using atomex.Common.FileSystem;
+using Atomex.Common;
+using Firebase.Messaging;
+using Plugin.Fingerprint;
+using Sentry;
 using Serilog;
 using Serilog.Events;
-using Sentry;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace atomex.Droid
 {
@@ -24,6 +25,8 @@ namespace atomex.Droid
 
         protected override void OnCreate(Bundle bundle)
         {
+            ConfigureLogging();
+
             Forms.SetFlags("Brush_Experimental");
             Forms.SetFlags("Shapes_Experimental");
 
@@ -50,16 +53,22 @@ namespace atomex.Droid
             global::ZXing.Net.Mobile.Forms.Android.Platform.Init();
 
             App.FileSystem = Device.Android;
-            _ = GetDeviceToken();
+
+            _ = GetDeviceTokenAsync();
 
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidUnhandledExceptionRaiser;
 
             LoadApplication(new App());
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
         private void AndroidUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
         {
-            SentrySdk.CaptureException(e.Exception);
+            Log.Error(e.Exception, "Android unhandled exception");
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -70,42 +79,56 @@ namespace atomex.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        private async Task GetDeviceToken()
+        private async Task GetDeviceTokenAsync()
         {
-            string token = (await FirebaseMessaging.Instance.GetToken()).ToString();
-            App.DeviceToken = token;
-            //StartSentry();
+            try
+            {
+                var token = await FirebaseMessaging.Instance.GetToken();
+
+                App.DeviceToken = token.ToString();
+
+                Log.Debug("DeviceToken: {@token}", App.DeviceToken);
+
+                // apply device token to sentry
+                SentrySdk.ConfigureScope(scope =>
+                {
+                    scope.SetTag("device_token", App.DeviceToken);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Get device token error");
+            }
         }
 
-        private void StartSentry()
+        private void ConfigureLogging()
         {
-            SelfLog.Enable(m => Log.Error(m));
-            SentrySdk.Init("https://newsentry.baking-bad.org/api/4/?sentry_key=dee6b20f797d4dff97b8bcdbd738a583");
-
-            //SentryXamarin.Init(o =>
-            //{
-            //    o.Dsn = "https://newsentry.baking-bad.org/api/4/?sentry_key=dee6b20f797d4dff97b8bcdbd738a583";
-            //    o.Debug = true;
-            //});
-
-            SentrySdk.ConfigureScope(scope =>
+            SentryXamarin.Init(o =>
             {
-                scope.SetTag("platform", "android");
-                scope.SetTag("device_token", App.DeviceToken);
+                o.Dsn = "https://dee6b20f797d4dff97b8bcdbd738a583@newsentry.baking-bad.org/4";
+                o.CreateHttpClientHandler = () => new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, sslPoicyErrors) =>
+                    {
+                        return true;
+                    }
+                };
             });
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .MinimumLevel.Debug()
+                .WriteTo.AndroidLog()
                 .WriteTo.Sentry(o =>
                 {
-                    o.TracesSampleRate = 1.0;
+                    //o.TracesSampleRate = 1.0;
                     o.MinimumEventLevel = LogEventLevel.Error;
                     o.MinimumBreadcrumbLevel = LogEventLevel.Error;
                     o.AttachStacktrace = true;
-                    o.SendDefaultPii = true;
+                    //o.SendDefaultPii = true;
                     o.InitializeSdk = false;
-                }).CreateLogger();
+                })
+                .CreateLogger();
         }
     }
 }

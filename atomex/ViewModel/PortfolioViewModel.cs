@@ -58,7 +58,8 @@ namespace atomex.ViewModel
 
     public class PortfolioViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
+        private readonly IAtomexApp _app;
+        private readonly CurrencyViewModelCreator _currencyViewModelCreator;
         [Reactive] private INavigationService _navigationService { get; set; }
 
         [Reactive] public IList<PortfolioCurrencyViewModel> AllCurrencies { get; set; }
@@ -75,10 +76,11 @@ namespace atomex.ViewModel
 
         [Reactive] public bool IsRestoring { get; set; }
 
-        public PortfolioViewModel(IAtomexApp app)
+        public PortfolioViewModel(IAtomexApp app, CurrencyViewModelCreator currencyViewModelCreator)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            
+            _currencyViewModelCreator = currencyViewModelCreator ?? throw new ArgumentNullException(nameof(currencyViewModelCreator));
+
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
@@ -211,7 +213,7 @@ namespace atomex.ViewModel
                     AllCurrencies = _app.Account?.Currencies
                         .Select(c =>
                         {
-                            var currency = CurrencyViewModelCreator.CreateOrGet(
+                            var currency = _currencyViewModelCreator.CreateOrGet(
                                 currencyConfig: c,
                                 navigationService: _navigationService,
                                 subscribeToUpdates: true);

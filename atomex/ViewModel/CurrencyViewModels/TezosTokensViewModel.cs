@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -52,9 +53,11 @@ namespace atomex.ViewModel.CurrencyViewModels
 
     public class TezosTokensViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private IAccount _account { get; set; }
-        private INavigationService _navigationService { get; set; }
+        private readonly IAtomexApp _app;
+        private IAccount _account;
+        private readonly INavigationService _navigationService;
+        private readonly TezosTokenViewModelCreator _tezosTokenViewModelCreator;
+
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
@@ -76,7 +79,8 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            
+            _tezosTokenViewModelCreator = new TezosTokenViewModelCreator();
+
             SubscribeToServices(_app);
 
             this.WhenAnyValue(vm => vm.Contracts)
@@ -126,10 +130,15 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task<IEnumerable<TezosTokenViewModel>> LoadTokens()
         {
-            var tokens = new ObservableCollection<TezosTokenViewModel>();
+            var tokens = new List<TezosTokenViewModel>();
 
             foreach (var contract in Contracts)
-                tokens.AddRange(await TezosTokenViewModelCreator.CreateOrGet(_app, _navigationService, contract));
+            {
+                var contractTokens = await _tezosTokenViewModelCreator.CreateOrGet(_app, _navigationService, contract);
+                tokens.AddRange(contractTokens);
+
+                Log.Debug("{@count} tokens for {@contract} loaded", contractTokens.Count(), contract.Address);
+            }
 
             return tokens.OrderByDescending(token => token.IsConvertable)
                 .ThenByDescending(token => token.TotalAmountInBase);
@@ -208,6 +217,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 IsTokensLoading = true;
 
                 var disabledTokens = _app.Account.UserData?.DisabledTokens ?? Array.Empty<string>();
+
                 var tokens = await Task.Run(
                     () => LoadTokens());
 

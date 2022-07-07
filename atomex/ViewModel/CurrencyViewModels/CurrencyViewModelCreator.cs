@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+
 using Atomex.Core;
+
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public enum Currencies
@@ -17,12 +19,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         XTZ,
     }
 
-    public static class CurrencyViewModelCreator
+    public class CurrencyViewModelCreator
     {
+        private readonly ConcurrentDictionary<Currencies, CurrencyViewModel> Instances = new();
 
-        private static readonly ConcurrentDictionary<Currencies, CurrencyViewModel> Instances = new();
-
-        public static CurrencyViewModel CreateOrGet(
+        public CurrencyViewModel CreateOrGet(
             CurrencyConfig currencyConfig,
             INavigationService navigationService,
             bool subscribeToUpdates)
@@ -57,7 +58,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             return currencyViewModel;
         }
 
-        public static void Reset()
+        public void Reset()
         {
             foreach (var currencyViewModel in Instances.Values)
             {
@@ -67,7 +68,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             Instances.Clear();
         }
 
-        private static NotSupportedException NotSupported(string currencyName)
+        private NotSupportedException NotSupported(string currencyName)
         {
             return new NotSupportedException(
                 $"Can't create currency view model for {currencyName}. This currency is not supported.");

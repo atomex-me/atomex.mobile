@@ -1,28 +1,28 @@
-﻿using System;
-using Atomex;
-using Microsoft.Extensions.Configuration;
-using Atomex.Wallet.Abstract;
-using Atomex.Common.Configuration;
-using System.Linq;
-using atomex.Services;
-using Atomex.Services;
+﻿using atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
-using Atomex.Common;
-using Xamarin.Forms;
-using Atomex.Client.Common;
+using Atomex;
 using Atomex.Client.Abstract;
+using Atomex.Client.Common;
 using Atomex.Client.V1.Entities;
+using Atomex.Common;
+using Atomex.Common.Configuration;
+using Atomex.Services;
+using Atomex.Wallet.Abstract;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public SettingsViewModel SettingsViewModel { get; set; }
-        public ConversionViewModel ConversionViewModel { get; set; }
-        public PortfolioViewModel PortfolioViewModel { get; set; }
-        public BuyViewModel BuyViewModel { get; set; }
-
-        public IAtomexApp AtomexApp { get; private set; }
+        public SettingsViewModel SettingsViewModel { get; }
+        public ConversionViewModel ConversionViewModel { get; }
+        public PortfolioViewModel PortfolioViewModel { get; }
+        public BuyViewModel BuyViewModel { get; }
+        public CurrencyViewModelCreator CurrencyViewModelCreator { get; }
+        public IAtomexApp AtomexApp { get; }
 
         public EventHandler Locked;
 
@@ -39,23 +39,16 @@ namespace atomex.ViewModel
                 .Build();
 
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            CurrencyViewModelCreator = new CurrencyViewModelCreator();
 
             SubscribeToServices();
 
-            ClientType clientType;
-
-            switch (Device.RuntimePlatform)
+            var clientType = Device.RuntimePlatform switch
             {
-                case Device.iOS:
-                    clientType = ClientType.iOS;
-                    break;
-                case Device.Android:
-                    clientType = ClientType.Android;
-                    break;
-                default:
-                    clientType = ClientType.Unknown;
-                    break;
-            }
+                Device.iOS => ClientType.iOS,
+                Device.Android => ClientType.Android,
+                _ => ClientType.Unknown,
+            };
 
             var atomexClient = new WebSocketAtomexClientLegacy(
                 exchangeUrl: configuration[$"Services:{account?.Network}:Exchange:Url"],
@@ -65,8 +58,8 @@ namespace atomex.ViewModel
 
             AtomexApp.ChangeAtomexClient(atomexClient, account, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
-            ConversionViewModel = new ConversionViewModel(AtomexApp);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp, CurrencyViewModelCreator);
+            ConversionViewModel = new ConversionViewModel(AtomexApp, CurrencyViewModelCreator);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
@@ -84,7 +77,6 @@ namespace atomex.ViewModel
 
             ConversionViewModel?.Reset();
             CurrencyViewModelCreator.Reset();
-            TezosTokenViewModelCreator.Reset();
 
             AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
 
