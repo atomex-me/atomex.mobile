@@ -877,6 +877,10 @@
     <Folder Include="Assets\Animations\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\atomex.client.core\Atomex.TzktEvents\Atomex.TzktEvents.csproj">
+      <Project>{4E3C8932-3924-4519-A49B-4D76F9FB2117}</Project>
+      <Name>Atomex.TzktEvents</Name>
+    </ProjectReference>
     <ProjectReference Include="..\atomex\atomex.csproj">
       <Project>{6A6C43B1-1489-4B8D-AA37-941EF60E36F0}</Project>
       <Name>atomex</Name>
