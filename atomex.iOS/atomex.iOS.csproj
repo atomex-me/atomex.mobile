@@ -339,6 +339,9 @@
     <PackageReference Include="Xamarin.Forms.InputKit">
       <Version>3.7.2</Version>
     </PackageReference>
+    <PackageReference Include="Serilog.Sinks.Xamarin">
+      <Version>0.2.0.64</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>

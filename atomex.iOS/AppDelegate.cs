@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Atomex.Common;
-using Foundation;
-using UIKit;
-using UserNotifications;
 
-using atomex.Common.FileSystem;
-using Xamarin.Forms;
-using atomex.Services;
-using Serilog.Debugging;
+using Foundation;
+using Sentry;
 using Serilog;
 using Serilog.Events;
-using Sentry;
+using UIKit;
+using UserNotifications;
+using Xamarin.Forms;
+
+using atomex.Common.FileSystem;
+using atomex.Services;
+using Atomex.Common;
 
 namespace atomex.iOS
 {
@@ -32,6 +32,8 @@ namespace atomex.iOS
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            ConfigureLogging();
+
             FileSystem.UseFileSystem(new IosFileSystem());
 
             Forms.SetFlags("Shapes_Experimental");
@@ -71,41 +73,49 @@ namespace atomex.iOS
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
+            try
+            {
+                //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
+                byte[] result = new byte[deviceToken.Length];
+                Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
+                DeviceToken = BitConverter.ToString(result).Replace("-", "");
 
-            //DeviceToken = Regex.Replace(deviceToken.ToString(), "[^0-9a-zA-Z]+", "");
-            byte[] result = new byte[deviceToken.Length];
-            Marshal.Copy(deviceToken.Bytes, result, 0, (int)deviceToken.Length);
-            DeviceToken = BitConverter.ToString(result).Replace("-", "");
+                App.FileSystem = Device.iOS;
+                App.DeviceToken = DeviceToken;
 
-            App.FileSystem = Device.iOS;
-            App.DeviceToken = DeviceToken;
-
-            StartSentry();
+                // apply device token to sentry
+                SentrySdk.ConfigureScope(scope =>
+                {
+                    scope.SetTag("device_token", DeviceToken);
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "RegisteredForRemoteNotifications error");
+            }
         }
 
-        private void StartSentry()
+        private void ConfigureLogging()
         {
-            SelfLog.Enable(m => Log.Error(m));
-            SentrySdk.Init("https://dee6b20f797d4dff97b8bcdbd738a583@newsentry.baking-bad.org/4");
-
-            SentrySdk.ConfigureScope(scope =>
+            SentryXamarin.Init(o =>
             {
-                scope.SetTag("platform", "iOS");
-                scope.SetTag("device_token", DeviceToken);
+                o.Dsn = "https://dee6b20f797d4dff97b8bcdbd738a583@newsentry.baking-bad.org/4";
             });
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .MinimumLevel.Debug()
+                .WriteTo.NSLog()
                 .WriteTo.Sentry(o =>
                 {
-                    o.TracesSampleRate = 1.0;
+                    //o.TracesSampleRate = 1.0;
                     o.MinimumEventLevel = LogEventLevel.Error;
                     o.MinimumBreadcrumbLevel = LogEventLevel.Error;
                     o.AttachStacktrace = true;
-                    o.SendDefaultPii = true;
+                    //o.SendDefaultPii = true;
                     o.InitializeSdk = false;
-                }).CreateLogger();
+                })
+                .CreateLogger();
         }
 
         public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
