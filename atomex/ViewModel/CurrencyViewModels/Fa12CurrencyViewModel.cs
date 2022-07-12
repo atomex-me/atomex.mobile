@@ -10,9 +10,11 @@ using atomex.ViewModel.TransactionViewModels;
 using System.Collections.ObjectModel;
 using Atomex.Common;
 using Atomex.Core;
-using ReactiveUI;
 using atomex.Views;
 using System.Threading;
+using static atomex.Models.SnackbarMessage;
+using atomex.Resources;
+using Atomex.Wallet;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -60,11 +62,19 @@ namespace atomex.ViewModel.CurrencyViewModels
                                 t.CopyAddress = CopyAddress;
                                 t.CopyTxId = CopyTxId;
                             }));
-                    var groups = Transactions.GroupBy(p => p.LocalTime.Date).Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, g));
-                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
 
-                    this.RaisePropertyChanged(nameof(Transactions));
-                    this.RaisePropertyChanged(nameof(GroupedTransactions));
+                    var groups = !IsAllTxsShowed
+                        ? Transactions
+                            .OrderByDescending(p => p.LocalTime.Date)
+                            .Take(TxsNumberPerPage)
+                            .GroupBy(p => p.LocalTime.Date)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                        : Transactions
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+
+                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
                 });
             }
             catch (OperationCanceledException)
@@ -93,18 +103,21 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         public override async Task ScanCurrency()
         {
-            if (IsRefreshing) return;
-
-            var cancellation = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
             IsRefreshing = true;
 
             try
             {
                 await _app.Account
                     .GetCurrencyAccount<Fa12Account>(Currency.Name)
-                    .UpdateBalanceAsync(cancellation.Token);
+                    .UpdateBalanceAsync(_cancellationTokenSource.Token);
 
                 await LoadTransactionsAsync();
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
+                });
             }
             catch (OperationCanceledException)
             {
@@ -115,22 +128,42 @@ namespace atomex.ViewModel.CurrencyViewModels
                 Log.Error(e, "Fa12WalletViewModel.OnUpdateClick error.");
                 // todo: message to user!?
             }
-
-            IsRefreshing = false;
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
 
         protected override void LoadAddresses()
         {
             var fa12currency = Currency as Fa12Config;
-            var tezosConfig = _app.Account
-                .Currencies
-                .Get<TezosConfig>(TezosConfig.Xtz);
 
             AddressesViewModel = new AddressesViewModel(
                 app: _app,
                 currency: fa12currency,
                 navigationService: _navigationService,
                 tokenContract: fa12currency.TokenContractAddress);
+        }
+
+        protected override async void OnBalanceUpdatedEventHandler(object sender, CurrencyEventArgs args)
+        {
+            try
+            {
+                var tezosTokenConfig = (TezosTokenConfig)Currency;
+
+                if (!args.IsTokenUpdate ||
+                   args.TokenContract != null && (args.TokenContract != tezosTokenConfig.TokenContractAddress || args.TokenId != tezosTokenConfig.TokenId))
+                {
+                    return;
+                }
+
+                await UpdateBalanceAsync();
+                await LoadTransactionsAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Account balance updated event handler error");
+            }
         }
     }
 }

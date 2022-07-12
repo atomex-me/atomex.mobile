@@ -661,7 +661,7 @@ namespace atomex.ViewModel
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(FeeCurrencyCode, BaseCurrencyCode);
@@ -675,7 +675,7 @@ namespace atomex.ViewModel
 
         private void OnQuotesProviderAvailabilityChangedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider provider)
+            if (sender is not IQuotesProvider provider)
                 return;
 
             if (provider.IsAvailable)

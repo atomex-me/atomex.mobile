@@ -69,7 +69,7 @@
                        WidthRequest="28"
                        HeightRequest="28"/>
                 <Label Grid.Column="1"
-                       Text="{Binding FromCurrencyViewModel.CurrencyCode}"
+                       Text="{Binding FromCurrencyViewModel.CurrencyName}"
                        Style="{DynamicResource MainTextH4}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="End"
@@ -112,7 +112,7 @@
                        HeightRequest="28"/>
                 <Label Grid.Row="2"
                        Grid.Column="1"
-                       Text="{Binding ToCurrencyViewModel.CurrencyCode}"
+                       Text="{Binding ToCurrencyViewModel.CurrencyName}"
                        Style="{DynamicResource MainTextH4}"
                        Padding="0,2"
                        HorizontalTextAlignment="Start"

@@ -11,10 +11,13 @@ using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
 using Atomex.MarketData;
+using Atomex.MarketData.Abstract;
 using Atomex.MarketData.Bitfinex;
 using Atomex.MarketData.TezTools;
 using Atomex.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -25,7 +28,7 @@ namespace atomex
         public static string DeviceToken;
         public static string FileSystem;
 
-        private IAtomexApp AtomexApp;
+        public static IAtomexApp AtomexApp;
 
         public static double ScreenWidth { get; } = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
         public static double ScreenHeight { get; } = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
@@ -60,6 +63,7 @@ namespace atomex
         {
             InitializeComponent();
             LoadStyles();
+            var loggerFactory = InitLogger();
 
             DependencyService.Get<INotificationManager>().Initialize();
 
@@ -67,11 +71,16 @@ namespace atomex
             var symbolsProvider = new SymbolsProvider(SymbolsConfiguration);
 
             var bitfinexQuotesProvider = new BitfinexQuotesProvider(
-                currencies: currenciesProvider.GetCurrencies(Network.MainNet),
-                baseCurrency: BitfinexQuotesProvider.Usd);
-            var tezToolsQuotesProvider = new TezToolsQuotesProvider();
+                currencies: currenciesProvider.GetCurrencies(Network.MainNet).Select(c => c.Name),
+                baseCurrency: QuotesProvider.Usd,
+                log: loggerFactory.CreateLogger<BitfinexQuotesProvider>());
+            var tezToolsQuotesProvider = new TezToolsQuotesProvider(
+                loggerFactory.CreateLogger<TezToolsQuotesProvider>());
 
-            var quotesProvider = new MultiSourceQuotesProvider(bitfinexQuotesProvider, tezToolsQuotesProvider);
+            var quotesProvider = new MultiSourceQuotesProvider(
+                log: loggerFactory.CreateLogger<MultiSourceQuotesProvider>(),
+                bitfinexQuotesProvider,
+                tezToolsQuotesProvider);
 
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)
@@ -109,6 +118,12 @@ namespace atomex
                 ResDictionary.MergedDictionaries.Add(SmallDevicesStyle.SharedInstance);
             else
                 ResDictionary.MergedDictionaries.Add(GeneralDevicesStyle.SharedInstance);
+        }
+
+        private ILoggerFactory InitLogger()
+        {
+            return new LoggerFactory()
+                .AddSerilog();
         }
     }
 }

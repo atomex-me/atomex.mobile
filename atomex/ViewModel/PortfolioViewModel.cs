@@ -14,11 +14,10 @@ using atomex.Views;
 using atomex.Views.Popup;
 using Atomex;
 using Atomex.Common;
-using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
-using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
@@ -32,31 +31,38 @@ namespace atomex.ViewModel
         Receive
     }
 
-    public class PortfolioCurrency : BaseViewModel
+    public class PortfolioCurrencyViewModel : BaseViewModel
     {
         public CurrencyViewModel CurrencyViewModel { get; set; }
         [Reactive] public bool IsSelected { get; set; }
         public Action<string, bool> OnChanged { get; set; }
 
-        public PortfolioCurrency()
+        public PortfolioCurrencyViewModel(
+            CurrencyViewModel currencyViewModel,
+            bool isSelected)
         {
+            CurrencyViewModel = currencyViewModel;
+            IsSelected = isSelected;
+
             this.WhenAnyValue(vm => vm.IsSelected)
+                .WhereNotNull()
+                .Skip(1)
                 .SubscribeInMainThread(flag =>
-                {
-                    OnChanged?.Invoke(CurrencyViewModel.CurrencyCode, flag);
-                });
+                    OnChanged?.Invoke(CurrencyViewModel.CurrencyCode, flag));
         }
 
         private ICommand _toggleCommand;
-        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() => IsSelected = !IsSelected);
+        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() =>
+            IsSelected = !IsSelected);
     }
 
     public class PortfolioViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
+        private readonly IAtomexApp _app;
+        private readonly CurrencyViewModelCreator _currencyViewModelCreator;
         [Reactive] private INavigationService _navigationService { get; set; }
 
-        [Reactive] public IList<PortfolioCurrency> AllCurrencies { get; set; }
+        [Reactive] public IList<PortfolioCurrencyViewModel> AllCurrencies { get; set; }
         [Reactive] public IList<CurrencyViewModel> UserCurrencies { get; set; }
 
         [Reactive] public decimal AvailableAmountInBase { get; set; }
@@ -67,14 +73,14 @@ namespace atomex.ViewModel
 
         private bool _startCurrenciesScan = false;
         private string[] _currenciesForScan { get; set; }
-        private string _defaultCurrencies = "BTC,LTC,ETH,XTZ";
-        private string _walletName;
 
-        public PortfolioViewModel(IAtomexApp app)
+        [Reactive] public bool IsRestoring { get; set; }
+
+        public PortfolioViewModel(IAtomexApp app, CurrencyViewModelCreator currencyViewModelCreator)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            _walletName = GetWalletName();
-            
+            _currencyViewModelCreator = currencyViewModelCreator ?? throw new ArgumentNullException(nameof(currencyViewModelCreator));
+
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
@@ -126,7 +132,7 @@ namespace atomex.ViewModel
                             SelectedCurrency = null;
                             break;
                     }
-                });   
+                });
         }
 
         private void SubscribeToUpdates()
@@ -145,14 +151,15 @@ namespace atomex.ViewModel
 
         private async Task StartCurrenciesScan()
         {
-            var currencies = AllCurrencies.Select(c => c.CurrencyViewModel);
+            IsRestoring = true;
 
-            if (_currenciesForScan != null)
-                currencies = AllCurrencies
+            var currencies = _currenciesForScan == null
+                ? AllCurrencies
+                    .Select(c => c.CurrencyViewModel)
+                : AllCurrencies
                     .Where(curr => _currenciesForScan.Contains(curr.CurrencyViewModel.CurrencyCode))
                     .Select(c => c.CurrencyViewModel)
                     .ToList();
-
             try
             {
                 var primaryCurrencies = currencies
@@ -165,32 +172,27 @@ namespace atomex.ViewModel
                         Task.WhenAll(primaryCurrencies
                             .Select(currency => currency.ScanCurrency())));
 
-                var tezosAccount = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+                var tezosTokens = primaryCurrencies
+                    .Where(c => c.HasTokens && c.CurrencyCode == "XTZ")
+                    ?.Cast<TezosCurrencyViewModel>()
+                    ?.FirstOrDefault()
+                    ?.TezosTokensViewModel;
 
-                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
-
-                await tezosTokensScanner.ScanAsync(
-                    skipUsed: false,
-                    cancellationToken: default);
-
-                // reload balances for all tezos tokens account
-                foreach (var currency in _app.Account.Currencies)
-                {
-                    if (Currencies.IsTezosToken(currency.Name))
-                        _app.Account
-                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                            .ReloadBalances();
-                }
+                await tezosTokens?.UpdateTokens();
 
                 await Task.Run(() =>
                         Task.WhenAll(tokenCurrencies
+                            .Where(c => c.Currency is not TezosConfig)
                             .Select(currency => currency.ScanCurrency())));
 
             }
             catch (Exception e)
             {
                 Log.Error(e, "Restore currencies error");
+            }
+            finally
+            {
+                IsRestoring = false;
             }
         }
 
@@ -204,34 +206,33 @@ namespace atomex.ViewModel
         {
             try
             {
-                var currencies = Preferences.Get(_walletName + "-" + "Currencies", string.Empty);
-                
-                if (string.IsNullOrEmpty(currencies))
-                    Preferences.Set(_walletName + "-" + "Currencies", _defaultCurrencies);
+                var disabledCurrencies = _app.Account.UserData?.DisabledCurrencies ?? Array.Empty<string>();
 
-                List<string> result = new List<string>();
-                result = currencies != string.Empty
-                    ? currencies.Split(',').ToList()
-                    : _defaultCurrencies.Split(',').ToList();
-
-                AllCurrencies = _app.Account?.Currencies
-                    .Select(c =>
-                    {
-                        var currency = CurrencyViewModelCreator.CreateViewModel(_app, c, _navigationService);
-                        var vm = new PortfolioCurrency
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AllCurrencies = _app.Account?.Currencies
+                        .Select(c =>
                         {
-                            CurrencyViewModel = currency,
-                            IsSelected = result.Contains(currency.CurrencyCode),
-                            OnChanged = ChangeUserCurrencies
-                        };
-                        return vm;
-                    })
-                    .ToList() ?? new List<PortfolioCurrency>();
+                            var currency = _currencyViewModelCreator.CreateOrGet(
+                                currencyConfig: c,
+                                navigationService: _navigationService,
+                                subscribeToUpdates: true);
 
-                UserCurrencies = AllCurrencies
-                    .Where(c => c.IsSelected)
-                    .Select(vm => vm.CurrencyViewModel)
-                    .ToList();
+                            var vm = new PortfolioCurrencyViewModel(
+                                currencyViewModel: currency,
+                                isSelected: !disabledCurrencies.Contains(currency.CurrencyCode))
+                            {
+                                OnChanged = ChangeUserCurrencies
+                            };
+                            return vm;
+                        })
+                        .ToList() ?? new List<PortfolioCurrencyViewModel>();
+
+                    UserCurrencies = AllCurrencies
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.CurrencyViewModel)
+                        .ToList();
+                });
             }
             catch (Exception ex)
             {
@@ -249,28 +250,22 @@ namespace atomex.ViewModel
             try
             {
                 if (string.IsNullOrEmpty(currency)) return;
-
-                var currencies = Preferences.Get(_walletName + "-" + "Currencies", string.Empty);
-                List<string> currenciesList = new List<string>();
-                currenciesList = currencies.Split(',').ToList();
-
-                if (isSelected && currenciesList.Any(item => item == currency))
-                    return;
-
-                if (isSelected)
-                    currenciesList.Add(currency);
-                else
-                    currenciesList.RemoveAll(c => c.Contains(currency));
                 
-                var result = string.Join(",", currenciesList);
-                Preferences.Set(_walletName + "-" + "Currencies", result);
+                var disabledCurrencies = AllCurrencies
+                    .Where(c => !c.IsSelected)
+                    .Select(currency => currency.CurrencyViewModel.CurrencyCode)
+                    .ToArray();
 
-                AllCurrencies?.Select(c => c.IsSelected == currenciesList.Contains(c.CurrencyViewModel.CurrencyCode));
-                
-                UserCurrencies = AllCurrencies?
-                    .Where(c => c.IsSelected)
-                    .Select(vm => vm.CurrencyViewModel)
-                    .ToList();
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    UserCurrencies = AllCurrencies?
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.CurrencyViewModel)
+                        .ToList();
+                });
+
+                _app.Account.UserData.DisabledCurrencies = disabledCurrencies;
+                _app.Account.UserData.SaveToFile(_app.Account.SettingsFilePath);
             }
             catch (Exception e)
             {
@@ -336,9 +331,10 @@ namespace atomex.ViewModel
         private ReactiveCommand<Unit, Unit> _exchangeCommand;
         public ReactiveCommand<Unit, Unit> ExchangeCommand => _exchangeCommand ??= ReactiveCommand.Create(() => _navigationService?.GoToExchange(null));
 
-        private string GetWalletName()
+        private ReactiveCommand<Unit, Unit> _hideRestoringCommand;
+        public ReactiveCommand<Unit, Unit> HideRestoringCommand => _hideRestoringCommand ??= ReactiveCommand.Create(() =>
         {
-            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
-        }
+            IsRestoring = false;
+        });
     }
 }

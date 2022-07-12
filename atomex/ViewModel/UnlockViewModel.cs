@@ -248,21 +248,6 @@ namespace atomex
                 {
                     var fileSystem = FileSystem.Current;
 
-                    ClientType clientType;
-
-                    switch (Device.RuntimePlatform)
-                    {
-                        case Device.iOS:
-                            clientType = ClientType.iOS;
-                            break;
-                        case Device.Android:
-                            clientType = ClientType.Android;
-                            break;
-                        default:
-                            clientType = ClientType.Unknown;
-                            break;
-                    }
-
                     var walletPath = Path.Combine(
                         fileSystem.PathToDocuments,
                         WalletInfo.DefaultWalletsDirectory,
@@ -275,7 +260,6 @@ namespace atomex
                             pathToAccount: walletPath,
                             password: StoragePassword,
                             currenciesProvider: _app.CurrenciesProvider,
-                            clientType: clientType,
                             migrationCompleteCallback: (MigrationActionType actionType) =>
                             {
                                 if (actionType == MigrationActionType.XtzTransactionsDeleted)
@@ -291,7 +275,9 @@ namespace atomex
 
                     try
                     {
-                        account.ChangePassword(StoragePassword);
+                        if (!account.ChangePassword(StoragePassword))
+                            throw new Exception("Can't change password");
+
                         await SecureStorage.SetAsync(WalletName, SecureStringToString(StoragePassword));
                     }
                     catch (Exception e)

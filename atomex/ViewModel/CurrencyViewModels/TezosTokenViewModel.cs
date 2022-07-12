@@ -32,9 +32,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosTokenViewModel : BaseViewModel
     {
-        protected IAtomexApp _app { get; set; }
-        protected IAccount _account { get; set; }
-        protected INavigationService _navigationService { get; set; }
+        protected IAtomexApp _app;
+        protected IAccount _account;
+        protected INavigationService _navigationService;
 
         public const string Fa12 = "FA12";
         public const string Fa2 = "FA2";
@@ -45,7 +45,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public bool IsFa2 => Contract.GetContractType() == Fa2;
         public static string BaseCurrencyCode => "USD";
         public string CurrencyCode => TokenBalance.Symbol;
-        public string Address { get; set; }
+        public string Description => TokenBalance.Name ?? TokenBalance.Symbol;
         public bool IsConvertable => _app?.Account?.Currencies
             .Any(c => c is Fa12Config fa12 && fa12?.TokenContractAddress == Contract.Address) ?? false;
         [Reactive] public decimal TotalAmount { get; set; }
@@ -59,6 +59,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public AddressesViewModel AddressesViewModel { get; set; }
         [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
 
+        [Reactive] public bool IsTransfersLoading { get; set; }
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
@@ -83,7 +84,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         [Reactive] public bool IsRefreshing { get; set; }
         [Reactive] public CurrencyTab SelectedTab { get; set; }
 
-        private ThumbsApi ThumbsApi => new ThumbsApi(
+        private ThumbsApi ThumbsApi => new(
             new ThumbsApiSettings
             {
                 ThumbsApiUri = TezosConfig.ThumbsApiUri,
@@ -134,15 +135,16 @@ namespace atomex.ViewModel.CurrencyViewModels
             IAtomexApp app,
             INavigationService navigationService,
             TokenContract contract,
-            TokenBalance tokenBalance,
-            string address)
+            TokenBalance tokenBalance)
         {
+            Transactions = new ObservableCollection<TransactionViewModel>();
+            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>();
+
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Contract = contract;
             TokenBalance = tokenBalance;
-            Address = address;
 
             TezosConfig = _app.Account
                 .Currencies
@@ -179,25 +181,24 @@ namespace atomex.ViewModel.CurrencyViewModels
                     OnAddresesChangedEventHandler();
                 });
 
-            LoadAddresses();
-            _ = LoadTransfers();
-            _ = UpdateAsync();
+            _ = UpdateBalanceAsync();
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
             SelectedTab = CurrencyTab.Activity;
-
-            SubscribeToUpdates();
         }
 
         protected void OnAddresesChangedEventHandler()
         {
             try
             {
-                Addresses = new ObservableCollection<AddressViewModel>(
-                    AddressesViewModel?.Addresses
-                        .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
-                        .Take(AddressesNumberPerPage));
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Addresses = new ObservableCollection<AddressViewModel>(
+                        AddressesViewModel?.Addresses
+                            .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
+                            .Take(AddressesNumberPerPage));
+                });
             }
             catch (Exception e)
             {
@@ -205,100 +206,64 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private void LoadAddresses()
-        {
-            AddressesViewModel?.Dispose();
-
-            AddressesViewModel = new AddressesViewModel(
-                app: _app,
-                currency: TezosConfig,
-                navigationService: _navigationService,
-                tokenContract: Contract.Address,
-                tokenId: TokenBalance.TokenId);
-        }
-
-        private async Task LoadTransfers()
+        public void LoadAddresses()
         {
             try
             {
-                if (IsFa12)
+                AddressesViewModel?.Dispose();
+
+                AddressesViewModel = new AddressesViewModel(
+                    app: _app,
+                    currency: TezosConfig,
+                    navigationService: _navigationService,
+                    tokenContract: Contract.Address,
+                    tokenId: TokenBalance.TokenId);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"LoadAddresses error for contract {Contract?.Name} ({Contract?.Address})");
+            }
+        }
+
+        public async Task LoadTransfers()
+        {
+            try
+            {
+                IsTransfersLoading = true;
+                
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    var tokenAccount = _app.Account.GetTezosTokenAccount<Fa12Account>(
-                        currency: Fa12,
-                        tokenContract: Contract.Address,
-                        tokenId: 0);
+                    Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
+                        .DataRepository
+                        .GetTezosTokenTransfersAsync(
+                            Contract.Address,
+                            offset: 0,
+                            limit: int.MaxValue))
+                        .Where(token => token.Token.TokenId == TokenBalance.TokenId)
+                        .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
+                        .ToList()
+                        .ForEachDo(t =>
+                        {
+                            t.CopyAddress = CopyAddress;
+                            t.CopyTxId = CopyTxId;
+                        }));
 
-                    var selectedTransactionId = SelectedTransaction?.Id;
+                    var groups = !IsAllTxsShowed
+                        ? Transactions
+                            .OrderByDescending(p => p.LocalTime.Date)
+                            .Take(TxsNumberPerPage)
+                            .GroupBy(p => p.LocalTime.Date)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                        : Transactions
+                            .GroupBy(p => p.LocalTime.Date)
+                            .OrderByDescending(g => g.Key)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-                    await Device.InvokeOnMainThreadAsync(async () =>
-                    {
-                        Transactions = new ObservableCollection<TransactionViewModel>((await tokenAccount
-                            .DataRepository
-                            .GetTezosTokenTransfersAsync(
-                                Contract.Address,
-                                offset: 0,
-                                limit: int.MaxValue))
-                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
-                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
-                            .ToList()
-                            .ForEachDo(t =>
-                            {
-                                t.CopyAddress = CopyAddress;
-                                t.CopyTxId = CopyTxId;
-                            }));
-
-                        var groups = !IsAllTxsShowed
-                            ? Transactions
-                               .OrderByDescending(p => p.LocalTime.Date)
-                               .Take(TxsNumberPerPage)
-                               .GroupBy(p => p.LocalTime.Date)
-                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
-                            : Transactions
-                                .GroupBy(p => p.LocalTime.Date)
-                                .OrderByDescending(g => g.Key)
-                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
-
-                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-                    });
-                }
-                else if (IsFa2)
-                {
-                    var tezosAccount = _app.Account
-                        .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-
-                    var selectedTransactionId = SelectedTransaction?.Id;
-
-                    await Device.InvokeOnMainThreadAsync(async () =>
-                    {
-                        Transactions = new ObservableCollection<TransactionViewModel>((await tezosAccount
-                            .DataRepository
-                            .GetTezosTokenTransfersAsync(
-                                Contract.Address,
-                                offset: 0,
-                                limit: int.MaxValue))
-                            .Where(token => token.Token.TokenId == TokenBalance.TokenId)
-                            .Select(t => new TezosTokenTransferViewModel(t, TezosConfig))
-                            .ToList()
-                            .ForEachDo(t =>
-                            {
-                                t.CopyAddress = CopyAddress;
-                                t.CopyTxId = CopyTxId;
-                            }));
-
-                        var groups = !IsAllTxsShowed
-                            ? Transactions
-                               .OrderByDescending(p => p.LocalTime.Date)
-                               .Take(TxsNumberPerPage)
-                               .GroupBy(p => p.LocalTime.Date)
-                               .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
-                            : Transactions
-                                .GroupBy(p => p.LocalTime.Date)
-                                .OrderByDescending(g => g.Key)
-                                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
-
-                        GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-                    });
-                }
+                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                });
             }
             catch (OperationCanceledException)
             {
@@ -310,6 +275,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             finally
             {
+                IsTransfersLoading = false;
                 Log.Debug($"Token transfers loaded for contract {Contract}");
             }
         }
@@ -318,12 +284,15 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (!Currencies.IsTezosToken(args?.Currency)) return;
+                if (!args.IsTokenUpdate ||
+                    args.TokenContract != null && (args.TokenContract != TokenBalance.Contract || args.TokenId != TokenBalance.TokenId))
+                {
+                    return;
+                }
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
-                    await LoadTransfers();
-                    await UpdateAsync();
+                    await UpdateBalanceAsync();
                 });
             }
             catch (Exception e)
@@ -332,7 +301,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private void SubscribeToUpdates()
+        public void SubscribeToUpdates()
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
             _app.QuotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
@@ -340,19 +309,26 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        public void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
-            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-            if (quote == null) return;
+            try
+            {
+                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
+                if (quote == null) return;
 
-            CurrentQuote = quote.Bid;
-            TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+                CurrentQuote = quote.Bid;
+                TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Update quotes error on tezos token {CurrencyCode}");
+            } 
         }
 
         private ReactiveCommand<Unit, Unit> _tokenActionSheetCommand;
@@ -391,7 +367,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             _cancellationTokenSource?.Dispose();
         });
 
-        private async Task UpdateAsync()
+        private async Task UpdateBalanceAsync()
         {
             var tezosAccount = _app.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
@@ -425,17 +401,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
-                await tezosTokensScanner.ScanContractAsync(
-                    contractAddress: Contract.Address,
+                await tezosTokensScanner.UpdateBalanceAsync(
+                    tokenContract: Contract?.Address,
+                    tokenId: (int)TokenBalance?.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
-
-                var tokenAccount = _app.Account
-                    .GetTezosTokenAccount<TezosTokenAccount>(
-                        currency: IsFa12 ? Fa12 : Fa2,
-                        tokenContract: Contract.Address,
-                        tokenId: (int)TokenBalance.TokenId);
-
-                tokenAccount.ReloadBalances();
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {

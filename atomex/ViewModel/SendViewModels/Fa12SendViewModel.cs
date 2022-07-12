@@ -8,7 +8,7 @@ using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Core;
+using Atomex.Common;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
 using Atomex.Wallet.Tezos;
@@ -40,7 +40,11 @@ namespace atomex.ViewModel.SendViewModels
                 ConfirmAction = ConfirmFromAddress
             };
 
-            SelectToViewModel = new SelectAddressViewModel(_app.Account, _currency, _navigationService)
+            SelectToViewModel = new SelectAddressViewModel(
+                account: _app.Account,
+                currency: tokenConfig,
+                navigationService: _navigationService,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmToAddress
             };
@@ -202,7 +206,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

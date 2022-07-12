@@ -5,7 +5,6 @@ using Atomex.Core;
 using System.Threading.Tasks;
 using Atomex.Common;
 using System;
-using Atomex.MarketData;
 using Serilog;
 using Xamarin.Forms;
 using Atomex.MarketData.Abstract;
@@ -16,7 +15,6 @@ using Atomex.Abstract;
 using atomex.Resources;
 using System.Windows.Input;
 using atomex.Views.CreateSwap;
-using Atomex.Services;
 using atomex.ViewModel.CurrencyViewModels;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
@@ -29,12 +27,15 @@ using Atomex.ViewModels;
 using atomex.Models;
 using atomex.Views;
 using static atomex.Models.Message;
+using Atomex.MarketData.Common;
+using Atomex.Client.Common;
 
 namespace atomex.ViewModel
 {
     public class ConversionViewModel : BaseViewModel
     {
-        private readonly IAtomexApp _app;
+        private IAtomexApp _app;
+        private readonly CurrencyViewModelCreator _currencyViewModelCreator;
         [Reactive] private INavigationService _navigationService { get; set; }
 
         private ISymbols _symbols
@@ -113,9 +114,10 @@ namespace atomex.ViewModel
         [Reactive] public bool IsAllSwapsShowed { get; set; }
         private int _swapNumberPerPage = 3;
 
-        public ConversionViewModel(IAtomexApp app)
+        public ConversionViewModel(IAtomexApp app, CurrencyViewModelCreator currencyViewModelCreator)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
+            _currencyViewModelCreator = currencyViewModelCreator ?? throw new ArgumentNullException(nameof(currencyViewModelCreator));
 
             Message = new Message();
             AmountToFeeRatioWarning = new Message();
@@ -253,8 +255,11 @@ namespace atomex.ViewModel
                 {
                     var symbol = _symbols.SymbolByCurrencies(t.Item1.Currency, t.Item2.Currency);
 
-                    BaseCurrencyCode = symbol?.Base;
-                    QuoteCurrencyCode = symbol?.Quote;
+                    var quoteCurrency = symbol != null ? _currencies.GetByName(symbol.Quote) : null;
+                    var baseCurrency = symbol != null ? _currencies.GetByName(symbol.Base) : null;
+
+                    BaseCurrencyCode = baseCurrency?.DisplayedName;
+                    QuoteCurrencyCode = quoteCurrency?.DisplayedName;
                 });
 
             // Amount, FromCurrencyViewModel or ToCurrencyViewModel changed => estimate swap price and target amount
@@ -275,22 +280,27 @@ namespace atomex.ViewModel
 
             // From Amount changed => update FromViewModel.AmountInBase
             this.WhenAnyValue(vm => vm.FromViewModel.Amount)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateFromAmountInBase());
 
             // To Amount changed => update ToViewModel.AmountInBase
             this.WhenAnyValue(vm => vm.ToViewModel.Amount)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateToAmountInBase());
 
             // EstimatedPaymentFee changed => update EstimatedPaymentFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedPaymentFee)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateEstimatedPaymentFeeInBase());
 
             // EstimatedRedeemFee changed => update EstimatedRedeemFeeInBase
             this.WhenAnyValue(vm => vm.EstimatedRedeemFee)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateEstimatedRedeemFeeInBase());
 
             // RewardForRedeem changed => update RewardForRedeemInBase
             this.WhenAnyValue(vm => vm.RewardForRedeem)
+                .WhereNotNull()
                 .SubscribeInMainThread(amount => UpdateRewardForRedeemInBase());
 
             // RewardForRedeem changed => update HasRewardForRedeem
@@ -463,6 +473,14 @@ namespace atomex.ViewModel
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+        public void Reset()
+        {
+            _app.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+
+            if (_app.HasQuotesProvider)
+                _app.QuotesProvider.QuotesUpdated -= OnBaseQuotesUpdatedEventHandler;
+        }
+
         public async void MaxClicked()
         {
             try
@@ -481,7 +499,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -558,7 +576,7 @@ namespace atomex.ViewModel
         {
             var currencyName = currencyViewModel?.Currency?.Name;
 
-            if (Currencies.IsBitcoinBased(currencyName))
+            if (Atomex.Currencies.IsBitcoinBased(currencyName))
             {
                 var availableOutputs = (await _app.Account
                     .GetCurrencyAccount<BitcoinBasedAccount>(currencyName)
@@ -679,7 +697,7 @@ namespace atomex.ViewModel
             if (_app.HasQuotesProvider)
                 _app.QuotesProvider.QuotesUpdated += OnBaseQuotesUpdatedEventHandler;
 
-            OnAtomexClientChangedEventHandler(this, new AtomexClientChangedEventArgs(_app.AtomexClient));
+            OnAtomexClientChangedEventHandler(this, new AtomexClientChangedEventArgs(oldClient: null, newClient: _app.AtomexClient));
         }
 
         protected virtual async Task EstimateSwapParamsAsync()
@@ -695,7 +713,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider,
                         quotesProvider: _app.QuotesProvider);
 
@@ -743,7 +761,7 @@ namespace atomex.ViewModel
             decimal amount,
             string currency,
             string baseCurrency,
-            ICurrencyQuotesProvider provider,
+            IQuotesProvider provider,
             decimal defaultAmountInBase = 0)
         {
             if (currency == null || baseCurrency == null || provider == null)
@@ -805,19 +823,17 @@ namespace atomex.ViewModel
         {
             var atomexClient = args.AtomexClient;
 
-            if (atomexClient?.Account == null) return;
-
+            if (_app?.Account == null) return;
 
             atomexClient.QuotesUpdated += OnQuotesUpdatedEventHandler;
             _app.SwapManager.SwapUpdated += OnSwapEventHandler;
 
-            FromCurrencies = atomexClient.Account.Currencies
+            FromCurrencies = _app.Account.Currencies
                 .Where(c => c.IsSwapAvailable)
-                .Select(c => CurrencyViewModelCreator.CreateViewModel(
-                    app: _app,
-                    currency: c,
+                .Select(c => _currencyViewModelCreator.CreateOrGet(
+                    currencyConfig: c,
                     navigationService: _navigationService,
-                    loadTransactions: false))
+                    subscribeToUpdates: true))
                 .ToList();
 
             ToCurrencies = FromCurrencies;
@@ -890,7 +906,7 @@ namespace atomex.ViewModel
             });
         }
 
-        protected async void OnQuotesUpdatedEventHandler(object sender, MarketDataEventArgs args)
+        protected async void OnQuotesUpdatedEventHandler(object sender, QuotesEventArgs args)
         {
             try
             {
@@ -906,7 +922,7 @@ namespace atomex.ViewModel
                         fromCurrency: FromViewModel?.CurrencyViewModel?.Currency,
                         toCurrency: ToViewModel?.CurrencyViewModel?.Currency,
                         account: _app.Account,
-                        atomexClient: _app.AtomexClient,
+                        marketDataRepository: _app.MarketDataRepository,
                         symbolsProvider: _app.SymbolsProvider);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -1088,119 +1104,141 @@ namespace atomex.ViewModel
                 this.RaisePropertyChanged(nameof(GroupedSwaps));
         }
 
-        private void OnConvertClick()
+        private bool _convertClick = false;
+
+        private async void OnConvertClick()
         {
-            if (FromViewModel?.CurrencyViewModel == null ||
-                ToViewModel?.CurrencyViewModel == null ||
-                FromCurrencyViewModelItem?.FromSource == null ||
-                ToAddress == null)
-                return;
-
-            if (FromViewModel.Amount <= 0)
+            try
             {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.AmountLessThanZeroError,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (_convertClick)
+                    return;
 
-            if (!FromViewModel.IsAmountValid || !ToViewModel.IsAmountValid)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.BigAmount,
-                    AppResources.AcceptButton);
-                return;
-            }
+                _convertClick = true;
 
-            if (EstimatedPrice <= 0)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    AppResources.NoLiquidityError,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (FromViewModel?.CurrencyViewModel == null ||
+                    ToViewModel?.CurrencyViewModel == null ||
+                    FromCurrencyViewModelItem?.FromSource == null ||
+                    ToAddress == null)
+                    return;
 
-            if (!_app.AtomexClient.IsServiceConnected(AtomexClientService.All))
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Error,
-                    AppResources.ServicesUnavailable,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (FromViewModel.Amount <= 0)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.AmountLessThanZeroError,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var symbol = _symbols.SymbolByCurrencies(
-                from: FromViewModel?.CurrencyViewModel.Currency,
-                to: ToViewModel?.CurrencyViewModel.Currency);
+                // final swap params estimation
+                await EstimateSwapParamsAsync();
 
-            if (symbol == null)
-            {
-                _navigationService?.ShowAlert(
-                    AppResources.Error,
-                    AppResources.NotSupportedSymbol,
-                    AppResources.AcceptButton);
-                return;
-            }
+                if (!FromViewModel.IsAmountValid || !ToViewModel.IsAmountValid)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.BigAmount,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var side = symbol.OrderSideForBuyCurrency(ToViewModel.CurrencyViewModel.Currency);
-            var price = EstimatedPrice;
-            var baseCurrency = _currencies.GetByName(symbol.Base);
+                if (EstimatedPrice <= 0)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        AppResources.NoLiquidityError,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            var qty = AmountHelper.AmountToSellQty(
-                side: side,
-                amount: FromViewModel.Amount,
-                price: price,
-                digitsMultiplier: baseCurrency.DigitsMultiplier);
+                if (!_app.AtomexClient.IsServiceConnected(Service.Exchange) ||
+                    !_app.AtomexClient.IsServiceConnected(Service.MarketData))
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.ServicesUnavailable,
+                        AppResources.AcceptButton);
+                    return;
+                }
 
-            if (qty < symbol.MinimumQty)
-            {
-                var minimumAmount = AmountHelper.QtyToSellAmount(
+                var symbol = _symbols.SymbolByCurrencies(
+                    from: FromViewModel?.CurrencyViewModel.Currency,
+                    to: ToViewModel?.CurrencyViewModel.Currency);
+
+                if (symbol == null)
+                {
+                    _navigationService?.ShowAlert(
+                        AppResources.Error,
+                        AppResources.NotSupportedSymbol,
+                        AppResources.AcceptButton);
+                    return;
+                }
+
+                var side = symbol.OrderSideForBuyCurrency(ToViewModel.CurrencyViewModel.Currency);
+                var price = EstimatedPrice;
+                var baseCurrency = _currencies.GetByName(symbol.Base);
+
+                var qty = AmountHelper.AmountToSellQty(
                     side: side,
-                    qty: symbol.MinimumQty,
+                    amount: FromViewModel.Amount,
                     price: price,
-                    digitsMultiplier: FromViewModel.CurrencyViewModel.Currency.DigitsMultiplier);
+                    digitsMultiplier: baseCurrency.DigitsMultiplier);
 
-                var message = string.Format(
-                    provider: CultureInfo.CurrentCulture,
-                    format: AppResources.MinimumAllowedQtyWarning,
-                    arg0: minimumAmount,
-                    arg1: FromViewModel.CurrencyViewModel.Currency.Name);
+                if (qty < symbol.MinimumQty)
+                {
+                    var minimumAmount = AmountHelper.QtyToSellAmount(
+                        side: side,
+                        qty: symbol.MinimumQty,
+                        price: price,
+                        digitsMultiplier: FromViewModel.CurrencyViewModel.Currency.DigitsMultiplier);
 
-                _navigationService?.ShowAlert(
-                    AppResources.Warning,
-                    message,
-                    AppResources.AcceptButton);
+                    var message = string.Format(
+                        provider: CultureInfo.CurrentCulture,
+                        format: AppResources.MinimumAllowedQtyWarning,
+                        arg0: minimumAmount,
+                        arg1: FromViewModel.CurrencyViewModel.Currency.Name);
 
-                return;
+                    _navigationService?.ShowAlert(
+                        AppResources.Warning,
+                        message,
+                        AppResources.AcceptButton);
+
+                    return;
+                }
+
+                var viewModel = new ConversionConfirmationViewModel(_app, _navigationService)
+                {
+                    FromCurrencyViewModel = FromViewModel?.CurrencyViewModel,
+                    ToCurrencyViewModel = ToViewModel?.CurrencyViewModel,
+                    FromSource = FromCurrencyViewModelItem?.FromSource,
+                    ToAddress = ToAddress,
+                    RedeemFromAddress = RedeemFromAddress,
+
+                    BaseCurrencyCode = BaseCurrencyCode,
+                    QuoteCurrencyCode = QuoteCurrencyCode,
+                    Amount = FromViewModel.Amount,
+                    AmountInBase = FromViewModel?.AmountInBase ?? 0m,
+                    TargetAmount = ToViewModel?.Amount ?? 0m,
+                    TargetAmountInBase = ToViewModel?.AmountInBase ?? 0m,
+
+                    EstimatedPrice = EstimatedPrice,
+                    EstimatedOrderPrice = _estimatedOrderPrice,
+                    EstimatedMakerNetworkFee = EstimatedMakerNetworkFee,
+                    EstimatedTotalNetworkFeeInBase = EstimatedTotalNetworkFeeInBase,
+                };
+
+                viewModel.OnSuccess += OnSuccessConvertion;
+
+                _navigationService?.ShowBottomSheet(new ExchangeConfirmationBottomSheet(viewModel));
             }
-
-            var viewModel = new ConversionConfirmationViewModel(_app, _navigationService)
+            catch (Exception e)
             {
-                FromCurrencyViewModel = FromViewModel?.CurrencyViewModel,
-                ToCurrencyViewModel = ToViewModel?.CurrencyViewModel,
-                FromSource = FromCurrencyViewModelItem?.FromSource,
-                ToAddress = ToAddress,
-                RedeemFromAddress = RedeemFromAddress,
-
-                BaseCurrencyCode = BaseCurrencyCode,
-                QuoteCurrencyCode = QuoteCurrencyCode,
-                Amount = FromViewModel.Amount,
-                AmountInBase = FromViewModel?.AmountInBase ?? 0m,
-                TargetAmount = ToViewModel?.Amount ?? 0m,
-                TargetAmountInBase = ToViewModel?.AmountInBase ?? 0m,
-
-                EstimatedPrice = EstimatedPrice,
-                EstimatedOrderPrice = _estimatedOrderPrice,
-                EstimatedMakerNetworkFee = EstimatedMakerNetworkFee,
-                EstimatedTotalNetworkFeeInBase = EstimatedTotalNetworkFeeInBase,
-            };
-
-            viewModel.OnSuccess += OnSuccessConvertion;
-
-            _navigationService?.ShowBottomSheet(new ExchangeConfirmationBottomSheet(viewModel));
+                Log.Error("On convert click error", e);
+            }
+            finally
+            {
+                _convertClick = false;
+            }
         }
 
         private void OnSuccessConvertion(object sender, EventArgs e)
@@ -1228,5 +1266,38 @@ namespace atomex.ViewModel
 
             this.RaisePropertyChanged(nameof(AmountToFeeRatioWarning));
         }
+
+        #region IDisposable Support
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_app != null)
+                        _app.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+                    if (_app?.QuotesProvider != null)
+                        _app.QuotesProvider.QuotesUpdated -= OnBaseQuotesUpdatedEventHandler;
+                }
+
+                _app = null;
+
+                _disposedValue = true;
+            }
+        }
+
+        ~ConversionViewModel()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

@@ -177,7 +177,7 @@
     <Style x:Key="ErrorTextH5" TargetType="Label" BasedOn="{StaticResource ErrorText}">
         <Setter Property="FontSize" Value="13"/>
     </Style>
-    <Style x:Key="ErrorTextH5CenterAlign" TargetType="Label" BasedOn="{StaticResource ErrorText}">
+    <Style x:Key="ErrorTextH5CenterAlign" TargetType="Label" BasedOn="{StaticResource ErrorTextH5}">
         <Setter Property="VerticalTextAlignment" Value="Center"/>
         <Setter Property="HorizontalTextAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5"/>

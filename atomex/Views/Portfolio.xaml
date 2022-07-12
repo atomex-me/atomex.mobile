@@ -13,7 +13,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding UserCurrencies}"
+        <AbsoluteLayout>
+        <ListView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                  AbsoluteLayout.LayoutFlags="All"
+                  ItemsSource="{Binding UserCurrencies}"
                   HasUnevenRows="True"
                   SeparatorVisibility="Default"
                   SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
@@ -141,7 +144,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="32" />
                             </Grid.ColumnDefinitions>
@@ -151,53 +154,56 @@
                                    WidthRequest="24"
                                    VerticalOptions="Center"
                                    HorizontalOptions="End"/>
-                            <Label Grid.Column="1"
+                            <Label Grid.ColumnSpan="2"
+                                   Grid.Column="1"
                                    Text="{Binding Currency.Description}"
                                    Style="{DynamicResource MainTextH4}"
-                                   Padding="12,0"
+                                   LineBreakMode="TailTruncation"
+                                   Padding="12,0,0,0"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="End"/>
                             <Label Grid.Column="1"
                                    Grid.Row="1"
                                    Text="{Binding Price, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource AdditionalTextH6}"
-                                   Padding="12,0"
+                                   Padding="12,0,8,0"
                                    HorizontalTextAlignment="Start"
                                    VerticalTextAlignment="Start">
                             </Label>
                             <Label Grid.Row="1"
                                    Grid.Column="2"
                                    Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                                   Style="{DynamicResource AdditionalTextH6}"
                                    HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="Start"
-                                   Padding="6,0">
+                                   VerticalTextAlignment="Start">
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="True">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource SuccessTextH6}"/>
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
                                         <Setter Property="Text"
                                                 Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                                  Value="False">
-                                        <Setter Property="Style"
-                                                Value="{DynamicResource ErrorTextH6}"/>
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
                             <Label Grid.Column="3"
                                    Style="{DynamicResource MainTextH4}"
+                                   Margin="8,0,0,0"
                                    LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="End">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
                                         <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyCode}"/>
+                                        <Span Text="{Binding CurrencyName}"/>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -205,6 +211,7 @@
                                    Grid.Column="3"
                                    Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                                    Style="{DynamicResource MainTextH6}"
+                                   Margin="8,0,0,0"
                                    LineBreakMode="TailTruncation"
                                    HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Start"/>
@@ -225,6 +232,56 @@
                     </controls:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>            
+        </ListView>
+        <StackLayout Spacing="0"
+                     AbsoluteLayout.LayoutBounds="0,1,1,56"
+                     AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
+                     IsVisible="{Binding IsRestoring}">
+            <Frame HasShadow="False"
+                   CornerRadius="4"
+                   HorizontalOptions="FillAndExpand"
+                   Padding="0"
+                   HeightRequest="48"
+                   Margin="16,0"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
+                <Grid Padding="20,0" 
+                      HorizontalOptions="FillAndExpand"
+                      ColumnSpacing="27"
+                      RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="48" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Label TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                           FontSize="14"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{helpers:Translate RestoringWallet}"/>
+                                <Span Text="..."/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Column="1"
+                           Text="{helpers:Translate HideButton}"
+                           TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                           LineBreakMode="TailTruncation"
+                           FontSize="17"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="End">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding HideRestoringCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </Frame>
+        </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

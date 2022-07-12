@@ -233,6 +233,39 @@
                         </Button>
                     </Grid>
                 </ScrollView>
+                <StackLayout IsVisible="False"
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                             VerticalOptions="FillAndExpand"
+                             Margin="0,30">
+                    <StackLayout.Triggers>
+                        <MultiTrigger TargetType="StackLayout">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding SelectedTab}"
+                                                  Value="Activity"/>
+                                <BindingCondition Binding="{Binding IsTransfersLoading}"
+                                                  Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsVisible"
+                                    Value="True"/>
+                        </MultiTrigger>
+                    </StackLayout.Triggers>
+                    <RelativeLayout VerticalOptions="End"
+                                    HorizontalOptions="Center">
+                        <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+	             	                       RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                                           RelativeLayout.WidthConstraint="20"
+                                           RelativeLayout.HeightConstraint="20"
+                                           BackgroundColor="Transparent"
+                                           IsRunning="True"
+                                           Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+
+                    </RelativeLayout>
+                    <Label Text="{helpers:Translate LoadingLabel}"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           Margin="0,4"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Start"/>
+                </StackLayout>
                 <ListView ItemsSource="{Binding GroupedTransactions}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"

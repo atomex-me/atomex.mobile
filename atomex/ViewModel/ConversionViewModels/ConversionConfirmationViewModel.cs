@@ -16,6 +16,8 @@ using Serilog;
 using atomex.Common;
 using Xamarin.Forms;
 using static atomex.Models.SnackbarMessage;
+using Atomex.Client.Entities;
+using Currencies = Atomex.Currencies;
 
 namespace atomex.ViewModel
 {
@@ -179,17 +181,20 @@ namespace atomex.ViewModel
                     return new Error(Errors.SwapError, message);
                 }
 
-                var isToBitcoinBased = Currencies.IsBitcoinBased(ToCurrencyViewModel.Currency.Name);
+                var isToBitcoinBased = Atomex.Currencies.IsBitcoinBased(ToCurrencyViewModel.Currency.Name);
 
                 var order = new Order
                 {
-                    Symbol = symbol.Name,
-                    TimeStamp = DateTime.UtcNow,
-                    Price = orderPrice,
-                    Qty = qty,
-                    Side = side,
-                    Type = OrderType.FillOrKill,
-                    FromWallets = fromWallets.ToList(),
+                    ClientOrderId   = Guid.NewGuid().ToByteArray().ToHexString(0, 16),
+                    Status          = OrderStatus.Pending,
+                    Symbol          = symbol.Name,
+                    TimeStamp       = DateTime.UtcNow,
+                    Price           = orderPrice,
+                    Qty             = qty,
+                    LeaveQty        = qty,
+                    Side            = side,
+                    Type            = OrderType.FillOrKill,
+                    FromWallets     = fromWallets.ToList(),
                     MakerNetworkFee = EstimatedMakerNetworkFee,
 
                     FromAddress = FromSource is FromAddress fromAddress ? fromAddress.Address : null,
@@ -204,9 +209,34 @@ namespace atomex.ViewModel
                         : RedeemFromAddress
                 };
 
-                await order.CreateProofOfPossessionAsync(account);
+                await order
+                    .CreateProofOfPossessionAsync(account);
 
-                atomexClient.OrderSendAsync(order);
+                await _app.Account
+                    .UpsertOrderAsync(order);
+
+                atomexClient.OrderSendAsync(new Atomex.Client.V1.Entities.Order
+                {
+                    ClientOrderId = order.ClientOrderId,
+                    Symbol        = order.Symbol,
+                    TimeStamp     = order.TimeStamp,
+                    Price         = order.Price,
+                    Qty           = order.Qty,
+                    Side          = order.Side,
+                    Type          = order.Type,
+                    FromWallets   = order.FromWallets
+                        .Select(w => new Atomex.Client.V1.Entities.WalletAddress
+                        {
+                            Address           = w.Address,
+                            Currency          = w.Currency,
+                            Nonce             = w.Nonce,
+                            ProofOfPossession = w.ProofOfPossession,
+                            PublicKey         = w.PublicKey,
+                        })
+                        .ToList(),
+                    BaseCurrencyContract = GetSwapContract(order.Symbol.BaseCurrency()),
+                    QuoteCurrencyContract = GetSwapContract(order.Symbol.QuoteCurrency())
+                });
 
                 // wait for swap confirmation
                 var timeStamp = DateTime.UtcNow;
@@ -215,7 +245,7 @@ namespace atomex.ViewModel
                 {
                     await Task.Delay(SwapCheckInterval);
 
-                    var currentOrder = atomexClient.Account.GetOrderById(order.ClientOrderId);
+                    var currentOrder = _app.Account.GetOrderById(order.ClientOrderId);
 
                     if (currentOrder == null)
                         continue;
@@ -225,7 +255,7 @@ namespace atomex.ViewModel
 
                     if (currentOrder.Status == OrderStatus.PartiallyFilled || currentOrder.Status == OrderStatus.Filled)
                     {
-                        var swap = (await atomexClient.Account
+                        var swap = (await _app.Account
                             .GetSwapsAsync())
                             .FirstOrDefault(s => s.OrderId == currentOrder.Id);
 
@@ -250,6 +280,17 @@ namespace atomex.ViewModel
 
                 return new Error(Errors.SwapError, AppResources.ConversionError);
             }
+        }
+
+        private string GetSwapContract(string currency)
+        {
+            if (currency == "ETH" || Currencies.IsEthereumToken(currency))
+                return _app.Account.Currencies.Get<EthereumConfig>(currency).SwapContractAddress;
+
+            if (currency == "XTZ" || Currencies.IsTezosToken(currency))
+                return _app.Account.Currencies.Get<TezosConfig>(currency).SwapContractAddress;
+
+            return null;
         }
 
         private async Task<IEnumerable<WalletAddress>> GetFromAddressesAsync()

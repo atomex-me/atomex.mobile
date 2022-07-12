@@ -55,7 +55,7 @@
                         <FormattedString>
                             <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding CurrencyCode}"/>
+                            <Span Text="{Binding CurrencyName}"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -73,7 +73,7 @@
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding CurrencyCode, StringFormat='1 {0} ='}"/>
+                                <Span Text="{Binding CurrencyName, StringFormat='1 {0} ='}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding Price, StringFormat='${0:f2}'}"/>
                             </FormattedString>
@@ -371,8 +371,7 @@
                           CachingStrategy="RecycleElement"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          RowHeight="72"
-                          x:Name="TransactionsListView"
+                          HeightRequest="{Binding TxListViewHeight}"
                           IsVisible="False">
                     <ListView.Triggers>
                         <DataTrigger TargetType="ListView"
@@ -380,12 +379,6 @@
                                      Value="Activity">
                             <Setter Property="IsVisible"
                                     Value="True"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding IsBitcoinBased, FallbackValue='False', TargetNullValue='False'}"
-                                     Value="True">
-                            <Setter Property="RowHeight"
-                                    Value="48"/>
                         </DataTrigger>
                     </ListView.Triggers>
                     <ListView.GroupHeaderTemplate>
@@ -530,18 +523,10 @@
                     </ListView.ItemTemplate>
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
-                                x:Name="TxsFooter"
                                 Style="{DynamicResource TransparentButton}"
-                                Clicked="ShowAllTxs">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding CanShowMoreTxs}"
-                                             Value="False">
-                                    <Setter Property="IsVisible"
-                                            Value="False"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                                IsVisible="{Binding CanShowMoreTxs}"
+                                HeightRequest="52"
+                                Command="{Binding ShowAllTxsCommand}"/>
                     </ListView.Footer>
                 </ListView>
                 <ListView ItemsSource="{Binding Addresses}"
@@ -551,8 +536,7 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          x:Name="AddressesListView"
-                          RowHeight="64"
+                          HeightRequest="{Binding AddressListViewHeight}"
                           Margin="0,20"
                           IsVisible="False">
                     <ListView.Triggers>
@@ -609,20 +593,18 @@
                     <ListView.Footer>
                         <Button Text="{helpers:Translate ShowAll}"
                                 Style="{DynamicResource TransparentButton}"
-                                x:Name="AddressesFooter"
                                 IsVisible="{Binding CanShowMoreAddresses}"
                                 Command="{Binding AddressesViewModel.ShowAllAddressesCommand}"/>
                     </ListView.Footer>
                 </ListView>
-                <ListView ItemsSource="{Binding Tokens}"
+                <ListView ItemsSource="{Binding TezosTokensViewModel.UserTokens}"
                           HasUnevenRows="True"
                           SeparatorVisibility="Default"
                           SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                           BackgroundColor="Transparent"
-                          x:Name="TokensListView"
                           SelectionMode="Single"
-                          SelectedItem="{Binding SelectedToken, Mode=TwoWay}"
-                          RowHeight="72"
+                          SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
+                          HeightRequest="{Binding TezosTokensViewModel.TokenListViewHeight}"
                           VerticalScrollBarVisibility="Never"
                           IsVisible="False"
                           Footer="">
@@ -653,7 +635,7 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding UpdateTokensCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.UpdateTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_update"
                                            WidthRequest="16"
@@ -661,14 +643,14 @@
                                            Margin="8,16">
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding IsUpdating}"
+                                                         Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
                                                          Value="True">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Start" />  
                                                 </DataTrigger.EnterActions>                                
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
-                                                         Binding="{Binding IsUpdating}"
+                                                         Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
                                                          Value="False">
                                                 <DataTrigger.EnterActions>
                                                     <behavior:AnimationTrigger Action="Stop" />  
@@ -684,7 +666,7 @@
                                        HorizontalOptions="End"
                                        BackgroundColor="Transparent">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ManageTokensCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.ManageTokensCommand}"/>
                                     </Frame.GestureRecognizers>
                                     <Image Source="ic_filters"
                                            Margin="8,0,4,0"
@@ -711,6 +693,27 @@
                             </StackLayout>
                             <StackLayout Style="{DynamicResource SeparatorStyle}"
                                          Margin="16,0,0,0"/>
+                            <StackLayout IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                         VerticalOptions="FillAndExpand"
+                                         Margin="0,30,0,60">
+                                <RelativeLayout VerticalOptions="End"
+                                                HorizontalOptions="Center">
+                                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+	             	                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                                                       RelativeLayout.WidthConstraint="20"
+                                                       RelativeLayout.HeightConstraint="20"
+                                                       BackgroundColor="Transparent"
+                                                       IsRunning="True"
+                                                       Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+
+                                </RelativeLayout>
+                                <Label Text="{helpers:Translate LoadingLabel}"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       Margin="0,4"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Start"/>
+                            </StackLayout>
                         </StackLayout>
                     </ListView.Header>
                     <ListView.ItemTemplate>
@@ -736,9 +739,10 @@
                                            VerticalOptions="Center"
                                            HorizontalOptions="End"/>
                                     <Label Grid.Column="1"
-                                           Text="{Binding CurrencyCode}"
+                                           Text="{Binding Description}"
                                            Style="{DynamicResource MainTextH4}"
-                                           Padding="12,0"
+                                           Padding="12,0,0,0"
+                                           LineBreakMode="TailTruncation"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="End"/>
                                     <Label Grid.Column="1"
@@ -755,7 +759,7 @@
                                            VerticalTextAlignment="End">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
                                                 <Span Text=" "/>
                                                 <Span Text="{Binding CurrencyCode}"/>
                                             </FormattedString>
@@ -793,8 +797,7 @@
                           SeparatorVisibility="None"
                           VerticalScrollBarVisibility="Never"
                           HasUnevenRows="True"
-                          RowHeight="72"
-                          x:Name="DelegationsListView"
+                          HeightRequest="{Binding DelegationListViewHeight}"
                           IsVisible="False"
                           Footer="">
                     <ListView.Triggers>

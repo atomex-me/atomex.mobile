@@ -86,7 +86,7 @@
                         </Label.IsVisible>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding SelectedAddress.TokenBalance}"/>
+                                <Span Text="{Binding SelectedAddress.TokenBalance, StringFormat='{0:0.########}'}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding SelectedAddress.TokenCode}"/>
                                 <Span Text=" / "/>
@@ -98,7 +98,7 @@
                            HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.#########}'}"/>
+                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.########}'}"/>
                                 <Span Text=" "/>
                                 <Span Text="{Binding SelectedAddress.CurrencyCode}"/>
                             </FormattedString>

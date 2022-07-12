@@ -57,6 +57,12 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Serilog.Sinks.Xamarin">
+      <Version>0.2.0.64</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
@@ -164,10 +170,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\Wallet__white.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\ic_launcher.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -301,10 +303,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-night\DownArrow.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-night\ic_launcher.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -852,6 +850,22 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\USDT_XTZ.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\USDT_XTZ.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-night\ic_launcher.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -863,6 +877,10 @@
     <Folder Include="Assets\Animations\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\atomex.client.core\Atomex.TzktEvents\Atomex.TzktEvents.csproj">
+      <Project>{4E3C8932-3924-4519-A49B-4D76F9FB2117}</Project>
+      <Name>Atomex.TzktEvents</Name>
+    </ProjectReference>
     <ProjectReference Include="..\atomex\atomex.csproj">
       <Project>{6A6C43B1-1489-4B8D-AA37-941EF60E36F0}</Project>
       <Name>atomex</Name>

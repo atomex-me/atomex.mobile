@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Threading;
 using System.Threading.Tasks;
 using atomex.Common;
-using atomex.Resources;
 using atomex.Views;
 using atomex.Views.Delegate;
-using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Core;
 using Atomex.Wallet;
-using Atomex.Wallet.Tezos;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
-using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
@@ -29,11 +23,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         public TezosConfig Tezos => Currency as TezosConfig;
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
-        [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
-        [Reactive] public ObservableCollection<TezosTokenViewModel> Tokens { get; set; }
+        [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
-        private TezosTokensViewModel _tezosTokensViewModel { get; set; }
-        [Reactive] public bool IsUpdating { get; set; }
+
+        public const double DefaultDelegationRowHeight = 76;
+        [Reactive] public double DelegationListViewHeight { get; set; }
 
         public TezosCurrencyViewModel(
              IAtomexApp app,
@@ -42,7 +36,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             : base(app, currency, navigationService)
         {
             Delegations = new ObservableCollection<DelegationViewModel>();
-            Tokens = new ObservableCollection<TezosTokenViewModel>();
 
             this.WhenAnyValue(vm => vm.SelectedDelegation)
                .WhereNotNull()
@@ -57,31 +50,17 @@ namespace atomex.ViewModel.CurrencyViewModels
                    SelectedDelegation = null;
                });
 
-            this.WhenAnyValue(vm => vm.SelectedToken)
-               .WhereNotNull()
-               .SubscribeInMainThread(token =>
-               {
-                    _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
-                   SelectedToken = null;
-               });
+            this.WhenAnyValue(vm => vm.Delegations)
+              .WhereNotNull()
+              .SubscribeInMainThread(d =>
+              {
+                  DelegationListViewHeight = Delegations.Count * DefaultDelegationRowHeight;
+              });
 
             _ = LoadDelegationInfoAsync();
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
-            _tezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
-            _tezosTokensViewModel.TokensChanged += OnTokensChangedEventHandler;
-        }
-
-        protected void OnTokensChangedEventHandler()
-        {
-            try
-            {
-                Tokens = new ObservableCollection<TezosTokenViewModel>(_tezosTokensViewModel?.UserTokens);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, $"On tokens changed event handler error");
-            }
+            TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
@@ -179,60 +158,6 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
-        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
-            (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
-
-        private async Task UpdateTokens()
-        {
-            var cancellation = new CancellationTokenSource();
-            IsUpdating = true;
-
-            try
-            {
-                var tezosAccount = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
-
-                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
-
-                await tezosTokensScanner.ScanAsync(
-                    skipUsed: false,
-                    cancellationToken: cancellation.Token);
-
-                // reload balances for all tezos tokens account
-                foreach (var currency in _app.Account.Currencies)
-                    if (Currencies.IsTezosToken(currency.Name))
-                        _app.Account
-                            .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                            .ReloadBalances();
-
-                await Device.InvokeOnMainThreadAsync(() =>
-                {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
-                });
-            }
-            catch (OperationCanceledException)
-            {
-                Log.Debug("Tezos tokens update canceled");
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Tezos tokens update error");
-            }
-            finally
-            {
-                IsUpdating = false;
-            }
-        }
-
-        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
-        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(_tezosTokensViewModel)));
-
-        private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
-        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(_tezosTokensViewModel)));
-
         private void ChangeBaker(DelegationViewModel delegation)
         {
             CloseActionBottomSheet();
@@ -261,7 +186,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (Currency.Name != args.Currency) return;
+                if (Currency?.Name != args?.Currency) return;
 
                 await UpdateBalanceAsync();
                 await LoadTransactionsAsync();

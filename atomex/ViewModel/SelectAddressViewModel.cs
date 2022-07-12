@@ -116,16 +116,6 @@ namespace atomex.ViewModel
                         SelectAddressMode == SelectAddressMode.EnterExternalAddress
                             ? ScanCommand
                             : SearchCommand;
-
-                    Title = SelectAddressMode == SelectAddressMode.ReceiveTo
-                        ? AppResources.ReceiveTo
-                        : SelectAddressMode == SelectAddressMode.SendFrom
-                        ? AppResources.SendFrom
-                        : SelectAddressMode == SelectAddressMode.EnterExternalAddress
-                        ? AppResources.EnterAnExternalAddress
-                        : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
-                        ? AppResources.ChangeRedeemAddress
-                        : string.Format(AppResources.MyCurrencyAddresses, _currency.Name);
                 });
 
             this.WhenAnyValue(
@@ -214,14 +204,14 @@ namespace atomex.ViewModel
                 });
 
             var addresses = AddressesHelper
-                    .GetReceivingAddressesAsync(
-                        account: account,
-                        currency: currency,
-                        tokenContract: tokenContract,
-                        tokenId: selectedTokenId)
-                    .WaitForResult()
-                    .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
-                    .OrderByDescending(address => address.Balance);
+                .GetReceivingAddressesAsync(
+                    account: account,
+                    currency: currency,
+                    tokenContract: tokenContract,
+                    tokenId: selectedTokenId)
+                .WaitForResult()
+                .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
+                .OrderByDescending(address => address.Balance);
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
             _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
@@ -232,6 +222,15 @@ namespace atomex.ViewModel
                 : SelectAddressMode == SelectAddressMode.SendFrom
                     ? SelectDefaultAddress()
                     : null;
+            Title = SelectAddressMode == SelectAddressMode.ReceiveTo
+                ? AppResources.ReceiveTo
+                : SelectAddressMode == SelectAddressMode.SendFrom
+                    ? AppResources.SendFrom
+                    : SelectAddressMode == SelectAddressMode.EnterExternalAddress
+                        ? AppResources.EnterAnExternalAddress
+                        : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
+                            ? AppResources.ChangeRedeemAddress
+                            : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
         }
 
         public WalletAddressViewModel SelectDefaultAddress()
@@ -301,24 +300,24 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _clearToAddressCommand;
         public ReactiveCommand<Unit, Unit> ClearToAddressCommand =>
-            _clearToAddressCommand ??= (_clearToAddressCommand = ReactiveCommand.Create(() =>
-            {
-                ToAddress = string.Empty;
-            }));
+        _clearToAddressCommand ??= (_clearToAddressCommand = ReactiveCommand.Create(() =>
+        {
+            ToAddress = string.Empty;
+        }));
 
         private ReactiveCommand<Unit, Unit> _clearSearchAddressCommand;
         public ReactiveCommand<Unit, Unit> ClearSearchAddressCommand =>
-            _clearSearchAddressCommand ??= (_clearSearchAddressCommand = ReactiveCommand.Create(() =>
-            {
-                SearchPattern = string.Empty;
-            }));
+        _clearSearchAddressCommand ??= (_clearSearchAddressCommand = ReactiveCommand.Create(() =>
+        {
+            SearchPattern = string.Empty;
+        }));
 
         private ReactiveCommand<bool, Unit> _changeAddressesTabCommand;
         public ReactiveCommand<bool, Unit> ChangeAddressesTabCommand =>
-            _changeAddressesTabCommand ??= (_changeAddressesTabCommand = ReactiveCommand.Create<bool>((value) =>
-            {
-                IsMyAddressesTab = value;
-            }));
+        _changeAddressesTabCommand ??= (_changeAddressesTabCommand = ReactiveCommand.Create<bool>((value) =>
+        {
+            IsMyAddressesTab = value;
+        }));
 
         private ICommand _scanResultCommand;
         public ICommand ScanResultCommand =>
@@ -326,13 +325,12 @@ namespace atomex.ViewModel
 
         private ICommand _backCommand;
         public ICommand BackCommand => _backCommand ??= new Command(() =>
-            {
-                SearchPattern = string.Empty;
-                if (SelectAddressFrom == SelectAddressFrom.InitSearch)
-                    SelectAddressFrom = SelectAddressFrom.Init;
-                if (SelectAddressFrom == SelectAddressFrom.ChangeSearch)
-                    SelectAddressFrom = SelectAddressFrom.Change;
-            });
+        {
+            SearchPattern = string.Empty;
+            SelectAddressFrom = SelectAddressFrom == SelectAddressFrom.ChangeSearch
+                ? SelectAddressFrom.Change
+                : SelectAddressFrom.Init;
+        });
 
         private ICommand _validateAddressCommand;
         public ICommand ValidateAddressCommand => _validateAddressCommand ??= new Command(() =>
@@ -413,10 +411,9 @@ namespace atomex.ViewModel
 
         private void OnSearchButtonClicked()
         {
-            if (SelectAddressFrom == SelectAddressFrom.Init)
-                SelectAddressFrom = SelectAddressFrom.InitSearch;
-            if (SelectAddressFrom == SelectAddressFrom.Change)
-                SelectAddressFrom = SelectAddressFrom.ChangeSearch;
+            SelectAddressFrom = SelectAddressFrom == SelectAddressFrom.Change
+                ? SelectAddressFrom.ChangeSearch
+                : SelectAddressFrom.InitSearch;
 
             _navigationService?.ShowPage(new SearchAddressPage(this), TabNavigation);
         }

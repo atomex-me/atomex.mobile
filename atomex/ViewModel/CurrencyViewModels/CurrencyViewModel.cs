@@ -19,6 +19,7 @@ using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
+using Atomex.TezosTokens;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 using ReactiveUI;
@@ -46,23 +47,25 @@ namespace atomex.ViewModel.CurrencyViewModels
 
     public class CurrencyViewModel : BaseViewModel
     {
-        public const double DefaultGroupHeight = 36;
-
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
         protected INavigationService _navigationService { get; set; }
 
         public virtual CurrencyConfig Currency { get; set; }
         public event EventHandler AmountUpdated;
-        private ICurrencyQuotesProvider _quotesProvider { get; set; }
+        private IQuotesProvider _quotesProvider { get; set; }
 
-        public string CurrencyCode => Currency.Name;
-        public string FeeCurrencyCode => Currency.FeeCode;
+        public string CurrencyCode => Currency?.Name;
+        public string CurrencyName => Currency?.DisplayedName;
+        public string FeeCurrencyCode => Currency?.FeeCode;
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
-        public bool IsStakingAvailable => Currency.Name == "XTZ";
+        public bool IsStakingAvailable => Currency?.Name == "XTZ";
         public bool HasCollectibles => false;
-        public bool HasTokens => Currency.Name == "XTZ";
+        public bool HasTokens => Currency?.Name == "XTZ";
+        public bool CanBuy { get; set; }
+
+        protected CancellationTokenSource _cancellationTokenSource;
 
         [Reactive] public decimal TotalAmount { get; set; }
         [Reactive] public decimal TotalAmountInBase { get; set; }
@@ -88,13 +91,16 @@ namespace atomex.ViewModel.CurrencyViewModels
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
 
-        public bool CanBuy { get; set; }
-
-        private CancellationTokenSource _cancellationTokenSource;
+        public const double DefaultTxGroupHeight = 36;
+        public double DefaultTxRowHeight => IsBitcoinBased ? 52 : 76;
+        public const double DefaultAddressRowHeight = 64;
+        public const double ListViewFooterHeight = 72;
+        [Reactive] public double TxListViewHeight { get; set; }
+        [Reactive] public double AddressListViewHeight { get; set; }
 
         public class Grouping<K, T> : ObservableCollection<T>
         {
-            public double GroupHeight { get; set; } = DefaultGroupHeight;
+            public double GroupHeight { get; set; } = DefaultTxGroupHeight;
             public K Date { get; private set; }
             public Grouping(K date, IEnumerable<T> items)
             {
@@ -110,20 +116,12 @@ namespace atomex.ViewModel.CurrencyViewModels
         public CurrencyViewModel(
             IAtomexApp app,
             CurrencyConfig currency,
-            INavigationService navigationService,
-            bool loadTransaction = true)
+            INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
             Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
-            SubscribeToServices();
-            SubscribeToRatesProvider(_app.QuotesProvider);
-            
-            if (loadTransaction)
-                _ = LoadTransactionsAsync();
-
-            _ = UpdateBalanceAsync();
 
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
@@ -136,12 +134,26 @@ namespace atomex.ViewModel.CurrencyViewModels
             this.WhenAnyValue(vm => vm.GroupedTransactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
+                {
+                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
+
+                    TxListViewHeight = IsAllTxsShowed
+                        ? Transactions.Count * DefaultTxRowHeight +
+                            GroupedTransactions.Count * DefaultTxGroupHeight +
+                            ListViewFooterHeight
+                        : TxsNumberPerPage * DefaultTxRowHeight +
+                            (GroupedTransactions.Count + 1) * DefaultTxGroupHeight;
+                });
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
+                {
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
+
+                    AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
+                        ListViewFooterHeight;
+                });
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()
@@ -152,6 +164,8 @@ namespace atomex.ViewModel.CurrencyViewModels
                 });
 
             LoadAddresses();
+            _ = LoadTransactionsAsync();
+            _ = UpdateBalanceAsync();
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
@@ -169,13 +183,13 @@ namespace atomex.ViewModel.CurrencyViewModels
                 navigationService: _navigationService);
         }
 
-        protected virtual void SubscribeToServices()
+        public virtual void SubscribeToServices()
         {
             _app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
             _app.Account.UnconfirmedTransactionAdded += OnUnconfirmedTransactionAdded;
         }
 
-        private void SubscribeToRatesProvider(ICurrencyQuotesProvider quotesProvider)
+        public void SubscribeToRatesProvider(IQuotesProvider quotesProvider)
         {
             _quotesProvider = quotesProvider;
             _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
@@ -185,10 +199,13 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                Addresses = new ObservableCollection<AddressViewModel>(
-                    AddressesViewModel?.Addresses
-                        .OrderByDescending(a => a.Balance)
-                        .Take(AddressesNumberPerPage));
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Addresses = new ObservableCollection<AddressViewModel>(
+                        AddressesViewModel?.Addresses
+                            .OrderByDescending(a => a.Balance)
+                            .Take(AddressesNumberPerPage));
+                });
             }
             catch (Exception e)
             {
@@ -200,11 +217,11 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (Currency.Name.Equals(args.Currency))
-                {
-                    await UpdateBalanceAsync();
-                    await LoadTransactionsAsync();
-                }
+                if (args.Currency != Currency.Name)
+                    return;
+
+                await UpdateBalanceAsync();
+                await LoadTransactionsAsync();
             }
             catch (Exception e)
             {
@@ -220,14 +237,16 @@ namespace atomex.ViewModel.CurrencyViewModels
                     .GetBalanceAsync(Currency.Name)
                     .ConfigureAwait(false);
 
+                if (balance == null) return;
+
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     TotalAmount = balance.Confirmed;
                     AvailableAmount = balance.Available;
                     UnconfirmedAmount = balance.UnconfirmedIncome + balance.UnconfirmedOutcome;
-                });
 
-                UpdateQuotesInBaseCurrency(_quotesProvider);
+                    UpdateQuotesInBaseCurrency(_quotesProvider);
+                });
             }
             catch (Exception e)
             {
@@ -237,24 +256,26 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (!(sender is ICurrencyQuotesProvider quotesProvider))
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             UpdateQuotesInBaseCurrency(quotesProvider);
         }
 
-        private void UpdateQuotesInBaseCurrency(ICurrencyQuotesProvider quotesProvider)
+        private void UpdateQuotesInBaseCurrency(IQuotesProvider quotesProvider)
         {
-            var quote = quotesProvider?.GetQuote(CurrencyCode, BaseCurrencyCode);
+            if (quotesProvider == null) return;
+
+            var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
 
             Device.InvokeOnMainThreadAsync(() =>
             {
-                Price = quote.Bid;
-                DailyChangePercent = quote.DailyChangePercent;
+                Price = quote?.Bid ?? 0;
+                DailyChangePercent = quote?.DailyChangePercent ?? 0;
                 TotalAmountInBase = TotalAmount * (quote?.Bid ?? 0m);
                 AvailableAmountInBase = AvailableAmount * (quote?.Bid ?? 0m);
                 UnconfirmedAmountInBase = UnconfirmedAmount * (quote?.Bid ?? 0m);
-                
+
                 AmountUpdated?.Invoke(this, EventArgs.Empty);
             });
         }
@@ -284,17 +305,17 @@ namespace atomex.ViewModel.CurrencyViewModels
                     return;
 
                 var transactions = (await _app.Account
-                        .GetTransactionsAsync(Currency.Name))
-                        .ToList();
+                    .GetTransactionsAsync(Currency.Name))
+                    .ToList();
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     Transactions = new ObservableCollection<TransactionViewModel>(
-                       transactions.Select(t => TransactionViewModelCreator
-                           .CreateViewModel(t, Currency, _navigationService))
-                           .ToList()
-                           .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
-                           .ForEachDo(t =>
+                        transactions.Select(t => TransactionViewModelCreator
+                            .CreateViewModel(t, Currency, _navigationService))
+                            .ToList()
+                            .SortList((t1, t2) => t2.LocalTime.CompareTo(t1.LocalTime))
+                            .ForEachDo(t =>
                             {
                                 t.RemoveClicked += RemoveTransactonEventHandler;
                                 t.CopyAddress = CopyAddress;
@@ -303,10 +324,10 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                     var groups = !IsAllTxsShowed
                         ? Transactions
-                           .OrderByDescending(p => p.LocalTime.Date)
-                           .Take(TxsNumberPerPage)
-                           .GroupBy(p => p.LocalTime.Date)
-                           .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
+                            .OrderByDescending(p => p.LocalTime.Date)
+                            .Take(TxsNumberPerPage)
+                            .GroupBy(p => p.LocalTime.Date)
+                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
@@ -386,7 +407,6 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                 await LoadTransactionsAsync();
 
-
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
                     _navigationService?.DisplaySnackBar(MessageType.Regular, Currency.Description + " " + AppResources.HasBeenUpdated);
@@ -398,7 +418,7 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
             catch (Exception e)
             {
-                Log.Error(e, $"HdWalletScanner error for {Currency?.Name}");
+                Log.Error(e, "HdWalletScanner error for {Currency}", Currency?.Name);
             }
             finally
             {
@@ -472,7 +492,7 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         protected virtual void OnSendClick()
         {
-            if (AvailableAmount <= 0) return;
+            if (TotalAmount <= 0) return;
             _navigationService?.CloseBottomSheet();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
@@ -489,8 +509,9 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        public void ShowAllTxs()
-        {
+        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
+        { 
             IsAllTxsShowed = true;
             CanShowMoreTxs = false;
             TxsNumberPerPage = Transactions.Count;
@@ -501,7 +522,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                 .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-        }
+        });
 
         #region IDisposable Support
         private bool _disposedValue;

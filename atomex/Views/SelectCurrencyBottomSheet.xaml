@@ -120,9 +120,9 @@
                                         </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.########}'}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyCode}"/>
+                                                <Span Text="{Binding CurrencyName}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

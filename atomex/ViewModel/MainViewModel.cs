@@ -1,24 +1,28 @@
-﻿using System;
+﻿using atomex.Services;
+using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
-using Microsoft.Extensions.Configuration;
-using Atomex.MarketData;
-using Atomex.Wallet.Abstract;
+using Atomex.Client.Abstract;
+using Atomex.Client.Common;
+using Atomex.Client.V1.Entities;
+using Atomex.Common;
 using Atomex.Common.Configuration;
-using System.Linq;
-using atomex.Services;
 using Atomex.Services;
-using Atomex.Services.Abstract;
+using Atomex.Wallet.Abstract;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace atomex.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public SettingsViewModel SettingsViewModel { get; set; }
-        public ConversionViewModel ConversionViewModel { get; set; }
-        public PortfolioViewModel PortfolioViewModel { get; set; }
-        public BuyViewModel BuyViewModel { get; set; }
-
-        public IAtomexApp AtomexApp { get; private set; }
+        public SettingsViewModel SettingsViewModel { get; }
+        public ConversionViewModel ConversionViewModel { get; }
+        public PortfolioViewModel PortfolioViewModel { get; }
+        public BuyViewModel BuyViewModel { get; }
+        public CurrencyViewModelCreator CurrencyViewModelCreator { get; }
+        public IAtomexApp AtomexApp { get; }
 
         public EventHandler Locked;
 
@@ -35,19 +39,27 @@ namespace atomex.ViewModel
                 .Build();
 
             AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
+            CurrencyViewModelCreator = new CurrencyViewModelCreator();
 
             SubscribeToServices();
+
+            var clientType = Device.RuntimePlatform switch
+            {
+                Device.iOS => ClientType.iOS,
+                Device.Android => ClientType.Android,
+                _ => ClientType.Unknown,
+            };
 
             var atomexClient = new WebSocketAtomexClientLegacy(
                 exchangeUrl: configuration[$"Services:{account?.Network}:Exchange:Url"],
                 marketDataUrl: configuration[$"Services:{account?.Network}:MarketData:Url"],
-                account: account,
-                symbolsProvider: AtomexApp.SymbolsProvider);
+                clientType: clientType,
+                authMessageSigner: account.DefaultAuthMessageSigner());
 
-            AtomexApp.UseAtomexClient(atomexClient, restart: true);
+            AtomexApp.ChangeAtomexClient(atomexClient, account, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
-            ConversionViewModel = new ConversionViewModel(AtomexApp);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp, CurrencyViewModelCreator);
+            ConversionViewModel = new ConversionViewModel(AtomexApp, CurrencyViewModelCreator);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
@@ -61,7 +73,13 @@ namespace atomex.ViewModel
 
         public void SignOut()
         {
-            AtomexApp.UseAtomexClient(null);
+            AtomexApp.ChangeAtomexClient(atomexClient: null, account: null);
+
+            ConversionViewModel?.Reset();
+            CurrencyViewModelCreator.Reset();
+
+            AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
+
         }
 
         private void SubscribeToServices()
@@ -71,25 +89,27 @@ namespace atomex.ViewModel
 
         private void OnAtomexClientChangedEventHandler(object sender, AtomexClientChangedEventArgs args)
         {
-            var atomexClient = args.AtomexClient;
+            if (AtomexApp?.Account == null)
+            {
+                if (args.OldAtomexClient != null)
+                    args.OldAtomexClient.ServiceStatusChanged -= OnAtomexClientServiceStatusChangedEventHandler;
 
-            if (atomexClient?.Account == null)
                 return;
+            }
 
-            atomexClient.ServiceConnected += OnTerminalServiceStateChangedEventHandler;
-            atomexClient.ServiceDisconnected += OnTerminalServiceStateChangedEventHandler;
+            args.AtomexClient.ServiceStatusChanged += OnAtomexClientServiceStatusChangedEventHandler;
         }
 
-        private void OnTerminalServiceStateChangedEventHandler(object sender, AtomexClientServiceEventArgs args)
+        private void OnAtomexClientServiceStatusChangedEventHandler(object sender, ServiceEventArgs args)
         {
-            if (!(sender is IAtomexClient terminal))
+            if (sender is not IAtomexClient atomexClient)
                 return;
 
             // subscribe to symbols updates
-            if (args.Service == AtomexClientService.MarketData && terminal.IsServiceConnected(AtomexClientService.MarketData))
+            if (args.Service == Service.MarketData && args.Status == ServiceStatus.Connected)
             {
-                terminal.SubscribeToMarketData(SubscriptionType.TopOfBook);
-                terminal.SubscribeToMarketData(SubscriptionType.DepthTwenty);
+                atomexClient.SubscribeToMarketData(SubscriptionType.TopOfBook);
+                atomexClient.SubscribeToMarketData(SubscriptionType.DepthTwenty);
             }
         }
     }

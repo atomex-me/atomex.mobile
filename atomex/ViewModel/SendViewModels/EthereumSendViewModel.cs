@@ -12,7 +12,7 @@ using atomex.ViewModel.CurrencyViewModels;
 using atomex.Views;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Core;
+using Atomex.Common;
 using Atomex.EthereumTokens;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Ethereum;

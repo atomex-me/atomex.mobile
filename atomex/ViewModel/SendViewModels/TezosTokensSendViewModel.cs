@@ -12,6 +12,7 @@ using atomex.Resources;
 using atomex.Views;
 using atomex.Views.Send;
 using Atomex;
+using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
 using Atomex.TezosTokens;
@@ -292,7 +293,9 @@ namespace atomex.ViewModel.SendViewModels
             SelectToViewModel = new SelectAddressViewModel(
                 account: _app.Account,
                 currency: tezosConfig,
-                navigationService: _navigationService)
+                navigationService: _navigationService,
+                selectedTokenId: tokenId,
+                tokenContract: tokenContract)
             {
                 ConfirmAction = ConfirmToAddress
             };
@@ -771,7 +774,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

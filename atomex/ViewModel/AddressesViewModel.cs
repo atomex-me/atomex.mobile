@@ -14,6 +14,7 @@ using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.Cryptography;
+using Atomex.ViewModels;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using ReactiveUI;
@@ -165,8 +166,11 @@ namespace atomex.ViewModel
 
                 if (updatedViewModel == null) return;
 
-                Balance = updatedViewModel.Balance;
-                TokenBalance = updatedViewModel?.TokenBalance;
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Balance = updatedViewModel.Balance;
+                    TokenBalance = updatedViewModel?.TokenBalance;
+                });
             }
             catch (Exception e)
             {
@@ -194,10 +198,8 @@ namespace atomex.ViewModel
 
         private readonly string _tokenContract;
         private readonly decimal _tokenId;
-        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         public bool HasTokens => _currency.Name == TezosConfig.Xtz && _tokenContract != null;
-
-        private SelectAddressViewModel _selectAddressViewModel { get; set; }
+        [Reactive] public ObservableCollection<AddressViewModel> Addresses { get; set; }
         [Reactive] public AddressViewModel SelectedAddress { get; set; }
 
         public const int MinimalAddressUpdateTimeMs = 1000;
@@ -217,32 +219,6 @@ namespace atomex.ViewModel
             _tokenContract = tokenContract;
             _tokenId = tokenId;
 
-            this.WhenAnyValue(vm => vm.Addresses)
-                .WhereNotNull()
-                .SubscribeInMainThread(_ =>
-                {                   
-                    _selectAddressViewModel = new SelectAddressViewModel(
-                        account: _app.Account,
-                        currency: _currency,
-                        navigationService: _navigationService,
-                        tokenContract: tokenContract,
-                        selectedTokenId: (int)tokenId,
-                        tab: TabNavigation.Portfolio,
-                        mode: SelectAddressMode.ChooseMyAddress)
-                    {
-                        ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
-                        {
-                            var address = Addresses?
-                                .Where(a => a.Address == walletAddressViewModel?.Address)
-                                .FirstOrDefault();
-                            _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
-
-                            if (_selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
-                                _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
-                        }
-                    };
-                });
-
             this.WhenAnyValue(vm => vm.SelectedAddress)
                 .WhereNotNull()
                 .SubscribeInMainThread(a =>
@@ -257,7 +233,30 @@ namespace atomex.ViewModel
 
         private ReactiveCommand<Unit, Unit> _showAllAddressesCommand;
         public ReactiveCommand<Unit, Unit> ShowAllAddressesCommand => _showAllAddressesCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowPage(new SelectAddressPage(_selectAddressViewModel), TabNavigation.Portfolio));
+        {
+            var selectAddressViewModel = new SelectAddressViewModel(
+                       account: _app.Account,
+                       currency: _currency,
+                       navigationService: _navigationService,
+                       tokenContract: _tokenContract,
+                       selectedTokenId: (int)_tokenId,
+                       tab: TabNavigation.Portfolio,
+                       mode: SelectAddressMode.ChooseMyAddress)
+            {
+                ConfirmAction = (selectAddressViewModel, walletAddressViewModel) =>
+                {
+                    var address = Addresses?
+                        .Where(a => a.Address == walletAddressViewModel?.Address)
+                        .FirstOrDefault();
+                    _navigationService?.ShowPage(new AddressInfoPage(address), TabNavigation.Portfolio);
+
+                    if (selectAddressViewModel.SelectAddressFrom == SelectAddressFrom.InitSearch)
+                        _navigationService?.RemovePreviousPage(TabNavigation.Portfolio);
+                }
+            };
+
+            _navigationService?.ShowPage(new SelectAddressPage(selectAddressViewModel), TabNavigation.Portfolio);
+        });
 
         private void SubscribeToServices()
         {
@@ -268,14 +267,11 @@ namespace atomex.ViewModel
         {
             try
             {
-                if (Currencies.IsTezosToken(args.Currency) && Currencies.IsTezosBased(_currency.Name))
+                if ((args.Currency != null && _currency.Name == args.Currency) ||
+                    (args.IsTokenUpdate && (args.TokenContract == null || (args.TokenContract == _tokenContract && args.TokenId == _tokenId))))
                 {
                     await ReloadAddresses();
-                    return;
                 }
-
-                if (_currency.Name == args.Currency)
-                    await ReloadAddresses();
             }
             catch (Exception e)
             {
@@ -287,57 +283,67 @@ namespace atomex.ViewModel
         {
             try
             {
-                var account = _app.Account
-                    .GetCurrencyAccount(_currency.Name);
-
-                var addresses = (await account
-                    .GetAddressesAsync())
+                var addresses = AddressesHelper
+                    .GetReceivingAddressesAsync(
+                        account: _app.Account,
+                        currency: _currency,
+                        tokenContract: _tokenContract,
+                        tokenId: (int)_tokenId)
+                    .WaitForResult()
+                    .OrderByDescending(address => address.Balance)
                     .ToList();
-
+                
                 addresses.Sort((a1, a2) =>
                 {
-                    var typeResult = a1.KeyType.CompareTo(a2.KeyType);
+                    var typeResult = a1.WalletAddress.KeyType.CompareTo(a2.WalletAddress.KeyType);
 
                     if (typeResult != 0)
                         return typeResult;
 
-                    var accountResult = a1.KeyIndex.Account.CompareTo(a2.KeyIndex.Account);
+                    var accountResult = a1.WalletAddress.KeyIndex.Account.CompareTo(a2.WalletAddress.KeyIndex.Account);
 
                     if (accountResult != 0)
                         return accountResult;
 
-                    var chainResult = a1.KeyIndex.Chain.CompareTo(a2.KeyIndex.Chain);
+                    var chainResult = a1.WalletAddress.KeyIndex.Chain.CompareTo(a2.WalletAddress.KeyIndex.Chain);
 
                     return chainResult != 0
                        ? chainResult
-                       : a1.KeyIndex.Index.CompareTo(a2.KeyIndex.Index);
+                       : a1.WalletAddress.KeyIndex.Index.CompareTo(a2.WalletAddress.KeyIndex.Index);
                 });
 
                 var freeAddress = _app.Account
                     .GetFreeExternalAddressAsync(_currency?.Name)
                     .WaitForResult();
 
-                Addresses = new ObservableCollection<AddressViewModel>(
-                    addresses.Select(a =>
-                    {
-                        var path = a.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
-                            ? $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}'"
-                            : $"m/44'/{_currency.Bip44Code}'/{a.KeyIndex.Account}'/{a.KeyIndex.Chain}/{a.KeyIndex.Index}";
-
-                        return new AddressViewModel(_app, _currency, _navigationService)
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    Addresses = new ObservableCollection<AddressViewModel>(
+                        addresses.Select(a =>
                         {
-                            WalletAddress = a,
-                            Path = path,
-                            HasTokens = HasTokens,
-                            IsFreeAddress = a?.Address == freeAddress?.Address,
-                            Balance = a.Balance,
-                            BalanceCode = _currency.Name,
-                            UpdateAddress = UpdateAddress
-                        };
-                    }));
+                            var path = a.WalletAddress.KeyType == CurrencyConfig.StandardKey && Currencies.IsTezosBased(_currency.Name)
+                                ? $"m/44'/{_currency.Bip44Code}'/{a.WalletAddress.KeyIndex.Account}'/{a.WalletAddress.KeyIndex.Chain}'"
+                                : $"m/44'/{_currency.Bip44Code}'/{a.WalletAddress.KeyIndex.Account}'/{a.WalletAddress.KeyIndex.Chain}/{a.WalletAddress.KeyIndex.Index}";
+
+                            return new AddressViewModel(_app, _currency, _navigationService)
+                            {
+                                WalletAddress = a.WalletAddress,
+                                Path = path,
+                                HasTokens = HasTokens,
+                                IsFreeAddress = a?.Address == freeAddress?.Address,
+                                Balance = a.Balance,
+                                BalanceCode = _currency.DisplayedName,
+                                UpdateAddress = UpdateAddress
+                            };
+                        })
+                    );
+                });
 
                 if (HasTokens)
                 {
+                    var account = _app.Account
+                        .GetCurrencyAccount(_currency.Name);
+
                     var tezosAccount = account as TezosAccount;
 
                     (await tezosAccount
@@ -381,14 +387,7 @@ namespace atomex.ViewModel
                         .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
                     await new TezosTokensScanner(tezosAccount)
-                        .ScanContractAsync(address, _tokenContract);
-
-                    // reload balances for all tezos tokens account
-                    foreach (var currency in _app.Account.Currencies)
-                        if (Currencies.IsTezosToken(currency.Name))
-                            _app.Account
-                                .GetCurrencyAccount<TezosTokenAccount>(currency.Name)
-                                .ReloadBalances();
+                        .UpdateBalanceAsync(address, _tokenContract, (int)_tokenId);   
                 }
 
                 await ReloadAddresses();

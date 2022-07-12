@@ -29,6 +29,9 @@
     <data name="ReviewButton" xml:space="preserve">
         <value>Продолжить</value>
     </data>
+    <data name="HideButton" xml:space="preserve">
+        <value>Скрыть</value>
+    </data>
     <data name="UnderstandButton" xml:space="preserve">
         <value>Я понимаю</value>
     </data>
@@ -280,6 +283,9 @@
     </data>
     <data name="BalanceOnHold" xml:space="preserve">
         <value>Balance on hold</value>
+    </data>
+    <data name="RestoringWallet" xml:space="preserve">
+        <value>Восстановление кошелька</value>
     </data>
     
     <!-- Wallets Page -->

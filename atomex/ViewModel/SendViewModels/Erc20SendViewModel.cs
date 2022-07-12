@@ -5,7 +5,7 @@ using atomex.Resources;
 using atomex.ViewModel.CurrencyViewModels;
 using Atomex;
 using Atomex.Blockchain.Abstract;
-using Atomex.Core;
+using Atomex.Common;
 using Atomex.MarketData.Abstract;
 using Atomex.Wallet.Ethereum;
 using Serilog;
@@ -156,7 +156,7 @@ namespace atomex.ViewModel.SendViewModels
 
         protected override void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
+            if (sender is not IQuotesProvider quotesProvider)
                 return;
 
             var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);

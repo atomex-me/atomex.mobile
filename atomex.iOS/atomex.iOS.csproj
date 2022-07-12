@@ -101,24 +101,6 @@
     <ImageAsset Include="Assets.xcassets\Logo.imageset\logo.png" />
     <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\label.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_40x40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_60x60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_58x58.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_87x87.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_80x80.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_120x120.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_120x120-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_180x180.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_20x20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_40x40-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_29x29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_58x58-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_40x40-2.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_80x80-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_76x76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_152x152.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_167x167.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon_1024x1024.png" />
     <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Wallet__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\Wallet__white.imageset\Contents.json" />
@@ -301,6 +283,26 @@
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-2.pdf" />
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\USDT_XTZ.pdf" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\1024.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -336,6 +338,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.InputKit">
       <Version>3.7.2</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Sinks.Xamarin">
+      <Version>0.2.0.64</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -527,6 +532,7 @@
     <Folder Include="Assets.xcassets\ic_search__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
+    <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />

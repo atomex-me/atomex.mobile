@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Common;
+using atomex.Resources;
+using atomex.Views.TezosTokens;
 using Atomex;
 using Atomex.Blockchain.Tezos;
+using Atomex.Client.Common;
 using Atomex.Common;
-using Atomex.MarketData.Abstract;
-using Atomex.Services;
 using Atomex.Wallet;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.Tezos;
@@ -20,46 +22,55 @@ using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
-using Xamarin.Essentials;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModel.CurrencyViewModels
 {
     public class TezosToken : BaseViewModel
     {
-        public TezosTokenViewModel TokenViewModel { get; set; }
+        public TezosTokenViewModel TezosTokenViewModel { get; set; }
         [Reactive] public bool IsSelected { get; set; }
         public Action<string, bool> OnChanged { get; set; }
 
-        public TezosToken()
+        public TezosToken(
+            TezosTokenViewModel tezosTokenViewModel,
+            bool isSelected)
         {
+            TezosTokenViewModel = tezosTokenViewModel;
+            IsSelected = isSelected;
+
             this.WhenAnyValue(vm => vm.IsSelected)
                 .Skip(1)
                 .SubscribeInMainThread(flag =>
-                {
-                    OnChanged?.Invoke(TokenViewModel.CurrencyCode, flag);
-                });
+                    OnChanged?.Invoke(TezosTokenViewModel.CurrencyCode, flag));
         }
 
         private ICommand _toggleCommand;
-        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() => IsSelected = !IsSelected);
+        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() =>
+            IsSelected = !IsSelected);
     }
 
     public class TezosTokensViewModel : BaseViewModel
     {
-        private IAtomexApp _app { get; }
-        private IAccount _account { get; set; }
-        private INavigationService _navigationService { get; set; }
-        private string _walletName { get; set; }
-        private ICurrencyQuotesProvider _quotesProvider { get; set; }
+        private readonly IAtomexApp _app;
+        private IAccount _account;
+        private readonly INavigationService _navigationService;
+        private readonly TezosTokenViewModelCreator _tezosTokenViewModelCreator;
+
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
-        [Reactive] public IEnumerable<TezosToken> AllTokens { get; set; }
-        [Reactive] public IEnumerable<TezosTokenViewModel> UserTokens { get; set; }
-
-        public Action TokensChanged;
+        [Reactive] public IList<TezosToken> AllTokens { get; set; }
+        [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
+        [Reactive] public bool IsTokensLoading { get; set; }
+        [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
+        private TezosTokenViewModel _openToken;
 
         public string BaseCurrencyCode => "USD";
+
+        public const double DefaultTokenRowHeight = 76;
+        public const double TokenListHeaderHeight = 76;
+        [Reactive] public double TokenListViewHeight { get; set; }
 
         public TezosTokensViewModel(
             IAtomexApp app,
@@ -68,13 +79,39 @@ namespace atomex.ViewModel.CurrencyViewModels
             _app = app ?? throw new ArgumentNullException(nameof(_app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            _walletName = GetWalletName();
+            _tezosTokenViewModelCreator = new TezosTokenViewModelCreator();
 
             SubscribeToServices(_app);
-            
+
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
-                .SubscribeInMainThread(_ => OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty));
+                .SubscribeInMainThread(async _ =>
+                    await GetTokensAsync());
+
+            this.WhenAnyValue(vm => vm.UserTokens)
+                .WhereNotNull()
+                .SubscribeInMainThread(vm =>
+                {
+                    TokenListViewHeight = (UserTokens.Count + 1) * DefaultTokenRowHeight +
+                        TokenListHeaderHeight;
+                });
+
+            this.WhenAnyValue(vm => vm.SelectedToken)
+                .WhereNotNull()
+                .SubscribeInMainThread(async (token) =>
+                {
+                    _navigationService?.ShowPage(new TokenPage(token), TabNavigation.Portfolio);
+                    _openToken = token;
+
+                    await Task.Run(async () =>
+                    {
+                        await SelectedToken.LoadTransfers();
+                        SelectedToken.LoadAddresses();
+                    });
+
+                    SelectedToken = null;
+                });
+
 
             _ = ReloadTokenContractsAsync();
         }
@@ -83,9 +120,6 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             app.AtomexClientChanged += OnAtomexClientChanged;
             app.Account.BalanceUpdated += OnBalanceUpdatedEventHandler;
-
-            _quotesProvider = app.QuotesProvider;
-            _quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
         }
 
         private async Task ReloadTokenContractsAsync()
@@ -101,51 +135,18 @@ namespace atomex.ViewModel.CurrencyViewModels
 
         private async Task<IEnumerable<TezosTokenViewModel>> LoadTokens()
         {
-            var tezosConfig = _app.Account
-                .Currencies
-                .Get<TezosConfig>(TezosConfig.Xtz);
-
-            var tokens = new ObservableCollection<TezosTokenViewModel>();
+            var tokens = new List<TezosTokenViewModel>();
 
             foreach (var contract in Contracts)
             {
-                var tezosAccount = _app.Account
-                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+                var contractTokens = await _tezosTokenViewModelCreator.CreateOrGet(_app, _navigationService, contract);
+                tokens.AddRange(contractTokens);
 
-                var tokenWalletAddresses = await tezosAccount
-                    .DataRepository
-                    .GetTezosTokenAddressesByContractAsync(contract.Address);
-
-                var tokenGroups = tokenWalletAddresses
-                    .Where(walletAddress => walletAddress.Balance != 0)
-                    .GroupBy(walletAddress => new
-                    {
-                        walletAddress.TokenBalance.TokenId,
-                        walletAddress.TokenBalance.Contract
-                    });
-
-                var tokensViewModels = tokenGroups
-                    .Select(walletAddressGroup =>
-                        walletAddressGroup.Skip(1).Aggregate(walletAddressGroup.First(), (result, walletAddress) =>
-                        {
-                            result.Balance += walletAddress.Balance;
-                            result.TokenBalance.ParsedBalance = result.TokenBalance.GetTokenBalance() +
-                                                                walletAddress.TokenBalance.GetTokenBalance();
-
-                            return result;
-                        }))
-                    .Select(walletAddress => new TezosTokenViewModel(
-                        app: _app,
-                        navigationService: _navigationService,
-                        tokenBalance: walletAddress.TokenBalance,
-                        contract: contract,
-                        address: walletAddress.Address));
-
-                tokens.AddRange(tokensViewModels);
+                Log.Debug("{@count} tokens for {@contract} loaded", contractTokens.Count(), contract.Address);
             }
 
-            return tokens
-                .Where(token => !token.TokenBalance.IsNft);
+            return tokens.OrderByDescending(token => token.IsConvertable)
+                .ThenByDescending(token => token.TotalAmountInBase);
         }
 
         private void ChangeUserTokens(
@@ -156,29 +157,21 @@ namespace atomex.ViewModel.CurrencyViewModels
             {
                 if (string.IsNullOrEmpty(token)) return;
 
-                var tokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
-                List<string> tokensList = new List<string>();
-                tokensList = tokens.Split(',').ToList();
+                var disabledTokens = AllTokens
+                    .Where(t => !t.IsSelected)
+                    .Select(token => token.TezosTokenViewModel.CurrencyCode)
+                    .ToArray();
 
-                if (isSelected && tokensList.Any(item => item == token))
-                    return;
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    UserTokens = AllTokens?
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.TezosTokenViewModel)
+                        .ToList();
+                });
 
-                if (isSelected)
-                    tokensList.Add(token);
-                else
-                    tokensList.RemoveAll(c => c.Contains(token));
-
-                var result = string.Join(",", tokensList);
-                Preferences.Set(_walletName + "-" + "TezosTokens", result);
-
-                AllTokens?.Select(t => t.IsSelected == tokensList.Contains(t.TokenViewModel.CurrencyCode));
-
-                UserTokens = AllTokens?
-                    .Where(c => c.IsSelected)
-                    .Select(vm => vm.TokenViewModel)
-                    .ToList();
-
-                TokensChanged?.Invoke();
+                _app.Account.UserData.DisabledTokens = disabledTokens;
+                _app.Account.UserData.SaveToFile(_app.Account.SettingsFilePath);
             }
             catch (Exception e)
             {
@@ -202,7 +195,14 @@ namespace atomex.ViewModel.CurrencyViewModels
         {
             try
             {
-                if (!Currencies.IsTezosToken(args.Currency)) return;
+                if (!args.IsTokenUpdate ||
+                   args.TokenContract != null && (args.TokenContract != _openToken.Contract.Address || args.TokenId != _openToken.TokenBalance.TokenId))
+                {
+                    return;
+                };
+
+                if (_openToken != null)
+                    _ = _openToken.LoadTransfers();
 
                 await Device.InvokeOnMainThreadAsync(async () =>
                 {
@@ -215,57 +215,99 @@ namespace atomex.ViewModel.CurrencyViewModels
             }
         }
 
-        private async void OnQuotesUpdatedEventHandler(object sender, EventArgs args)
+        private async Task GetTokensAsync()
         {
-            if (sender is not ICurrencyQuotesProvider quotesProvider)
-                return;
+            try
+            {
+                IsTokensLoading = true;
 
-            var userTokens = Preferences.Get(_walletName + "-" + "TezosTokens", string.Empty);
-            var tokens = await LoadTokens();
+                var disabledTokens = _app.Account.UserData?.DisabledTokens ?? Array.Empty<string>();
 
-            List<string> result = new List<string>();
-            result = userTokens != string.Empty
-                ? userTokens.Split(',').ToList()
-                : tokens.Select(t => t.CurrencyCode).ToList();
+                var tokens = await Task.Run(
+                    () => LoadTokens());
 
-            AllTokens = new ObservableCollection<TezosToken>(tokens
-                .Select(token =>
+                await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    var quote = quotesProvider.GetQuote(token.TokenBalance.Symbol, BaseCurrencyCode);
+                    AllTokens = new ObservableCollection<TezosToken>(tokens
+                        .Select(token =>
+                        {
+                            var vm = new TezosToken(
+                                tezosTokenViewModel: token,
+                                isSelected: !disabledTokens.Contains(token.CurrencyCode))
+                            {
+                                OnChanged = ChangeUserTokens
+                            };
 
-                    var vm = new TezosToken
-                    {
-                        TokenViewModel = token,
-                        IsSelected = result != null ? result.Contains(token.CurrencyCode) : false,
-                        OnChanged = ChangeUserTokens
-                    };
+                            return vm;
+                        })
+                        .OrderByDescending(token => token.TezosTokenViewModel.IsConvertable)
+                        .ThenByDescending(token => token.TezosTokenViewModel.TotalAmountInBase));
 
-                    if (quote == null) return vm;
-
-                    token.CurrentQuote = quote.Bid;
-                    token.TotalAmountInBase = token.TokenBalance.GetTokenBalance().SafeMultiply(quote.Bid);
-
-                    return vm;
-                })
-                .OrderByDescending(token => token.TokenViewModel.IsConvertable)
-                .ThenByDescending(token => token.TokenViewModel.TotalAmountInBase));
-
-            UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
-                .Where(c => c.IsSelected)
-                .Select(vm => vm.TokenViewModel)
-                .ToList());
-
-            TokensChanged?.Invoke();
+                    UserTokens = new ObservableCollection<TezosTokenViewModel>(AllTokens
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.TezosTokenViewModel)
+                        .ToList());
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Get tezos tokens error");
+            }
+            finally
+            {
+                IsTokensLoading = false;
+            }
         }
+
+        private ReactiveCommand<Unit, Unit> _updateTokensCommand;
+        public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
+            (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
+
+        public async Task UpdateTokens()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsTokensLoading = true;
+
+            try
+            {
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await tezosTokensScanner.UpdateBalanceAsync(
+                    cancellationToken: cancellation.Token);
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Tezos tokens update canceled");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Tezos tokens update error");
+            }
+            finally
+            {
+                IsTokensLoading = false;
+            }
+        }
+
+        private ReactiveCommand<Unit, Unit> _manageTokensCommand;
+        public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
+                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(this)));
+
+        private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
+        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
+            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(this)));
 
         private ICommand _closeActionSheetCommand;
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
             new Command(() => _navigationService?.CloseBottomSheet());
-
-        private string GetWalletName()
-        {
-            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
-        }
 
         #region IDisposable Support
         private bool _disposedValue;
@@ -281,13 +323,9 @@ namespace atomex.ViewModel.CurrencyViewModels
 
                     if (_app != null)
                         _app.AtomexClientChanged -= OnAtomexClientChanged;
-
-                    if (_quotesProvider != null)
-                        _quotesProvider.QuotesUpdated -= OnQuotesUpdatedEventHandler;
                 }
 
                 _account = null;
-                _quotesProvider = null;
                 _disposedValue = true;
             }
         }
