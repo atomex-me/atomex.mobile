@@ -275,7 +275,9 @@ namespace atomex
 
                     try
                     {
-                        account.ChangePassword(StoragePassword);
+                        if (!account.ChangePassword(StoragePassword))
+                            throw new Exception("Can't change password");
+
                         await SecureStorage.SetAsync(WalletName, SecureStringToString(StoragePassword));
                     }
                     catch (Exception e)

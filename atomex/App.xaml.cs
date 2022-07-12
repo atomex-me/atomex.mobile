@@ -11,6 +11,7 @@ using Atomex;
 using Atomex.Common.Configuration;
 using Atomex.Core;
 using Atomex.MarketData;
+using Atomex.MarketData.Abstract;
 using Atomex.MarketData.Bitfinex;
 using Atomex.MarketData.TezTools;
 using Atomex.Services;
@@ -71,12 +72,15 @@ namespace atomex
 
             var bitfinexQuotesProvider = new BitfinexQuotesProvider(
                 currencies: currenciesProvider.GetCurrencies(Network.MainNet).Select(c => c.Name),
-                baseCurrency: BitfinexQuotesProvider.Usd,
+                baseCurrency: QuotesProvider.Usd,
                 log: loggerFactory.CreateLogger<BitfinexQuotesProvider>());
             var tezToolsQuotesProvider = new TezToolsQuotesProvider(
                 loggerFactory.CreateLogger<TezToolsQuotesProvider>());
 
-            var quotesProvider = new MultiSourceQuotesProvider(bitfinexQuotesProvider, tezToolsQuotesProvider);
+            var quotesProvider = new MultiSourceQuotesProvider(
+                log: loggerFactory.CreateLogger<MultiSourceQuotesProvider>(),
+                bitfinexQuotesProvider,
+                tezToolsQuotesProvider);
 
             AtomexApp = new AtomexApp()
                 .UseCurrenciesProvider(currenciesProvider)

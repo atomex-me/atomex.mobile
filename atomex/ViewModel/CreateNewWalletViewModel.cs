@@ -459,22 +459,18 @@ namespace atomex
                 IsLoading = true;
 
                 Account account = null;
-                await _wallet.EncryptAsync(StoragePassword);
-                _wallet.SaveToFile(_wallet.PathToWallet, StoragePassword);
 
-                ClientType clientType;
-                switch (Device.RuntimePlatform)
+                await _wallet.EncryptAsync(StoragePassword);
+
+                if (!_wallet.SaveToFile(_wallet.PathToWallet, StoragePassword))
+                    throw new Exception("Can't create wallet file");
+
+                var clientType = Device.RuntimePlatform switch
                 {
-                    case Device.iOS:
-                        clientType = ClientType.iOS;
-                        break;
-                    case Device.Android:
-                        clientType = ClientType.Android;
-                        break;
-                    default:
-                        clientType = ClientType.Unknown;
-                        break;
-                }
+                    Device.iOS => ClientType.iOS,
+                    Device.Android => ClientType.Android,
+                    _ => ClientType.Unknown,
+                };
 
                 try
                 {
