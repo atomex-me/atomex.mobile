@@ -37,7 +37,6 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 		Debug|iPhone = Debug|iPhone
 		Release|iPhone = Release|iPhone
-		PlayMarket|Any CPU = PlayMarket|Any CPU
 		ReleasePlayMarket|Any CPU = ReleasePlayMarket|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
