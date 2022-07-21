@@ -4,18 +4,10 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <LangVersion>9.0</LangVersion>
-    <Configurations>Debug;Release;PlayMarket</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PlayMarket|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\PlayMarket</OutputPath>
-    <DefineConstants></DefineConstants>
-    <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>obj\PlayMarket</IntermediateOutputPath>
-    <NoWarn></NoWarn>
-    <LangVersion>Default</LangVersion>
-    <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />

@@ -353,6 +353,7 @@ namespace atomex.ViewModel.CurrencyViewModels
                     return; // TODO: msg to user
 
                 _navigationService?.CloseBottomSheet();
+                _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
                 _navigationService?.GoToExchange(currency);
             }
         });
