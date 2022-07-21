@@ -125,7 +125,7 @@ namespace atomex
                 if (currency == null)
                     conversionViewModel?.FromViewModel?.SelectCurrencyCommand.Execute(null);
                 else
-                    conversionViewModel.SetFromCurrency(currency);
+                    conversionViewModel?.SetFromCurrency(currency);
             }
         }
 

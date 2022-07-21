@@ -375,6 +375,7 @@ namespace atomex.ViewModel.CurrencyViewModels
         public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
         {
             _navigationService?.CloseBottomSheet();
+            _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
             _navigationService?.GoToExchange(Currency);
         });
 
