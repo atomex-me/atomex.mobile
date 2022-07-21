@@ -377,12 +377,12 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         protected ReactiveCommand<Unit, Unit> _convertCurrencyCommand;
 
-        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(
-            () =>
-            {
-                _navigationService?.CloseBottomSheet();
-                _navigationService?.GoToExchange(Currency);
-            });
+        public ReactiveCommand<Unit, Unit> ConvertCurrencyCommand => _convertCurrencyCommand ??= ReactiveCommand.Create(() =>
+        {
+            _navigationService?.CloseBottomSheet();
+            _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
+            _navigationService?.GoToExchange(Currency);
+        });
 
         protected ReactiveCommand<Unit, Unit> _buyCurrencyCommand;
 
