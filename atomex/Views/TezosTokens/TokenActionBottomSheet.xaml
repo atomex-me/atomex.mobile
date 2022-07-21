@@ -1,5 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<pages:PopupPage  
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
@@ -10,18 +11,18 @@
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout VerticalOptions="EndAndExpand"
@@ -30,7 +31,7 @@
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="100"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14"
@@ -42,7 +43,7 @@
                        HeightRequest="4"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
-                       Margin="0,0,0,24"/>
+                       Margin="0,0,0,24" />
                 <StackLayout Orientation="Horizontal"
                              Margin="24"
                              Spacing="0">
@@ -51,11 +52,11 @@
                                      Binding="{Binding Balance, Converter={StaticResource GreaterThanZeroConverter}}"
                                      Value="False">
                             <Setter Property="Opacity"
-                                    Value="0.38"/>
+                                    Value="0.38" />
                         </DataTrigger>
                     </StackLayout.Triggers>
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SendCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SendCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Center"
@@ -63,22 +64,22 @@
                            HorizontalOptions="FillAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{helpers:Translate SendButton}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyCode}"/>
+                                <Span Text="{helpers:Translate SendButton}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="24">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ReceiveCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ReceiveCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Center"
@@ -86,23 +87,23 @@
                            HorizontalOptions="FillAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{helpers:Translate ReceiveButton}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyCode}"/>
+                                <Span Text="{helpers:Translate ReceiveButton}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="24"
                              IsVisible="{Binding IsConvertable, TargetNullValue='False', FallbackValue='False'}">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ConvertCurrencyCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ConvertCurrencyCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Center"
@@ -110,20 +111,18 @@
                            HorizontalOptions="FillAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{helpers:Translate ExchangeButton}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyCode}"/>
+                                <Span Text="{helpers:Translate ExchangeButton}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="End" />
                 </StackLayout>
             </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>
-
-

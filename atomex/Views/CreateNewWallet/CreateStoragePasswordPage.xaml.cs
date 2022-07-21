@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using atomex.ViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views.CreateNewWallet
 {
     public partial class CreateStoragePasswordPage : ContentPage
     {
-
         public CreateStoragePasswordPage()
         {
             InitializeComponent();
@@ -20,11 +20,12 @@ namespace atomex.Views.CreateNewWallet
 
         protected override void OnDisappearing()
         {
-            var vm = (CreateNewWalletViewModel)BindingContext;
+            var vm = (CreateNewWalletViewModel) BindingContext;
             if (vm.ClearWarningCommand.CanExecute(null))
             {
                 vm.ClearWarningCommand.Execute(null);
             }
+
             base.OnDisappearing();
         }
 

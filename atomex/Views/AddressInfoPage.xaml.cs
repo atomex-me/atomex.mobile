@@ -1,7 +1,7 @@
-﻿using atomex.ViewModel;
+﻿using atomex.ViewModels;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class AddressInfoPage : ContentPage
     {

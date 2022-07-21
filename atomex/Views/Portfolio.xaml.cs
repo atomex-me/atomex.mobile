@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
-using atomex.ViewModel;
+using atomex.ViewModels;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class Portfolio : ContentPage
     {

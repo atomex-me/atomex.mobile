@@ -5,7 +5,6 @@ using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Application = Xamarin.Forms.Application;
 using atomex.CustomElements;
 using atomex.Resources;
-using atomex.ViewModel;
 using atomex.Helpers;
 using CurrenciesPage = atomex.Views.BuyCurrency.CurrenciesPage;
 using NavigationPage = Xamarin.Forms.NavigationPage;
@@ -16,11 +15,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.Extensions;
 using System;
+using atomex.ViewModels;
+using atomex.ViewModels.ConversionViewModels;
 using static atomex.Models.SnackbarMessage;
 using Rg.Plugins.Popup.Services;
 using Rg.Plugins.Popup.Pages;
 
-namespace atomex
+namespace atomex.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
@@ -31,7 +32,7 @@ namespace atomex
         private readonly NavigationPage NavigationPortfolioPage;
         private readonly NavigationPage NavigationBuyPage;
         private readonly NavigationPage NavigationSettingsPage;
-        
+
         public MainViewModel MainViewModel { get; }
 
         private int _initiatedPageNumber;
@@ -78,10 +79,7 @@ namespace atomex
             Children.Add(NavigationBuyPage);
             Children.Add(NavigationSettingsPage);
 
-            mainViewModel.Locked += (s, a) =>
-            {
-                SignOut();
-            };
+            mainViewModel.Locked += (s, a) => { SignOut(); };
 
             LocalizationResourceManager.Instance.LanguageChanged += (s, a) =>
             {
@@ -188,19 +186,23 @@ namespace atomex
             {
                 case TabNavigation.Portfolio:
                     NavigationPortfolioPage.Navigation.RemovePage(
-                        NavigationPortfolioPage.Navigation.NavigationStack[NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
+                        NavigationPortfolioPage.Navigation.NavigationStack[
+                            NavigationPortfolioPage.Navigation.NavigationStack.Count - 2]);
                     break;
                 case TabNavigation.Exchange:
                     NavigationConversionPage.Navigation.RemovePage(
-                        NavigationConversionPage.Navigation.NavigationStack[NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
+                        NavigationConversionPage.Navigation.NavigationStack[
+                            NavigationConversionPage.Navigation.NavigationStack.Count - 2]);
                     break;
                 case TabNavigation.Buy:
                     NavigationBuyPage.Navigation.RemovePage(
-                        NavigationBuyPage.Navigation.NavigationStack[NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
+                        NavigationBuyPage.Navigation.NavigationStack[
+                            NavigationBuyPage.Navigation.NavigationStack.Count - 2]);
                     break;
                 case TabNavigation.Settings:
                     NavigationSettingsPage.Navigation.RemovePage(
-                        NavigationSettingsPage.Navigation.NavigationStack[NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
+                        NavigationSettingsPage.Navigation.NavigationStack[
+                            NavigationSettingsPage.Navigation.NavigationStack.Count - 2]);
                     break;
                 case TabNavigation.None:
                     break;
@@ -276,9 +278,9 @@ namespace atomex
                 : snackBarTextColorName;
 
             Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-            backgroundColor = (Color)bgColor;
+            backgroundColor = (Color) bgColor;
             Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-            textColor = (Color)txtColor;
+            textColor = (Color) txtColor;
 
             var messageOptions = new MessageOptions
             {
@@ -297,10 +299,7 @@ namespace atomex
                     Font = Font.SystemFontOfSize(17),
                     Text = buttonText,
                     Padding = new Thickness(20, 16),
-                    Action = () => 
-                    {
-                        return Task.CompletedTask;
-                    }
+                    Action = () => { return Task.CompletedTask; }
                 }
             };
 
@@ -312,7 +311,7 @@ namespace atomex
                 IsRtl = false,
                 CornerRadius = 4,
                 Actions = actionOptions
-            };            
+            };
 
             var result = await this.DisplaySnackBarAsync(options);
         }
@@ -352,7 +351,7 @@ namespace atomex
                     _initiatedPageNumber = NavigationPortfolioPage.Navigation.NavigationStack.Count;
                     break;
                 case TabNavigation.Exchange:
-                     _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
+                    _initiatedPageNumber = NavigationConversionPage.Navigation.NavigationStack.Count;
                     break;
                 case TabNavigation.Buy:
                     _initiatedPageNumber = NavigationBuyPage.Navigation.NavigationStack.Count;
@@ -373,19 +372,25 @@ namespace atomex
             switch (tab)
             {
                 case TabNavigation.Portfolio:
-                    for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    for (int i = NavigationPortfolioPage.Navigation.NavigationStack.Count - 1;
+                         i > _initiatedPageNumber;
+                         i--)
                     {
                         NavigationPortfolioPage.Navigation.RemovePage(
                             NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
                     }
+
                     await NavigationPortfolioPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.Exchange:
-                    for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1;
+                         i > _initiatedPageNumber;
+                         i--)
                     {
                         NavigationConversionPage.Navigation.RemovePage(
                             NavigationConversionPage.Navigation.NavigationStack[i - 1]);
                     }
+
                     await NavigationConversionPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.Buy:
@@ -394,14 +399,18 @@ namespace atomex
                         NavigationBuyPage.Navigation.RemovePage(
                             NavigationBuyPage.Navigation.NavigationStack[i - 1]);
                     }
+
                     await NavigationBuyPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.Settings:
-                    for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1; i > _initiatedPageNumber; i--)
+                    for (int i = NavigationSettingsPage.Navigation.NavigationStack.Count - 1;
+                         i > _initiatedPageNumber;
+                         i--)
                     {
                         NavigationSettingsPage.Navigation.RemovePage(
                             NavigationSettingsPage.Navigation.NavigationStack[i - 1]);
                     }
+
                     await NavigationSettingsPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.None:

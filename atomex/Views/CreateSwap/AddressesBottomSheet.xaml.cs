@@ -1,4 +1,4 @@
-﻿using atomex.ViewModel.ConversionViewModels;
+﻿using atomex.ViewModels.ConversionViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.CreateSwap

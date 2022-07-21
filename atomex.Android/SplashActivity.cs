@@ -7,10 +7,10 @@ using Android.Support.V7.App;
 
 namespace atomex.Droid
 {
-    [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true,
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class SplashActivity : AppCompatActivity
     {
-
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
         {
             base.OnCreate(savedInstanceState, persistentState);
@@ -31,6 +31,8 @@ namespace atomex.Droid
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }
 
-        public override void OnBackPressed() { }
+        public override void OnBackPressed()
+        {
+        }
     }
 }

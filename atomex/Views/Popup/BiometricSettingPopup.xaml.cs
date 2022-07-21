@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using atomex.ViewModel;
+using atomex.ViewModels;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 
@@ -8,7 +8,6 @@ namespace atomex.Views.Popup
 {
     public partial class BiometricSettingPopup : PopupPage
     {
-
         public BiometricSettingPopup(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
@@ -18,7 +17,7 @@ namespace atomex.Views.Popup
         private async void OnPasswordTextChanged(object sender, TextChangedEventArgs args)
         {
             if (!String.IsNullOrEmpty(args.NewTextValue))
-            {   
+            {
                 if (!PasswordHint.IsVisible)
                 {
                     PasswordHint.IsVisible = true;

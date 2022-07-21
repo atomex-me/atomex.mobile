@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
@@ -9,9 +10,9 @@
     <StackLayout HorizontalOptions="CenterAndExpand"
                  VerticalOptions="CenterAndExpand">
         <Label Text="{helpers:Translate WalletTypeStepLabel}"
-               Style="{DynamicResource CreateNewWalletTitleStyle}"/>
+               Style="{DynamicResource CreateNewWalletTitleStyle}" />
         <Label Text="{helpers:Translate SelectTypeLabel}"
-               Style="{DynamicResource CreateNewWalletTextStyle}"/>
+               Style="{DynamicResource CreateNewWalletTextStyle}" />
         <StackLayout Orientation="Horizontal"
                      Margin="0,20"
                      HorizontalOptions="Center"
@@ -21,13 +22,13 @@
                                       FontSize="14"
                                       CornerRadius="0"
                                       TextTransform="Uppercase"
-                                      Command="{Binding SetTestNetTypeCommand}"/>
+                                      Command="{Binding SetTestNetTypeCommand}" />
             <custom:RightRoundedButton Text="{helpers:Translate MainNetButton}"
                                        Style="{DynamicResource MainButton}"
                                        FontSize="14"
                                        CornerRadius="0"
                                        TextTransform="Uppercase"
-                                       Command="{Binding SetMainNetTypeCommand}"/>
+                                       Command="{Binding SetMainNetTypeCommand}" />
         </StackLayout>
-    </StackLayout> 
+    </StackLayout>
 </ContentPage>

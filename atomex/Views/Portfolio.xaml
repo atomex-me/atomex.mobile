@@ -1,287 +1,294 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
-             x:Class="atomex.Portfolio"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             x:Class="atomex.Views.Portfolio"
              Title="{helpers:Translate PortfolioPageTitle}"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+    <ContentPage.BindingContext>
+        <vm:PortfolioViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout>
-        <ListView AbsoluteLayout.LayoutBounds="0,0,1,1"
-                  AbsoluteLayout.LayoutFlags="All"
-                  ItemsSource="{Binding UserCurrencies}"
-                  HasUnevenRows="True"
-                  SeparatorVisibility="Default"
-                  SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                  VerticalOptions="FillAndExpand"
-                  BackgroundColor="Transparent"
-                  SelectionMode="Single"
-                  SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
-                  Footer="">
-            <ListView.Header>
-                <StackLayout>
-                    <StackLayout Orientation="Horizontal"
-                                 Margin="16,56,16,0"
-                                 VerticalOptions="Center"
-                                 HorizontalOptions="CenterAndExpand">
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}"/>
-                        </StackLayout.GestureRecognizers>
-                        <Label Text="{helpers:Translate AvailableBalance}"
-                               Style="{DynamicResource MainTextH5}"
+            <ListView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                      AbsoluteLayout.LayoutFlags="All"
+                      ItemsSource="{Binding UserCurrencies}"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="Default"
+                      SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                      VerticalOptions="FillAndExpand"
+                      BackgroundColor="Transparent"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
+                      Footer="">
+                <ListView.Header>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal"
+                                     Margin="16,56,16,0"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="CenterAndExpand">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}" />
+                            </StackLayout.GestureRecognizers>
+                            <Label Text="{helpers:Translate AvailableBalance}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center" />
+                            <Image Source="ic_question"
+                                   WidthRequest="12"
+                                   HeightRequest="12" />
+                        </StackLayout>
+                        <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                               Style="{DynamicResource MainTextH1}"
+                               Margin="16,0"
                                HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"/>
-                        <Image Source="ic_question"
-                               WidthRequest="12"
-                               HeightRequest="12"/>
-                    </StackLayout>
-                    <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                           Style="{DynamicResource MainTextH1}"
-                           Margin="16,0"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"/>
-                    <Grid RowSpacing="4"
-                          ColumnSpacing="24"
-                          HorizontalOptions="CenterAndExpand"
-                          Margin="16,24">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="56" />
-                            <RowDefinition Height="20" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <ImageButton Padding="21"
-                                     Margin="0"
-                                     CornerRadius="28"
-                                     HeightRequest="56"
-                                     WidthRequest="56"
-                                     HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                     Command="{Binding SendCommand}"
-                                     Source="ic_send"/>
-                        <Label Grid.Row="1"
-                               Text="{helpers:Translate SendButton}"
-                               Style="{DynamicResource MainTextH5}"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               Padding="0"/>
-                        <ImageButton Grid.Column="1"
-                                     Padding="21"
-                                     Margin="0"
-                                     CornerRadius="28"
-                                     HeightRequest="56"
-                                     WidthRequest="56"
-                                     HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                     Command="{Binding ReceiveCommand}"
-                                     Source="ic_receive"/>
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="{helpers:Translate ReceiveButton}"
-                               Style="{DynamicResource MainTextH5}"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               Padding="0"/>
-                        <ImageButton Grid.Column="2"
-                                     Padding="19"
-                                     Margin="0"
-                                     CornerRadius="28"
-                                     HeightRequest="56"
-                                     WidthRequest="56"
-                                     HorizontalOptions="Center"
-                                     BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
-                                     Command="{Binding ExchangeCommand}"
-                                     Source="ic_exchange__white"/>
-                        <Label Grid.Row="1"
-                               Grid.Column="2"
-                               Text="{helpers:Translate ExchangeButton}"
-                               Style="{DynamicResource MainTextH5}"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               Padding="0"/>
-                    </Grid>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{helpers:Translate CoinsAndTokens}"
-                               Style="{DynamicResource AdditionalTextH4}"
-                               Margin="16,14"
-                               HorizontalTextAlignment="Start"
-                               VerticalTextAlignment="Center"/>
-                        <Image Source="ic_filters"
-                               Margin="20,0"
-                               HorizontalOptions="EndAndExpand"
-                               VerticalOptions="FillAndExpand"
-                               HeightRequest="16"
-                               WidthRequest="16">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ManageAssetsCommand}"/>
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </StackLayout>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                 Margin="16,0,0,0"/>
-                </StackLayout>
-            </ListView.Header>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                               VerticalTextAlignment="Center" />
                         <Grid RowSpacing="4"
-                              ColumnSpacing="0"
-                              Padding="16,0">
+                              ColumnSpacing="24"
+                              HorizontalOptions="CenterAndExpand"
+                              Margin="16,24">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="36" />
-                                <RowDefinition Height="36" />
+                                <RowDefinition Height="56" />
+                                <RowDefinition Height="20" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="24" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="80" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="32" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Image Grid.RowSpan="2"
-                                   Source="{Binding CurrencyCode}"
-                                   HeightRequest="24"
-                                   WidthRequest="24"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"/>
-                            <Label Grid.ColumnSpan="2"
+                            <ImageButton Padding="21"
+                                         Margin="0"
+                                         CornerRadius="28"
+                                         HeightRequest="56"
+                                         WidthRequest="56"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                         Command="{Binding SendCommand}"
+                                         Source="ic_send" />
+                            <Label Grid.Row="1"
+                                   Text="{helpers:Translate SendButton}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   Padding="0" />
+                            <ImageButton Grid.Column="1"
+                                         Padding="21"
+                                         Margin="0"
+                                         CornerRadius="28"
+                                         HeightRequest="56"
+                                         WidthRequest="56"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                         Command="{Binding ReceiveCommand}"
+                                         Source="ic_receive" />
+                            <Label Grid.Row="1"
                                    Grid.Column="1"
-                                   Text="{Binding Currency.Description}"
-                                   Style="{DynamicResource MainTextH4}"
-                                   LineBreakMode="TailTruncation"
-                                   Padding="12,0,0,0"
-                                   HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="End"/>
-                            <Label Grid.Column="1"
-                                   Grid.Row="1"
-                                   Text="{Binding Price, StringFormat='${0:f2}'}"
-                                   Style="{DynamicResource AdditionalTextH6}"
-                                   Padding="12,0,8,0"
-                                   HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="Start">
-                            </Label>
+                                   Text="{helpers:Translate ReceiveButton}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   Padding="0" />
+                            <ImageButton Grid.Column="2"
+                                         Padding="19"
+                                         Margin="0"
+                                         CornerRadius="28"
+                                         HeightRequest="56"
+                                         WidthRequest="56"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
+                                         Command="{Binding ExchangeCommand}"
+                                         Source="ic_exchange__white" />
                             <Label Grid.Row="1"
                                    Grid.Column="2"
-                                   Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
-                                   Style="{DynamicResource AdditionalTextH6}"
-                                   HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="Start">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                 Value="True">
-                                        <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                                        <Setter Property="Text"
-                                                Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                 Value="False">
-                                        <Setter Property="TextColor"
-                                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label Grid.Column="3"
-                                   Style="{DynamicResource MainTextH4}"
-                                   Margin="8,0,0,0"
-                                   LineBreakMode="TailTruncation"
-                                   HorizontalTextAlignment="End"
-                                   VerticalTextAlignment="End">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CurrencyName}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label Grid.Row="1"
-                                   Grid.Column="3"
-                                   Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                                   Style="{DynamicResource MainTextH6}"
-                                   Margin="8,0,0,0"
-                                   LineBreakMode="TailTruncation"
-                                   HorizontalTextAlignment="End"
-                                   VerticalTextAlignment="Start"/>
-                            <Frame Grid.RowSpan="2"
-                                   Grid.Column="4"
-                                   HasShadow="False"
-                                   Padding="0"
-                                   BackgroundColor="Transparent">
-                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}"/>
-                                    </Frame.GestureRecognizers>
-                                <Image Source="ic_menu"
-                                       WidthRequest="4"
-                                       HeightRequest="16"
-                                       Margin="18,0,10,0"/>
-                            </Frame>
+                                   Text="{helpers:Translate ExchangeButton}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   Padding="0" />
                         </Grid>
-                    </controls:CustomViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <StackLayout Spacing="0"
-                     AbsoluteLayout.LayoutBounds="0,1,1,56"
-                     AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
-                     IsVisible="{Binding IsRestoring}">
-            <Frame HasShadow="False"
-                   CornerRadius="4"
-                   HorizontalOptions="FillAndExpand"
-                   Padding="0"
-                   HeightRequest="48"
-                   Margin="16,0"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
-                <Grid Padding="20,0" 
-                      HorizontalOptions="FillAndExpand"
-                      ColumnSpacing="27"
-                      RowSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="48" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="80" />
-                    </Grid.ColumnDefinitions>
-                    <Label TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
-                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
-                           FontSize="14"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{helpers:Translate RestoringWallet}"/>
-                                <Span Text="..."/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Label Grid.Column="1"
-                           Text="{helpers:Translate HideButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
-                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
-                           LineBreakMode="TailTruncation"
-                           FontSize="17"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="End">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding HideRestoringCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Grid>
-            </Frame>
-        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{helpers:Translate CoinsAndTokens}"
+                                   Style="{DynamicResource AdditionalTextH4}"
+                                   Margin="16,14"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center" />
+                            <Image Source="ic_filters"
+                                   Margin="20,0"
+                                   HorizontalOptions="EndAndExpand"
+                                   VerticalOptions="FillAndExpand"
+                                   HeightRequest="16"
+                                   WidthRequest="16">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ManageAssetsCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                        <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                     Margin="16,0,0,0" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:CustomViewCell
+                            SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                            <Grid RowSpacing="4"
+                                  ColumnSpacing="0"
+                                  Padding="16,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="36" />
+                                    <RowDefinition Height="36" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="32" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2"
+                                       Source="{Binding CurrencyCode}"
+                                       HeightRequest="24"
+                                       WidthRequest="24"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End" />
+                                <Label Grid.ColumnSpan="2"
+                                       Grid.Column="1"
+                                       Text="{Binding Currency.Description}"
+                                       Style="{DynamicResource MainTextH4}"
+                                       LineBreakMode="TailTruncation"
+                                       Padding="12,0,0,0"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="End" />
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       Text="{Binding Price, StringFormat='${0:f2}'}"
+                                       Style="{DynamicResource AdditionalTextH6}"
+                                       Padding="12,0,8,0"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Start">
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="2"
+                                       Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                                       Style="{DynamicResource AdditionalTextH6}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Start">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                     Value="True">
+                                            <Setter Property="TextColor"
+                                                    Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}" />
+                                            <Setter Property="Text"
+                                                    Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                     Value="False">
+                                            <Setter Property="TextColor"
+                                                    Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.Column="3"
+                                       Style="{DynamicResource MainTextH4}"
+                                       Margin="8,0,0,0"
+                                       LineBreakMode="TailTruncation"
+                                       HorizontalTextAlignment="End"
+                                       VerticalTextAlignment="End">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding CurrencyName}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Row="1"
+                                       Grid.Column="3"
+                                       Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                                       Style="{DynamicResource MainTextH6}"
+                                       Margin="8,0,0,0"
+                                       LineBreakMode="TailTruncation"
+                                       HorizontalTextAlignment="End"
+                                       VerticalTextAlignment="Start" />
+                                <Frame Grid.RowSpan="2"
+                                       Grid.Column="4"
+                                       HasShadow="False"
+                                       Padding="0"
+                                       BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ShowCurrencyActionBottomSheet}" />
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="ic_menu"
+                                           WidthRequest="4"
+                                           HeightRequest="16"
+                                           Margin="18,0,10,0" />
+                                </Frame>
+                            </Grid>
+                        </controls:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Spacing="0"
+                         AbsoluteLayout.LayoutBounds="0,1,1,56"
+                         AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
+                         IsVisible="{Binding IsRestoring}">
+                <Frame HasShadow="False"
+                       CornerRadius="4"
+                       HorizontalOptions="FillAndExpand"
+                       Padding="0"
+                       HeightRequest="48"
+                       Margin="16,0"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
+                    <Grid Padding="20,0"
+                          HorizontalOptions="FillAndExpand"
+                          ColumnSpacing="27"
+                          RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+                        <Label
+                            TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                            FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                            FontSize="14"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate RestoringWallet}" />
+                                    <Span Text="..." />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Column="1"
+                               Text="{helpers:Translate HideButton}"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               LineBreakMode="TailTruncation"
+                               FontSize="17"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding HideRestoringCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Frame>
+            </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

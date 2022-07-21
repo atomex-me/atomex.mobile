@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
@@ -16,10 +17,10 @@
                      VerticalOptions="CenterAndExpand">
             <Label Text="{helpers:Translate MnemonicVerificationStepLabel}"
                    Style="{DynamicResource CreateNewWalletTitleStyle}"
-                   Margin="20,0"/>
+                   Margin="20,0" />
             <Label Text="{helpers:Translate MnemonicVerificationDescriptionText}"
                    Style="{DynamicResource CreateNewWalletTextStyle}"
-                   Margin="20,0"/>
+                   Margin="20,0" />
             <Grid Margin="0,10"
                   BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
                 <Grid.Triggers>
@@ -27,11 +28,11 @@
                                  Binding="{Binding TargetMnemonicSubstr.Count}"
                                  Value="0">
                         <Setter Property="IsVisible"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Grid.Triggers>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <FlexLayout BindableLayout.ItemsSource="{Binding TargetMnemonicSubstr}"
                             Padding="10"
@@ -45,11 +46,12 @@
                                 <Frame Style="{DynamicResource SeedWordFrameStyle}"
                                        BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}">
                                     <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}" Command="{Binding BindingContext.DeleteWordFromVerificationCommand, Source={x:Reference BindingContextPage}}"/>
+                                        <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}"
+                                                              Command="{Binding BindingContext.DeleteWordFromVerificationCommand, Source={x:Reference BindingContextPage}}" />
                                     </Frame.GestureRecognizers>
                                     <Label Text="{Binding .}"
                                            Style="{DynamicResource SeedWordLabelStyle}"
-                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                                 </Frame>
                             </StackLayout>
                         </DataTemplate>
@@ -65,7 +67,7 @@
                                  Binding="{Binding SourceMnemonicSubstr.Count}"
                                  Value="0">
                         <Setter Property="IsVisible"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Grid.Triggers>
                 <StackLayout Grid.Row="0">
@@ -79,10 +81,11 @@
                                 <StackLayout>
                                     <Frame Style="{DynamicResource SeedWordFrameStyle}">
                                         <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}" Command="{Binding BindingContext.AddWordToVerificationCommand, Source={x:Reference BindingContextPage}}"/>
+                                            <TapGestureRecognizer CommandParameter="{Binding ., Mode=TwoWay}"
+                                                                  Command="{Binding BindingContext.AddWordToVerificationCommand, Source={x:Reference BindingContextPage}}" />
                                         </Frame.GestureRecognizers>
                                         <Label Text="{Binding .}"
-                                               Style="{DynamicResource SeedWordLabelStyle}"/>
+                                               Style="{DynamicResource SeedWordLabelStyle}" />
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>
@@ -100,17 +103,18 @@
                 </StackLayout.IsVisible>
                 <Label Text="{helpers:Translate DerivedVerificationDescriptionText}"
                        Style="{DynamicResource CreateNewWalletTextStyle}"
-                       Margin="0,10"/>
+                       Margin="0,10" />
                 <custom:CustomFrame x:Name="PasswordFrame"
                                     CornerRadius="10"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout HeightRequest="60">
-                        <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                        <RelativeLayout
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"
                                    VerticalTextAlignment="Center"
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}" />
                             <custom:CustomEntry x:Name="PasswordEntry"
                                                 Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                 Keyboard="Text"
@@ -123,12 +127,12 @@
                                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                                 <custom:CustomEntry.Behaviors>
                                     <behaviors:EventToCommandBehavior EventName="Focused"
-                                                                      Command="{Binding ClearWarningCommand}"/>
+                                                                      Command="{Binding ClearWarningCommand}" />
                                     <behaviors:EventToCommandBehavior EventName="Unfocused"
-                                                                      Command="{Binding VerificateDerivedPswdCommand}"/>
+                                                                      Command="{Binding VerificateDerivedPswdCommand}" />
                                     <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                                       Command="{Binding DerivedPswdConfirmationChangedCommand}"
-                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}" />
                                 </custom:CustomEntry.Behaviors>
                             </custom:CustomEntry>
                         </RelativeLayout>
@@ -143,7 +147,7 @@
                                  Binding="{Binding Warning}"
                                  Value="">
                         <Setter Property="IsVisible"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>

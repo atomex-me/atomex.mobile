@@ -1,8 +1,9 @@
-﻿using atomex.ViewModel;
-using atomex.ViewModel.SendViewModels;
+﻿using atomex.ViewModels;
+using atomex.ViewModels.ConversionViewModels;
+using atomex.ViewModels.SendViewModels;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class ScanningQrPage : ContentPage
     {

@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Gms.Extensions;
@@ -16,14 +15,15 @@ using Sentry;
 using Serilog;
 using Serilog.Events;
 using Xamarin.Forms;
-
 using atomex.Common.FileSystem;
 using Atomex.Common;
 using Atomex.TzktEvents;
 
 namespace atomex.Droid
 {
-    [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask, ScreenOrientation = ScreenOrientation.Locked)]
+    [Activity(Label = "Atomex", Icon = "@mipmap/icon", Theme = "@style/MainTheme",
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTask,
+        ScreenOrientation = ScreenOrientation.Locked)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity Instance { get; private set; }
@@ -44,7 +44,8 @@ namespace atomex.Droid
 
             //Window.DecorView.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.LightNavigationBar;
 
-            Window.SetNavigationBarColor(Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.colorPrimary)));
+            Window.SetNavigationBarColor(
+                Android.Graphics.Color.ParseColor(ApplicationContext.Resources.GetString(Resource.Color.colorPrimary)));
 
             CrossFingerprint.SetCurrentActivityResolver(() => this);
 
@@ -79,10 +80,12 @@ namespace atomex.Droid
             Log.Error(e.Exception, "Android unhandled exception");
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions,
+                grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -98,10 +101,7 @@ namespace atomex.Droid
                 Log.Debug("DeviceToken: {@token}", App.DeviceToken);
 
                 // apply device token to sentry
-                SentrySdk.ConfigureScope(scope =>
-                {
-                    scope.SetTag("device_token", App.DeviceToken);
-                });
+                SentrySdk.ConfigureScope(scope => { scope.SetTag("device_token", App.DeviceToken); });
             }
             catch (Exception e)
             {
@@ -122,8 +122,10 @@ namespace atomex.Droid
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
+#if DEBUG
                 .MinimumLevel.Debug()
                 .WriteTo.AndroidLog()
+#else
                 .WriteTo.Sentry(o =>
                 {
                     //o.TracesSampleRate = 1.0;
@@ -133,6 +135,7 @@ namespace atomex.Droid
                     //o.SendDefaultPii = true;
                     o.InitializeSdk = false;
                 })
+#endif
                 .CreateLogger();
         }
 

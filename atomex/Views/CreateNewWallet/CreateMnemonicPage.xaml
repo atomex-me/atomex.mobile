@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
@@ -9,7 +10,7 @@
              Title="{Binding Title}"
              Style="{DynamicResource MainBackgroundStyle}">
     <ContentPage.Resources>
-        <converters:StringToBoolConverter x:Key="StringToBool"/>
+        <converters:StringToBoolConverter x:Key="StringToBool" />
     </ContentPage.Resources>
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
@@ -17,9 +18,9 @@
                      Spacing="0"
                      Style="{DynamicResource CreateWalletStackLayoutStyle}">
             <Label Text="{helpers:Translate MnemonicPhraseStepLabel}"
-                   Style="{DynamicResource CreateNewWalletTitleStyle}"/>
+                   Style="{DynamicResource CreateNewWalletTitleStyle}" />
             <Label Text="{helpers:Translate MnemonicDescriptionText}"
-                   Style="{DynamicResource CreateNewWalletLeftAlignTextStyle}"/>
+                   Style="{DynamicResource CreateNewWalletLeftAlignTextStyle}" />
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="0"
@@ -41,7 +42,7 @@
                                     Style="{DynamicResource EntryFrameStyle}"
                                     x:Name="LanguageFrame">
                     <custom:CustomFrame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked" />
                     </custom:CustomFrame.GestureRecognizers>
                 </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="1"
@@ -54,13 +55,13 @@
                                      Style="{DynamicResource CustomPickerStyle}">
                     <custom:CustomPicker.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                                          Command="{Binding ClearMnemonicCommand}"/>
+                                                          Command="{Binding ClearMnemonicCommand}" />
                     </custom:CustomPicker.Behaviors>
                 </custom:CustomPicker>
-                <Label Text ="{helpers:Translate LanguageLabel}"
+                <Label Text="{helpers:Translate LanguageLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.RowSpan="2"
@@ -69,7 +70,7 @@
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnLanguagePickerClicked" />
                     </Image.GestureRecognizers>
                 </Image>
                 <custom:CustomFrame Grid.Row="3"
@@ -79,7 +80,7 @@
                                     x:Name="WordCountFrame"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked" />
                     </Frame.GestureRecognizers>
                 </custom:CustomFrame>
                 <custom:CustomPicker Grid.Row="4"
@@ -92,14 +93,14 @@
                                      Style="{DynamicResource CustomPickerStyle}">
                     <custom:CustomPicker.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="SelectedIndexChanged"
-                                                          Command="{Binding ClearMnemonicCommand}"/>
+                                                          Command="{Binding ClearMnemonicCommand}" />
                     </custom:CustomPicker.Behaviors>
                 </custom:CustomPicker>
                 <Label Grid.Row="3"
-                       Text ="{helpers:Translate WordCountLabel}"
+                       Text="{helpers:Translate WordCountLabel}"
                        Style="{DynamicResource PickerHintStyle}">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.RowSpan="2"
@@ -109,7 +110,7 @@
                        Margin="0,25,20,25"
                        HeightRequest="10">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked"/>
+                        <TapGestureRecognizer Tapped="OnWordCountPickerClicked" />
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
@@ -122,21 +123,22 @@
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UseDerivedPswdInfoCommand}"/>
+                        <TapGestureRecognizer Command="{Binding UseDerivedPswdInfoCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Source="ic_question"
                        WidthRequest="16"
                        HeightRequest="16">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UseDerivedPswdInfoCommand}"/>
+                        <TapGestureRecognizer Command="{Binding UseDerivedPswdInfoCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
-                <Switch OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                        IsToggled="{Binding UseDerivedKeyPswd, Mode=TwoWay}"
-                        Toggled="OnUseDerivedPswdToggled"
-                        HorizontalOptions="EndAndExpand"
-                        VerticalOptions="Center"/>
+                <Switch
+                    OnColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                    IsToggled="{Binding UseDerivedKeyPswd, Mode=TwoWay}"
+                    Toggled="OnUseDerivedPswdToggled"
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center" />
             </StackLayout>
             <StackLayout Spacing="1"
                          IsVisible="{Binding UseDerivedKeyPswd}">
@@ -144,12 +146,13 @@
                                     CornerRadius="20,20,0,0"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout HeightRequest="60">
-                        <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                        <RelativeLayout
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"
                                    VerticalTextAlignment="Center"
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}" />
                             <custom:CustomEntry x:Name="PasswordEntry"
                                                 Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                 Keyboard="Text"
@@ -162,10 +165,10 @@
                                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                                 <custom:CustomEntry.Behaviors>
                                     <behaviors:EventToCommandBehavior EventName="Focused"
-                                                                      Command="{Binding ClearWarningCommand}"/>
+                                                                      Command="{Binding ClearWarningCommand}" />
                                     <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                                       Command="{Binding DerivedPswdChangedCommand}"
-                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}" />
                                 </custom:CustomEntry.Behaviors>
                             </custom:CustomEntry>
                         </RelativeLayout>
@@ -175,12 +178,13 @@
                                     CornerRadius="0,0,20,20"
                                     Style="{DynamicResource EntryFrameStyle}">
                     <StackLayout HeightRequest="60">
-                        <RelativeLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
+                        <RelativeLayout
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}">
                             <Label x:Name="PasswordConfirmationHint"
                                    Style="{DynamicResource EntryHintStyle}"
                                    VerticalTextAlignment="Center"
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1}"
-                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}"/>
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}" />
                             <custom:CustomEntry x:Name="PasswordConfirmationEntry"
                                                 Placeholder="{helpers:Translate PasswordConfirmationEntryPlaceholder}"
                                                 Keyboard="Text"
@@ -193,10 +197,10 @@
                                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                                 <custom:CustomEntry.Behaviors>
                                     <behaviors:EventToCommandBehavior EventName="Focused"
-                                                                      Command="{Binding ClearWarningCommand}"/>
+                                                                      Command="{Binding ClearWarningCommand}" />
                                     <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                                       Command="{Binding DerivedPswdConfirmationChangedCommand}"
-                                                                      CommandParameter="{Binding Source={x:Reference PasswordConfirmationEntry},Path=Text}"/>
+                                                                      CommandParameter="{Binding Source={x:Reference PasswordConfirmationEntry},Path=Text}" />
                                 </custom:CustomEntry.Behaviors>
                             </custom:CustomEntry>
                         </RelativeLayout>
@@ -210,7 +214,7 @@
                                  Binding="{Binding Warning}"
                                  Value="">
                         <Setter Property="IsVisible"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -229,7 +233,7 @@
                                 <StackLayout>
                                     <Frame Style="{DynamicResource SeedWordFrameStyle}">
                                         <Label Text="{Binding .}"
-                                               Style="{DynamicResource SeedWordLabelStyle}"/>
+                                               Style="{DynamicResource SeedWordLabelStyle}" />
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>
@@ -243,12 +247,12 @@
                 <Image Source="ic_question__warning"
                        HeightRequest="16"
                        WidthRequest="16"
-                       Margin="0,0,10,0"/>
+                       Margin="0,0,10,0" />
                 <Label Text="{helpers:Translate LoseMnemonicPhraseText}"
                        TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                        FontFamily="{DynamicResource RegularFont}"
                        FontSize="14"
-                       HorizontalTextAlignment="Start"/>
+                       HorizontalTextAlignment="Start" />
             </StackLayout>
             <Button Text="{helpers:Translate NextButton}"
                     Margin="0,20"
@@ -261,7 +265,7 @@
                                  Binding="{Binding Mnemonic}"
                                  Value="">
                         <Setter Property="Text"
-                                Value="{helpers:Translate GenerateButton}"/>
+                                Value="{helpers:Translate GenerateButton}" />
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

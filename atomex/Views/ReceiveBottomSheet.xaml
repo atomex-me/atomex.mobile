@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -10,29 +11,33 @@
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
     xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
-    x:Class="atomex.Views.ReceiveBottomSheet">
+    x:Class="atomex.Views.ReceiveBottomSheet"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
+    <pages:PopupPage.BindingContext>
+        <vm:ReceiveViewModel />
+    </pages:PopupPage.BindingContext>
     <pages:PopupPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="448"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14"
@@ -45,30 +50,31 @@
                        HeightRequest="4"
                        Margin="0,0,0,40"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
                 <Label Text="{Binding ReceivingAddressLabel}"
                        Style="{DynamicResource MainTextH2}"
                        Margin="24,0,24,24"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"/>
+                       VerticalTextAlignment="Center" />
                 <StackLayout Spacing="0">
-                    <zxing:ZXingBarcodeImageView BarcodeValue="{Binding SelectedAddress.Address, Mode=TwoWay, FallbackValue='Atomex'}"
-                                                 BarcodeFormat="QR_CODE"
-                                                 WidthRequest="150"
-                                                 HeightRequest="150"
-                                                 Margin="0">
-                    <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                        <zxcm:EncodingOptions Width="150"
-                                              Height="150"
-                                              Margin="0"/>
-                    </zxing:ZXingBarcodeImageView.BarcodeOptions>
-                </zxing:ZXingBarcodeImageView>
+                    <zxing:ZXingBarcodeImageView
+                        BarcodeValue="{Binding SelectedAddress.Address, Mode=TwoWay, FallbackValue='Atomex'}"
+                        BarcodeFormat="QR_CODE"
+                        WidthRequest="150"
+                        HeightRequest="150"
+                        Margin="0">
+                        <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                            <zxcm:EncodingOptions Width="150"
+                                                  Height="150"
+                                                  Margin="0" />
+                        </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    </zxing:ZXingBarcodeImageView>
                 </StackLayout>
                 <Label Text="{Binding SelectedAddress.Address}"
                        Style="{DynamicResource MainTextH4}"
                        LineBreakMode="CharacterWrap"
                        HorizontalTextAlignment="Center"
-                       Margin="24,24,24,4"/>
+                       Margin="24,24,24,4" />
                 <StackLayout Spacing="0"
                              Orientation="Horizontal"
                              HorizontalOptions="Center">
@@ -79,17 +85,17 @@
                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                 <Binding Path="SelectedAddress.IsFreeAddress"
                                          Mode="OneWay"
-                                         Converter="{StaticResource InverseBool}"/>
+                                         Converter="{StaticResource InverseBool}" />
                                 <Binding Path="SelectedAddress.IsTezosToken"
-                                         Mode="OneWay"/>
-                            </MultiBinding>                   
+                                         Mode="OneWay" />
+                            </MultiBinding>
                         </Label.IsVisible>
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding SelectedAddress.TokenBalance, StringFormat='{0:0.########}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding SelectedAddress.TokenCode}"/>
-                                <Span Text=" / "/>
+                                <Span Text="{Binding SelectedAddress.TokenBalance, StringFormat='{0:0.########}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding SelectedAddress.TokenCode}" />
+                                <Span Text=" / " />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -98,9 +104,9 @@
                            HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.########}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding SelectedAddress.CurrencyCode}"/>
+                                <Span Text="{Binding SelectedAddress.AvailableBalance, StringFormat='{0:0.########}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding SelectedAddress.CurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -109,20 +115,20 @@
                        WidthRequest="200"
                        Margin="24,12">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding CopyCommand}"/>
+                        <TapGestureRecognizer Command="{Binding CopyCommand}" />
                     </Frame.GestureRecognizers>
                     <Frame.Triggers>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding IsCopied}"
                                      Value="False">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Frame"
                                      Binding="{Binding IsCopied}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}" />
                         </DataTrigger>
                     </Frame.Triggers>
                     <StackLayout Spacing="10"
@@ -136,13 +142,13 @@
                                              Binding="{Binding IsCopied}"
                                              Value="False">
                                     <Setter Property="Source"
-                                            Value="ic_copy__white"/>
+                                            Value="ic_copy__white" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding IsCopied}"
                                              Value="True">
                                     <Setter Property="Source"
-                                            Value="ic_tick"/>
+                                            Value="ic_tick" />
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
@@ -153,13 +159,13 @@
                                              Binding="{Binding IsCopied}"
                                              Value="False">
                                     <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding IsCopied}"
                                              Value="True">
                                     <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource HighlightingButtonTextColorDark}, Light={StaticResource HighlightingButtonTextColor}}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -168,7 +174,7 @@
                 <Frame Style="{DynamicResource AdditionalClickableFrame}"
                        WidthRequest="200">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShareCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ShareCommand}" />
                     </Frame.GestureRecognizers>
                     <Grid ColumnSpacing="12"
                           RowSpacing="0"
@@ -183,14 +189,15 @@
                         </Grid.ColumnDefinitions>
                         <RelativeLayout Grid.ColumnSpan="2"
                                         HorizontalOptions="CenterAndExpand">
-                            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
-	             	                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
-                                               RelativeLayout.WidthConstraint="24"
-                                               RelativeLayout.HeightConstraint="24"
-                                               Color="#92C8F9"
-                                               BackgroundColor="Transparent"
-                                               IsRunning="{Binding IsShared}"
-                                               IsVisible="{Binding IsShared}"/>
+                            <ActivityIndicator
+                                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                                RelativeLayout.WidthConstraint="24"
+                                RelativeLayout.HeightConstraint="24"
+                                Color="#92C8F9"
+                                BackgroundColor="Transparent"
+                                IsRunning="{Binding IsShared}"
+                                IsVisible="{Binding IsShared}" />
                         </RelativeLayout>
                         <Image HeightRequest="18"
                                WidthRequest="18"
@@ -198,10 +205,10 @@
                                Source="ic_share">
                             <Image.Triggers>
                                 <DataTrigger TargetType="Image"
-                                                Binding="{Binding IsShared}"
-                                                Value="True">
+                                             Binding="{Binding IsShared}"
+                                             Value="True">
                                     <Setter Property="IsVisible"
-                                            Value="False"/>
+                                            Value="False" />
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
@@ -212,10 +219,10 @@
                                HorizontalTextAlignment="Start">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
-                                                Binding="{Binding IsShared}"
-                                                Value="True">
+                                             Binding="{Binding IsShared}"
+                                             Value="True">
                                     <Setter Property="IsVisible"
-                                            Value="False"/>
+                                            Value="False" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -224,9 +231,8 @@
                 <Button Text="{Binding MyAddressesButtonName}"
                         Style="{DynamicResource TransparentButton}"
                         Margin="70,12,70,45"
-                        Command="{Binding ShowReceiveAddressesCommand}"/>
+                        Command="{Binding ShowReceiveAddressesCommand}" />
             </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>
-

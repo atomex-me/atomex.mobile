@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using atomex.ViewModel;
+using atomex.ViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views.BuyCurrency

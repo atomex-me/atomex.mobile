@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,227 +10,228 @@
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.Views.CreateSwap.ExchangeConfirmationBottomSheet">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="348"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="448"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-        <StackLayout Spacing="0">
-            <Image Source="ic_swipe__indicator"
-                   WidthRequest="35"
-                   HeightRequest="4"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="0,0,0,30"/>
-            <Label Text="{helpers:Translate ConfirmationLabel}"
-                   Style="{DynamicResource MainTextH1}"
-                   Padding="0,0,0,20"/>
-            <Grid HorizontalOptions="Fill"
-                  ColumnSpacing="0"
-                  RowSpacing="8">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Frame Grid.RowSpan="2"
-                       Grid.ColumnSpan="3"
-                       HorizontalOptions="FillAndExpand"
-                       HasShadow="False"
-                       CornerRadius="16"
-                       BackgroundColor="Transparent"
-                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"/>
-                <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"
-                       VerticalOptions="End"
-                       HorizontalOptions="End"
-                       Margin="22,0,8,0"
-                       WidthRequest="28"
-                       HeightRequest="28"/>
-                <Label Grid.Column="1"
-                       Text="{Binding FromCurrencyViewModel.CurrencyName}"
-                       Style="{DynamicResource MainTextH4}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"
-                       Padding="0,2"/>
-                <Label Grid.Column="2"
-                       Text="{Binding Amount}"
-                       Style="{DynamicResource MainTextH4SemiBold}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="End"
-                       Padding="16,0"/>
-                <Label Grid.Row="1"
-                       Grid.ColumnSpan="2"
-                       Text="{Binding FromAddressDescription}"
-                       Style="{DynamicResource AdditionalTextH6}"
-                       Padding="22,0"
-                       LineBreakMode="MiddleTruncation"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"/>
-                <Label Grid.Row="1"
-                       Grid.Column="2"
-                       Style="{DynamicResource AdditionalTextH6}"
-                       Text="{Binding AmountInBase, StringFormat='${0:f2}'}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Start"
-                       Padding="16,0"/>
-                <Frame Grid.Row="2"
-                       Grid.RowSpan="2"
-                       Grid.ColumnSpan="3"
-                       HorizontalOptions="FillAndExpand"
-                       HasShadow="False"
-                       CornerRadius="16"
-                       BackgroundColor="Transparent"
-                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"/>
-                <Image Grid.Row="2"
-                       Source="{Binding ToCurrencyViewModel.CurrencyCode}"
-                       Margin="22,0,8,0"
-                       VerticalOptions="EndAndExpand"
-                       HorizontalOptions="EndAndExpand"
-                       WidthRequest="28"
-                       HeightRequest="28"/>
-                <Label Grid.Row="2"
-                       Grid.Column="1"
-                       Text="{Binding ToCurrencyViewModel.CurrencyName}"
-                       Style="{DynamicResource MainTextH4}"
-                       Padding="0,2"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"/>
-                <Label Grid.Row="2"
-                       Grid.Column="2"
-                       Style="{DynamicResource MainTextH4SemiBold}"
-                       Padding="16,0"
-                       Text="{Binding TargetAmount}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="End"/>
-                <Label Grid.Row="3"
-                       Grid.ColumnSpan="2"
-                       Style="{DynamicResource AdditionalTextH6}"
-                       Padding="22,0"
-                       Text="{Binding ToAddress}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Start"
-                       LineBreakMode="MiddleTruncation"/>
-                <Label Grid.Row="3"
-                       Grid.Column="2"
-                       Style="{DynamicResource AdditionalTextH6}"
-                       Text="{Binding TargetAmountInBase, StringFormat='${0:f2}'}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Start"
-                       Padding="16,0"/>
-                <Frame WidthRequest="40"
-                       HeightRequest="40"
-                       CornerRadius="20"
-                       Margin="0,80,0,-70"
-                       Grid.ColumnSpan="3"
-                       Padding="0"
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
                        HorizontalOptions="Center"
-                       IsClippedToBounds="True"
-                       HasShadow="False"
-                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
-                <StackLayout Grid.Row="4"
-                             Grid.ColumnSpan="3"
-                             HeightRequest="8"
-                             WidthRequest="40"
-                             Margin="0,-114,0,114"
-                             HorizontalOptions="Center"
-                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
-                <Image Grid.ColumnSpan="3"
-                       Source="ic_arrow__down"
-                       HeightRequest="14"
-                       WidthRequest="14"
-                       Margin="0,80,0,-70"
                        VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
-            </Grid>
-            <StackLayout Spacing="2"
-                         Padding="20,0">
-                <Label HorizontalTextAlignment="Start"
-                       Style="{DynamicResource AdditionalTextH6}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate EstimatedPriceLabel}"/>
-                            <Span Text=" 1 "/>
-                            <Span Text="{Binding BaseCurrencyCode}"/>
-                            <Span Text=" = "/>
-                            <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding QuoteCurrencyCode}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <StackLayout Spacing="0"
-                             Orientation="Horizontal">
+                       Margin="0,0,0,30" />
+                <Label Text="{helpers:Translate ConfirmationLabel}"
+                       Style="{DynamicResource MainTextH1}"
+                       Padding="0,0,0,20" />
+                <Grid HorizontalOptions="Fill"
+                      ColumnSpacing="0"
+                      RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.RowSpan="2"
+                           Grid.ColumnSpan="3"
+                           HorizontalOptions="FillAndExpand"
+                           HasShadow="False"
+                           CornerRadius="16"
+                           BackgroundColor="Transparent"
+                           BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}" />
+                    <Image Source="{Binding FromCurrencyViewModel.CurrencyCode}"
+                           VerticalOptions="End"
+                           HorizontalOptions="End"
+                           Margin="22,0,8,0"
+                           WidthRequest="28"
+                           HeightRequest="28" />
+                    <Label Grid.Column="1"
+                           Text="{Binding FromCurrencyViewModel.CurrencyName}"
+                           Style="{DynamicResource MainTextH4}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="End"
+                           Padding="0,2" />
+                    <Label Grid.Column="2"
+                           Text="{Binding Amount}"
+                           Style="{DynamicResource MainTextH4SemiBold}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="End"
+                           Padding="16,0" />
+                    <Label Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding FromAddressDescription}"
+                           Style="{DynamicResource AdditionalTextH6}"
+                           Padding="22,0"
+                           LineBreakMode="MiddleTruncation"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start" />
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Style="{DynamicResource AdditionalTextH6}"
+                           Text="{Binding AmountInBase, StringFormat='${0:f2}'}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Start"
+                           Padding="16,0" />
+                    <Frame Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Grid.ColumnSpan="3"
+                           HorizontalOptions="FillAndExpand"
+                           HasShadow="False"
+                           CornerRadius="16"
+                           BackgroundColor="Transparent"
+                           BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}" />
+                    <Image Grid.Row="2"
+                           Source="{Binding ToCurrencyViewModel.CurrencyCode}"
+                           Margin="22,0,8,0"
+                           VerticalOptions="EndAndExpand"
+                           HorizontalOptions="EndAndExpand"
+                           WidthRequest="28"
+                           HeightRequest="28" />
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding ToCurrencyViewModel.CurrencyName}"
+                           Style="{DynamicResource MainTextH4}"
+                           Padding="0,2"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="End" />
+                    <Label Grid.Row="2"
+                           Grid.Column="2"
+                           Style="{DynamicResource MainTextH4SemiBold}"
+                           Padding="16,0"
+                           Text="{Binding TargetAmount}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="End" />
+                    <Label Grid.Row="3"
+                           Grid.ColumnSpan="2"
+                           Style="{DynamicResource AdditionalTextH6}"
+                           Padding="22,0"
+                           Text="{Binding ToAddress}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start"
+                           LineBreakMode="MiddleTruncation" />
+                    <Label Grid.Row="3"
+                           Grid.Column="2"
+                           Style="{DynamicResource AdditionalTextH6}"
+                           Text="{Binding TargetAmountInBase, StringFormat='${0:f2}'}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Start"
+                           Padding="16,0" />
+                    <Frame WidthRequest="40"
+                           HeightRequest="40"
+                           CornerRadius="20"
+                           Margin="0,80,0,-70"
+                           Grid.ColumnSpan="3"
+                           Padding="0"
+                           HorizontalOptions="Center"
+                           IsClippedToBounds="True"
+                           HasShadow="False"
+                           BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    <StackLayout Grid.Row="4"
+                                 Grid.ColumnSpan="3"
+                                 HeightRequest="8"
+                                 WidthRequest="40"
+                                 Margin="0,-114,0,114"
+                                 HorizontalOptions="Center"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
+                    <Image Grid.ColumnSpan="3"
+                           Source="ic_arrow__down"
+                           HeightRequest="14"
+                           WidthRequest="14"
+                           Margin="0,80,0,-70"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+                </Grid>
+                <StackLayout Spacing="2"
+                             Padding="20,0">
                     <Label HorizontalTextAlignment="Start"
                            Style="{DynamicResource AdditionalTextH6}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}"/>
+                                <Span Text="{helpers:Translate EstimatedPriceLabel}" />
+                                <Span Text=" 1 " />
+                                <Span Text="{Binding BaseCurrencyCode}" />
+                                <Span Text=" = " />
+                                <Span Text="{Binding EstimatedPrice, StringFormat='{0:0.#########}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding QuoteCurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
+                    <StackLayout Spacing="0"
+                                 Orientation="Horizontal">
+                        <Label HorizontalTextAlignment="Start"
+                               Style="{DynamicResource AdditionalTextH6}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{helpers:Translate EstimatedNetworkFeeLabel}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding EstimatedTotalNetworkFeeInBase, StringFormat='${0:f2}'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <RelativeLayout HeightRequest="44">
+                        <Button Text="{helpers:Translate ConfirmButton}"
+                                CornerRadius="22"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                FontSize="17"
+                                TextTransform="None"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding NextCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="" />
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <ActivityIndicator
+                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                            RelativeLayout.WidthConstraint="24"
+                            RelativeLayout.HeightConstraint="24"
+                            Color="#92C8F9"
+                            BackgroundColor="Transparent"
+                            IsRunning="{Binding IsLoading}"
+                            IsVisible="{Binding IsLoading}" />
+                    </RelativeLayout>
                 </StackLayout>
             </StackLayout>
-            <StackLayout VerticalOptions="EndAndExpand">
-                <RelativeLayout HeightRequest="44">
-                    <Button Text="{helpers:Translate ConfirmButton}"
-                            CornerRadius="22"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                            FontSize="17"
-                            TextTransform="None"
-                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                            HorizontalOptions="FillAndExpand"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding NextCommand}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding IsLoading}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value=""/>
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
-	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
-                                       RelativeLayout.WidthConstraint="24"
-                                       RelativeLayout.HeightConstraint="24"
-                                       Color="#92C8F9"
-                                       BackgroundColor="Transparent"
-                                       IsRunning="{Binding IsLoading}"
-                                       IsVisible="{Binding IsLoading}"/>
-                </RelativeLayout>
-            </StackLayout>
-        </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>

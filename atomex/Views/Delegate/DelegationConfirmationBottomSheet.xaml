@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -11,328 +12,329 @@
     x:Class="atomex.Views.Delegate.DelegationConfirmationBottomSheet">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="465"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16,14"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="565"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-        <StackLayout Spacing="0">
-            <Image Source="ic_swipe__indicator"
-                   WidthRequest="35"
-                   HeightRequest="4"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="0,0,0,30"/>
-            <Label Text="{helpers:Translate ConfirmationLabel}"
-                   Style="{DynamicResource MainTextH1}"
-                   Padding="0,0,0,20"/>
-            <Grid ColumnSpacing="12"
-                  RowSpacing="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="38" />
-                    <RowDefinition Height="38" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Frame Grid.RowSpan="2"
-                       Grid.ColumnSpan="4"
-                       HorizontalOptions="FillAndExpand"
-                       HasShadow="False"
-                       CornerRadius="12"
-                       BackgroundColor="Transparent"
-                       BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}"/>
-                <Image Grid.RowSpan="2"
-                       Margin="16,0,0,0"
-                       WidthRequest="24"
-                       HeightRequest="24"
-                       Source="{Binding SelectedBaker.Logo}"/>
-                <Label Grid.Column="1"
-                       Text="{Binding SelectedBaker.Name}"
-                       Style="{DynamicResource MainTextH4}"
-                       LineBreakMode="TailTruncation"
-                       VerticalTextAlignment="End"
-                       HorizontalTextAlignment="Start"/>
-                <Frame Grid.Column="2"
-                       Padding="5,3"
-                       Margin="0"
-                       HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                       CornerRadius="4"
-                       HorizontalOptions="Start"
-                       VerticalOptions="End"
-                       IsVisible="{Binding SelectedBaker.IsCurrentlyActive}">
-                    <Label Text="{helpers:Translate Current}"
-                           Style="{DynamicResource MainTextH6}"
-                           TextTransform="Lowercase"
-                           VerticalTextAlignment="End"
-                           HorizontalTextAlignment="Center"/>
-                </Frame>
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Style="{DynamicResource AdditionalTextH6}"
-                       VerticalTextAlignment="Start"
-                       HorizontalTextAlignment="Start"
-                       IsVisible="{Binding SelectedBaker.IsFull, Converter={StaticResource InverseBool}}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate FreeSpace}"/>
-                            <Span Text=" " /> 
-                            <Span Text="{Binding SelectedBaker.FreeSpaceFormatted}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{helpers:Translate BakerIsFull}"
-                       Style="{DynamicResource WarningTextH6}"
-                       VerticalTextAlignment="Start"
-                       HorizontalTextAlignment="Start"
-                       IsVisible="{Binding SelectedBaker.IsFull}"/>
-                <Label Grid.Column="3"
-                       Style="{DynamicResource AdditionalTextH5}"
-                       Margin="0,0,16,0"
-                       VerticalTextAlignment="End"
-                       HorizontalTextAlignment="End">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate EstimatedRoi}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding SelectedBaker.Roi, StringFormat='${0:P}'}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Grid.Row="1"
-                       Grid.Column="3"
-                       Style="{DynamicResource AdditionalTextH5}"
-                       Margin="0,0,16,0"
-                       VerticalTextAlignment="Start"
-                       HorizontalTextAlignment="End">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{helpers:Translate MinLabel}"/>
-                            <Span Text=" "/> 
-                            <Span Text="{Binding SelectedBaker.MinDelegation, StringFormat='{0:0.##} XTZ'}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Grid>
-            <Grid ColumnSpacing="8"
-                  RowSpacing="8"
-                  Margin="0,16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="32" />
-                    <RowDefinition Height="32" />
-                    <RowDefinition Height="32" />
-                    <RowDefinition Height="32" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="7*" />
-                </Grid.ColumnDefinitions>
-                <Label Text="{helpers:Translate FromLabel}"
-                       Style="{DynamicResource AdditionalTextH4}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"/>
-                <StackLayout Grid.Column="1"
-                             Orientation="Horizontal"
-                             HorizontalOptions="EndAndExpand"
-                             Spacing="0">
-                    <Image Source="XTZ"
-                           WidthRequest="20"
-                           HeightRequest="20"/>
-                    <Label Text="{Binding DelegateAddress}"
-                           Style="{DynamicResource MainTextH4}"
-                           Padding="13,0"
-                           HorizontalOptions="End"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Center"
-                           LineBreakMode="MiddleTruncation"/>
-                    <Image Source="ic_copy__gray"
-                           WidthRequest="15"
-                           HeightRequest="18">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                  CommandParameter="{Binding DelegateAddress}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                </StackLayout>
-                <Label Grid.Row="1"
-                       Text="{helpers:Translate ToLabel}"
-                       Style="{DynamicResource AdditionalTextH4}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"/>
-                <StackLayout Grid.Row="1"
-                             Grid.Column="1"
-                             Orientation="Horizontal"
-                             HorizontalOptions="EndAndExpand"
-                             Spacing="0">
-                    <Image Source="XTZ"
-                           WidthRequest="20"
-                           HeightRequest="20"/>
-                    <Label Text="{Binding SelectedBaker.Address}"
-                           Style="{DynamicResource MainTextH4}"
-                           Padding="13,0"
-                           HorizontalOptions="FillAndExpand"
-                           HorizontalTextAlignment="End"
-                           VerticalTextAlignment="Center"
-                           LineBreakMode="MiddleTruncation"/>
-                    <Image Source="ic_copy__gray"
-                           WidthRequest="15"
-                           HeightRequest="18">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                  CommandParameter="{Binding SelectedBaker.Address}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                </StackLayout>
-                <Label Grid.Row="2"
-                       Text="{helpers:Translate AmountLabel}"
-                       Style="{DynamicResource AdditionalTextH4}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"/>
-                <Label Grid.Row="2"
-                       Grid.Column="1"
-                       Style="{DynamicResource MainTextH4}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding DelegateAddressBalance, StringFormat='{0:0.######}'}"/>
-                            <Span Text=" XTZ "/>
-                            <Span Text="/ "
-                                    FontSize="12"
-                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                            <Span Text="{Binding DelegateAddressBalanceInBase, StringFormat='${0:0.00}'}"
-                                    FontSize="12"
-                                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Grid.Row="3"
-                       Text="{helpers:Translate FeeLabel}"
-                       Style="{DynamicResource AdditionalTextH4}"
-                       HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"/>
-                <Label Grid.Row="3"
-                       Grid.Column="1"
-                       Style="{DynamicResource MainTextH4}"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
-                            <Span Text=" XTZ "/>
-                            <Span Text="/ "
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                            <Span Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
-                                  FontSize="12"
-                                  TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </Grid>
-            <StackLayout VerticalOptions="EndAndExpand">
-                <Label Text="{Binding Message.Text}"
-                       HorizontalTextAlignment="Start"
-                       HorizontalOptions="StartAndExpand"
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       HorizontalOptions="Center"
                        VerticalOptions="Center"
-                       Margin="0,24">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Message.Type}"
-                                     Value="Warning">
-                            <Setter Property="Style"
-                                    Value="{DynamicResource WarningTextH6}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label"
-                                     Binding="{Binding Message.Type}"
-                                     Value="Error">
-                            <Setter Property="Style"
-                                    Value="{DynamicResource ErrorTextH6}"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <RelativeLayout HeightRequest="44">
-                    <Button Text="{helpers:Translate ConfirmButton}"
-                            CornerRadius="22"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                            FontSize="17"
-                            TextTransform="None"
-                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                            HorizontalOptions="FillAndExpand"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding DelegateCommand}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanDelegate}"
-                                         Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
-                                <Setter Property="Opacity"
-                                        Value="0.5"/>
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
+                       Margin="0,0,0,30" />
+                <Label Text="{helpers:Translate ConfirmationLabel}"
+                       Style="{DynamicResource MainTextH1}"
+                       Padding="0,0,0,20" />
+                <Grid ColumnSpacing="12"
+                      RowSpacing="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="38" />
+                        <RowDefinition Height="38" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.RowSpan="2"
+                           Grid.ColumnSpan="4"
+                           HorizontalOptions="FillAndExpand"
+                           HasShadow="False"
+                           CornerRadius="12"
+                           BackgroundColor="Transparent"
+                           BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}" />
+                    <Image Grid.RowSpan="2"
+                           Margin="16,0,0,0"
+                           WidthRequest="24"
+                           HeightRequest="24"
+                           Source="{Binding SelectedBaker.Logo}" />
+                    <Label Grid.Column="1"
+                           Text="{Binding SelectedBaker.Name}"
+                           Style="{DynamicResource MainTextH4}"
+                           LineBreakMode="TailTruncation"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start" />
+                    <Frame Grid.Column="2"
+                           Padding="5,3"
+                           Margin="0"
+                           HasShadow="False"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                           CornerRadius="4"
+                           HorizontalOptions="Start"
+                           VerticalOptions="End"
+                           IsVisible="{Binding SelectedBaker.IsCurrentlyActive}">
+                        <Label Text="{helpers:Translate Current}"
+                               Style="{DynamicResource MainTextH6}"
+                               TextTransform="Lowercase"
+                               VerticalTextAlignment="End"
+                               HorizontalTextAlignment="Center" />
+                    </Frame>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH6}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"
+                           IsVisible="{Binding SelectedBaker.IsFull, Converter={StaticResource InverseBool}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{helpers:Translate FreeSpace}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding SelectedBaker.FreeSpaceFormatted}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{helpers:Translate BakerIsFull}"
+                           Style="{DynamicResource WarningTextH6}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"
+                           IsVisible="{Binding SelectedBaker.IsFull}" />
+                    <Label Grid.Column="3"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           Margin="0,0,16,0"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="End">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{helpers:Translate EstimatedRoi}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding SelectedBaker.Roi, StringFormat='${0:P}'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="1"
+                           Grid.Column="3"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           Margin="0,0,16,0"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="End">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{helpers:Translate MinLabel}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding SelectedBaker.MinDelegation, StringFormat='{0:0.##} XTZ'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+                <Grid ColumnSpacing="8"
+                      RowSpacing="8"
+                      Margin="0,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="7*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="{helpers:Translate FromLabel}"
+                           Style="{DynamicResource AdditionalTextH4}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center" />
+                    <StackLayout Grid.Column="1"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="EndAndExpand"
+                                 Spacing="0">
+                        <Image Source="XTZ"
+                               WidthRequest="20"
+                               HeightRequest="20" />
+                        <Label Text="{Binding DelegateAddress}"
+                               Style="{DynamicResource MainTextH4}"
+                               Padding="13,0"
+                               HorizontalOptions="End"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="MiddleTruncation" />
+                        <Image Source="ic_copy__gray"
+                               WidthRequest="15"
+                               HeightRequest="18">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                      CommandParameter="{Binding DelegateAddress}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                    <Label Grid.Row="1"
+                           Text="{helpers:Translate ToLabel}"
+                           Style="{DynamicResource AdditionalTextH4}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center" />
+                    <StackLayout Grid.Row="1"
+                                 Grid.Column="1"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="EndAndExpand"
+                                 Spacing="0">
+                        <Image Source="XTZ"
+                               WidthRequest="20"
+                               HeightRequest="20" />
+                        <Label Text="{Binding SelectedBaker.Address}"
+                               Style="{DynamicResource MainTextH4}"
+                               Padding="13,0"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="End"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="MiddleTruncation" />
+                        <Image Source="ic_copy__gray"
+                               WidthRequest="15"
+                               HeightRequest="18">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                      CommandParameter="{Binding SelectedBaker.Address}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </StackLayout>
+                    <Label Grid.Row="2"
+                           Text="{helpers:Translate AmountLabel}"
+                           Style="{DynamicResource AdditionalTextH4}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Style="{DynamicResource MainTextH4}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding DelegateAddressBalance, StringFormat='{0:0.######}'}" />
+                                <Span Text=" XTZ " />
+                                <Span Text="/ "
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                <Span Text="{Binding DelegateAddressBalanceInBase, StringFormat='${0:0.00}'}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Row="3"
+                           Text="{helpers:Translate FeeLabel}"
+                           Style="{DynamicResource AdditionalTextH4}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Style="{DynamicResource MainTextH4}"
+                           HorizontalTextAlignment="End"
+                           VerticalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}" />
+                                <Span Text=" XTZ " />
+                                <Span Text="/ "
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                <Span Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
+                                      FontSize="12"
+                                      TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <Label Text="{Binding Message.Text}"
+                           HorizontalTextAlignment="Start"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center"
+                           Margin="0,24">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Warning">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource WarningTextH6}" />
                             </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanDelegate}"
-                                         Value="True">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
-                                <Setter Property="Opacity"
-                                        Value="1"/>
-                                <Setter Property="IsEnabled"
-                                        Value="True"/>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding Message.Type}"
+                                         Value="Error">
+                                <Setter Property="Style"
+                                        Value="{DynamicResource ErrorTextH6}" />
                             </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding IsLoading}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value=""/>
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
-	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
-                                       RelativeLayout.WidthConstraint="24"
-                                       RelativeLayout.HeightConstraint="24"
-                                       Color="#92C8F9"
-                                       BackgroundColor="Transparent"
-                                       IsRunning="{Binding IsLoading}"
-                                       IsVisible="{Binding IsLoading}"/>
-                </RelativeLayout>
+                        </Label.Triggers>
+                    </Label>
+                    <RelativeLayout HeightRequest="44">
+                        <Button Text="{helpers:Translate ConfirmButton}"
+                                CornerRadius="22"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                FontSize="17"
+                                TextTransform="None"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding DelegateCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanDelegate}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="0.5" />
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanDelegate}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="1" />
+                                    <Setter Property="IsEnabled"
+                                            Value="True" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <ActivityIndicator
+                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                            RelativeLayout.WidthConstraint="24"
+                            RelativeLayout.HeightConstraint="24"
+                            Color="#92C8F9"
+                            BackgroundColor="Transparent"
+                            IsRunning="{Binding IsLoading}"
+                            IsVisible="{Binding IsLoading}" />
+                    </RelativeLayout>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>

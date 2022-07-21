@@ -1,17 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             x:Class="atomex.DelegationInfoPage"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             x:Class="atomex.Views.DelegationInfoPage"
              Title="{helpers:Translate DelegationInfoPageTitle}"
              Style="{DynamicResource MainBackgroundStyle}">
+    <ContentPage.BindingContext>
+        <vm:DelegationViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0"
                          Padding="16">
                 <Label Text="{helpers:Translate DelegationInfoPageTitle}"
                        Style="{DynamicResource MainTextH1}"
-                       Padding="0,16"/>
+                       Padding="0,16" />
                 <Grid RowSpacing="0"
                       ColumnSpacing="0">
                     <Grid.RowDefinitions>
@@ -27,13 +32,13 @@
                     <Label Text="{helpers:Translate AddressLabel}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,60"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding Address}"
                            Style="{DynamicResource MainTextH4}"
                            LineBreakMode="MiddleTruncation"
                            VerticalTextAlignment="Start"
-                           Padding="0,0,60,0"/>
+                           Padding="0,0,60,0" />
                     <Image Grid.Column="1"
                            Grid.RowSpan="2"
                            Source="ic_copy__gray"
@@ -42,15 +47,15 @@
                            VerticalOptions="FillAndExpand">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
-                                                  CommandParameter="{Binding Address}"/>
+                                                  CommandParameter="{Binding Address}" />
                         </Image.GestureRecognizers>
                     </Image>
                     <Line Grid.Row="2"
                           Grid.ColumnSpan="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
                           Grid.ColumnSpan="2"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="0">
@@ -67,15 +72,15 @@
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding Balance, StringFormat='{0:0.#########} XTZ'}"
                            Style="{DynamicResource MainTextH4}"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="6">
@@ -91,36 +96,36 @@
                     <Label Text="{helpers:Translate DelegationStatus}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding StatusString}"
                            Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Start">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
-                                            Binding="{Binding Status}"
-                                            Value="Confirmed">
+                                         Binding="{Binding Status}"
+                                         Value="Confirmed">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                            Binding="{Binding Status}"
-                                            Value="Active">
+                                         Binding="{Binding Status}"
+                                         Value="Active">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
-                                            Binding="{Binding Status}"
-                                            Value="Pending">
+                                         Binding="{Binding Status}"
+                                         Value="Pending">
                                 <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
+                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="0">
@@ -136,15 +141,15 @@
                     <Label Text="{helpers:Translate DelegationTime}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding DelegationTime, StringFormat='{}{0:MMMM dd yyyy, HH:mm}'}"
                            Style="{DynamicResource MainTextH4}"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="0"
@@ -161,15 +166,15 @@
                     <Label Text="{helpers:Translate CurrentBaker}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding Baker.Name}"
                            Style="{DynamicResource MainTextH4}"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="0">
@@ -185,15 +190,15 @@
                     <Label Text="{helpers:Translate MinimumAmountLabel}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding Baker.MinDelegation, StringFormat='{0:0.##} XTZ'}"
                            Style="{DynamicResource MainTextH4}"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Grid RowSpacing="0"
                       ColumnSpacing="0">
@@ -209,20 +214,20 @@
                     <Label Text="{helpers:Translate Roi}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
-                           VerticalTextAlignment="End"/>
+                           VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
                            Text="{Binding Baker.EstimatedRoi, StringFormat='{0:P}'}"
                            Style="{DynamicResource MainTextH4}"
-                           VerticalTextAlignment="Start"/>
+                           VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"
-                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="3"
-                          BackgroundColor="Transparent"/>
+                          BackgroundColor="Transparent" />
                 </Grid>
                 <Button Text="{helpers:Translate ChangeBaker}"
                         Style="{DynamicResource AdditionalButton}"
                         Margin="0,33,0,24"
-                        Command="{Binding ChangeBakerCommand}"/>
+                        Command="{Binding ChangeBakerCommand}" />
                 <Button Text="{helpers:Translate CheckRewards}"
                         Style="{DynamicResource TransparentButton}"
                         Command="{Binding CheckRewardsCommand}">

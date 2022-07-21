@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Atomex.Core;
+using atomex.ViewModels;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.UI.Views.Options;
 using Xamarin.Forms;
 using static atomex.Models.SnackbarMessage;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class StartPage : ContentPage, INavigationService
     {
@@ -66,9 +67,9 @@ namespace atomex
                 : snackBarTextColorName;
 
             Application.Current.Resources.TryGetValue(snackBarBgColorName, out var bgColor);
-            backgroundColor = (Color)bgColor;
+            backgroundColor = (Color) bgColor;
             Application.Current.Resources.TryGetValue(snackBarTextColorName, out var txtColor);
-            textColor = (Color)txtColor;
+            textColor = (Color) txtColor;
 
             var messageOptions = new MessageOptions
             {
@@ -87,10 +88,7 @@ namespace atomex
                     Font = Font.SystemFontOfSize(17),
                     Text = buttonText,
                     Padding = new Thickness(20, 16),
-                    Action = () =>
-                    {
-                        return Task.CompletedTask;
-                    }
+                    Action = () => { return Task.CompletedTask; }
                 }
             };
 

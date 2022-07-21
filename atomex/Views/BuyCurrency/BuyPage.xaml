@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,7 +9,7 @@
     x:Class="atomex.Views.BuyCurrency.BuyPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -16,23 +17,24 @@
             <StackLayout IsVisible="{Binding IsLoading}"
                          VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                                       BackgroundColor="Transparent"
-                                       IsRunning="True"/>
+                    <ActivityIndicator
+                        Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
+                        BackgroundColor="Transparent"
+                        IsRunning="True" />
                     <Label Text="{helpers:Translate LoadingLabel}"
                            TextColor="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
                            FontFamily="{DynamicResource BoldFont}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            FontSize="12"
-                           Padding="10"/>
+                           Padding="10" />
                 </StackLayout>
             </StackLayout>
             <custom:CustomWebView IsVisible="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                                   Source="{Binding Url}"
                                   HorizontalOptions="FillAndExpand"
                                   VerticalOptions="FillAndExpand"
-                                  NavigatingCommand="{Binding CanExecuteCommand}"/>
+                                  NavigatingCommand="{Binding CanExecuteCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

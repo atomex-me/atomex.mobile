@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,7 +8,8 @@
     xmlns:custom="clr-namespace:atomex.CustomElements"
     x:Name="BindingContextPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+        <StackLayout
+            BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <Label Text="{helpers:Translate SendFrom}"
                    Style="{DynamicResource MainTextH1}"
                    Padding="16,32,16,16">
@@ -16,13 +18,13 @@
                                  Binding="{Binding Type}"
                                  Value="From">
                         <Setter Property="Text"
-                                Value="{helpers:Translate SendFrom}"/>
+                                Value="{helpers:Translate SendFrom}" />
                     </DataTrigger>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding Type}"
                                  Value="To">
                         <Setter Property="Text"
-                                Value="{helpers:Translate ReceiveTo}"/>
+                                Value="{helpers:Translate ReceiveTo}" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -38,7 +40,8 @@
                       Footer="">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                        <custom:CustomViewCell
+                            SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                             <Grid ColumnSpacing="0"
                                   RowSpacing="0">
                                 <Grid.RowDefinitions>
@@ -57,13 +60,13 @@
                                        Margin="16,0"
                                        VerticalOptions="CenterAndExpand"
                                        HorizontalOptions="Start"
-                                       Source="{Binding CurrencyViewModel.CurrencyCode}"/>
+                                       Source="{Binding CurrencyViewModel.CurrencyCode}" />
                                 <Label Grid.Column="1"
                                        Text="{Binding CurrencyViewModel.Currency.Description}"
                                        Style="{DynamicResource MainTextH3}"
                                        Margin="0,3"
                                        VerticalTextAlignment="End"
-                                       HorizontalTextAlignment="Start"/>
+                                       HorizontalTextAlignment="Start" />
                                 <Label Grid.Row="1"
                                        Grid.Column="1"
                                        Style="{DynamicResource MainTextH5}"
@@ -71,9 +74,10 @@
                                        HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding CurrencyViewModel.TotalAmount, StringFormat='{0:0.########}'}"/>
-                                            <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyViewModel.CurrencyName}"/>
+                                            <Span
+                                                Text="{Binding CurrencyViewModel.TotalAmount, StringFormat='{0:0.########}'}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding CurrencyViewModel.CurrencyName}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
@@ -82,7 +86,7 @@
                                        Style="{DynamicResource AdditionalTextH6}"
                                        Margin="0,2"
                                        VerticalTextAlignment="End"
-                                       HorizontalTextAlignment="End"/>
+                                       HorizontalTextAlignment="End" />
                                 <Label Grid.Row="1"
                                        Grid.Column="2"
                                        Style="{DynamicResource AdditionalTextH6}"
@@ -93,14 +97,14 @@
                                                      Binding="{Binding IsNew}"
                                                      Value="True">
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </DataTrigger>
                                     </Label.Triggers>
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding SelectedBalance, StringFormat='{0:0.########}'}"/>
-                                            <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyViewModel.CurrencyName}"/>
+                                            <Span Text="{Binding SelectedBalance, StringFormat='{0:0.########}'}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding CurrencyViewModel.CurrencyName}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
@@ -110,15 +114,16 @@
                                        VerticalOptions="FillAndExpand"
                                        Source="ic_edit">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.ChangeAddressesCommand, Source={x:Reference BindingContextPage}}"
-                                                              CommandParameter="{Binding .}"/>
+                                        <TapGestureRecognizer
+                                            Command="{Binding BindingContext.ChangeAddressesCommand, Source={x:Reference BindingContextPage}}"
+                                            CommandParameter="{Binding .}" />
                                     </Image.GestureRecognizers>
                                 </Image>
                             </Grid>
                         </custom:CustomViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>            
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

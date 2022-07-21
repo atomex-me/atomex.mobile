@@ -39,10 +39,10 @@
   <ItemGroup>
     <Folder Include="CustomElements\" />
     <Folder Include="Services\" />
-    <Folder Include="ViewModel\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="Helpers\" />
     <Folder Include="Views\" />
-    <Folder Include="ViewModel\TransactionViewModels\" />
+    <Folder Include="ViewModels\TransactionViewModels\" />
     <Folder Include="Views\CreateNewWallet\" />
     <Folder Include="Views\CreateSwap\" />
     <Folder Include="Views\SettingsOptions\" />
@@ -57,7 +57,7 @@
     <Folder Include="Views\BuyCurrency\" />
     <Folder Include="Views\TezosTokens\" />
     <Folder Include="Views\Send\" />
-    <Folder Include="ViewModel\ConversionViewModels\" />
+    <Folder Include="ViewModels\ConversionViewModels\" />
     <Folder Include="Views\Delegate\" />
   </ItemGroup>
   <ItemGroup>
@@ -115,11 +115,6 @@
     <None Remove="Sentry.Xamarin.Forms" />
     <None Remove="Views\Delegate\" />
     <None Remove="Serilog.Extensions.Logging" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="**/*" />
-    <Content Include="**/*" />
-    <Content Include="**/*" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="configuration.json" />

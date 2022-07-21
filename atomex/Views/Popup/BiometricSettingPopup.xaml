@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
@@ -9,20 +10,20 @@
               x:Class="atomex.Views.Popup.BiometricSettingPopup">
     <rg:PopupPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
         </ResourceDictionary>
     </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
-    <rg:ScaleAnimation PositionIn="Center"
-                       PositionOut="Center"
-                       ScaleIn="1.2"
-                       ScaleOut="0.8"
-                       DurationIn="400"
-                       DurationOut="300"
-                       EasingIn="SinOut"
-                       EasingOut="SinIn"
-                       HasBackgroundAnimation="True"/>
+        <rg:ScaleAnimation PositionIn="Center"
+                           PositionOut="Center"
+                           ScaleIn="1.2"
+                           ScaleOut="0.8"
+                           DurationIn="400"
+                           DurationOut="300"
+                           EasingIn="SinOut"
+                           EasingOut="SinIn"
+                           HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <ScrollView x:Name="Popup">
         <Frame CornerRadius="20"
@@ -38,13 +39,13 @@
                              Binding="{Binding IsLoading}"
                              Value="True">
                     <Setter Property="Opacity"
-                            Value="0.3"/>
+                            Value="0.3" />
                 </DataTrigger>
                 <DataTrigger TargetType="Frame"
                              Binding="{Binding IsLoading}"
                              Value="False">
                     <Setter Property="Opacity"
-                            Value="1"/>
+                            Value="1" />
                 </DataTrigger>
             </Frame.Triggers>
             <StackLayout Spacing="0">
@@ -55,12 +56,12 @@
                     <Label Text="{helpers:Translate EnableBiometricLabel}"
                            Style="{DynamicResource MainTextH4}"
                            Padding="10"
-                           HorizontalTextAlignment="Center"/>
+                           HorizontalTextAlignment="Center" />
                     <Frame x:Name="PasswordFrame"
                            CornerRadius="10"
                            Style="{DynamicResource EntryFrameStyle}">
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                            <TapGestureRecognizer Tapped="PasswordEntryClicked" />
                         </Frame.GestureRecognizers>
                         <StackLayout Orientation="Horizontal">
                             <StackLayout VerticalOptions="CenterAndExpand"
@@ -71,21 +72,22 @@
                                        HorizontalOptions="CenterAndExpand"
                                        Source="Lock">
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                                        <TapGestureRecognizer Tapped="PasswordEntryClicked" />
                                     </Image.GestureRecognizers>
                                 </Image>
                             </StackLayout>
                             <RelativeLayout HorizontalOptions="FillAndExpand"
                                             HeightRequest="60"
                                             Margin="-10,0,0,0">
-                                <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
-	             	                               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
-                                                   RelativeLayout.WidthConstraint="50"
-                                                   RelativeLayout.HeightConstraint="50"
-                                                   Scale="1.5"
-                                                   Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
-                                                   BackgroundColor="Transparent"
-                                                   IsRunning="{Binding IsLoading}"/>
+                                <ActivityIndicator
+                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                                    RelativeLayout.WidthConstraint="50"
+                                    RelativeLayout.HeightConstraint="50"
+                                    Scale="1.5"
+                                    Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light={StaticResource LoaderColor}}"
+                                    BackgroundColor="Transparent"
+                                    IsRunning="{Binding IsLoading}" />
                                 <controls:CustomEntry x:Name="PasswordEntry"
                                                       Placeholder="{helpers:Translate PasswordEntryPlaceholder}"
                                                       Keyboard="Text"
@@ -98,44 +100,44 @@
                                                       TextChanged="OnPasswordTextChanged">
                                     <controls:CustomEntry.Behaviors>
                                         <behaviors:EventToCommandBehavior EventName="Focused"
-                                                                          Command="{Binding ClearWarningCommand}"/>
+                                                                          Command="{Binding ClearWarningCommand}" />
                                         <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                                           Command="{Binding PswdChangedCommand}"
-                                                                          CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                                                          CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}" />
                                     </controls:CustomEntry.Behaviors>
                                 </controls:CustomEntry>
                                 <Label x:Name="PasswordHint"
                                        Style="{DynamicResource EntryHintStyle}"
                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                                       VerticalTextAlignment="Center"/>
+                                       VerticalTextAlignment="Center" />
                             </RelativeLayout>
                         </StackLayout>
                     </Frame>
                     <Label Text="{Binding Warning}"
                            Style="{DynamicResource ErrorTextH5CenterAlign}"
-                           IsVisible="{Binding Warning, Converter={StaticResource StringToBool}}"/>
+                           IsVisible="{Binding Warning, Converter={StaticResource StringToBool}}" />
                 </StackLayout>
                 <Grid ColumnSpacing="0"
                       RowSpacing="0"
                       VerticalOptions="EndAndExpand">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="5*" />
                     </Grid.ColumnDefinitions>
                     <Button Text="{helpers:Translate CancelButton}"
                             Style="{DynamicResource PopupCancelButtonStyle}"
-                            Command="{Binding ClosePopupCommand}"/>
+                            Command="{Binding ClosePopupCommand}" />
                     <Button Grid.Column="1"
                             Text="{helpers:Translate AcceptButton}"
                             Style="{DynamicResource PopupAcceptButtonStyle}"
                             VerticalOptions="FillAndExpand"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                             Command="{Binding EnableBiometricCommand}"
-                            CommandParameter="{Binding Source={x:Reference PasswordEntry}, Path=Text}"/>
+                            CommandParameter="{Binding Source={x:Reference PasswordEntry}, Path=Text}" />
                 </Grid>
             </StackLayout>
         </Frame>

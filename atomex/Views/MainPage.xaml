@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <custom:CustomTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:custom="clr-namespace:atomex.CustomElements"
-            x:Class="atomex.MainPage"
-            BarBackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColor}}"
-            SelectedTabColor="{AppThemeBinding Dark={StaticResource SelectedTabColorDark}, Light={StaticResource SelectedTabColor}}"
-            UnselectedTabColor="{AppThemeBinding Dark={StaticResource UnselectedTabColorDark}, Light={StaticResource UnselectedTabColor}}"/>
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         xmlns:custom="clr-namespace:atomex.CustomElements"
+                         x:Class="atomex.Views.MainPage"
+                         BarBackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColor}}"
+                         SelectedTabColor="{AppThemeBinding Dark={StaticResource SelectedTabColorDark}, Light={StaticResource SelectedTabColor}}"
+                         UnselectedTabColor="{AppThemeBinding Dark={StaticResource UnselectedTabColorDark}, Light={StaticResource UnselectedTabColor}}" />

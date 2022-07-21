@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,15 +9,17 @@
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:behaviors="clr-namespace:EventToCommandBehavior"
-    Style="{DynamicResource MainBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
+    <ContentPage.BindingContext>
+        <vm:SelectAddressViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
-            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -30,7 +33,7 @@
         <StackLayout>
             <Label Style="{DynamicResource MainTextH1}"
                    Padding="16,32,16,16"
-                   Text="{Binding Title}"/>
+                   Text="{Binding Title}" />
             <!--Tabs switcher-->
             <Grid Margin="14,12"
                   HorizontalOptions="FillAndExpand"
@@ -42,7 +45,7 @@
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ReceiveTo">
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                 </Grid.Triggers>
                 <Grid.RowDefinitions>
@@ -56,7 +59,7 @@
                        CornerRadius="18"
                        HasShadow="False"
                        Padding="0"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
                 <Button Text="{helpers:Translate ExternalAddress}"
                         Style="{DynamicResource TabButton}"
                         Command="{Binding ChangeAddressesTabCommand}">
@@ -68,17 +71,17 @@
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="False">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="True">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                             <Setter Property="BackgroundColor"
-                                    Value="Transparent"/>
+                                    Value="Transparent" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
@@ -94,17 +97,17 @@
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="True">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding IsMyAddressesTab}"
                                      Value="False">
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                             <Setter Property="BackgroundColor"
-                                    Value="Transparent"/>
+                                    Value="Transparent" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
@@ -116,18 +119,18 @@
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding SelectAddressMode}"
-                                              Value="ReceiveTo"/>
+                                              Value="ReceiveTo" />
                             <BindingCondition Binding="{Binding IsMyAddressesTab}"
-                                              Value="False"/>
+                                              Value="False" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="EnterExternalAddress">
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Frame Padding="0"
@@ -155,7 +158,7 @@
                                             Margin="16,0">
                             <custom:CustomEntry.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Unfocused"
-                                                                  Command="{Binding ValidateAddressCommand}"/>
+                                                                  Command="{Binding ValidateAddressCommand}" />
                             </custom:CustomEntry.Behaviors>
                         </custom:CustomEntry>
                         <Button Grid.Column="1"
@@ -173,7 +176,7 @@
                                 HorizontalOptions="End"
                                 VerticalOptions="Center"
                                 Command="{Binding PasteCommand}"
-                                IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>
+                                IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}" />
                         <ImageButton Grid.Column="1"
                                      Source="ic_close"
                                      BorderColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
@@ -186,7 +189,7 @@
                                      CornerRadius="12"
                                      VerticalOptions="Center"
                                      Command="{Binding ClearToAddressCommand}"
-                                     IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
+                                     IsVisible="{Binding ToAddress, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
                     </Grid>
                 </Frame>
                 <StackLayout IsVisible="False">
@@ -194,12 +197,13 @@
                         <MultiTrigger TargetType="StackLayout">
                             <MultiTrigger.Conditions>
                                 <BindingCondition Binding="{Binding Message.RelatedElement}"
-                                                  Value="Address"/>
-                                <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                                  Value="True"/>
+                                                  Value="Address" />
+                                <BindingCondition
+                                    Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
+                                    Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter Property="IsVisible"
-                                    Value="True"/>
+                                    Value="True" />
                         </MultiTrigger>
                     </StackLayout.Triggers>
                     <StackLayout Orientation="Horizontal"
@@ -213,13 +217,13 @@
                                              Binding="{Binding Message.Type}"
                                              Value="Warning">
                                     <Setter Property="Style"
-                                            Value="{StaticResource WarningTextH5}"/>
+                                            Value="{StaticResource WarningTextH5}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Message.Type}"
                                              Value="Error">
                                     <Setter Property="Style"
-                                            Value="{StaticResource ErrorTextH5}"/>
+                                            Value="{StaticResource ErrorTextH5}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -234,13 +238,13 @@
                                              Binding="{Binding Message.Type}"
                                              Value="Error">
                                     <Setter Property="Source"
-                                            Value="ic_question__error"/>
+                                            Value="ic_question__error" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding Message.Type}"
                                              Value="Warning">
                                     <Setter Property="Source"
-                                            Value="ic_question__warning"/>
+                                            Value="ic_question__warning" />
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
@@ -257,29 +261,29 @@
                                  Binding="{Binding SelectAddressMode}"
                                  Value="SendFrom">
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ChooseMyAddress">
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding SelectAddressMode}"
                                  Value="ChangeRedeemAddress">
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding SelectAddressMode}"
-                                              Value="ReceiveTo"/>
+                                              Value="ReceiveTo" />
                             <BindingCondition Binding="{Binding IsMyAddressesTab}"
-                                              Value="True"/>
+                                              Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
@@ -291,45 +295,47 @@
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="Center"
                            VerticalOptions="FillAndExpand"
-                           HorizontalOptions="FillAndExpand"/>
-                    <Button TextColor="{AppThemeBinding Dark={StaticResource ActionBarButtonTextColorDark}, Light={StaticResource ActionBarButtonTextColor}}"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                            Text="{Binding SortButtonName}"
-                            HeightRequest="32"
-                            HorizontalOptions="End"
-                            CornerRadius="16"
-                            Padding="14,6"
-                            FontSize="14"
-                            Margin="0,10"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding ChangeSortTypeCommand}"
-                            TextTransform="Lowercase"/>
-                    <ImageButton BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                                 Padding="6"
-                                 Margin="0,10"
-                                 HorizontalOptions="End"
-                                 HeightRequest="32"
-                                 WidthRequest="32"
-                                 CornerRadius="16"
-                                 Command="{Binding ChangeSortDirectionCommand}">
+                           HorizontalOptions="FillAndExpand" />
+                    <Button
+                        TextColor="{AppThemeBinding Dark={StaticResource ActionBarButtonTextColorDark}, Light={StaticResource ActionBarButtonTextColor}}"
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                        Text="{Binding SortButtonName}"
+                        HeightRequest="32"
+                        HorizontalOptions="End"
+                        CornerRadius="16"
+                        Padding="14,6"
+                        FontSize="14"
+                        Margin="0,10"
+                        FontFamily="{DynamicResource RegularFont}"
+                        Command="{Binding ChangeSortTypeCommand}"
+                        TextTransform="Lowercase" />
+                    <ImageButton
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                        Padding="6"
+                        Margin="0,10"
+                        HorizontalOptions="End"
+                        HeightRequest="32"
+                        WidthRequest="32"
+                        CornerRadius="16"
+                        Command="{Binding ChangeSortDirectionCommand}">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton"
                                          Binding="{Binding SortIsAscending}"
                                          Value="True">
                                 <Setter Property="Source"
-                                        Value="ic_sort__down"/>
+                                        Value="ic_sort__down" />
                             </DataTrigger>
                             <DataTrigger TargetType="ImageButton"
                                          Binding="{Binding SortIsAscending}"
                                          Value="False">
                                 <Setter Property="Source"
-                                        Value="ic_sort__up"/>
+                                        Value="ic_sort__up" />
                             </DataTrigger>
                         </ImageButton.Triggers>
                     </ImageButton>
                 </StackLayout>
                 <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0" />
                 <ListView ItemsSource="{Binding MyAddresses}"
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedAddress}"
@@ -342,11 +348,12 @@
                           Footer="">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior EventName="ItemTapped"
-                                                          Command="{Binding SelectAddressCommand}"/>
+                                                          Command="{Binding SelectAddressCommand}" />
                     </ListView.Behaviors>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                            <custom:CustomViewCell
+                                SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
                                 <Grid ColumnSpacing="0"
                                       RowSpacing="0"
                                       Padding="16,5">
@@ -365,7 +372,7 @@
                                            LineBreakMode="MiddleTruncation"
                                            Padding="0,3"
                                            VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="Start"/>
+                                           HorizontalTextAlignment="Start" />
                                     <Label Grid.Row="1"
                                            Style="{DynamicResource AdditionalTextH5}"
                                            VerticalTextAlignment="Start"
@@ -374,17 +381,17 @@
                                             <MultiBinding Converter="{StaticResource AllTrueConverter}">
                                                 <Binding Path="IsFreeAddress"
                                                          Mode="OneWay"
-                                                         Converter="{StaticResource InverseBool}"/>
+                                                         Converter="{StaticResource InverseBool}" />
                                                 <Binding Path="IsTezosToken"
-                                                         Mode="OneWay"/>
-                                            </MultiBinding>                   
+                                                         Mode="OneWay" />
+                                            </MultiBinding>
                                         </Label.IsVisible>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TokenBalance}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding TokenCode}"/>
-                                                <Span Text=" / "/>
+                                                <Span Text="{Binding TokenBalance}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding TokenCode}" />
+                                                <Span Text=" / " />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -396,9 +403,9 @@
                                            IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableBalance}"/>
-                                                <Span Text=" " /> 
-                                                <Span Text="{Binding CurrencyCode}"/>
+                                                <Span Text="{Binding AvailableBalance}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrencyCode}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
@@ -413,21 +420,22 @@
                                                Style="{DynamicResource MainTextH6}"
                                                TextTransform="Lowercase"
                                                VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="Center"/>
+                                               HorizontalTextAlignment="Center" />
                                     </Frame>
                                     <StackLayout Grid.RowSpan="2"
                                                  Grid.Column="2"
                                                  VerticalOptions="FillAndExpand"
                                                  HorizontalOptions="FillAndExpand">
                                         <StackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
-                                                                  CommandParameter="{Binding .}"/>
+                                            <TapGestureRecognizer
+                                                Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
+                                                CommandParameter="{Binding .}" />
                                         </StackLayout.GestureRecognizers>
                                         <Image WidthRequest="15"
                                                HeightRequest="18"
                                                VerticalOptions="FillAndExpand"
                                                HorizontalOptions="End"
-                                               Source="ic_copy__gray"/>
+                                               Source="ic_copy__gray" />
                                     </StackLayout>
                                 </Grid>
                             </custom:CustomViewCell>
@@ -442,13 +450,13 @@
                     <MultiBinding Converter="{StaticResource AllTrueConverter}">
                         <Binding Path="ToAddress"
                                  Mode="OneWay"
-                                 Converter="{StaticResource StringToBool}"/>
+                                 Converter="{StaticResource StringToBool}" />
                         <Binding Path="IsMyAddressesTab"
                                  Mode="OneWay"
-                                 Converter="{StaticResource InverseBool}"/>
+                                 Converter="{StaticResource InverseBool}" />
                     </MultiBinding>
                 </StackLayout.IsVisible>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}" />
                 <Button Text="{helpers:Translate ConfirmButton}"
                         Style="{DynamicResource MainButton}"
                         Margin="16,14"
@@ -458,25 +466,25 @@
                                      Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBool}}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}" />
                             <Setter Property="Opacity"
-                                    Value="0.5"/>
+                                    Value="0.5" />
                             <Setter Property="IsEnabled"
-                                    Value="False"/>
+                                    Value="False" />
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding Message.Text, Mode=OneWay, Converter={StaticResource StringToBoolInvert}}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
                             <Setter Property="Opacity"
-                                    Value="1"/>
+                                    Value="1" />
                             <Setter Property="IsEnabled"
-                                    Value="True"/>
+                                    Value="True" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>

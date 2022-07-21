@@ -5,9 +5,13 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
-             x:Class="atomex.UnlockWalletPage"
+             x:Class="atomex.Views.UnlockWalletPage"
              Title="{helpers:Translate UnlockTitle}"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
+    <ContentPage.BindingContext>
+        <vm:UnlockViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool"/>

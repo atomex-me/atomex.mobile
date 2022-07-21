@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using atomex.ViewModels;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class UnlockWalletPage : ContentPage
     {
-        public UnlockWalletPage()
-        {
-            InitializeComponent();
-        }
-
         public UnlockWalletPage(UnlockViewModel unlockViewModel)
         {
             InitializeComponent();

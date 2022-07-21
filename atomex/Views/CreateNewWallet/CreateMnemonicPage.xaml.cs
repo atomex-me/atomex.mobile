@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using atomex.ViewModels;
 
 namespace atomex.Views.CreateNewWallet
 {

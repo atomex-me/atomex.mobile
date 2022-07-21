@@ -1,7 +1,7 @@
-﻿using atomex.ViewModel.TransactionViewModels;
+﻿using atomex.ViewModels.TransactionViewModels;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class TransactionInfoPage : ContentPage
     {

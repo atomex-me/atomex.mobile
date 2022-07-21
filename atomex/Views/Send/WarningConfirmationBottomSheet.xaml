@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -10,138 +11,139 @@
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.Views.Send.WarningConfirmationBottomSheet">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="456"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="16,8,16,16"
                               HorizontalOptions="FillAndExpand"
                               HeightRequest="556"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-        <StackLayout Spacing="0">
-            <Image Source="ic_swipe__indicator"
-                   WidthRequest="35"
-                   HeightRequest="4"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="0,0,0,20"/>
-            <Label Text="{helpers:Translate Warning}"
-                   Style="{DynamicResource WarningTextH1}"
-                   Padding="0,0,0,20"/>
-            <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
-                   Style="{DynamicResource MainTextH5}"
-                   LineHeight="1.25"
-                   HorizontalTextAlignment="Start"/>
-            <input:RadioButtonGroupView>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="0,20"/>
-                <input:RadioButton Text="{Binding SendRecommendedAmountMenu}"
-                                   IsChecked="{Binding UseRecommendedAmount, Mode=TwoWay}"
-                                   TextFontSize="16"
-                                   CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
-                                   Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
-                    <input:RadioButton.Triggers>
-                        <DataTrigger TargetType="input:RadioButton"
-                                     Binding="{Binding UseRecommendedAmount}"
-                                     Value="False">
-                            <Setter Property="Opacity"
-                                    Value="0.5"/>
-                        </DataTrigger>
-                    </input:RadioButton.Triggers>
-                </input:RadioButton>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="0,20"/>
-                <input:RadioButton Text="{Binding SendEnteredAmountMenu}"
-                                   IsChecked="{Binding UseEnteredAmount, Mode=TwoWay}"
-                                   TextFontSize="16"
-                                   CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
-                                   Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
-                                   TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
-                    <input:RadioButton.Triggers>
-                        <DataTrigger TargetType="input:RadioButton"
-                                     Binding="{Binding UseEnteredAmount}"
-                                     Value="False">
-                            <Setter Property="Opacity"
-                                    Value="0.5"/>
-                        </DataTrigger>
-                    </input:RadioButton.Triggers>
-                </input:RadioButton>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"                             
-                             Margin="0,20"/>
-            </input:RadioButtonGroupView>
-            <StackLayout VerticalOptions="EndAndExpand">
-                <RelativeLayout HeightRequest="44">
-                    <Button Text="{helpers:Translate SendButton}"
-                            CornerRadius="22"
-                            BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
-                            FontSize="17"
-                            TextTransform="None"
-                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
-                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-                            HorizontalOptions="FillAndExpand"
-                            FontFamily="{DynamicResource RegularFont}"
-                            Command="{Binding NextCommand}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding IsLoading}"
-                                         Value="True">
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
-                                <Setter Property="Text"
-                                        Value=""/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanSend}"
+            <StackLayout Spacing="0">
+                <Image Source="ic_swipe__indicator"
+                       WidthRequest="35"
+                       HeightRequest="4"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Margin="0,0,0,20" />
+                <Label Text="{helpers:Translate Warning}"
+                       Style="{DynamicResource WarningTextH1}"
+                       Padding="0,0,0,20" />
+                <Label Text="{Binding RecommendedMaxAmountWarning.TooltipText}"
+                       Style="{DynamicResource MainTextH5}"
+                       LineHeight="1.25"
+                       HorizontalTextAlignment="Start" />
+                <input:RadioButtonGroupView>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="0,20" />
+                    <input:RadioButton Text="{Binding SendRecommendedAmountMenu}"
+                                       IsChecked="{Binding UseRecommendedAmount, Mode=TwoWay}"
+                                       TextFontSize="16"
+                                       CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                       Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                        <input:RadioButton.Triggers>
+                            <DataTrigger TargetType="input:RadioButton"
+                                         Binding="{Binding UseRecommendedAmount}"
                                          Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
                                 <Setter Property="Opacity"
-                                        Value="0.5"/>
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
+                                        Value="0.5" />
                             </DataTrigger>
-                            <DataTrigger TargetType="Button"
-                                         Binding="{Binding CanSend}"
-                                         Value="True">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
-                                <Setter Property="TextColor"
-                                        Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                        </input:RadioButton.Triggers>
+                    </input:RadioButton>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="0,20" />
+                    <input:RadioButton Text="{Binding SendEnteredAmountMenu}"
+                                       IsChecked="{Binding UseEnteredAmount, Mode=TwoWay}"
+                                       TextFontSize="16"
+                                       CircleColor="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                       Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
+                                       TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}">
+                        <input:RadioButton.Triggers>
+                            <DataTrigger TargetType="input:RadioButton"
+                                         Binding="{Binding UseEnteredAmount}"
+                                         Value="False">
                                 <Setter Property="Opacity"
-                                        Value="1"/>
-                                <Setter Property="IsEnabled"
-                                        Value="True"/>
+                                        Value="0.5" />
                             </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
-	             	                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
-                                       RelativeLayout.WidthConstraint="24"
-                                       RelativeLayout.HeightConstraint="24"
-                                       Color="#92C8F9"
-                                       BackgroundColor="Transparent"
-                                       IsRunning="{Binding IsLoading}"
-                                       IsVisible="{Binding IsLoading}"/>
-                </RelativeLayout>
+                        </input:RadioButton.Triggers>
+                    </input:RadioButton>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="0,20" />
+                </input:RadioButtonGroupView>
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <RelativeLayout HeightRequest="44">
+                        <Button Text="{helpers:Translate SendButton}"
+                                CornerRadius="22"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                TextColor="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"
+                                FontSize="17"
+                                TextTransform="None"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                                HorizontalOptions="FillAndExpand"
+                                FontFamily="{DynamicResource RegularFont}"
+                                Command="{Binding NextCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding IsLoading}"
+                                             Value="True">
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                    <Setter Property="Text"
+                                            Value="" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanSend}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="0.5" />
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button"
+                                             Binding="{Binding CanSend}"
+                                             Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
+                                    <Setter Property="Opacity"
+                                            Value="1" />
+                                    <Setter Property="IsEnabled"
+                                            Value="True" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <ActivityIndicator
+                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                            RelativeLayout.WidthConstraint="24"
+                            RelativeLayout.HeightConstraint="24"
+                            Color="#92C8F9"
+                            BackgroundColor="Transparent"
+                            IsRunning="{Binding IsLoading}"
+                            IsVisible="{Binding IsLoading}" />
+                    </RelativeLayout>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>

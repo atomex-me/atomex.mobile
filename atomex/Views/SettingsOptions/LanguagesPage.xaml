@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              x:Class="atomex.Views.SettingsOptions.LanguagesPage"
-             x:Name="Page"
+             x:Name="BindingContextPage"
              Title="{helpers:Translate SettingsPageTitle}"
              Style="{DynamicResource AdditionalBackgroundStyle}">
     <ContentPage.Content>
@@ -17,7 +18,7 @@
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                        VerticalTextAlignment="Center"
                        TextTransform="Uppercase"
-                       Padding="20,5"/>
+                       Padding="20,5" />
                 <Frame CornerRadius="10"
                        Style="{DynamicResource EntryFrameStyle}"
                        Padding="0,5">
@@ -31,12 +32,12 @@
                                              Padding="20,0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer CommandParameter="{Binding .}"
-                                                              Command="{Binding BindingContext.ChangeLanguageCommand, Source={x:Reference Page}}"
-                                                              Tapped="OnItemTapped"/>
+                                                              Command="{Binding BindingContext.ChangeLanguageCommand, Source={x:Reference BindingContextPage}}"
+                                                              Tapped="OnItemTapped" />
                                     </StackLayout.GestureRecognizers>
                                     <Image Source="{Binding Code}"
                                            VerticalOptions="Center"
-                                           WidthRequest="24"/>
+                                           WidthRequest="24" />
                                     <Label Text="{Binding Name}"
                                            Style="{DynamicResource OptionLabelStyle}"
                                            Margin="5,0">
@@ -52,7 +53,7 @@
                                                          Binding="{Binding IsActive}"
                                                          Value="True">
                                                 <Setter Property="IsVisible"
-                                                        Value="True"/>
+                                                        Value="True" />
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>

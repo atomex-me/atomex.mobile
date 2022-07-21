@@ -1,27 +1,32 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<pages:PopupPage  
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
     x:Class="atomex.Views.DelegationActionBottomSheet"
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors">
+    <pages:PopupPage.BindingContext>
+        <vm:DelegationViewModel />
+    </pages:PopupPage.BindingContext>
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:NullToBooleanConverter x:Key="NullToBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout VerticalOptions="EndAndExpand"
@@ -30,7 +35,7 @@
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="100"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14"
@@ -42,12 +47,12 @@
                        HeightRequest="4"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
-                       Margin="0,0,0,24"/>
+                       Margin="0,0,0,24" />
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="24">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ChangeBakerCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ChangeBakerCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
                            Text="{helpers:Translate DelegateButton}"
@@ -59,40 +64,39 @@
                                          Binding="{Binding Baker, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}"
                                          Value="False">
                                 <Setter Property="Text"
-                                        Value="{helpers:Translate DelegateButton}"/>
+                                        Value="{helpers:Translate DelegateButton}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Baker, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}"
                                          Value="True">
                                 <Setter Property="Text"
-                                        Value="{helpers:Translate ChangeBaker}"/>
+                                        Value="{helpers:Translate ChangeBaker}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="24"
                              IsVisible="{Binding Baker, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding UndelegateCommand}"/>
+                        <TapGestureRecognizer Command="{Binding UndelegateCommand}" />
                     </StackLayout.GestureRecognizers>
                     <Label Style="{DynamicResource MainTextH4}"
                            Text="{helpers:Translate UndelegateButton}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="Start"
-                           HorizontalOptions="FillAndExpand"/>
+                           HorizontalOptions="FillAndExpand" />
                     <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
                            HeightRequest="12"
                            WidthRequest="12"
-                           HorizontalOptions="End"/>
+                           HorizontalOptions="End" />
                 </StackLayout>
             </StackLayout>
         </controls:CustomFrame>
     </StackLayout>
 </pages:PopupPage>
-

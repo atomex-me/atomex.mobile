@@ -1,5 +1,5 @@
 ﻿using System;
-using atomex.ViewModel.CurrencyViewModels;
+using atomex.ViewModels.CurrencyViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views.TezosTokens

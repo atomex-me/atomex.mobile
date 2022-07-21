@@ -1,4 +1,4 @@
-﻿using atomex.ViewModel.SendViewModels;
+﻿using atomex.ViewModels.SendViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.Send

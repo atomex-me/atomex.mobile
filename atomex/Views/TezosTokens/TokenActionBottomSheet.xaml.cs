@@ -1,4 +1,4 @@
-﻿using atomex.ViewModel.CurrencyViewModels;
+﻿using atomex.ViewModels.CurrencyViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.TezosTokens
