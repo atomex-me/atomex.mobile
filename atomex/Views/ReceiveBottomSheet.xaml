@@ -12,10 +12,11 @@
     xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
     xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
     x:Class="atomex.Views.ReceiveBottomSheet"
-    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <pages:PopupPage.BindingContext>
-        <vm:ReceiveViewModel />
-    </pages:PopupPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:ReceiveViewModel}">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool" />

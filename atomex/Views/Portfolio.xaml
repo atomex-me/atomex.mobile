@@ -8,10 +8,11 @@
              xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
              x:Class="atomex.Views.Portfolio"
              Title="{helpers:Translate PortfolioPageTitle}"
-             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
-    <ContentPage.BindingContext>
-        <vm:PortfolioViewModel />
-    </ContentPage.BindingContext>
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:PortfolioViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />

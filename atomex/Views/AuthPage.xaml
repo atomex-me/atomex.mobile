@@ -8,10 +8,11 @@
     xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
     x:Class="atomex.Views.AuthPage"
     Style="{DynamicResource MainBackgroundStyle}"
-    Title="{helpers:Translate UnlockTitle}">
-    <ContentPage.BindingContext>
-        <vm:UnlockViewModel />
-    </ContentPage.BindingContext>
+    Title="{helpers:Translate UnlockTitle}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:UnlockViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:GreaterThanValueConverter x:Key="GreaterThanValue" />

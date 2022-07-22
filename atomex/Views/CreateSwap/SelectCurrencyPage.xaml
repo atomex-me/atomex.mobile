@@ -6,7 +6,12 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     x:Class="atomex.Views.CreateSwap.SelectCurrencyPage"
     xmlns:custom="clr-namespace:atomex.CustomElements"
-    x:Name="BindingContextPage">
+    x:Name="BindingContextPage"
+    xmlns:vm="clr-namespace:atomex.ViewModels.ConversionViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectCurrencyViewModel}">
     <ContentPage.Content>
         <StackLayout
             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">

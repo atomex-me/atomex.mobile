@@ -8,10 +8,11 @@
     xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
     x:Name="BindingContextPage"
     Style="{DynamicResource MainBackgroundStyle}"
-    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <ContentPage.BindingContext>
-        <vm:SelectOutputsViewModel />
-    </ContentPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectOutputsViewModel}">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_search"
                      Order="Primary"

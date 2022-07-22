@@ -10,10 +10,11 @@
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-             Title="{Binding Currency.Description}">
-    <ContentPage.BindingContext>
-        <vm:CurrencyViewModel />
-    </ContentPage.BindingContext>
+             Title="{Binding Currency.Description}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:CurrencyViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
@@ -91,7 +92,7 @@
                                              Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                              Value="True">
                                     <Setter Property="Style"
-                                            Value="{StaticResource SuccessTextH5}" />
+                                            Value="{DynamicResource SuccessTextH5}" />
                                     <Setter Property="Text"
                                             Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}" />
                                 </DataTrigger>
@@ -99,7 +100,7 @@
                                              Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
                                              Value="False">
                                     <Setter Property="Style"
-                                            Value="{StaticResource ErrorTextH5}" />
+                                            Value="{DynamicResource ErrorTextH5}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>

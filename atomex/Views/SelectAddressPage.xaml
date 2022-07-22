@@ -10,10 +10,11 @@
     xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:behaviors="clr-namespace:EventToCommandBehavior"
     Style="{DynamicResource MainBackgroundStyle}"
-    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <ContentPage.BindingContext>
-        <vm:SelectAddressViewModel />
-    </ContentPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectAddressViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool" />
@@ -217,13 +218,13 @@
                                              Binding="{Binding Message.Type}"
                                              Value="Warning">
                                     <Setter Property="Style"
-                                            Value="{StaticResource WarningTextH5}" />
+                                            Value="{DynamicResource WarningTextH5}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding Message.Type}"
                                              Value="Error">
                                     <Setter Property="Style"
-                                            Value="{StaticResource ErrorTextH5}" />
+                                            Value="{DynamicResource ErrorTextH5}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>

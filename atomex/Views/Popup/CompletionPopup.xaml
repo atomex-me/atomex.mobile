@@ -4,7 +4,12 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-              x:Class="atomex.Views.Popup.CompletionPopup">
+              x:Class="atomex.Views.Popup.CompletionPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:PopupViewModel}">
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
                            PositionOut="Center"

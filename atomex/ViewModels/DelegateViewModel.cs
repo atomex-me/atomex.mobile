@@ -18,7 +18,6 @@ using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Common;
 using Atomex.MarketData.Abstract;
-using atomex.ViewModel;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
 using Newtonsoft.Json.Linq;

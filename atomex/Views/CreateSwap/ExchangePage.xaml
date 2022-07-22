@@ -9,7 +9,12 @@
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateSwap.ExchangePage"
              Title="{helpers:Translate ExchangePageTitle}"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels.ConversionViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:ConversionViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:NullToBooleanConverter x:Key="NullToBoolean" />

@@ -12,7 +12,6 @@ using Atomex;
 using Atomex.Blockchain.BitcoinBased;
 using Atomex.Common;
 using Atomex.Core;
-using atomex.ViewModel;
 using atomex.ViewModels.CurrencyViewModels;
 using Atomex.Wallet.Abstract;
 using Atomex.Wallet.BitcoinBased;

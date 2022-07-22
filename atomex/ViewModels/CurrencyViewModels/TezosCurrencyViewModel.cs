@@ -10,7 +10,6 @@ using Atomex.Blockchain.Tezos;
 using Atomex.Blockchain.Tezos.Internal;
 using Atomex.Blockchain.Tezos.Tzkt;
 using Atomex.Core;
-using atomex.ViewModel;
 using Atomex.Wallet;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

@@ -7,10 +7,11 @@
              x:Name="BindingContextPage"
              Title="{helpers:Translate MyWalletsTitle}"
              Style="{DynamicResource MainBackgroundStyle}"
-             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <ContentPage.BindingContext>
-        <vm:MyWalletsViewModel />
-    </ContentPage.BindingContext>
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:MyWalletsViewModel}">
     <ContentPage.Content>
         <StackLayout Padding="20,0">
             <Label Text="{helpers:Translate SelectWalletLabel}"

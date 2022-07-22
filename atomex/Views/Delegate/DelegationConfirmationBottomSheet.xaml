@@ -9,7 +9,12 @@
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:behavior="clr-namespace:atomex.Behaviors"
-    x:Class="atomex.Views.Delegate.DelegationConfirmationBottomSheet">
+    x:Class="atomex.Views.Delegate.DelegationConfirmationBottomSheet"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:DelegateViewModel}">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool" />

@@ -8,7 +8,12 @@
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-             Title="{Binding Currency.Description}">
+             Title="{Binding Description}"
+             xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:TezosTokenViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />

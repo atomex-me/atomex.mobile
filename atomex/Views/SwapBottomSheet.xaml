@@ -14,10 +14,11 @@
     x:Name="BindingContextPage"
     Title="{helpers:Translate SwapInfoPageTitle}"
     Style="{DynamicResource MainBackgroundStyle}"
-    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <pages:PopupPage.BindingContext>
-        <vm:SwapViewModel />
-    </pages:PopupPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SwapViewModel}">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
             <converters:EqualsConverter x:Key="EqualsConverter" />

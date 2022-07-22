@@ -11,10 +11,11 @@
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Name="BindingContextPage"
     x:Class="atomex.Views.SelectCurrencyBottomSheet"
-    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <pages:PopupPage.BindingContext>
-        <vm:SelectCurrencyViewModel />
-    </pages:PopupPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectCurrencyViewModel}">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             PositionIn="Bottom"

@@ -9,10 +9,11 @@
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Class="atomex.Views.RemoveTxBottomSheet"
-    xmlns:vm="clr-namespace:atomex.ViewModels.TransactionViewModels;assembly=atomex">
-    <pages:PopupPage.BindingContext>
-        <vm:TransactionViewModel />
-    </pages:PopupPage.BindingContext>
+    xmlns:vm="clr-namespace:atomex.ViewModels.TransactionViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:TransactionViewModel}">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             PositionIn="Bottom"

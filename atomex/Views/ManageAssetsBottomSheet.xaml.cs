@@ -1,5 +1,4 @@
-﻿using atomex.ViewModel;
-using atomex.ViewModels;
+﻿using atomex.ViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views

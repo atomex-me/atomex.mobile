@@ -6,7 +6,12 @@
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
-    x:Class="atomex.Views.BuyCurrency.BuyPage">
+    x:Class="atomex.Views.BuyCurrency.BuyPage"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:BuyViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBool" />

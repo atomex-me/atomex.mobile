@@ -6,10 +6,11 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              Title="{helpers:Translate ScanningQrCodePageTitle}"
-             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex">
-    <ContentPage.BindingContext>
-        <vm:SelectAddressViewModel />
-    </ContentPage.BindingContext>
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:SelectAddressViewModel}">
     <Grid VerticalOptions="FillAndExpand"
           HorizontalOptions="FillAndExpand">
         <zxing:ZXingScannerView Result="{Binding ScanResult, Mode=TwoWay}"

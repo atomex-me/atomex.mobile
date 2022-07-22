@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
-namespace atomex.ViewModel
+namespace atomex.ViewModels
 {
     public enum PopupType
     {

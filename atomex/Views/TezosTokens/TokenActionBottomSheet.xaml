@@ -9,7 +9,12 @@
     xmlns:converters="clr-namespace:atomex.Converters"
     x:Class="atomex.Views.TezosTokens.TokenActionBottomSheet"
     xmlns:controls="clr-namespace:atomex.CustomElements"
-    xmlns:behavior="clr-namespace:atomex.Behaviors">
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:TezosTokenViewModel}">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             PositionIn="Bottom"
@@ -49,7 +54,7 @@
                              Spacing="0">
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
-                                     Binding="{Binding Balance, Converter={StaticResource GreaterThanZeroConverter}}"
+                                     Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
                                      Value="False">
                             <Setter Property="Opacity"
                                     Value="0.38" />

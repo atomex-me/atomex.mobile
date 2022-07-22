@@ -16,7 +16,6 @@ using Atomex.Blockchain;
 using Atomex.Common;
 using Atomex.Core;
 using Atomex.MarketData.Abstract;
-using atomex.ViewModel;
 using atomex.ViewModels.SendViewModels;
 using atomex.ViewModels.TransactionViewModels;
 using Atomex.Wallet;

@@ -9,10 +9,11 @@
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
-    x:Class="atomex.Views.ExportKeyBottomSheet">
-    <pages:PopupPage.BindingContext>
-        <vm:AddressViewModel />
-    </pages:PopupPage.BindingContext>
+    x:Class="atomex.Views.ExportKeyBottomSheet"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:AddressViewModel}">
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation
             PositionIn="Bottom"
