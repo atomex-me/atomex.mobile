@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -7,23 +8,28 @@
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:controls="clr-namespace:atomex.CustomElements"
-    xmlns:behavior="clr-namespace:atomex.Behaviors">
+    xmlns:behavior="clr-namespace:atomex.Behaviors"
+    xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:TezosTokensViewModel}">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="567"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14,0,0"
@@ -36,12 +42,12 @@
                        HeightRequest="4"
                        Margin="0,0,0,40"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
                 <Label Text="{helpers:Translate ManageTezosTokens}"
                        Style="{DynamicResource MainTextH1}"
                        Margin="16,0,16,10"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"/>
+                       VerticalTextAlignment="Center" />
                 <ListView ItemsSource="{Binding AllTokens}"
                           HasUnevenRows="True"
                           SeparatorVisibility="Default"
@@ -56,14 +62,14 @@
                                 <StackLayout Orientation="Horizontal"
                                              Spacing="0">
                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ToggleCommand}"/>
+                                        <TapGestureRecognizer Command="{Binding ToggleCommand}" />
                                     </StackLayout.GestureRecognizers>
                                     <StackLayout.Triggers>
                                         <DataTrigger TargetType="StackLayout"
                                                      Binding="{Binding IsSelected}"
                                                      Value="False">
                                             <Setter Property="Opacity"
-                                                    Value="0.38"/>
+                                                    Value="0.38" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Image Source="{Binding TezosTokenViewModel.TokenPreview}"
@@ -71,42 +77,44 @@
                                            WidthRequest="28"
                                            Margin="16,0"
                                            VerticalOptions="Center"
-                                           HorizontalOptions="Start"/>
+                                           HorizontalOptions="Start" />
                                     <Label Text="{Binding TezosTokenViewModel.Description}"
                                            Style="{DynamicResource MainTextH4}"
                                            LineBreakMode="TailTruncation"
                                            WidthRequest="150"
                                            HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Center"/>
+                                           VerticalTextAlignment="Center" />
                                     <Label Style="{DynamicResource MainTextH5}"
                                            HorizontalOptions="EndAndExpand"
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TezosTokenViewModel.TotalAmount, StringFormat='{0:0.########}'}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding TezosTokenViewModel.CurrencyCode}"/>
+                                                <Span
+                                                    Text="{Binding TezosTokenViewModel.TotalAmount, StringFormat='{0:0.########}'}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding TezosTokenViewModel.CurrencyCode}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Switch OnColor="{AppThemeBinding Dark={StaticResource SwitchBackgroundColorDark}, Light={StaticResource SwitchBackgroundColor}}"
-                                            IsToggled="{Binding IsSelected, Mode=TwoWay}"
-                                            Margin="16,0"
-                                            HorizontalOptions="End"
-                                            VerticalOptions="Center">
+                                    <Switch
+                                        OnColor="{AppThemeBinding Dark={StaticResource SwitchBackgroundColorDark}, Light={StaticResource SwitchBackgroundColor}}"
+                                        IsToggled="{Binding IsSelected, Mode=TwoWay}"
+                                        Margin="16,0"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center">
                                         <Switch.Triggers>
                                             <DataTrigger TargetType="Switch"
                                                          Binding="{Binding IsSelected}"
                                                          Value="False">
                                                 <Setter Property="ThumbColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource InactiveThumbColorDark}, Light={StaticResource InactiveThumbColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource InactiveThumbColorDark}, Light={StaticResource InactiveThumbColor}}" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Switch"
                                                          Binding="{Binding IsSelected}"
                                                          Value="True">
                                                 <Setter Property="ThumbColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource ActiveThumbColorDark}, Light={StaticResource ActiveThumbColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveThumbColorDark}, Light={StaticResource ActiveThumbColor}}" />
                                             </DataTrigger>
                                         </Switch.Triggers>
                                     </Switch>

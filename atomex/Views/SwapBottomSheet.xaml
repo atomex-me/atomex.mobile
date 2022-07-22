@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -12,31 +13,36 @@
     x:Class="atomex.Views.SwapBottomSheet"
     x:Name="BindingContextPage"
     Title="{helpers:Translate SwapInfoPageTitle}"
-    Style="{DynamicResource MainBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SwapViewModel}">
     <pages:PopupPage.Resources>
         <ResourceDictionary>
-            <converters:EqualsConverter x:Key="EqualsConverter"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" /> 
-            <converters:NullToBooleanConverter x:Key="NullToBoolean"/>
-            <converters:NullToBooleanInvertConverter x:Key="NullToBooleanInvert"/>
+            <converters:EqualsConverter x:Key="EqualsConverter" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
+            <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+            <converters:NullToBooleanInvertConverter x:Key="NullToBooleanInvert" />
         </ResourceDictionary>
     </pages:PopupPage.Resources>
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="EndAndExpand"
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="520"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14"
@@ -49,7 +55,7 @@
                        HeightRequest="4"
                        Margin="0,0,0,40"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
                 <ScrollView>
                     <StackLayout Spacing="0"
                                  Padding="0,0,0,20">
@@ -60,31 +66,31 @@
                                              Binding="{Binding State}"
                                              Value="In Progress">
                                     <Setter Property="Source"
-                                            Value="SwapInProgress"/>
+                                            Value="SwapInProgress" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding State}"
                                              Value="Completed">
                                     <Setter Property="Source"
-                                            Value="SwapCompleted"/>
+                                            Value="SwapCompleted" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding State}"
                                              Value="Canceled">
                                     <Setter Property="Source"
-                                            Value="SwapCanceled"/>
+                                            Value="SwapCanceled" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding State}"
                                              Value="Refunded">
                                     <Setter Property="Source"
-                                            Value="SwapCanceled"/>
+                                            Value="SwapCanceled" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Image"
                                              Binding="{Binding State}"
                                              Value="Unsettled">
                                     <Setter Property="Source"
-                                            Value="SwapCanceled"/>
+                                            Value="SwapCanceled" />
                                 </DataTrigger>
                             </Image.Triggers>
                         </Image>
@@ -96,31 +102,31 @@
                                              Binding="{Binding State}"
                                              Value="In Progress">
                                     <Setter Property="Style"
-                                            Value="{DynamicResource MainTextH2}"/>
+                                            Value="{DynamicResource MainTextH2}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Completed">
                                     <Setter Property="Style"
-                                            Value="{DynamicResource SuccessTextH2}"/>
+                                            Value="{DynamicResource SuccessTextH2}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Canceled">
                                     <Setter Property="Style"
-                                            Value="{DynamicResource ErrorTextH2}"/>
+                                            Value="{DynamicResource ErrorTextH2}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Refunded">
                                     <Setter Property="Style"
-                                            Value="{DynamicResource ErrorTextH2}"/>
+                                            Value="{DynamicResource ErrorTextH2}" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Unsettled">
                                     <Setter Property="Style"
-                                            Value="{DynamicResource ErrorTextH2}"/>
+                                            Value="{DynamicResource ErrorTextH2}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -134,21 +140,21 @@
                                              Binding="{Binding State}"
                                              Value="In Progress">
                                     <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                            Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
                                     <Setter Property="IsVisible"
-                                            Value="True"/>
+                                            Value="True" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Refunded">
                                     <Setter Property="IsVisible"
-                                            Value="True"/>
+                                            Value="True" />
                                 </DataTrigger>
                                 <DataTrigger TargetType="Label"
                                              Binding="{Binding State}"
                                              Value="Unsettled">
                                     <Setter Property="IsVisible"
-                                            Value="True"/>
+                                            Value="True" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
@@ -167,25 +173,25 @@
                             <Image Source="{Binding FromCurrencyCode}"
                                    WidthRequest="48"
                                    HeightRequest="48"
-                                   HorizontalOptions="Center"/>
+                                   HorizontalOptions="Center" />
                             <Image Source="ic_exchange"
                                    Grid.Column="1"
                                    WidthRequest="20"
-                                   VerticalOptions="CenterAndExpand"/>
+                                   VerticalOptions="CenterAndExpand" />
                             <Image Grid.Column="2"
                                    Source="{Binding ToCurrencyCode}"
                                    WidthRequest="48"
                                    HeightRequest="48"
-                                   HorizontalOptions="Center"/>
+                                   HorizontalOptions="Center" />
                             <Label Grid.Row="1"
                                    Style="{DynamicResource MainTextH6}"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding FromAmount}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding FromCurrencyName}"/>
+                                        <Span Text="{Binding FromAmount}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding FromCurrencyName}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -196,9 +202,9 @@
                                    VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding ToAmount}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding ToCurrencyName}"/>
+                                        <Span Text="{Binding ToAmount}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding ToCurrencyName}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -220,7 +226,7 @@
                                    CornerRadius="18"
                                    HasShadow="False"
                                    Padding="0"
-                                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
                             <Button Style="{DynamicResource TabButton}"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapProgress"
@@ -231,17 +237,17 @@
                                         <VisualState Name="SwapProgress">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                                                 <Setter Property="BackgroundColor"
-                                                        Value="Transparent"/>
+                                                        Value="Transparent" />
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -258,17 +264,17 @@
                                         <VisualState Name="SwapProgress">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
                                                 <Setter Property="BackgroundColor"
-                                                        Value="Transparent"/>
+                                                        Value="Transparent" />
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState Name="SwapDetails">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                                                 <Setter Property="BackgroundColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                                                        Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -285,13 +291,13 @@
                                     <VisualState Name="SwapProgress">
                                         <VisualState.Setters>
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </VisualState.Setters>
                                     </VisualState>
                                     <VisualState Name="SwapDetails">
                                         <VisualState.Setters>
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -319,7 +325,7 @@
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -333,61 +339,61 @@
                                                      Binding="{Binding Status}"
                                                      Value="Exchanging">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Status}"
                                                      Value="Completion">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Canceled"/>
+                                                                  Value="Canceled" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Initialization"/>
+                                                                  Value="Initialization" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Refunded"/>
+                                                                  Value="Refunded" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Initialization"/>
+                                                                  Value="Initialization" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Unsettled"/>
+                                                                  Value="Unsettled" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Initialization"/>
+                                                                  Value="Initialization" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -406,11 +412,11 @@
                                             <Binding Path="Status"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="Initialization"/>
+                                                     ConverterParameter="Initialization" />
                                             <Binding Path="State"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="In Progress"/>
+                                                     ConverterParameter="In Progress" />
                                         </MultiBinding>
                                     </lottie:AnimationView.IsVisible>
                                 </lottie:AnimationView>
@@ -420,7 +426,7 @@
                                        HorizontalOptions="Center"
                                        Aspect="AspectFill"
                                        WidthRequest="1"
-                                       HeightRequest="40"/>
+                                       HeightRequest="40" />
                                 <Image Grid.Row="1"
                                        Source="ic_line__full"
                                        Aspect="AspectFill"
@@ -433,13 +439,13 @@
                                                      Binding="{Binding Status}"
                                                      Value="Initialization">
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -449,7 +455,7 @@
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Initialization"/>
+                                                              CommandParameter="Initialization" />
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <StackLayout Grid.Row="1"
@@ -457,19 +463,19 @@
                                              Spacing="0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Initialization"/>
+                                                              CommandParameter="Initialization" />
                                     </StackLayout.GestureRecognizers>
                                     <StackLayout.Triggers>
                                         <DataTrigger TargetType="StackLayout"
                                                      Binding="{Binding ExpandedStatus}"
                                                      Value="Initialization">
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding InitStatusDesc}"
                                            Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Start"/>
+                                           VerticalTextAlignment="Start" />
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
                                              Grid.Column="1"
@@ -482,12 +488,12 @@
                                                      Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                      Value="Initialization">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Initialization"/>
+                                                              CommandParameter="Initialization" />
                                     </StackLayout.GestureRecognizers>
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
@@ -498,7 +504,7 @@
                                                     <Label Text="{Binding Description}"
                                                            Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
-                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
+                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}" />
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
@@ -507,9 +513,9 @@
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
-                                                                    <Span Text="{Binding ExplorerLink.Text}"/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
+                                                                    <Span Text="{Binding ExplorerLink.Text}" />
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
@@ -518,14 +524,15 @@
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
                                                                     <Span Text="{Binding ExplorerLink.Text}"
                                                                           TextDecorations="Underline"
                                                                           TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                         <Span.GestureRecognizers>
-                                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                                  CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                            <TapGestureRecognizer
+                                                                                Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                CommandParameter="{Binding ExplorerLink.Url}" />
                                                                         </Span.GestureRecognizers>
                                                                     </Span>
                                                                 </FormattedString>
@@ -539,8 +546,9 @@
                                                                Margin="12,0,0,0"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Image.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                      CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                <TapGestureRecognizer
+                                                                    Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                    CommandParameter="{Binding ExplorerLink.Url}" />
                                                             </Image.GestureRecognizers>
                                                         </Image>
                                                     </StackLayout>
@@ -553,7 +561,7 @@
                                              Grid.RowSpan="2">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Initialization"/>
+                                                              CommandParameter="Initialization" />
                                     </StackLayout.GestureRecognizers>
                                     <Image Source="DownArrow"
                                            HeightRequest="10"
@@ -567,13 +575,13 @@
                                                          Binding="{Binding BindingContext.InitStatusMessages.Count, Source={x:Reference BindingContextPage}}"
                                                          Value="0">
                                                 <Setter Property="IsVisible"
-                                                        Value="False"/>
+                                                        Value="False" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
                                                          Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                          Value="Initialization">
                                                 <Setter Property="Rotation"
-                                                        Value="180"/>
+                                                        Value="180" />
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
@@ -602,7 +610,7 @@
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -616,77 +624,77 @@
                                                      Binding="{Binding Status}"
                                                      Value="Completion">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Completion"/>
+                                                                  Value="Completion" />
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="In Progress"/>
+                                                                  Value="In Progress" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Canceled"/>
+                                                                  Value="Canceled" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Initialization"/>
+                                                                  Value="Initialization" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Canceled"/>
+                                                                  Value="Canceled" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Exchanging"/>
+                                                                  Value="Exchanging" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Refunded"/>
+                                                                  Value="Refunded" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Exchanging"/>
+                                                                  Value="Exchanging" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                         <MultiTrigger TargetType="Image">
                                             <MultiTrigger.Conditions>
                                                 <BindingCondition Binding="{Binding State}"
-                                                                  Value="Unsettled"/>
+                                                                  Value="Unsettled" />
                                                 <BindingCondition Binding="{Binding Status}"
-                                                                  Value="Exchanging"/>
+                                                                  Value="Exchanging" />
                                             </MultiTrigger.Conditions>
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </MultiTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -705,11 +713,11 @@
                                             <Binding Path="Status"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="Exchanging"/>
+                                                     ConverterParameter="Exchanging" />
                                             <Binding Path="State"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="In Progress"/>
+                                                     ConverterParameter="In Progress" />
                                         </MultiBinding>
                                     </lottie:AnimationView.IsVisible>
                                 </lottie:AnimationView>
@@ -725,7 +733,7 @@
                                                      Binding="{Binding ExpandedStatus}"
                                                      Value="Exchanging">
                                             <Setter Property="HeightRequest"
-                                                    Value="60"/>
+                                                    Value="60" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -742,19 +750,19 @@
                                                      Binding="{Binding ExpandedStatus}"
                                                      Value="Exchanging">
                                             <Setter Property="HeightRequest"
-                                                    Value="60"/>
+                                                    Value="60" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding Status}"
                                                      Value="Completion">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -764,7 +772,7 @@
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Exchanging"/>
+                                                              CommandParameter="Exchanging" />
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <StackLayout Grid.Row="1"
@@ -772,19 +780,19 @@
                                              Spacing="0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Exchanging"/>
+                                                              CommandParameter="Exchanging" />
                                     </StackLayout.GestureRecognizers>
                                     <StackLayout.Triggers>
                                         <DataTrigger TargetType="StackLayout"
                                                      Binding="{Binding ExpandedStatus}"
                                                      Value="Exchanging">
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding ExchangeStatusDesc}"
                                            Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Start"/>
+                                           VerticalTextAlignment="Start" />
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
                                              Grid.Column="1"
@@ -796,12 +804,12 @@
                                                      Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                      Value="Exchanging">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Exchanging"/>
+                                                              CommandParameter="Exchanging" />
                                     </StackLayout.GestureRecognizers>
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
@@ -813,19 +821,19 @@
                                                     <Label Text="{Binding Description}"
                                                            Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
-                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
+                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}" />
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
-                                                                 HorizontalOptions="FillAndExpand" 
+                                                                 HorizontalOptions="FillAndExpand"
                                                                  IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                         <Label Style="{DynamicResource AdditionalTextH5}"
                                                                VerticalTextAlignment="Start"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
-                                                                    <Span Text="{Binding ExplorerLink.Text}"/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
+                                                                    <Span Text="{Binding ExplorerLink.Text}" />
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
@@ -834,14 +842,15 @@
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
                                                                     <Span Text="{Binding ExplorerLink.Text}"
                                                                           TextDecorations="Underline"
                                                                           TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                         <Span.GestureRecognizers>
-                                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                                  CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                            <TapGestureRecognizer
+                                                                                Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                CommandParameter="{Binding ExplorerLink.Url}" />
                                                                         </Span.GestureRecognizers>
                                                                     </Span>
                                                                 </FormattedString>
@@ -855,8 +864,9 @@
                                                                Margin="12,0,0,0"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Image.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                      CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                <TapGestureRecognizer
+                                                                    Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                    CommandParameter="{Binding ExplorerLink.Url}" />
                                                             </Image.GestureRecognizers>
                                                         </Image>
                                                     </StackLayout>
@@ -869,7 +879,7 @@
                                              Grid.RowSpan="2">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Exchanging"/>
+                                                              CommandParameter="Exchanging" />
                                     </StackLayout.GestureRecognizers>
                                     <Image Source="DownArrow"
                                            HeightRequest="10"
@@ -883,13 +893,13 @@
                                                          Binding="{Binding BindingContext.ExchangeStatusMessages.Count, Source={x:Reference BindingContextPage}}"
                                                          Value="0">
                                                 <Setter Property="IsVisible"
-                                                        Value="False"/>
+                                                        Value="False" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
                                                          Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                          Value="Exchanging">
                                                 <Setter Property="Rotation"
-                                                        Value="180"/>
+                                                        Value="180" />
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
@@ -918,7 +928,7 @@
                                                      Binding="{Binding State}"
                                                      Value="In Progress">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -932,33 +942,33 @@
                                                      Binding="{Binding State}"
                                                      Value="Completed">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__completed"/>
+                                                    Value="ic_status__completed" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Canceled">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Unsettled">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding State}"
                                                      Value="Refunded">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                             <Setter Property="Source"
-                                                    Value="ic_status__canceled"/>
+                                                    Value="ic_status__canceled" />
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
@@ -977,11 +987,11 @@
                                             <Binding Path="Status"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="Completion"/>
+                                                     ConverterParameter="Completion" />
                                             <Binding Path="State"
                                                      Mode="OneWay"
                                                      Converter="{StaticResource EqualsConverter}"
-                                                     ConverterParameter="In Progress"/>
+                                                     ConverterParameter="In Progress" />
                                         </MultiBinding>
                                     </lottie:AnimationView.IsVisible>
                                 </lottie:AnimationView>
@@ -991,7 +1001,7 @@
                                        VerticalTextAlignment="Start">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Completion"/>
+                                                              CommandParameter="Completion" />
                                     </Label.GestureRecognizers>
                                 </Label>
                                 <StackLayout Grid.Row="1"
@@ -999,19 +1009,19 @@
                                              Spacing="0">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Completion"/>
+                                                              CommandParameter="Completion" />
                                     </StackLayout.GestureRecognizers>
                                     <StackLayout.Triggers>
                                         <DataTrigger TargetType="StackLayout"
                                                      Binding="{Binding ExpandedStatus}"
                                                      Value="Completion">
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <Label Text="{Binding CompletionStatusDesc}"
                                            Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Start"/>
+                                           VerticalTextAlignment="Start" />
                                 </StackLayout>
                                 <StackLayout Grid.Row="1"
                                              Grid.Column="1"
@@ -1024,12 +1034,12 @@
                                                      Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                      Value="Completion">
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </DataTrigger>
                                     </StackLayout.Triggers>
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Completion"/>
+                                                              CommandParameter="Completion" />
                                     </StackLayout.GestureRecognizers>
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
@@ -1040,7 +1050,7 @@
                                                     <Label Text="{Binding Description}"
                                                            Style="{DynamicResource AdditionalTextH5}"
                                                            VerticalTextAlignment="Start"
-                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}"/>
+                                                           IsVisible="{Binding ExplorerLink, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}" />
                                                     <StackLayout Spacing="0"
                                                                  Orientation="Horizontal"
                                                                  HorizontalOptions="FillAndExpand"
@@ -1050,9 +1060,9 @@
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBooleanInvert}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
-                                                                    <Span Text="{Binding ExplorerLink.Text}"/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
+                                                                    <Span Text="{Binding ExplorerLink.Text}" />
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
@@ -1061,14 +1071,15 @@
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
-                                                                    <Span Text="{Binding Description}"/>
-                                                                    <Span Text=" "/>
+                                                                    <Span Text="{Binding Description}" />
+                                                                    <Span Text=" " />
                                                                     <Span Text="{Binding ExplorerLink.Text}"
                                                                           TextDecorations="Underline"
                                                                           TextColor="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}">
                                                                         <Span.GestureRecognizers>
-                                                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                                  CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                            <TapGestureRecognizer
+                                                                                Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                                CommandParameter="{Binding ExplorerLink.Url}" />
                                                                         </Span.GestureRecognizers>
                                                                     </Span>
                                                                 </FormattedString>
@@ -1082,8 +1093,9 @@
                                                                Margin="12,0,0,0"
                                                                IsVisible="{Binding ExplorerLink.Url, Mode=OneWay, Converter={StaticResource NullToBoolean}}">
                                                             <Image.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
-                                                                                      CommandParameter="{Binding ExplorerLink.Url}"/>
+                                                                <TapGestureRecognizer
+                                                                    Command="{Binding BindingContext.OpenInExplorerCommand, Source={x:Reference BindingContextPage}}"
+                                                                    CommandParameter="{Binding ExplorerLink.Url}" />
                                                             </Image.GestureRecognizers>
                                                         </Image>
                                                     </StackLayout>
@@ -1096,7 +1108,7 @@
                                              Grid.RowSpan="2">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding ExpandStatusCommand}"
-                                                              CommandParameter="Completion"/>
+                                                              CommandParameter="Completion" />
                                     </StackLayout.GestureRecognizers>
                                     <Image Source="DownArrow"
                                            HeightRequest="10"
@@ -1110,13 +1122,13 @@
                                                          Binding="{Binding BindingContext.CompletionStatusMessages.Count, Source={x:Reference BindingContextPage}}"
                                                          Value="0">
                                                 <Setter Property="IsVisible"
-                                                        Value="False"/>
+                                                        Value="False" />
                                             </DataTrigger>
                                             <DataTrigger TargetType="Image"
                                                          Binding="{Binding BindingContext.ExpandedStatus, Source={x:Reference BindingContextPage}}"
                                                          Value="Completion">
                                                 <Setter Property="Rotation"
-                                                        Value="180"/>
+                                                        Value="180" />
                                             </DataTrigger>
                                         </Image.Triggers>
                                     </Image>
@@ -1133,13 +1145,13 @@
                                     <VisualState Name="SwapProgress">
                                         <VisualState.Setters>
                                             <Setter Property="IsVisible"
-                                                    Value="False"/>
+                                                    Value="False" />
                                         </VisualState.Setters>
                                     </VisualState>
                                     <VisualState Name="SwapDetails">
                                         <VisualState.Setters>
                                             <Setter Property="IsVisible"
-                                                    Value="True"/>
+                                                    Value="True" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -1148,11 +1160,11 @@
                                 <Label Text="{helpers:Translate Price}"
                                        Style="{DynamicResource AdditionalTextH5}"
                                        VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="Start"/>
+                                       HorizontalTextAlignment="Start" />
                                 <Label Text="{Binding Price}"
                                        Style="{DynamicResource MainTextH4}"
                                        VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="Start"/>
+                                       HorizontalTextAlignment="Start" />
                             </StackLayout>
                         </StackLayout>
                     </StackLayout>

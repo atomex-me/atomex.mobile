@@ -1,4 +1,4 @@
-﻿using atomex.ViewModel.CurrencyViewModels;
+﻿using atomex.ViewModels.CurrencyViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views
@@ -15,7 +15,7 @@ namespace atomex.Views
         {
             if (BindingContext is CurrencyViewModel)
             {
-                var currencyViewModel = (CurrencyViewModel)BindingContext;
+                var currencyViewModel = (CurrencyViewModel) BindingContext;
                 if (currencyViewModel.CloseBottomSheetCommand.CanExecute(null))
                     currencyViewModel.CloseBottomSheetCommand.Execute(null);
             }

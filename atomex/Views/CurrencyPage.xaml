@@ -1,681 +1,690 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.CurrencyPage"
+             x:Class="atomex.Views.CurrencyPage"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:behavior="clr-namespace:atomex.Behaviors"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-             Title="{Binding Currency.Description}">
+             Title="{Binding Currency.Description}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:CurrencyViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:EqualsConverter x:Key="EqualsConverter"/>
-            <converters:NotEqualsConverter x:Key="NotEqualsConverter"/>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+    <RefreshView IsRefreshing="{Binding  IsRefreshing}"
                  Command="{Binding RefreshCommand}">
         <AbsoluteLayout>
-        <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
-                    AbsoluteLayout.LayoutFlags="All">
-            <StackLayout Spacing="0">
-                <Frame Padding="0"
-                       Margin="16"
-                       HasShadow="False"
-                       CornerRadius="49"
-                       HeightRequest="98"
-                       WidthRequest="98"
-                       HorizontalOptions="Center"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                    <Image Source="{Binding CurrencyCode}"
-                           Margin="30"/>
-                </Frame>
-                <StackLayout Margin="16,0,16,6"
-                             Orientation="Horizontal"
-                             HorizontalOptions="CenterAndExpand">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}"/>
-                    </StackLayout.GestureRecognizers>
-                    <Label Text="{helpers:Translate AvailableBalance}"
-                           Style="{DynamicResource MainTextH5}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"/>
-                    <Image Source="ic_question"
-                           WidthRequest="12"
-                           HeightRequest="12"/>
-                </StackLayout>
-                <Label Style="{DynamicResource MainTextH2}"
-                        HorizontalTextAlignment="Center"
-                        VerticalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyName}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                       Style="{DynamicResource AdditionalTextH5}"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center"
-                       Margin="16,2,16,12"/>
-                <StackLayout Spacing="6"
-                             Orientation="Horizontal"
-                             HorizontalOptions="CenterAndExpand">
-                    <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
-                           Style="{DynamicResource MainTextH5}"
+            <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                        AbsoluteLayout.LayoutFlags="All">
+                <StackLayout Spacing="0">
+                    <Frame Padding="0"
+                           Margin="16"
+                           HasShadow="False"
+                           CornerRadius="49"
+                           HeightRequest="98"
+                           WidthRequest="98"
+                           HorizontalOptions="Center"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                        <Image Source="{Binding CurrencyCode}"
+                               Margin="30" />
+                    </Frame>
+                    <StackLayout Margin="16,0,16,6"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="CenterAndExpand">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowAvailableAmountCommand}" />
+                        </StackLayout.GestureRecognizers>
+                        <Label Text="{helpers:Translate AvailableBalance}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center" />
+                        <Image Source="ic_question"
+                               WidthRequest="12"
+                               HeightRequest="12" />
+                    </StackLayout>
+                    <Label Style="{DynamicResource MainTextH2}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding CurrencyName, StringFormat='1 {0} ='}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding Price, StringFormat='${0:f2}'}"/>
+                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.#########}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                         Value="True">
-                                <Setter Property="Style"
-                                        Value="{StaticResource SuccessTextH5}"/>
-                                <Setter Property="Text"
-                                        Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
-                                         Value="False">
-                                <Setter Property="Style"
-                                        Value="{StaticResource ErrorTextH5}"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                </StackLayout>
-                <Grid RowSpacing="4"
-                      ColumnSpacing="0"
-                      HorizontalOptions="CenterAndExpand"
-                      Margin="16,12,16,32">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="56" />
-                        <RowDefinition Height="20" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ImageButton Padding="21"
-                                 Margin="12,0"
-                                 CornerRadius="28"
-                                 HeightRequest="56"
-                                 WidthRequest="56"
-                                 HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                 Command="{Binding SendCommand}"
-                                 Source="ic_send">
-                        <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
-                                         Value="False">
-                                <Setter Property="BackgroundColor"
-                                        Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
-                                <Setter Property="IsEnabled"
-                                        Value="False"/>
-                                <Setter Property="Opacity"
-                                        Value="0.3"/>
-                            </DataTrigger>
-                        </ImageButton.Triggers>
-                    </ImageButton>
-                    <Label Grid.Row="1"
-                           Text="{helpers:Translate SendButton}"
-                           Style="{DynamicResource MainTextH5}"
+                    <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                           Style="{DynamicResource AdditionalTextH5}"
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
-                           Padding="0"
-                           Margin="5,0">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
-                                         Value="False">
-                                <Setter Property="Opacity"
-                                        Value="0.3"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <ImageButton Grid.Column="1"
-                                 Padding="21"
-                                 Margin="12,0"
-                                 CornerRadius="28"
-                                 HeightRequest="56"
-                                 WidthRequest="56"
-                                 HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
-                                 Command="{Binding ReceiveCommand}"
-                                 Source="ic_receive"/>
-                    <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{helpers:Translate ReceiveButton}"
-                           Style="{DynamicResource MainTextH5}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           Padding="0"
-                           Margin="5,0"/>
-                    <ImageButton Grid.Column="2"
-                                 Padding="19"
-                                 Margin="12,0"
-                                 CornerRadius="28"
-                                 HeightRequest="56"
-                                 WidthRequest="56"
-                                 HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
-                                 Command="{Binding ConvertCurrencyCommand}"
-                                 Source="ic_exchange__white"/>
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Text="{helpers:Translate ExchangeButton}"
-                           Style="{DynamicResource MainTextH5}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           Padding="0"
-                           Margin="5,0"/>
-                    <ImageButton Grid.Column="3"
-                                 Padding="19"
-                                 Margin="12,0"
-                                 CornerRadius="28"
-                                 HeightRequest="56"
-                                 WidthRequest="56"
-                                 HorizontalOptions="Center"
-                                 BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
-                                 Command="{Binding BuyCurrencyCommand}"
-                                 Source="ic_card"
-                                 IsVisible="{Binding CanBuy}"/>
-                    <Label Grid.Row="1"
-                           Grid.Column="3"
-                           Text="{helpers:Translate BuyButton}"
-                           Style="{DynamicResource MainTextH5}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           Padding="0"
-                           Margin="5,0"
-                           IsVisible="{Binding CanBuy}"/>
-                </Grid>
-                <ScrollView Orientation="Horizontal"
-                            HorizontalScrollBarVisibility="Never"
-                            HorizontalOptions="FillAndExpand"
-                            Padding="8,0"
-                            x:Name="TabScrollView">
-                    <Grid HorizontalOptions="CenterAndExpand"
+                           Margin="16,2,16,12" />
+                    <StackLayout Spacing="6"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding CurrencyName, StringFormat='1 {0} ='}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding Price, StringFormat='${0:f2}'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding DailyChangePercent, StringFormat='{0:P2}'}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                             Value="True">
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource SuccessTextH5}" />
+                                    <Setter Property="Text"
+                                            Value="{Binding DailyChangePercent, StringFormat='+{0:P2}'}" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding DailyChangePercent, Converter={StaticResource GreaterThanZeroConverter}}"
+                                             Value="False">
+                                    <Setter Property="Style"
+                                            Value="{DynamicResource ErrorTextH5}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                    <Grid RowSpacing="4"
                           ColumnSpacing="0"
-                          RowSpacing="0">
+                          HorizontalOptions="CenterAndExpand"
+                          Margin="16,12,16,32">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="36" />
+                            <RowDefinition Height="56" />
+                            <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Frame Grid.ColumnSpan="5"
-                               CornerRadius="18"
-                               HasShadow="False"
+                        <ImageButton Padding="21"
+                                     Margin="12,0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                     Command="{Binding SendCommand}"
+                                     Source="ic_send">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                             Value="False">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                    <Setter Property="Opacity"
+                                            Value="0.3" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                        <Label Grid.Row="1"
+                               Text="{helpers:Translate SendButton}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
                                Padding="0"
-                               BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}"/>
-                        <Button Style="{DynamicResource TabButton}"
-                                Text="{helpers:Translate Activity}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Activity">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Activity">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
+                               Margin="5,0">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                             Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="0.3" />
                                 </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button Grid.Column="1"
-                                Style="{DynamicResource TabButton}"
-                                Text="{helpers:Translate Addresses}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Addresses"
-                                Clicked="ScrollToEnd">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Addresses">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Addresses'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button Grid.Column="2"
-                                Style="{DynamicResource TabButton}"
-                                WidthRequest="120"
-                                Text="{helpers:Translate Tokens}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Tokens"
-                                IsVisible="{Binding HasTokens, TargetNullValue='false', FallbackValue='false'}"
-                                Clicked="ScrollToCenter">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Tokens">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Tokens'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button Grid.Column="3"
-                                Style="{DynamicResource TabButton}"
-                                WidthRequest="120"
-                                Text="{helpers:Translate Collectibles}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Collectibles"
-                                IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
-                                Clicked="ScrollToCenter">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Collectibles">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
-                        <Button Grid.Column="4"
-                                Style="{DynamicResource TabButton}"
-                                Text="{helpers:Translate Delegations}"
-                                Command="{Binding ChangeCurrencyTabCommand}"
-                                CommandParameter="Delegations"
-                                IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
-                            <Button.Triggers>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab}"
-                                             Value="Delegations">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}"/>
-                                </DataTrigger>
-                                <DataTrigger TargetType="Button"
-                                             Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Delegations'}"
-                                             Value="True">
-                                    <Setter Property="TextColor"
-                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Transparent"/>
-                                </DataTrigger>
-                            </Button.Triggers>
-                        </Button>
+                            </Label.Triggers>
+                        </Label>
+                        <ImageButton Grid.Column="1"
+                                     Padding="21"
+                                     Margin="12,0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
+                                     Command="{Binding ReceiveCommand}"
+                                     Source="ic_receive" />
+                        <Label Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{helpers:Translate ReceiveButton}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"
+                               Margin="5,0" />
+                        <ImageButton Grid.Column="2"
+                                     Padding="19"
+                                     Margin="12,0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource HighlightingButtonBackgroundColorDark}, Light={StaticResource HighlightingButtonBackgroundColor}}"
+                                     Command="{Binding ConvertCurrencyCommand}"
+                                     Source="ic_exchange__white" />
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{helpers:Translate ExchangeButton}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"
+                               Margin="5,0" />
+                        <ImageButton Grid.Column="3"
+                                     Padding="19"
+                                     Margin="12,0"
+                                     CornerRadius="28"
+                                     HeightRequest="56"
+                                     WidthRequest="56"
+                                     HorizontalOptions="Center"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalButtonBackgroundColorDark}, Light={StaticResource AdditionalButtonBackgroundColor}}"
+                                     Command="{Binding BuyCurrencyCommand}"
+                                     Source="ic_card"
+                                     IsVisible="{Binding CanBuy}" />
+                        <Label Grid.Row="1"
+                               Grid.Column="3"
+                               Text="{helpers:Translate BuyButton}"
+                               Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Padding="0"
+                               Margin="5,0"
+                               IsVisible="{Binding CanBuy}" />
                     </Grid>
-                </ScrollView>
-                <ListView ItemsSource="{Binding GroupedTransactions}"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                          BackgroundColor="Transparent"
-                          SeparatorVisibility="Default"
-                          SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                          IsGroupingEnabled="True"
-                          CachingStrategy="RecycleElement"
-                          VerticalScrollBarVisibility="Never"
-                          HasUnevenRows="True"
-                          HeightRequest="{Binding TxListViewHeight}"
-                          IsVisible="False">
-                    <ListView.Triggers>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding SelectedTab}"
-                                     Value="Activity">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </ListView.Triggers>
-                    <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <controls:CustomViewCell BindableHeight="{Binding GroupHeight}">
-                                <StackLayout VerticalOptions="FillAndExpand"
-                                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                                             Spacing="0">
-                                    <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
+                    <ScrollView Orientation="Horizontal"
+                                HorizontalScrollBarVisibility="Never"
+                                HorizontalOptions="FillAndExpand"
+                                Padding="8,0"
+                                x:Name="TabScrollView">
+                        <Grid HorizontalOptions="CenterAndExpand"
+                              ColumnSpacing="0"
+                              RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Frame Grid.ColumnSpan="5"
+                                   CornerRadius="18"
+                                   HasShadow="False"
+                                   Padding="0"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource TabSwitcherBackgroundColorDark}, Light={StaticResource TabSwitcherBackgroundColor}}" />
+                            <Button Style="{DynamicResource TabButton}"
+                                    Text="{helpers:Translate Activity}"
+                                    Command="{Binding ChangeCurrencyTabCommand}"
+                                    CommandParameter="Activity">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab}"
+                                                 Value="Activity">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Activity'}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="1"
+                                    Style="{DynamicResource TabButton}"
+                                    Text="{helpers:Translate Addresses}"
+                                    Command="{Binding ChangeCurrencyTabCommand}"
+                                    CommandParameter="Addresses"
+                                    Clicked="ScrollToEnd">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab}"
+                                                 Value="Addresses">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Addresses'}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="2"
+                                    Style="{DynamicResource TabButton}"
+                                    WidthRequest="120"
+                                    Text="{helpers:Translate Tokens}"
+                                    Command="{Binding ChangeCurrencyTabCommand}"
+                                    CommandParameter="Tokens"
+                                    IsVisible="{Binding HasTokens, TargetNullValue='false', FallbackValue='false'}"
+                                    Clicked="ScrollToCenter">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab}"
+                                                 Value="Tokens">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Tokens'}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="3"
+                                    Style="{DynamicResource TabButton}"
+                                    WidthRequest="120"
+                                    Text="{helpers:Translate Collectibles}"
+                                    Command="{Binding ChangeCurrencyTabCommand}"
+                                    CommandParameter="Collectibles"
+                                    IsVisible="{Binding HasCollectibles, TargetNullValue='false', FallbackValue='false'}"
+                                    Clicked="ScrollToCenter">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab}"
+                                                 Value="Collectibles">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Collectibles'}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <Button Grid.Column="4"
+                                    Style="{DynamicResource TabButton}"
+                                    Text="{helpers:Translate Delegations}"
+                                    Command="{Binding ChangeCurrencyTabCommand}"
+                                    CommandParameter="Delegations"
+                                    IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab}"
+                                                 Value="Delegations">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ActiveTabBackgroundColorDark}, Light={StaticResource ActiveTabBackgroundColor}}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding SelectedTab, Converter={StaticResource NotEqualsConverter}, ConverterParameter='Delegations'}"
+                                                 Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </Grid>
+                    </ScrollView>
+                    <ListView ItemsSource="{Binding GroupedTransactions}"
+                              SelectionMode="Single"
+                              SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                              BackgroundColor="Transparent"
+                              SeparatorVisibility="Default"
+                              SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                              IsGroupingEnabled="True"
+                              CachingStrategy="RecycleElement"
+                              VerticalScrollBarVisibility="Never"
+                              HasUnevenRows="True"
+                              HeightRequest="{Binding TxListViewHeight}"
+                              IsVisible="False">
+                        <ListView.Triggers>
+                            <DataTrigger TargetType="ListView"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Activity">
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </DataTrigger>
+                        </ListView.Triggers>
+                        <ListView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <controls:CustomViewCell BindableHeight="{Binding GroupHeight}">
+                                    <StackLayout VerticalOptions="FillAndExpand"
+                                                 BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                                 Spacing="0">
+                                        <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               Padding="16,0"
+                                               VerticalOptions="FillAndExpand"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="Start" />
+                                    </StackLayout>
+                                </controls:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.GroupHeaderTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:CustomViewCell
+                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                    <Grid Padding="16,12"
+                                          HorizontalOptions="FillAndExpand"
+                                          ColumnSpacing="0"
+                                          RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="24" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="20" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Description}"
+                                               Style="{DynamicResource MainTextH4}"
+                                               HorizontalOptions="StartAndExpand"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Start" />
+                                        <Label Grid.Row="1"
+                                               Style="{DynamicResource AdditionalTextH4}"
+                                               HorizontalOptions="StartAndExpand"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Start"
+                                               LineBreakMode="TailTruncation"
+                                               IsVisible="{Binding Alias, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Direction}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding Alias}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Image Grid.Column="1"
+                                               Grid.RowSpan="2"
+                                               WidthRequest="20"
+                                               HeightRequest="20"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding State}"
+                                                             Value="Confirmed">
+                                                    <Setter Property="Source"
+                                                            Value="ic_status__completed" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding State}"
+                                                             Value="Pending">
+                                                    <Setter Property="Source"
+                                                            Value="ic_status__empty" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding State}"
+                                                             Value="Failed">
+                                                    <Setter Property="Source"
+                                                            Value="ic_status__canceled" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding State}"
+                                                             Value="Unconfirmed">
+                                                    <Setter Property="Source"
+                                                            Value="ic_status__empty" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding State}"
+                                                             Value="Unknown">
+                                                    <Setter Property="Source"
+                                                            Value="ic_status__empty" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                        <lottie:AnimationView Grid.Column="1"
+                                                              Grid.RowSpan="2"
+                                                              WidthRequest="20"
+                                                              HeightRequest="20"
+                                                              Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
+                                                              AnimationSource="AssetOrBundle"
+                                                              ImageAssetsFolder="Assets/Animations"
+                                                              AutoPlay="True"
+                                                              RepeatMode="Infinite"
+                                                              Speed="1"
+                                                              VerticalOptions="Center"
+                                                              HorizontalOptions="End"
+                                                              IsVisible="False">
+                                            <lottie:AnimationView.Triggers>
+                                                <DataTrigger TargetType="lottie:AnimationView"
+                                                             Binding="{Binding State}"
+                                                             Value="Confirmed">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="lottie:AnimationView"
+                                                             Binding="{Binding State}"
+                                                             Value="Pending">
+                                                    <Setter Property="IsVisible"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="lottie:AnimationView"
+                                                             Binding="{Binding State}"
+                                                             Value="Failed">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="lottie:AnimationView"
+                                                             Binding="{Binding State}"
+                                                             Value="Unconfirmed">
+                                                    <Setter Property="IsVisible"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="lottie:AnimationView"
+                                                             Binding="{Binding State}"
+                                                             Value="Unknown">
+                                                    <Setter Property="IsVisible"
+                                                            Value="True" />
+                                                </DataTrigger>
+                                            </lottie:AnimationView.Triggers>
+                                        </lottie:AnimationView>
+                                    </Grid>
+                                </controls:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <Button Text="{helpers:Translate ShowAll}"
+                                    Style="{DynamicResource TransparentButton}"
+                                    IsVisible="{Binding CanShowMoreTxs}"
+                                    HeightRequest="52"
+                                    Command="{Binding ShowAllTxsCommand}" />
+                        </ListView.Footer>
+                    </ListView>
+                    <ListView ItemsSource="{Binding Addresses}"
+                              SelectionMode="Single"
+                              SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
+                              BackgroundColor="Transparent"
+                              SeparatorVisibility="None"
+                              VerticalScrollBarVisibility="Never"
+                              HasUnevenRows="True"
+                              HeightRequest="{Binding AddressListViewHeight}"
+                              Margin="0,20"
+                              IsVisible="False">
+                        <ListView.Triggers>
+                            <DataTrigger TargetType="ListView"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Addresses">
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </DataTrigger>
+                        </ListView.Triggers>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:CustomViewCell
+                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                    <Grid Padding="16,10"
+                                          HorizontalOptions="FillAndExpand"
+                                          ColumnSpacing="0"
+                                          RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="24" />
+                                            <RowDefinition Height="20" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="44" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Address}"
+                                               Style="{DynamicResource MainTextH4}"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="Start"
+                                               LineBreakMode="MiddleTruncation" />
+                                        <Label Grid.Row="1"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Balance}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding BalanceCode}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Image Grid.Column="1"
+                                               Grid.RowSpan="2"
+                                               HorizontalOptions="End"
+                                               WidthRequest="11"
+                                               HeightRequest="11"
+                                               Source="RightArrow__gray"
+                                               Margin="8,16" />
+                                    </Grid>
+                                </controls:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <Button Text="{helpers:Translate ShowAll}"
+                                    Style="{DynamicResource TransparentButton}"
+                                    IsVisible="{Binding CanShowMoreAddresses}"
+                                    Command="{Binding AddressesViewModel.ShowAllAddressesCommand}" />
+                        </ListView.Footer>
+                    </ListView>
+                    <ListView ItemsSource="{Binding TezosTokensViewModel.UserTokens}"
+                              HasUnevenRows="True"
+                              SeparatorVisibility="Default"
+                              SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
+                              BackgroundColor="Transparent"
+                              SelectionMode="Single"
+                              SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
+                              HeightRequest="{Binding TezosTokensViewModel.TokenListViewHeight}"
+                              VerticalScrollBarVisibility="Never"
+                              IsVisible="False"
+                              Footer="">
+                        <ListView.Triggers>
+                            <DataTrigger TargetType="ListView"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Tokens">
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </DataTrigger>
+                        </ListView.Triggers>
+                        <ListView.Header>
+                            <StackLayout Spacing="0">
+                                <StackLayout Orientation="Horizontal"
+                                             HorizontalOptions="Fill"
+                                             Padding="16,8,16,0"
+                                             HeightRequest="52"
+                                             Spacing="4">
+                                    <Label Text="{helpers:Translate Tokens}"
                                            Style="{DynamicResource AdditionalTextH5}"
-                                           Padding="16,0"
+                                           HorizontalOptions="FillAndExpand"
+                                           HorizontalTextAlignment="Start"
+                                           VerticalTextAlignment="Center" />
+                                    <Frame HasShadow="False"
+                                           WidthRequest="32"
+                                           Padding="0"
                                            VerticalOptions="FillAndExpand"
-                                           VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="Start"/>
-                                </StackLayout>
-                            </controls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid Padding="16,12" 
-                                      HorizontalOptions="FillAndExpand"
-                                      ColumnSpacing="0"
-                                      RowSpacing="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="20" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Description}"
-                                           Style="{DynamicResource MainTextH4}"
-                                           HorizontalOptions="StartAndExpand"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"/>
-                                    <Label Grid.Row="1"
-                                           Style="{DynamicResource AdditionalTextH4}"
-                                           HorizontalOptions="StartAndExpand"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start"
-                                           LineBreakMode="TailTruncation"
-                                           IsVisible="{Binding Alias, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Direction}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding Alias}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Image Grid.Column="1"
-                                           Grid.RowSpan="2"
-                                           WidthRequest="20"
-                                           HeightRequest="20"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="End">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding State}"
-                                                         Value="Confirmed">
-                                                <Setter Property="Source"
-                                                        Value="ic_status__completed"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding State}"
-                                                         Value="Pending">
-                                                <Setter Property="Source"
-                                                        Value="ic_status__empty"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding State}"
-                                                         Value="Failed">
-                                                <Setter Property="Source"
-                                                        Value="ic_status__canceled"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding State}"
-                                                         Value="Unconfirmed">
-                                                <Setter Property="Source"
-                                                        Value="ic_status__empty"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding State}"
-                                                         Value="Unknown">
-                                                <Setter Property="Source"
-                                                        Value="ic_status__empty"/>
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
-                                    <lottie:AnimationView Grid.Column="1"
-                                                          Grid.RowSpan="2"
-                                                          WidthRequest="20"
-                                                          HeightRequest="20"
-                                                          Animation="{AppThemeBinding Dark=loader_dark__blue.json, Light=loader_light__blue.json}"
-                                                          AnimationSource="AssetOrBundle"
-                                                          ImageAssetsFolder="Assets/Animations"
-                                                          AutoPlay="True"
-                                                          RepeatMode="Infinite"
-                                                          Speed="1"
-                                                          VerticalOptions="Center"
-                                                          HorizontalOptions="End"
-                                                          IsVisible="False">
-                                        <lottie:AnimationView.Triggers>
-                                            <DataTrigger TargetType="lottie:AnimationView"
-                                                         Binding="{Binding State}"
-                                                         Value="Confirmed">
-                                                <Setter Property="IsVisible"
-                                                        Value="False"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="lottie:AnimationView"
-                                                         Binding="{Binding State}"
-                                                         Value="Pending">
-                                                <Setter Property="IsVisible"
-                                                        Value="True"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="lottie:AnimationView"
-                                                         Binding="{Binding State}"
-                                                         Value="Failed">
-                                                <Setter Property="IsVisible"
-                                                        Value="False"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="lottie:AnimationView"
-                                                         Binding="{Binding State}"
-                                                         Value="Unconfirmed">
-                                                <Setter Property="IsVisible"
-                                                        Value="True"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="lottie:AnimationView"
-                                                         Binding="{Binding State}"
-                                                         Value="Unknown">
-                                                <Setter Property="IsVisible"
-                                                        Value="True"/>
-                                            </DataTrigger>
-                                        </lottie:AnimationView.Triggers>
-                                    </lottie:AnimationView>
-                                </Grid>
-                            </controls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <Button Text="{helpers:Translate ShowAll}"
-                                Style="{DynamicResource TransparentButton}"
-                                IsVisible="{Binding CanShowMoreTxs}"
-                                HeightRequest="52"
-                                Command="{Binding ShowAllTxsCommand}"/>
-                    </ListView.Footer>
-                </ListView>
-                <ListView ItemsSource="{Binding Addresses}"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding AddressesViewModel.SelectedAddress, Mode=TwoWay}"
-                          BackgroundColor="Transparent"
-                          SeparatorVisibility="None"
-                          VerticalScrollBarVisibility="Never"
-                          HasUnevenRows="True"
-                          HeightRequest="{Binding AddressListViewHeight}"
-                          Margin="0,20"
-                          IsVisible="False">
-                    <ListView.Triggers>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding SelectedTab}"
-                                     Value="Addresses">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </ListView.Triggers>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid Padding="16,10" 
-                                      HorizontalOptions="FillAndExpand"
-                                      ColumnSpacing="0"
-                                      RowSpacing="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="20" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="44" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Address}"
-                                           Style="{DynamicResource MainTextH4}"
-                                           VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="Start"
-                                           LineBreakMode="MiddleTruncation"/>
-                                    <Label Grid.Row="1"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Balance}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding BalanceCode}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Image Grid.Column="1"
-                                           Grid.RowSpan="2"
                                            HorizontalOptions="End"
-                                           WidthRequest="11"
-                                           HeightRequest="11"
-                                           Source="RightArrow__gray"
-                                           Margin="8,16"/>
-                                </Grid>
-                            </controls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <Button Text="{helpers:Translate ShowAll}"
-                                Style="{DynamicResource TransparentButton}"
-                                IsVisible="{Binding CanShowMoreAddresses}"
-                                Command="{Binding AddressesViewModel.ShowAllAddressesCommand}"/>
-                    </ListView.Footer>
-                </ListView>
-                <ListView ItemsSource="{Binding TezosTokensViewModel.UserTokens}"
-                          HasUnevenRows="True"
-                          SeparatorVisibility="Default"
-                          SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-                          BackgroundColor="Transparent"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding TezosTokensViewModel.SelectedToken, Mode=TwoWay}"
-                          HeightRequest="{Binding TezosTokensViewModel.TokenListViewHeight}"
-                          VerticalScrollBarVisibility="Never"
-                          IsVisible="False"
-                          Footer="">
-                    <ListView.Triggers>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding SelectedTab}"
-                                     Value="Tokens">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </ListView.Triggers>
-                    <ListView.Header>
-                        <StackLayout Spacing="0">
-                            <StackLayout Orientation="Horizontal"
-                                         HorizontalOptions="Fill"
-                                         Padding="16,8,16,0"
-                                         HeightRequest="52"
-                                         Spacing="4">
-                                <Label Text="{helpers:Translate Tokens}"
-                                       Style="{DynamicResource AdditionalTextH5}"
-                                       HorizontalOptions="FillAndExpand"
-                                       HorizontalTextAlignment="Start"
-                                       VerticalTextAlignment="Center"/>
-                                <Frame HasShadow="False"
-                                       WidthRequest="32"
-                                       Padding="0"
-                                       VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="End"
-                                       BackgroundColor="Transparent">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.UpdateTokensCommand}"/>
-                                    </Frame.GestureRecognizers>
-                                    <Image Source="ic_update"
-                                           WidthRequest="16"
-                                           HeightRequest="21"
-                                           Margin="8,16">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
-                                                         Value="True">
-                                                <DataTrigger.EnterActions>
-                                                    <behavior:AnimationTrigger Action="Start" />  
-                                                </DataTrigger.EnterActions>                                
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
-                                                         Value="False">
-                                                <DataTrigger.EnterActions>
-                                                    <behavior:AnimationTrigger Action="Stop" />  
-                                                </DataTrigger.EnterActions>                                
-                                            </DataTrigger>                    
-                                        </Image.Triggers>
-                                    </Image>
-                                </Frame>
-                                <Frame HasShadow="False"
-                                       WidthRequest="32"
-                                       Padding="0"
-                                       VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="End"
-                                       BackgroundColor="Transparent">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding TezosTokensViewModel.ManageTokensCommand}"/>
-                                    </Frame.GestureRecognizers>
-                                    <Image Source="ic_filters"
-                                           Margin="8,0,4,0"
-                                           HorizontalOptions="EndAndExpand"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding TezosTokensViewModel.UpdateTokensCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_update"
+                                               WidthRequest="16"
+                                               HeightRequest="21"
+                                               Margin="8,16">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                                             Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:AnimationTrigger Action="Start" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                                             Value="False">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:AnimationTrigger Action="Stop" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </Frame>
+                                    <Frame HasShadow="False"
+                                           WidthRequest="32"
+                                           Padding="0"
                                            VerticalOptions="FillAndExpand"
-                                           HeightRequest="16"
-                                           WidthRequest="16"/>
-                                </Frame>
-                                <!--<Frame HasShadow="False"
+                                           HorizontalOptions="End"
+                                           BackgroundColor="Transparent">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding TezosTokensViewModel.ManageTokensCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="ic_filters"
+                                               Margin="8,0,4,0"
+                                               HorizontalOptions="EndAndExpand"
+                                               VerticalOptions="FillAndExpand"
+                                               HeightRequest="16"
+                                               WidthRequest="16" />
+                                    </Frame>
+                                    <!--<Frame HasShadow="False"
                                        WidthRequest="32"
                                        Padding="0"
                                        VerticalOptions="FillAndExpand"
@@ -690,290 +699,293 @@
                                            HorizontalOptions="End"
                                            Margin="10,17"/>
                                 </Frame>-->
-                            </StackLayout>
-                            <StackLayout Style="{DynamicResource SeparatorStyle}"
-                                         Margin="16,0,0,0"/>
-                            <StackLayout IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
-                                         BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
-                                         VerticalOptions="FillAndExpand"
-                                         Margin="0,30,0,60">
-                                <RelativeLayout VerticalOptions="End"
-                                                HorizontalOptions="Center">
-                                    <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
-	             	                                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
-                                                       RelativeLayout.WidthConstraint="20"
-                                                       RelativeLayout.HeightConstraint="20"
-                                                       BackgroundColor="Transparent"
-                                                       IsRunning="True"
-                                                       Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
+                                </StackLayout>
+                                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                             Margin="16,0,0,0" />
+                                <StackLayout IsVisible="{Binding TezosTokensViewModel.IsTokensLoading}"
+                                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                             VerticalOptions="FillAndExpand"
+                                             Margin="0,30,0,60">
+                                    <RelativeLayout VerticalOptions="End"
+                                                    HorizontalOptions="Center">
+                                        <ActivityIndicator
+                                            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+                                            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                                            RelativeLayout.WidthConstraint="20"
+                                            RelativeLayout.HeightConstraint="20"
+                                            BackgroundColor="Transparent"
+                                            IsRunning="True"
+                                            Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
 
-                                </RelativeLayout>
-                                <Label Text="{helpers:Translate LoadingLabel}"
-                                       Style="{DynamicResource AdditionalTextH5}"
-                                       Margin="0,4"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Start"/>
+                                    </RelativeLayout>
+                                    <Label Text="{helpers:Translate LoadingLabel}"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           Margin="0,4"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Start" />
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
-                    </ListView.Header>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid RowSpacing="4"
-                                      ColumnSpacing="0"
-                                      Padding="16,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="36" />
-                                        <RowDefinition Height="36" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="24" />
-                                        <ColumnDefinition Width="4*" />
-                                        <ColumnDefinition Width="6*" />
-                                        <ColumnDefinition Width="32" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           Source="{Binding TokenPreview}"
-                                           HeightRequest="24"
-                                           WidthRequest="24"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="End"/>
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Description}"
-                                           Style="{DynamicResource MainTextH4}"
-                                           Padding="12,0,0,0"
-                                           LineBreakMode="TailTruncation"
-                                           HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="End"/>
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
-                                           Style="{DynamicResource AdditionalTextH6}"
-                                           Padding="12,0"
-                                           HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Start"/>
-                                    <Label Grid.Column="2"
-                                           Style="{DynamicResource MainTextH4}"
-                                           LineBreakMode="TailTruncation"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="End">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyCode}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="2"
-                                           Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
-                                           Style="{DynamicResource MainTextH6}"
-                                           LineBreakMode="TailTruncation"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="Start"/>
-                                    <Frame Grid.RowSpan="2"
-                                           Grid.Column="3"
-                                           HasShadow="False"
-                                           Padding="0"
-                                           BackgroundColor="Transparent">
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding TokenActionSheetCommand}"/>
-                                        </Frame.GestureRecognizers>
-                                        <Image Source="ic_menu"
-                                               WidthRequest="4"
-                                               HeightRequest="16"
-                                               Margin="18,0,10,0"/>
-                                    </Frame>
-                                </Grid>
-                            </controls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>         
-                <ListView ItemsSource="{Binding Delegations}"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
-                          BackgroundColor="Transparent"
-                          SeparatorVisibility="None"
-                          VerticalScrollBarVisibility="Never"
-                          HasUnevenRows="True"
-                          HeightRequest="{Binding DelegationListViewHeight}"
-                          IsVisible="False"
-                          Footer="">
-                    <ListView.Triggers>
-                        <DataTrigger TargetType="ListView"
-                                     Binding="{Binding SelectedTab}"
-                                     Value="Delegations">
-                            <Setter Property="IsVisible"
-                                    Value="True"/>
-                        </DataTrigger>
-                    </ListView.Triggers>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid Padding="16,0" 
-                                      HorizontalOptions="FillAndExpand"
-                                      ColumnSpacing="0"
-                                      RowSpacing="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="36" />
-                                        <RowDefinition Height="36" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="36" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           Source="{Binding Baker.Logo}"
-                                           HeightRequest="24"
-                                           WidthRequest="24"
-                                           Margin="0,0,12,0"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Start">
-                                        <Image.Triggers>
-                                            <DataTrigger TargetType="Image"
-                                                         Binding="{Binding Status}"
-                                                         Value="NotDelegated">
-                                                <Setter Property="IsVisible"
-                                                        Value="False"/>
-                                            </DataTrigger>
-                                        </Image.Triggers>
-                                    </Image>
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Address}"
-                                           Style="{DynamicResource MainTextH4}"
-                                           Margin="0,0,70,0"
-                                           LineBreakMode="MiddleTruncation"
-                                           HorizontalTextAlignment="Start"
-                                           HorizontalOptions="FillAndExpand"
-                                           VerticalTextAlignment="End"/>
-                                    <Label Grid.Column="1"
-                                           Grid.Row="1"
-                                           Text="{Binding StatusString}"
-                                           Style="{DynamicResource AdditionalTextH6}"
-                                           HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Start">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="NotDelegated">
-                                                <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="Confirmed">
-                                                <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="Active">
-                                                <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
-                                            </DataTrigger>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="Pending">
-                                                <Setter Property="TextColor"
-                                                        Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Column="2"
-                                           Text="{helpers:Translate EstimatedRoi}"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="End">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="NotDelegated">
-                                                <Setter Property="IsVisible"
-                                                        Value="False"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Label Grid.Column="2"
-                                           Grid.Row="1"
-                                           Text="{Binding Baker.EstimatedRoi, StringFormat='${0:P}'}"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           HorizontalTextAlignment="End"
-                                           VerticalTextAlignment="Start">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding Status}"
-                                                         Value="NotDelegated">
-                                                <Setter Property="IsVisible"
-                                                        Value="False"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
-                                    <Frame Grid.RowSpan="2"
-                                           Grid.Column="3"
-                                           HasShadow="False"
-                                           Padding="0"
-                                           BackgroundColor="Transparent">
-                                             <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding DelegationActionSheetCommand}"/>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:CustomViewCell
+                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                    <Grid RowSpacing="4"
+                                          ColumnSpacing="0"
+                                          Padding="16,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="36" />
+                                            <RowDefinition Height="36" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="24" />
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="6*" />
+                                            <ColumnDefinition Width="32" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2"
+                                               Source="{Binding TokenPreview}"
+                                               HeightRequest="24"
+                                               WidthRequest="24"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Description}"
+                                               Style="{DynamicResource MainTextH4}"
+                                               Padding="12,0,0,0"
+                                               LineBreakMode="TailTruncation"
+                                               HorizontalTextAlignment="Start"
+                                               VerticalTextAlignment="End" />
+                                        <Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding CurrentQuote, StringFormat='${0:f2}'}"
+                                               Style="{DynamicResource AdditionalTextH6}"
+                                               Padding="12,0"
+                                               HorizontalTextAlignment="Start"
+                                               VerticalTextAlignment="Start" />
+                                        <Label Grid.Column="2"
+                                               Style="{DynamicResource MainTextH4}"
+                                               LineBreakMode="TailTruncation"
+                                               HorizontalTextAlignment="End"
+                                               VerticalTextAlignment="End">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding TotalAmount, StringFormat='{0:0.########}'}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding CurrencyCode}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Row="1"
+                                               Grid.Column="2"
+                                               Text="{Binding TotalAmountInBase, StringFormat='${0:f2}'}"
+                                               Style="{DynamicResource MainTextH6}"
+                                               LineBreakMode="TailTruncation"
+                                               HorizontalTextAlignment="End"
+                                               VerticalTextAlignment="Start" />
+                                        <Frame Grid.RowSpan="2"
+                                               Grid.Column="3"
+                                               HasShadow="False"
+                                               Padding="0"
+                                               BackgroundColor="Transparent">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding TokenActionSheetCommand}" />
                                             </Frame.GestureRecognizers>
-                                        <Image Source="ic_menu"
-                                               WidthRequest="4"
-                                               HeightRequest="16"
-                                               Margin="22,0,10,0"/>
-                                    </Frame>
-                                </Grid>
-                            </controls:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>    
+                                            <Image Source="ic_menu"
+                                                   WidthRequest="4"
+                                                   HeightRequest="16"
+                                                   Margin="18,0,10,0" />
+                                        </Frame>
+                                    </Grid>
+                                </controls:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <ListView ItemsSource="{Binding Delegations}"
+                              SelectionMode="Single"
+                              SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"
+                              BackgroundColor="Transparent"
+                              SeparatorVisibility="None"
+                              VerticalScrollBarVisibility="Never"
+                              HasUnevenRows="True"
+                              HeightRequest="{Binding DelegationListViewHeight}"
+                              IsVisible="False"
+                              Footer="">
+                        <ListView.Triggers>
+                            <DataTrigger TargetType="ListView"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Delegations">
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </DataTrigger>
+                        </ListView.Triggers>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:CustomViewCell
+                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                    <Grid Padding="16,0"
+                                          HorizontalOptions="FillAndExpand"
+                                          ColumnSpacing="0"
+                                          RowSpacing="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="36" />
+                                            <RowDefinition Height="36" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="36" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2"
+                                               Source="{Binding Baker.Logo}"
+                                               HeightRequest="24"
+                                               WidthRequest="24"
+                                               Margin="0,0,12,0"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Start">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding Status}"
+                                                             Value="NotDelegated">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Address}"
+                                               Style="{DynamicResource MainTextH4}"
+                                               Margin="0,0,70,0"
+                                               LineBreakMode="MiddleTruncation"
+                                               HorizontalTextAlignment="Start"
+                                               HorizontalOptions="FillAndExpand"
+                                               VerticalTextAlignment="End" />
+                                        <Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding StatusString}"
+                                               Style="{DynamicResource AdditionalTextH6}"
+                                               HorizontalTextAlignment="Start"
+                                               VerticalTextAlignment="Start">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="NotDelegated">
+                                                    <Setter Property="TextColor"
+                                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Confirmed">
+                                                    <Setter Property="TextColor"
+                                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Active">
+                                                    <Setter Property="TextColor"
+                                                            Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="Pending">
+                                                    <Setter Property="TextColor"
+                                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="2"
+                                               Text="{helpers:Translate EstimatedRoi}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               HorizontalTextAlignment="End"
+                                               VerticalTextAlignment="End">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="NotDelegated">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="2"
+                                               Grid.Row="1"
+                                               Text="{Binding Baker.EstimatedRoi, StringFormat='${0:P}'}"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               HorizontalTextAlignment="End"
+                                               VerticalTextAlignment="Start">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Status}"
+                                                             Value="NotDelegated">
+                                                    <Setter Property="IsVisible"
+                                                            Value="False" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Frame Grid.RowSpan="2"
+                                               Grid.Column="3"
+                                               HasShadow="False"
+                                               Padding="0"
+                                               BackgroundColor="Transparent">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding DelegationActionSheetCommand}" />
+                                            </Frame.GestureRecognizers>
+                                            <Image Source="ic_menu"
+                                                   WidthRequest="4"
+                                                   HeightRequest="16"
+                                                   Margin="22,0,10,0" />
+                                        </Frame>
+                                    </Grid>
+                                </controls:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout Spacing="0"
+                         AbsoluteLayout.LayoutBounds="0,1,1,56"
+                         AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
+                         IsVisible="{Binding IsRefreshing}">
+                <Frame HasShadow="False"
+                       CornerRadius="4"
+                       HorizontalOptions="FillAndExpand"
+                       Padding="0"
+                       HeightRequest="48"
+                       Margin="16,0"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
+                    <Grid Padding="20,0"
+                          HorizontalOptions="FillAndExpand"
+                          ColumnSpacing="27"
+                          RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="48" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{helpers:Translate StillUpdatingBalances}"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               FontSize="14"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="Start" />
+                        <Label Grid.Column="1"
+                               Text="{helpers:Translate CancelButton}"
+                               TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
+                               FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
+                               LineBreakMode="TailTruncation"
+                               FontSize="17"
+                               VerticalTextAlignment="Center"
+                               HorizontalTextAlignment="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CancelUpdateCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Frame>
             </StackLayout>
-        </ScrollView>
-        <StackLayout Spacing="0"
-                     AbsoluteLayout.LayoutBounds="0,1,1,56"
-                     AbsoluteLayout.LayoutFlags="WidthProportional, YProportional"
-                     IsVisible="{Binding IsRefreshing}">
-            <Frame HasShadow="False"
-                   CornerRadius="4"
-                   HorizontalOptions="FillAndExpand"
-                   Padding="0"
-                   HeightRequest="48"
-                   Margin="16,0"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource RegularSnackBarBgColorDark}, Light={StaticResource RegularSnackBarBgColor}}">
-                <Grid Padding="20,0" 
-                      HorizontalOptions="FillAndExpand"
-                      ColumnSpacing="27"
-                      RowSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="48" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="80" />
-                    </Grid.ColumnDefinitions>
-                    <Label Text="{helpers:Translate StillUpdatingBalances}"
-                           TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
-                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
-                           FontSize="14"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Start"/>
-                    <Label Grid.Column="1"
-                           Text="{helpers:Translate CancelButton}"
-                           TextColor="{AppThemeBinding Dark={StaticResource RegularSnackBarTextColorDark}, Light={StaticResource RegularSnackBarTextColor}}"
-                           FontFamily="{AppThemeBinding Dark={StaticResource RegularFont}, Light={StaticResource MediumFont}}"
-                           LineBreakMode="TailTruncation"
-                           FontSize="17"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="End">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CancelUpdateCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Grid>
-            </Frame>
-        </StackLayout>
         </AbsoluteLayout>
     </RefreshView>
 </ContentPage>

@@ -1,9 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
-             x:Class="atomex.StartPage"
-             NavigationPage.HasNavigationBar="False">
+             x:Class="atomex.Views.StartPage"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:StartViewModel}">
     <RelativeLayout VerticalOptions="StartAndExpand">
         <Frame HasShadow="True"
                CornerRadius="0"
@@ -12,48 +18,52 @@
             <Frame.Background>
                 <LinearGradientBrush StartPoint="0,0"
                                      EndPoint="0,1">
-                    <GradientStop Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStartColorDark}, Light={StaticResource StartPageBackgroundStartColor}}"
-                                  Offset="0.1"/>
-                    <GradientStop Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStopColorDark}, Light={StaticResource StartPageBackgroundStopColor}}"
-                                  Offset="1.0"/>
+                    <GradientStop
+                        Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStartColorDark}, Light={StaticResource StartPageBackgroundStartColor}}"
+                        Offset="0.1" />
+                    <GradientStop
+                        Color="{AppThemeBinding Dark={StaticResource StartPageBackgroundStopColorDark}, Light={StaticResource StartPageBackgroundStopColor}}"
+                        Offset="1.0" />
                 </LinearGradientBrush>
             </Frame.Background>
         </Frame>
-        <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
-                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
-                     Spacing="0">
+        <StackLayout
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
+            Spacing="0">
             <StackLayout VerticalOptions="CenterAndExpand"
                          Spacing="0">
-                <Image Style="{DynamicResource LogoImageStyle}"/>
+                <Image Style="{DynamicResource LogoImageStyle}" />
                 <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Spacing="0">
-                    <Label Text="a" Style="{DynamicResource LogoCompressedLabelStyle}"/>
-                    <Label Text="t" Style="{DynamicResource LogoCompressedLabelStyle}"/>
-                    <Label Text="o" Style="{DynamicResource LogoCompressedLabelStyle}"/>
-                    <Label Text="m" Style="{DynamicResource LogoCompressedLabelStyle}"/>
-                    <Label Text="e" Style="{DynamicResource LogoCompressedLabelStyle}"/>
-                    <Label Text="x" Style="{DynamicResource LogoCompressedLabelStyle}"/>
+                    <Label Text="a" Style="{DynamicResource LogoCompressedLabelStyle}" />
+                    <Label Text="t" Style="{DynamicResource LogoCompressedLabelStyle}" />
+                    <Label Text="o" Style="{DynamicResource LogoCompressedLabelStyle}" />
+                    <Label Text="m" Style="{DynamicResource LogoCompressedLabelStyle}" />
+                    <Label Text="e" Style="{DynamicResource LogoCompressedLabelStyle}" />
+                    <Label Text="x" Style="{DynamicResource LogoCompressedLabelStyle}" />
                 </StackLayout>
             </StackLayout>
         </StackLayout>
         <StackLayout Style="{DynamicResource StartPageLanguageSwitcherStyle}">
             <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}"/>
+                <TapGestureRecognizer Command="{Binding ShowLanguagesCommand}" />
             </StackLayout.GestureRecognizers>
             <Image Source="{Binding Language.Code}"
                    VerticalOptions="Center"
-                   WidthRequest="24"/>
+                   WidthRequest="24" />
             <Label Text="{Binding Language.ShortName}"
-                   Style="{DynamicResource StartPageLanguageNameStyle}"/>
+                   Style="{DynamicResource StartPageLanguageNameStyle}" />
             <Image Source="RightArrow__white"
                    HeightRequest="10"
-                   VerticalOptions="Center"/>
+                   VerticalOptions="Center" />
         </StackLayout>
-        <StackLayout RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
-                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
-                     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
-                     Style="{DynamicResource StartPageButtonsStyle}">
+        <StackLayout
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.15}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.7}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
+            Style="{DynamicResource StartPageButtonsStyle}">
             <Button Text="{helpers:Translate MyWalletsButton}"
                     Style="{DynamicResource MainButton}"
                     Command="{Binding ShowMyWalletsCommand}">
@@ -62,27 +72,27 @@
                                  Binding="{Binding HasWallets}"
                                  Value="True">
                         <Setter Property="Opacity"
-                                Value="1"/>
+                                Value="1" />
                         <Setter Property="IsEnabled"
-                                Value="True"/>
+                                Value="True" />
                     </DataTrigger>
                     <DataTrigger TargetType="Button"
                                  Binding="{Binding HasWallets}"
                                  Value="False">
                         <Setter Property="Opacity"
-                                Value="0.3"/>
+                                Value="0.3" />
                         <Setter Property="IsEnabled"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
             <Button Text="{helpers:Translate CreateNewWalletButton}"
                     Style="{DynamicResource MainButton}"
-                    Command="{Binding CreateNewWalletCommand}"/>
+                    Command="{Binding CreateNewWalletCommand}" />
             <Button Text="{helpers:Translate RestoreWalletButton}"
                     Style="{DynamicResource MainButton}"
-                    Command="{Binding RestoreWalletCommand}"/>
+                    Command="{Binding RestoreWalletCommand}" />
         </StackLayout>
     </RelativeLayout>
-    
+
 </ContentPage>

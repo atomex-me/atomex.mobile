@@ -15,6 +15,8 @@ using Atomex.MarketData.Abstract;
 using Atomex.MarketData.Bitfinex;
 using Atomex.MarketData.TezTools;
 using Atomex.Services;
+using atomex.ViewModels;
+using atomex.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -30,8 +32,12 @@ namespace atomex
 
         public static IAtomexApp AtomexApp;
 
-        public static double ScreenWidth { get; } = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
-        public static double ScreenHeight { get; } = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+        public static double ScreenWidth { get; } =
+            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+
+        public static double ScreenHeight { get; } =
+            DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+
         public static bool IsSmallScreen { get; } = ScreenWidth <= 360;
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;

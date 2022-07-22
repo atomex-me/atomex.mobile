@@ -1,5 +1,5 @@
 ﻿using System;
-using atomex.ViewModel.SendViewModels;
+using atomex.ViewModels.SendViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views.Send

@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              x:Class="atomex.Views.Delegate.DelegatePage"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:DelegateViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -20,25 +26,26 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-        <StackLayout VerticalOptions="FillAndExpand"
-                     Spacing="0">
-            <Label Style="{DynamicResource MainTextH1}"
-                   Padding="16,32,16,16"
-                   Text="{Binding Title}"/>
-            <StackLayout Spacing="5"
-                         Orientation="Vertical"
-                         VerticalOptions="Fill">
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="Fill"
-                             Margin="16,0"
-                             Spacing="12">
-                    <Label Text="{helpers:Translate Bakers}"
-                           Style="{DynamicResource AdditionalTextH5}"
-                           HorizontalTextAlignment="Start"
-                           VerticalTextAlignment="Center"
-                           VerticalOptions="FillAndExpand"
-                           HorizontalOptions="FillAndExpand"/>
-                    <Button TextColor="{AppThemeBinding Dark={StaticResource ActionBarButtonTextColorDark}, Light={StaticResource ActionBarButtonTextColor}}"
+            <StackLayout VerticalOptions="FillAndExpand"
+                         Spacing="0">
+                <Label Style="{DynamicResource MainTextH1}"
+                       Padding="16,32,16,16"
+                       Text="{Binding Title}" />
+                <StackLayout Spacing="5"
+                             Orientation="Vertical"
+                             VerticalOptions="Fill">
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Fill"
+                                 Margin="16,0"
+                                 Spacing="12">
+                        <Label Text="{helpers:Translate Bakers}"
+                               Style="{DynamicResource AdditionalTextH5}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand" />
+                        <Button
+                            TextColor="{AppThemeBinding Dark={StaticResource ActionBarButtonTextColorDark}, Light={StaticResource ActionBarButtonTextColor}}"
                             BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
                             Text="{Binding SortButtonName}"
                             HeightRequest="32"
@@ -49,138 +56,140 @@
                             Margin="0,10"
                             FontFamily="{DynamicResource RegularFont}"
                             Command="{Binding ChangeSortFieldCommand}"
-                            TextTransform="Lowercase"/>
-                    <ImageButton BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                                 Padding="6"
-                                 Margin="0,10"
-                                 HorizontalOptions="End"
-                                 HeightRequest="32"
-                                 WidthRequest="32"
-                                 CornerRadius="16"
-                                 Command="{Binding SetSortTypeCommand}">
-                        <ImageButton.Triggers>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding CurrentSortDirection}"
-                                         Value="Asc">
-                                <Setter Property="Source"
-                                        Value="ic_sort__down"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="ImageButton"
-                                         Binding="{Binding CurrentSortDirection}"
-                                         Value="Desc">
-                                <Setter Property="Source"
-                                        Value="ic_sort__up"/>
-                            </DataTrigger>
-                        </ImageButton.Triggers>
-                    </ImageButton>
-                </StackLayout>
-                <StackLayout Style="{DynamicResource SeparatorStyle}"
-                             Margin="16,0,0,0"/>
-                <ListView ItemsSource="{Binding BakersList}"
-                          SelectionMode="Single"
-                          SelectedItem="{Binding SelectedBaker}"
-                          BackgroundColor="Transparent"
-                          HasUnevenRows="True"
-                          SeparatorVisibility="Default"
-                          CachingStrategy="RetainElement"
-                          RowHeight="76"
-                          Footer="">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                                <Grid ColumnSpacing="12"
-                                      RowSpacing="4"
-                                      Padding="16,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="38" />
-                                        <RowDefinition Height="38" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="24" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           WidthRequest="24"
-                                           HeightRequest="24"
-                                           Source="{Binding Logo}"/>
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Name}"
-                                           Style="{DynamicResource MainTextH4}"
-                                           LineBreakMode="TailTruncation"
-                                           VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="Start"/>
-                                    <Frame Grid.Column="2"
-                                           Padding="5,3"
-                                           Margin="0"
-                                           HasShadow="False"
-                                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                                           CornerRadius="4"
-                                           HorizontalOptions="Start"
-                                           VerticalOptions="End"
-                                           IsVisible="{Binding IsCurrentlyActive}">
-                                        <Label Text="{helpers:Translate Current}"
-                                               Style="{DynamicResource MainTextH6}"
-                                               TextTransform="Lowercase"
+                            TextTransform="Lowercase" />
+                        <ImageButton
+                            BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                            Padding="6"
+                            Margin="0,10"
+                            HorizontalOptions="End"
+                            HeightRequest="32"
+                            WidthRequest="32"
+                            CornerRadius="16"
+                            Command="{Binding SetSortTypeCommand}">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding CurrentSortDirection}"
+                                             Value="Asc">
+                                    <Setter Property="Source"
+                                            Value="ic_sort__down" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton"
+                                             Binding="{Binding CurrentSortDirection}"
+                                             Value="Desc">
+                                    <Setter Property="Source"
+                                            Value="ic_sort__up" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </StackLayout>
+                    <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                 Margin="16,0,0,0" />
+                    <ListView ItemsSource="{Binding BakersList}"
+                              SelectionMode="Single"
+                              SelectedItem="{Binding SelectedBaker}"
+                              BackgroundColor="Transparent"
+                              HasUnevenRows="True"
+                              SeparatorVisibility="Default"
+                              CachingStrategy="RetainElement"
+                              RowHeight="76"
+                              Footer="">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <custom:CustomViewCell
+                                    SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                    <Grid ColumnSpacing="12"
+                                          RowSpacing="4"
+                                          Padding="16,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="38" />
+                                            <RowDefinition Height="38" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="24" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.RowSpan="2"
+                                               WidthRequest="24"
+                                               HeightRequest="24"
+                                               Source="{Binding Logo}" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               Style="{DynamicResource MainTextH4}"
+                                               LineBreakMode="TailTruncation"
                                                VerticalTextAlignment="End"
-                                               HorizontalTextAlignment="Center"/>
-                                    </Frame>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Grid.ColumnSpan="2"
-                                           Style="{DynamicResource AdditionalTextH6}"
-                                           VerticalTextAlignment="Start"
-                                           HorizontalTextAlignment="Start"
-                                           IsVisible="{Binding IsFull, Converter={StaticResource InverseBool}}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{helpers:Translate FreeSpace}"/>
-                                                <Span Text=" " /> 
-                                                <Span Text="{Binding FreeSpaceFormatted}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Grid.ColumnSpan="2"
-                                           Text="{helpers:Translate BakerIsFull}"
-                                           Style="{DynamicResource WarningTextH6}"
-                                           VerticalTextAlignment="Start"
-                                           HorizontalTextAlignment="Start"
-                                           IsVisible="{Binding IsFull}"/>
-                                    <Label Grid.Column="3"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="End"
-                                           HorizontalTextAlignment="End">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{helpers:Translate EstimatedRoi}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding Roi, StringFormat='${0:P}'}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="3"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Start"
-                                           HorizontalTextAlignment="End">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{helpers:Translate MinLabel}"/>
-                                                <Span Text=" "/> 
-                                                <Span Text="{Binding MinDelegation, StringFormat='{0:0.##} XTZ'}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </Grid>
-                            </custom:CustomViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                               HorizontalTextAlignment="Start" />
+                                        <Frame Grid.Column="2"
+                                               Padding="5,3"
+                                               Margin="0"
+                                               HasShadow="False"
+                                               BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                                               CornerRadius="4"
+                                               HorizontalOptions="Start"
+                                               VerticalOptions="End"
+                                               IsVisible="{Binding IsCurrentlyActive}">
+                                            <Label Text="{helpers:Translate Current}"
+                                                   Style="{DynamicResource MainTextH6}"
+                                                   TextTransform="Lowercase"
+                                                   VerticalTextAlignment="End"
+                                                   HorizontalTextAlignment="Center" />
+                                        </Frame>
+                                        <Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="2"
+                                               Style="{DynamicResource AdditionalTextH6}"
+                                               VerticalTextAlignment="Start"
+                                               HorizontalTextAlignment="Start"
+                                               IsVisible="{Binding IsFull, Converter={StaticResource InverseBool}}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{helpers:Translate FreeSpace}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding FreeSpaceFormatted}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="2"
+                                               Text="{helpers:Translate BakerIsFull}"
+                                               Style="{DynamicResource WarningTextH6}"
+                                               VerticalTextAlignment="Start"
+                                               HorizontalTextAlignment="Start"
+                                               IsVisible="{Binding IsFull}" />
+                                        <Label Grid.Column="3"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               VerticalTextAlignment="End"
+                                               HorizontalTextAlignment="End">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{helpers:Translate EstimatedRoi}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding Roi, StringFormat='${0:P}'}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Row="1"
+                                               Grid.Column="3"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               VerticalTextAlignment="Start"
+                                               HorizontalTextAlignment="End">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{helpers:Translate MinLabel}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding MinDelegation, StringFormat='{0:0.##} XTZ'}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+                                </custom:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
-            </StackLayout>
     </ContentPage.Content>
 </ContentPage>

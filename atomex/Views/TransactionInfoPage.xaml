@@ -1,12 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:custom="clr-namespace:atomex.CustomElements"
              xmlns:converters="clr-namespace:atomex.Converters"
-             x:Class="atomex.TransactionInfoPage"
+             x:Class="atomex.Views.TransactionInfoPage"
              Title="{helpers:Translate TransactionInfoPageTitle}"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels.TransactionViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:TransactionViewModel}">
     <ContentPage.ToolbarItems>
         <custom:BindableToolbarItem IconImageSource="ic_delete"
                                     Order="Primary"
@@ -17,8 +23,8 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -34,31 +40,31 @@
                                  Binding="{Binding State}"
                                  Value="Confirmed">
                         <Setter Property="Source"
-                                Value="SwapCompleted"/>
+                                Value="SwapCompleted" />
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
                                  Binding="{Binding State}"
                                  Value="Pending">
                         <Setter Property="Source"
-                                Value="ic_status__pending"/>
+                                Value="ic_status__pending" />
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
                                  Binding="{Binding State}"
                                  Value="Failed">
                         <Setter Property="Source"
-                                Value="SwapCanceled"/>
+                                Value="SwapCanceled" />
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
                                  Binding="{Binding State}"
                                  Value="Unconfirmed">
                         <Setter Property="Source"
-                                Value="ic_status__pending"/>
+                                Value="ic_status__pending" />
                     </DataTrigger>
                     <DataTrigger TargetType="Image"
                                  Binding="{Binding State}"
                                  Value="Unknown">
                         <Setter Property="Source"
-                                Value="ic_status__pending"/>
+                                Value="ic_status__pending" />
                     </DataTrigger>
                 </Image.Triggers>
             </Image>
@@ -66,7 +72,7 @@
                    Style="{DynamicResource MainTextH2}"
                    VerticalTextAlignment="Center"
                    HorizontalTextAlignment="Center"
-                   Margin="0,16"/>
+                   Margin="0,16" />
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
                 <Grid.RowDefinitions>
@@ -81,15 +87,15 @@
                 <Label Text="{helpers:Translate Description}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Text="{Binding Description}"
                        Style="{DynamicResource MainTextH4}"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start" />
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
@@ -106,22 +112,22 @@
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
                        TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyCode}"/>
+                            <Span Text="{Binding Amount, StringFormat='{0:0.#########}'}" />
+                            <Span Text=" " />
+                            <Span Text="{Binding CurrencyCode}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6">
@@ -139,14 +145,14 @@
                 <Label Text="{helpers:Translate TransactionId}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Text="{Binding Id}"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start"
                        LineBreakMode="MiddleTruncation">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.Column="1"
@@ -157,7 +163,7 @@
                        HeightRequest="12"
                        WidthRequest="12">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}"/>
+                        <TapGestureRecognizer Command="{Binding ShowTxInExplorerCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Image Grid.Column="2"
@@ -168,15 +174,15 @@
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyTxIdCommand}"
-                                              CommandParameter="{Binding Id}"/>
+                                              CommandParameter="{Binding Id}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0">
@@ -192,15 +198,15 @@
                 <Label Text="{helpers:Translate TransactionTime}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Text="{Binding LocalTime,  StringFormat='{}{0:MMMM dd yyyy, HH:mm}'}"
                        Style="{DynamicResource MainTextH4}"
-                       VerticalTextAlignment="Start"/>
+                       VerticalTextAlignment="Start" />
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -219,7 +225,7 @@
                 <Label Text="{helpers:Translate FromLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Text="{Binding From}"
                        Style="{DynamicResource MainTextH4}"
@@ -227,7 +233,7 @@
                        LineBreakMode="MiddleTruncation">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
-                                              CommandParameter="{Binding From}"/>
+                                              CommandParameter="{Binding From}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.Column="1"
@@ -239,7 +245,7 @@
                        WidthRequest="12">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
-                                              CommandParameter="{Binding From}"/>
+                                              CommandParameter="{Binding From}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Image Grid.Column="2"
@@ -250,15 +256,15 @@
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
-                                              CommandParameter="{Binding From}"/>
+                                              CommandParameter="{Binding From}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="6"
@@ -277,7 +283,7 @@
                 <Label Text="{helpers:Translate ToLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Text="{Binding To}"
                        Style="{DynamicResource MainTextH4}"
@@ -285,7 +291,7 @@
                        LineBreakMode="MiddleTruncation">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
-                                              CommandParameter="{Binding To}"/>
+                                              CommandParameter="{Binding To}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.Column="1"
@@ -297,7 +303,7 @@
                        WidthRequest="12">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowAddressInExplorerCommand}"
-                                              CommandParameter="{Binding To}"/>
+                                              CommandParameter="{Binding To}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Image Grid.Column="2"
@@ -308,15 +314,15 @@
                        VerticalOptions="FillAndExpand">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CopyAddressCommand}"
-                                              CommandParameter="{Binding To}"/>
+                                              CommandParameter="{Binding To}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Line Grid.Row="2"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
                       Grid.ColumnSpan="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -333,20 +339,20 @@
                 <Label Text="{helpers:Translate FeeLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding Fee}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding Currency.FeeCode}"/>
+                            <Span Text="{Binding Fee}" />
+                            <Span Text=" " />
+                            <Span Text="{Binding Currency.FeeCode}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -363,22 +369,22 @@
                 <Label Text="{helpers:Translate GasPriceLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding GasPrice}"/>
-                            <Span Text=" "/>
-                            <Span Text="GWEI"/>
+                            <Span Text="{Binding GasPrice}" />
+                            <Span Text=" " />
+                            <Span Text="GWEI" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -395,22 +401,22 @@
                 <Label Text="{helpers:Translate GasLimitLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding GasLimit}"/>
-                            <Span Text=" "/>
-                            <Span Text="GAS"/>
+                            <Span Text="{Binding GasLimit}" />
+                            <Span Text=" " />
+                            <Span Text="GAS" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
             <Grid RowSpacing="0"
                   ColumnSpacing="0"
@@ -427,22 +433,22 @@
                 <Label Text="{helpers:Translate GasUsedLabel}"
                        Style="{DynamicResource AdditionalTextH5}"
                        Padding="0,0,0,6"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <Label Grid.Row="1"
                        Style="{DynamicResource MainTextH4}"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding GasUsed}"/>
-                            <Span Text=" "/>
-                            <Span Text="GAS"/>
+                            <Span Text="{Binding GasUsed}" />
+                            <Span Text=" " />
+                            <Span Text="GAS" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
                 <Line Grid.Row="2"
-                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}"/>
+                      BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                 <Line Grid.Row="3"
-                      BackgroundColor="Transparent"/>
+                      BackgroundColor="Transparent" />
             </Grid>
         </StackLayout>
     </ScrollView>

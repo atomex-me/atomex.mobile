@@ -1,16 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
              xmlns:helpers="clr-namespace:atomex.Helpers"
              xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
-             x:Class="atomex.UnlockWalletPage"
+             x:Class="atomex.Views.UnlockWalletPage"
              Title="{helpers:Translate UnlockTitle}"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:UnlockViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView x:Name="Page">
@@ -23,26 +29,26 @@
                                  Binding="{Binding IsLoading}"
                                  Value="True">
                         <Setter Property="Opacity"
-                                Value="0.3"/>
+                                Value="0.3" />
                     </DataTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding IsLoading}"
                                  Value="False">
                         <Setter Property="Opacity"
-                                Value="1"/>
+                                Value="1" />
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Image WidthRequest="170"
                        HeightRequest="156"
                        Margin="10"
-                       Source="AtomexLogo"/>
+                       Source="AtomexLogo" />
                 <Label Text="{helpers:Translate UnlockLabel}"
-                       Style="{DynamicResource UnlockWalletTextStyle}"/>
+                       Style="{DynamicResource UnlockWalletTextStyle}" />
                 <Frame x:Name="PasswordFrame"
                        CornerRadius="10"
                        Style="{DynamicResource EntryFrameStyle}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                        <TapGestureRecognizer Tapped="PasswordEntryClicked" />
                     </Frame.GestureRecognizers>
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="FillAndExpand">
@@ -54,7 +60,7 @@
                                    HorizontalOptions="CenterAndExpand"
                                    Source="Lock">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="PasswordEntryClicked"/>
+                                    <TapGestureRecognizer Tapped="PasswordEntryClicked" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </StackLayout>
@@ -74,14 +80,14 @@
                                 <controls:CustomEntry.Behaviors>
                                     <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                                       Command="{Binding TextChangedCommand}"
-                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}"/>
+                                                                      CommandParameter="{Binding Source={x:Reference PasswordEntry},Path=Text}" />
                                 </controls:CustomEntry.Behaviors>
                             </controls:CustomEntry>
                             <Label x:Name="PasswordHint"
                                    Style="{DynamicResource EntryHintStyle}"
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                                   VerticalTextAlignment="Center"/>
+                                   VerticalTextAlignment="Center" />
                         </RelativeLayout>
                     </StackLayout>
                 </Frame>
@@ -89,15 +95,16 @@
                         Margin="0,20"
                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}"
                         Style="{DynamicResource MainButton}"
-                        Command="{Binding UnlockCommand}"/>
+                        Command="{Binding UnlockCommand}" />
             </StackLayout>
-            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
-                               RelativeLayout.WidthConstraint="50"
-                               RelativeLayout.HeightConstraint="50"
-                               BackgroundColor="Transparent"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               IsRunning="{Binding IsLoading}"/>
+            <ActivityIndicator
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                RelativeLayout.WidthConstraint="50"
+                RelativeLayout.HeightConstraint="50"
+                BackgroundColor="Transparent"
+                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                IsRunning="{Binding IsLoading}" />
         </RelativeLayout>
     </ScrollView>
 </ContentPage>

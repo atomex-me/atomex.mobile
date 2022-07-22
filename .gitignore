@@ -350,3 +350,23 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+## Ignore Rider files
+.idea/
+.vscode/
+.vs/
+
+bin/
+Installs/
+obj/
+
+*.user
+dist/
+release/
+
+.DS_Store
+*.pfx
+FodyWeavers.*
+global.json
+UpgradeLog.htm

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:atomex.CustomElements"
@@ -6,23 +7,28 @@
              xmlns:behaviors="clr-namespace:EventToCommandBehavior"
              x:Class="atomex.Views.CreateNewWallet.WalletNamePage"
              Title="{Binding Title}"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:CreateNewWalletViewModel}">
     <ScrollView x:Name="Page">
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
                      Padding="0,20">
             <StackLayout>
                 <Label Text="{helpers:Translate WalletNameStepLabel}"
-                       Style="{DynamicResource CreateNewWalletTitleStyle}"/>
+                       Style="{DynamicResource CreateNewWalletTitleStyle}" />
                 <Label Text="{helpers:Translate EnterNameLabel}"
-                       Style="{DynamicResource CreateNewWalletTextStyle}"/>
+                       Style="{DynamicResource CreateNewWalletTextStyle}" />
             </StackLayout>
             <Frame x:Name="Frame"
                    Style="{DynamicResource EntryFrameStyle}"
                    Margin="20,10"
                    CornerRadius="10">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                    <TapGestureRecognizer Tapped="OnEntryTapped" />
                 </Frame.GestureRecognizers>
                 <StackLayout HeightRequest="60">
                     <RelativeLayout>
@@ -32,7 +38,7 @@
                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=0.7}"
                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnEntryTapped"/>
+                                <TapGestureRecognizer Tapped="OnEntryTapped" />
                             </Label.GestureRecognizers>
                         </Label>
                         <controls:CustomEntry x:Name="Entry"
@@ -47,7 +53,7 @@
                                               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1}">
                             <controls:CustomEntry.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Focused"
-                                                                  Command="{Binding ClearWarningCommand}"/>
+                                                                  Command="{Binding ClearWarningCommand}" />
                             </controls:CustomEntry.Behaviors>
                         </controls:CustomEntry>
                     </RelativeLayout>
@@ -60,14 +66,14 @@
                                  Binding="{Binding Warning}"
                                  Value="">
                         <Setter Property="IsVisible"
-                                Value="False"/>
+                                Value="False" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Button Text="{helpers:Translate NextButton}"
                     Margin="20,10"
                     Style="{DynamicResource MainButton}"
-                    Command="{Binding MnemonicPageCommand}"/>
+                    Command="{Binding MnemonicPageCommand}" />
         </StackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,180 +9,187 @@
     xmlns:custom="clr-namespace:atomex.CustomElements"
     xmlns:converters="clr-namespace:atomex.Converters"
     xmlns:behaviors="clr-namespace:EventToCommandBehavior"
-    Style="{DynamicResource MainBackgroundStyle}">
+    Style="{DynamicResource MainBackgroundStyle}"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectAddressViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:AllTrueMultiConverter x:Key="AllTrueConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert" />
+            <converters:AllTrueMultiConverter x:Key="AllTrueConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-        <StackLayout Spacing="0"
-                     VerticalOptions="FillAndExpand">
-            <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="Fill"
-                         Margin="16,10"
-                         HeightRequest="52"
-                         Spacing="0">
-                <custom:CustomEntry Placeholder="{helpers:Translate EnterAddressPlaceholder}"
-                                    Style="{DynamicResource EntryStyle}"
-                                    FontSize="14"
-                                    Text="{Binding SearchPattern, Mode=TwoWay}"
-                                    HorizontalTextAlignment="Start"
-                                    VerticalTextAlignment="Center"
-                                    VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"/>
-                <Image Source="ic_search"
-                       WidthRequest="17"
-                       HeightRequest="17"
-                       VerticalOptions="Center"
-                       IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}"/>
-                <ImageButton Source="ic_close"
-                             BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
-                             Padding="7"
-                             WidthRequest="24"
-                             HeightRequest="24"
-                             CornerRadius="12"
-                             VerticalOptions="Center"
-                             Command="{Binding ClearSearchAddressCommand}"
-                             IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}"/>
+            <StackLayout Spacing="0"
+                         VerticalOptions="FillAndExpand">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Fill"
+                             Margin="16,10"
+                             HeightRequest="52"
+                             Spacing="0">
+                    <custom:CustomEntry Placeholder="{helpers:Translate EnterAddressPlaceholder}"
+                                        Style="{DynamicResource EntryStyle}"
+                                        FontSize="14"
+                                        Text="{Binding SearchPattern, Mode=TwoWay}"
+                                        HorizontalTextAlignment="Start"
+                                        VerticalTextAlignment="Center"
+                                        VerticalOptions="FillAndExpand"
+                                        HorizontalOptions="FillAndExpand" />
+                    <Image Source="ic_search"
+                           WidthRequest="17"
+                           HeightRequest="17"
+                           VerticalOptions="Center"
+                           IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBoolInvert}, FallbackValue='True'}" />
+                    <ImageButton Source="ic_close"
+                                 BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                 Padding="7"
+                                 WidthRequest="24"
+                                 HeightRequest="24"
+                                 CornerRadius="12"
+                                 VerticalOptions="Center"
+                                 Command="{Binding ClearSearchAddressCommand}"
+                                 IsVisible="{Binding SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
+                </StackLayout>
+                <StackLayout Style="{DynamicResource SeparatorStyle}" />
+                <ListView ItemsSource="{Binding MyAddresses}"
+                          SelectionMode="Single"
+                          SelectedItem="{Binding SelectedAddress}"
+                          BackgroundColor="Transparent"
+                          CachingStrategy="RetainElement"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="None"
+                          VerticalOptions="FillAndExpand"
+                          RowHeight="64"
+                          Footer="">
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                          Command="{Binding SelectAddressCommand}" />
+                    </ListView.Behaviors>
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"
+                                     Binding="{Binding MyAddresses.Count}"
+                                     Value="0">
+                            <Setter Property="IsVisible"
+                                    Value="False" />
+                        </DataTrigger>
+                    </ListView.Triggers>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <custom:CustomViewCell
+                                SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
+                                <Grid ColumnSpacing="0"
+                                      RowSpacing="0"
+                                      Padding="16,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="80" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.ColumnSpan="2"
+                                           Text="{Binding Address}"
+                                           Style="{DynamicResource MainTextH4}"
+                                           LineBreakMode="MiddleTruncation"
+                                           Padding="0,3"
+                                           VerticalTextAlignment="End"
+                                           HorizontalTextAlignment="Start" />
+                                    <Label Grid.Row="1"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Start"
+                                           HorizontalTextAlignment="Start">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                <Binding Path="IsFreeAddress"
+                                                         Mode="OneWay"
+                                                         Converter="{StaticResource InverseBool}" />
+                                                <Binding Path="IsTezosToken"
+                                                         Mode="OneWay" />
+                                            </MultiBinding>
+                                        </Label.IsVisible>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TokenBalance}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding TokenCode}" />
+                                                <Span Text=" / " />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Start"
+                                           HorizontalTextAlignment="Start"
+                                           IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding AvailableBalance}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrencyCode}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Frame Grid.Row="1"
+                                           Padding="5,0"
+                                           Margin="0,6"
+                                           HasShadow="False"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
+                                           CornerRadius="4"
+                                           IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
+                                        <Label Text="{helpers:Translate New}"
+                                               Style="{DynamicResource MainTextH6}"
+                                               TextTransform="Lowercase"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Center" />
+                                    </Frame>
+                                    <Image Grid.RowSpan="2"
+                                           Grid.Column="2"
+                                           WidthRequest="15"
+                                           HeightRequest="18"
+                                           Margin="0"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="FillAndExpand"
+                                           Source="ic_copy__gray">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
+                                                CommandParameter="{Binding .}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+                            </custom:CustomViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout IsVisible="False"
+                             VerticalOptions="Start">
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding MyAddresses.Count}"
+                                     Value="0">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                    <Image Source="ic_search"
+                           WidthRequest="45"
+                           HeightRequest="45"
+                           Margin="20,40,20,10"
+                           VerticalOptions="Start" />
+                    <Label Text="{helpers:Translate AddressesNotFound}"
+                           Style="{DynamicResource AdditionalTextH4}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Start" />
+                </StackLayout>
             </StackLayout>
-            <StackLayout Style="{DynamicResource SeparatorStyle}"/>
-            <ListView ItemsSource="{Binding MyAddresses}"
-                      SelectionMode="Single"
-                      SelectedItem="{Binding SelectedAddress}"
-                      BackgroundColor="Transparent"
-                      CachingStrategy="RetainElement"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None"
-                      VerticalOptions="FillAndExpand"
-                      RowHeight="64"
-                      Footer="">
-                <ListView.Behaviors>
-                    <behaviors:EventToCommandBehavior EventName="ItemTapped"
-                                                      Command="{Binding SelectAddressCommand}"/>
-                </ListView.Behaviors>
-                <ListView.Triggers>
-                    <DataTrigger TargetType="ListView"
-                                 Binding="{Binding MyAddresses.Count}"
-                                 Value="0">
-                        <Setter Property="IsVisible"
-                                Value="False"/>
-                    </DataTrigger>
-                </ListView.Triggers>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <custom:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}">
-                            <Grid ColumnSpacing="0"
-                                  RowSpacing="0"
-                                  Padding="16,5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="32" />
-                                    <RowDefinition Height="32" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="80" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.ColumnSpan="2"
-                                       Text="{Binding Address}"
-                                       Style="{DynamicResource MainTextH4}"
-                                       LineBreakMode="MiddleTruncation"
-                                       Padding="0,3"
-                                       VerticalTextAlignment="End"
-                                       HorizontalTextAlignment="Start"/>
-                                <Label Grid.Row="1"
-                                       Style="{DynamicResource AdditionalTextH5}"
-                                       VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start">
-                                    <Label.IsVisible>
-                                        <MultiBinding Converter="{StaticResource AllTrueConverter}">
-                                            <Binding Path="IsFreeAddress"
-                                                     Mode="OneWay"
-                                                     Converter="{StaticResource InverseBool}"/>
-                                            <Binding Path="IsTezosToken"
-                                                     Mode="OneWay"/>
-                                        </MultiBinding>                   
-                                    </Label.IsVisible>
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding TokenBalance}"/>
-                                            <Span Text=" "/>
-                                            <Span Text="{Binding TokenCode}"/>
-                                            <Span Text=" / "/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Label Grid.Row="1"
-                                       Grid.Column="1"
-                                       Style="{DynamicResource AdditionalTextH5}"
-                                       VerticalTextAlignment="Start"
-                                       HorizontalTextAlignment="Start"
-                                       IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="{Binding AvailableBalance}"/>
-                                            <Span Text=" " /> 
-                                            <Span Text="{Binding CurrencyCode}"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Frame Grid.Row="1"
-                                       Padding="5,0"
-                                       Margin="0,6"
-                                       HasShadow="False"
-                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ActionBarButtonBackgroundColorDark}, Light={StaticResource ActionBarButtonBackgroundColor}}"
-                                       CornerRadius="4"
-                                       IsVisible="{Binding IsFreeAddress, FallbackValue=False, TargetNullValue=False}">
-                                    <Label Text="{helpers:Translate New}"
-                                           Style="{DynamicResource MainTextH6}"
-                                           TextTransform="Lowercase"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Center"/>
-                                </Frame>
-                                <Image Grid.RowSpan="2"
-                                       Grid.Column="2"
-                                       WidthRequest="15"
-                                       HeightRequest="18"
-                                       Margin="0"
-                                       HorizontalOptions="End"
-                                       VerticalOptions="FillAndExpand"
-                                       Source="ic_copy__gray">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.CopyCommand, Source={x:Reference BindingContextPage}}"
-                                                              CommandParameter="{Binding .}"/>
-                                    </Image.GestureRecognizers>
-                                </Image>
-                            </Grid>
-                        </custom:CustomViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackLayout IsVisible="False"
-                         VerticalOptions="Start">
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding MyAddresses.Count}"
-                                 Value="0">
-                        <Setter Property="IsVisible"
-                                Value="True"/>
-                    </DataTrigger>
-                </StackLayout.Triggers>
-                <Image Source="ic_search"
-                       WidthRequest="45"
-                       HeightRequest="45"
-                       Margin="20,40,20,10"
-                       VerticalOptions="Start"/>
-                <Label Text="{helpers:Translate AddressesNotFound}"
-                       Style="{DynamicResource AdditionalTextH4}"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start"/>
-            </StackLayout>
-        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

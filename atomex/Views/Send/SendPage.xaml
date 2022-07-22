@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:atomex.Helpers"
@@ -6,14 +7,18 @@
              xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
              xmlns:converters="clr-namespace:atomex.Converters"
              x:Class="atomex.Views.Send.SendPage"
-             Style="{DynamicResource MainBackgroundStyle}">
+             Style="{DynamicResource MainBackgroundStyle}"
+             xmlns:vm="clr-namespace:atomex.ViewModels.SendViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:SendViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
-            <converters:StringToBoolConverter x:Key="StringToBool"/>
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert"/>
-            <converters:NullToBooleanConverter x:Key="NullToBool"/>
-            <converters:NullToBooleanInvertConverter x:Key="NullToBoolInvert"/>
+            <converters:InverseBoolConverter x:Key="InverseBool" />
+            <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:NullToBooleanConverter x:Key="NullToBool" />
+            <converters:NullToBooleanInvertConverter x:Key="NullToBoolInvert" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -22,7 +27,7 @@
                      RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
             <Label Text="{helpers:Translate SendPageTitle}"
                    Style="{DynamicResource MainTextH1}"
-                   Padding="16,32,16,16"/>
+                   Padding="16,32,16,16" />
             <Grid HorizontalOptions="Fill"
                   ColumnSpacing="0"
                   RowSpacing="8"
@@ -46,7 +51,7 @@
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Frame.GestureRecognizers>
                 </Frame>
                 <Image Grid.RowSpan="2"
@@ -58,7 +63,7 @@
                        HorizontalOptions="EndAndExpand"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Frame Grid.RowSpan="2"
@@ -71,11 +76,11 @@
                        IsClippedToBounds="True"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Frame.GestureRecognizers>
                     <Image Source="{Binding TokenPreview}"
                            WidthRequest="28"
-                           HeightRequest="28"/>
+                           HeightRequest="28" />
                 </Frame>
                 <Label Grid.Column="1"
                        Text="{Binding From}"
@@ -84,7 +89,7 @@
                        VerticalTextAlignment="End"
                        LineBreakMode="MiddleTruncation">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Label Grid.Row="1"
@@ -95,13 +100,13 @@
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectedFromBalance}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding CurrencyName}"/>
+                            <Span Text="{Binding SelectedFromBalance}" />
+                            <Span Text=" " />
+                            <Span Text="{Binding CurrencyName}" />
                         </FormattedString>
                     </Label.FormattedText>
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.RowSpan="2"
@@ -112,7 +117,7 @@
                        WidthRequest="12"
                        VerticalOptions="Center">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectFromCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Frame Grid.Row="2"
@@ -123,7 +128,7 @@
                        CornerRadius="8"
                        BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColor}}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}" />
                     </Frame.GestureRecognizers>
                 </Frame>
                 <Image Grid.Row="2"
@@ -136,7 +141,7 @@
                        HorizontalOptions="EndAndExpand"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBoolInvert}, FallbackValue='True', TargetNullValue='True'}">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Frame Grid.Row="2"
@@ -150,11 +155,11 @@
                        IsClippedToBounds="True"
                        IsVisible="{Binding TokenPreview, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}" />
                     </Frame.GestureRecognizers>
                     <Image Source="{Binding TokenPreview}"
                            WidthRequest="28"
-                           HeightRequest="28"/>
+                           HeightRequest="28" />
                 </Frame>
                 <Label Grid.Row="2"
                        Grid.RowSpan="2"
@@ -165,7 +170,7 @@
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Image Grid.Row="2"
@@ -177,7 +182,7 @@
                        WidthRequest="12"
                        VerticalOptions="Center">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SelectToCommand}"/>
+                        <TapGestureRecognizer Command="{Binding SelectToCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
                 <Frame WidthRequest="40"
@@ -189,21 +194,21 @@
                        HorizontalOptions="Center"
                        IsClippedToBounds="True"
                        HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
                 <StackLayout Grid.Row="4"
                              HeightRequest="8"
                              WidthRequest="40"
                              Margin="0,-104,0,104"
                              Grid.ColumnSpan="3"
                              HorizontalOptions="Center"
-                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"/>
+                             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}" />
                 <Image Grid.ColumnSpan="3"
                        Source="ic_arrow__down"
                        HeightRequest="14"
                        WidthRequest="14"
                        Margin="0,70,0,-70"
                        VerticalOptions="Center"
-                       HorizontalOptions="Center"/>
+                       HorizontalOptions="Center" />
             </Grid>
             <Frame Padding="0"
                    Margin="16,0"
@@ -231,14 +236,14 @@
                                         Style="{DynamicResource EntryStyle}"
                                         FontSize="16"
                                         HorizontalTextAlignment="Start"
-                                        VerticalTextAlignment="Center"/>
+                                        VerticalTextAlignment="Center" />
                     <Label Grid.Column="1"
                            Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
                            HorizontalTextAlignment="End"
                            Text="{Binding AmountInBase, StringFormat='${0:0.00}'}">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="AmountEntryFocus"/>
+                            <TapGestureRecognizer Tapped="AmountEntryFocus" />
                         </Label.GestureRecognizers>
                     </Label>
                     <Button Grid.Column="2"
@@ -254,7 +259,7 @@
                             Margin="16,0"
                             CornerRadius="15"
                             VerticalOptions="Center"
-                            Command="{Binding MaxCommand}"/>
+                            Command="{Binding MaxCommand}" />
                 </Grid>
             </Frame>
             <StackLayout Margin="16,12,16,0"
@@ -263,16 +268,17 @@
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.RelatedElement}"
-                                              Value="Amount"/>
-                            <BindingCondition Binding="{Binding RecommendedMaxAmountWarning.Text, Converter={StaticResource StringToBool}}"
-                                              Value="True"/>
+                                              Value="Amount" />
+                            <BindingCondition
+                                Binding="{Binding RecommendedMaxAmountWarning.Text, Converter={StaticResource StringToBool}}"
+                                Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ShowRecommendedMaxAmountTooltip}"/>
+                    <TapGestureRecognizer Command="{Binding ShowRecommendedMaxAmountTooltip}" />
                 </StackLayout.GestureRecognizers>
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="FillAndExpand">
@@ -285,19 +291,19 @@
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Warning">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource WarningTextH6}"/>
+                                        Value="{DynamicResource WarningTextH6}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Error">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource ErrorTextH6}"/>
+                                        Value="{DynamicResource ErrorTextH6}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Regular">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource AdditionalTextH6}"/>
+                                        Value="{DynamicResource AdditionalTextH6}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -312,19 +318,19 @@
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Error">
                                 <Setter Property="Source"
-                                        Value="ic_question__error"/>
+                                        Value="ic_question__error" />
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Warning">
                                 <Setter Property="Source"
-                                        Value="ic_question__warning"/>
+                                        Value="ic_question__warning" />
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
                                          Binding="{Binding RecommendedMaxAmountWarning.Type}"
                                          Value="Regular">
                                 <Setter Property="Source"
-                                        Value="ic_question"/>
+                                        Value="ic_question" />
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -336,12 +342,12 @@
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding Message.RelatedElement}"
-                                              Value="Amount"/>
+                                              Value="Amount" />
                             <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                              Value="True"/>
+                                              Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
@@ -355,13 +361,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource WarningTextH6}"/>
+                                        Value="{DynamicResource WarningTextH6}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource ErrorTextH6}"/>
+                                        Value="{DynamicResource ErrorTextH6}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -376,13 +382,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Source"
-                                        Value="ic_question__error"/>
+                                        Value="ic_question__error" />
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Source"
-                                        Value="ic_question__warning"/>
+                                        Value="ic_question__warning" />
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -400,12 +406,13 @@
                     <MultiTrigger TargetType="Frame">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding UseDefaultFee}"
-                                              Value="False"/>
-                            <BindingCondition Binding="{Binding IsEthBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='True'}"
-                                              Value="True"/>
+                                              Value="False" />
+                            <BindingCondition
+                                Binding="{Binding IsEthBased, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue='True'}"
+                                Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </Frame.Triggers>
                 <Grid HorizontalOptions="Fill"
@@ -426,7 +433,7 @@
                                         Style="{DynamicResource EntryStyle}"
                                         FontSize="16"
                                         HorizontalTextAlignment="Start"
-                                        VerticalTextAlignment="Center"/>
+                                        VerticalTextAlignment="Center" />
                     <Label Grid.Column="1"
                            Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
@@ -434,7 +441,7 @@
                            Text="{Binding FeeInBase, StringFormat='${0:0.00}'}"
                            Margin="16,0">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="FeeEntryFocus"/>
+                            <TapGestureRecognizer Tapped="FeeEntryFocus" />
                         </Label.GestureRecognizers>
                     </Label>
                 </Grid>
@@ -445,12 +452,12 @@
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding Message.RelatedElement}"
-                                              Value="Fee"/>
+                                              Value="Fee" />
                             <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                              Value="True"/>
+                                              Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
@@ -464,13 +471,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource WarningTextH6}"/>
+                                        Value="{DynamicResource WarningTextH6}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource ErrorTextH6}"/>
+                                        Value="{DynamicResource ErrorTextH6}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -485,13 +492,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Source"
-                                        Value="ic_question__error"/>
+                                        Value="ic_question__error" />
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Source"
-                                        Value="ic_question__warning"/>
+                                        Value="ic_question__warning" />
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -509,12 +516,12 @@
                     <MultiTrigger TargetType="Frame">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding UseDefaultFee}"
-                                              Value="False"/>
+                                              Value="False" />
                             <BindingCondition Binding="{Binding IsEthBased, FallbackValue='False'}"
-                                              Value="True"/>
+                                              Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </Frame.Triggers>
                 <Grid HorizontalOptions="Fill"
@@ -535,7 +542,7 @@
                                         Style="{DynamicResource EntryStyle}"
                                         FontSize="16"
                                         HorizontalTextAlignment="Start"
-                                        VerticalTextAlignment="Center"/>
+                                        VerticalTextAlignment="Center" />
                     <Label Grid.Column="1"
                            Style="{DynamicResource AdditionalTextH6}"
                            VerticalTextAlignment="Center"
@@ -543,7 +550,7 @@
                            Text="{Binding GasPriceCode}"
                            Margin="16,0">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="GasPriceEntryFocus"/>
+                            <TapGestureRecognizer Tapped="GasPriceEntryFocus" />
                         </Label.GestureRecognizers>
                     </Label>
                 </Grid>
@@ -554,12 +561,12 @@
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding Message.RelatedElement}"
-                                              Value="All"/>
+                                              Value="All" />
                             <BindingCondition Binding="{Binding Message.Text, Converter={StaticResource StringToBool}}"
-                                              Value="True"/>
+                                              Value="True" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True"/>
+                                Value="True" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"
@@ -573,13 +580,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource WarningTextH6}"/>
+                                        Value="{DynamicResource WarningTextH6}" />
                             </DataTrigger>
                             <DataTrigger TargetType="Label"
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource ErrorTextH6}"/>
+                                        Value="{DynamicResource ErrorTextH6}" />
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
@@ -594,13 +601,13 @@
                                          Binding="{Binding Message.Type}"
                                          Value="Error">
                                 <Setter Property="Source"
-                                        Value="ic_question__error"/>
+                                        Value="ic_question__error" />
                             </DataTrigger>
                             <DataTrigger TargetType="Image"
                                          Binding="{Binding Message.Type}"
                                          Value="Warning">
                                 <Setter Property="Source"
-                                        Value="ic_question__warning"/>
+                                        Value="ic_question__warning" />
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -614,7 +621,7 @@
                             Type="Material"
                             Color="{AppThemeBinding Dark={StaticResource CheckBoxBackgroundColorDark}, Light={StaticResource CheckBoxBackgroundColor}}"
                             IconColor="{AppThemeBinding Dark={StaticResource CheckBoxIconColorDark}, Light={StaticResource CheckBoxIconColor}}"
-                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"/>
+                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
             <Label Style="{DynamicResource AdditionalTextH6}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
@@ -622,11 +629,11 @@
                    IsVisible="{Binding IsBtcBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="{helpers:Translate FeeRateLabel}"/>
-                        <Span Text=": "/>
-                        <Span Text="{Binding FeeRate, StringFormat='{0:0}'}"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding FeeRateCode}"/>
+                        <Span Text="{helpers:Translate FeeRateLabel}" />
+                        <Span Text=": " />
+                        <Span Text="{Binding FeeRate, StringFormat='{0:0}'}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding FeeRateCode}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -637,11 +644,11 @@
                    IsVisible="{Binding IsEthBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="{helpers:Translate GasPriceLabel}"/>
-                        <Span Text=": "/>
-                        <Span Text="{Binding GasPrice, StringFormat='{0:0}'}"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding GasPriceCode}"/>
+                        <Span Text="{helpers:Translate GasPriceLabel}" />
+                        <Span Text=": " />
+                        <Span Text="{Binding GasPrice, StringFormat='{0:0}'}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding GasPriceCode}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -652,11 +659,11 @@
                    IsVisible="{Binding IsEthBased, FallbackValue='False'}">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="{helpers:Translate GasLimitLabel}"/>
-                        <Span Text=": "/>
-                        <Span Text="{Binding GasLimit, StringFormat='{0:0}'}"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding GasLimitCode}"/>
+                        <Span Text="{helpers:Translate GasLimitLabel}" />
+                        <Span Text=": " />
+                        <Span Text="{Binding GasLimit, StringFormat='{0:0}'}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding GasLimitCode}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -666,20 +673,20 @@
                    Margin="16,1">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="{helpers:Translate FeeLabel}"/>
-                        <Span Text=": "/>
-                        <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding FeeCurrencyCode}"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding FeeInBase, StringFormat='(${0:0.00})'}"/>
+                        <Span Text="{helpers:Translate FeeLabel}" />
+                        <Span Text=": " />
+                        <Span Text="{Binding Fee, StringFormat='{0:0.#########}'}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding FeeCurrencyCode}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding FeeInBase, StringFormat='(${0:0.00})'}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
             <StackLayout VerticalOptions="EndAndExpand"
                          Spacing="0"
                          BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColor}}">
-                <StackLayout Style="{DynamicResource SeparatorStyle}"/>
+                <StackLayout Style="{DynamicResource SeparatorStyle}" />
                 <Button Text="{helpers:Translate ReviewButton}"
                         Margin="16,14"
                         CornerRadius="22"
@@ -696,25 +703,25 @@
                                      Binding="{Binding CanSend}"
                                      Value="False">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonTextColorDark}, Light={StaticResource DisabledButtonTextColor}}" />
                             <Setter Property="Opacity"
-                                    Value="0.5"/>
+                                    Value="0.5" />
                             <Setter Property="IsEnabled"
-                                    Value="False"/>
+                                    Value="False" />
                         </DataTrigger>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding CanSend}"
                                      Value="True">
                             <Setter Property="BackgroundColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}" />
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}"/>
+                                    Value="{AppThemeBinding Dark={StaticResource MainButtonTextColorDark}, Light={StaticResource MainButtonTextColor}}" />
                             <Setter Property="Opacity"
-                                    Value="1"/>
+                                    Value="1" />
                             <Setter Property="IsEnabled"
-                                    Value="True"/>
+                                    Value="True" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>

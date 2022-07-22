@@ -1,5 +1,5 @@
-﻿using atomex.ViewModel;
-using atomex.ViewModel.CurrencyViewModels;
+﻿using atomex.ViewModels;
+using atomex.ViewModels.CurrencyViewModels;
 using Rg.Plugins.Popup.Pages;
 
 namespace atomex.Views.Popup

@@ -1,13 +1,19 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:helpers="clr-namespace:atomex.Helpers"
               xmlns:converters="clr-namespace:atomex.Converters"
-              x:Class="atomex.Views.Popup.AvailableAmountPopup">
+              x:Class="atomex.Views.Popup.AvailableAmountPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:CurrencyViewModel}">
     <rg:PopupPage.Resources>
         <ResourceDictionary>
-            <converters:NullToBooleanConverter x:Key="NullToBool"/>
+            <converters:NullToBooleanConverter x:Key="NullToBool" />
         </ResourceDictionary>
     </rg:PopupPage.Resources>
     <rg:PopupPage.Animation>
@@ -19,7 +25,7 @@
                            DurationOut="300"
                            EasingIn="SinOut"
                            EasingOut="SinIn"
-                           HasBackgroundAnimation="True"/>
+                           HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
            WidthRequest="280"
@@ -36,7 +42,7 @@
                 <Label Text="{helpers:Translate AvailableToSpend}"
                        Style="{DynamicResource AdditionalTextH4}"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="0,4,0,24">
@@ -46,24 +52,24 @@
                            IsVisible="{Binding AvailableAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyName}"/>
+                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.####}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Label Style="{DynamicResource AdditionalTextH4}"
                            Text=" / "
                            HorizontalTextAlignment="Start"
-                           IsVisible="{Binding AvailableAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}"/>
+                           IsVisible="{Binding AvailableAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}" />
                     <Label Text="{Binding AvailableAmountInBase, StringFormat='${0:f2}'}"
                            Style="{DynamicResource MainTextH4}"
-                           HorizontalTextAlignment="Start"/>
+                           HorizontalTextAlignment="Start" />
                 </StackLayout>
                 <Label Text="{helpers:Translate BalanceOnHold}"
                        Style="{DynamicResource AdditionalTextH4}"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="End"/>
+                       VerticalTextAlignment="End" />
                 <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Margin="0,4">
@@ -73,19 +79,19 @@
                            IsVisible="{Binding UnconfirmedAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding UnconfirmedAmount, StringFormat='{0:0.####}'}"/>
-                                <Span Text=" "/>
-                                <Span Text="{Binding CurrencyName}"/>
+                                <Span Text="{Binding UnconfirmedAmount, StringFormat='{0:0.####}'}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                     <Label Style="{DynamicResource AdditionalTextH4}"
                            Text=" / "
                            HorizontalTextAlignment="Start"
-                           IsVisible="{Binding UnconfirmedAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}"/>
+                           IsVisible="{Binding UnconfirmedAmount, Converter={StaticResource NullToBool}, FallbackValue='False', TargetNullValue='False'}" />
                     <Label Text="{Binding UnconfirmedAmountInBase, StringFormat='${0:f2}'}"
                            Style="{DynamicResource MainTextH4}"
-                           HorizontalTextAlignment="Start"/>
+                           HorizontalTextAlignment="Start" />
                 </StackLayout>
             </StackLayout>
             <Button Text="{helpers:Translate CloseButton}"
@@ -93,7 +99,7 @@
                     Margin="10,0"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="EndAndExpand"
-                    Command="{Binding CloseBottomSheetCommand}"/>
-        </StackLayout>   
+                    Command="{Binding CloseBottomSheetCommand}" />
+        </StackLayout>
     </Frame>
 </rg:PopupPage>

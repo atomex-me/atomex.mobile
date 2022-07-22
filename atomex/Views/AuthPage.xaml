@@ -1,16 +1,22 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:atomex.Helpers"
     xmlns:converters="clr-namespace:atomex.Converters"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
     x:Class="atomex.Views.AuthPage"
     Style="{DynamicResource MainBackgroundStyle}"
-    Title="{helpers:Translate UnlockTitle}">
+    Title="{helpers:Translate UnlockTitle}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:UnlockViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:GreaterThanValueConverter x:Key="GreaterThanValue"/>
-            <converters:InverseBoolConverter x:Key="InverseBool"/>
+            <converters:GreaterThanValueConverter x:Key="GreaterThanValue" />
+            <converters:InverseBoolConverter x:Key="InverseBool" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -25,21 +31,21 @@
                                  Binding="{Binding IsLoading}"
                                  Value="True">
                         <Setter Property="Opacity"
-                                Value="0.3"/>
+                                Value="0.3" />
                     </DataTrigger>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding IsLoading}"
                                  Value="False">
                         <Setter Property="Opacity"
-                                Value="1"/>
+                                Value="1" />
                     </DataTrigger>
                 </StackLayout.Triggers>
                 <Image WidthRequest="30"
                        HeightRequest="30"
                        HorizontalOptions="CenterAndExpand"
-                       Source="Lock"/>
+                       Source="Lock" />
                 <Label Style="{DynamicResource EnterPinLabelStyle}"
-                       Text="{Binding Header}"/>
+                       Text="{Binding Header}" />
                 <StackLayout Style="{DynamicResource PinIconsLayout}"
                              IsVisible="{Binding IsEnteredStoragePassword, Mode=OneWay, Converter={StaticResource InverseBool}, FallbackValue=True}">
                     <Frame Style="{DynamicResource PinIconEmptyStyle}">
@@ -48,7 +54,7 @@
                                          Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=1}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -58,7 +64,7 @@
                                          Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -68,7 +74,7 @@
                                          Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=3}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -78,7 +84,7 @@
                                          Binding="{Binding StoragePassword.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=4}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -91,7 +97,7 @@
                                          Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=1}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -101,7 +107,7 @@
                                          Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=2}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -111,7 +117,7 @@
                                          Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=3}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -121,7 +127,7 @@
                                          Binding="{Binding StoragePasswordConfirmation.Length, Mode=OneWay, Converter={StaticResource GreaterThanValue}, ConverterParameter=4}"
                                          Value="True">
                                 <Setter Property="Style"
-                                        Value="{DynamicResource PinIconFullStyle}"/>
+                                        Value="{DynamicResource PinIconFullStyle}" />
                             </DataTrigger>
                         </Frame.Triggers>
                     </Frame>
@@ -131,40 +137,40 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="1"/>
+                                                  CommandParameter="1" />
                         </Frame.GestureRecognizers>
                         <Label Text="1"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Column="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="2"/>
+                                                  CommandParameter="2" />
                         </Frame.GestureRecognizers>
                         <Label Text="2"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Column="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="3"/>
+                                                  CommandParameter="3" />
                         </Frame.GestureRecognizers>
                         <Label Text="3"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="1"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="4"/>
+                                                  CommandParameter="4" />
                         </Frame.GestureRecognizers>
                         <Label Text="4"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="1"
                            Grid.Column="1"
@@ -172,10 +178,10 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="5"/>
+                                                  CommandParameter="5" />
                         </Frame.GestureRecognizers>
                         <Label Text="5"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="1"
                            Grid.Column="2"
@@ -183,20 +189,20 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="6"/>
+                                                  CommandParameter="6" />
                         </Frame.GestureRecognizers>
                         <Label Text="6"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="7"/>
+                                                  CommandParameter="7" />
                         </Frame.GestureRecognizers>
                         <Label Text="7"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="2"
                            Grid.Column="1"
@@ -204,10 +210,10 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="8"/>
+                                                  CommandParameter="8" />
                         </Frame.GestureRecognizers>
                         <Label Text="8"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="2"
                            Grid.Column="2"
@@ -215,21 +221,21 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="9"/>
+                                                  CommandParameter="9" />
                         </Frame.GestureRecognizers>
                         <Label Text="9"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="3"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CancelCommand}"
-                                                  Tapped="OnItemTapped"/>
+                                                  Tapped="OnItemTapped" />
                         </Frame.GestureRecognizers>
                         <Label Text="{helpers:Translate CancelButton}"
                                Style="{DynamicResource PinNumberStyle}"
                                FontSize="14"
-                               Padding="0"/>
+                               Padding="0" />
                     </Frame>
                     <Frame Grid.Row="3"
                            Grid.Column="1"
@@ -237,20 +243,20 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding AddCharCommand}"
                                                   Tapped="OnItemTapped"
-                                                  CommandParameter="0"/>
+                                                  CommandParameter="0" />
                         </Frame.GestureRecognizers>
                         <Label Text="0"
-                               Style="{DynamicResource PinNumberStyle}"/>
+                               Style="{DynamicResource PinNumberStyle}" />
                     </Frame>
                     <Frame Grid.Row="3"
                            Grid.Column="2"
                            Style="{DynamicResource PinNumberFrameStyle}">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding DeleteCharCommand}"
-                                                  Tapped="OnItemTapped"/>
+                                                  Tapped="OnItemTapped" />
                         </Frame.GestureRecognizers>
                         <Image Source="ic_pin__del"
-                               Margin="20"/>
+                               Margin="20" />
                     </Frame>
                 </Grid>
                 <Label Text="{Binding Warning}"
@@ -261,7 +267,7 @@
                                      Binding="{Binding Warning}"
                                      Value="">
                             <Setter Property="IsVisible"
-                                    Value="False"/>
+                                    Value="False" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -273,25 +279,26 @@
                     <Image WidthRequest="150"
                            HeightRequest="150"
                            HorizontalOptions="CenterAndExpand"
-                           Source="AtomexLogo"/>
+                           Source="AtomexLogo" />
                     <Label Text="{helpers:Translate WalletHasBeenLocked}"
                            Style="{DynamicResource MainTextH3}"
                            VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Center"/>
+                           HorizontalTextAlignment="Center" />
                     <Label Text="{Binding Warning}"
                            Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="Center"/>
+                           HorizontalTextAlignment="Center" />
                 </StackLayout>
             </StackLayout>
-            <ActivityIndicator RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
-	             	           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
-                               RelativeLayout.WidthConstraint="50"
-                               RelativeLayout.HeightConstraint="50"
-                               BackgroundColor="Transparent"
-                               Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
-                               IsRunning="{Binding IsLoading}"
-                               IsEnabled="False"/>
+            <ActivityIndicator
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-25}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-25}"
+                RelativeLayout.WidthConstraint="50"
+                RelativeLayout.HeightConstraint="50"
+                BackgroundColor="Transparent"
+                Color="{AppThemeBinding Dark={StaticResource LoaderColorDark}, Light=Black}"
+                IsRunning="{Binding IsLoading}"
+                IsEnabled="False" />
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <pages:PopupPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,20 +10,25 @@
     xmlns:controls="clr-namespace:atomex.CustomElements"
     xmlns:behavior="clr-namespace:atomex.Behaviors"
     x:Name="BindingContextPage"
-    x:Class="atomex.Views.SelectCurrencyBottomSheet">
+    x:Class="atomex.Views.SelectCurrencyBottomSheet"
+    xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:BindingContext="{d:DesignInstance vm:SelectCurrencyViewModel}">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <animations:ScaleAnimation
             PositionIn="Bottom"
             PositionOut="Bottom"
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
             EasingOut="SinIn"
-            HasBackgroundAnimation="True"/>
+            HasBackgroundAnimation="True" />
     </pages:PopupPage.Animation>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <StackLayout VerticalOptions="EndAndExpand"
@@ -30,7 +36,7 @@
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
                                                 ClosingEdge="448"
-                                                ClosingTimeInMs="300"/>
+                                                ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14"
@@ -43,7 +49,7 @@
                        HeightRequest="4"
                        Margin="0,0,0,30"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center" />
                 <Label Style="{DynamicResource MainTextH1}"
                        Margin="16,10"
                        HorizontalTextAlignment="Start"
@@ -53,13 +59,13 @@
                                      Binding="{Binding Type}"
                                      Value="Send">
                             <Setter Property="Text"
-                                    Value="{helpers:Translate SendFrom}"/>
+                                    Value="{helpers:Translate SendFrom}" />
                         </DataTrigger>
                         <DataTrigger TargetType="Label"
                                      Binding="{Binding Type}"
                                      Value="Receive">
                             <Setter Property="Text"
-                                    Value="{helpers:Translate ReceiveTo}"/>
+                                    Value="{helpers:Translate ReceiveTo}" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -74,8 +80,9 @@
                           Footer="">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <controls:CustomViewCell SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}"
-                                                     Height="55">
+                            <controls:CustomViewCell
+                                SelectedBackgroundColor="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}"
+                                Height="55">
                                 <StackLayout Orientation="Horizontal"
                                              Spacing="0">
                                     <Image Source="{Binding CurrencyCode}"
@@ -83,7 +90,7 @@
                                            WidthRequest="24"
                                            Margin="16,0"
                                            VerticalOptions="Center"
-                                           HorizontalOptions="Start"/>
+                                           HorizontalOptions="Start" />
                                     <Label Text="{Binding Currency.Description}"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
@@ -91,13 +98,15 @@
                                         <Label.Triggers>
                                             <MultiTrigger TargetType="Label">
                                                 <MultiTrigger.Conditions>
-                                                    <BindingCondition Binding="{Binding BindingContext.Type, Source={x:Reference BindingContextPage}}"
-                                                                      Value="Send"/>
-                                                    <BindingCondition Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                                      Value="False"/>
+                                                    <BindingCondition
+                                                        Binding="{Binding BindingContext.Type, Source={x:Reference BindingContextPage}}"
+                                                        Value="Send" />
+                                                    <BindingCondition
+                                                        Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                        Value="False" />
                                                 </MultiTrigger.Conditions>
                                                 <Setter Property="Opacity"
-                                                        Value="0.38"/>
+                                                        Value="0.38" />
                                             </MultiTrigger>
                                         </Label.Triggers>
                                     </Label>
@@ -109,20 +118,22 @@
                                         <Label.Triggers>
                                             <MultiTrigger TargetType="Label">
                                                 <MultiTrigger.Conditions>
-                                                    <BindingCondition Binding="{Binding BindingContext.Type, Source={x:Reference BindingContextPage}}"
-                                                                      Value="Send"/>
-                                                    <BindingCondition Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
-                                                                      Value="False"/>
+                                                    <BindingCondition
+                                                        Binding="{Binding BindingContext.Type, Source={x:Reference BindingContextPage}}"
+                                                        Value="Send" />
+                                                    <BindingCondition
+                                                        Binding="{Binding AvailableAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                                        Value="False" />
                                                 </MultiTrigger.Conditions>
                                                 <Setter Property="Opacity"
-                                                        Value="0.38"/>
+                                                        Value="0.38" />
                                             </MultiTrigger>
                                         </Label.Triggers>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.########}'}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding CurrencyName}"/>
+                                                <Span Text="{Binding AvailableAmount, StringFormat='{0:0.########}'}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrencyName}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

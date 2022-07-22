@@ -1,9 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
               xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-              x:Class="atomex.Views.Popup.CompletionPopup">
+              x:Class="atomex.Views.Popup.CompletionPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:PopupViewModel}">
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
                            PositionOut="Center"
@@ -13,7 +19,7 @@
                            DurationOut="300"
                            EasingIn="SinOut"
                            EasingOut="SinIn"
-                           HasBackgroundAnimation="True"/>
+                           HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
     <Frame CornerRadius="20"
            Padding="0"
@@ -36,13 +42,13 @@
                                  Binding="{Binding Type}"
                                  Value="Success">
                         <Setter Property="Animation"
-                                Value="{AppThemeBinding Dark=successful-completion_dark.json, Light=successful-completion_light.json}"/>
+                                Value="{AppThemeBinding Dark=successful-completion_dark.json, Light=successful-completion_light.json}" />
                     </DataTrigger>
                     <DataTrigger TargetType="lottie:AnimationView"
                                  Binding="{Binding Type}"
                                  Value="Error">
                         <Setter Property="Animation"
-                                Value="{AppThemeBinding Dark=failed-completion_dark.json, Light=failed-completion_light.json}"/>
+                                Value="{AppThemeBinding Dark=failed-completion_dark.json, Light=failed-completion_light.json}" />
                     </DataTrigger>
                 </lottie:AnimationView.Triggers>
             </lottie:AnimationView>
@@ -50,13 +56,13 @@
                    TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                    FontSize="18"
                    HorizontalTextAlignment="Center"
-                   FontFamily="{DynamicResource BoldFont}"/>
+                   FontFamily="{DynamicResource BoldFont}" />
             <Label Text="{Binding Body}"
                    TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                    FontSize="14"
                    HorizontalTextAlignment="Center"
                    FontFamily="{DynamicResource RegularFont}"
-                   Padding="0,0,0,20"/>
+                   Padding="0,0,0,20" />
             <Button Text="{Binding ButtonText}"
                     CornerRadius="22"
                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainButtonBackgroundColorDark}, Light={StaticResource MainButtonBackgroundColor}}"
@@ -73,13 +79,13 @@
                                  Binding="{Binding Type}"
                                  Value="Success">
                         <Setter Property="BackgroundColor"
-                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}"/>
+                                Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}" />
                     </DataTrigger>
                     <DataTrigger TargetType="Button"
                                  Binding="{Binding Type}"
                                  Value="Error">
                         <Setter Property="BackgroundColor"
-                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}"/>
+                                Value="{AppThemeBinding Dark={StaticResource ErrorTextColorDark}, Light={StaticResource ErrorTextColor}}" />
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

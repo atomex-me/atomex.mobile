@@ -1,5 +1,5 @@
 ﻿using System;
-using atomex.ViewModel;
+using atomex.ViewModels;
 using Xamarin.Forms;
 
 namespace atomex.Views

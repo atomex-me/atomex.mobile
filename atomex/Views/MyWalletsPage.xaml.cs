@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using atomex.ViewModels;
 using Xamarin.Forms;
 
-namespace atomex
+namespace atomex.Views
 {
     public partial class MyWalletsPage : ContentPage
     {
@@ -21,14 +22,14 @@ namespace atomex
                 : "ListViewSelectedBackgroundColor";
 
             Application.Current.Resources.TryGetValue(selectedColorName, out var selectedColor);
-            selectedItemBackgroundColor = (Color)selectedColor;
+            selectedItemBackgroundColor = (Color) selectedColor;
 
             BindingContext = myWalletsViewModel;
         }
 
         private async void OnItemTapped(object sender, EventArgs args)
         {
-            Frame selectedItem = (Frame)sender;
+            Frame selectedItem = (Frame) sender;
             selectedItem.IsEnabled = false;
             Color initColor = selectedItem.BackgroundColor;
 
