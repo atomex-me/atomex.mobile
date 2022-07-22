@@ -345,7 +345,7 @@ namespace atomex.ViewModels
                                 Path = path,
                                 HasTokens = HasTokens,
                                 IsFreeAddress = a?.Address == freeAddress?.Address,
-                                Balance = a.Balance,
+                                Balance = a.AvailableBalance,
                                 BalanceCode = _currency.DisplayedName,
                                 UpdateAddress = UpdateAddress
                             };
