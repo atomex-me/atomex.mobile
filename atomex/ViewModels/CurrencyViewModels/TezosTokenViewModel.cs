@@ -185,7 +185,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             IsRefreshing = false;
             IsAllTxsShowed = false;
-            SelectedTab = CurrencyTab.Activity;
+            
+            SelectedTab = tokenBalance.IsNft 
+                ? CurrencyTab.Details 
+                : CurrencyTab.Activity;
         }
 
         protected void OnAddresesChangedEventHandler()
@@ -509,6 +512,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                 }
             });
         }
+        
+        private ICommand _copyAddressCommand;
+        public ICommand CopyAddressCommand => _copyAddressCommand ??= new Command<string>((value) => CopyAddress(value));
+        
+        private ReactiveCommand<string, Unit> _showTokenInExplorerCommand;
+        public ReactiveCommand<string, Unit> ShowTokenInExplorerCommand => _showTokenInExplorerCommand ??=
+            ReactiveCommand.CreateFromTask<string>((value) =>
+                Launcher.OpenAsync(new Uri($"{TezosConfig.AddressExplorerUri}{Contract?.Address}/tokens/{TokenBalance?.TokenId}")));
 
         public bool IsIpfsAsset =>
             TokenBalance.ArtifactUri != null && ThumbsApi.HasIpfsPrefix(TokenBalance.ArtifactUri);
@@ -517,7 +528,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             ? $"http://ipfs.io/ipfs/{ThumbsApi.RemoveIpfsPrefix(TokenBalance.ArtifactUri)}"
             : null;
 
-        public void ShowAllTxs()
+        private ReactiveCommand<Unit, Unit> _showAllTxsCommand;
+        public ReactiveCommand<Unit, Unit> ShowAllTxsCommand => _showAllTxsCommand ??= ReactiveCommand.Create(() =>
         {
             IsAllTxsShowed = true;
             CanShowMoreTxs = false;
@@ -526,10 +538,11 @@ namespace atomex.ViewModels.CurrencyViewModels
             var groups = Transactions
                 .GroupBy(p => p.LocalTime.Date)
                 .OrderByDescending(g => g.Key)
-                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key, new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
+                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                    new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
-        }
+        });
 
         #region IDisposable Support
         private bool _disposedValue;

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Views.Collectibles.CollectiblePage"
+             Title="{Binding Name}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:CollectibleViewModel}">
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding Tokens, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedToken}"
+                        BackgroundColor="Transparent"
+                        SelectionMode="Single"
+                        Margin="16">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 VerticalItemSpacing="16"
+                                 HorizontalItemSpacing="16" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Spacing="0">
+                        <Frame HasShadow="False"
+                               WidthRequest="156"
+                               HeightRequest="156"
+                               Padding="0"
+                               CornerRadius="4"
+                               IsClippedToBounds="True">
+                            <Image Source="{Binding TokenPreview}"
+                                   WidthRequest="156"
+                                   HeightRequest="156"
+                                   Aspect="AspectFill" />
+                        </Frame>
+                        <Grid RowSpacing="0"
+                              ColumnSpacing="0"
+                              WidthRequest="156"
+                              Margin="0,6,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="24" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Description}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding TotalAmount}"
+                                   Style="{DynamicResource AdditionalTextH6}"
+                                   VerticalTextAlignment="Center"
+                                   Padding="8,0" />
+                        </Grid>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

@@ -801,6 +801,170 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+
+
+                    <StackLayout Spacing="0"
+                                 IsVisible="False">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding SelectedTab}"
+                                         Value="Collectibles">
+                                <Setter Property="IsVisible"
+                                        Value="True" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="Fill"
+                                     Padding="16,8,16,0"
+                                     HeightRequest="52"
+                                     Spacing="4">
+                            <Label Text="{helpers:Translate Collectibles}"
+                                   Style="{DynamicResource AdditionalTextH5}"
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center" />
+                            <Frame HasShadow="False"
+                                   WidthRequest="32"
+                                   Padding="0"
+                                   VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="End"
+                                   BackgroundColor="Transparent">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding CollectiblesViewModel.UpdateTokensCommand}" />
+                                </Frame.GestureRecognizers>
+                                <Image Source="ic_update"
+                                       WidthRequest="16"
+                                       HeightRequest="21"
+                                       Margin="8,16">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                                     Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <behavior:AnimationTrigger Action="Start" />
+                                            </DataTrigger.EnterActions>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                                     Value="False">
+                                            <DataTrigger.EnterActions>
+                                                <behavior:AnimationTrigger Action="Stop" />
+                                            </DataTrigger.EnterActions>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                            </Frame>
+                            <Frame HasShadow="False"
+                                   WidthRequest="32"
+                                   Padding="0"
+                                   VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="End"
+                                   BackgroundColor="Transparent">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding CollectiblesViewModel.ManageTokensCommand}" />
+                                </Frame.GestureRecognizers>
+                                <Image Source="ic_filters"
+                                       Margin="8,0,4,0"
+                                       HorizontalOptions="EndAndExpand"
+                                       VerticalOptions="FillAndExpand"
+                                       HeightRequest="16"
+                                       WidthRequest="16" />
+                            </Frame>
+                            <!--<Frame HasShadow="False"
+                                       WidthRequest="32"
+                                       Padding="0"
+                                       VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="End"
+                                       BackgroundColor="Transparent">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TokensActionSheetCommand}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="ic_menu"
+                                           WidthRequest="4"
+                                           HeightRequest="16"
+                                           HorizontalOptions="End"
+                                           Margin="10,17"/>
+                                </Frame>-->
+                        </StackLayout>
+                        <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                     Margin="16,0,0,8" />
+                        <StackLayout IsVisible="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
+                                     BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+                                     VerticalOptions="FillAndExpand"
+                                     Margin="0,30,0,60">
+                            <RelativeLayout VerticalOptions="End"
+                                            HorizontalOptions="Center">
+                                <ActivityIndicator
+                                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+                                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0}"
+                                    RelativeLayout.WidthConstraint="20"
+                                    RelativeLayout.HeightConstraint="20"
+                                    BackgroundColor="Transparent"
+                                    IsRunning="True"
+                                    Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
+
+                            </RelativeLayout>
+                            <Label Text="{helpers:Translate LoadingLabel}"
+                                   Style="{DynamicResource AdditionalTextH5}"
+                                   Margin="0,4"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Start" />
+                        </StackLayout>
+                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.Collectibles, Mode=OneWay}"
+                                        SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
+                                        BackgroundColor="Transparent"
+                                        SelectionMode="Single"
+                                        Margin="16">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                                 Span="2"
+                                                 VerticalItemSpacing="16"
+                                                 HorizontalItemSpacing="16" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Spacing="0">
+                                        <Frame HasShadow="False"
+                                               WidthRequest="156"
+                                               HeightRequest="156"
+                                               Padding="0"
+                                               CornerRadius="4"
+                                               IsClippedToBounds="True">
+                                            <Image Source="{Binding PreviewUrl}"
+                                                   WidthRequest="156"
+                                                   HeightRequest="156"
+                                                   Aspect="AspectFill" />
+                                        </Frame>
+                                        <Grid RowSpacing="0"
+                                              ColumnSpacing="0"
+                                              WidthRequest="156"
+                                              Margin="0,6,0,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="24" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding Name}"
+                                                   Style="{DynamicResource MainTextH5}"
+                                                   VerticalTextAlignment="Center"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding Amount}"
+                                                   Style="{DynamicResource AdditionalTextH6}"
+                                                   VerticalTextAlignment="Center"
+                                                   Padding="8,0" />
+                                        </Grid>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+
                     <ListView ItemsSource="{Binding Delegations}"
                               SelectionMode="Single"
                               SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"

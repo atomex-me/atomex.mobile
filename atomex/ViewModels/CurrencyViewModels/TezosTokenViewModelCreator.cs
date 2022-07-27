@@ -9,15 +9,16 @@ using Atomex.Wallet.Tezos;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
-    public class TezosTokenViewModelCreator
+    public static class TezosTokenViewModelCreator
     {
-        private readonly ConcurrentDictionary<(string, decimal), TezosTokenViewModel> Instances =
+        private static readonly ConcurrentDictionary<(string, decimal), TezosTokenViewModel> Instances =
             new();
 
-        public async Task<IEnumerable<TezosTokenViewModel>> CreateOrGet(
+        public static async Task<IEnumerable<TezosTokenViewModel>> CreateOrGet(
             IAtomexApp atomexApp,
             INavigationService navigationService,
-            TokenContract contract)
+            TokenContract contract,
+            bool isNft)
         {
             var tezosAccount = atomexApp.Account.GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
 
@@ -26,7 +27,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .GetTezosTokenAddressesByContractAsync(contract.Address);
 
             var tokenGroups = tokenWalletAddresses
-                .Where(walletAddress => !walletAddress.TokenBalance.IsNft) // skip NFT
+                .Where(walletAddress => isNft ? walletAddress.TokenBalance.IsNft : !walletAddress.TokenBalance.IsNft)
                 .GroupBy(walletAddress => walletAddress.TokenBalance.TokenId);
 
             var resultTokens = new List<TezosTokenViewModel>();
@@ -77,7 +78,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return resultTokens;
         }
 
-        public void Reset()
+        public static void Reset()
         {
             foreach (var tokenViewModel in Instances.Values)
             {

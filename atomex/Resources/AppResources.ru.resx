@@ -1208,4 +1208,10 @@
     <data name="UndelegateWarning" xml:space="preserve">
         <value>Вы уверены, что хотите отправить транзакцию, которая остановит делегирование {0} с комиссией {1} XTZ?</value>
     </data>
+    <data name="ContractAddress" xml:space="preserve">
+        <value>Адрес контракта</value>
+    </data>
+    <data name="ViewOnObjktButton" xml:space="preserve">
+        <value>View more on objkt.com</value>
+    </data>
 </root>

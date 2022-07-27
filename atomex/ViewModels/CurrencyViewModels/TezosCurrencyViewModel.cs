@@ -24,6 +24,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public ObservableCollection<DelegationViewModel> Delegations { get; set; }
         [Reactive] public DelegationViewModel SelectedDelegation { get; set; }
         [Reactive] public TezosTokensViewModel TezosTokensViewModel { get; set; }
+        
+        [Reactive] public CollectiblesViewModel CollectiblesViewModel { get; set; }
         private DelegateViewModel _delegateViewModel { get; set; }
 
         public const double DefaultDelegationRowHeight = 76;
@@ -61,6 +63,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             _delegateViewModel = new DelegateViewModel(_app, _navigationService);
             TezosTokensViewModel = new TezosTokensViewModel(_app, _navigationService);
+            CollectiblesViewModel = new CollectiblesViewModel(_app, _navigationService);
         }
 
         private async Task LoadDelegationInfoAsync()
