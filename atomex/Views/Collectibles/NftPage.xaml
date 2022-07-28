@@ -74,9 +74,9 @@
                             <RowDefinition Height="36" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3.33*" />
-                            <ColumnDefinition Width="3.33*" />
-                            <ColumnDefinition Width="3.33*" />
+                            <ColumnDefinition Width="3.3*" />
+                            <ColumnDefinition Width="3.3*" />
+                            <ColumnDefinition Width="3.3*" />
                         </Grid.ColumnDefinitions>
                         <Frame Grid.ColumnSpan="3"
                                CornerRadius="18"
@@ -170,19 +170,27 @@
                     <Grid RowSpacing="0"
                           ColumnSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="36" />
-                            <RowDefinition Height="36" />
+                            <RowDefinition Height="38" />
+                            <RowDefinition Height="38" />
                             <RowDefinition Height="0.5" />
                             <RowDefinition Height="0.5" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="36" />
                         </Grid.ColumnDefinitions>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowDescriptionCommand}" />
+                        </Grid.GestureRecognizers>
                         <Label Text="{helpers:Translate Description}"
                                Style="{DynamicResource AdditionalTextH5}"
                                Padding="0,0,0,6"
                                VerticalTextAlignment="End" />
+                        <Label Grid.Row="1"
+                               Text="{Binding TokenBalance.Description}"
+                               Style="{DynamicResource MainTextH4}"
+                               VerticalTextAlignment="Start"
+                               LineBreakMode="TailTruncation" />
                         <Image Grid.Column="1"
                                Grid.RowSpan="2"
                                HorizontalOptions="End"
@@ -190,12 +198,6 @@
                                HeightRequest="11"
                                Source="RightArrow__gray"
                                VerticalOptions="FillAndExpand" />
-                        <Label Grid.Row="1"
-                               Text="{Binding TokenBalance.Description}"
-                               Style="{DynamicResource MainTextH4}"
-                               VerticalTextAlignment="Start"
-                               MaxLines="2"
-                               LineBreakMode="TailTruncation" />
                         <Line Grid.Row="2"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                         <Line Grid.Row="3"
@@ -204,8 +206,8 @@
                     <Grid RowSpacing="0"
                           ColumnSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="36" />
-                            <RowDefinition Height="36" />
+                            <RowDefinition Height="38" />
+                            <RowDefinition Height="38" />
                             <RowDefinition Height="0.5" />
                             <RowDefinition Height="0.5" />
                         </Grid.RowDefinitions>
@@ -229,8 +231,8 @@
                     <Grid RowSpacing="0"
                           ColumnSpacing="6">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="36" />
-                            <RowDefinition Height="36" />
+                            <RowDefinition Height="38" />
+                            <RowDefinition Height="38" />
                             <RowDefinition Height="0.5" />
                             <RowDefinition Height="0.5" />
                         </Grid.RowDefinitions>
@@ -490,33 +492,48 @@
                                         <RowDefinition Height="20" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="44" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Address}"
+                                    <Label Grid.ColumnSpan="2"
+                                           Text="{Binding Address}"
                                            Style="{DynamicResource MainTextH4}"
                                            VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"
+                                           HorizontalOptions="FillAndExpand"
                                            LineBreakMode="MiddleTruncation" />
                                     <Label Grid.Row="1"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           VerticalTextAlignment="Center"
-                                           HorizontalTextAlignment="Start">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Balance}" />
-                                                <Span Text=" " />
-                                                <Span Text="{Binding BalanceCode}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Image Grid.Column="1"
-                                           Grid.RowSpan="2"
-                                           HorizontalOptions="End"
-                                           WidthRequest="11"
-                                           HeightRequest="11"
-                                           Source="RightArrow__gray"
-                                           Margin="8,16" />
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding TokenBalanceString}" />
+                                                    <Span Text=" / " />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Style="{DynamicResource AdditionalTextH5}"
+                                               VerticalTextAlignment="Center"
+                                               HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Balance}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding BalanceCode}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Image Grid.Column="2"
+                                               Grid.RowSpan="2"
+                                               HorizontalOptions="End"
+                                               WidthRequest="11"
+                                               HeightRequest="11"
+                                               Source="RightArrow__gray"
+                                               Margin="8,16" />
                                 </Grid>
                             </controls:CustomViewCell>
                         </DataTemplate>

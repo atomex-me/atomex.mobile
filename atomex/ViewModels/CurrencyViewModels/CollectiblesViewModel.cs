@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Client.Common;
 using atomex.Common;
+using atomex.Resources;
 using atomex.Views.Collectibles;
 using Atomex.Wallet;
 using Atomex.Wallet.Tezos;
@@ -15,6 +17,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Xamarin.Forms;
+using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
@@ -127,5 +130,44 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 _navigationService?.ShowPage(new CollectiblePage(collectible), TabNavigation.Portfolio);
             });
+        
+        private ReactiveCommand<Unit, Unit> _updateCollectiblesCommand;
+        public ReactiveCommand<Unit, Unit> UpdateCollectiblesCommand => _updateCollectiblesCommand ??=
+            (_updateCollectiblesCommand = ReactiveCommand.CreateFromTask(UpdateCollectibles));
+        
+        public async Task UpdateCollectibles()
+        {
+            var cancellation = new CancellationTokenSource();
+            IsCollectiblesLoading = true;
+
+            try
+            {
+                var tezosAccount = _app.Account
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz);
+
+                var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
+
+                await tezosTokensScanner.UpdateBalanceAsync(
+                    cancellationToken: cancellation.Token);
+
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    _navigationService?.DisplaySnackBar(MessageType.Regular,
+                        AppResources.Collectibles + " " + AppResources.HasBeenUpdated);
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Debug("Tezos collectibles update canceled");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Tezos collectibles update error");
+            }
+            finally
+            {
+                IsCollectiblesLoading = false;
+            }
+        }
     }
 }

@@ -831,7 +831,7 @@
                                    BackgroundColor="Transparent">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
-                                        Command="{Binding CollectiblesViewModel.UpdateTokensCommand}" />
+                                        Command="{Binding CollectiblesViewModel.UpdateCollectiblesCommand}" />
                                 </Frame.GestureRecognizers>
                                 <Image Source="ic_update"
                                        WidthRequest="16"
