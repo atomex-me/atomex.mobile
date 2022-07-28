@@ -69,15 +69,22 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
+        
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
-        public const double DefaultGroupHeight = 36;
+
+        public const double DefaultTxGroupHeight = 36;
+        public double DefaultTxRowHeight = 76;
+        public const double DefaultAddressRowHeight = 64;
+        public const double ListViewFooterHeight = 72;
+        [Reactive] public double TxListViewHeight { get; set; }
+        [Reactive] public double AddressListViewHeight { get; set; }
 
         private CancellationTokenSource _cancellationTokenSource;
 
         public class Grouping<K, T> : ObservableCollection<T>
         {
-            public double GroupHeight { get; set; } = DefaultGroupHeight;
+            public double GroupHeight { get; set; } = DefaultTxGroupHeight;
             public K Date { get; private set; }
 
             public Grouping(K date, IEnumerable<T> items)
@@ -209,12 +216,26 @@ namespace atomex.ViewModels.CurrencyViewModels
             this.WhenAnyValue(vm => vm.GroupedTransactions)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage);
+                {
+                    CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
+                        
+                    TxListViewHeight = IsAllTxsShowed
+                        ? Transactions.Count * DefaultTxRowHeight +
+                          GroupedTransactions.Count * DefaultTxGroupHeight +
+                          ListViewFooterHeight
+                        : TxsNumberPerPage * DefaultTxRowHeight +
+                          (GroupedTransactions.Count + 1) * DefaultTxGroupHeight;
+                });
 
             this.WhenAnyValue(vm => vm.Addresses)
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
-                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage);
+                {
+                    CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
+                    
+                    AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
+                                            ListViewFooterHeight;
+                });
 
             this.WhenAnyValue(vm => vm.AddressesViewModel)
                 .WhereNotNull()

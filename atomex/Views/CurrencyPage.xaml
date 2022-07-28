@@ -801,8 +801,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-
                     <StackLayout Spacing="0"
                                  IsVisible="False">
                         <StackLayout.Triggers>

@@ -280,7 +280,7 @@
                               CachingStrategy="RecycleElement"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
-                              RowHeight="72"
+                              HeightRequest="{Binding TxListViewHeight}"
                               IsVisible="False">
                         <ListView.Triggers>
                             <DataTrigger TargetType="ListView"
@@ -446,7 +446,7 @@
                               SeparatorVisibility="None"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
-                              RowHeight="64"
+                              HeightRequest="{Binding AddressListViewHeight}"
                               Margin="0,20"
                               IsVisible="False">
                         <ListView.Triggers>
