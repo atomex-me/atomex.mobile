@@ -37,13 +37,9 @@ namespace atomex.ViewModels.CurrencyViewModels
         protected IAccount _account;
         protected INavigationService _navigationService;
 
-        public const string Fa12 = "FA12";
-        public const string Fa2 = "FA2";
         public TezosConfig TezosConfig { get; set; }
         public TokenBalance TokenBalance { get; set; }
         public TokenContract Contract { get; set; }
-        public bool IsFa12 => Contract.GetContractType() == Fa12;
-        public bool IsFa2 => Contract.GetContractType() == Fa2;
         public static string BaseCurrencyCode => "USD";
         public string CurrencyCode => TokenBalance?.Symbol ?? "TOKENS";
         public string Description => TokenBalance?.Name ?? TokenBalance?.Symbol;
@@ -69,7 +65,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public bool CanShowMoreTxs { get; set; }
         [Reactive] public bool IsAllTxsShowed { get; set; }
         [Reactive] public bool CanShowMoreAddresses { get; set; }
-        
+
         public int TxsNumberPerPage = 3;
         public int AddressesNumberPerPage = 3;
 
@@ -145,8 +141,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                     return null;
                 }
 
-                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance.Contract, TokenBalance.ThumbnailUri,
-                             TokenBalance.DisplayUri ?? TokenBalance.ArtifactUri))
+                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance?.Contract, TokenBalance?.ThumbnailUri,
+                             TokenBalance?.DisplayUri ?? TokenBalance?.ArtifactUri))
                 {
                     var hasImageInCache = CacheHelper
                         .HasCacheAsync(new Uri(url))
@@ -190,9 +186,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             Transactions = new ObservableCollection<TransactionViewModel>();
             GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>();
 
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _account = app.Account ?? throw new ArgumentNullException(nameof(app.Account));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             Contract = contract;
             TokenBalance = tokenBalance;
 
@@ -218,7 +214,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(_ =>
                 {
                     CanShowMoreTxs = Transactions.Count > TxsNumberPerPage;
-                        
+
                     TxListViewHeight = IsAllTxsShowed
                         ? Transactions.Count * DefaultTxRowHeight +
                           GroupedTransactions.Count * DefaultTxGroupHeight +
@@ -232,7 +228,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(_ =>
                 {
                     CanShowMoreAddresses = AddressesViewModel?.Addresses?.Count > AddressesNumberPerPage;
-                    
+
                     AddressListViewHeight = AddressesNumberPerPage * DefaultAddressRowHeight +
                                             ListViewFooterHeight;
                 });
@@ -261,10 +257,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 Device.InvokeOnMainThreadAsync(() =>
                 {
-                    Addresses = new ObservableCollection<AddressViewModel>(
-                        AddressesViewModel?.Addresses
-                            .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
-                            .Take(AddressesNumberPerPage));
+                    Addresses = AddressesViewModel != null
+                        ? new ObservableCollection<AddressViewModel>(
+                            AddressesViewModel.Addresses
+                                .OrderByDescending(a => a?.TokenBalance?.ParsedBalance)
+                                .Take(AddressesNumberPerPage))
+                        : new ObservableCollection<AddressViewModel>();
                 });
             }
             catch (Exception e)
@@ -387,7 +385,6 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-                if (quote == null) return;
 
                 CurrentQuote = quote.Bid;
                 TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
@@ -472,8 +469,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 var tezosTokensScanner = new TezosTokensScanner(tezosAccount);
 
                 await tezosTokensScanner.UpdateBalanceAsync(
-                    tokenContract: Contract?.Address,
-                    tokenId: (int) TokenBalance?.TokenId,
+                    tokenContract: Contract.Address,
+                    tokenId: (int) TokenBalance.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -505,7 +502,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
-                tokenId: (int) TokenBalance?.TokenId);
+                tokenId: (int) TokenBalance.TokenId);
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -515,13 +512,21 @@ namespace atomex.ViewModels.CurrencyViewModels
             _navigationService?.CloseBottomSheet();
 
             _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
-            var sendViewModel = new TezosTokensSendViewModel(
-                app: _app,
-                navigationService: _navigationService,
-                tokenContract: Contract.Address,
-                tokenId: (int) TokenBalance?.TokenId,
-                tokenType: Contract.GetContractType(),
-                tokenPreview: TokenPreview);
+            var sendViewModel = TokenBalance.IsNft
+                ? new NftSendViewModel(
+                    app: _app,
+                    navigationService: _navigationService,
+                    tokenContract: Contract.Address,
+                    tokenId: (int) TokenBalance.TokenId,
+                    tokenType: Contract.GetContractType(),
+                    tokenPreview: TokenPreview)
+                : new TezosTokensSendViewModel(
+                    app: _app,
+                    navigationService: _navigationService,
+                    tokenContract: Contract.Address,
+                    tokenId: (int) TokenBalance.TokenId,
+                    tokenType: Contract.GetContractType(),
+                    tokenPreview: TokenPreview);
 
             _navigationService?.ShowPage(new SelectAddressPage(sendViewModel.SelectFromViewModel),
                 TabNavigation.Portfolio);

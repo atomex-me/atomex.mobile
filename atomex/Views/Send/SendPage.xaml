@@ -165,7 +165,7 @@
                        Grid.RowSpan="2"
                        Grid.Column="1"
                        Text="{Binding To}"
-                       Style="{DynamicResource MainTextH5}"
+                       Style="{DynamicResource MainTextH4}"
                        LineHeight="1.25"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center">

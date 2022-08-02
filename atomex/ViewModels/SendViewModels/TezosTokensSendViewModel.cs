@@ -43,11 +43,10 @@ namespace atomex.ViewModels.SendViewModels
         [Reactive] public string To { get; set; }
         [Reactive] public UriImageSource TokenPreview { get; set; }
         private readonly string _tokenType;
-        public bool IsFa2 => _tokenType == "FA2";
 
         [Reactive] public decimal Amount { get; set; }
         [ObservableAsProperty] public string TotalAmountString { get; }
-        public string AmountString
+        public virtual string AmountString
         {
             get => Amount.ToString(CultureInfo.InvariantCulture);
             set
@@ -184,8 +183,8 @@ namespace atomex.ViewModels.SendViewModels
             UriImageSource tokenPreview,
             string from = null)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             Message = new Message();
 
             var tezosConfig = _app.Account

@@ -113,7 +113,7 @@
                             <FormattedString>
                                 <Span Text="{Binding SelectedFromBalance}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyName}" />
+                                <Span Text="{Binding CurrencyCode}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -201,7 +201,7 @@
                                           FontSize="14"
                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding CurrencyName}"
+                                    <Span Text="{Binding CurrencyCode}"
                                           FontSize="14"
                                           TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}" />
                                     <Span Text=" / "
@@ -316,7 +316,8 @@
                         </Label>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal"
-                                 Spacing="4">
+                                 Spacing="4"
+                                 Padding="0,2">
                         <StackLayout.Triggers>
                             <DataTrigger TargetType="StackLayout"
                                          Binding="{Binding TokenId, TargetNullValue='0', FallbackValue='0'}"
@@ -339,7 +340,8 @@
                     </StackLayout>
                     <StackLayout Orientation="Horizontal"
                                  Spacing="4"
-                                 IsVisible="{Binding TokenContract, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}">
+                                 IsVisible="{Binding TokenContract, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}"
+                                 Padding="0,2">
                         <Label Text="{helpers:Translate TokenContract}"
                                Style="{DynamicResource AdditionalTextH5}"
                                HorizontalTextAlignment="Start"
@@ -370,7 +372,7 @@
                                 <FormattedString>
                                     <Span Text="{Binding TotalAmountString}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding CurrencyName}" />
+                                    <Span Text="{Binding CurrencyCode}" />
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
