@@ -5,11 +5,18 @@
              x:Class="atomex.Views.Collectibles.CollectiblePage"
              Title="{Binding Name}"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+             xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="clr-namespace:atomex.Behaviors;assembly=atomex"
              mc:Ignorable="d"
              d:BindingContext="{d:DesignInstance vm:CollectibleViewModel}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding Tokens, Mode=OneWay}"
                         SelectedItem="{Binding SelectedToken}"
@@ -34,7 +41,27 @@
                             <Image Source="{Binding TokenPreview}"
                                    WidthRequest="156"
                                    HeightRequest="156"
-                                   Aspect="AspectFill" />
+                                   Aspect="AspectFill"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                 Value="False">
+                                        <DataTrigger.EnterActions>
+                                            <behaviors:FadeAnimationTrigger Action="Start" />
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                 Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <behaviors:FadeAnimationTrigger Action="Stop" />
+                                        </DataTrigger.EnterActions>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent"/>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
                         </Frame>
                         <Grid RowSpacing="0"
                               ColumnSpacing="0"

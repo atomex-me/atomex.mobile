@@ -102,78 +102,57 @@ namespace atomex.ViewModels.CurrencyViewModels
                 CatavaApiUri = TezosConfig.CatavaApiUri
             });
 
-        public UriImageSource TokenPreview
+        public ImageSource TokenPreview { get; set; }
+
+        protected ImageSource GetTokenPreview(string url)
         {
-            get
+            var hasImageInCache = CacheHelper
+                .HasCacheAsync(new Uri(url))
+                .WaitForResult();
+            
+            if (hasImageInCache)
             {
-                if (TokenBalance != null && TokenBalance.IsNft)
+                return new UriImageSource
                 {
-                    var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
-
-                    var hasImageInCache = CacheHelper
-                        .HasCacheAsync(new Uri(url))
-                        .WaitForResult();
-
-                    if (hasImageInCache)
-                    {
-                        return new UriImageSource
-                        {
-                            Uri = new Uri(url),
-                            CachingEnabled = true,
-                            CacheValidity = new TimeSpan(5, 0, 0, 0)
-                        };
-                    }
-
-                    var downloaded = CacheHelper
-                        .SaveToCacheAsync(new Uri(url))
-                        .WaitForResult();
-
-                    if (downloaded)
-                    {
-                        return new UriImageSource
-                        {
-                            Uri = new Uri(url),
-                            CachingEnabled = true,
-                            CacheValidity = new TimeSpan(5, 0, 0, 0)
-                        };
-                    }
-
-                    return null;
-                }
-
-                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance?.Contract, TokenBalance?.ThumbnailUri,
-                             TokenBalance?.DisplayUri ?? TokenBalance?.ArtifactUri))
+                    Uri = new Uri(url),
+                    CachingEnabled = true,
+                    CacheValidity = new TimeSpan(365, 0, 0, 0)
+                };
+            }
+            
+            var downloaded = CacheHelper
+                .SaveToCacheAsync(new Uri(url))
+                .WaitForResult();
+            
+            if (downloaded)
+            {
+                return new UriImageSource
                 {
-                    var hasImageInCache = CacheHelper
-                        .HasCacheAsync(new Uri(url))
-                        .WaitForResult();
+                    Uri = new Uri(url),
+                    CachingEnabled = true,
+                    CacheValidity = new TimeSpan(365, 0, 0, 0)
+                };
+            }
 
-                    if (hasImageInCache)
-                    {
-                        return new UriImageSource
-                        {
-                            Uri = new Uri(url),
-                            CachingEnabled = true,
-                            CacheValidity = new TimeSpan(5, 0, 0, 0)
-                        };
-                    }
+            return null;
+        }
 
-                    var downloaded = CacheHelper
-                        .SaveToCacheAsync(new Uri(url))
-                        .WaitForResult();
+        protected void InitTokenPreview()
+        {
+            if (TokenBalance == null) return;
 
-                    if (downloaded)
-                    {
-                        return new UriImageSource
-                        {
-                            Uri = new Uri(url),
-                            CachingEnabled = true,
-                            CacheValidity = new TimeSpan(5, 0, 0, 0)
-                        };
-                    }
+            if (TokenBalance.IsNft)
+            {
+                var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
+                TokenPreview = GetTokenPreview(url);
+            }
+            else
+            {
+                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance.Contract, TokenBalance.ThumbnailUri,
+                             TokenBalance.DisplayUri ?? TokenBalance.ArtifactUri))
+                {
+                    TokenPreview = GetTokenPreview(url);
                 }
-
-                return null;
             }
         }
 
@@ -249,6 +228,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             SelectedTab = tokenBalance != null && tokenBalance.IsNft
                 ? CurrencyTab.Details
                 : CurrencyTab.Activity;
+            
+            InitTokenPreview();
         }
 
         protected void OnAddresesChangedEventHandler()
@@ -385,7 +366,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-
+                if (quote == null) return;
+                
                 CurrentQuote = quote.Bid;
                 TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
             }

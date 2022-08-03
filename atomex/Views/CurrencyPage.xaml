@@ -20,6 +20,7 @@
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
             <converters:StringToBoolConverter x:Key="StringToBool" />
+            <converters:NullToBooleanConverter x:Key="NullToBoolean" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding  IsRefreshing}"
@@ -654,14 +655,14 @@
                                                              Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
                                                              Value="True">
                                                     <DataTrigger.EnterActions>
-                                                        <behavior:AnimationTrigger Action="Start" />
+                                                        <behavior:RotateAnimationTrigger Action="Start" />
                                                     </DataTrigger.EnterActions>
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="Image"
                                                              Binding="{Binding TezosTokensViewModel.IsTokensLoading}"
                                                              Value="False">
                                                     <DataTrigger.EnterActions>
-                                                        <behavior:AnimationTrigger Action="Stop" />
+                                                        <behavior:RotateAnimationTrigger Action="Stop" />
                                                     </DataTrigger.EnterActions>
                                                 </DataTrigger>
                                             </Image.Triggers>
@@ -716,7 +717,6 @@
                                             BackgroundColor="Transparent"
                                             IsRunning="True"
                                             Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-
                                     </RelativeLayout>
                                     <Label Text="{helpers:Translate LoadingLabel}"
                                            Style="{DynamicResource AdditionalTextH5}"
@@ -748,7 +748,27 @@
                                                HeightRequest="24"
                                                WidthRequest="24"
                                                VerticalOptions="Center"
-                                               HorizontalOptions="End" />
+                                               HorizontalOptions="End"
+                                               BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                             Value="False">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:FadeAnimationTrigger Action="Start" />
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image"
+                                                             Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                             Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <behavior:FadeAnimationTrigger Action="Stop" />
+                                                    </DataTrigger.EnterActions>
+                                                    <Setter Property="BackgroundColor"
+                                                            Value="Transparent"/>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
                                         <Label Grid.Column="1"
                                                Text="{Binding Description}"
                                                Style="{DynamicResource MainTextH4}"
@@ -840,14 +860,14 @@
                                                      Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
                                                      Value="True">
                                             <DataTrigger.EnterActions>
-                                                <behavior:AnimationTrigger Action="Start" />
+                                                <behavior:RotateAnimationTrigger Action="Start" />
                                             </DataTrigger.EnterActions>
                                         </DataTrigger>
                                         <DataTrigger TargetType="Image"
                                                      Binding="{Binding CollectiblesViewModel.IsCollectiblesLoading}"
                                                      Value="False">
                                             <DataTrigger.EnterActions>
-                                                <behavior:AnimationTrigger Action="Stop" />
+                                                <behavior:RotateAnimationTrigger Action="Stop" />
                                             </DataTrigger.EnterActions>
                                         </DataTrigger>
                                     </Image.Triggers>
@@ -902,7 +922,6 @@
                                     BackgroundColor="Transparent"
                                     IsRunning="True"
                                     Color="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-
                             </RelativeLayout>
                             <Label Text="{helpers:Translate LoadingLabel}"
                                    Style="{DynamicResource AdditionalTextH5}"
@@ -912,6 +931,7 @@
                         </StackLayout>
                         <CollectionView ItemsSource="{Binding CollectiblesViewModel.Collectibles, Mode=OneWay}"
                                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
+                                        HorizontalScrollBarVisibility="Never"
                                         BackgroundColor="Transparent"
                                         SelectionMode="Single"
                                         Margin="16">
@@ -930,10 +950,28 @@
                                                Padding="0"
                                                CornerRadius="4"
                                                IsClippedToBounds="True">
-                                            <Image Source="{Binding PreviewUrl}"
+                                            <Image Source="{Binding TokenPreview}"
                                                    WidthRequest="156"
                                                    HeightRequest="156"
-                                                   Aspect="AspectFill" />
+                                                   Aspect="AspectFill"
+                                                   BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                                 Value="False">
+                                                        <DataTrigger.EnterActions>
+                                                            <behavior:FadeAnimationTrigger Action="Start" />
+                                                        </DataTrigger.EnterActions>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                                 Value="True">
+                                                        <DataTrigger.EnterActions>
+                                                            <behavior:FadeAnimationTrigger Action="Stop" />
+                                                        </DataTrigger.EnterActions>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
                                         </Frame>
                                         <Grid RowSpacing="0"
                                               ColumnSpacing="0"
@@ -961,8 +999,6 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </StackLayout>
-
-
                     <ListView ItemsSource="{Binding Delegations}"
                               SelectionMode="Single"
                               SelectedItem="{Binding SelectedDelegation, Mode=TwoWay}"

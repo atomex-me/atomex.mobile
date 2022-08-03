@@ -44,7 +44,7 @@ namespace atomex.ViewModels.SendViewModels
             string tokenContract,
             int tokenId,
             string tokenType,
-            UriImageSource tokenPreview,
+            ImageSource tokenPreview,
             string from = null)
             : base(app, navigationService, tokenContract, tokenId, tokenType, tokenPreview, from)
         {

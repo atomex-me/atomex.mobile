@@ -17,48 +17,52 @@ namespace atomex.ViewModels.CurrencyViewModels
     {
         private readonly IAtomexApp _app;
         private readonly INavigationService _navigationService;
-        public IEnumerable<TezosTokenViewModel> Tokens { get; set; }
+        [Reactive] public IEnumerable<TezosTokenViewModel> Tokens { get; set; }
 
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         public string Name => Tokens.First().Contract.Name ?? Tokens.First().Contract.Address;
 
-        public UriImageSource PreviewUrl
+        public ImageSource TokenPreview { get; set; }
+
+        protected ImageSource GetCollectiblePreview(string url)
         {
-            get
+            var hasImageInCache = CacheHelper
+                .HasCacheAsync(new Uri(url))
+                .WaitForResult();
+
+            if (hasImageInCache)
             {
-                var url = ThumbsApi.GetCollectiblePreviewUrl(Tokens.First().Contract.Address,
-                    Tokens.First().TokenBalance.TokenId);
-
-                var hasImageInCache = CacheHelper
-                    .HasCacheAsync(new Uri(url))
-                    .WaitForResult();
-
-                if (hasImageInCache)
+                return new UriImageSource
                 {
-                    return new UriImageSource
-                    {
-                        Uri = new Uri(url),
-                        CachingEnabled = true,
-                        CacheValidity = new TimeSpan(5, 0, 0, 0)
-                    };
-                }
-
-                var downloaded = CacheHelper
-                    .SaveToCacheAsync(new Uri(url))
-                    .WaitForResult();
-
-                if (downloaded)
-                {
-                    return new UriImageSource
-                    {
-                        Uri = new Uri(url),
-                        CachingEnabled = true,
-                        CacheValidity = new TimeSpan(5, 0, 0, 0)
-                    };
-                }
-
-                return null;
+                    Uri = new Uri(url),
+                    CachingEnabled = true,
+                    CacheValidity = new TimeSpan(365, 0, 0, 0)
+                };
             }
+            
+            var downloaded = CacheHelper
+                .SaveToCacheAsync(new Uri(url))
+                .WaitForResult();
+            
+            if (downloaded)
+            {
+                return new UriImageSource
+                {
+                    Uri = new Uri(url),
+                    CachingEnabled = true,
+                    CacheValidity = new TimeSpan(365, 0, 0, 0)
+                };
+            }
+
+            return null;
+        }
+
+        protected void InitCollectiblePreview()
+        {
+            var url = ThumbsApi.GetCollectiblePreviewUrl(Tokens.First().Contract.Address,
+                Tokens.First().TokenBalance.TokenId);
+            
+            TokenPreview = GetCollectiblePreview(url);
         }
 
         public int Amount => Tokens
@@ -71,6 +75,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+
+            this.WhenAnyValue(vm => vm.Tokens)
+                .WhereNotNull()
+                .SubscribeInMainThread(async token =>
+                    InitCollectiblePreview());
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()

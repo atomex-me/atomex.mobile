@@ -41,7 +41,7 @@ namespace atomex.ViewModels.SendViewModels
         [Reactive] public string TokenContract { get; set; }
         [Reactive] public int TokenId { get; set; }
         [Reactive] public string To { get; set; }
-        [Reactive] public UriImageSource TokenPreview { get; set; }
+        [Reactive] public ImageSource TokenPreview { get; set; }
         private readonly string _tokenType;
 
         [Reactive] public decimal Amount { get; set; }
@@ -180,7 +180,7 @@ namespace atomex.ViewModels.SendViewModels
             string tokenContract,
             int tokenId,
             string tokenType,
-            UriImageSource tokenPreview,
+            ImageSource tokenPreview,
             string from = null)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));

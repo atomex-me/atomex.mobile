@@ -169,14 +169,14 @@
                                      Binding="{Binding IsUpdating}"
                                      Value="True">
                             <DataTrigger.EnterActions>
-                                <behavior:AnimationTrigger Action="Start" />
+                                <behavior:RotateAnimationTrigger Action="Start" />
                             </DataTrigger.EnterActions>
                         </DataTrigger>
                         <DataTrigger TargetType="Image"
                                      Binding="{Binding IsUpdating}"
                                      Value="False">
                             <DataTrigger.EnterActions>
-                                <behavior:AnimationTrigger Action="Stop" />
+                                <behavior:RotateAnimationTrigger Action="Stop" />
                             </DataTrigger.EnterActions>
                         </DataTrigger>
                     </Image.Triggers>
