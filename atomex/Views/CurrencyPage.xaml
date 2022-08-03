@@ -1035,22 +1035,29 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="36" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.RowSpan="2"
-                                               Source="{Binding Baker.Logo}"
-                                               HeightRequest="24"
+                                        <Frame Grid.RowSpan="2"
+                                               HasShadow="False"
                                                WidthRequest="24"
-                                               Margin="0,0,12,0"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="Start">
-                                            <Image.Triggers>
-                                                <DataTrigger TargetType="Image"
+                                               HeightRequest="24"
+                                               Padding="0"
+                                               Margin="0,24,12,24"
+                                               CornerRadius="4"
+                                               IsClippedToBounds="True"
+                                               BackgroundColor="Transparent">
+                                            <Frame.Triggers>
+                                                <DataTrigger TargetType="Frame"
                                                              Binding="{Binding Status}"
                                                              Value="NotDelegated">
                                                     <Setter Property="IsVisible"
                                                             Value="False" />
                                                 </DataTrigger>
-                                            </Image.Triggers>
-                                        </Image>
+                                            </Frame.Triggers>
+                                            <Image Source="{Binding Baker.Logo}"
+                                                   HeightRequest="24"
+                                                   WidthRequest="24"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Start"/>
+                                        </Frame>
                                         <Label Grid.Column="1"
                                                Text="{Binding Address}"
                                                Style="{DynamicResource MainTextH4}"

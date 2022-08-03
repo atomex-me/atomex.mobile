@@ -33,7 +33,7 @@
                        Text="{Binding Title}" />
                 <StackLayout Spacing="5"
                              Orientation="Vertical"
-                             VerticalOptions="Fill">
+                             VerticalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal"
                                  HorizontalOptions="Fill"
                                  Margin="16,0"
@@ -91,6 +91,7 @@
                               HasUnevenRows="True"
                               SeparatorVisibility="Default"
                               CachingStrategy="RetainElement"
+                              VerticalOptions="FillAndExpand"
                               RowHeight="76"
                               Footer="">
                         <ListView.ItemTemplate>
@@ -110,10 +111,19 @@
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.RowSpan="2"
+                                        <Frame Grid.RowSpan="2"
+                                               HasShadow="False"
                                                WidthRequest="24"
                                                HeightRequest="24"
-                                               Source="{Binding Logo}" />
+                                               Padding="0"
+                                               Margin="0,26"
+                                               CornerRadius="4"
+                                               IsClippedToBounds="True"
+                                               BackgroundColor="Transparent">
+                                            <Image WidthRequest="24"
+                                                   HeightRequest="24"
+                                                   Source="{Binding Logo}" />
+                                        </Frame>
                                         <Label Grid.Column="1"
                                                Text="{Binding Name}"
                                                Style="{DynamicResource MainTextH4}"

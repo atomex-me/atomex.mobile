@@ -70,10 +70,6 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                var balance = await _app.Account
-                    .GetBalanceAsync(Tezos.Name)
-                    .ConfigureAwait(false);
-
                 var addresses = await _app.Account
                     .GetUnspentAddressesAsync(Tezos.Name)
                     .ConfigureAwait(false);
