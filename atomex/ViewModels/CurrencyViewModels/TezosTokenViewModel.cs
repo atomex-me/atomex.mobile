@@ -102,14 +102,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                 CatavaApiUri = TezosConfig.CatavaApiUri
             });
 
-        public ImageSource TokenPreview { get; set; }
+        [Reactive] public ImageSource TokenPreview { get; set; }
 
         protected ImageSource GetTokenPreview(string url)
         {
             var hasImageInCache = CacheHelper
                 .HasCacheAsync(new Uri(url))
                 .WaitForResult();
-            
+
             if (hasImageInCache)
             {
                 return new UriImageSource
@@ -119,11 +119,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     CacheValidity = new TimeSpan(365, 0, 0, 0)
                 };
             }
-            
+
             var downloaded = CacheHelper
                 .SaveToCacheAsync(new Uri(url))
                 .WaitForResult();
-            
+
             if (downloaded)
             {
                 return new UriImageSource
@@ -228,7 +228,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             SelectedTab = tokenBalance != null && tokenBalance.IsNft
                 ? CurrencyTab.Details
                 : CurrencyTab.Activity;
-            
+
             InitTokenPreview();
         }
 
@@ -367,7 +367,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
                 if (quote == null) return;
-                
+
                 CurrentQuote = quote.Bid;
                 TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
             }

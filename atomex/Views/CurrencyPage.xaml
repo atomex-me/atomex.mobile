@@ -931,6 +931,7 @@
                         </StackLayout>
                         <CollectionView ItemsSource="{Binding CollectiblesViewModel.Collectibles, Mode=OneWay}"
                                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
+                                        HeightRequest="{Binding CollectiblesViewModel.CollectibleListViewHeight}"
                                         HorizontalScrollBarVisibility="Never"
                                         BackgroundColor="Transparent"
                                         SelectionMode="Single"

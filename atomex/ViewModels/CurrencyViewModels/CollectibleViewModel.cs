@@ -22,7 +22,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         public string Name => Tokens.First().Contract.Name ?? Tokens.First().Contract.Address;
 
-        public ImageSource TokenPreview { get; set; }
+        [Reactive] public ImageSource TokenPreview { get; set; }
 
         protected ImageSource GetCollectiblePreview(string url)
         {
@@ -67,8 +67,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         public int Amount => Tokens
             .Aggregate(0, (result, tokenViewModel) => result + decimal.ToInt32(tokenViewModel.TotalAmount));
-
-
+        
         public CollectibleViewModel(
             IAtomexApp app,
             INavigationService navigationService)

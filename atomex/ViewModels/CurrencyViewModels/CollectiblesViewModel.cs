@@ -31,6 +31,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
         [Reactive] public bool IsCollectiblesLoading { get; set; }
 
+        public const double DefaultCollectibleHeight = 224;
+        public const double CollectiblesPerRow = 2;
+
+        [Reactive] public double CollectibleListViewHeight { get; set; }
+
         public CollectiblesViewModel(
             IAtomexApp app,
             INavigationService navigationService)
@@ -43,7 +48,14 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             this.WhenAnyValue(vm => vm.Contracts)
                 .WhereNotNull()
-                .SubscribeInMainThread(collectibles => _ = LoadCollectibles());
+                .SubscribeInMainThread(collectibles =>
+                    _ = LoadCollectibles());
+
+            this.WhenAnyValue(vm => vm.Collectibles)
+                .WhereNotNull()
+                .SubscribeInMainThread(collectibles =>
+                    CollectibleListViewHeight =
+                        Math.Ceiling(Collectibles.Count / CollectiblesPerRow) * DefaultCollectibleHeight);
 
             this.WhenAnyValue(vm => vm.SelectedCollectible)
                 .WhereNotNull()
@@ -68,7 +80,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                await Device.InvokeOnMainThreadAsync(async () => { await ReloadTokenContractsAsync(); });
+                await Device.InvokeOnMainThreadAsync(async () =>
+                    await ReloadTokenContractsAsync());
             }
             catch (Exception e)
             {
@@ -130,11 +143,12 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 _navigationService?.ShowPage(new CollectiblePage(collectible), TabNavigation.Portfolio);
             });
-        
+
         private ReactiveCommand<Unit, Unit> _updateCollectiblesCommand;
+
         public ReactiveCommand<Unit, Unit> UpdateCollectiblesCommand => _updateCollectiblesCommand ??=
             (_updateCollectiblesCommand = ReactiveCommand.CreateFromTask(UpdateCollectibles));
-        
+
         public async Task UpdateCollectibles()
         {
             var cancellation = new CancellationTokenSource();
