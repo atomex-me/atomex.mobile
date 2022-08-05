@@ -173,10 +173,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\RightArrow__black.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\RightArrow__blue.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -335,10 +331,6 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-night\LogoLabel.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-night\RightArrow__black.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

@@ -110,8 +110,6 @@
     <ImageAsset Include="Assets.xcassets\RightArrow__white.imageset\Right-arrow-2__white.pdf" />
     <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Right-arrow-2__blue.pdf" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__black.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__black.imageset\Right-arrow-2__black.pdf" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png" />
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json" />

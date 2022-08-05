@@ -75,9 +75,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -98,9 +100,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -122,9 +126,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -146,9 +152,11 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
             </StackLayout>
