@@ -71,7 +71,7 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate SendButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -94,7 +94,7 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate ReceiveButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -118,7 +118,7 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate ExchangeButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -142,7 +142,7 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate BuyButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

@@ -999,7 +999,7 @@ namespace atomex.ViewModels.ConversionViewModels
                         : FormattableString.Invariant($"{EstimatedRedeemFeeInBase:(0.00$)}"),
                     AppResources.MakerFeeLabel,
                     FormattableString.Invariant(
-                        $"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.CurrencyCode}"),
+                        $"{EstimatedMakerNetworkFee} {FromViewModel?.CurrencyViewModel?.CurrencyName}"),
                     FormattableString.Invariant($"{EstimatedMakerNetworkFeeInBase:(0.00$)}"),
                     AppResources.TotalNetworkFeeLabel,
                     FormattableString.Invariant($"{EstimatedTotalNetworkFeeInBase:0.00$}"));
@@ -1192,7 +1192,7 @@ namespace atomex.ViewModels.ConversionViewModels
                     return;
                 }
 
-                var side = symbol.OrderSideForBuyCurrency(ToViewModel.CurrencyViewModel.Currency);
+                var side = symbol.OrderSideForBuyCurrency(ToViewModel?.CurrencyViewModel.Currency);
                 var price = EstimatedPrice;
                 var baseCurrency = _currencies.GetByName(symbol.Base);
 

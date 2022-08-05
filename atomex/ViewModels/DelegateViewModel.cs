@@ -488,8 +488,6 @@ namespace atomex.ViewModels
                             StakingAvailable = bakerData.StakingAvailable
                         })
                         .ToList();
-
-                    // TODO: load logo from cash
                 });
             }
             catch (Exception e)
