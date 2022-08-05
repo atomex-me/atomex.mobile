@@ -179,7 +179,7 @@
                     </Grid>
                 </ScrollView>
                 <StackLayout Spacing="0"
-                             Margin="16,0"
+                             Margin="16,0,20,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
@@ -216,11 +216,12 @@
                         <Image Grid.Column="1"
                                Grid.RowSpan="2"
                                HorizontalOptions="End"
-                               WidthRequest="11"
-                               HeightRequest="11"
-                               Source="RightArrow__gray"
+                               WidthRequest="8"
+                               HeightRequest="12"
+                               Source="ic_forward"
                                VerticalOptions="FillAndExpand" />
                         <Line Grid.Row="2"
+                              Grid.ColumnSpan="2"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                         <Line Grid.Row="3"
                               BackgroundColor="Transparent" />
@@ -552,9 +553,9 @@
                                         <Image Grid.Column="2"
                                                Grid.RowSpan="2"
                                                HorizontalOptions="End"
-                                               WidthRequest="11"
-                                               HeightRequest="11"
-                                               Source="RightArrow__gray"
+                                               WidthRequest="8"
+                                               HeightRequest="12"
+                                               Source="ic_forward"
                                                Margin="8,16" />
                                 </Grid>
                             </controls:CustomViewCell>

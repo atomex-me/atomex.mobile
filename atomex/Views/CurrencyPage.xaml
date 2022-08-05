@@ -590,9 +590,9 @@
                                         <Image Grid.Column="1"
                                                Grid.RowSpan="2"
                                                HorizontalOptions="End"
-                                               WidthRequest="11"
-                                               HeightRequest="11"
-                                               Source="RightArrow__gray"
+                                               WidthRequest="8"
+                                               HeightRequest="12"
+                                               Source="ic_forward"
                                                Margin="8,16" />
                                     </Grid>
                                 </controls:CustomViewCell>

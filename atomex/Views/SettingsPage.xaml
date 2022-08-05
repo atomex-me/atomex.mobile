@@ -69,10 +69,10 @@
                                Style="{DynamicResource OptionLabelStyle}" />
                         <Label Text="{Binding Language.Name}"
                                Style="{DynamicResource OptionValueLabelStyle}" />
-                        <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                        <Image Source="ic_forward"
                                Margin="10,15,20,15"
-                               HeightRequest="10"
-                               WidthRequest="10" />
+                               WidthRequest="8"
+                               HeightRequest="12"/>
                     </StackLayout>
                 </Frame>
                 <Label Text="{helpers:Translate CommunitySection}"
@@ -120,9 +120,11 @@
                             <TapGestureRecognizer Command="{Binding TelegramCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                    <Image Source="ic_forward"
                            Grid.Column="2"
                            Margin="20,15"
+                           WidthRequest="8"
+                           HeightRequest="12"
                            HorizontalOptions="End" />
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
                                  Grid.Row="1"
@@ -153,9 +155,11 @@
                             <TapGestureRecognizer Command="{Binding TwitterCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                    <Image Source="ic_forward"
                            Grid.Row="2"
                            Grid.Column="2"
+                           WidthRequest="8"
+                           HeightRequest="12"
                            Margin="20,15"
                            HorizontalOptions="End" />
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -187,9 +191,11 @@
                             <TapGestureRecognizer Command="{Binding YoutubeCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                    <Image Source="ic_forward"
                            Grid.Row="4"
                            Grid.Column="2"
+                           WidthRequest="8"
+                           HeightRequest="12"
                            Margin="20,15"
                            HorizontalOptions="End" />
                     <StackLayout Style="{DynamicResource SeparatorStyle}"
@@ -221,9 +227,11 @@
                             <TapGestureRecognizer Command="{Binding SupportCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__gray}"
+                    <Image Source="ic_forward"
                            Grid.Row="6"
                            Grid.Column="2"
+                           WidthRequest="8"
+                           HeightRequest="12"
                            Margin="20,15"
                            HorizontalOptions="End" />
                 </Grid>

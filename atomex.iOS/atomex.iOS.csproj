@@ -118,8 +118,6 @@
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__gray.imageset\Right-arrow-2__gray.pdf" />
     <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
@@ -303,6 +301,9 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\152.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\167.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\1024.png" />
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward--dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -533,6 +534,9 @@
     <Folder Include="Assets.xcassets\ic_exchange__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
+    <Folder Include="Assets.xcassets\ic_forward__white.imageset\" />
+    <Folder Include="Assets.xcassets\ic_forward__gray.imageset\" />
+    <Folder Include="Assets.xcassets\ic_forward.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Agency-FB.ttf" />
