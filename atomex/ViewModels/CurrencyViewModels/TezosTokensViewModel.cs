@@ -73,9 +73,9 @@ namespace atomex.ViewModels.CurrencyViewModels
             IAtomexApp app,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             SubscribeToServices(_app);
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Atomex;
 using Atomex.Blockchain.Tezos;
 using Atomex.Client.Common;
@@ -21,17 +23,43 @@ using static atomex.Models.SnackbarMessage;
 
 namespace atomex.ViewModels.CurrencyViewModels
 {
+    public class Collectible : BaseViewModel
+    {
+        public CollectibleViewModel CollectibleViewModel { get; set; }
+        [Reactive] public bool IsSelected { get; set; }
+        public Action<string, bool> OnChanged { get; set; }
+
+        public Collectible(
+            CollectibleViewModel collectibleViewModel,
+            bool isSelected)
+        {
+            CollectibleViewModel = collectibleViewModel;
+            IsSelected = isSelected;
+
+            this.WhenAnyValue(vm => vm.IsSelected)
+                .Skip(1)
+                .SubscribeInMainThread(flag =>
+                    OnChanged?.Invoke(CollectibleViewModel.Name, flag));
+        }
+
+        private ICommand _toggleCommand;
+
+        public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() =>
+            IsSelected = !IsSelected);
+    }
+
     public class CollectiblesViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
         private readonly INavigationService _navigationService;
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
-        [Reactive] public ObservableCollection<CollectibleViewModel> Collectibles { get; set; }
+        [Reactive] public IList<Collectible> AllCollectibles { get; set; }
+        [Reactive] public IList<CollectibleViewModel> UserCollectibles { get; set; }
 
         [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
         [Reactive] public bool IsCollectiblesLoading { get; set; }
 
-        public const double DefaultCollectibleHeight = 224;
+        public const double DefaultCollectibleHeight = 228;
         public const double CollectiblesPerRow = 2;
 
         [Reactive] public double CollectibleListViewHeight { get; set; }
@@ -51,11 +79,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(collectibles =>
                     _ = LoadCollectibles());
 
-            this.WhenAnyValue(vm => vm.Collectibles)
+            this.WhenAnyValue(vm => vm.UserCollectibles)
                 .WhereNotNull()
                 .SubscribeInMainThread(collectibles =>
                     CollectibleListViewHeight =
-                        Math.Ceiling(Collectibles.Count / CollectiblesPerRow) * DefaultCollectibleHeight);
+                        Math.Ceiling(UserCollectibles.Count / CollectiblesPerRow) * DefaultCollectibleHeight);
 
             this.WhenAnyValue(vm => vm.SelectedCollectible)
                 .WhereNotNull()
@@ -107,24 +135,45 @@ namespace atomex.ViewModels.CurrencyViewModels
                 IsCollectiblesLoading = true;
 
                 var nftTokens = new List<TezosTokenViewModel>();
+                var disabledCollectibles = _app.Account.UserData?.DisabledCollectibles ?? Array.Empty<string>();
 
-                foreach (var contract in Contracts)
-                    nftTokens.AddRange(await TezosTokenViewModelCreator.CreateOrGet(
-                        atomexApp: _app,
-                        navigationService: _navigationService,
-                        contract: contract,
-                        isNft: true));
+                await Task.Run(async () =>
+                {
+                    foreach (var contract in Contracts)
+                        nftTokens.AddRange(await TezosTokenViewModelCreator.CreateOrGet(
+                            atomexApp: _app,
+                            navigationService: _navigationService,
+                            contract: contract,
+                            isNft: true));
+                });
 
-                Collectibles = new ObservableCollection<CollectibleViewModel>(nftTokens
-                    .GroupBy(nft => nft.Contract.Address)
-                    .Select(nftGroup => new CollectibleViewModel(
-                        app: _app,
-                        navigationService: _navigationService)
-                    {
-                        Tokens = nftGroup.Select(g => g)
-                    })
-                    .OrderByDescending(collectible => collectible.Amount != 0)
-                    .ThenBy(collectible => collectible.Name));
+                await Device.InvokeOnMainThreadAsync(() =>
+                {
+                    AllCollectibles = new ObservableCollection<Collectible>(nftTokens
+                        .GroupBy(nft => nft.Contract.Address)
+                        .Select(collectible =>
+                        {
+                            var vm = new Collectible(
+                                collectibleViewModel: new CollectibleViewModel(app: _app,
+                                    navigationService: _navigationService)
+                                {
+                                    Tokens = collectible.Select(g => g)
+                                },
+                                isSelected: !disabledCollectibles.Contains(collectible.First().Contract.Address))
+                            {
+                                OnChanged = ChangeUserCollectibles
+                            };
+
+                            return vm;
+                        })
+                        .OrderByDescending(collectible => collectible.CollectibleViewModel.Amount != 0)
+                        .ThenBy(collectible => collectible.CollectibleViewModel.Name));
+
+                    UserCollectibles = new ObservableCollection<CollectibleViewModel>(AllCollectibles
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.CollectibleViewModel)
+                        .ToList());
+                });
             }
             catch (Exception e)
             {
@@ -135,6 +184,42 @@ namespace atomex.ViewModels.CurrencyViewModels
                 IsCollectiblesLoading = false;
             }
         }
+
+        private void ChangeUserCollectibles(
+            string collectible,
+            bool isSelected)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(collectible)) return;
+
+                var disabledCollectibles = AllCollectibles
+                    .Where(c => !c.IsSelected)
+                    .Select(collectible => collectible.CollectibleViewModel.ContractAddress)
+                    .ToArray();
+
+                Device.InvokeOnMainThreadAsync(() =>
+                {
+                    UserCollectibles = AllCollectibles?
+                        .Where(c => c.IsSelected)
+                        .Select(vm => vm.CollectibleViewModel)
+                        .ToList();
+                });
+
+                _app.Account.UserData.DisabledCollectibles = disabledCollectibles;
+                _app.Account.UserData.SaveToFile(_app.Account.SettingsFilePath);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Change user collectibles error");
+            }
+        }
+
+        private ReactiveCommand<Unit, Unit> _manageCollectiblesCommand;
+
+        public ReactiveCommand<Unit, Unit> ManageCollectiblesCommand => _manageCollectiblesCommand ??=
+            ReactiveCommand.Create(() =>
+                _navigationService?.ShowBottomSheet(new ManageCollectiblesBottomSheet(this)));
 
         private ReactiveCommand<CollectibleViewModel, Unit> _selectCollectible;
 
@@ -183,5 +268,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                 IsCollectiblesLoading = false;
             }
         }
+
+        private ICommand _closeActionSheetCommand;
+
+        public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
+            new Command(() => _navigationService?.CloseBottomSheet());
     }
 }

@@ -21,6 +21,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         public string Name => Tokens.First().Contract.Name ?? Tokens.First().Contract.Address;
+        public string ContractAddress => Tokens.First().Contract.Address;
 
         [Reactive] public ImageSource TokenPreview { get; set; }
 

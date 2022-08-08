@@ -881,7 +881,7 @@
                                    BackgroundColor="Transparent">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer
-                                        Command="{Binding CollectiblesViewModel.ManageTokensCommand}" />
+                                        Command="{Binding CollectiblesViewModel.ManageCollectiblesCommand}" />
                                 </Frame.GestureRecognizers>
                                 <Image Source="ic_filters"
                                        Margin="8,0,4,0"
@@ -929,7 +929,7 @@
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Start" />
                         </StackLayout>
-                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.Collectibles, Mode=OneWay}"
+                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=OneWay}"
                                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
                                         HeightRequest="{Binding CollectiblesViewModel.CollectibleListViewHeight}"
                                         HorizontalScrollBarVisibility="Never"
