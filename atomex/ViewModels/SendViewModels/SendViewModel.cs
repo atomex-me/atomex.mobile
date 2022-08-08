@@ -143,9 +143,9 @@ namespace atomex.ViewModels.SendViewModels
 
         public SendViewModel(IAtomexApp app, CurrencyViewModel currencyViewModel, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(CurrencyViewModel));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            CurrencyViewModel = currencyViewModel ?? throw new ArgumentNullException(nameof(currencyViewModel));
             _currency = currencyViewModel?.Currency;
 
             Message = new Message();

@@ -19,6 +19,7 @@
             <converters:NotEqualsConverter x:Key="NotEqualsConverter" />
             <converters:StringToBoolConverter x:Key="StringToBool" />
             <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -84,7 +85,19 @@
                         HorizontalOptions="FillAndExpand"
                         FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding SendCommand}"
-                        Margin="16" />
+                        Margin="16" >
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button"
+                                     Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                     Value="False">
+                            <Setter Property="BackgroundColor"
+                                    Value="{AppThemeBinding Dark={StaticResource DisabledButtonBackgroundColorDark}, Light={StaticResource DisabledButtonBackgroundColor}}" />
+                            <Setter Property="IsEnabled"
+                                    Value="False" />
+
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
                 <ScrollView Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
                             HorizontalOptions="FillAndExpand"

@@ -15,6 +15,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -32,6 +33,14 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Spacing="0">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="False">
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
                         <Frame HasShadow="False"
                                WidthRequest="156"
                                HeightRequest="156"

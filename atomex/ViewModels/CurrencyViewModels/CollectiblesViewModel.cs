@@ -157,7 +157,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                                 collectibleViewModel: new CollectibleViewModel(app: _app,
                                     navigationService: _navigationService)
                                 {
-                                    Tokens = collectible.Select(g => g)
+                                    Tokens = collectible
+                                        .Select(g => g)
+                                        .OrderByDescending(t => t.TotalAmount != 0)
+                                        .ThenBy(token => token.TokenBalance?.Name)
                                 },
                                 isSelected: !disabledCollectibles.Contains(collectible.First().Contract.Address))
                             {
