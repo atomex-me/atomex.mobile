@@ -1214,4 +1214,7 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="ViewOnObjktButton" xml:space="preserve">
         <value>View more on objkt.com</value>
     </data>
+    <data name="Search" xml:space="preserve">
+        <value>Search...</value>
+    </data>
 </root>

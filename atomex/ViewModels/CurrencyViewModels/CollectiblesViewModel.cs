@@ -55,15 +55,17 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
         [Reactive] public IList<Collectible> AllCollectibles { get; set; }
         [Reactive] public IList<CollectibleViewModel> UserCollectibles { get; set; }
-
-        [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
+        [Reactive] private IList<CollectibleViewModel> _initialCollectibles { get; set; }
         [Reactive] public bool IsCollectiblesLoading { get; set; }
+        [Reactive] public CollectibleViewModel SelectedCollectible { get; set; }
 
         public const double DefaultCollectibleHeight = 228;
         public const double CollectiblesPerRow = 2;
 
         [Reactive] public double CollectibleListViewHeight { get; set; }
 
+        [Reactive] public string SearchPattern { get; set; }
+        
         public CollectiblesViewModel(
             IAtomexApp app,
             INavigationService navigationService)
@@ -91,6 +93,21 @@ namespace atomex.ViewModels.CurrencyViewModels
                 {
                     _navigationService?.ShowPage(new CollectiblePage(collectible), TabNavigation.Portfolio);
                     SelectedCollectible = null;
+                });
+            
+            this.WhenAnyValue(vm => vm.SearchPattern)
+                .SubscribeInMainThread(value =>
+                {
+                    if (UserCollectibles == null) return;
+
+                    var collectibles = new ObservableCollection<CollectibleViewModel>(
+                        _initialCollectibles
+                            .Where(c => c.Name.ToLower()
+                                .Contains(value?.ToLower() ?? string.Empty)));
+                    
+                    UserCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles)
+                        .OrderByDescending(collectible => collectible.Amount != 0)
+                        .ToList();
                 });
 
             _ = ReloadTokenContractsAsync();
@@ -176,6 +193,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList());
+                    
+                    _initialCollectibles = new List<CollectibleViewModel>(UserCollectibles);
                 });
             }
             catch (Exception e)
@@ -207,6 +226,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList();
+                    
+                    _initialCollectibles = UserCollectibles != null 
+                        ? new List<CollectibleViewModel>(UserCollectibles) 
+                        : new List<CollectibleViewModel>();
                 });
 
                 _app.Account.UserData.DisabledCollectibles = disabledCollectibles;
@@ -217,6 +240,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error(e, "Change user collectibles error");
             }
         }
+        
+        private ReactiveCommand<Unit, Unit> _clearSearchPatternCommand;
+
+        public ReactiveCommand<Unit, Unit> ClearSearchPatternCommand => _clearSearchPatternCommand ??=
+            _clearSearchPatternCommand = ReactiveCommand.Create(() => { SearchPattern = string.Empty; });
 
         private ReactiveCommand<Unit, Unit> _manageCollectiblesCommand;
 

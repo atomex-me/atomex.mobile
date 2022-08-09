@@ -21,13 +21,15 @@
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
             <converters:StringToBoolConverter x:Key="StringToBool" />
             <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding  IsRefreshing}"
                  Command="{Binding RefreshCommand}">
         <AbsoluteLayout>
             <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
-                        AbsoluteLayout.LayoutFlags="All">
+                        AbsoluteLayout.LayoutFlags="All"
+                        x:Name="Page">
                 <StackLayout Spacing="0">
                     <Frame Padding="0"
                            Margin="16"
@@ -631,11 +633,25 @@
                                              Padding="16,8,16,0"
                                              HeightRequest="52"
                                              Spacing="4">
-                                    <Label Text="{helpers:Translate Tokens}"
-                                           Style="{DynamicResource AdditionalTextH5}"
-                                           HorizontalOptions="FillAndExpand"
-                                           HorizontalTextAlignment="Start"
-                                           VerticalTextAlignment="Center" />
+                                    <controls:CustomEntry Placeholder="{helpers:Translate Search}"
+                                                          Style="{DynamicResource EntryStyle}"
+                                                          FontSize="14"
+                                                          Text="{Binding TezosTokensViewModel.SearchPattern, Mode=TwoWay}"
+                                                          Focused="ScrollToSearch"
+                                                          HorizontalTextAlignment="Start"
+                                                          VerticalTextAlignment="Center"
+                                                          VerticalOptions="FillAndExpand"
+                                                          HorizontalOptions="FillAndExpand" />
+                                    <ImageButton Source="ic_close"
+                                                 BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                                 Padding="7"
+                                                 Margin="10,0"
+                                                 WidthRequest="24"
+                                                 HeightRequest="24"
+                                                 CornerRadius="12"
+                                                 VerticalOptions="Center"
+                                                 Command="{Binding TezosTokensViewModel.ClearSearchPatternCommand}"
+                                                 IsVisible="{Binding TezosTokensViewModel.SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
                                     <Frame HasShadow="False"
                                            WidthRequest="32"
                                            Padding="0"
@@ -685,21 +701,6 @@
                                                HeightRequest="16"
                                                WidthRequest="16" />
                                     </Frame>
-                                    <!--<Frame HasShadow="False"
-                                       WidthRequest="32"
-                                       Padding="0"
-                                       VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="End"
-                                       BackgroundColor="Transparent">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding TokensActionSheetCommand}"/>
-                                    </Frame.GestureRecognizers>
-                                    <Image Source="ic_menu"
-                                           WidthRequest="4"
-                                           HeightRequest="16"
-                                           HorizontalOptions="End"
-                                           Margin="10,17"/>
-                                </Frame>-->
                                 </StackLayout>
                                 <StackLayout Style="{DynamicResource SeparatorStyle}"
                                              Margin="16,0,0,0" />
@@ -765,7 +766,7 @@
                                                         <behavior:FadeAnimationTrigger Action="Stop" />
                                                     </DataTrigger.EnterActions>
                                                     <Setter Property="BackgroundColor"
-                                                            Value="Transparent"/>
+                                                            Value="Transparent" />
                                                 </DataTrigger>
                                             </Image.Triggers>
                                         </Image>
@@ -831,16 +832,32 @@
                                         Value="True" />
                             </DataTrigger>
                         </StackLayout.Triggers>
+
+
                         <StackLayout Orientation="Horizontal"
                                      HorizontalOptions="Fill"
                                      Padding="16,8,16,0"
                                      HeightRequest="52"
                                      Spacing="4">
-                            <Label Text="{helpers:Translate Collectibles}"
-                                   Style="{DynamicResource AdditionalTextH5}"
-                                   HorizontalOptions="FillAndExpand"
-                                   HorizontalTextAlignment="Start"
-                                   VerticalTextAlignment="Center" />
+                            <controls:CustomEntry Placeholder="{helpers:Translate Search}"
+                                                  Style="{DynamicResource EntryStyle}"
+                                                  FontSize="14"
+                                                  Text="{Binding CollectiblesViewModel.SearchPattern, Mode=TwoWay}"
+                                                  Focused="ScrollToSearch"
+                                                  HorizontalTextAlignment="Start"
+                                                  VerticalTextAlignment="Center"
+                                                  VerticalOptions="FillAndExpand"
+                                                  HorizontalOptions="FillAndExpand" />
+                            <ImageButton Source="ic_close"
+                                         BackgroundColor="{AppThemeBinding Dark={StaticResource ActionElementBorderColorDark}, Light={StaticResource ActionElementBorderColor}}"
+                                         Padding="7"
+                                         Margin="10,0"
+                                         WidthRequest="24"
+                                         HeightRequest="24"
+                                         CornerRadius="12"
+                                         VerticalOptions="Center"
+                                         Command="{Binding CollectiblesViewModel.ClearSearchPatternCommand}"
+                                         IsVisible="{Binding CollectiblesViewModel.SearchPattern, Mode=OneWay, Converter={StaticResource StringToBool}, FallbackValue='False'}" />
                             <Frame HasShadow="False"
                                    WidthRequest="32"
                                    Padding="0"
@@ -890,21 +907,6 @@
                                        HeightRequest="16"
                                        WidthRequest="16" />
                             </Frame>
-                            <!--<Frame HasShadow="False"
-                                       WidthRequest="32"
-                                       Padding="0"
-                                       VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="End"
-                                       BackgroundColor="Transparent">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding TokensActionSheetCommand}"/>
-                                    </Frame.GestureRecognizers>
-                                    <Image Source="ic_menu"
-                                           WidthRequest="4"
-                                           HeightRequest="16"
-                                           HorizontalOptions="End"
-                                           Margin="10,17"/>
-                                </Frame>-->
                         </StackLayout>
                         <StackLayout Style="{DynamicResource SeparatorStyle}"
                                      Margin="16,0,0,8" />
@@ -1065,7 +1067,7 @@
                                                    HeightRequest="24"
                                                    WidthRequest="24"
                                                    VerticalOptions="Center"
-                                                   HorizontalOptions="Start"/>
+                                                   HorizontalOptions="Start" />
                                         </Frame>
                                         <Label Grid.Column="1"
                                                Text="{Binding Address}"

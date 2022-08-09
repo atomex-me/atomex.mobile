@@ -22,5 +22,10 @@ namespace atomex.Views
         {
             await TabScrollView.ScrollToAsync((VisualElement) sender, ScrollToPosition.End, true);
         }
+
+        private async void ScrollToSearch(object sender, EventArgs e)
+        {
+            await Page.ScrollToAsync((VisualElement) sender, ScrollToPosition.Start, true);
+        }
     }
 }

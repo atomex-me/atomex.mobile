@@ -59,6 +59,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
+        [Reactive] private IList<TezosTokenViewModel> _initialTokens { get; set; }
         [Reactive] public bool IsTokensLoading { get; set; }
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         private TezosTokenViewModel _openToken;
@@ -68,6 +69,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         public const double DefaultTokenRowHeight = 76;
         public const double TokenListHeaderHeight = 76;
         [Reactive] public double TokenListViewHeight { get; set; }
+
+        [Reactive] public string SearchPattern { get; set; }
 
         public TezosTokensViewModel(
             IAtomexApp app,
@@ -108,6 +111,21 @@ namespace atomex.ViewModels.CurrencyViewModels
                     SelectedToken = null;
                 });
 
+            this.WhenAnyValue(vm => vm.SearchPattern)
+                .SubscribeInMainThread(value =>
+                {
+                    if (UserTokens == null) return;
+
+                    var tokens = new ObservableCollection<TezosTokenViewModel>(
+                        _initialTokens
+                            .Where(t => t.Description.ToLower()
+                                .Contains(value?.ToLower() ?? string.Empty)));
+
+                    UserTokens = new ObservableCollection<TezosTokenViewModel>(tokens)
+                        .OrderByDescending(token => token.IsConvertable)
+                        .ThenByDescending(token => token.TotalAmountInBase)
+                        .ToList();
+                });
 
             _ = ReloadTokenContractsAsync();
         }
@@ -168,6 +186,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.TezosTokenViewModel)
                         .ToList();
+                    
+                    _initialTokens = UserTokens != null 
+                        ? new List<TezosTokenViewModel>(UserTokens) 
+                        : new List<TezosTokenViewModel>();
                 });
 
                 _app.Account.UserData.DisabledTokens = disabledTokens;
@@ -178,6 +200,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error(e, "Change user tokens error");
             }
         }
+
+        private ReactiveCommand<Unit, Unit> _clearSearchPatternCommand;
+
+        public ReactiveCommand<Unit, Unit> ClearSearchPatternCommand => _clearSearchPatternCommand ??=
+            _clearSearchPatternCommand = ReactiveCommand.Create(() => { SearchPattern = string.Empty; });
 
         private ReactiveCommand<Unit, Unit> _hideLowBalancesCommand;
 
@@ -247,6 +274,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.TezosTokenViewModel)
                         .ToList());
+
+                    _initialTokens = new List<TezosTokenViewModel>(UserTokens);
                 });
             }
             catch (Exception e)

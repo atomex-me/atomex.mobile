@@ -2318,5 +2318,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("ViewOnObjktButton", resourceCulture);
             }
         }
+        
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
     }
 }
