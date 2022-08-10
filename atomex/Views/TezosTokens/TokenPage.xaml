@@ -277,7 +277,6 @@
                               SeparatorVisibility="Default"
                               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                               IsGroupingEnabled="True"
-                              CachingStrategy="RecycleElement"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
                               HeightRequest="{Binding TxListViewHeight}"
@@ -436,7 +435,7 @@
                                     Style="{DynamicResource TransparentButton}"
                                     IsVisible="{Binding CanShowMoreTxs}"
                                     HeightRequest="52"
-                                    Command="{Binding ShowAllTxsCommand}"/>
+                                    Command="{Binding ShowAllTxsCommand}" />
                         </ListView.Footer>
                     </ListView>
                     <ListView ItemsSource="{Binding Addresses}"

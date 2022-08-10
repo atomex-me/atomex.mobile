@@ -376,7 +376,6 @@
                               SeparatorVisibility="Default"
                               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                               IsGroupingEnabled="True"
-                              CachingStrategy="RecycleElement"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
                               HeightRequest="{Binding TxListViewHeight}"

@@ -343,7 +343,6 @@
                           BackgroundColor="Transparent"
                           HasUnevenRows="True"
                           SeparatorVisibility="None"
-                          CachingStrategy="RetainElement"
                           VerticalOptions="FillAndExpand"
                           RowHeight="64"
                           Footer="">

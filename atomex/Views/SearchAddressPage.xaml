@@ -60,7 +60,6 @@
                           SelectionMode="Single"
                           SelectedItem="{Binding SelectedAddress}"
                           BackgroundColor="Transparent"
-                          CachingStrategy="RetainElement"
                           HasUnevenRows="True"
                           SeparatorVisibility="None"
                           VerticalOptions="FillAndExpand"

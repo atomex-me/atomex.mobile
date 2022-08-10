@@ -31,8 +31,7 @@
               HasUnevenRows="True"
               SeparatorVisibility="Default"
               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-              BackgroundColor="Transparent"
-              CachingStrategy="RecycleElement">
+              BackgroundColor="Transparent">
         <ListView.Header>
             <StackLayout Spacing="0">
                 <Label Text="{helpers:Translate ExchangeLabel}"

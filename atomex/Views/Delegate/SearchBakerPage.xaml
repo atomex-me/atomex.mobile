@@ -57,7 +57,6 @@
                       BackgroundColor="Transparent"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
-                      CachingStrategy="RetainElement"
                       VerticalOptions="FillAndExpand"
                       RowHeight="76"
                       Footer="">
