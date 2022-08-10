@@ -1217,4 +1217,7 @@
     <data name="Search" xml:space="preserve">
         <value>Search...</value>
     </data>
+    <data name="ManageTezosCollectibles" xml:space="preserve">
+        <value>Управление Tezos NFT</value>
+    </data>
 </root>

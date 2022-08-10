@@ -100,12 +100,12 @@ namespace atomex.ViewModels.ConversionViewModels
                 {
                     if (error != null)
                     {
+                        _navigationService?.CloseBottomSheet();
+                        
                         if (error.Code == Errors.PriceHasChanged)
                             _navigationService?.DisplaySnackBar(MessageType.Error, AppResources.PriceChangedError);
                         else
                             _navigationService?.DisplaySnackBar(MessageType.Error, error.Description);
-
-                        return;
                     }
                 });
                 OnSuccess?.Invoke(this, EventArgs.Empty);

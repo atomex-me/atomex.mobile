@@ -192,7 +192,7 @@
                     </Grid>
                 </ScrollView>
                 <StackLayout Spacing="0"
-                             Margin="16,0,20,0"
+                             Margin="16,0,0,0"
                              IsVisible="False">
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
@@ -229,6 +229,7 @@
                         <Image Grid.Column="1"
                                Grid.RowSpan="2"
                                HorizontalOptions="End"
+                               Margin="20,0"
                                WidthRequest="8"
                                HeightRequest="12"
                                Source="ic_forward"
@@ -303,6 +304,7 @@
                         </Image>
                         <StackLayout Grid.RowSpan="2"
                                      Grid.Column="2"
+                                     Margin="20,0"
                                      VerticalOptions="FillAndExpand"
                                      HorizontalOptions="FillAndExpand">
                             <StackLayout.GestureRecognizers>

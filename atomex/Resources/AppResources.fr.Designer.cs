@@ -2324,5 +2324,11 @@ namespace atomex.Resources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
+        
+        internal static string ManageTezosCollectibles {
+            get {
+                return ResourceManager.GetString("ManageTezosCollectibles", resourceCulture);
+            }
+        }
     }
 }
