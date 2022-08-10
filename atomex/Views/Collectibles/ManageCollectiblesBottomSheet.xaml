@@ -33,13 +33,13 @@
                  HorizontalOptions="FillAndExpand">
         <StackLayout.Behaviors>
             <behavior:SwipeDownToClosePopupPage CloseAction="OnClose"
-                                                ClosingEdge="567"
+                                                ClosingEdge="467"
                                                 ClosingTimeInMs="300" />
         </StackLayout.Behaviors>
         <controls:CustomFrame CornerRadius="20,20,0,0"
                               Padding="0,14,0,0"
                               HorizontalOptions="FillAndExpand"
-                              HeightRequest="667"
+                              HeightRequest="567"
                               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
             <StackLayout Spacing="0">
                 <Image Source="ic_swipe__indicator"

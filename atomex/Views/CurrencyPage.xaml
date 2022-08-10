@@ -831,8 +831,6 @@
                                         Value="True" />
                             </DataTrigger>
                         </StackLayout.Triggers>
-
-
                         <StackLayout Orientation="Horizontal"
                                      HorizontalOptions="Fill"
                                      Padding="16,8,16,0"
@@ -936,16 +934,27 @@
                                         HorizontalScrollBarVisibility="Never"
                                         BackgroundColor="Transparent"
                                         SelectionMode="Single"
-                                        Margin="16">
+                                        Margin="8, 16">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout Orientation="Vertical"
                                                  Span="2"
                                                  VerticalItemSpacing="16"
-                                                 HorizontalItemSpacing="16" />
+                                                 HorizontalItemSpacing="0" />
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Spacing="0">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup Name="CommonStates">
+                                                <VisualState Name="Normal" />
+                                                <VisualState Name="Selected">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor"
+                                                                Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
                                         <StackLayout.Triggers>
                                             <DataTrigger TargetType="StackLayout"
                                                          Binding="{Binding Amount, Converter={StaticResource GreaterThanZeroConverter}}"
@@ -955,14 +964,14 @@
                                             </DataTrigger>
                                         </StackLayout.Triggers>
                                         <Frame HasShadow="False"
-                                               WidthRequest="156"
-                                               HeightRequest="156"
                                                Padding="0"
+                                               Margin="8,0"
                                                CornerRadius="4"
+                                               HorizontalOptions="Center"
                                                IsClippedToBounds="True">
                                             <Image Source="{Binding TokenPreview}"
-                                                   WidthRequest="156"
-                                                   HeightRequest="156"
+                                                   VerticalOptions="Fill"
+                                                   HorizontalOptions="Fill"
                                                    Aspect="AspectFill"
                                                    BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
                                                 <Image.Triggers>
@@ -985,8 +994,7 @@
                                         </Frame>
                                         <Grid RowSpacing="0"
                                               ColumnSpacing="0"
-                                              WidthRequest="156"
-                                              Margin="0,6,0,0">
+                                              Margin="8,6">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="24" />
                                             </Grid.RowDefinitions>

@@ -212,7 +212,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="36" />
+                            <ColumnDefinition Width="48" />
                         </Grid.ColumnDefinitions>
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ShowDescriptionCommand}" />
