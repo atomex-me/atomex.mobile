@@ -943,10 +943,16 @@
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Spacing="0">
+                                    <StackLayout Spacing="0"
+                                                 HorizontalOptions="FillAndExpand">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup Name="CommonStates">
-                                                <VisualState Name="Normal" />
+                                                <VisualState Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor"
+                                                                Value="Transparent"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
                                                 <VisualState Name="Selected">
                                                     <VisualState.Setters>
                                                         <Setter Property="BackgroundColor"
@@ -967,17 +973,19 @@
                                                Padding="0"
                                                Margin="8,0"
                                                CornerRadius="4"
-                                               HorizontalOptions="Center"
+                                               HorizontalOptions="FillAndExpand"
                                                IsClippedToBounds="True">
                                             <Image Source="{Binding TokenPreview}"
                                                    VerticalOptions="Fill"
-                                                   HorizontalOptions="Fill"
+                                                   HorizontalOptions="FillAndExpand"
                                                    Aspect="AspectFill"
                                                    BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
                                                 <Image.Triggers>
                                                     <DataTrigger TargetType="Image"
                                                                  Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
                                                                  Value="False">
+                                                        <Setter Property="HeightRequest"
+                                                                Value="136"/>
                                                         <DataTrigger.EnterActions>
                                                             <behavior:FadeAnimationTrigger Action="Start" />
                                                         </DataTrigger.EnterActions>
