@@ -984,8 +984,6 @@
                                                     <DataTrigger TargetType="Image"
                                                                  Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
                                                                  Value="False">
-                                                        <Setter Property="HeightRequest"
-                                                                Value="136"/>
                                                         <DataTrigger.EnterActions>
                                                             <behavior:FadeAnimationTrigger Action="Start" />
                                                         </DataTrigger.EnterActions>

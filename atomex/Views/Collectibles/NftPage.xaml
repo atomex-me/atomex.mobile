@@ -26,15 +26,15 @@
         <ScrollView>
             <StackLayout Spacing="0">
                 <Frame HasShadow="False"
-                       WidthRequest="328"
-                       HeightRequest="328"
+                       HorizontalOptions="FillAndExpand"
+                       HeightRequest="{Binding Source={x:Reference NftImage}, Path=Width}"
                        Padding="0"
                        CornerRadius="4"
                        IsClippedToBounds="True"
                        Margin="16">
                     <Image Source="{Binding TokenPreview}"
-                           WidthRequest="328"
-                           HeightRequest="328"
+                           x:Name="NftImage"
+                           HorizontalOptions="FillAndExpand"
                            Aspect="AspectFill"
                            BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
                         <Image.Triggers>
@@ -52,7 +52,7 @@
                                     <behaviors:FadeAnimationTrigger Action="Stop" />
                                 </DataTrigger.EnterActions>
                                 <Setter Property="BackgroundColor"
-                                        Value="Transparent"/>
+                                        Value="Transparent" />
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
@@ -85,7 +85,7 @@
                         HorizontalOptions="FillAndExpand"
                         FontFamily="{DynamicResource RegularFont}"
                         Command="{Binding SendCommand}"
-                        Margin="16" >
+                        Margin="16">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button"
                                      Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
@@ -541,36 +541,36 @@
                                            HorizontalOptions="FillAndExpand"
                                            LineBreakMode="MiddleTruncation" />
                                     <Label Grid.Row="1"
-                                               Style="{DynamicResource AdditionalTextH5}"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="Start">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding TokenBalanceString}" />
-                                                    <Span Text=" / " />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label Grid.Row="1"
-                                               Grid.Column="1"
-                                               Style="{DynamicResource AdditionalTextH5}"
-                                               VerticalTextAlignment="Center"
-                                               HorizontalTextAlignment="Start">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding Balance}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding BalanceCode}" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Image Grid.Column="2"
-                                               Grid.RowSpan="2"
-                                               HorizontalOptions="End"
-                                               WidthRequest="8"
-                                               HeightRequest="12"
-                                               Source="ic_forward"
-                                               Margin="8,16" />
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding TokenBalanceString}" />
+                                                <Span Text=" / " />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{DynamicResource AdditionalTextH5}"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Balance}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding BalanceCode}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Column="2"
+                                           Grid.RowSpan="2"
+                                           HorizontalOptions="End"
+                                           WidthRequest="8"
+                                           HeightRequest="12"
+                                           Source="ic_forward"
+                                           Margin="8,16" />
                                 </Grid>
                             </controls:CustomViewCell>
                         </DataTemplate>

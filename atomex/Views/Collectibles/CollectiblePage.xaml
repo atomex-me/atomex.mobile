@@ -65,7 +65,6 @@
                                HorizontalOptions="FillAndExpand"
                                IsClippedToBounds="True">
                             <Image Source="{Binding TokenPreview}"
-                                   VerticalOptions="Fill"
                                    HorizontalOptions="FillAndExpand"
                                    Aspect="AspectFill"
                                    BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
@@ -73,8 +72,6 @@
                                     <DataTrigger TargetType="Image"
                                                  Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
                                                  Value="False">
-                                        <Setter Property="HeightRequest"
-                                                Value="136"/>
                                         <DataTrigger.EnterActions>
                                             <behaviors:FadeAnimationTrigger Action="Start" />
                                         </DataTrigger.EnterActions>
