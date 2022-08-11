@@ -56,7 +56,6 @@ namespace atomex.ViewModels
     public class PortfolioViewModel : BaseViewModel
     {
         private readonly IAtomexApp _app;
-        private readonly CurrencyViewModelCreator _currencyViewModelCreator;
         [Reactive] private INavigationService _navigationService { get; set; }
 
         [Reactive] public IList<PortfolioCurrencyViewModel> AllCurrencies { get; set; }
@@ -77,11 +76,9 @@ namespace atomex.ViewModels
         {
         }
 
-        public PortfolioViewModel(IAtomexApp app, CurrencyViewModelCreator currencyViewModelCreator)
+        public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            _currencyViewModelCreator = currencyViewModelCreator ??
-                                        throw new ArgumentNullException(nameof(currencyViewModelCreator));
 
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
@@ -219,7 +216,7 @@ namespace atomex.ViewModels
                     AllCurrencies = _app.Account?.Currencies
                         .Select(c =>
                         {
-                            var currency = _currencyViewModelCreator.CreateOrGet(
+                            var currency = CurrencyViewModelCreator.CreateOrGet(
                                 currencyConfig: c,
                                 navigationService: _navigationService,
                                 subscribeToUpdates: true);

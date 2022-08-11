@@ -34,7 +34,6 @@ namespace atomex.ViewModels.ConversionViewModels
     public class ConversionViewModel : BaseViewModel
     {
         private IAtomexApp _app;
-        private readonly CurrencyViewModelCreator _currencyViewModelCreator;
         [Reactive] private INavigationService _navigationService { get; set; }
 
         private ISymbols _symbols
@@ -114,12 +113,9 @@ namespace atomex.ViewModels.ConversionViewModels
         [Reactive] public bool IsAllSwapsShowed { get; set; }
         private int _swapNumberPerPage = 3;
 
-        public ConversionViewModel(IAtomexApp app, CurrencyViewModelCreator currencyViewModelCreator)
+        public ConversionViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            _currencyViewModelCreator = currencyViewModelCreator ??
-                                        throw new ArgumentNullException(nameof(currencyViewModelCreator));
-
             Message = new Message();
             AmountToFeeRatioWarning = new Message();
             ExternalAddressWarning = new Message();
@@ -836,7 +832,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
             FromCurrencies = _app.Account.Currencies
                 .Where(c => c.IsSwapAvailable)
-                .Select(c => _currencyViewModelCreator.CreateOrGet(
+                .Select(c => CurrencyViewModelCreator.CreateOrGet(
                     currencyConfig: c,
                     navigationService: _navigationService,
                     subscribeToUpdates: true))

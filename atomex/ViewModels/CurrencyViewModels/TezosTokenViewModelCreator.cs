@@ -66,12 +66,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                     navigationService: navigationService,
                     tokenBalance: tokenBalance,
                     contract: contract);
-
-                //tokenViewModel.UpdateQuotesInBaseCurrency(atomexApp.QuotesProvider);
+                
                 tokenViewModel.SubscribeToUpdates();
 
                 Instances.TryAdd((contract.Address, tokenGroup.Key), tokenViewModel);
-
                 resultTokens.Add(tokenViewModel);
             }
 
