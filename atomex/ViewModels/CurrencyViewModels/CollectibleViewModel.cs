@@ -20,9 +20,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public IEnumerable<TezosTokenViewModel> Tokens { get; set; }
 
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
-        public string Name => Tokens.First().Contract.Name ?? Tokens.First().Contract.Address;
         public string ContractAddress => Tokens.First().Contract.Address;
-
+        public string Name => Tokens.First().Contract.Name ?? ContractAddress.TruncateAddress();
         [Reactive] public ImageSource TokenPreview { get; set; }
 
         protected ImageSource GetCollectiblePreview(string url)

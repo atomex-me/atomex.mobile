@@ -71,6 +71,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public double TokenListViewHeight { get; set; }
 
         [Reactive] public string SearchPattern { get; set; }
+        private bool _searched;
 
         public TezosTokensViewModel(
             IAtomexApp app,
@@ -88,12 +89,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     await GetTokensAsync());
 
             this.WhenAnyValue(vm => vm.UserTokens)
+                .Where(_ => !_searched)
                 .WhereNotNull()
                 .SubscribeInMainThread(vm =>
-                {
                     TokenListViewHeight = (UserTokens.Count + 1) * DefaultTokenRowHeight +
-                                          TokenListHeaderHeight;
-                });
+                                          TokenListHeaderHeight);
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()
@@ -116,6 +116,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 {
                     if (UserTokens == null) return;
 
+                    _searched = true;
+                    
                     var tokens = new ObservableCollection<TezosTokenViewModel>(
                         _initialTokens
                             .Where(t => t.Description.ToLower()
@@ -125,6 +127,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .OrderByDescending(token => token.IsConvertable)
                         .ThenByDescending(token => token.TotalAmountInBase)
                         .ToList();
+                    
+                    _searched = false;
                 });
 
             _ = ReloadTokenContractsAsync();

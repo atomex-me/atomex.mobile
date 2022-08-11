@@ -65,6 +65,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public double CollectibleListViewHeight { get; set; }
 
         [Reactive] public string SearchPattern { get; set; }
+        private bool _searched;
         
         public CollectiblesViewModel(
             IAtomexApp app,
@@ -82,6 +83,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                     _ = LoadCollectibles());
 
             this.WhenAnyValue(vm => vm.UserCollectibles)
+                .Where(_ => !_searched)
                 .WhereNotNull()
                 .SubscribeInMainThread(collectibles =>
                     CollectibleListViewHeight =
@@ -99,6 +101,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .SubscribeInMainThread(value =>
                 {
                     if (UserCollectibles == null) return;
+                    
+                    _searched = true;
 
                     var collectibles = new ObservableCollection<CollectibleViewModel>(
                         _initialCollectibles
@@ -108,8 +112,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                     UserCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles)
                         .OrderByDescending(collectible => collectible.Amount != 0)
                         .ToList();
+                    
+                    _searched = false;
                 });
-
+            
             _ = ReloadTokenContractsAsync();
         }
 
@@ -125,8 +131,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                await Device.InvokeOnMainThreadAsync(async () =>
-                    await ReloadTokenContractsAsync());
+                if (args.IsTokenUpdate &&
+                    (args.TokenContract == null || (Contracts != null && Contracts.Select(c => c.Address)
+                        .Contains(args.TokenContract)))) 
+                    await Device.InvokeOnMainThreadAsync(async () => 
+                        await ReloadTokenContractsAsync());
             }
             catch (Exception e)
             {

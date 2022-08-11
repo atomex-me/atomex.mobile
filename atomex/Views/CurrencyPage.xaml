@@ -928,7 +928,7 @@
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Start" />
                         </StackLayout>
-                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=OneWay}"
+                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=TwoWay}"
                                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
                                         HeightRequest="{Binding CollectiblesViewModel.CollectibleListViewHeight}"
                                         HorizontalScrollBarVisibility="Never"
