@@ -41,15 +41,15 @@ namespace atomex.ViewModels
         [Reactive] public bool IsLocked { get; set; }
         [Reactive] public string Warning { get; set; }
 
-        private MainViewModel MainViewModel { get; set; }
+        private MainViewModel _mainViewModel { get; set; }
 
-        private CancellationTokenSource Cancellation { get; set; }
+        private CancellationTokenSource _cancellation { get; set; }
 
         private static TimeSpan CheckLockInterval = TimeSpan.FromSeconds(5);
         private static TimeSpan LockTime = TimeSpan.FromMinutes(2);
-        private const int DefaultAttemptsCount = 5;
+        private const int _defaultAttemptsCount = 5;
 
-        private Action OnMigrateAction;
+        private Action _onMigrateAction;
 
         private Account _userAccount;
 
@@ -59,8 +59,8 @@ namespace atomex.ViewModels
 
         public UnlockViewModel(IAtomexApp app, WalletInfo wallet, INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             StoragePassword = new SecureString();
             WalletName = wallet?.Name;
             CheckWalletLock();
@@ -140,7 +140,7 @@ namespace atomex.ViewModels
         {
             if (!IsEnteredStoragePassword)
             {
-                if (StoragePassword?.Length != 0)
+                if (StoragePassword != null && StoragePassword.Length != 0)
                 {
                     StoragePassword.RemoveAt(StoragePassword.Length - 1);
                     this.RaisePropertyChanged(nameof(StoragePassword));
@@ -148,7 +148,7 @@ namespace atomex.ViewModels
             }
             else
             {
-                if (StoragePasswordConfirmation?.Length != 0)
+                if (StoragePasswordConfirmation != null && StoragePasswordConfirmation.Length != 0)
                 {
                     StoragePasswordConfirmation.RemoveAt(StoragePasswordConfirmation.Length - 1);
                     this.RaisePropertyChanged(nameof(StoragePasswordConfirmation));
@@ -163,7 +163,7 @@ namespace atomex.ViewModels
             try
             {
                 await SecureStorage.SetAsync(WalletName + "-" + "AuthType", "Pin");
-                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", DefaultAttemptsCount.ToString());
+                await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", _defaultAttemptsCount.ToString());
             }
             catch (Exception ex)
             {
@@ -228,7 +228,7 @@ namespace atomex.ViewModels
         public ICommand BackCommand => _backCommand ??= ReactiveCommand.Create(() =>
         {
             _userAccount = null;
-            Cancellation?.Cancel();
+            _cancellation?.Cancel();
         });
 
         private ICommand _textChangedCommand;
@@ -240,7 +240,7 @@ namespace atomex.ViewModels
 
         public ICommand CancelCommand => _cancelCommand ??= ReactiveCommand.Create(() =>
         {
-            Cancellation?.Cancel();
+            _cancellation?.Cancel();
             _userAccount = null;
             _navigationService?.ClosePage();
         });
@@ -272,9 +272,10 @@ namespace atomex.ViewModels
                             migrationCompleteCallback: (MigrationActionType actionType) =>
                             {
                                 if (actionType == MigrationActionType.XtzTransactionsDeleted)
-                                {
-                                    OnMigrateAction = TezosTransactionsDeleted;
-                                }
+                                    _onMigrateAction = ScanXtzCurrencies;
+
+                                if (actionType == MigrationActionType.XtzTokensDataDeleted)
+                                    _onMigrateAction = ScanXtz;
                             });
                     });
                 }
@@ -303,16 +304,16 @@ namespace atomex.ViewModels
                         {
                             await Task.Run(() =>
                             {
-                                MainViewModel = new MainViewModel(_app, account);
-                                OnMigrateAction?.Invoke();
+                                _mainViewModel = new MainViewModel(_app, account);
+                                _onMigrateAction?.Invoke();
                             });
 
-                            Application.Current.MainPage = new MainPage(MainViewModel);
+                            Application.Current.MainPage = new MainPage(_mainViewModel);
 
                             try
                             {
                                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts",
-                                    DefaultAttemptsCount.ToString());
+                                    _defaultAttemptsCount.ToString());
                             }
                             catch (Exception ex)
                             {
@@ -421,7 +422,7 @@ namespace atomex.ViewModels
 
                     int.TryParse(await SecureStorage.GetAsync(WalletName + "-" + "PinAttempts"), out int attemptsCount);
 
-                    if (attemptsCount < DefaultAttemptsCount)
+                    if (attemptsCount < _defaultAttemptsCount)
                     {
                         string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft,
                             attemptsCount);
@@ -449,7 +450,7 @@ namespace atomex.ViewModels
 
                 if (DateTime.Compare(DateTime.Now.ToLocalTime(), unlockTime) < 0)
                 {
-                    Cancellation = new CancellationTokenSource();
+                    _cancellation = new CancellationTokenSource();
 
                     IsLocked = true;
 
@@ -459,15 +460,10 @@ namespace atomex.ViewModels
 
                     while (IsLocked)
                     {
-                        if (Cancellation.IsCancellationRequested)
-                        {
-                            return;
-                        }
+                        if (_cancellation.IsCancellationRequested) return;
 
                         await Task.Delay(CheckLockInterval);
-
                         var newTimeMin = Math.Ceiling(unlockTime.Subtract(DateTime.UtcNow.ToLocalTime()).TotalMinutes);
-
                         if (newTimeMin != lockMinutes)
                         {
                             Warning = string.Format(CultureInfo.InvariantCulture, AppResources.TryAgainInMinutes,
@@ -488,7 +484,7 @@ namespace atomex.ViewModels
                                 await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts",
                                     attemptsCount.ToString());
 
-                                if (attemptsCount < DefaultAttemptsCount)
+                                if (attemptsCount < _defaultAttemptsCount)
                                 {
                                     string message = string.Format(CultureInfo.InvariantCulture,
                                         AppResources.AttemptsLeft, attemptsCount);
@@ -511,7 +507,7 @@ namespace atomex.ViewModels
                     attemptsCount++;
                     await SecureStorage.SetAsync(WalletName + "-" + "PinAttempts", attemptsCount.ToString());
 
-                    if (attemptsCount < DefaultAttemptsCount)
+                    if (attemptsCount < _defaultAttemptsCount)
                     {
                         string message = string.Format(CultureInfo.InvariantCulture, AppResources.AttemptsLeft,
                             attemptsCount);
@@ -581,7 +577,9 @@ namespace atomex.ViewModels
                     }
                     else
                     {
-                        await _navigationService?.ShowAlert(AppResources.SorryLabel, AppResources.NotAuthenticated,
+                        if (_navigationService == null) return;
+
+                        await _navigationService.ShowAlert(AppResources.SorryLabel, AppResources.NotAuthenticated,
                             AppResources.AcceptButton);
                     }
                 }
@@ -593,10 +591,16 @@ namespace atomex.ViewModels
             }
         }
 
-        private void TezosTransactionsDeleted()
+        private void ScanXtzCurrencies()
         {
             var xtzCurrencies = new[] {"XTZ", "TZBTC", "KUSD"};
-            MainViewModel?.InitCurrenciesScan(xtzCurrencies);
+            _mainViewModel?.InitCurrenciesScan(xtzCurrencies);
+        }
+
+        private void ScanXtz()
+        {
+            var xtzCurrencies = new[] {"XTZ"};
+            _mainViewModel?.InitCurrenciesScan(xtzCurrencies);
         }
     }
 }

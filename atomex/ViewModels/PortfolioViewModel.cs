@@ -67,7 +67,7 @@ namespace atomex.ViewModels
         public CurrencyActionType SelectCurrencyUseCase { get; set; }
         [Reactive] public CurrencyViewModel SelectedCurrency { get; set; }
 
-        private bool _startCurrenciesScan = false;
+        private bool _startCurrenciesScan;
         private string[] _currenciesForScan { get; set; }
 
         [Reactive] public bool IsRestoring { get; set; }
@@ -79,7 +79,7 @@ namespace atomex.ViewModels
         public PortfolioViewModel(IAtomexApp app)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-
+            
             this.WhenAnyValue(vm => vm.AllCurrencies)
                 .WhereNotNull()
                 .SubscribeInMainThread(async _ =>
@@ -178,11 +178,12 @@ namespace atomex.ViewModels
 
                 var tezosTokens = primaryCurrencies
                     .Where(c => c.HasTokens && c.CurrencyCode == "XTZ")
-                    ?.Cast<TezosCurrencyViewModel>()
-                    ?.FirstOrDefault()
+                    .Cast<TezosCurrencyViewModel>()
+                    .FirstOrDefault()
                     ?.TezosTokensViewModel;
 
-                await tezosTokens?.UpdateTokens();
+                if (tezosTokens != null)
+                    await tezosTokens.UpdateTokens();
 
                 await Task.Run(() =>
                     Task.WhenAll(tokenCurrencies

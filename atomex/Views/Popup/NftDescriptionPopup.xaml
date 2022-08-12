@@ -39,6 +39,7 @@
                        VerticalTextAlignment="End" />
                 <Label Text="{Binding TokenBalance.Description}"
                        Style="{DynamicResource MainTextH5}"
+                       MaxLines="10"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="End" />
             </StackLayout>
