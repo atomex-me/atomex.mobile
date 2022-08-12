@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <CollectionView ItemsSource="{Binding Tokens, Mode=OneWay}"
+        <CollectionView ItemsSource="{Binding Tokens, Mode=TwoWay}"
                         SelectedItem="{Binding SelectedToken}"
                         BackgroundColor="Transparent"
                         SelectionMode="Single"
@@ -27,13 +27,12 @@
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                                  Span="2"
-                                 VerticalItemSpacing="16"
+                                 VerticalItemSpacing="0"
                                  HorizontalItemSpacing="0" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Spacing="0"
-                                 HorizontalOptions="FillAndExpand">
+                    <StackLayout Spacing="0">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
                                 <VisualState Name="Normal">
@@ -63,6 +62,8 @@
                                Margin="8,0"
                                CornerRadius="4"
                                HorizontalOptions="FillAndExpand"
+                               VerticalOptions="FillAndExpand"
+                               HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                                IsClippedToBounds="True">
                             <Image Source="{Binding TokenPreview}"
                                    HorizontalOptions="FillAndExpand"
@@ -90,8 +91,8 @@
                         </Frame>
                         <Grid RowSpacing="0"
                               ColumnSpacing="0"
-                              HorizontalOptions="Fill"
-                              Margin="8,6">
+                              HorizontalOptions="FillAndExpand"
+                              Margin="8,6,8,16">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="24" />
                             </Grid.RowDefinitions>

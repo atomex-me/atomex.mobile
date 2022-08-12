@@ -928,23 +928,23 @@
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Start" />
                         </StackLayout>
-                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=TwoWay}"
+                        <CollectionView ItemsSource="{Binding CollectiblesViewModel.UserCollectibles, Mode=OneWay}"
                                         SelectedItem="{Binding CollectiblesViewModel.SelectedCollectible}"
                                         HeightRequest="{Binding CollectiblesViewModel.CollectibleListViewHeight}"
                                         HorizontalScrollBarVisibility="Never"
+                                        VerticalScrollBarVisibility="Never"
                                         BackgroundColor="Transparent"
                                         SelectionMode="Single"
                                         Margin="8, 16">
                             <CollectionView.ItemsLayout>
                                 <GridItemsLayout Orientation="Vertical"
                                                  Span="2"
-                                                 VerticalItemSpacing="16"
+                                                 VerticalItemSpacing="0"
                                                  HorizontalItemSpacing="0" />
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Spacing="0"
-                                                 HorizontalOptions="FillAndExpand">
+                                    <StackLayout Spacing="0">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup Name="CommonStates">
                                                 <VisualState Name="Normal">
@@ -974,9 +974,10 @@
                                                Margin="8,0"
                                                CornerRadius="4"
                                                HorizontalOptions="FillAndExpand"
+                                               VerticalOptions="FillAndExpand"
+                                               HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                                                IsClippedToBounds="True">
                                             <Image Source="{Binding TokenPreview}"
-                                                   VerticalOptions="Fill"
                                                    HorizontalOptions="FillAndExpand"
                                                    Aspect="AspectFill"
                                                    BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
@@ -1000,7 +1001,8 @@
                                         </Frame>
                                         <Grid RowSpacing="0"
                                               ColumnSpacing="0"
-                                              Margin="8,6">
+                                              Margin="8,6,8,16"
+                                              HorizontalOptions="FillAndExpand">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="24" />
                                             </Grid.RowDefinitions>

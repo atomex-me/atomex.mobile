@@ -27,6 +27,7 @@
             <StackLayout Spacing="0">
                 <Frame HasShadow="False"
                        HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"
                        HeightRequest="{Binding Source={x:Reference NftImage}, Path=Width}"
                        Padding="0"
                        CornerRadius="4"

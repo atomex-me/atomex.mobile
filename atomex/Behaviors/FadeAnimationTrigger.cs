@@ -27,8 +27,8 @@ namespace atomex.Behaviors
         private void StartAnimation(Image myElement)
         {
             var animation = new Animation();
-            var anim1 = new Animation(v => myElement.Opacity = v, 0.2, 0.8);
-            var anim2 = new Animation(v => myElement.Opacity = v, 0.8, 0.2);
+            var anim1 = new Animation(v => myElement.Opacity = v, 0.1, 0.9);
+            var anim2 = new Animation(v => myElement.Opacity = v, 0.9, 0.1);
             animation.Add(0,0.5, anim1);
             animation.Insert(0.5, 1, anim2);
             animation.Commit(myElement, "FadeAnimation", length: 1500, easing: Easing.Linear, repeat:() => true);

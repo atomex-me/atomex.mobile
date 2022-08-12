@@ -108,12 +108,6 @@
                                             </Image.Triggers>
                                         </Image>
                                     </Frame>
-                                    <!-- <Image Source="{Binding CollectibleViewModel.TokenPreview}" -->
-                                    <!--        HeightRequest="28" -->
-                                    <!--        WidthRequest="28" -->
-                                    <!--        Margin="16,0" -->
-                                    <!--        VerticalOptions="Center" -->
-                                    <!--        HorizontalOptions="Start" /> -->
                                     <Label Text="{Binding CollectibleViewModel.Name}"
                                            Style="{DynamicResource MainTextH4}"
                                            LineBreakMode="TailTruncation"
