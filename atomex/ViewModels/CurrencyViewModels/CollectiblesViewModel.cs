@@ -66,7 +66,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         [Reactive] public string SearchPattern { get; set; }
         private bool _searched;
-        
+
         public CollectiblesViewModel(
             IAtomexApp app,
             INavigationService navigationService)
@@ -96,23 +96,24 @@ namespace atomex.ViewModels.CurrencyViewModels
                     _navigationService?.ShowPage(new CollectiblePage(collectible), TabNavigation.Portfolio);
                     SelectedCollectible = null;
                 });
-            
+
             this.WhenAnyValue(vm => vm.SearchPattern)
-                .SubscribeInMainThread(value =>
+                .SubscribeInMainThread(searchPattern =>
                 {
                     if (UserCollectibles == null) return;
-                    
+
                     _searched = true;
 
                     var collectibles = new ObservableCollection<CollectibleViewModel>(
                         _initialCollectibles
-                            .Where(c => c.Name.ToLower()
-                                .Contains(value?.ToLower() ?? string.Empty)));
-                    
+                            .Where(c =>
+                                c.Name?.ToLower().Contains(searchPattern.ToLower()) ?? false));
+
                     UserCollectibles = new ObservableCollection<CollectibleViewModel>(collectibles)
                         .OrderByDescending(collectible => collectible.Amount != 0)
+                        .ThenBy(c => c.Name)
                         .ToList();
-                    
+
                     _searched = false;
                 });
             
@@ -133,8 +134,8 @@ namespace atomex.ViewModels.CurrencyViewModels
             {
                 if (args.IsTokenUpdate &&
                     (args.TokenContract == null || (Contracts != null && Contracts.Select(c => c.Address)
-                        .Contains(args.TokenContract)))) 
-                    await Device.InvokeOnMainThreadAsync(async () => 
+                        .Contains(args.TokenContract))))
+                    await Device.InvokeOnMainThreadAsync(async () =>
                         await ReloadTokenContractsAsync());
             }
             catch (Exception e)
@@ -202,7 +203,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList());
-                    
+
                     _initialCollectibles = new List<CollectibleViewModel>(UserCollectibles);
                 });
             }
@@ -235,9 +236,9 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.CollectibleViewModel)
                         .ToList();
-                    
-                    _initialCollectibles = UserCollectibles != null 
-                        ? new List<CollectibleViewModel>(UserCollectibles) 
+
+                    _initialCollectibles = UserCollectibles != null
+                        ? new List<CollectibleViewModel>(UserCollectibles)
                         : new List<CollectibleViewModel>();
                 });
 
@@ -249,7 +250,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 Log.Error(e, "Change user collectibles error");
             }
         }
-        
+
         private ReactiveCommand<Unit, Unit> _clearSearchPatternCommand;
 
         public ReactiveCommand<Unit, Unit> ClearSearchPatternCommand => _clearSearchPatternCommand ??=

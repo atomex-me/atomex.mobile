@@ -112,22 +112,31 @@ namespace atomex.ViewModels.CurrencyViewModels
                 });
 
             this.WhenAnyValue(vm => vm.SearchPattern)
-                .SubscribeInMainThread(value =>
+                .SubscribeInMainThread(searchPattern =>
                 {
                     if (UserTokens == null) return;
 
                     _searched = true;
-                    
+
                     var tokens = new ObservableCollection<TezosTokenViewModel>(
                         _initialTokens
-                            .Where(t => t.Description.ToLower()
-                                .Contains(value?.ToLower() ?? string.Empty)));
+                            .Where(token =>
+                            {
+                                if (token.TokenBalance.Name != null && token.TokenBalance.Symbol != null)
+                                {
+                                    return token.TokenBalance.Name.ToLower().Contains(searchPattern.ToLower()) ||
+                                           token.TokenBalance.Symbol.ToLower().Contains(searchPattern.ToLower()) ||
+                                           token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                                }
+
+                                return token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                            }));
 
                     UserTokens = new ObservableCollection<TezosTokenViewModel>(tokens)
                         .OrderByDescending(token => token.IsConvertable)
                         .ThenByDescending(token => token.TotalAmountInBase)
                         .ToList();
-                    
+
                     _searched = false;
                 });
 
@@ -190,9 +199,9 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.TezosTokenViewModel)
                         .ToList();
-                    
-                    _initialTokens = UserTokens != null 
-                        ? new List<TezosTokenViewModel>(UserTokens) 
+
+                    _initialTokens = UserTokens != null
+                        ? new List<TezosTokenViewModel>(UserTokens)
                         : new List<TezosTokenViewModel>();
                 });
 
