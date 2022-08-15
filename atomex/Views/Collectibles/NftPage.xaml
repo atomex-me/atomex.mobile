@@ -223,7 +223,6 @@
                                Padding="0,0,0,6"
                                VerticalTextAlignment="End" />
                         <Label Grid.Row="1"
-                               Text="{Binding TokenBalance.Description}"
                                Style="{DynamicResource MainTextH4}"
                                VerticalTextAlignment="Start"
                                LineBreakMode="TailTruncation">
@@ -233,6 +232,12 @@
                                              Value="False">
                                     <Setter Property="Text"
                                             Value="-" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding TokenBalance.Description, Converter={StaticResource StringToBool}, FallbackValue='False', TargetNullValue='False'}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="{Binding TokenBalance.Description}" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
