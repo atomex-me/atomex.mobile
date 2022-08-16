@@ -111,10 +111,10 @@
                 </Label>
                 <Image Grid.RowSpan="2"
                        Grid.Column="2"
-                       Source="RightArrow__gray"
+                       Source="ic_forward"
                        Margin="20,0"
+                       WidthRequest="8"
                        HeightRequest="12"
-                       WidthRequest="12"
                        VerticalOptions="Center">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectFromCommand}" />
@@ -165,7 +165,7 @@
                        Grid.RowSpan="2"
                        Grid.Column="1"
                        Text="{Binding To}"
-                       Style="{DynamicResource MainTextH5}"
+                       Style="{DynamicResource MainTextH4}"
                        LineHeight="1.25"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center">
@@ -176,10 +176,10 @@
                 <Image Grid.Row="2"
                        Grid.RowSpan="2"
                        Grid.Column="2"
-                       Source="RightArrow__gray"
+                       Source="ic_forward"
                        Margin="20,0"
+                       WidthRequest="8"
                        HeightRequest="12"
-                       WidthRequest="12"
                        VerticalOptions="Center">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectToCommand}" />

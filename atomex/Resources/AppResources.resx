@@ -59,6 +59,9 @@
     <data name="AddressEntryPlaceholder" xml:space="preserve">
         <value>Address</value>
     </data>
+    <data name="ContractAddress" xml:space="preserve">
+        <value>Contract address</value>
+    </data>
     <data name="AmountEntryPlaceholder" xml:space="preserve">
         <value>Amount</value>
     </data>
@@ -118,6 +121,9 @@
     </data>
     <data name="Current" xml:space="preserve">
         <value>Current</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>Search...</value>
     </data>
     
     <!-- Start Page -->
@@ -782,6 +788,9 @@
     <data name="ManageTezosTokens" xml:space="preserve">
         <value>Manage Tezos tokens</value>
     </data>
+    <data name="ManageTezosCollectibles" xml:space="preserve">
+        <value>Manage Tezos collectibles</value>
+    </data>
     <data name="HideLowBalances" xml:space="preserve">
         <value>Hide low balances</value>
     </data>
@@ -820,6 +829,9 @@
     </data>
     <data name="ShowInIpfsButton" xml:space="preserve">
         <value>Show in ipfs</value>
+    </data>
+    <data name="ViewOnObjktButton" xml:space="preserve">
+        <value>View more on objkt.com</value>
     </data>
 
     <!-- Settings Page -->

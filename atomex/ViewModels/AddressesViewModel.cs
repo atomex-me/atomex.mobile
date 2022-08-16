@@ -51,18 +51,14 @@ namespace atomex.ViewModels
 
         public Func<string, Task<AddressViewModel>> UpdateAddress { get; set; }
 
-        public AddressViewModel()
-        {
-        }
-
         public AddressViewModel(
             IAtomexApp app,
             CurrencyConfig currency,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _currency = currency ?? throw new ArgumentNullException(nameof(currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             CopyButtonName = AppResources.CopyKeyButton;
         }
 
@@ -114,12 +110,12 @@ namespace atomex.ViewModels
 
                     var hdWallet = _app.Account.Wallet as HdWallet;
 
-                    using var privateKey = hdWallet.KeyStorage.GetPrivateKey(
+                    using var privateKey = hdWallet?.KeyStorage.GetPrivateKey(
                         currency: _currency,
                         keyIndex: walletAddress.KeyIndex,
                         keyType: walletAddress.KeyType);
 
-                    var unsecuredPrivateKey = privateKey.ToUnsecuredBytes();
+                    var unsecuredPrivateKey = privateKey?.ToUnsecuredBytes();
 
                     if (Currencies.IsBitcoinBased(_currency.Name))
                     {
@@ -223,9 +219,9 @@ namespace atomex.ViewModels
             string tokenContract = null,
             decimal tokenId = 0)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _currency = currency ?? throw new ArgumentNullException(nameof(currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _tokenContract = tokenContract;
             _tokenId = tokenId;
 
@@ -359,6 +355,9 @@ namespace atomex.ViewModels
                         .GetCurrencyAccount(_currency.Name);
 
                     var tezosAccount = account as TezosAccount;
+                    
+                    if (tezosAccount == null)
+                        return;
 
                     (await tezosAccount
                             .DataRepository

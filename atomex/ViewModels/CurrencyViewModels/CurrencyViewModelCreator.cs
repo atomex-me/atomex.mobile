@@ -19,11 +19,11 @@ namespace atomex.ViewModels.CurrencyViewModels
         XTZ,
     }
 
-    public class CurrencyViewModelCreator
+    public static class CurrencyViewModelCreator
     {
-        private readonly ConcurrentDictionary<Currencies, CurrencyViewModel> Instances = new();
+        private static readonly ConcurrentDictionary<Currencies, CurrencyViewModel> Instances = new();
 
-        public CurrencyViewModel CreateOrGet(
+        public static CurrencyViewModel CreateOrGet(
             CurrencyConfig currencyConfig,
             INavigationService navigationService,
             bool subscribeToUpdates)
@@ -58,7 +58,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             return currencyViewModel;
         }
 
-        public void Reset()
+        public static void Reset()
         {
             foreach (var currencyViewModel in Instances.Values)
             {
@@ -68,7 +68,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             Instances.Clear();
         }
 
-        private NotSupportedException NotSupported(string currencyName)
+        private static NotSupportedException NotSupported(string currencyName)
         {
             return new NotSupportedException(
                 $"Can't create currency view model for {currencyName}. This currency is not supported.");

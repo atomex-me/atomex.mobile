@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="http://rotorgames.com"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
+              x:Class="atomex.Views.Popup.NftDescriptionPopup"
+              xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              mc:Ignorable="d"
+              d:BindingContext="{d:DesignInstance vm:TezosTokenViewModel}">
+    <rg:PopupPage.Animation>
+        <rg:ScaleAnimation PositionIn="Center"
+                           PositionOut="Center"
+                           ScaleIn="1.2"
+                           ScaleOut="0.8"
+                           DurationIn="400"
+                           DurationOut="300"
+                           EasingIn="SinOut"
+                           EasingOut="SinIn"
+                           HasBackgroundAnimation="True" />
+    </rg:PopupPage.Animation>
+    <Frame CornerRadius="8"
+           WidthRequest="280"
+           Padding="0"
+           HasShadow="False"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <StackLayout Spacing="0"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center">
+            <StackLayout Spacing="24"
+                         Margin="24,24,24,0">
+                <Label Text="{helpers:Translate Description}"
+                       Style="{DynamicResource MainTextH3}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End" />
+                <Label Text="{Binding TokenBalance.Description}"
+                       Style="{DynamicResource MainTextH5}"
+                       MaxLines="10"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End" />
+            </StackLayout>
+            <Button Text="{helpers:Translate CloseButton}"
+                    Style="{DynamicResource TransparentButton}"
+                    Margin="10"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding CloseBottomSheetCommand}" />
+        </StackLayout>
+    </Frame>
+</rg:PopupPage>

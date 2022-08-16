@@ -1208,4 +1208,16 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="UndelegateWarning" xml:space="preserve">
         <value>Are you sure you want to send transaction, that will stop delegating {0} with fee {1} XTZ?</value>
     </data>
+    <data name="ContractAddress" xml:space="preserve">
+        <value>Contract address</value>
+    </data>
+    <data name="ViewOnObjktButton" xml:space="preserve">
+        <value>View more on objkt.com</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>Search...</value>
+    </data>
+    <data name="ManageTezosCollectibles" xml:space="preserve">
+        <value>Manage Tezos collectibles</value>
+    </data>
 </root>

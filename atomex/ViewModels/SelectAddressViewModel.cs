@@ -85,8 +85,8 @@ namespace atomex.ViewModels
             int selectedTokenId = 0,
             string tokenContract = null)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            _currency = currency ?? throw new ArgumentNullException(nameof(_currency));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _currency = currency ?? throw new ArgumentNullException(nameof(currency));
             Message = new Message();
 
             TabNavigation = tab;

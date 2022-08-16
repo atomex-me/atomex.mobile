@@ -8,10 +8,12 @@ namespace atomex.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is decimal val)
-                return val > 0;
-
-            return false;
+            return value switch
+            {
+                decimal val => val > 0,
+                int val => val > 0,
+                _ => false
+            };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

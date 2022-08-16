@@ -18,12 +18,11 @@ namespace atomex.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        public IAtomexApp AtomexApp { get; }
         public SettingsViewModel SettingsViewModel { get; }
         public ConversionViewModel ConversionViewModel { get; }
         public PortfolioViewModel PortfolioViewModel { get; }
         public BuyViewModel BuyViewModel { get; }
-        public CurrencyViewModelCreator CurrencyViewModelCreator { get; }
-        public IAtomexApp AtomexApp { get; }
 
         public EventHandler Locked;
 
@@ -39,8 +38,7 @@ namespace atomex.ViewModels
                 .AddEmbeddedJsonFile(assembly, "configuration.json")
                 .Build();
 
-            AtomexApp = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            CurrencyViewModelCreator = new CurrencyViewModelCreator();
+            AtomexApp = app ?? throw new ArgumentNullException(nameof(app));
 
             SubscribeToServices();
 
@@ -59,8 +57,8 @@ namespace atomex.ViewModels
 
             AtomexApp.ChangeAtomexClient(atomexClient, account, restart: true);
 
-            PortfolioViewModel = new PortfolioViewModel(AtomexApp, CurrencyViewModelCreator);
-            ConversionViewModel = new ConversionViewModel(AtomexApp, CurrencyViewModelCreator);
+            PortfolioViewModel = new PortfolioViewModel(AtomexApp);
+            ConversionViewModel = new ConversionViewModel(AtomexApp);
             BuyViewModel = new BuyViewModel(AtomexApp);
             SettingsViewModel = new SettingsViewModel(AtomexApp, this);
 
@@ -78,6 +76,7 @@ namespace atomex.ViewModels
 
             ConversionViewModel?.Reset();
             CurrencyViewModelCreator.Reset();
+            TezosTokenViewModelCreator.Reset();
 
             AtomexApp.AtomexClientChanged -= OnAtomexClientChangedEventHandler;
 

@@ -44,6 +44,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         }
 
         private ICommand _toggleCommand;
+
         public ICommand ToggleCommand => _toggleCommand ??= ReactiveCommand.Create(() =>
             IsSelected = !IsSelected);
     }
@@ -53,12 +54,12 @@ namespace atomex.ViewModels.CurrencyViewModels
         private readonly IAtomexApp _app;
         private IAccount _account;
         private readonly INavigationService _navigationService;
-        private readonly TezosTokenViewModelCreator _tezosTokenViewModelCreator;
 
         [Reactive] private ObservableCollection<TokenContract> Contracts { get; set; }
 
         [Reactive] public IList<TezosToken> AllTokens { get; set; }
         [Reactive] public IList<TezosTokenViewModel> UserTokens { get; set; }
+        [Reactive] private IList<TezosTokenViewModel> _initialTokens { get; set; }
         [Reactive] public bool IsTokensLoading { get; set; }
         [Reactive] public TezosTokenViewModel SelectedToken { get; set; }
         private TezosTokenViewModel _openToken;
@@ -69,14 +70,16 @@ namespace atomex.ViewModels.CurrencyViewModels
         public const double TokenListHeaderHeight = 76;
         [Reactive] public double TokenListViewHeight { get; set; }
 
+        [Reactive] public string SearchPattern { get; set; }
+        private bool _searched;
+
         public TezosTokensViewModel(
             IAtomexApp app,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
             _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            _tezosTokenViewModelCreator = new TezosTokenViewModelCreator();
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             SubscribeToServices(_app);
 
@@ -86,12 +89,11 @@ namespace atomex.ViewModels.CurrencyViewModels
                     await GetTokensAsync());
 
             this.WhenAnyValue(vm => vm.UserTokens)
+                .Where(_ => !_searched)
                 .WhereNotNull()
                 .SubscribeInMainThread(vm =>
-                {
                     TokenListViewHeight = (UserTokens.Count + 1) * DefaultTokenRowHeight +
-                        TokenListHeaderHeight;
-                });
+                                          TokenListHeaderHeight);
 
             this.WhenAnyValue(vm => vm.SelectedToken)
                 .WhereNotNull()
@@ -109,6 +111,34 @@ namespace atomex.ViewModels.CurrencyViewModels
                     SelectedToken = null;
                 });
 
+            this.WhenAnyValue(vm => vm.SearchPattern)
+                .SubscribeInMainThread(searchPattern =>
+                {
+                    if (UserTokens == null) return;
+
+                    _searched = true;
+
+                    var tokens = new ObservableCollection<TezosTokenViewModel>(
+                        _initialTokens
+                            .Where(token =>
+                            {
+                                if (token.TokenBalance.Name != null && token.TokenBalance.Symbol != null)
+                                {
+                                    return token.TokenBalance.Name.ToLower().Contains(searchPattern.ToLower()) ||
+                                           token.TokenBalance.Symbol.ToLower().Contains(searchPattern.ToLower()) ||
+                                           token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                                }
+
+                                return token.TokenBalance.Contract.Contains(searchPattern.ToLower());
+                            }));
+
+                    UserTokens = new ObservableCollection<TezosTokenViewModel>(tokens)
+                        .OrderByDescending(token => token.IsConvertable)
+                        .ThenByDescending(token => token.TotalAmountInBase)
+                        .ToList();
+
+                    _searched = false;
+                });
 
             _ = ReloadTokenContractsAsync();
         }
@@ -122,10 +152,10 @@ namespace atomex.ViewModels.CurrencyViewModels
         private async Task ReloadTokenContractsAsync()
         {
             var contracts = (await _app.Account
-                .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz)
-                .DataRepository
-                .GetTezosTokenContractsAsync())
-                    .ToList();
+                    .GetCurrencyAccount<TezosAccount>(TezosConfig.Xtz)
+                    .DataRepository
+                    .GetTezosTokenContractsAsync())
+                .ToList();
 
             Contracts = new ObservableCollection<TokenContract>(contracts);
         }
@@ -136,7 +166,11 @@ namespace atomex.ViewModels.CurrencyViewModels
 
             foreach (var contract in Contracts)
             {
-                var contractTokens = await _tezosTokenViewModelCreator.CreateOrGet(_app, _navigationService, contract);
+                var contractTokens = await TezosTokenViewModelCreator.CreateOrGet(
+                    atomexApp: _app,
+                    navigationService: _navigationService,
+                    contract: contract,
+                    isNft: false);
                 tokens.AddRange(contractTokens);
 
                 Log.Debug("{@count} tokens for {@contract} loaded", contractTokens.Count(), contract.Address);
@@ -165,6 +199,10 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.TezosTokenViewModel)
                         .ToList();
+
+                    _initialTokens = UserTokens != null
+                        ? new List<TezosTokenViewModel>(UserTokens)
+                        : new List<TezosTokenViewModel>();
                 });
 
                 _app.Account.UserData.DisabledTokens = disabledTokens;
@@ -176,12 +214,19 @@ namespace atomex.ViewModels.CurrencyViewModels
             }
         }
 
+        private ReactiveCommand<Unit, Unit> _clearSearchPatternCommand;
+
+        public ReactiveCommand<Unit, Unit> ClearSearchPatternCommand => _clearSearchPatternCommand ??=
+            _clearSearchPatternCommand = ReactiveCommand.Create(() => { SearchPattern = string.Empty; });
+
         private ReactiveCommand<Unit, Unit> _hideLowBalancesCommand;
-        public ReactiveCommand<Unit, Unit> HideLowBalancesCommand => _hideLowBalancesCommand ??= ReactiveCommand.Create(() =>
-        {
-            _navigationService?.CloseBottomSheet();
-            // TODO: filters tezos tokens
-        });
+
+        public ReactiveCommand<Unit, Unit> HideLowBalancesCommand => _hideLowBalancesCommand ??= ReactiveCommand.Create(
+            () =>
+            {
+                _navigationService?.CloseBottomSheet();
+                // TODO: filters tezos tokens
+            });
 
         private void OnAtomexClientChanged(object sender, AtomexClientChangedEventArgs e)
         {
@@ -193,18 +238,16 @@ namespace atomex.ViewModels.CurrencyViewModels
             try
             {
                 if (!args.IsTokenUpdate ||
-                   args.TokenContract != null && (args.TokenContract != _openToken.Contract.Address || args.TokenId != _openToken.TokenBalance.TokenId))
+                    args.TokenContract != null && (args.TokenContract != _openToken.Contract.Address ||
+                                                   args.TokenId != _openToken.TokenBalance.TokenId))
                 {
                     return;
-                };
+                }
 
                 if (_openToken != null)
                     _ = _openToken.LoadTransfers();
 
-                await Device.InvokeOnMainThreadAsync(async () =>
-                {
-                    await ReloadTokenContractsAsync();
-                });
+                await Device.InvokeOnMainThreadAsync(async () => { await ReloadTokenContractsAsync(); });
             }
             catch (Exception e)
             {
@@ -244,6 +287,8 @@ namespace atomex.ViewModels.CurrencyViewModels
                         .Where(c => c.IsSelected)
                         .Select(vm => vm.TezosTokenViewModel)
                         .ToList());
+
+                    _initialTokens = new List<TezosTokenViewModel>(UserTokens);
                 });
             }
             catch (Exception e)
@@ -257,6 +302,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         }
 
         private ReactiveCommand<Unit, Unit> _updateTokensCommand;
+
         public ReactiveCommand<Unit, Unit> UpdateTokensCommand => _updateTokensCommand ??=
             (_updateTokensCommand = ReactiveCommand.CreateFromTask(UpdateTokens));
 
@@ -277,7 +323,8 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await Device.InvokeOnMainThreadAsync(() =>
                 {
-                    _navigationService?.DisplaySnackBar(MessageType.Regular, AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
+                    _navigationService?.DisplaySnackBar(MessageType.Regular,
+                        AppResources.TezosTokens + " " + AppResources.HasBeenUpdated);
                 });
             }
             catch (OperationCanceledException)
@@ -295,18 +342,23 @@ namespace atomex.ViewModels.CurrencyViewModels
         }
 
         private ReactiveCommand<Unit, Unit> _manageTokensCommand;
+
         public ReactiveCommand<Unit, Unit> ManageTokensCommand => _manageTokensCommand ??= ReactiveCommand.Create(() =>
-                _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(this)));
+            _navigationService?.ShowBottomSheet(new ManageTokensBottomSheet(this)));
 
         private ReactiveCommand<Unit, Unit> _tokensActionSheetCommand;
-        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??= ReactiveCommand.Create(() =>
-            _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(this)));
+
+        public ReactiveCommand<Unit, Unit> TokensActionSheetCommand => _tokensActionSheetCommand ??=
+            ReactiveCommand.Create(() =>
+                _navigationService?.ShowBottomSheet(new TokensActionBottomSheet(this)));
 
         private ICommand _closeActionSheetCommand;
+
         public ICommand CloseActionSheetCommand => _closeActionSheetCommand ??=
             new Command(() => _navigationService?.CloseBottomSheet());
 
         #region IDisposable Support
+
         private bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
@@ -337,6 +389,7 @@ namespace atomex.ViewModels.CurrencyViewModels
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

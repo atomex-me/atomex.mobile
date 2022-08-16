@@ -2,7 +2,7 @@
 
 namespace atomex.Behaviors
 {
-    public class AnimationTrigger : TriggerAction<Image>
+    public class RotateAnimationTrigger : TriggerAction<Image>
     {
         public AnimationAction Action { get; set; }
         public enum AnimationAction

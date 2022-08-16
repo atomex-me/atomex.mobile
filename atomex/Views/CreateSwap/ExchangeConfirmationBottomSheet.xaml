@@ -82,7 +82,7 @@
                            Padding="0,2" />
                     <Label Grid.Column="2"
                            Text="{Binding Amount}"
-                           Style="{DynamicResource MainTextH4SemiBold}"
+                           Style="{DynamicResource MainTextH3}"
                            HorizontalTextAlignment="End"
                            VerticalTextAlignment="End"
                            Padding="16,0" />
@@ -125,7 +125,7 @@
                            VerticalTextAlignment="End" />
                     <Label Grid.Row="2"
                            Grid.Column="2"
-                           Style="{DynamicResource MainTextH4SemiBold}"
+                           Style="{DynamicResource MainTextH3}"
                            Padding="16,0"
                            Text="{Binding TargetAmount}"
                            HorizontalTextAlignment="End"

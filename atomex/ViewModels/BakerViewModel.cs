@@ -1,8 +1,15 @@
-﻿namespace atomex.ViewModels
+﻿using System;
+using atomex.Common;
+using Atomex.Common;
+using ReactiveUI;
+using Xamarin.Forms;
+
+namespace atomex.ViewModels
 {
     public class BakerViewModel : BaseViewModel
     {
-        public string Logo { get; set; }
+        public string LogoUrl { get; set; }
+        public ImageSource Logo { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public decimal Fee { get; set; }
@@ -22,5 +29,41 @@
             < -999 => "0,.#K",
             _ => "0"
         });
+
+        public BakerViewModel()
+        {
+            this.WhenAnyValue(vm => vm.LogoUrl)
+                .WhereNotNull()
+                .SubscribeInMainThread(url =>
+                {
+                    var hasImageInCache = CacheHelper
+                        .HasCacheAsync(new Uri(url))
+                        .WaitForResult();
+
+                    if (hasImageInCache)
+                    {
+                        Logo = new UriImageSource
+                        {
+                            Uri = new Uri(url),
+                            CachingEnabled = true,
+                            CacheValidity = new TimeSpan(7, 0, 0, 0)
+                        };
+                    }
+
+                    var downloaded = CacheHelper
+                        .SaveToCacheAsync(new Uri(url))
+                        .WaitForResult();
+
+                    if (downloaded)
+                    {
+                        Logo = new UriImageSource
+                        {
+                            Uri = new Uri(url),
+                            CachingEnabled = true,
+                            CacheValidity = new TimeSpan(7, 0, 0, 0)
+                        };
+                    }
+                });
+        }
     }
 }

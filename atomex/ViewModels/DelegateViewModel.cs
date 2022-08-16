@@ -346,7 +346,7 @@ namespace atomex.ViewModels
         public DelegateViewModel(IAtomexApp app, INavigationService navigationService)
         {
             _app = app ?? throw new ArgumentNullException(nameof(app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _tezosConfig = _app.Account.Currencies.Get<TezosConfig>(TezosConfig.Xtz);
             Message = new Message();
 
@@ -438,25 +438,29 @@ namespace atomex.ViewModels
             {
                 Title = AppResources.ChangeBaker;
 
-                BakersList = new List<BakerViewModel>(BakersList?
-                    .Select(baker =>
-                    {
-                        if (baker.Address == delegation.Baker.Address)
-                            baker.IsCurrentlyActive = true;
-                        return baker;
-                    }));
+                BakersList = BakersList != null
+                    ? new List<BakerViewModel>(BakersList
+                        .Select(baker =>
+                        {
+                            if (baker.Address == delegation.Baker.Address)
+                                baker.IsCurrentlyActive = true;
+                            return baker;
+                        }))
+                    : new List<BakerViewModel>();
             }
             else
             {
                 Title = AppResources.DelegatingTo;
                 SelectedBaker = null;
-                BakersList = new List<BakerViewModel>(BakersList?
-                    .Select(baker =>
-                    {
-                        if (baker.IsCurrentlyActive)
-                            baker.IsCurrentlyActive = false;
-                        return baker;
-                    }));
+                BakersList = BakersList != null
+                    ? new List<BakerViewModel>(BakersList
+                        .Select(baker =>
+                        {
+                            if (baker.IsCurrentlyActive)
+                                baker.IsCurrentlyActive = false;
+                            return baker;
+                        }))
+                    : new List<BakerViewModel>();
             }
 
             OnQuotesUpdatedEventHandler(_app.QuotesProvider, EventArgs.Empty);
@@ -484,8 +488,6 @@ namespace atomex.ViewModels
                             StakingAvailable = bakerData.StakingAvailable
                         })
                         .ToList();
-
-                    // TODO: load logo from cash
                 });
             }
             catch (Exception e)
@@ -496,7 +498,10 @@ namespace atomex.ViewModels
             await Device.InvokeOnMainThreadAsync(() =>
             {
                 BakersList = bakers;
-                _initialBakersList = new List<BakerViewModel>(BakersList);
+                _initialBakersList =
+                    BakersList != null
+                        ? new List<BakerViewModel>(BakersList)
+                        : new List<BakerViewModel>();
                 //UseDefaultFee = _useDefaultFee;
             });
         }
@@ -565,7 +570,7 @@ namespace atomex.ViewModels
                 return new Error(Errors.WrongDelegationAddress, "Wrong delegation address.");
             }
 
-            if (delegateData["deactivated"].Value<bool>())
+            if (delegateData["deactivated"] != null && delegateData["deactivated"].Value<bool>())
                 return new Error(Errors.WrongDelegationAddress, "Baker is deactivated. Pick another one.");
 
             var delegators = delegateData["delegated_contracts"]?.Values<string>();

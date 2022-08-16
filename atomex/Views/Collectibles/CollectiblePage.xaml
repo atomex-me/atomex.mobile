@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Views.Collectibles.CollectiblePage"
+             Title="{Binding Name}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
+             xmlns:converters="clr-namespace:atomex.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:atomex.ViewModels.CurrencyViewModels;assembly=atomex"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="clr-namespace:atomex.Behaviors;assembly=atomex"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:CollectibleViewModel}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding Tokens, Mode=TwoWay}"
+                        SelectedItem="{Binding SelectedToken}"
+                        BackgroundColor="Transparent"
+                        SelectionMode="Single"
+                        Margin="8,16">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 VerticalItemSpacing="0"
+                                 HorizontalItemSpacing="0" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Spacing="0">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor"
+                                                Value="{AppThemeBinding Dark={StaticResource ListViewSelectedBackgroundColorDark}, Light={StaticResource ListViewSelectedBackgroundColor}}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout"
+                                         Binding="{Binding TotalAmount, Converter={StaticResource GreaterThanZeroConverter}}"
+                                         Value="False">
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Frame HasShadow="False"
+                               Padding="0"
+                               Margin="8,0"
+                               CornerRadius="4"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="FillAndExpand"
+                               HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                               IsClippedToBounds="True">
+                            <Image Source="{Binding TokenPreview}"
+                                   HorizontalOptions="FillAndExpand"
+                                   Aspect="AspectFill"
+                                   BackgroundColor="{AppThemeBinding Dark={StaticResource DownloadPreviewBackgroundColorDark}, Light={StaticResource DownloadPreviewBackgroundColor}}">
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                 Value="False">
+                                        <DataTrigger.EnterActions>
+                                            <behaviors:FadeAnimationTrigger Action="Start" />
+                                        </DataTrigger.EnterActions>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image"
+                                                 Binding="{Binding TokenPreview, Mode=OneWay, Converter={StaticResource NullToBoolean}, FallbackValue='False', TargetNullValue='False'}"
+                                                 Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <behaviors:FadeAnimationTrigger Action="Stop" />
+                                        </DataTrigger.EnterActions>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+                        </Frame>
+                        <Grid RowSpacing="0"
+                              ColumnSpacing="0"
+                              HorizontalOptions="FillAndExpand"
+                              Margin="8,6,8,16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="24" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Description}"
+                                   Style="{DynamicResource MainTextH5}"
+                                   VerticalTextAlignment="Center"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding TotalAmount}"
+                                   Style="{DynamicResource AdditionalTextH6}"
+                                   VerticalTextAlignment="Center"
+                                   Padding="8,0" />
+                        </Grid>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

@@ -71,13 +71,15 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate SendButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -94,13 +96,15 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate ReceiveButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -118,13 +122,15 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate ExchangeButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"
@@ -142,13 +148,15 @@
                             <FormattedString>
                                 <Span Text="{helpers:Translate BuyButton}" />
                                 <Span Text=" " />
-                                <Span Text="{Binding CurrencyCode}" />
+                                <Span Text="{Binding CurrencyName}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Image Source="{AppThemeBinding Dark='RightArrow__white', Light='RightArrow__black'}"
+                    <Image Source="ic_forward"
                            HeightRequest="12"
-                           WidthRequest="12"
+                           WidthRequest="8"
+                           Margin="0,4"
+                           VerticalOptions="Center"
                            HorizontalOptions="End" />
                 </StackLayout>
             </StackLayout>

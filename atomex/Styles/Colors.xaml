@@ -62,6 +62,7 @@
     <Color x:Key="PopupFrameBackgroundColor">#f4f4ff</Color>
     <Color x:Key="LoaderColor">#3a6cb1</Color>
     <Color x:Key="SeparatorColor">#29000E22</Color>
+    <Color x:Key="DownloadPreviewBackgroundColor">#34000E22</Color>
 
     <Color x:Key="StartPageBackgroundStartColor">#2b5287</Color>
     <Color x:Key="StartPageBackgroundStopColor">#123054</Color>
@@ -129,6 +130,7 @@
     <Color x:Key="PopupFrameBackgroundColorDark">#11233C</Color>
     <Color x:Key="LoaderColorDark">#f6f6f6</Color>
     <Color x:Key="SeparatorColorDark">#29DCECFF</Color>
+    <Color x:Key="DownloadPreviewBackgroundColorDark">#41516a</Color>
 
     <Color x:Key="StartPageBackgroundStartColorDark">#2b5277</Color>
     <Color x:Key="StartPageBackgroundStopColorDark">#0e1621</Color>

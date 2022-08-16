@@ -56,7 +56,6 @@
                 <StackLayout Style="{DynamicResource SeparatorStyle}" />
                 <ListView ItemsSource="{Binding Outputs}"
                           SelectionMode="None"
-                          CachingStrategy="RetainElement"
                           HasUnevenRows="True"
                           SeparatorVisibility="None"
                           VerticalOptions="FillAndExpand"

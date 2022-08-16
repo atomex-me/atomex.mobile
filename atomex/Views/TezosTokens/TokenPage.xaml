@@ -171,8 +171,7 @@
                     <ScrollView Orientation="Horizontal"
                                 HorizontalScrollBarVisibility="Never"
                                 HorizontalOptions="FillAndExpand"
-                                Padding="8,0"
-                                x:Name="TabScrollView">
+                                Padding="8,0">
                         <Grid HorizontalOptions="CenterAndExpand"
                               ColumnSpacing="0"
                               RowSpacing="0">
@@ -278,11 +277,9 @@
                               SeparatorVisibility="Default"
                               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
                               IsGroupingEnabled="True"
-                              CachingStrategy="RecycleElement"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
-                              RowHeight="72"
-                              x:Name="TransactionsListView"
+                              HeightRequest="{Binding TxListViewHeight}"
                               IsVisible="False">
                         <ListView.Triggers>
                             <DataTrigger TargetType="ListView"
@@ -435,18 +432,10 @@
                         </ListView.ItemTemplate>
                         <ListView.Footer>
                             <Button Text="{helpers:Translate ShowAll}"
-                                    x:Name="TxsFooter"
                                     Style="{DynamicResource TransparentButton}"
-                                    Clicked="ShowAllTxs">
-                                <Button.Triggers>
-                                    <DataTrigger TargetType="Button"
-                                                 Binding="{Binding CanShowMoreTxs}"
-                                                 Value="False">
-                                        <Setter Property="IsVisible"
-                                                Value="False" />
-                                    </DataTrigger>
-                                </Button.Triggers>
-                            </Button>
+                                    IsVisible="{Binding CanShowMoreTxs}"
+                                    HeightRequest="52"
+                                    Command="{Binding ShowAllTxsCommand}" />
                         </ListView.Footer>
                     </ListView>
                     <ListView ItemsSource="{Binding Addresses}"
@@ -456,8 +445,7 @@
                               SeparatorVisibility="None"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
-                              x:Name="AddressesListView"
-                              RowHeight="64"
+                              HeightRequest="{Binding AddressListViewHeight}"
                               Margin="0,20"
                               IsVisible="False">
                         <ListView.Triggers>
@@ -519,9 +507,9 @@
                                         <Image Grid.Column="2"
                                                Grid.RowSpan="2"
                                                HorizontalOptions="End"
-                                               WidthRequest="11"
-                                               HeightRequest="11"
-                                               Source="RightArrow__gray"
+                                               WidthRequest="8"
+                                               HeightRequest="12"
+                                               Source="ic_forward"
                                                Margin="8,16" />
                                     </Grid>
                                 </controls:CustomViewCell>
@@ -530,7 +518,6 @@
                         <ListView.Footer>
                             <Button Text="{helpers:Translate ShowAll}"
                                     Style="{DynamicResource TransparentButton}"
-                                    x:Name="AddressesFooter"
                                     IsVisible="{Binding CanShowMoreAddresses}"
                                     Command="{Binding AddressesViewModel.ShowAllAddressesCommand}" />
                         </ListView.Footer>

@@ -36,7 +36,6 @@
             <ListView ItemsSource="{Binding Currencies}"
                       SelectionMode="Single"
                       SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
-                      CachingStrategy="RetainElement"
                       HasUnevenRows="True"
                       SeparatorVisibility="Default"
                       BackgroundColor="Transparent"

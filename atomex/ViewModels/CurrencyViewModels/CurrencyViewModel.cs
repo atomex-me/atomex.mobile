@@ -35,7 +35,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Description("Collectibles")] Collectibles,
         [Description("Addresses")] Addresses,
         [Description("Delegations")] Delegations,
-        [Description("Tokens")] Tokens
+        [Description("Tokens")] Tokens,
+        [Description("Details")] Details
     }
 
     public class CurrencyViewModel : BaseViewModel
@@ -54,7 +55,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public string BaseCurrencyCode => "USD";
         public bool IsBitcoinBased => Currency is BitcoinBasedConfig;
         public bool IsStakingAvailable => Currency?.Name == "XTZ";
-        public bool HasCollectibles => false;
+        public bool HasCollectibles => Currency?.Name == "XTZ";
         public bool HasTokens => Currency?.Name == "XTZ";
         public bool CanBuy { get; set; }
 

@@ -31,8 +31,7 @@
               HasUnevenRows="True"
               SeparatorVisibility="Default"
               SeparatorColor="{AppThemeBinding Dark={StaticResource ListViewSeparatorColorDark}, Light={StaticResource ListViewSeparatorColor}}"
-              BackgroundColor="Transparent"
-              CachingStrategy="RecycleElement">
+              BackgroundColor="Transparent">
         <ListView.Header>
             <StackLayout Spacing="0">
                 <Label Text="{helpers:Translate ExchangeLabel}"
@@ -372,10 +371,10 @@
                            TextColor="{AppThemeBinding Dark={StaticResource MainTextColorDark}, Light={StaticResource MainTextColor}}"
                            FontFamily="{DynamicResource RegularFont}"
                            FontSize="16" />
-                    <Image Source="{AppThemeBinding Dark=RightArrow__white, Light=RightArrow__black}"
+                    <Image Source="ic_forward"
                            Margin="10,0"
                            HeightRequest="12"
-                           WidthRequest="12" />
+                           WidthRequest="8" />
                 </StackLayout>
                 <StackLayout Spacing="2"
                              Padding="17,0">
