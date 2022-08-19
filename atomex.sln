@@ -226,6 +226,10 @@ Global
 		{55E444DA-533C-4A0F-8F71-42E3F80894EC}.Release|iPhone.Build.0 = Release|Any CPU
 		{55E444DA-533C-4A0F-8F71-42E3F80894EC}.ReleasePlayMarket|Any CPU.ActiveCfg = Release|Any CPU
 		{55E444DA-533C-4A0F-8F71-42E3F80894EC}.ReleasePlayMarket|Any CPU.Build.0 = Release|Any CPU
+		{00D49D30-4373-4A8A-A3A8-9481F110A7F9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{00D49D30-4373-4A8A-A3A8-9481F110A7F9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{973E3C65-B305-4DB3-AE78-7694E7F38A92}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{973E3C65-B305-4DB3-AE78-7694E7F38A92}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E3C8932-3924-4519-A49B-4D76F9FB2117} = {B50066C9-027D-4C2F-A473-3592D54ABD5C}

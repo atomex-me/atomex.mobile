@@ -83,9 +83,6 @@
     <data name="TotalAmountInclFees" xml:space="preserve">
         <value>Всего (вкл. коммиссию)</value>
     </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>На адрес</value>
-    </data>
     <data name="TransactionTime" xml:space="preserve">
         <value>Время транзакции</value>
     </data>
@@ -692,13 +689,6 @@
     <data name="CurrencyRefunded" xml:space="preserve">
         <value>{0} возвращен</value>
     </data>
-    <data name="DetailsTab" xml:space="preserve">
-        <value>Подробнее</value>
-    </data>
-    <data name="ProgressTab" xml:space="preserve">
-        <value>Прогресс</value>
-    </data>
-
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">
         <value>Список свопов</value>
@@ -1054,9 +1044,6 @@
     <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
         <value>Недостаточно {0} для покрытия комиссии за перевод токенов. Требуется минимум {1}</value>
     </data>
-    <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>Комиссия должна быть больше нуля</value>
-    </data>
     <data name="SendingTransactionError" xml:space="preserve">
         <value>Ошибка при отправке транзакции</value>
     </data>
@@ -1219,5 +1206,14 @@
     </data>
     <data name="ManageTezosCollectibles" xml:space="preserve">
         <value>Управление Tezos NFT</value>
+    </data>
+    <data name="Dapps" xml:space="preserve">
+        <value>Dapps</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Подробнее</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
     </data>
 </root>

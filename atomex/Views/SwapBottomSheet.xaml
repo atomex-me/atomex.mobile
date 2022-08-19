@@ -231,7 +231,7 @@
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapProgress"
                                     x:Name="ProgressButton"
-                                    Text="{helpers:Translate ProgressTab}">
+                                    Text="{helpers:Translate Progress}">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="SwapInfoStates">
                                         <VisualState Name="SwapProgress">
@@ -255,7 +255,7 @@
                             </Button>
                             <Button Grid.Column="1"
                                     Style="{DynamicResource TabButton}"
-                                    Text="{helpers:Translate DetailsTab}"
+                                    Text="{helpers:Translate Details}"
                                     Clicked="OnButtonClicked"
                                     CommandParameter="SwapDetails"
                                     x:Name="DetailsButton">

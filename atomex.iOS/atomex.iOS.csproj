@@ -532,8 +532,6 @@
     <Folder Include="Assets.xcassets\ic_exchange__white.imageset\" />
     <Folder Include="Assets.xcassets\ic_exchange.imageset\" />
     <Folder Include="Assets.xcassets\USDT_XTZ.imageset\" />
-    <Folder Include="Assets.xcassets\ic_forward__white.imageset\" />
-    <Folder Include="Assets.xcassets\ic_forward__gray.imageset\" />
     <Folder Include="Assets.xcassets\ic_forward.imageset\" />
   </ItemGroup>
   <ItemGroup>

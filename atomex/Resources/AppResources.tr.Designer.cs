@@ -183,12 +183,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string ToLabel {
-            get {
-                return ResourceManager.GetString("ToLabel", resourceCulture);
-            }
-        }
-        
         internal static string TransactionTime {
             get {
                 return ResourceManager.GetString("TransactionTime", resourceCulture);
@@ -234,6 +228,12 @@ namespace atomex.Resources {
         internal static string FromLabel {
             get {
                 return ResourceManager.GetString("FromLabel", resourceCulture);
+            }
+        }
+        
+        internal static string ToLabel {
+            get {
+                return ResourceManager.GetString("ToLabel", resourceCulture);
             }
         }
         
@@ -1323,18 +1323,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string DetailsTab {
-            get {
-                return ResourceManager.GetString("DetailsTab", resourceCulture);
-            }
-        }
-        
-        internal static string ProgressTab {
-            get {
-                return ResourceManager.GetString("ProgressTab", resourceCulture);
-            }
-        }
-        
         internal static string SwapListPageTitle {
             get {
                 return ResourceManager.GetString("SwapListPageTitle", resourceCulture);
@@ -2007,12 +1995,6 @@ namespace atomex.Resources {
             }
         }
         
-        internal static string CommissionLessThanZeroError {
-            get {
-                return ResourceManager.GetString("CommissionLessThanZeroError", resourceCulture);
-            }
-        }
-        
         internal static string SendingTransactionError {
             get {
                 return ResourceManager.GetString("SendingTransactionError", resourceCulture);
@@ -2076,6 +2058,12 @@ namespace atomex.Resources {
         internal static string AvailableFundsError {
             get {
                 return ResourceManager.GetString("AvailableFundsError", resourceCulture);
+            }
+        }
+        
+        internal static string CommissionLessThanZeroError {
+            get {
+                return ResourceManager.GetString("CommissionLessThanZeroError", resourceCulture);
             }
         }
         
@@ -2328,6 +2316,24 @@ namespace atomex.Resources {
         internal static string ManageTezosCollectibles {
             get {
                 return ResourceManager.GetString("ManageTezosCollectibles", resourceCulture);
+            }
+        }
+        
+        internal static string Dapps {
+            get {
+                return ResourceManager.GetString("Dapps", resourceCulture);
+            }
+        }
+        
+        internal static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        internal static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
             }
         }
     }

@@ -83,9 +83,6 @@
     <data name="TotalAmountInclFees" xml:space="preserve">
         <value>Total (incl. fees)</value>
     </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>À l'adresse</value>
-    </data>
     <data name="TransactionTime" xml:space="preserve">
         <value>Temps de transaction</value>
     </data>
@@ -692,13 +689,6 @@
     <data name="CurrencyRefunded" xml:space="preserve">
         <value>{0} refunded</value>
     </data>
-    <data name="DetailsTab" xml:space="preserve">
-        <value>Details</value>
-    </data>
-    <data name="ProgressTab" xml:space="preserve">
-        <value>Progress</value>
-    </data>
-    
     <!-- Create Swap Pages -->
     <data name="SwapListPageTitle" xml:space="preserve">
         <value>Liste de permutation</value>
@@ -1054,9 +1044,6 @@
     <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
         <value>Insufficient {0} to cover token transfer fee. Minimum {1} is required</value>
     </data>
-    <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>La commission doit être supérieure à zéro</value>
-    </data>
     <data name="SendingTransactionError" xml:space="preserve">
         <value>Erreur lors de l'envoi de la transaction</value>
     </data>
@@ -1219,5 +1206,14 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     </data>
     <data name="ManageTezosCollectibles" xml:space="preserve">
         <value>Manage Tezos collectibles</value>
+    </data>
+    <data name="Dapps" xml:space="preserve">
+        <value>Dapps</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="Progress" xml:space="preserve">
+        <value>Progress</value>
     </data>
 </root>

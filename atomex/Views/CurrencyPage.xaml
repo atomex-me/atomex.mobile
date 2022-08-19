@@ -236,7 +236,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Frame Grid.ColumnSpan="5"
+                            <Frame Grid.ColumnSpan="6"
                                    CornerRadius="18"
                                    HasShadow="False"
                                    Padding="0"
@@ -348,6 +348,7 @@
                                     Text="{helpers:Translate Delegations}"
                                     Command="{Binding ChangeCurrencyTabCommand}"
                                     CommandParameter="Delegations"
+                                    Clicked="ScrollToCenter"
                                     IsVisible="{Binding IsStakingAvailable, FallbackValue='False', TargetNullValue='False'}">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button"
@@ -1216,6 +1217,11 @@
                                         Value="True" />
                             </DataTrigger>
                         </ListView.Triggers>
+                        <ListView.Header>
+                            <Button Command="{Binding DappsViewModel.DappConnectCommand}"
+                                    Text="Dapp connect"
+                                    Style="{DynamicResource MainButtonStyle}"/>
+                        </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <controls:CustomViewCell

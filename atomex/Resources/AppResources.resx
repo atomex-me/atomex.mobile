@@ -86,9 +86,6 @@
     <data name="TotalAmountInclFees" xml:space="preserve">
         <value>Total (incl. fees)</value>
     </data>
-    <data name="ToLabel" xml:space="preserve">
-        <value>To</value>
-    </data>
     <data name="TransactionTime" xml:space="preserve">
         <value>Transaction time</value>
     </data>
@@ -347,6 +344,9 @@
     </data>
     <data name="Delegations" xml:space="preserve">
         <value>Delegations</value>
+    </data>
+    <data name="Dapps" xml:space="preserve">
+        <value>Dapps</value>
     </data>
 
     <!-- Addresses info Page -->
@@ -698,10 +698,10 @@
     <data name="CurrencyRefunded" xml:space="preserve">
         <value>{0} refunded</value>
     </data>
-    <data name="DetailsTab" xml:space="preserve">
+    <data name="Details" xml:space="preserve">
         <value>Details</value>
     </data>
-    <data name="ProgressTab" xml:space="preserve">
+    <data name="Progress" xml:space="preserve">
         <value>Progress</value>
     </data>
     
@@ -1065,9 +1065,6 @@
     </data>
     <data name="InsufficientChainFundsWithDetails" xml:space="preserve">
         <value>Insufficient {0} to cover token transfer fee. Minimum {1} is required</value>
-    </data>
-    <data name="CommissionLessThanZeroError" xml:space="preserve">
-        <value>Commission must be a positive value</value>
     </data>
     <data name="SendingTransactionError" xml:space="preserve">
         <value>An error has occurred while sending transaction</value>

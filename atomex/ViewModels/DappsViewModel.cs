@@ -9,6 +9,7 @@ using Atomex.Client.Common;
 using Atomex.Common;
 using Atomex.Cryptography;
 using Atomex.ViewModels;
+using atomex.Views.Dapps;
 using Atomex.Wallet;
 using Beacon.Sdk;
 using Beacon.Sdk.Beacon;
@@ -29,14 +30,17 @@ namespace atomex.ViewModels
     {
         public string Logo => "BTC";
         public string Name { get; set; }
-        public string ConnectedAddress { get; set; }
+        public WalletAddressViewModel ConnectedAddress { get; set; }
         public DateTime ConnectTime { get; set; }
 
 
         private ReactiveCommand<Unit, Unit> _openInExplorerCommand;
 
         public ReactiveCommand<Unit, Unit> OpenInExplorerCommand => _openInExplorerCommand ??= ReactiveCommand.Create(
-            () => { Log.Information(ConnectedAddress); });
+            () =>
+            {
+                
+            });
 
         private ReactiveCommand<Unit, Unit> _copyCommand;
 
@@ -126,7 +130,7 @@ namespace atomex.ViewModels
             Log.Debug("{@Sender}: WalletClient logged in {@LoggedIn}", "Beacon", _beaconWalletClient.LoggedIn);
 
             var pairingRequest = ConnectToPeer();
-            await _beaconWalletClient.AddPeerAsync(pairingRequest);
+            await _beaconWalletClient.AddPeerAsync(pairingRequest, AddressToConnect.Address);
 
             P2PPairingRequest ConnectToPeer()
             {
@@ -135,6 +139,12 @@ namespace atomex.ViewModels
                 return JsonConvert.DeserializeObject<P2PPairingRequest>(message);
             }
         }
+
+        private ReactiveCommand<Unit, Unit> _dappConnectCommand;
+        public ReactiveCommand<Unit, Unit> DappConnectCommand => _dappConnectCommand ??= ReactiveCommand.Create(() =>
+        {
+            _navigationService?.ShowPage(new DappConnectPage(), TabNavigation.Portfolio);
+        });
 
         private void OnBeaconWalletClientMessageReceived(object? sender, BeaconMessageEventArgs e)
         {

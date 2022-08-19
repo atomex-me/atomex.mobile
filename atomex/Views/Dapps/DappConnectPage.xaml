@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="atomex.Views.Dapps.DappConnectPage"
+             xmlns:vm="clr-namespace:atomex.ViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:DappViewModel}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+    <ContentPage.Content>
+        <StackLayout Spacing="0"
+                     Padding="24,0">
+            <Frame Padding="0"
+                   Margin="16"
+                   HasShadow="False"
+                   CornerRadius="20"
+                   HeightRequest="40"
+                   WidthRequest="40"
+                   HorizontalOptions="Center"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                <Image Source="BTC" />
+            </Frame>
+            <Label Text="{Binding Name}"
+                   Style="{DynamicResource AdditionalTextH5}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+            <Label Text="Uniswap wants to connect to your account"
+                   Style="{DynamicResource MainTextH2}"
+                   Margin="0,8,0,32"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+            <Label Style="{DynamicResource MainTextH5}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   LineHeight="1.25">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="The website is requesting the following permissions:"/>
+                        <Span Text="&#10; &#8226;" />
+                        <Span Text=" Signing transactions" />
+                        <Span Text="&#10; &#8226;" />
+                        <Span Text=" Operation request" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Frame HasShadow="False"
+                   Padding="0"
+                   Margin="0,24"
+                   HorizontalOptions="FillAndExpand"
+                   CornerRadius="12"
+                   BackgroundColor="Transparent"
+                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
+                <Grid ColumnSpacing="0"
+                      RowSpacing="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="39" />
+                        <RowDefinition Height="39" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="52" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="48" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="XTZ"
+                           Margin="17,27,13,27" />
+                    <Label Grid.Column="1"
+                           Text="tz1Mrt2GJcdRhqt9GGH6tLss..."
+                           Style="{DynamicResource MainTextH5}"
+                           LineBreakMode="MiddleTruncation"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"
+                           Text="0.074322001 XTZ">
+                        <!-- <Label.FormattedText> -->
+                        <!--     <FormattedString> -->
+                        <!--         <Span Text="{Binding ConnectedAddress.AvailableBalance}" /> -->
+                        <!--         <Span Text=" " /> -->
+                        <!--         <Span Text="{Binding ConnectedAddress.CurrencyCode}" /> -->
+                        <!--     </FormattedString> -->
+                        <!-- </Label.FormattedText> -->
+                    </Label>
+                    <Image Grid.Column="2"
+                           Grid.RowSpan="2"
+                           HorizontalOptions="End"
+                           Margin="20,0"
+                           WidthRequest="8"
+                           HeightRequest="12"
+                           Source="ic_forward"
+                           VerticalOptions="FillAndExpand" />
+                </Grid>
+            </Frame>
+            <Button Text="Allow"
+                    Style="{DynamicResource MainButton}"/>
+            <Label Text="Only connect to websites you trust"
+                   Style="{DynamicResource AdditionalTextH6}"
+                   Margin="12"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
