@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atomex.Client", "atomex.cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atomex.MarketData", "atomex.client.core\Atomex.MarketData\Atomex.MarketData.csproj", "{55E444DA-533C-4A0F-8F71-42E3F80894EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beacon.Sdk", "beacon-dotnet-sdk\Beacon.Sdk\Beacon.Sdk.csproj", "{00D49D30-4373-4A8A-A3A8-9481F110A7F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix.Sdk", "matrix-dotnet-sdk\Matrix.Sdk\Matrix.Sdk.csproj", "{973E3C65-B305-4DB3-AE78-7694E7F38A92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

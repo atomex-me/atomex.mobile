@@ -38,7 +38,8 @@ namespace atomex.ViewModels
         [Description("ReceiveTo")] ReceiveTo,
         [Description("ChangeRedeemAddress")] ChangeRedeemAddress,
         [Description("EnterExternalAddress")] EnterExternalAddress,
-        [Description("ChooseMyAddress")] ChooseMyAddress
+        [Description("ChooseMyAddress")] ChooseMyAddress,
+        [Description("Connect")] Connect
     }
 
     public class SelectAddressViewModel : BaseViewModel

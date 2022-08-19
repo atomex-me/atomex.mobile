@@ -28,6 +28,7 @@
     <PackageReference Include="Sentry.Xamarin.Forms" Version="1.3.2" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="Netezos" Version="2.4.6" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -55,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
+    <ProjectReference Include="..\matrix-dotnet-sdk\Matrix.Sdk\Matrix.Sdk.csproj" />
+    <ProjectReference Include="..\beacon-dotnet-sdk\Beacon.Sdk\Beacon.Sdk.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\AppResources.Designer.cs">

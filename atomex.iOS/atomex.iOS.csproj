@@ -56,10 +56,10 @@
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>EntitlementsDev.plist</CodesignEntitlements>
     <MtouchLink>None</MtouchLink>
-<LangVersion>8.0</LangVersion>
-<MtouchInterpreter>-all</MtouchInterpreter>
-<MtouchExtraArgs>--interpreter</MtouchExtraArgs>
-<CodesignProvision>Atomex Development</CodesignProvision>
+    <LangVersion>8.0</LangVersion>
+    <MtouchInterpreter>-all</MtouchInterpreter>
+    <MtouchExtraArgs>--interpreter</MtouchExtraArgs>
+    <CodesignProvision>Atomex Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -72,8 +72,8 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchFloat32>true</MtouchFloat32>
     <MtouchLink>SdkOnly</MtouchLink>
-<LangVersion>8.0</LangVersion>
-<BuildIpa>true</BuildIpa>
+    <LangVersion>8.0</LangVersion>
+    <BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

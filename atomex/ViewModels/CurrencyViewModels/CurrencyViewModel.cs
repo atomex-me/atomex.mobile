@@ -36,7 +36,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Description("Addresses")] Addresses,
         [Description("Delegations")] Delegations,
         [Description("Tokens")] Tokens,
-        [Description("Details")] Details
+        [Description("Details")] Details,
+        [Description("Dapps")] Dapps
     }
 
     public class CurrencyViewModel : BaseViewModel
@@ -57,6 +58,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         public bool IsStakingAvailable => Currency?.Name == "XTZ";
         public bool HasCollectibles => Currency?.Name == "XTZ";
         public bool HasTokens => Currency?.Name == "XTZ";
+        public bool HasDapps => Currency?.Name == "XTZ";
         public bool CanBuy { get; set; }
 
         protected CancellationTokenSource _cancellationTokenSource;
@@ -120,10 +122,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             CurrencyConfig currency,
             INavigationService navigationService)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _account = app.Account ?? throw new ArgumentNullException(nameof(_account));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _account = app.Account ?? throw new ArgumentNullException(nameof(app.Account));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            Currency = currency ?? throw new ArgumentNullException(nameof(currency));
 
             this.WhenAnyValue(vm => vm.SelectedTransaction)
                 .WhereNotNull()
