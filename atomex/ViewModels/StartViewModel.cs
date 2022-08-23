@@ -147,15 +147,22 @@ namespace atomex.ViewModels
 
         private async Task CheckLatestVersion()
         {
-            var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
-
-            if (!isLatest)
+            try
             {
-                var update = await _navigationService?.ShowAlert(AppResources.UpdateAvailable, AppResources.UpdateApp,
-                    AppResources.Yes, AppResources.No);
+                var isLatest = await CrossLatestVersion.Current.IsUsingLatestVersion();
 
-                if (update)
-                    await CrossLatestVersion.Current.OpenAppInStore();
+                if (!isLatest)
+                {
+                    var update = await _navigationService?.ShowAlert(AppResources.UpdateAvailable, AppResources.UpdateApp,
+                        AppResources.Yes, AppResources.No);
+
+                    if (update)
+                        await CrossLatestVersion.Current.OpenAppInStore();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Check latest app version error");
             }
         }
     }

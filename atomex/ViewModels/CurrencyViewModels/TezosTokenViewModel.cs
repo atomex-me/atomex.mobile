@@ -141,19 +141,8 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (TokenBalance == null) return;
 
-            if (TokenBalance.IsNft)
-            {
-                var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
-                TokenPreview = GetTokenPreview(url);
-            }
-            else
-            {
-                foreach (var url in ThumbsApi.GetTokenPreviewUrls(TokenBalance.Contract, TokenBalance.ThumbnailUri,
-                             TokenBalance.DisplayUri ?? TokenBalance.ArtifactUri))
-                {
-                    TokenPreview = GetTokenPreview(url);
-                }
-            }
+            var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
+            TokenPreview = GetTokenPreview(url);
         }
 
         public TezosTokenViewModel(
@@ -365,11 +354,12 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             try
             {
-                var quote = quotesProvider.GetQuote(CurrencyCode, BaseCurrencyCode);
-                if (quote == null) return;
+                var tokenQuote = quotesProvider.GetQuote(TokenBalance.Symbol, BaseCurrencyCode);
+                var xtzQuote = quotesProvider.GetQuote(TezosConfig.Xtz, BaseCurrencyCode);
+                if (tokenQuote == null || xtzQuote == null) return;
 
-                CurrentQuote = quote.Bid;
-                TotalAmountInBase = TotalAmount.SafeMultiply(quote.Bid);
+                CurrentQuote = tokenQuote.Bid.SafeMultiply(xtzQuote.Bid);
+                TotalAmountInBase = TotalAmount.SafeMultiply(CurrentQuote);
             }
             catch (Exception e)
             {
@@ -401,7 +391,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     if (currency == null)
                         return; // TODO: msg to user
-                        
+
                     _navigationService?.CloseBottomSheet();
                     _navigationService?.SetInitiatedPage(TabNavigation.Exchange);
                     _navigationService?.GoToExchange(currency);
@@ -452,7 +442,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                 await tezosTokensScanner.UpdateBalanceAsync(
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     cancellationToken: _cancellationTokenSource.Token);
 
                 await Device.InvokeOnMainThreadAsync(() =>
@@ -484,7 +474,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 currency: TezosConfig,
                 tokenContract: Contract.Address,
                 tokenType: Contract.GetContractType(),
-                tokenId: (int) TokenBalance.TokenId);
+                tokenId: (int)TokenBalance.TokenId);
             _navigationService?.ShowBottomSheet(new ReceiveBottomSheet(receiveViewModel));
         }
 
@@ -499,14 +489,14 @@ namespace atomex.ViewModels.CurrencyViewModels
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview)
                 : new TezosTokensSendViewModel(
                     app: _app,
                     navigationService: _navigationService,
                     tokenContract: Contract.Address,
-                    tokenId: (int) TokenBalance.TokenId,
+                    tokenId: (int)TokenBalance.TokenId,
                     tokenType: Contract.GetContractType(),
                     tokenPreview: TokenPreview);
 
