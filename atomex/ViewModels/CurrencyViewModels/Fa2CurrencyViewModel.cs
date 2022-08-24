@@ -68,15 +68,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .OrderByDescending(p => p.LocalTime.Date)
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (OperationCanceledException)

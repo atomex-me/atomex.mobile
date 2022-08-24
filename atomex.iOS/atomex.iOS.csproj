@@ -96,212 +96,622 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
     <InterfaceDefinition Include="AtomexLaunchScreen.storyboard" />
-    <ImageAsset Include="Assets.xcassets\Logo.imageset\logo.png" />
-    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\label.png" />
-    <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Wallet__blue.pdf" />
-    <ImageAsset Include="Assets.xcassets\Wallet__white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tick.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Wallet__white.imageset\Wallet__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__white.imageset\Right-arrow-2__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Right-arrow-2__blue.pdf" />
-    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png" />
-    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf" />
-    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\Lock.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Lock.imageset\Password__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_support.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\en.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\en.imageset\en.pdf" />
-    <ImageAsset Include="Assets.xcassets\ru.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf" />
-    <ImageAsset Include="Assets.xcassets\tr.imageset\tr-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\fr.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\fr.imageset\fr.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap--dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-2.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\sort-down__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_close.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down--light-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_search.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\ic_question__warning.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error__light.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_send.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_send.imageset\ic_send.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\ic_copy__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\ic_copy__blue--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\ic_copy__blue.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_share.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\navbar_portfolio.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\navbar_dex.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\navbar_buy.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\navbar_settings.pdf" />
-    <ImageAsset Include="Assets.xcassets\BTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\BTC.imageset\BTC.pdf" />
-    <ImageAsset Include="Assets.xcassets\ETH.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ETH.imageset\ETH.pdf" />
-    <ImageAsset Include="Assets.xcassets\LTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LTC.imageset\LTC.pdf" />
-    <ImageAsset Include="Assets.xcassets\XTZ.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\XTZ.imageset\XTZ.pdf" />
-    <ImageAsset Include="Assets.xcassets\USDT.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\USDT.imageset\USDT.pdf" />
-    <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC.pdf" />
-    <ImageAsset Include="Assets.xcassets\TBTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\WBTC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.pdf" />
-    <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSD.pdf" />
-    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf" />
-    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\ic_exchange__white.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-2.pdf" />
-    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\USDT_XTZ.pdf" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\87.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\180.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-2.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80-1.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\152.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\167.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\1024.png" />
-    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward--dark.pdf" />
-    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward.pdf" />
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LogoLabel.imageset\label.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Wallet__blue.imageset\Wallet__blue.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Wallet__white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tick.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Wallet__white.imageset\Wallet__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\RightArrow__white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\RightArrow__white.imageset\Right-arrow-2__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\RightArrow__blue.imageset\Right-arrow-2__blue.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AtomexLogo.imageset\atomex_logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_youtube.imageset\youtube.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_twitter.imageset\twitter.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2__gray.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\DownArrow.imageset\Down-arrow-2-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Lock.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Lock.imageset\Password__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Lock.imageset\Password-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_support.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_support.imageset\question.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tick.imageset\Tick-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\en.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\en.imageset\en.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ru.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\tr.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ru.imageset\ru.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\tr.imageset\tr-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\fr.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\fr.imageset\fr.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_telegram.imageset\telegram.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_pin__del.imageset\ic_pin-del.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-40-done-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCompleted.imageset\swap-completed__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-progress__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-49-cancelled-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapCanceled.imageset\swap-cancelled__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\Component 177 canceld-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\Component 177-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__completed.imageset\ic_status_completed__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__empty.imageset\swap-16-empty__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\SwapInProgress.imageset\swap-40-progress__dark-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrow.imageset\swap-24__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-24-failure__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ConvertArrowFailure.imageset\swap-16-failure__light-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__full.imageset\Line 11-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__light-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_line__empty.imageset\Line 10__dark-2.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close__red.imageset\ic_close__red__light-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__canceled.imageset\ic_status_canceled__light1-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_edit.imageset\ic_edit.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap--dark-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swap.imageset\ic_swap.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\ic_sort-up-2.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\ic_sort-down--dark-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__down.imageset\sort-down.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_sort__up.imageset\sort-down__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_qr.imageset\ic_qr-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_arrow__down.imageset\ic_arrow__down--light-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_close.imageset\ic_close--light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_search.imageset\ic_search-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question__warning.imageset\ic_question__warning.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question__error.imageset\ic_question__error__light.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_question.imageset\ic_question.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_swipe__indicator.imageset\ic_swipe__indicator-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_send.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_card.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_card.imageset\ic_card.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_send.imageset\ic_send.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_receive.imageset\ic_receive.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__white.imageset\ic_copy__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\ic_copy__blue--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__blue.imageset\ic_copy__blue.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export__green.imageset\ic_export--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_share.imageset\ic_share.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_tick.imageset\ic_tick-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_update.imageset\ic_update.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_delete.imageset\ic_delete-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_filters.imageset\ic_filters-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_menu.imageset\ic_menu-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__portfolio.imageset\navbar_portfolio.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__dex.imageset\navbar_dex.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__buy.imageset\navbar_buy.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_navbar__settings.imageset\navbar_settings.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\BTC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\BTC.imageset\BTC.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ETH.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ETH.imageset\ETH.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LTC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LTC.imageset\LTC.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\XTZ.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\XTZ.imageset\XTZ.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\USDT.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\USDT.imageset\USDT.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\KUSD.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TZBTC.imageset\TZBTC.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\WBTC.imageset\WBTC.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\KUSD.imageset\KUSD.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC__dark-1.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\TBTC.imageset\TBTC.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_export.imageset\ic_export.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_copy__gray.imageset\ic_copy__gray.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_exchange__white.imageset\ic_exchange__white.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange__dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_exchange.imageset\ic_exchange.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_status__pending.imageset\ic_status__pending-2.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\USDT_XTZ.imageset\USDT_XTZ.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\120-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\58-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\40-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\80-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\152.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward--dark.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ic_forward.imageset\ic_forward.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

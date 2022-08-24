@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Reactive;
+using System.Threading;
 using System.Windows.Input;
 using atomex.Resources;
 using atomex.Views;
@@ -33,6 +35,7 @@ namespace atomex.ViewModels.TransactionViewModels
         public decimal Fee { get; set; }
         public DateTime Time { get; set; }
         public DateTime LocalTime => Time.ToLocalTime();
+        public string LocalTimeString => LocalTime.ToString(AppResources.Culture.DateTimeFormat.FullDateTimePattern, AppResources.Culture);
         public string TxExplorerUri { get; set; }
         public string AddressExplorerUri { get; set; }
         public string From { get; set; }

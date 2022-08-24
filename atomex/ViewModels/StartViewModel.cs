@@ -42,11 +42,9 @@ namespace atomex.ViewModels
                     _language.IsActive = false;
 
                 _language = value;
-
+                
                 SetCulture(_language);
-
                 _language.IsActive = true;
-
                 OnPropertyChanged(nameof(Language));
             }
         }
@@ -65,25 +63,23 @@ namespace atomex.ViewModels
         {
             try
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
+                LocalizationResourceManager.Instance
+                    .SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
             }
-            catch
+            catch(Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
+                Log.Error(e, "Set culture error");
             }
         }
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
-
-        public StartViewModel()
-        {
-        }
+        
 
         public StartViewModel(IAtomexApp app)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(AtomexApp));
-            HasWallets = WalletInfo.AvailableWallets().Count() > 0;
-            SetUserLanguage();
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            HasWallets = WalletInfo.AvailableWallets().Any();
+            InitUserLanguage();
             _ = CheckLatestVersion();
         }
 
@@ -92,20 +88,18 @@ namespace atomex.ViewModels
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        private void SetUserLanguage()
+        private void InitUserLanguage()
         {
             try
             {
-                string language = Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName);
-                Language = Languages.Where(l =>
-                    l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName)).Single();
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language));
+                string language = Preferences.Get(LanguageKey, "en");
+                Language = Languages.Single(l =>
+                    l.Code == language);
             }
             catch (Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
-                Language = Languages.Where(l => l.Code == "en").Single();
-                Log.Error(e, "Not found user language error");
+                Language = Languages.Single(l => l.Code == "en");
+                Log.Error(e, "Init user language error");
             }
         }
 

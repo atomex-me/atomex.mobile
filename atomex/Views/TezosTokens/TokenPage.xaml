@@ -295,7 +295,7 @@
                                     <StackLayout VerticalOptions="FillAndExpand"
                                                  BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}"
                                                  Spacing="0">
-                                        <Label Text="{Binding Date, StringFormat='{}{0:dddd, dd MMMM}'}"
+                                        <Label Text="{Binding DateString}"
                                                Style="{DynamicResource AdditionalTextH5}"
                                                Padding="16,0"
                                                VerticalOptions="FillAndExpand"

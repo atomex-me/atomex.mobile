@@ -81,20 +81,16 @@ namespace atomex.ViewModels
 
         public CultureInfo CurrentCulture => AppResources.Culture ?? Thread.CurrentThread.CurrentUICulture;
 
-        public SettingsViewModel()
-        {
-        }
-
         public SettingsViewModel(
             IAtomexApp app,
             MainViewModel mainViewModel)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(MainViewModel));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _mainViewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _walletName = GetWalletName();
             StoragePassword = new SecureString();
-            SetUserLanguage();
             Wallets = WalletInfo.AvailableWallets().ToList();
+            InitUserLanguage();
             _ = CheckBiometricSensor();
             _ = ResetUseBiometricSetting();
 
@@ -106,6 +102,21 @@ namespace atomex.ViewModels
         public void SetNavigationService(INavigationService service)
         {
             _navigationService = service ?? throw new ArgumentNullException(nameof(service));
+        }
+        
+        private void InitUserLanguage()
+        {
+            try
+            {
+                string language = Preferences.Get(LanguageKey, "en");
+                Language = Languages.Single(l =>
+                    l.Code == language);
+            }
+            catch (Exception e)
+            {
+                Language = Languages.Single(l => l.Code == "en");
+                Log.Error(e, "Init user language error");
+            }
         }
 
         public async Task ResetUseBiometricSetting()
@@ -174,7 +185,7 @@ namespace atomex.ViewModels
             }
         }
 
-        public bool CheckAccountExist()
+        private bool CheckAccountExist()
         {
             if (StoragePassword == null || StoragePassword?.Length == 0)
                 return false;
@@ -193,7 +204,7 @@ namespace atomex.ViewModels
             }
         }
 
-        public void DeleteWallet(string path)
+        private void DeleteWallet(string path)
         {
             try
             {
@@ -222,7 +233,6 @@ namespace atomex.ViewModels
             {
                 try
                 {
-                    string walletName = Path.GetFileName(Path.GetDirectoryName(_app.Account.Wallet.PathToWallet));
                     await SecureStorage.SetAsync(_walletName, pswd);
                 }
                 catch (Exception ex)
@@ -301,33 +311,16 @@ namespace atomex.ViewModels
                 _navigationService?.ClosePage(TabNavigation.Settings);
             });
 
-        private void SetUserLanguage()
-        {
-            try
-            {
-                Language = Languages
-                    .Where(l => l.Code == Preferences.Get(LanguageKey, CurrentCulture.TwoLetterISOLanguageName))
-                    .Single();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Set user language error");
-
-                Language = Languages
-                    .Where(l => l.Code == "en")
-                    .Single();
-            }
-        }
-
         private void SetCulture(Language language)
         {
             try
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo(language.Code));
+                LocalizationResourceManager.Instance.
+                    SetCulture(CultureInfo.GetCultureInfo(language?.Code ?? "en"));
             }
-            catch
+            catch(Exception e)
             {
-                LocalizationResourceManager.Instance.SetCulture(CultureInfo.GetCultureInfo("en"));
+                Log.Error(e, "Set culture error");
             }
         }
 
@@ -429,8 +422,7 @@ namespace atomex.ViewModels
             ReactiveCommand.Create<string>(async (name) =>
             {
                 WalletInfo selectedWallet = Wallets
-                    .Where(w => w.Name == name)
-                    .Single();
+                    .Single(w => w.Name == name);
 
                 var confirm = await _navigationService?.ShowAlert(AppResources.DeletingWallet,
                     AppResources.DeletingWalletText, AppResources.UnderstandButton, AppResources.CancelButton);
@@ -453,7 +445,7 @@ namespace atomex.ViewModels
 
         private string GetWalletName()
         {
-            return new DirectoryInfo(_app?.Account?.Wallet?.PathToWallet).Parent.Name;
+            return new DirectoryInfo(_app.Account.Wallet.PathToWallet).Parent.Name;
         }
     }
 }

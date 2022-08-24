@@ -735,7 +735,7 @@
                     <StackLayout HeightRequest="20"
                                  BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                  Spacing="0">
-                        <Label Text="{Binding Date, StringFormat='{}{0:MMMM dd, yyyy}'}"
+                        <Label Text="{Binding DateString}"
                                Style="{DynamicResource AdditionalTextH6}"
                                BackgroundColor="{AppThemeBinding Dark={StaticResource AdditionalBackgroundColorDark}, Light={StaticResource AdditionalBackgroundColor}}"
                                Padding="10,0"

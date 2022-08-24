@@ -50,16 +50,19 @@ namespace atomex.ViewModels.ConversionViewModels
             get { return _app.Account.Currencies; }
         }
 
-        public class Grouping<K, T> : ObservableCollection<T>
+        public class Grouping<T> : ObservableCollection<T>
         {
-            public K Date { get; private set; }
+            public DateTime Date { get; private set; }
 
-            public Grouping(K date, IEnumerable<T> items)
+            public Grouping(DateTime date, IEnumerable<T> items)
             {
                 Date = date;
+                
                 foreach (T item in items)
                     Items.Add(item);
             }
+            
+            public string DateString => Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
         }
 
         public string ToAddress => (ToCurrencyViewModelItem as SelectCurrencyWithAddressViewModelItem)?.SelectedAddress
@@ -107,7 +110,7 @@ namespace atomex.ViewModels.ConversionViewModels
 
 
         [Reactive] public SwapViewModel SelectedSwap { get; set; }
-        [Reactive] public ObservableCollection<Grouping<DateTime, SwapViewModel>> GroupedSwaps { get; set; }
+        [Reactive] public ObservableCollection<Grouping<SwapViewModel>> GroupedSwaps { get; set; }
         private Dictionary<long, SwapViewModel> _cachedSwaps;
         [Reactive] public bool CanShowMoreSwaps { get; set; }
         [Reactive] public bool IsAllSwapsShowed { get; set; }
@@ -122,7 +125,7 @@ namespace atomex.ViewModels.ConversionViewModels
             RedeemFromAddressNote = new Message();
             _cachedSwaps = new Dictionary<long, SwapViewModel>();
             Swaps = new ObservableCollection<SwapViewModel>();
-            GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>();
+            GroupedSwaps = new ObservableCollection<Grouping<SwapViewModel>>();
             CanExchange = true;
             IsAllSwapsShowed = false;
 
@@ -1106,15 +1109,15 @@ namespace atomex.ViewModels.ConversionViewModels
                     .OrderByDescending(p => p.LocalTime.Date)
                     .Take(_swapNumberPerPage)
                     .GroupBy(p => p.LocalTime.Date)
-                    .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key,
+                    .Select(g => new Grouping<SwapViewModel>(g.Key,
                         new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))))
                 : Swaps
                     .GroupBy(p => p.LocalTime.Date)
                     .OrderByDescending(g => g.Key)
-                    .Select(g => new Grouping<DateTime, SwapViewModel>(g.Key,
+                    .Select(g => new Grouping<SwapViewModel>(g.Key,
                         new ObservableCollection<SwapViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-            GroupedSwaps = new ObservableCollection<Grouping<DateTime, SwapViewModel>>(groups);
+            GroupedSwaps = new ObservableCollection<Grouping<SwapViewModel>>(groups);
             this.RaisePropertyChanged(nameof(GroupedSwaps));
         }
 

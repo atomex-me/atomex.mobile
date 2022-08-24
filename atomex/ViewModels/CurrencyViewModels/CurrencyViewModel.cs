@@ -76,7 +76,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public ObservableCollection<TransactionViewModel> Transactions { get; set; }
 
         [Reactive]
-        public ObservableCollection<Grouping<DateTime, TransactionViewModel>> GroupedTransactions { get; set; }
+        public ObservableCollection<Grouping<TransactionViewModel>> GroupedTransactions { get; set; }
 
         [Reactive] public TransactionViewModel SelectedTransaction { get; set; }
 
@@ -97,25 +97,24 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Reactive] public double TxListViewHeight { get; set; }
         [Reactive] public double AddressListViewHeight { get; set; }
 
-        public class Grouping<K, T> : ObservableCollection<T>
+        public class Grouping<T> : ObservableCollection<T>
         {
             public double GroupHeight { get; set; } = DefaultTxGroupHeight;
-            public K Date { get; private set; }
+            public DateTime Date { get; private set; }
 
-            public Grouping(K date, IEnumerable<T> items)
+            public Grouping(DateTime date, IEnumerable<T> items)
             {
                 Date = date;
+
                 foreach (T item in items)
                     Items.Add(item);
             }
+
+            public string DateString => Date.ToString(AppResources.Culture.DateTimeFormat.MonthDayPattern, AppResources.Culture);
         }
 
         [Reactive] public bool IsRefreshing { get; set; }
         [Reactive] public CurrencyTab SelectedTab { get; set; }
-
-        public CurrencyViewModel()
-        {
-        }
 
         public CurrencyViewModel(
             IAtomexApp app,
@@ -331,15 +330,15 @@ namespace atomex.ViewModels.CurrencyViewModels
                             .OrderByDescending(p => p.LocalTime.Date)
                             .Take(TxsNumberPerPage)
                             .GroupBy(p => p.LocalTime.Date)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))))
                         : Transactions
                             .GroupBy(p => p.LocalTime.Date)
                             .OrderByDescending(g => g.Key)
-                            .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                            .Select(g => new Grouping<TransactionViewModel>(g.Key,
                                 new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-                    GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+                    GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
                 });
             }
             catch (Exception e)
@@ -540,10 +539,10 @@ namespace atomex.ViewModels.CurrencyViewModels
             var groups = Transactions
                 .GroupBy(p => p.LocalTime.Date)
                 .OrderByDescending(g => g.Key)
-                .Select(g => new Grouping<DateTime, TransactionViewModel>(g.Key,
+                .Select(g => new Grouping<TransactionViewModel>(g.Key,
                     new ObservableCollection<TransactionViewModel>(g.OrderByDescending(g => g.LocalTime))));
 
-            GroupedTransactions = new ObservableCollection<Grouping<DateTime, TransactionViewModel>>(groups);
+            GroupedTransactions = new ObservableCollection<Grouping<TransactionViewModel>>(groups);
         });
 
         #region IDisposable Support
