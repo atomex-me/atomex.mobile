@@ -1,5 +1,6 @@
 ﻿using atomex.ViewModels;
 using atomex.ViewModels.ConversionViewModels;
+using atomex.ViewModels.DappsViewModels;
 using atomex.ViewModels.SendViewModels;
 using Xamarin.Forms;
 
@@ -29,6 +30,12 @@ namespace atomex.Views
         {
             InitializeComponent();
             BindingContext = conversionViewModel;
+        }
+        
+        public ScanningQrPage(ConnectDappViewModel connectDappViewModel)
+        {
+            InitializeComponent();
+            BindingContext = connectDappViewModel;
         }
     }
 }

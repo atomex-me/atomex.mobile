@@ -196,6 +196,9 @@ namespace atomex.ViewModels
                     Message.Text = string.Empty;
                     this.RaisePropertyChanged(nameof(Message));
                 });
+            
+            var onlyAddressesWithBalances =
+                SelectAddressMode is SelectAddressMode.SendFrom or SelectAddressMode.Connect;
 
             var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(
@@ -204,8 +207,10 @@ namespace atomex.ViewModels
                     tokenContract: tokenContract,
                     tokenId: selectedTokenId)
                 .WaitForResult()
-                .Where(address => SelectAddressMode != SelectAddressMode.SendFrom || address.Balance != 0)
-                .OrderByDescending(address => address.Balance);
+                .Where(address => !onlyAddressesWithBalances || address.Balance != 0)
+                .OrderByDescending(address => address.Balance)
+                .Where(address => SelectAddressMode != SelectAddressMode.Connect ||
+                                  address.WalletAddress.KeyType == CurrencyConfig.StandardKey);
 
             MyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
             _initialMyAddresses = new ObservableCollection<WalletAddressViewModel>(addresses);
@@ -224,7 +229,9 @@ namespace atomex.ViewModels
                         ? AppResources.EnterAnExternalAddress
                         : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
                             ? AppResources.ChangeRedeemAddress
-                            : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
+                            : SelectAddressMode == SelectAddressMode.Connect
+                                ? "Address to connect"
+                                : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
         }
 
         public WalletAddressViewModel SelectDefaultAddress()
@@ -408,7 +415,7 @@ namespace atomex.ViewModels
                 permissions = await Permissions.RequestAsync<Permissions.Camera>();
             if (permissions != PermissionStatus.Granted)
                 return;
-
+            
             IsScanning = true;
             IsAnalyzing = true;
             this.RaisePropertyChanged(nameof(IsScanning));

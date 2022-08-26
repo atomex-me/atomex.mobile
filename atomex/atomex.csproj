@@ -13,6 +13,7 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
+    <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
     <PackageReference Include="Sentry" Version="3.15.0" />
@@ -29,6 +30,7 @@
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Netezos" Version="2.4.6" />
+    <PackageReference Include="Beacon.Sdk" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomElements\" />
@@ -56,8 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\atomex.client.core\Atomex.Client.Core\Atomex.Client.Core.csproj" />
-    <ProjectReference Include="..\matrix-dotnet-sdk\Matrix.Sdk\Matrix.Sdk.csproj" />
-    <ProjectReference Include="..\beacon-dotnet-sdk\Beacon.Sdk\Beacon.Sdk.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\AppResources.Designer.cs">

@@ -255,36 +255,23 @@
             <StackLayout Spacing="5"
                          Orientation="Vertical"
                          VerticalOptions="FillAndExpand"
-                         HorizontalOptions="FillAndExpand"
-                         IsVisible="False">
+                         HorizontalOptions="FillAndExpand">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding SelectAddressMode}"
-                                 Value="SendFrom">
+                                 Value="EnterExternalAddress">
                         <Setter Property="IsVisible"
-                                Value="True" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="ChooseMyAddress">
-                        <Setter Property="IsVisible"
-                                Value="True" />
-                    </DataTrigger>
-                    <DataTrigger TargetType="StackLayout"
-                                 Binding="{Binding SelectAddressMode}"
-                                 Value="ChangeRedeemAddress">
-                        <Setter Property="IsVisible"
-                                Value="True" />
+                                Value="False" />
                     </DataTrigger>
                     <MultiTrigger TargetType="StackLayout">
                         <MultiTrigger.Conditions>
                             <BindingCondition Binding="{Binding SelectAddressMode}"
                                               Value="ReceiveTo" />
                             <BindingCondition Binding="{Binding IsMyAddressesTab}"
-                                              Value="True" />
+                                              Value="False" />
                         </MultiTrigger.Conditions>
                         <Setter Property="IsVisible"
-                                Value="True" />
+                                Value="False" />
                     </MultiTrigger>
                 </StackLayout.Triggers>
                 <StackLayout Orientation="Horizontal"

@@ -1207,8 +1207,7 @@
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
                               HeightRequest="{Binding DappListViewHeight}"
-                              IsVisible="False"
-                              Footer="">
+                              IsVisible="False">
                         <ListView.Triggers>
                             <DataTrigger TargetType="ListView"
                                          Binding="{Binding SelectedTab}"
@@ -1217,11 +1216,6 @@
                                         Value="True" />
                             </DataTrigger>
                         </ListView.Triggers>
-                        <ListView.Header>
-                            <Button Command="{Binding DappsViewModel.DappConnectCommand}"
-                                    Text="Dapp connect"
-                                    Style="{DynamicResource MainButtonStyle}"/>
-                        </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <controls:CustomViewCell
@@ -1342,6 +1336,27 @@
                                 </controls:CustomViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                                   Margin="16,32"
+                                   VerticalOptions="End"
+                                   HorizontalOptions="FillAndExpand">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding DappsViewModel.NewDappCommand}"/>
+                                </Frame.GestureRecognizers>
+                                <StackLayout Spacing="10"
+                                             Orientation="Horizontal"
+                                             HorizontalOptions="Center">
+                                    <Image HeightRequest="20"
+                                           WidthRequest="20"
+                                           Source="ic_qr"
+                                           VerticalOptions="Center" />
+                                    <Label Text="Connect Dapp"
+                                           Style="{DynamicResource AdditionalClickableLabel}"
+                                           VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </Frame>
+                        </ListView.Footer>
                     </ListView>
                 </StackLayout>
             </ScrollView>
