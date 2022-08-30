@@ -59,7 +59,7 @@ namespace atomex.ViewModels.CurrencyViewModels
 
         protected void InitCollectiblePreview()
         {
-            var url = ThumbsApi.GetCollectiblePreviewUrl(Tokens.First().Contract.Address,
+            var url = ThumbsApi.GetTokenPreviewUrl(Tokens.First().Contract.Address,
                 Tokens.First().TokenBalance.TokenId);
             
             TokenPreview = GetCollectiblePreview(url);

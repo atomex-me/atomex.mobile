@@ -198,7 +198,7 @@ namespace atomex.ViewModels
                 });
             
             var onlyAddressesWithBalances =
-                SelectAddressMode is SelectAddressMode.SendFrom or SelectAddressMode.Connect;
+                SelectAddressMode is SelectAddressMode.SendFrom;
 
             var addresses = AddressesHelper
                 .GetReceivingAddressesAsync(

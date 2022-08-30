@@ -144,7 +144,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         {
             if (TokenBalance == null) return;
 
-            var url = ThumbsApi.GetCollectiblePreviewUrl(Contract.Address, TokenBalance.TokenId);
+            var url = ThumbsApi.GetTokenPreviewUrl(Contract.Address, TokenBalance.TokenId);
             TokenPreview = GetTokenPreview(url);
         }
 
