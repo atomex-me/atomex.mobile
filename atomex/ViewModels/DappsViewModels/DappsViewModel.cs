@@ -20,7 +20,7 @@ using Beacon.Sdk.Beacon.Error;
 using Beacon.Sdk.Beacon.Operation;
 using Beacon.Sdk.Beacon.Permission;
 using Beacon.Sdk.Beacon.Sign;
-using Matrix.Sdk;
+using Beacon.Sdk.WalletBeaconClient;
 using Microsoft.Extensions.DependencyInjection;
 using Netezos.Keys;
 using Newtonsoft.Json;
@@ -28,8 +28,10 @@ using Newtonsoft.Json.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Serilog.Extensions.Logging;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using FileSystem = Atomex.Common.FileSystem;
 
 namespace atomex.ViewModels.DappsViewModels
 {
@@ -70,6 +72,8 @@ namespace atomex.ViewModels.DappsViewModels
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
         private ServiceProvider _beaconServicesProvider;
+        
+        private static readonly WalletBeaconClientFactory _beaconClientFactoryFactory = new();
 
         [Reactive] public ObservableCollection<DappViewModel> Dapps { get; set; }
         public TezosConfig Tezos { get; set; }
@@ -83,17 +87,7 @@ namespace atomex.ViewModels.DappsViewModels
         {
             _app = atomexApp ?? throw new ArgumentNullException(nameof(atomexApp));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-
-            var beaconServices = new ServiceCollection();
-            beaconServices.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
-            beaconServices.AddMatrixClient();
-            beaconServices.AddBeaconClient(
-                pathToDb: Path.GetDirectoryName(_app.Account.Wallet.PathToWallet)!,
-                appName: "Atomex mobile");
-            _beaconServicesProvider = beaconServices.BuildServiceProvider();
-
             _app.AtomexClientChanged += OnAtomexClientChangedEventHandler;
-
             Tezos = (TezosConfig) _app.Account.Currencies.GetByName(TezosConfig.Xtz);
             
             SelectAddressViewModel =
@@ -129,14 +123,41 @@ namespace atomex.ViewModels.DappsViewModels
             _ = Task.Run(async () =>
             {
                 if (_app.Account == null) return;
-            
-                _beaconWalletClient = _beaconServicesProvider.GetRequiredService<IWalletBeaconClient>();
-                _beaconWalletClient.OnBeaconMessageReceived += OnBeaconWalletClientMessageReceived;
-                await _beaconWalletClient.InitAsync();
-                _beaconWalletClient.Connect();
 
-                Log.Debug("{@Sender}: WalletClient connected {@Connected}", "Beacon", _beaconWalletClient.Connected);
-                Log.Debug("{@Sender}: WalletClient logged in {@LoggedIn}", "Beacon", _beaconWalletClient.LoggedIn);
+                try
+                {
+                    var path = Path.Combine(FileSystem.Current.PathToDocuments, "beacon.db");
+
+                    var options = new BeaconOptions
+                    {
+                        AppName = "Atomex mobile",
+                        AppUrl = "https://atomex.me",
+                        IconUrl = "https://bcd-static-assets.fra1.digitaloceanspaces.com/dapps/atomex/atomex_logo.jpg",
+                        KnownRelayServers = new[]
+                        {
+                            "beacon-node-1.diamond.papers.tech",
+                            "beacon-node-1.sky.papers.tech",
+                            "beacon-node-2.sky.papers.tech",
+                            "beacon-node-1.hope.papers.tech",
+                            "beacon-node-1.hope-2.papers.tech",
+                            "beacon-node-1.hope-3.papers.tech",
+                            "beacon-node-1.hope-4.papers.tech",
+                        },
+                        DatabaseConnectionString = $"Filename={path}" //$"{ConnectionString}"
+                    };
+
+                    _beaconWalletClient = _beaconClientFactoryFactory.Create(options, new SerilogLoggerFactory());
+                    _beaconWalletClient.OnBeaconMessageReceived += OnBeaconWalletClientMessageReceived;
+                    await _beaconWalletClient.InitAsync();
+                    _beaconWalletClient.Connect();
+
+                    Log.Debug("{@Sender}: WalletClient connected {@Connected}", "Beacon", _beaconWalletClient.Connected);
+                    Log.Debug("{@Sender}: WalletClient logged in {@LoggedIn}", "Beacon", _beaconWalletClient.LoggedIn);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Connect beacon client error");
+                }
             });
         }
 
