@@ -108,9 +108,9 @@ namespace atomex.ViewModel.WalletBeacon
             
             var network = new Network
             {
-                Type = NetworkType.hangzhounet,
-                Name = "Hangzhounet",
-                RpcUrl = "https://hangzhounet.tezblock.io"
+                Type = NetworkType.mainnet,
+                Name = "Mainnet",
+                RpcUrl = "https://rpc.tzkt.io/mainnet"
             };
 
             var scopes = new List<PermissionScope>();
@@ -128,7 +128,8 @@ namespace atomex.ViewModel.WalletBeacon
                 scopes: PermissionRequest.Scopes,
                 publicKey: publicKey.ToString(),
                 address: address,
-                appMetadata: _walletBeaconClient.Metadata);
+                appMetadata: _walletBeaconClient.Metadata,
+                version: PermissionRequest.Version);
 
             await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);//.ConfigureAwait(false);
 

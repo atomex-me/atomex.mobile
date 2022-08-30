@@ -67,7 +67,8 @@ namespace atomex.ViewModel.WalletBeacon
                     var response = new OperationResponse(
                                 id: OperationRequest!.Id,
                                 senderId: _walletBeaconClient.SenderId,
-                                transactionHash: "transactionHash");
+                                transactionHash: "transactionHash",
+                                version: "2");
 
                     await _walletBeaconClient.SendResponseAsync(receiverId: _receiverId, response);
                 }

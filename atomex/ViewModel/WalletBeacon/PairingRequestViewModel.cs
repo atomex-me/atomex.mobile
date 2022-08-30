@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using atomex.Views.WalletBeacon;
@@ -71,7 +70,8 @@ namespace atomex.ViewModel.WalletBeacon
             }
         }
 
-        private async Task ConnectAsync() => await _walletBeaconClient.AddPeerAsync(PairingRequest).ConfigureAwait(false);
+        private async Task ConnectAsync() => await _walletBeaconClient
+            .AddPeerAsync(PairingRequest, string.Empty).ConfigureAwait(false);
 
         private async Task CancelAsync() => await Navigation.PopAsync();
     }

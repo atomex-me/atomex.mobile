@@ -107,11 +107,6 @@
     <None Remove="Sentry.Xamarin.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="**/*" />
-    <Content Include="**/*" />
-    <Content Include="**/*" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="configuration.json" />
     <Content Remove="obj\Debug\netstandard2.0\atomex.csprojAssemblyReference.cache" />
   </ItemGroup>

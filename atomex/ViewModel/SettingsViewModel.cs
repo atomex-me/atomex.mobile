@@ -511,11 +511,11 @@ namespace atomex.ViewModel
 
                 if (WalletBeaconHelper.oldDappsViewModel != null)
                 {
-                    walletBeaconClient.OnDappConnected -= WalletBeaconHelper.oldDappsViewModel.OnDappConnectedEventHandler;
+                    walletBeaconClient.OnDappsListChanged -= WalletBeaconHelper.oldDappsViewModel.OnDappConnectedEventHandler;
                     walletBeaconClient.OnBeaconMessageReceived -= WalletBeaconHelper.oldDappsViewModel.OnBeaconMessageRecievedHandler;
                 }
 
-                walletBeaconClient.OnDappConnected += dappsViewModel.OnDappConnectedEventHandler;
+                walletBeaconClient.OnDappsListChanged += dappsViewModel.OnDappConnectedEventHandler;
                 walletBeaconClient.OnBeaconMessageReceived += dappsViewModel.OnBeaconMessageRecievedHandler;
 
                 WalletBeaconHelper.oldDappsViewModel = dappsViewModel;
