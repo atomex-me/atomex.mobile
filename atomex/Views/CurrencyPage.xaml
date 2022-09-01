@@ -1199,14 +1199,14 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <ListView ItemsSource="{Binding Dapps}"
+                    <ListView ItemsSource="{Binding DappsViewModel.Dapps}"
                               SelectionMode="Single"
-                              SelectedItem="{Binding SelectedDapp, Mode=TwoWay}"
+                              SelectedItem="{Binding DappsViewModel.SelectedDapp, Mode=TwoWay}"
                               BackgroundColor="Transparent"
                               SeparatorVisibility="None"
                               VerticalScrollBarVisibility="Never"
                               HasUnevenRows="True"
-                              HeightRequest="{Binding DappListViewHeight}"
+                              HeightRequest="{Binding DappsViewModel.DappListViewHeight}"
                               IsVisible="False">
                         <ListView.Triggers>
                             <DataTrigger TargetType="ListView"
@@ -1216,6 +1216,21 @@
                                         Value="True" />
                             </DataTrigger>
                         </ListView.Triggers>
+                        <ListView.Header>
+                            <StackLayout HorizontalOptions="Fill"
+                                         HeightRequest="52"
+                                         Padding="16,8,16,0"
+                                         Spacing="0">
+                                <Label Text="Dapps"
+                                       Style="{DynamicResource AdditionalTextH5}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="End"
+                                       VerticalOptions="FillAndExpand"
+                                       Padding="0,14"/>
+                                <StackLayout Style="{DynamicResource SeparatorStyle}"
+                                             Margin="16,0,0,0" />
+                            </StackLayout>
+                        </ListView.Header>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <controls:CustomViewCell
@@ -1223,19 +1238,16 @@
                                     <Grid Padding="16,0"
                                           HorizontalOptions="FillAndExpand"
                                           ColumnSpacing="0"
-                                          RowSpacing="2">
+                                          RowSpacing="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="36" />
-                                            <RowDefinition Height="36" />
+                                            <RowDefinition Height="72" />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="48" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="36" />
+                                            <ColumnDefinition Width="38" />
                                         </Grid.ColumnDefinitions>
-                                        <Frame Grid.RowSpan="2"
-                                               HasShadow="False"
+                                        <Frame HasShadow="False"
                                                WidthRequest="24"
                                                HeightRequest="24"
                                                Padding="0"
@@ -1243,7 +1255,7 @@
                                                CornerRadius="4"
                                                IsClippedToBounds="True"
                                                BackgroundColor="Transparent">
-                                            <Image Source="{Binding Logo}"
+                                            <Image Source="{Binding DappLogo}"
                                                    HeightRequest="24"
                                                    WidthRequest="24"
                                                    VerticalOptions="Center"
@@ -1256,81 +1268,18 @@
                                                LineBreakMode="MiddleTruncation"
                                                HorizontalTextAlignment="Start"
                                                HorizontalOptions="FillAndExpand"
-                                               VerticalTextAlignment="End" />
-                                        <Label Grid.Column="1"
-                                               Grid.Row="1"
-                                               Text="{Binding StatusString}"
-                                               Style="{DynamicResource AdditionalTextH6}"
-                                               HorizontalTextAlignment="Start"
-                                               VerticalTextAlignment="Start">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="NotDelegated">
-                                                    <Setter Property="TextColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="Confirmed">
-                                                    <Setter Property="TextColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource HintTextColorDark}, Light={StaticResource HintTextColor}}" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="Active">
-                                                    <Setter Property="TextColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource SuccessTextColorDark}, Light={StaticResource SuccessTextColor}}" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="Pending">
-                                                    <Setter Property="TextColor"
-                                                            Value="{AppThemeBinding Dark={StaticResource WarningTextColorDark}, Light={StaticResource WarningTextColor}}" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-                                        <Label Grid.Column="2"
-                                               Text="{helpers:Translate EstimatedRoi}"
-                                               Style="{DynamicResource AdditionalTextH5}"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="End">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="NotDelegated">
-                                                    <Setter Property="IsVisible"
-                                                            Value="False" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-                                        <Label Grid.Column="2"
-                                               Grid.Row="1"
-                                               Text="{Binding Baker.EstimatedRoi, StringFormat='${0:P}'}"
-                                               Style="{DynamicResource AdditionalTextH5}"
-                                               HorizontalTextAlignment="End"
-                                               VerticalTextAlignment="Start">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding Status}"
-                                                             Value="NotDelegated">
-                                                    <Setter Property="IsVisible"
-                                                            Value="False" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-                                        <Frame Grid.RowSpan="2"
-                                               Grid.Column="3"
+                                               VerticalTextAlignment="Center" />
+                                        <Frame Grid.Column="2"
                                                HasShadow="False"
                                                Padding="0"
                                                BackgroundColor="Transparent">
                                             <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding DelegationActionSheetCommand}" />
+                                                <TapGestureRecognizer Command="{Binding DisconnectCommand}" />
                                             </Frame.GestureRecognizers>
-                                            <Image Source="ic_menu"
-                                                   WidthRequest="4"
-                                                   HeightRequest="16"
-                                                   Margin="22,0,10,0" />
+                                            <Image Source="ic_disconnect"
+                                                   WidthRequest="20"
+                                                   HeightRequest="18"
+                                                   Margin="10,27" />
                                         </Frame>
                                     </Grid>
                                 </controls:CustomViewCell>
@@ -1349,7 +1298,7 @@
                                              HorizontalOptions="Center">
                                     <Image HeightRequest="20"
                                            WidthRequest="20"
-                                           Source="ic_qr"
+                                           Source="ic_qr__blue"
                                            VerticalOptions="Center" />
                                     <Label Text="Connect Dapp"
                                            Style="{DynamicResource AdditionalClickableLabel}"

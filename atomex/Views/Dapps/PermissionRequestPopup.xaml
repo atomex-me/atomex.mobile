@@ -8,7 +8,7 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               mc:Ignorable="d"
-              d:BindingContext="{d:DesignInstance vm:DappViewModel}"
+              d:BindingContext="{d:DesignInstance vm:PermissionRequestViewModel}"
               BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
@@ -21,98 +21,197 @@
                            EasingOut="SinIn"
                            HasBackgroundAnimation="True" />
     </rg:PopupPage.Animation>
-    <StackLayout Spacing="0"
-                 Padding="24,0">
-        <Frame Padding="0"
-               Margin="16"
-               HasShadow="False"
-               CornerRadius="20"
-               HeightRequest="40"
-               WidthRequest="40"
-               HorizontalOptions="Center"
-               BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-            <Image Source="BTC" />
-        </Frame>
-        <Label Text="{Binding Name}"
-               Style="{DynamicResource AdditionalTextH5}"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
-        <Label Text="Uniswap wants to connect to your account"
-               Style="{DynamicResource MainTextH2}"
-               Margin="0,8,0,32"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
-        <Label Style="{DynamicResource MainTextH5}"
-               HorizontalTextAlignment="Start"
-               VerticalTextAlignment="Center"
-               LineHeight="1.25">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="The website is requesting the following permissions:" />
-                    <Span Text="&#10; &#8226;" />
-                    <Span Text=" Signing transactions" />
-                    <Span Text="&#10; &#8226;" />
-                    <Span Text=" Operation request" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-        <Frame HasShadow="False"
-               Padding="0"
-               Margin="0,24"
-               HorizontalOptions="FillAndExpand"
-               CornerRadius="12"
-               BackgroundColor="Transparent"
-               BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
-            <Grid ColumnSpacing="0"
-                  RowSpacing="4">
+    <Frame CornerRadius="8"
+           WidthRequest="320"
+           Padding="0"
+           HasShadow="False"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           BackgroundColor="{AppThemeBinding Dark={StaticResource PopupFrameBackgroundColorDark}, Light={StaticResource PopupFrameBackgroundColor}}">
+        <StackLayout Spacing="0"
+                     Padding="24,0">
+            <Frame Padding="0"
+                   Margin="16"
+                   HasShadow="False"
+                   CornerRadius="20"
+                   HeightRequest="40"
+                   WidthRequest="40"
+                   HorizontalOptions="Center"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                <Image Source="{Binding DappLogo}" />
+            </Frame>
+            <Label Text="{Binding DappName}"
+                   Style="{DynamicResource AdditionalTextH5}"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Start" />
+            <Label Text="{Binding SubTitle}"
+                   Style="{DynamicResource MainTextH2}"
+                   Margin="0,8,0,32"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+            <!-- <ListView ItemsSource="{Binding PermissionStrings}" -->
+            <!--           SelectionMode="None" -->
+            <!--           BackgroundColor="Transparent" -->
+            <!--           SeparatorVisibility="None" -->
+            <!--           VerticalScrollBarVisibility="Never" -->
+            <!--           HasUnevenRows="True"> -->
+            <!--     <ListView.Header> -->
+            <!--         <Label Text="The website is requesting the following permissions:" -->
+            <!--                Style="{DynamicResource MainTextH5}" -->
+            <!--                HorizontalTextAlignment="Start" -->
+            <!--                VerticalTextAlignment="Center" -->
+            <!--                LineHeight="1.25"> -->
+            <!--         </Label> -->
+            <!--     </ListView.Header> -->
+            <!--     <ListView.ItemTemplate> -->
+            <!--         <DataTemplate> -->
+            <!--             <Label Style="{DynamicResource MainTextH5}" -->
+            <!--                    HorizontalTextAlignment="Start" -->
+            <!--                    VerticalTextAlignment="Center" -->
+            <!--                    LineHeight="1.25"> -->
+            <!--                 <Label.FormattedText> -->
+            <!--                     <FormattedString> -->
+            <!--                         <Span Text="&#10; &#8226;" /> -->
+            <!--                         <Span Text="{Binding .}" /> -->
+            <!--                     </FormattedString> -->
+            <!--                 </Label.FormattedText> -->
+            <!--             </Label> -->
+            <!--         </DataTemplate> -->
+            <!--     </ListView.ItemTemplate> -->
+            <!-- </ListView> -->
+            <Label Style="{DynamicResource MainTextH5}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   LineHeight="1.25">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="The website is requesting the following permissions:" />
+                        <Span Text="&#10; &#8226;" />
+                        <Span Text=" Signing transactions" />
+                        <Span Text="&#10; &#8226;" />
+                        <Span Text=" Operation request" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Frame HasShadow="False"
+                   Padding="0"
+                   Margin="0,24"
+                   HorizontalOptions="FillAndExpand"
+                   CornerRadius="12"
+                   BackgroundColor="Transparent"
+                   BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
+                <Grid ColumnSpacing="13"
+                      RowSpacing="4"
+                      Padding="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="22" />
+                        <RowDefinition Height="22" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.RowSpan="2"
+                           Source="XTZ"
+                           HorizontalOptions="Start" />
+                    <Label Grid.Column="1"
+                           Text="{Binding Address}"
+                           Style="{DynamicResource MainTextH5}"
+                           LineBreakMode="MiddleTruncation"
+                           VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Start" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="Start"
+                           HorizontalTextAlignment="Start"
+                           Text="{Binding Balance}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Balance}" />
+                                <Span Text=" " />
+                                <Span Text="XTZ" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+            </Frame>
+            <Grid RowSpacing="0"
+                  ColumnSpacing="8">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="39" />
-                    <RowDefinition Height="39" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="52" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.RowSpan="2"
-                       Source="XTZ"
-                       Margin="17,27,13,27" />
-                <Label Grid.Column="1"
-                       Text="tz1Mrt2GJcdRhqt9GGH6tLss..."
-                       Style="{DynamicResource MainTextH5}"
-                       LineBreakMode="MiddleTruncation"
-                       VerticalTextAlignment="End"
-                       HorizontalTextAlignment="Start" />
-                <Label Grid.Row="1"
-                       Grid.Column="1"
-                       Style="{DynamicResource AdditionalTextH5}"
-                       VerticalTextAlignment="Start"
-                       HorizontalTextAlignment="Start"
-                       Text="0.074322001 XTZ">
-                    <!-- <Label.FormattedText> -->
-                    <!--     <FormattedString> -->
-                    <!--         <Span Text="{Binding ConnectedAddress.AvailableBalance}" /> -->
-                    <!--         <Span Text=" " /> -->
-                    <!--         <Span Text="{Binding ConnectedAddress.CurrencyCode}" /> -->
-                    <!--     </FormattedString> -->
-                    <!-- </Label.FormattedText> -->
-                </Label>
-                <Image Grid.Column="2"
-                       Grid.RowSpan="2"
-                       HorizontalOptions="End"
-                       Margin="20,0"
-                       WidthRequest="8"
-                       HeightRequest="12"
-                       Source="ic_forward"
-                       VerticalOptions="FillAndExpand" />
+                <RelativeLayout HeightRequest="44">
+                    <Button Text="Reject"
+                            Style="{DynamicResource AdditionalButton}"
+                            HeightRequest="44"
+                            CornerRadius="22"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            Command="{Binding OnRejectCommand}"
+                            Margin="0">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsRejecting}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="" />
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                        RelativeLayout.WidthConstraint="24"
+                        RelativeLayout.HeightConstraint="24"
+                        Color="#92C8F9"
+                        BackgroundColor="Transparent"
+                        IsRunning="{Binding IsRejecting}"
+                        IsVisible="{Binding IsRejecting}" />
+                </RelativeLayout>
+                <RelativeLayout Grid.Column="1"
+                                HeightRequest="44">
+                    <Button Text="Allow"
+                            Style="{DynamicResource MainButton}"
+                            HeightRequest="44"
+                            CornerRadius="22"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+                            Command="{Binding OnAllowCommand}"
+                            Margin="0">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button"
+                                         Binding="{Binding IsSending}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="" />
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <ActivityIndicator
+                        RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor =.5, Constant=-12}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor =.5, Constant=-12}"
+                        RelativeLayout.WidthConstraint="24"
+                        RelativeLayout.HeightConstraint="24"
+                        Color="#92C8F9"
+                        BackgroundColor="Transparent"
+                        IsRunning="{Binding IsSending}"
+                        IsVisible="{Binding IsSending}" />
+                </RelativeLayout>
             </Grid>
-        </Frame>
-        <Button Text="Allow"
-                Style="{DynamicResource MainButton}" />
-        <Label Text="Only connect to websites you trust"
-               Style="{DynamicResource AdditionalTextH6}"
-               Margin="12"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
-    </StackLayout>
+            <Label Text="Only connect to websites you trust"
+                   Style="{DynamicResource AdditionalTextH6}"
+                   Margin="12"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center" />
+        </StackLayout>
+    </Frame>
 </rg:PopupPage>
