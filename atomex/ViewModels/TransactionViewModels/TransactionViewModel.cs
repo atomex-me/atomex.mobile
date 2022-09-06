@@ -87,7 +87,7 @@ namespace atomex.ViewModels.TransactionViewModels
                 amountDigits: currencyConfig.Digits,
                 currencyCode: currencyConfig.Name);
 
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         public static string GetDescription(

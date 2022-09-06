@@ -8,8 +8,7 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               mc:Ignorable="d"
-              d:BindingContext="{d:DesignInstance vm:PermissionRequestViewModel}"
-              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+              d:BindingContext="{d:DesignInstance vm:PermissionRequestViewModel}">
     <rg:PopupPage.Animation>
         <rg:ScaleAnimation PositionIn="Center"
                            PositionOut="Center"
@@ -23,7 +22,7 @@
     </rg:PopupPage.Animation>
     <Frame CornerRadius="8"
            WidthRequest="320"
-           Padding="0"
+           Padding="0,12"
            HasShadow="False"
            HorizontalOptions="Center"
            VerticalOptions="Center"
@@ -31,32 +30,61 @@
         <StackLayout Spacing="0"
                      Padding="24,0">
             <Frame Padding="0"
-                   Margin="16"
                    HasShadow="False"
                    CornerRadius="20"
                    HeightRequest="40"
                    WidthRequest="40"
                    HorizontalOptions="Center"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
-                <Image Source="{Binding DappLogo}" />
+                <Image Source="{Binding DappLogo}"
+                       HeightRequest="40"
+                       WidthRequest="40"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
             </Frame>
             <Label Text="{Binding DappName}"
                    Style="{DynamicResource AdditionalTextH5}"
                    HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Start" />
+                   VerticalTextAlignment="Start" 
+                   Margin="0,8"/>
             <Label Text="{Binding SubTitle}"
                    Style="{DynamicResource MainTextH2}"
-                   Margin="0,8,0,32"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />
+            <Label Text="The app is requesting the following permissions:"
+                   Style="{DynamicResource MainTextH5}"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   LineHeight="1.25"
+                   Margin="0,32,0,8"/>
+            <StackLayout BindableLayout.ItemsSource="{Binding PermissionStrings}"
+                         BackgroundColor="Transparent"
+                         Spacing="0">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Label Style="{DynamicResource MainTextH5}"
+                               HorizontalTextAlignment="Start"
+                               VerticalTextAlignment="Center"
+                               LineHeight="1.25">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#8226;" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding .}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
             <!-- <ListView ItemsSource="{Binding PermissionStrings}" -->
             <!--           SelectionMode="None" -->
-            <!--           BackgroundColor="Transparent" -->
+            <!--           VerticalOptions="Start" -->
             <!--           SeparatorVisibility="None" -->
             <!--           VerticalScrollBarVisibility="Never" -->
             <!--           HasUnevenRows="True"> -->
             <!--     <ListView.Header> -->
-            <!--         <Label Text="The website is requesting the following permissions:" -->
+            <!--         <Label Text="The app is requesting the following permissions:" -->
             <!--                Style="{DynamicResource MainTextH5}" -->
             <!--                HorizontalTextAlignment="Start" -->
             <!--                VerticalTextAlignment="Center" -->
@@ -65,39 +93,43 @@
             <!--     </ListView.Header> -->
             <!--     <ListView.ItemTemplate> -->
             <!--         <DataTemplate> -->
-            <!--             <Label Style="{DynamicResource MainTextH5}" -->
-            <!--                    HorizontalTextAlignment="Start" -->
-            <!--                    VerticalTextAlignment="Center" -->
-            <!--                    LineHeight="1.25"> -->
-            <!--                 <Label.FormattedText> -->
-            <!--                     <FormattedString> -->
-            <!--                         <Span Text="&#10; &#8226;" /> -->
-            <!--                         <Span Text="{Binding .}" /> -->
-            <!--                     </FormattedString> -->
-            <!--                 </Label.FormattedText> -->
-            <!--             </Label> -->
+            <!--             <ViewCell> -->
+            <!--                 <Label Style="{DynamicResource MainTextH5}" -->
+            <!--                        HorizontalTextAlignment="Start" -->
+            <!--                        VerticalTextAlignment="Center" -->
+            <!--                        LineHeight="1.25"> -->
+            <!--                     <Label.FormattedText> -->
+            <!--                         <FormattedString> -->
+            <!--                             <Span Text="&#8226;" /> -->
+            <!--                             <Span Text=" " /> -->
+            <!--                             <Span Text="{Binding .}" /> -->
+            <!--                         </FormattedString> -->
+            <!--                     </Label.FormattedText> -->
+            <!--                 </Label> -->
+            <!--             </ViewCell> -->
             <!--         </DataTemplate> -->
             <!--     </ListView.ItemTemplate> -->
             <!-- </ListView> -->
-            <Label Style="{DynamicResource MainTextH5}"
-                   HorizontalTextAlignment="Start"
-                   VerticalTextAlignment="Center"
-                   LineHeight="1.25">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="The website is requesting the following permissions:" />
-                        <Span Text="&#10; &#8226;" />
-                        <Span Text=" Signing transactions" />
-                        <Span Text="&#10; &#8226;" />
-                        <Span Text=" Operation request" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+
+            <!-- <Label Style="{DynamicResource MainTextH5}" -->
+            <!--        HorizontalTextAlignment="Start" -->
+            <!--        VerticalTextAlignment="Center" -->
+            <!--        LineHeight="1.25"> -->
+            <!--     <Label.FormattedText> -->
+            <!--         <FormattedString> -->
+            <!--             <Span Text="The website is requesting the following permissions:" /> -->
+            <!--             <Span Text="&#10; &#8226;" /> -->
+            <!--             <Span Text=" Signing transactions" /> -->
+            <!--             <Span Text="&#10; &#8226;" /> -->
+            <!--             <Span Text=" Operation request" /> -->
+            <!--         </FormattedString> -->
+            <!--     </Label.FormattedText> -->
+            <!-- </Label> -->
             <Frame HasShadow="False"
                    Padding="0"
                    Margin="0,24"
                    HorizontalOptions="FillAndExpand"
-                   CornerRadius="12"
+                   CornerRadius="8"
                    BackgroundColor="Transparent"
                    BorderColor="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColor}}">
                 <Grid ColumnSpacing="13"
@@ -137,7 +169,8 @@
                 </Grid>
             </Frame>
             <Grid RowSpacing="0"
-                  ColumnSpacing="8">
+                  ColumnSpacing="8"
+                  HeightRequest="44">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -148,7 +181,6 @@
                 <RelativeLayout HeightRequest="44">
                     <Button Text="Reject"
                             Style="{DynamicResource AdditionalButton}"
-                            HeightRequest="44"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
@@ -179,7 +211,6 @@
                                 HeightRequest="44">
                     <Button Text="Allow"
                             Style="{DynamicResource MainButton}"
-                            HeightRequest="44"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
                             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
@@ -209,7 +240,7 @@
             </Grid>
             <Label Text="Only connect to websites you trust"
                    Style="{DynamicResource AdditionalTextH6}"
-                   Margin="12"
+                   Margin="0,12"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />
         </StackLayout>

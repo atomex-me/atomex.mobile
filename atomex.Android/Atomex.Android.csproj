@@ -156,8 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-night\ic_disconnect.xml" />
+    <AndroidResource Include="Resources\drawable-night\ic_disconnect__blue.xml" />
     <AndroidResource Include="Resources\drawable-night\ic_qr__blue.xml" />
     <AndroidResource Include="Resources\drawable\ic_disconnect.xml" />
+    <AndroidResource Include="Resources\drawable\ic_disconnect__blue.xml" />
     <AndroidResource Include="Resources\drawable\ic_qr__blue.xml" />
     <AndroidResource Include="Resources\layout\Tabbar.xml" />
     <AndroidResource Include="Resources\values\styles.xml" />

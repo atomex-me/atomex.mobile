@@ -99,6 +99,9 @@
     <ImageAsset Include="Assets.xcassets\ic_disconnect.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_disconnect.imageset\ic_disconnect.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_disconnect.imageset\ic_disconnect__dark.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\ic_disconnect__blue.pdf" />
+    <ImageAsset Include="Assets.xcassets\ic_disconnect__blue.imageset\ic_disconnect__blue__dark.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Ic_qr__blue.pdf" />
     <ImageAsset Include="Assets.xcassets\ic_qr__blue.imageset\Ic_qr__blue__dark.pdf" />

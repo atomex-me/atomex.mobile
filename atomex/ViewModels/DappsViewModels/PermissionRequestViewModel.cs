@@ -19,7 +19,7 @@ namespace atomex.ViewModels.DappsViewModels
         public List<string> PermissionStrings => BeaconHelper.GetPermissionStrings(Permissions);
 
         public string SubTitle =>
-            $"{DappName} wants to connect to your account. The app is requesting the following permissions:";
+            $"{DappName} wants to connect to your account";
 
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }

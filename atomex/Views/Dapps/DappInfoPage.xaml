@@ -2,12 +2,198 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="atomex.Views.Dapps.DappInfoPage">
+             x:Class="atomex.Views.Dapps.DappInfoPage"
+             xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:BindingContext="{d:DesignInstance vm:DappViewModel}"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Hello, world!"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="0"
+                         Margin="24,0">
+                <Frame Padding="0"
+                       HasShadow="False"
+                       CornerRadius="20"
+                       HeightRequest="40"
+                       WidthRequest="40"
+                       HorizontalOptions="Center"
+                       BackgroundColor="{AppThemeBinding Dark={StaticResource IconFrameBackgroundColorDark}, Light={StaticResource IconFrameBackgroundColor}}">
+                    <Image Source="{Binding Logo}"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Frame>
+                <Label Text="{Binding Name}"
+                       Style="{DynamicResource AdditionalTextH5}"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start"
+                       Margin="0,8" />
+                <Label Style="{DynamicResource MainTextH2}"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Start">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding Name}" />
+                            <Span Text=" " />
+                            <Span Text="is connected to your account" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0"
+                      Margin="0,24,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Line BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
+                    <Line Grid.Row="1"
+                          BackgroundColor="Transparent" />
+                    <Label Grid.Row="2"
+                           Text="Permissions"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           VerticalTextAlignment="End" />
+                    <StackLayout Grid.Row="3"
+                                 BindableLayout.ItemsSource="{Binding PermissionStrings}"
+                                 BackgroundColor="Transparent"
+                                 Padding="0,10,0,16"
+                                 Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Label Style="{DynamicResource MainTextH5}"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center"
+                                       LineHeight="1.25">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="  &#8226;" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding .}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                    <Line Grid.Row="4"
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
+                    <Line Grid.Row="5"
+                          BackgroundColor="Transparent" />
+                </Grid>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Connected to address"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           Padding="0,0,0,6"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           VerticalTextAlignment="End" />
+                    <Label Grid.Row="1"
+                           Style="{DynamicResource MainTextH4}"
+                           LineBreakMode="MiddleTruncation"
+                           VerticalTextAlignment="Start"
+                           Text="{Binding ConnectedAddress}" />
+                    <Image Grid.Column="1"
+                           Grid.RowSpan="2"
+                           Source="ic_copy__gray"
+                           WidthRequest="15"
+                           HeightRequest="18"
+                           VerticalOptions="FillAndExpand"
+                           HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                  CommandParameter="{Binding ConnectedAddress}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Line Grid.Row="2"
+                          Grid.ColumnSpan="2"
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
+                    <Line Grid.Row="3"
+                          Grid.ColumnSpan="2"
+                          BackgroundColor="Transparent" />
+                </Grid>
+                <Grid RowSpacing="0"
+                      ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Dapp ID"
+                           Style="{DynamicResource AdditionalTextH5}"
+                           Padding="0,0,0,6"
+                           TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
+                           VerticalTextAlignment="End" />
+                    <Label Grid.Row="1"
+                           Style="{DynamicResource MainTextH4}"
+                           LineBreakMode="MiddleTruncation"
+                           VerticalTextAlignment="Start"
+                           Text="{Binding Id}" />
+                    <Image Grid.Column="1"
+                           Grid.RowSpan="2"
+                           Source="ic_copy__gray"
+                           WidthRequest="15"
+                           HeightRequest="18"
+                           VerticalOptions="FillAndExpand"
+                           HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CopyCommand}"
+                                                  CommandParameter="{Binding Id}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Line Grid.Row="2"
+                          Grid.ColumnSpan="2"
+                          BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
+                    <Line Grid.Row="3"
+                          Grid.ColumnSpan="2"
+                          BackgroundColor="Transparent" />
+                </Grid>
+                <Frame Style="{DynamicResource AdditionalClickableFrame}"
+                       Margin="0,24"
+                       VerticalOptions="EndAndExpand"
+                       HorizontalOptions="FillAndExpand">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDisconnectionCommand}"
+                                              CommandParameter="{Binding .}"/>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Spacing="10"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="Center">
+                        <Image HeightRequest="18"
+                               WidthRequest="15"
+                               Source="ic_disconnect__blue"
+                               VerticalOptions="Center" />
+                        <Label Text="Disconnect"
+                               Style="{DynamicResource AdditionalClickableLabel}"
+                               VerticalTextAlignment="Center" />
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

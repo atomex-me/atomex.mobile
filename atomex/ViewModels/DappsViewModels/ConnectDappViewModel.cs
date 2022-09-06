@@ -20,8 +20,7 @@ namespace atomex.ViewModels.DappsViewModels
         public Func<string, string, Task> OnConnect;
         [Reactive] public string AddressToConnect { get; set; }
         [Reactive] public string QrCodeString { get; set; }
-        [ObservableAsProperty] public bool IsSending { get; }
-        
+
         [Reactive] public Result ScanResult { get; set; }
         [Reactive] public bool IsScanning { get; set; }
         [Reactive] public bool IsAnalyzing { get; set; }
@@ -29,16 +28,6 @@ namespace atomex.ViewModels.DappsViewModels
         public ConnectDappViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            // ConnectCommand.Merge(BackCommand)
-            //     .SubscribeInMainThread(_ =>
-            //     {
-            //         QrCodeString = null;
-            //         AddressToConnect = null;
-            //     });
-            //
-            // ConnectCommand
-            //     .IsExecuting
-            //     .ToPropertyExInMainThread(this, vm => vm.IsSending);
         }
 
         private ReactiveCommand<Unit, Unit> _backCommand;
@@ -100,8 +89,7 @@ namespace atomex.ViewModels.DappsViewModels
                 _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                 if (QrCodeString != null && AddressToConnect != null)
-                    await OnConnect(QrCodeString, AddressToConnect);
-                //ConfirmAction?.Invoke(this, selectedAddress);
+                    await OnConnect(QrCodeString, AddressToConnect); ;
             });
         }
     }

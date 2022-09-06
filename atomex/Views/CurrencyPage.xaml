@@ -1252,10 +1252,10 @@
                                                HeightRequest="24"
                                                Padding="0"
                                                Margin="0,24,12,24"
-                                               CornerRadius="4"
+                                               CornerRadius="12"
                                                IsClippedToBounds="True"
                                                BackgroundColor="Transparent">
-                                            <Image Source="{Binding DappLogo}"
+                                            <Image Source="{Binding Logo}"
                                                    HeightRequest="24"
                                                    WidthRequest="24"
                                                    VerticalOptions="Center"
