@@ -54,13 +54,17 @@ namespace atomex.ViewModels.DappsViewModels
         public Action<DappViewModel> ShowDisconnection { get; set; }
         public Action CloseDisconnection { get; set; }
 
+        public string DappInfoTitle => string.Format(AppResources.DappIsConnected, Name);
+        public string DisconnectTitle => string.Format(AppResources.DisconnectDappTitle, Name);
+        public string DisconnectConfirmationText => string.Format(AppResources.AreYouSureToDisconnect, Name);
+
         private ReactiveCommand<Unit, Unit> _openDappSiteCommand;
 
         public ReactiveCommand<Unit, Unit> OpenDappSiteCommand =>
             _openDappSiteCommand ??= ReactiveCommand.Create(() =>
             {
                 if (PermissionInfo != null && Uri.TryCreate(PermissionInfo.Website, UriKind.Absolute, out var uri))
-                    ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(uri.ToString()));
+                    ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(uri.ToString())));
             });
 
 
@@ -73,8 +77,7 @@ namespace atomex.ViewModels.DappsViewModels
         private ReactiveCommand<Unit, Unit> _closeDisconnectionCommand;
 
         public ReactiveCommand<Unit, Unit> CloseDisconnectionCommand =>
-            _closeDisconnectionCommand ??=
-                ReactiveCommand.Create(() => CloseDisconnection?.Invoke());
+            _closeDisconnectionCommand ??= ReactiveCommand.Create(() => CloseDisconnection?.Invoke());
 
         private ReactiveCommand<Unit, Unit> _disconnectCommand;
 
@@ -132,7 +135,6 @@ namespace atomex.ViewModels.DappsViewModels
 
             ConnectDappViewModel = new ConnectDappViewModel(_navigationService)
             {
-                // OnBack = () => App.DialogService.Show(SelectAddressViewModel),
                 OnConnect = Connect
             };
 
@@ -147,12 +149,16 @@ namespace atomex.ViewModels.DappsViewModels
                     {
                         AddressToConnect = walletAddressViewModel;
                         ConnectDappViewModel!.AddressToConnect = AddressToConnect.Address;
+                        selectAddressViewModel.SelectedAddress = null;
                         PermissionStatus permissions = await Permissions.CheckStatusAsync<Permissions.Camera>();
 
                         if (permissions != PermissionStatus.Granted)
                             permissions = await Permissions.RequestAsync<Permissions.Camera>();
                         if (permissions != PermissionStatus.Granted)
+                        {
+                            _navigationService?.ClosePage(TabNavigation.Portfolio);
                             return;
+                        }
 
                         ConnectDappViewModel!.IsScanning = true;
                         ConnectDappViewModel!.IsAnalyzing = true;
@@ -167,7 +173,7 @@ namespace atomex.ViewModels.DappsViewModels
                 try
                 {
                     var pathToWalletFolder = new DirectoryInfo(_app.Account.Wallet.PathToWallet).Parent?.FullName;
-                    var path = Path.Combine(pathToWalletFolder, "beacon.db");
+                    var path = Path.Combine(pathToWalletFolder!, "beacon.db");
 
                     var options = new BeaconOptions
                     {
@@ -220,25 +226,26 @@ namespace atomex.ViewModels.DappsViewModels
                     var message = Encoding.UTF8.GetString(decodedQr.ToArray());
                     return JsonConvert.DeserializeObject<P2PPairingRequest>(message);
                 }
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                    AppResources.ConnectedSuccessfully);
             }
             catch (Exception e)
             {
-                _navigationService?.ShowAlert(AppResources.Error, "Incorrect QR code format",
-                    AppResources.AcceptButton);
+                // _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
+                //     AppResources.AcceptButton);
                 Device.BeginInvokeOnMainThread(() => _navigationService?.ClosePage(TabNavigation.Portfolio));
+                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
+                    AppResources.IncorrectQrCodeFormat);
                 Log.Error(e, "Connect dApp error");
             }
         }
 
         private ReactiveCommand<Unit, Unit> _newDappCommand;
 
-        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.Create(() =>
-        {
-            _navigationService?.SetInitiatedPage(TabNavigation.Portfolio);
-            _navigationService?.ShowPage(new SelectAddressPage(SelectAddressViewModel), TabNavigation.Portfolio);
-        });
+        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.Create(() 
+            => _navigationService?.ShowPage(new SelectAddressPage(SelectAddressViewModel), TabNavigation.Portfolio));
 
-        private async void OnBeaconWalletClientMessageReceived(object? sender, BeaconMessageEventArgs e)
+        private async void OnBeaconWalletClientMessageReceived(object sender, BeaconMessageEventArgs e)
         {
             var message = e.Request;
             var peer = _beaconWalletClient.GetPeer(message.SenderId);
@@ -568,27 +575,27 @@ namespace atomex.ViewModels.DappsViewModels
                         PermissionInfo = _beaconWalletClient.PermissionInfoRepository
                             .TryReadBySenderIdAsync(peer.SenderId).Result,
                         ShowDisconnection = connectedDapp =>
+                            _navigationService?.ShowBottomSheet(new DappDisconnectPopup(connectedDapp)),
+                        CloseDisconnection = () => _navigationService?.CloseBottomSheet(),
+                        OnDisconnect = async disconnectPeer =>
                         {
-                            _navigationService?.ShowBottomSheet(new DappDisconnectPopup(connectedDapp));
-                        },
-                        CloseDisconnection = () =>
-                        {
-                            _navigationService?.CloseBottomSheet();
-                        },
-                        OnDisconnect = disconnectPeer =>
-                        {
-                            _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
-                            Device.InvokeOnMainThreadAsync(() =>
+                            _ = Device.InvokeOnMainThreadAsync(() => 
                             {
-                                _navigationService?.ClosePage(TabNavigation.Portfolio);
+                                _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
                                 _navigationService?.CloseBottomSheet();
                                 _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                                    "Disconnecting...");
+                                    AppResources.Disconnecting + "...");
+                            });
+                            await _beaconWalletClient.RemovePeerAsync(disconnectPeer.SenderId);
+                            await Device.InvokeOnMainThreadAsync(() =>
+                            {
+                                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                                    AppResources.DisconnectedSuccessfully);
                             });
                         },
                         OnCopy = value =>
                         {
-                            Device.InvokeOnMainThreadAsync(() =>
+                            _ = Device.InvokeOnMainThreadAsync(() =>
                             {
                                 if (value != null)
                                 {

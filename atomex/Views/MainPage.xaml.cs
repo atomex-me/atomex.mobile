@@ -380,7 +380,8 @@ namespace atomex.Views
                             NavigationPortfolioPage.Navigation.NavigationStack[i - 1]);
                     }
 
-                    await NavigationPortfolioPage.Navigation.PopAsync();
+                    if (NavigationPortfolioPage.Navigation.NavigationStack.Count > _initiatedPageNumber) 
+                        await NavigationPortfolioPage.Navigation.PopAsync();
                     break;
                 case TabNavigation.Exchange:
                     for (int i = NavigationConversionPage.Navigation.NavigationStack.Count - 1;

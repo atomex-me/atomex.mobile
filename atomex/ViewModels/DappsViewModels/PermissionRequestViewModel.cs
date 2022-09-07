@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
 using atomex.Common;
+using atomex.Resources;
 using Beacon.Sdk.Beacon.Permission;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -18,8 +19,7 @@ namespace atomex.ViewModels.DappsViewModels
         public List<PermissionScope> Permissions { get; set; }
         public List<string> PermissionStrings => BeaconHelper.GetPermissionStrings(Permissions);
 
-        public string SubTitle =>
-            $"{DappName} wants to connect to your account";
+        public string SubTitle => string.Format(AppResources.DappWantsToConnect, DappName);
 
         [ObservableAsProperty] public bool IsSending { get; }
         [ObservableAsProperty] public bool IsRejecting { get; }

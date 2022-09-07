@@ -38,7 +38,7 @@
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="Center">
             <StackLayout Spacing="0"
-                         Margin="24,24,24,0">
+                         Margin="24,24,24,12">
                 <Label Text="{helpers:Translate AvailableToSpend}"
                        Style="{DynamicResource AdditionalTextH4}"
                        HorizontalTextAlignment="Start"

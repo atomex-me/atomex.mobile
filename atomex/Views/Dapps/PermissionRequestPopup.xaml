@@ -3,6 +3,7 @@
 <rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
               x:Class="atomex.Views.Dapps.PermissionRequestPopup"
               xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -45,18 +46,24 @@
             <Label Text="{Binding DappName}"
                    Style="{DynamicResource AdditionalTextH5}"
                    HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Start" 
-                   Margin="0,8"/>
+                   VerticalTextAlignment="Start"
+                   Margin="0,8" />
             <Label Text="{Binding SubTitle}"
                    Style="{DynamicResource MainTextH2}"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />
-            <Label Text="The app is requesting the following permissions:"
-                   Style="{DynamicResource MainTextH5}"
+            <Label Style="{DynamicResource MainTextH5}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
                    LineHeight="1.25"
-                   Margin="0,32,0,8"/>
+                   Margin="0,32,0,8">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{helpers:Translate AppIsRequestingPermissions}" />
+                        <Span Text=":" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
             <StackLayout BindableLayout.ItemsSource="{Binding PermissionStrings}"
                          BackgroundColor="Transparent"
                          Spacing="0">
@@ -77,54 +84,6 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>
-            <!-- <ListView ItemsSource="{Binding PermissionStrings}" -->
-            <!--           SelectionMode="None" -->
-            <!--           VerticalOptions="Start" -->
-            <!--           SeparatorVisibility="None" -->
-            <!--           VerticalScrollBarVisibility="Never" -->
-            <!--           HasUnevenRows="True"> -->
-            <!--     <ListView.Header> -->
-            <!--         <Label Text="The app is requesting the following permissions:" -->
-            <!--                Style="{DynamicResource MainTextH5}" -->
-            <!--                HorizontalTextAlignment="Start" -->
-            <!--                VerticalTextAlignment="Center" -->
-            <!--                LineHeight="1.25"> -->
-            <!--         </Label> -->
-            <!--     </ListView.Header> -->
-            <!--     <ListView.ItemTemplate> -->
-            <!--         <DataTemplate> -->
-            <!--             <ViewCell> -->
-            <!--                 <Label Style="{DynamicResource MainTextH5}" -->
-            <!--                        HorizontalTextAlignment="Start" -->
-            <!--                        VerticalTextAlignment="Center" -->
-            <!--                        LineHeight="1.25"> -->
-            <!--                     <Label.FormattedText> -->
-            <!--                         <FormattedString> -->
-            <!--                             <Span Text="&#8226;" /> -->
-            <!--                             <Span Text=" " /> -->
-            <!--                             <Span Text="{Binding .}" /> -->
-            <!--                         </FormattedString> -->
-            <!--                     </Label.FormattedText> -->
-            <!--                 </Label> -->
-            <!--             </ViewCell> -->
-            <!--         </DataTemplate> -->
-            <!--     </ListView.ItemTemplate> -->
-            <!-- </ListView> -->
-
-            <!-- <Label Style="{DynamicResource MainTextH5}" -->
-            <!--        HorizontalTextAlignment="Start" -->
-            <!--        VerticalTextAlignment="Center" -->
-            <!--        LineHeight="1.25"> -->
-            <!--     <Label.FormattedText> -->
-            <!--         <FormattedString> -->
-            <!--             <Span Text="The website is requesting the following permissions:" /> -->
-            <!--             <Span Text="&#10; &#8226;" /> -->
-            <!--             <Span Text=" Signing transactions" /> -->
-            <!--             <Span Text="&#10; &#8226;" /> -->
-            <!--             <Span Text=" Operation request" /> -->
-            <!--         </FormattedString> -->
-            <!--     </Label.FormattedText> -->
-            <!-- </Label> -->
             <Frame HasShadow="False"
                    Padding="0"
                    Margin="0,24"
@@ -179,7 +138,7 @@
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
                 <RelativeLayout HeightRequest="44">
-                    <Button Text="Reject"
+                    <Button Text="{helpers:Translate Reject}"
                             Style="{DynamicResource AdditionalButton}"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
@@ -209,7 +168,7 @@
                 </RelativeLayout>
                 <RelativeLayout Grid.Column="1"
                                 HeightRequest="44">
-                    <Button Text="Allow"
+                    <Button Text="{helpers:Translate Allow}"
                             Style="{DynamicResource MainButton}"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
@@ -238,7 +197,7 @@
                         IsVisible="{Binding IsSending}" />
                 </RelativeLayout>
             </Grid>
-            <Label Text="Only connect to websites you trust"
+            <Label Text="{helpers:Translate ConnectToTrustSites}"
                    Style="{DynamicResource AdditionalTextH6}"
                    Margin="0,12"
                    HorizontalTextAlignment="Center"

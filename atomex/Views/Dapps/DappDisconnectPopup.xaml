@@ -31,31 +31,15 @@
         <StackLayout Spacing="0"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="Center">
-            <Label Style="{DynamicResource MainTextH3}"
+            <Label Text="{Binding DisconnectTitle}"
+                   Style="{DynamicResource MainTextH3}"
                    HorizontalTextAlignment="Start"
-                   VerticalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Disconnect" />
-                        <Span Text=" " />
-                        <Span Text="{Binding Name}" />
-                        <Span Text="?" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <Label Style="{DynamicResource MainTextH5}"
+                   VerticalTextAlignment="Center" />
+            <Label Text="{Binding DisconnectConfirmationText}"
+                   Style="{DynamicResource MainTextH5}"
                    Margin="0,24"
                    HorizontalTextAlignment="Start"
-                   VerticalTextAlignment="Start">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Are you sure you want to disconnect" />
-                        <Span Text=" " />
-                        <Span Text="{Binding Name}" />
-                        <Span Text="?" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                   VerticalTextAlignment="Start" />
             <Grid HorizontalOptions="FillAndExpand"
                   ColumnSpacing="0"
                   RowSpacing="0">
@@ -66,14 +50,14 @@
                     <ColumnDefinition Width="5*" />
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
-                <Button Text="{helpers:Translate CloseButton}"
+                <Button Text="{helpers:Translate CancelButton}"
                         Style="{DynamicResource TransparentButton}"
                         Padding="0"
                         VerticalOptions="Center"
                         HorizontalOptions="FillAndExpand"
                         Command="{Binding CloseDisconnectionCommand}" />
                 <Button Grid.Column="1"
-                        Text="Disconnect"
+                        Text="{helpers:Translate Disconnect}"
                         Style="{DynamicResource TransparentButton}"
                         Padding="0"
                         VerticalOptions="Center"

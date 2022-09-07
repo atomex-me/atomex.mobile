@@ -43,9 +43,9 @@ namespace atomex.ViewModels
             string tokenType = null,
             int tokenId = 0)
         {
-            _app = app ?? throw new ArgumentNullException(nameof(_app));
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(_navigationService));
-            Currency = currency ?? throw new ArgumentNullException(nameof(Currency));
+            _app = app ?? throw new ArgumentNullException(nameof(app));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            Currency = currency ?? throw new ArgumentNullException(nameof(currency));
             TokenContract = tokenContract;
             TokenType = tokenType;
 

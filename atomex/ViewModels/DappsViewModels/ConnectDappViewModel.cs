@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using atomex.Common;
+using atomex.Models;
 using atomex.Resources;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Serilog;
 using Xamarin.Forms;
 using ZXing;
 
@@ -16,7 +13,6 @@ namespace atomex.ViewModels.DappsViewModels
     {
         protected INavigationService _navigationService;
         
-        public Action OnBack;
         public Func<string, string, Task> OnConnect;
         [Reactive] public string AddressToConnect { get; set; }
         [Reactive] public string QrCodeString { get; set; }
@@ -30,34 +26,6 @@ namespace atomex.ViewModels.DappsViewModels
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
-        private ReactiveCommand<Unit, Unit> _backCommand;
-
-        public ReactiveCommand<Unit, Unit> BackCommand =>
-            _backCommand ??= _backCommand = ReactiveCommand.Create(() => { OnBack?.Invoke(); });
-
-        private ReactiveCommand<Unit, Unit> _connectCommand;
-
-        public ReactiveCommand<Unit, Unit> ConnectCommand =>
-            _connectCommand ??= _connectCommand = ReactiveCommand.CreateFromTask(async () =>
-            {
-                if (QrCodeString != null && AddressToConnect != null)
-                    await OnConnect(QrCodeString, AddressToConnect);
-            });
-
-        private ReactiveCommand<string, Unit> _copyCommand;
-
-        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(data =>
-        {
-            try
-            {
-               
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Copy to clipboard error");
-            }
-        });
-        
         private ICommand _scanResultCommand;
 
         public ICommand ScanResultCommand =>
@@ -70,14 +38,14 @@ namespace atomex.ViewModels.DappsViewModels
 
             if (ScanResult == null)
             {
-                _navigationService?.ShowAlert(AppResources.Error, "Incorrect QR code format",
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
                     AppResources.AcceptButton);
                 Device.BeginInvokeOnMainThread(() =>  _navigationService?.ClosePage(TabNavigation.Portfolio));
 
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.InvokeOnMainThreadAsync(async () =>
             {
                 string key = "data=";
                 int indexOfChar = ScanResult.Text.IndexOf(key, StringComparison.CurrentCulture);
@@ -89,7 +57,11 @@ namespace atomex.ViewModels.DappsViewModels
                 _navigationService?.ClosePage(TabNavigation.Portfolio);
 
                 if (QrCodeString != null && AddressToConnect != null)
-                    await OnConnect(QrCodeString, AddressToConnect); ;
+                {
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
+                        AppResources.Connecting + "...");
+                    await OnConnect(QrCodeString, AddressToConnect);
+                }
             });
         }
     }

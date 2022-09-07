@@ -32,17 +32,10 @@
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Start"
                        Margin="0,8" />
-                <Label Style="{DynamicResource MainTextH2}"
+                <Label Text="{Binding DappInfoTitle}"
+                       Style="{DynamicResource MainTextH2}"
                        HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Start">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding Name}" />
-                            <Span Text=" " />
-                            <Span Text="is connected to your account" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                       VerticalTextAlignment="Start" />
                 <Grid RowSpacing="0"
                       ColumnSpacing="0"
                       Margin="0,24,0,0">
@@ -57,11 +50,12 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Line BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
+                    <Line
+                        BackgroundColor="{AppThemeBinding Dark={StaticResource SeparatorColorDark}, Light={StaticResource SeparatorColor}}" />
                     <Line Grid.Row="1"
                           BackgroundColor="Transparent" />
                     <Label Grid.Row="2"
-                           Text="Permissions"
+                           Text="{helpers:Translate Permissions}"
                            Style="{DynamicResource AdditionalTextH5}"
                            VerticalTextAlignment="End" />
                     <StackLayout Grid.Row="3"
@@ -103,7 +97,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
-                    <Label Text="Connected to address"
+                    <Label Text="{helpers:Translate ConnectedToAddress}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -122,7 +116,7 @@
                            HorizontalOptions="End">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                  CommandParameter="{Binding ConnectedAddress}"/>
+                                                  CommandParameter="{Binding ConnectedAddress}" />
                         </Image.GestureRecognizers>
                     </Image>
                     <Line Grid.Row="2"
@@ -144,7 +138,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
-                    <Label Text="Dapp ID"
+                    <Label Text="{helpers:Translate DappId}"
                            Style="{DynamicResource AdditionalTextH5}"
                            Padding="0,0,0,6"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
@@ -153,7 +147,11 @@
                            Style="{DynamicResource MainTextH4}"
                            LineBreakMode="MiddleTruncation"
                            VerticalTextAlignment="Start"
-                           Text="{Binding Id}" />
+                           Text="{Binding Id}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenDappSiteCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
                     <Image Grid.Column="1"
                            Grid.RowSpan="2"
                            Source="ic_copy__gray"
@@ -163,7 +161,7 @@
                            HorizontalOptions="End">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CopyCommand}"
-                                                  CommandParameter="{Binding Id}"/>
+                                                  CommandParameter="{Binding Id}" />
                         </Image.GestureRecognizers>
                     </Image>
                     <Line Grid.Row="2"
@@ -179,7 +177,7 @@
                        HorizontalOptions="FillAndExpand">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowDisconnectionCommand}"
-                                              CommandParameter="{Binding .}"/>
+                                              CommandParameter="{Binding .}" />
                     </Frame.GestureRecognizers>
                     <StackLayout Spacing="10"
                                  Orientation="Horizontal"
@@ -188,7 +186,7 @@
                                WidthRequest="15"
                                Source="ic_disconnect__blue"
                                VerticalOptions="Center" />
-                        <Label Text="Disconnect"
+                        <Label Text="{helpers:Translate Disconnect}"
                                Style="{DynamicResource AdditionalClickableLabel}"
                                VerticalTextAlignment="Center" />
                     </StackLayout>

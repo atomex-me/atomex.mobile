@@ -21,7 +21,6 @@
             <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
             <converters:StringToBoolConverter x:Key="StringToBool" />
             <converters:NullToBooleanConverter x:Key="NullToBoolean" />
-            <converters:StringToBoolConverterInvert x:Key="StringToBoolInvert" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding  IsRefreshing}"
@@ -1221,7 +1220,7 @@
                                          HeightRequest="52"
                                          Padding="16,8,16,0"
                                          Spacing="0">
-                                <Label Text="Dapps"
+                                <Label Text="{helpers:Translate Dapps}"
                                        Style="{DynamicResource AdditionalTextH5}"
                                        HorizontalTextAlignment="Start"
                                        VerticalTextAlignment="End"
@@ -1274,7 +1273,8 @@
                                                Padding="0"
                                                BackgroundColor="Transparent">
                                             <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding DisconnectCommand}" />
+                                                <TapGestureRecognizer Command="{Binding ShowDisconnectionCommand}"
+                                                                      CommandParameter="{Binding .}"/>
                                             </Frame.GestureRecognizers>
                                             <Image Source="ic_disconnect"
                                                    WidthRequest="20"
@@ -1300,7 +1300,7 @@
                                            WidthRequest="20"
                                            Source="ic_qr__blue"
                                            VerticalOptions="Center" />
-                                    <Label Text="Connect Dapp"
+                                    <Label Text="{helpers:Translate ConnectDapp}"
                                            Style="{DynamicResource AdditionalClickableLabel}"
                                            VerticalTextAlignment="Center" />
                                 </StackLayout>

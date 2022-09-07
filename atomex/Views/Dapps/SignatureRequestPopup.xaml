@@ -3,6 +3,7 @@
 <rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:rg="http://rotorgames.com"
+              xmlns:helpers="clr-namespace:atomex.Helpers"
               x:Class="atomex.Views.Dapps.SignatureRequestPopup"
               xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -47,7 +48,7 @@
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Start"
                    Margin="0,8" />
-            <Label Text="Do you want to sign the following data?"
+            <Label Text="{helpers:Translate DoYouWantToSignData}"
                    Style="{DynamicResource MainTextH5}"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"
@@ -76,7 +77,7 @@
                     <ColumnDefinition Width="5*" />
                 </Grid.ColumnDefinitions>
                 <RelativeLayout HeightRequest="44">
-                    <Button Text="Reject"
+                    <Button Text="{helpers:Translate Reject}"
                             Style="{DynamicResource AdditionalButton}"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
@@ -106,7 +107,7 @@
                 </RelativeLayout>
                 <RelativeLayout Grid.Column="1"
                                 HeightRequest="44">
-                    <Button Text="Sign"
+                    <Button Text="{helpers:Translate Sign}"
                             Style="{DynamicResource MainButton}"
                             CornerRadius="22"
                             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=0}"
@@ -135,7 +136,7 @@
                         IsVisible="{Binding IsSigning}" />
                 </RelativeLayout>
             </Grid>
-            <Label Text="Only connect to websites you trust"
+            <Label Text="{helpers:Translate ConnectToTrustSites}"
                    Style="{DynamicResource AdditionalTextH6}"
                    Margin="0,12"
                    HorizontalTextAlignment="Center"

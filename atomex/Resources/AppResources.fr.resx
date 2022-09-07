@@ -1126,7 +1126,7 @@
         <value>Échec de l'activation de l'authentification biométrique</value>
     </data>
     <data name="Verified" xml:space="preserve">
-        <value>Vérifié!</value>
+        <value>Vérifié</value>
     </data>
     <data name="SwapHistoryText" xml:space="preserve">
         <value>L'historique des échanges est stocké localement sur votre appareil. Cela signifie que vous ne verrez pas les opérations effectuées sur un autre appareil.</value>
@@ -1215,5 +1215,68 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     </data>
     <data name="Progress" xml:space="preserve">
         <value>Progress</value>
+    </data>
+    <data name="IncorrectQrCodeFormat" xml:space="preserve">
+        <value>Incorrect QR code format</value>
+    </data>
+    <data name="DappId" xml:space="preserve">
+        <value>Dapp ID</value>
+    </data>
+    <data name="DappIsConnected" xml:space="preserve">
+        <value>{0} is connected to your account</value>
+    </data>
+    <data name="Connecting" xml:space="preserve">
+        <value>Connecting</value>
+    </data>
+    <data name="ConnectedToAddress" xml:space="preserve">
+        <value>Connected to address</value>
+    </data>
+    <data name="ConnectDapp" xml:space="preserve">
+        <value>Connect Dapp</value>
+    </data>
+    <data name="ConnectedSuccessfully" xml:space="preserve">
+        <value>Connected successfully</value>
+    </data>
+    <data name="ConnectToTrustSites" xml:space="preserve">
+        <value>Only connect to websites you trust</value>
+    </data>
+    <data name="AppIsRequestingPermissions" xml:space="preserve">
+        <value>The app is requesting the following permissions</value>
+    </data>
+    <data name="AreYouSureToDisconnect" xml:space="preserve">
+        <value>Are you sure you want to disconnect {0}?</value>
+    </data>
+    <data name="Allow" xml:space="preserve">
+        <value>Allow</value>
+    </data>
+    <data name="Disconnect" xml:space="preserve">
+        <value>Disconnect</value>
+    </data>
+    <data name="DisconnectDappTitle" xml:space="preserve">
+        <value>Disconnect {0}?</value>
+    </data>
+    <data name="DisconnectedSuccessfully" xml:space="preserve">
+        <value>Disconnected successfully</value>
+    </data>
+    <data name="Disconnecting" xml:space="preserve">
+        <value>Disconnecting</value>
+    </data>
+    <data name="Permissions" xml:space="preserve">
+        <value>Permissions</value>
+    </data>
+    <data name="Reject" xml:space="preserve">
+        <value>Reject</value>
+    </data>
+    <data name="Sign" xml:space="preserve">
+        <value>Sign</value>
+    </data>
+    <data name="DoYouWantToSignData" xml:space="preserve">
+        <value>Do you want to sign the following data?</value>
+    </data>
+    <data name="AddressToConnect" xml:space="preserve">
+        <value>Address to connect</value>
+    </data>
+    <data name="DappWantsToConnect" xml:space="preserve">
+        <value>{0} wants to connect to your account</value>
     </data>
 </root>

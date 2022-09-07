@@ -230,7 +230,7 @@ namespace atomex.ViewModels
                         : SelectAddressMode == SelectAddressMode.ChangeRedeemAddress
                             ? AppResources.ChangeRedeemAddress
                             : SelectAddressMode == SelectAddressMode.Connect
-                                ? "Address to connect"
+                                ? AppResources.AddressToConnect
                                 : string.Format(AppResources.MyCurrencyAddresses, _currency.DisplayedName);
         }
 
@@ -386,7 +386,7 @@ namespace atomex.ViewModels
 
             if (ScanResult == null)
             {
-                _navigationService?.ShowAlert(AppResources.Error, "Incorrect QR code format",
+                _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
                     AppResources.AcceptButton);
                 Device.BeginInvokeOnMainThread(() => { _navigationService?.ClosePage(TabNavigation.Portfolio); });
 
