@@ -63,10 +63,9 @@ namespace atomex.ViewModels.DappsViewModels
         public ReactiveCommand<Unit, Unit> OpenDappSiteCommand =>
             _openDappSiteCommand ??= ReactiveCommand.Create(() =>
             {
-                if (PermissionInfo != null && Uri.TryCreate(PermissionInfo.Website, UriKind.Absolute, out var uri))
-                    ReactiveCommand.CreateFromTask(() => Launcher.OpenAsync(new Uri(uri.ToString())));
+                if (PermissionInfo?.Website != null)
+                    Launcher.OpenAsync(new Uri(PermissionInfo.Website));
             });
-
 
         private ReactiveCommand<DappViewModel, Unit> _showDisconnectionCommand;
 
@@ -96,7 +95,7 @@ namespace atomex.ViewModels.DappsViewModels
         private INavigationService _navigationService;
         private IWalletBeaconClient _beaconWalletClient;
 
-        private static readonly WalletBeaconClientFactory _beaconClientFactoryFactory = new();
+        private static readonly WalletBeaconClientFactory _beaconClientFactory = new();
 
         [Reactive] public ObservableCollection<DappViewModel> Dapps { get; set; }
         [Reactive] public DappViewModel SelectedDapp { get; set; }
@@ -193,7 +192,7 @@ namespace atomex.ViewModels.DappsViewModels
                         DatabaseConnectionString = $"Filename={path}"
                     };
 
-                    _beaconWalletClient = _beaconClientFactoryFactory.Create(options, new SerilogLoggerFactory());
+                    _beaconWalletClient = _beaconClientFactory.Create(options, new SerilogLoggerFactory());
                     _beaconWalletClient.OnBeaconMessageReceived += OnBeaconWalletClientMessageReceived;
                     _beaconWalletClient.OnDappsListChanged += OnDappsListChanged;
                     await _beaconWalletClient.InitAsync();
@@ -226,23 +225,26 @@ namespace atomex.ViewModels.DappsViewModels
                     var message = Encoding.UTF8.GetString(decodedQr.ToArray());
                     return JsonConvert.DeserializeObject<P2PPairingRequest>(message);
                 }
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Regular,
-                    AppResources.ConnectedSuccessfully);
+
+                Device.BeginInvokeOnMainThread(() => _navigationService?.DisplaySnackBar(
+                    SnackbarMessage.MessageType.Regular,
+                    AppResources.ConnectedSuccessfully));
             }
             catch (Exception e)
             {
-                // _navigationService?.ShowAlert(AppResources.Error, AppResources.IncorrectQrCodeFormat,
-                //     AppResources.AcceptButton);
-                Device.BeginInvokeOnMainThread(() => _navigationService?.ClosePage(TabNavigation.Portfolio));
-                _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
-                    AppResources.IncorrectQrCodeFormat);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _navigationService?.ClosePage(TabNavigation.Portfolio);
+                    _navigationService?.DisplaySnackBar(SnackbarMessage.MessageType.Error,
+                        AppResources.IncorrectQrCodeFormat);
+                });
                 Log.Error(e, "Connect dApp error");
             }
         }
 
         private ReactiveCommand<Unit, Unit> _newDappCommand;
 
-        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.Create(() 
+        public ReactiveCommand<Unit, Unit> NewDappCommand => _newDappCommand ??= ReactiveCommand.Create(()
             => _navigationService?.ShowPage(new SelectAddressPage(SelectAddressViewModel), TabNavigation.Portfolio));
 
         private async void OnBeaconWalletClientMessageReceived(object sender, BeaconMessageEventArgs e)
@@ -579,7 +581,7 @@ namespace atomex.ViewModels.DappsViewModels
                         CloseDisconnection = () => _navigationService?.CloseBottomSheet(),
                         OnDisconnect = async disconnectPeer =>
                         {
-                            _ = Device.InvokeOnMainThreadAsync(() => 
+                            _ = Device.InvokeOnMainThreadAsync(() =>
                             {
                                 _navigationService?.ReturnToInitiatedPage(TabNavigation.Portfolio);
                                 _navigationService?.CloseBottomSheet();

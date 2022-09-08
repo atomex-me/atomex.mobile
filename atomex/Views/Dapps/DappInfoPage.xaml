@@ -4,12 +4,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="atomex.Views.Dapps.DappInfoPage"
              xmlns:helpers="clr-namespace:atomex.Helpers"
+             xmlns:converters="clr-namespace:atomex.Converters"
              xmlns:vm="clr-namespace:atomex.ViewModels.DappsViewModels;assembly=atomex"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:BindingContext="{d:DesignInstance vm:DappViewModel}"
              BackgroundColor="{AppThemeBinding Dark={StaticResource MainBackgroundColorDark}, Light={StaticResource MainBackgroundColor}}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBoolean" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0"
@@ -143,15 +149,25 @@
                            Padding="0,0,0,6"
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="End" />
-                    <Label Grid.Row="1"
-                           Style="{DynamicResource MainTextH4}"
-                           LineBreakMode="MiddleTruncation"
-                           VerticalTextAlignment="Start"
-                           Text="{Binding Id}">
-                        <Label.GestureRecognizers>
+                    <StackLayout Grid.Row="1"
+                                 Spacing="12"
+                                 Orientation="Horizontal">
+                        <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OpenDappSiteCommand}" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                        </StackLayout.GestureRecognizers>
+                        <Label Style="{DynamicResource MainTextH4}"
+                               LineBreakMode="MiddleTruncation"
+                               VerticalTextAlignment="Start"
+                               Text="{Binding Id}" />
+                        <Image Source="ic_export"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Start"
+                               WidthRequest="10"
+                               HeightRequest="10"
+                               Margin="0,4,0,0"
+                               IsVisible="{Binding PermissionInfo.Website, Mode=OneWay, Converter={StaticResource NullToBoolean}, TargetNullValue='False', FallbackValue='False'}">
+                        </Image>
+                    </StackLayout>
                     <Image Grid.Column="1"
                            Grid.RowSpan="2"
                            Source="ic_copy__gray"
