@@ -627,6 +627,15 @@ namespace atomex.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By confirming, you are allowing {0} to make the following operations.
+        /// </summary>
+        internal static string ConfirmDappOperations {
+            get {
+                return ResourceManager.GetString("ConfirmDappOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmer la transaction.
         /// </summary>
         internal static string ConfirmTransactionLabel {
@@ -2437,6 +2446,15 @@ namespace atomex.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request from {0}.
+        /// </summary>
+        internal static string RequestFromDapp {
+            get {
+                return ResourceManager.GetString("RequestFromDapp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restaurer le portefeuille.
         /// </summary>
         internal static string RestoreWalletButton {
@@ -3213,6 +3231,15 @@ namespace atomex.Resources {
         internal static string TotalNetworkFeeLabel {
             get {
                 return ResourceManager.GetString("TotalNetworkFeeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction.
+        /// </summary>
+        internal static string Transaction {
+            get {
+                return ResourceManager.GetString("Transaction", resourceCulture);
             }
         }
         

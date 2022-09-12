@@ -1279,4 +1279,13 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="DappWantsToConnect" xml:space="preserve">
         <value>{0} wants to connect to your account</value>
     </data>
+    <data name="ConfirmDappOperations" xml:space="preserve">
+        <value>By confirming, you are allowing {0} to make the following operations</value>
+    </data>
+    <data name="RequestFromDapp" xml:space="preserve">
+        <value>Request from {0}</value>
+    </data>
+    <data name="Transaction" xml:space="preserve">
+        <value>Transaction</value>
+    </data>
 </root>

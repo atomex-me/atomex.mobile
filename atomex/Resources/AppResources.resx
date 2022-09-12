@@ -388,6 +388,9 @@
     <data name="Description" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="Transaction" xml:space="preserve">
+        <value>Transaction</value>
+    </data>
     <data name="TransactionId" xml:space="preserve">
         <value>Transaction ID</value>
     </data>
@@ -894,6 +897,12 @@
     </data>
     <data name="DoYouWantToSignData" xml:space="preserve">
         <value>Do you want to sign the following data?</value>
+    </data>
+    <data name="RequestFromDapp" xml:space="preserve">
+        <value>Request from {0}</value>
+    </data>
+    <data name="ConfirmDappOperations" xml:space="preserve">
+        <value>By confirming, you are allowing {0} to make the following operations</value>
     </data>
 
     <!-- Settings Page -->

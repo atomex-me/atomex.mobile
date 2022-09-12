@@ -1279,4 +1279,13 @@
     <data name="DappWantsToConnect" xml:space="preserve">
         <value>{0} хочет подключиться к вашему аккаунту</value>
     </data>
+    <data name="ConfirmDappOperations" xml:space="preserve">
+        <value>Подтверждая, вы разрешаете {0} выполнить следующие операции</value>
+    </data>
+    <data name="RequestFromDapp" xml:space="preserve">
+        <value>Запрос от {0}</value>
+    </data>
+    <data name="Transaction" xml:space="preserve">
+        <value>Транзакция</value>
+    </data>
 </root>

@@ -627,6 +627,15 @@ namespace atomex.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Подтверждая, вы разрешаете {0} выполнить следующие операции.
+        /// </summary>
+        internal static string ConfirmDappOperations {
+            get {
+                return ResourceManager.GetString("ConfirmDappOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Подтвердите транзакцию.
         /// </summary>
         internal static string ConfirmTransactionLabel {
@@ -2437,6 +2446,15 @@ namespace atomex.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Запрос от {0}.
+        /// </summary>
+        internal static string RequestFromDapp {
+            get {
+                return ResourceManager.GetString("RequestFromDapp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Восстановить кошелек.
         /// </summary>
         internal static string RestoreWalletButton {
@@ -3213,6 +3231,15 @@ namespace atomex.Resources {
         internal static string TotalNetworkFeeLabel {
             get {
                 return ResourceManager.GetString("TotalNetworkFeeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Транзакция.
+        /// </summary>
+        internal static string Transaction {
+            get {
+                return ResourceManager.GetString("Transaction", resourceCulture);
             }
         }
         
