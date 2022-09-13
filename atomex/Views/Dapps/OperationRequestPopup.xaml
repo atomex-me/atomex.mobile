@@ -52,8 +52,8 @@
                         </Frame>
                         <Label Text="..."
                                Style="{DynamicResource AdditionalTextH3}"
-                               VerticalTextAlignment="Center"
-                               Margin="10,0" />
+                               VerticalOptions="Start"
+                               Margin="10,20,10,0" />
                         <Frame Padding="0"
                                HasShadow="False"
                                CornerRadius="20"
@@ -81,11 +81,9 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <StackLayout Style="{DynamicResource SeparatorStyle}" />
                     <StackLayout BindableLayout.ItemsSource="{Binding Operations}"
                                  BackgroundColor="Transparent"
-                                 Spacing="0"
-                                 Padding="0,16">
+                                 Spacing="0">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <Grid HorizontalOptions="Fill"
@@ -94,19 +92,24 @@
                                       RowSpacing="4"
                                       BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonContainerColorDark}, Light={StaticResource ButtonContainerColorDark}}">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="17" />
                                         <RowDefinition Height="24" />
                                         <RowDefinition Height="24" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="24" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="24" />
-                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="70" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4*" />
                                         <ColumnDefinition Width="6*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.ColumnSpan="2"
+                                    <StackLayout Grid.ColumnSpan="2"
+                                                 Style="{DynamicResource SeparatorStyle}"
+                                                 Margin="0,0,0,16" />
+                                    <Label Grid.Row="1"
+                                           Grid.ColumnSpan="2"
                                            Style="{DynamicResource MainTextH4}"
                                            HorizontalTextAlignment="Start"
                                            VerticalTextAlignment="Center">
@@ -117,54 +120,93 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Grid.Row="1"
+                                    <Label Grid.Row="2"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            Text="{helpers:Translate FromLabel}" />
-                                    <Label Grid.Row="1"
+                                    <Label Grid.Row="2"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            LineBreakMode="MiddleTruncation"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
                                            Text="{Binding Operation.Source}" />
-                                    <Label Grid.Row="2"
+                                    <Label Grid.Row="3"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate ToLabel}" />
-                                    <Label Grid.Row="2"
+                                           Text="{helpers:Translate ToLabel}"
+                                           HeightRequest="24">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Row="3"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            LineBreakMode="MiddleTruncation"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
-                                           Text="{Binding Operation.Destination}" />
-                                    <Label Grid.Row="3"
+                                           Text="{Binding Operation.Destination}"
+                                           HeightRequest="24">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Row="4"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
-                                           Text="{helpers:Translate AmountLabel}" />
-                                    <Label Grid.Row="3"
+                                           Text="{helpers:Translate AmountLabel}"
+                                           HeightRequest="24">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Grid.Row="4"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="End"
-                                           Text="{Binding AmountInTez}">
+                                           Text="{Binding AmountInTez}"
+                                           HeightRequest="24">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding AmountInTez, StringFormat='{0:0.#####} XTZ /'}" />
                                                 <Span Text="{Binding AmountInBase, StringFormat=' ${0:f2}'}"></Span>
                                             </FormattedString>
                                         </Label.FormattedText>
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Operation.Kind}"
+                                                         Value="reveal">
+                                                <Setter Property="IsVisible"
+                                                        Value="False" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
                                     </Label>
-                                    <Label Grid.Row="4"
+                                    <Label Grid.Row="5"
                                            Style="{DynamicResource AdditionalTextH4}"
                                            VerticalTextAlignment="Center"
                                            HorizontalTextAlignment="Start"
                                            Text="{helpers:Translate FeeLabel}" />
-                                    <Label Grid.Row="4"
+                                    <Label Grid.Row="5"
                                            Grid.Column="1"
                                            Style="{DynamicResource MainTextH5}"
                                            VerticalTextAlignment="Center"
@@ -177,13 +219,13 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Button Grid.Row="5"
+                                    <Button Grid.Row="6"
                                             Grid.ColumnSpan="2"
                                             Text="{Binding DetailsButtonName}"
                                             Style="{DynamicResource TransparentButton}"
-                                            Margin="0,10,0,0"
+                                            Margin="0,10"
                                             Command="{Binding OnOpenDetailsCommand}" />
-                                    <StackLayout Grid.Row="6"
+                                    <StackLayout Grid.Row="7"
                                                  Grid.ColumnSpan="2"
                                                  Spacing="0"
                                                  IsVisible="{Binding IsDetailsOpened}">

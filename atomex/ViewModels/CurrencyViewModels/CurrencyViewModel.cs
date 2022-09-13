@@ -40,7 +40,7 @@ namespace atomex.ViewModels.CurrencyViewModels
         [Description("Dapps")] Dapps
     }
 
-    public class CurrencyViewModel : BaseViewModel
+    public class CurrencyViewModel : BaseViewModel, IDisposable
     {
         protected IAtomexApp _app { get; set; }
         protected IAccount _account { get; set; }
@@ -142,10 +142,10 @@ namespace atomex.ViewModels.CurrencyViewModels
 
                     TxListViewHeight = IsAllTxsShowed
                         ? Transactions.Count * DefaultTxRowHeight +
-                          GroupedTransactions.Count * DefaultTxGroupHeight +
+                          GroupedTransactions!.Count * DefaultTxGroupHeight +
                           ListViewFooterHeight
                         : TxsNumberPerPage * DefaultTxRowHeight +
-                          (GroupedTransactions.Count + 1) * DefaultTxGroupHeight;
+                          (GroupedTransactions!.Count + 1) * DefaultTxGroupHeight;
                 });
 
             this.WhenAnyValue(vm => vm.Addresses)
@@ -162,7 +162,7 @@ namespace atomex.ViewModels.CurrencyViewModels
                 .WhereNotNull()
                 .SubscribeInMainThread(_ =>
                 {
-                    AddressesViewModel.AddressesChanged += OnAddresesChangedEventHandler;
+                    AddressesViewModel!.AddressesChanged += OnAddresesChangedEventHandler;
                     OnAddresesChangedEventHandler();
                 });
 
