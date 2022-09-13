@@ -1288,4 +1288,10 @@
     <data name="Transaction" xml:space="preserve">
         <value>Транзакция</value>
     </data>
+    <data name="DisplayTxDetails" xml:space="preserve">
+        <value>Показать доп. информацию о транзакции</value>
+    </data>
+    <data name="HideTxDetails" xml:space="preserve">
+        <value>Скрыть доп. информацию о транзакции</value>
+    </data>
 </root>

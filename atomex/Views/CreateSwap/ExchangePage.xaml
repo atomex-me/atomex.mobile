@@ -750,6 +750,8 @@
                 <Button Text="{helpers:Translate ShowAll}"
                         Style="{DynamicResource AdditionalButton}"
                         IsVisible="{Binding CanShowMoreSwaps}"
+                        Margin="16,0"
+                        Padding="16,0"
                         Command="{Binding ShowAllSwapsCommand}" />
                 <Label Text="{helpers:Translate SwapHistoryText}"
                        Style="{DynamicResource AdditionalTextH5}"

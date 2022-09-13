@@ -228,11 +228,11 @@
                 <Button Text="{helpers:Translate ChangeBaker}"
                         Style="{DynamicResource AdditionalButton}"
                         Margin="0,33,0,24"
+                        Padding="16,0"
                         Command="{Binding ChangeBakerCommand}" />
                 <Button Text="{helpers:Translate CheckRewards}"
                         Style="{DynamicResource TransparentButton}"
-                        Command="{Binding CheckRewardsCommand}">
-                </Button>
+                        Command="{Binding CheckRewardsCommand}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

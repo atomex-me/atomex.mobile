@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -13,20 +12,27 @@ using Newtonsoft.Json;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using Xamarin.Essentials;
 
 namespace atomex.ViewModels.DappsViewModels
 {
- public abstract class BaseBeaconOperationViewModel : BaseViewModel, IDisposable
+    public abstract class BaseBeaconOperationViewModel : BaseViewModel, IDisposable
     {
         public int Id { get; set; }
         protected static string BaseCurrencyCode => "USD";
-        public string BaseCurrencyFormat => "$0.##";
         public abstract string JsonStringOperation { get; }
         [Reactive] public IQuotesProvider QuotesProvider { get; set; }
         [Reactive] public bool IsDetailsOpened { get; set; }
+        [Reactive] public string CopyButtonName { get; set; }
+        [Reactive] public string DetailsButtonName { get; set; }
+        [ObservableAsProperty] public bool IsCopied { get; }
 
         protected BaseBeaconOperationViewModel()
         {
+            CopyCommand
+                .IsExecuting
+                .ToPropertyExInMainThread(this, vm => vm.IsCopied);
+            
             this.WhenAnyValue(vm => vm.QuotesProvider)
                 .WhereNotNull()
                 .Take(1)
@@ -35,14 +41,42 @@ namespace atomex.ViewModels.DappsViewModels
                     quotesProvider.QuotesUpdated += OnQuotesUpdatedEventHandler;
                     OnQuotesUpdatedEventHandler(quotesProvider, EventArgs.Empty);
                 });
+            
+            CopyButtonName = AppResources.CopyButton;
+            DetailsButtonName = AppResources.DisplayTxDetails;
         }
 
-        protected abstract void OnQuotesUpdatedEventHandler(object? sender, EventArgs args);
+        protected abstract void OnQuotesUpdatedEventHandler(object sender, EventArgs args);
 
         private ReactiveCommand<Unit, Unit> _onOpenDetailsCommand;
 
         public ReactiveCommand<Unit, Unit> OnOpenDetailsCommand =>
-            _onOpenDetailsCommand ??= ReactiveCommand.Create(() => { IsDetailsOpened = !IsDetailsOpened; });
+            _onOpenDetailsCommand ??= ReactiveCommand.Create(() =>
+            {
+                IsDetailsOpened = !IsDetailsOpened;
+                DetailsButtonName = IsDetailsOpened 
+                    ? AppResources.HideTxDetails 
+                    : AppResources.DisplayTxDetails;
+            });
+
+        private ReactiveCommand<string, Unit> _copyCommand;
+
+        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.CreateFromTask<string>(
+            async data =>
+            {
+                try
+                {
+                    CopyButtonName = AppResources.Copied;
+                    await Clipboard.SetTextAsync(data);
+                    await Task.Delay(1500);
+                    CopyButtonName = AppResources.CopyButton;
+                }
+                catch (Exception e)
+                {
+                    CopyButtonName = AppResources.CopyButton;
+                    Log.Error(e, "Copy to clipboard error");
+                }
+            });
 
         public void Dispose()
         {
@@ -124,20 +158,6 @@ namespace atomex.ViewModels.DappsViewModels
 
         public ReactiveCommand<Unit, Unit> OnRejectCommand =>
             _onRejectCommand ??= ReactiveCommand.CreateFromTask(async () => await OnReject());
-
-        private ReactiveCommand<string, Unit> _copyCommand;
-
-        public ReactiveCommand<string, Unit> CopyCommand => _copyCommand ??= ReactiveCommand.Create<string>(data =>
-        {
-            try
-            {
-                // App.Clipboard.SetTextAsync(data);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Copy to clipboard error");
-            }
-        });
 
         public void Dispose()
         {

@@ -1288,4 +1288,10 @@ NOTE: Do not sign out or close the application until the swap is completed, othe
     <data name="Transaction" xml:space="preserve">
         <value>Transaction</value>
     </data>
+    <data name="DisplayTxDetails" xml:space="preserve">
+        <value>Display extra tx details</value>
+    </data>
+    <data name="HideTxDetails" xml:space="preserve">
+        <value>Hide extra tx details</value>
+    </data>
 </root>

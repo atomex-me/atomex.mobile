@@ -1176,6 +1176,15 @@ namespace atomex.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display extra tx details.
+        /// </summary>
+        internal static string DisplayTxDetails {
+            get {
+                return ResourceManager.GetString("DisplayTxDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to sign the following data?.
         /// </summary>
         internal static string DoYouWantToSignData {
@@ -1568,6 +1577,15 @@ namespace atomex.Resources {
         internal static string HideLowBalances {
             get {
                 return ResourceManager.GetString("HideLowBalances", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide extra tx details.
+        /// </summary>
+        internal static string HideTxDetails {
+            get {
+                return ResourceManager.GetString("HideTxDetails", resourceCulture);
             }
         }
         

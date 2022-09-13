@@ -40,8 +40,6 @@
         <Setter Property="CornerRadius" Value="25"/>
         <Setter Property="TextTransform" Value="None"/>
         <Setter Property="FontFamily" Value="{DynamicResource MediumFont}"/>
-        <Setter Property="Padding" Value="16,0"/>
-        <Setter Property="Margin" Value="16,0"/>
         <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
     </Style>
     <Style x:Key="TransparentButton" TargetType="Button">

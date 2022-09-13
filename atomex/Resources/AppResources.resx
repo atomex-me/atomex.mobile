@@ -904,6 +904,12 @@
     <data name="ConfirmDappOperations" xml:space="preserve">
         <value>By confirming, you are allowing {0} to make the following operations</value>
     </data>
+    <data name="DisplayTxDetails" xml:space="preserve">
+        <value>Display extra tx details</value>
+    </data>
+    <data name="HideTxDetails" xml:space="preserve">
+        <value>Hide extra tx details</value>
+    </data>
 
     <!-- Settings Page -->
     <data name="SettingsPageTitle" xml:space="preserve">
