@@ -375,7 +375,7 @@
                                         </Label.IsVisible>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding TokenBalance}" />
+                                                <Span Text="{Binding TokenBalance, StringFormat='{0:0.########}'}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding TokenCode}" />
                                                 <Span Text=" / " />
@@ -390,7 +390,7 @@
                                            IsVisible="{Binding IsFreeAddress, Converter={StaticResource InverseBool}, FallbackValue=True, TargetNullValue=True}">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding AvailableBalance}" />
+                                                <Span Text="{Binding AvailableBalance, StringFormat='{0:0.########}'}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding CurrencyCode}" />
                                             </FormattedString>

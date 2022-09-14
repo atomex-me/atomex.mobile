@@ -75,7 +75,7 @@
                            TextColor="{AppThemeBinding Dark={StaticResource AdditionalTextColorDark}, Light={StaticResource AdditionalTextColor}}"
                            VerticalTextAlignment="End" />
                     <Label Grid.Row="1"
-                           Text="{Binding Balance, StringFormat='{0:0.#########} XTZ'}"
+                           Text="{Binding Balance, StringFormat='{0:0.########} XTZ'}"
                            Style="{DynamicResource MainTextH4}"
                            VerticalTextAlignment="Start" />
                     <Line Grid.Row="2"

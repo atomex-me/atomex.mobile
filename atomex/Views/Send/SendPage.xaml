@@ -94,13 +94,12 @@
                 </Label>
                 <Label Grid.Row="1"
                        Grid.Column="1"
-                       Text="{Binding SelectedFromBalance}"
                        Style="{DynamicResource AdditionalTextH5}"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding SelectedFromBalance}" />
+                            <Span Text="{Binding SelectedFromBalance, StringFormat='{0:0.########}'}" />
                             <Span Text=" " />
                             <Span Text="{Binding CurrencyName}" />
                         </FormattedString>

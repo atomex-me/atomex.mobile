@@ -498,7 +498,7 @@
                                                HorizontalTextAlignment="Start">
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Balance}" />
+                                                    <Span Text="{Binding Balance, StringFormat='{0:0.########}'}" />
                                                     <Span Text=" " />
                                                     <Span Text="{Binding BalanceCode}" />
                                                 </FormattedString>

@@ -341,7 +341,7 @@ namespace atomex.ViewModels
                                 Path = path,
                                 HasTokens = HasTokens,
                                 IsFreeAddress = a?.Address == freeAddress?.Address,
-                                Balance = a.AvailableBalance,
+                                Balance = Currencies.IsTezosToken(_currency.Name) ? a.TokenBalance : a.AvailableBalance,
                                 BalanceCode = _currency.DisplayedName,
                                 UpdateAddress = UpdateAddress
                             };
